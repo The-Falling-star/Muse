@@ -1,0 +1,97 @@
+// Package config 定义应用配置结构和加载逻辑
+package config
+
+import (
+	"fmt"
+
+	"github.com/spf13/viper"
+)
+
+// Config 应用配置结构
+type Config struct {
+	Server   ServerConfig   `mapstructure:"server"`
+	Database DatabaseConfig `mapstructure:"database"`
+}
+
+// ServerConfig 服务器配置
+type ServerConfig struct {
+	Host string `mapstructure:"host"`
+	Port int    `mapstructure:"port"`
+}
+
+// Address 返回服务器监听地址
+func (s ServerConfig) Address() string {
+	return fmt.Sprintf("%s:%d", s.Host, s.Port)
+}
+
+// DatabaseConfig 数据库配置
+type DatabaseConfig struct {
+	Driver       string `mapstructure:"driver"`      // 数据库驱动: mysql 或 sqlite
+	SQLitePath   string `mapstructure:"sqlite_path"` // SQLite 数据库文件路径
+	Host         string `mapstructure:"host"`        // MySQL 主机地址
+	Port         int    `mapstructure:"port"`        // MySQL 端口
+	Username     string `mapstructure:"username"`    // MySQL 用户名
+	Password     string `mapstructure:"password"`    // MySQL 密码
+	Database     string `mapstructure:"database"`    // MySQL 数据库名
+	Charset      string `mapstructure:"charset"`     // MySQL 字符集
+	MaxIdleConns int    `mapstructure:"max_idle_conns"`
+	MaxOpenConns int    `mapstructure:"max_open_conns"`
+}
+
+// IsSQLite 判断是否使用SQLite
+func (d DatabaseConfig) IsSQLite() bool {
+	return d.Driver == "sqlite"
+}
+
+// DSN 返回MySQL数据库连接字符串
+func (d DatabaseConfig) DSN() string {
+	charset := d.Charset
+	if charset == "" {
+		charset = "utf8mb4"
+	}
+	return fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s&parseTime=True&loc=Local",
+		d.Username,
+		d.Password,
+		d.Host,
+		d.Port,
+		d.Database,
+		charset,
+	)
+}
+
+// globalConfig 全局配置实例
+var globalConfig *Config
+
+// Load 从配置文件加载配置
+func Load(configPath string) (*Config, error) {
+	viper.SetConfigFile(configPath)
+	viper.SetConfigType("yaml")
+
+	// 设置默认值
+	viper.SetDefault("server.host", "0.0.0.0")
+	viper.SetDefault("server.port", 8080)
+	viper.SetDefault("database.driver", "sqlite") // 默认使用SQLite
+	viper.SetDefault("database.sqlite_path", "./data/muse.db")
+	viper.SetDefault("database.host", "localhost")
+	viper.SetDefault("database.port", 3306)
+	viper.SetDefault("database.charset", "utf8mb4")
+	viper.SetDefault("database.max_idle_conns", 10)
+	viper.SetDefault("database.max_open_conns", 100)
+
+	if err := viper.ReadInConfig(); err != nil {
+		return nil, fmt.Errorf("读取配置文件失败: %w", err)
+	}
+
+	cfg := &Config{}
+	if err := viper.Unmarshal(cfg); err != nil {
+		return nil, fmt.Errorf("解析配置文件失败: %w", err)
+	}
+
+	globalConfig = cfg
+	return cfg, nil
+}
+
+// Get 获取全局配置实例
+func Get() *Config {
+	return globalConfig
+}

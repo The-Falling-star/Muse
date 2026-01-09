@@ -1,0 +1,24 @@
+# Muse 服务器配置文件
+
+server:
+  host: "0.0.0.0"
+  port: 8080
+
+database:
+  # 数据库驱动: sqlite 或 mysql
+  # sqlite: 生产环境推荐，无需额外安装数据库，数据存储在本地文件
+  # mysql: 开发环境推荐，方便调试和查看数据
+  driver: "sqlite"
+
+  # SQLite 配置 (driver 为 sqlite 时使用)
+  sqlite_path: "./data/muse.db"
+
+  # MySQL 配置 (driver 为 mysql 时使用)
+  host: "localhost"
+  port: 3306
+  username: "root"
+  password: "your_password"
+  database: "muse"
+  charset: "utf8mb4"
+  max_idle_conns: 10
+  max_open_conns: 100

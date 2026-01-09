@@ -1,0 +1,27 @@
+version: v2
+managed:
+  enabled: true
+  override:
+    - file_option: go_package_prefix
+      value: github.com/ling/muse/gen
+plugins:
+  # Go protobuf 消息生成
+  - remote: buf.build/protocolbuffers/go
+    out: backend/gen
+    opt:
+      - paths=source_relative
+  # Go connect-rpc 服务生成
+  - remote: buf.build/connectrpc/go
+    out: backend/gen
+    opt:
+      - paths=source_relative
+  # TypeScript protobuf 消息 + connect-rpc 服务生成 (使用 bufbuild/es 同时生成)
+  - remote: buf.build/bufbuild/es
+    out: frontend/src/gen
+    opt:
+      - target=ts
+  - remote: buf.build/connectrpc/es
+    out: frontend/src/gen
+    opt:
+      - target=ts
+      - import_extension=none

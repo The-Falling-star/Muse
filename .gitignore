@@ -1,0 +1,53 @@
+# 编译产物
+/backend/muse
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# 测试产物
+*.test
+*.out
+
+# 依赖
+/vendor
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 配置文件（包含敏感信息）
+config.yaml
+
+# 日志
+*.log
+logs/
+
+# 临时文件
+tmp/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+/frontend/node_modules/
+/frontend/dist/
+/.codebuddy/

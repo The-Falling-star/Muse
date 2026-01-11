@@ -9,52 +9,44 @@ option go_package = "github.com/ling/muse/gen/muse;muse";
 // 枚举定义
 // ================================
 
-// MessageRole 消息角色
-enum MessageRole {
-  MESSAGE_ROLE_UNSPECIFIED = 0;
-  MESSAGE_ROLE_SYSTEM = 1;
-  MESSAGE_ROLE_USER = 2;
-  MESSAGE_ROLE_ASSISTANT = 3;
-}
-
 // PromptItemRole 提示项角色
-enum PromptItemRole {
-  PROMPT_ITEM_ROLE_UNSPECIFIED = 0;
-  PROMPT_ITEM_ROLE_SYSTEM = 1;
-  PROMPT_ITEM_ROLE_USER = 2;
-  PROMPT_ITEM_ROLE_ASSISTANT = 3;
+enum Role {
+  RoleUnspecified = 0;
+  System = 1;
+  User = 2;
+  Assistant = 3;
 }
 
 // InjectionPosition 注入位置
 enum InjectionPosition {
-  INJECTION_POSITION_UNSPECIFIED = 0;
-  INJECTION_POSITION_RELATIVE = 1;
-  INJECTION_POSITION_ABSOLUTE = 2;
+  InjectionPositionUnspecified = 0;
+  Relative = 1;
+  Absolute = 2;
 }
 
 // EntryPosition 世界书条目插入位置
 enum EntryPosition {
-  ENTRY_POSITION_UNSPECIFIED = 0;
-  ENTRY_POSITION_BEFORE_CHAR = 1;
-  ENTRY_POSITION_AFTER_CHAR = 2;
-  ENTRY_POSITION_BEFORE_EXAMPLE = 3;
-  ENTRY_POSITION_AFTER_EXAMPLE = 4;
-  ENTRY_POSITION_AT_DEPTH = 5;
+  EntryPositionUnspecified = 0;
+  BeforeChar = 1;
+  AfterChar = 2;
+  BeforeExample = 3;
+  AfterExample = 4;
+  AtDepth = 5;
 }
 
 // APIProvider API提供商
 enum APIProvider {
-  API_PROVIDER_UNSPECIFIED = 0;
-  API_PROVIDER_OPENAI = 1;
-  API_PROVIDER_CLAUDE = 2;
-  API_PROVIDER_GEMINI = 3;
+  APIProviderUnspecified = 0;
+  OpenAI = 1;
+  Claude = 2;
+  Gemini = 3;
 }
 
 // Theme 主题
 enum Theme {
-  THEME_AUTO = 0;
-  THEME_LIGHT = 1;
-  THEME_DARK = 2;
+  Auto = 0;
+  Light = 1;
+  Dark = 2;
 }
 
 // ================================
@@ -62,10 +54,9 @@ enum Theme {
 // ================================
 
 // User 用户信息
-message User {
+message SysUser {
   int32 id = 1;
   string username = 2;
-  string email = 3;
   int32 active_persona_id = 4;
   int32 active_preset_id = 5;
   int64 created_at = 6;
@@ -106,14 +97,11 @@ message Character {
   string name = 3;
   string avatar = 4;
   string description = 5;
-  string personality = 6;
-  string scenario = 7;
   string first_message = 8;
   string example_dialogue = 9;
   string creator_notes = 10;
-  string system_prompt = 11;
   int32 world_info_id = 12;
-  int64 version = 13;
+  int64 version = 13; // 乐观锁版本号
   int64 created_at = 14;
   int64 updated_at = 15;
   // 关联的世界书（可选加载）
@@ -142,7 +130,7 @@ message ChatSession {
 message Message {
   int32 id = 1;
   int32 session_id = 2;
-  MessageRole role = 3;
+  Role role = 3;
   int32 active_swipe_index = 4;
   int32 sort_order = 5;
   int64 created_at = 6;
@@ -190,7 +178,7 @@ message PromptItem {
   string identifier = 3;
   string name = 4;
   string content = 5;
-  PromptItemRole role = 6;
+  Role role = 6;
   bool is_enabled = 7;
   InjectionPosition injection_position = 8;
   int32 injection_depth = 9;
@@ -198,6 +186,15 @@ message PromptItem {
   int32 sort_order = 11;
   int64 created_at = 12;
   int64 updated_at = 13;
+}
+
+// RegexAffectFlags 正则规则作用范围
+message RegexAffectFlags {
+  bool user_input = 1; // 用户输入
+  bool ai_output = 2; // ai输出
+  bool slash_command = 3; // 斜杠命令
+  bool world_info = 4; // 世界书
+  bool prompt = 5; // 作用于提示词
 }
 
 // RegexRule 正则规则
@@ -212,7 +209,7 @@ message RegexRule {
   bool substitute_regex = 8;
   int32 min_depth = 9;
   int32 max_depth = 10;
-  int64 affect_flags = 11;  // 位掩码
+  RegexAffectFlags affect_flags = 11;
   int32 sort_order = 12;
   int64 created_at = 13;
   int64 updated_at = 14;
@@ -281,12 +278,11 @@ message APIConfig {
 message RegisterRequest {
   string username = 1;
   string password = 2;
-  optional string email = 3;
 }
 
 // 注册响应
 message RegisterResponse {
-  User user = 1;
+  SysUser user = 1;
   string token = 2;
 }
 
@@ -298,7 +294,7 @@ message LoginRequest {
 
 // 登录响应
 message LoginResponse {
-  User user = 1;
+  SysUser user = 1;
   string token = 2;
 }
 
@@ -307,7 +303,7 @@ message GetCurrentUserRequest {}
 
 // 获取当前用户响应
 message GetCurrentUserResponse {
-  User user = 1;
+  SysUser user = 1;
 }
 
 // 修改密码请求
@@ -838,7 +834,7 @@ message CreatePromptItemRequest {
   string identifier = 1;
   string name = 2;
   optional string content = 3;
-  PromptItemRole role = 4;
+  Role role = 4;
   bool is_enabled = 5;
   InjectionPosition injection_position = 6;
   int32 injection_depth = 7;
@@ -856,7 +852,7 @@ message CreateRegexRuleRequest {
   bool substitute_regex = 6;
   optional int32 min_depth = 7;
   optional int32 max_depth = 8;
-  int64 affect_flags = 9;
+  RegexAffectFlags affect_flags = 9;
   int32 sort_order = 10;
 }
 
@@ -937,7 +933,7 @@ message AddPromptItemRequest {
   string identifier = 2;
   string name = 3;
   optional string content = 4;
-  PromptItemRole role = 5;
+  Role role = 5;
   bool is_enabled = 6;
   InjectionPosition injection_position = 7;
   int32 injection_depth = 8;
@@ -956,7 +952,7 @@ message UpdatePromptItemRequest {
   string identifier = 2;
   string name = 3;
   optional string content = 4;
-  PromptItemRole role = 5;
+  Role role = 5;
   bool is_enabled = 6;
   InjectionPosition injection_position = 7;
   int32 injection_depth = 8;
@@ -1042,7 +1038,7 @@ message AddRegexRuleRequest {
   bool substitute_regex = 7;
   optional int32 min_depth = 8;
   optional int32 max_depth = 9;
-  int64 affect_flags = 10;
+  RegexAffectFlags affect_flags = 10;
   int32 sort_order = 11;
 }
 
@@ -1062,7 +1058,7 @@ message UpdateRegexRuleRequest {
   bool substitute_regex = 7;
   optional int32 min_depth = 8;
   optional int32 max_depth = 9;
-  int64 affect_flags = 10;
+  RegexAffectFlags affect_flags = 10;
   int32 sort_order = 11;
 }
 

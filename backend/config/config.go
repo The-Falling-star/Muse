@@ -71,7 +71,7 @@ func Load(configPath string) (*Config, error) {
 	viper.SetDefault("server.host", "0.0.0.0")
 	viper.SetDefault("server.port", 8080)
 	viper.SetDefault("database.driver", "sqlite") // 默认使用SQLite
-	viper.SetDefault("database.sqlite_path", "./data/muse.db")
+	viper.SetDefault("database.sqlite_path", "./data/muse.database")
 	viper.SetDefault("database.host", "localhost")
 	viper.SetDefault("database.port", 3306)
 	viper.SetDefault("database.charset", "utf8mb4")

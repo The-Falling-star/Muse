@@ -3,7 +3,7 @@ package entity
 import (
 	"time"
 
-	"github.com/ling/muse/common/constants"
+	pb "github.com/ling/muse/gen/muse"
 )
 
 // ChatSession 聊天会话表实体
@@ -28,13 +28,13 @@ func (ChatSession) TableName() string {
 
 // Message 消息表实体
 type Message struct {
-	ID               int                   `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
-	SessionID        int                   `gorm:"column:session_id;not null;index:idx_session_id" json:"sessionId"`
-	Role             constants.MessageRole `gorm:"column:role;type:tinyint unsigned;not null" json:"role"`
-	ActiveSwipeIndex int                   `gorm:"column:active_swipe_index;not null;default:0" json:"activeSwipeIndex"`
-	SortOrder        int                   `gorm:"column:sort_order;not null;default:0;index:idx_sort_order" json:"sortOrder"`
-	CreatedAt        time.Time             `gorm:"column:created_at;autoCreateTime" json:"createdAt"`
-	UpdatedAt        time.Time             `gorm:"column:updated_at;autoUpdateTime" json:"updatedAt"`
+	ID               int       `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
+	SessionID        int       `gorm:"column:session_id;not null;index:idx_session_id" json:"sessionId"`
+	Role             pb.Role   `gorm:"column:role;type:tinyint unsigned;not null" json:"role"`
+	ActiveSwipeIndex int       `gorm:"column:active_swipe_index;not null;default:0" json:"activeSwipeIndex"`
+	SortOrder        int       `gorm:"column:sort_order;not null;default:0;index:idx_sort_order" json:"sortOrder"`
+	CreatedAt        time.Time `gorm:"column:created_at;autoCreateTime" json:"createdAt"`
+	UpdatedAt        time.Time `gorm:"column:updated_at;autoUpdateTime" json:"updatedAt"`
 
 	// 关联关系
 	Swipes []MessageSwipe `gorm:"foreignKey:MessageID" json:"swipes,omitempty"`

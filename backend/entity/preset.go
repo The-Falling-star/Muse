@@ -3,7 +3,7 @@ package entity
 import (
 	"time"
 
-	"github.com/ling/muse/common/constants"
+	pb "github.com/ling/muse/gen/muse"
 )
 
 // Preset 预设表实体
@@ -33,19 +33,19 @@ func (Preset) TableName() string {
 
 // PromptItem 提示项表实体
 type PromptItem struct {
-	ID                int                         `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
-	PresetID          int                         `gorm:"column:preset_id;not null;index:idx_preset_id" json:"presetId"`
-	Identifier        string                      `gorm:"column:identifier;type:varchar(64);not null" json:"identifier"`
-	Name              string                      `gorm:"column:name;type:varchar(128);not null" json:"name"`
-	Content           string                      `gorm:"column:content;type:text" json:"content"`
-	Role              constants.PromptItemRole    `gorm:"column:role;type:tinyint unsigned;not null;default:0" json:"role"`
-	IsEnabled         bool                        `gorm:"column:is_enabled;not null;default:true" json:"isEnabled"`
-	InjectionPosition constants.InjectionPosition `gorm:"column:injection_position;type:tinyint unsigned;not null;default:0" json:"injectionPosition"`
-	InjectionDepth    int                         `gorm:"column:injection_depth;not null;default:0" json:"injectionDepth"`
-	ForbidOverrides   bool                        `gorm:"column:forbid_overrides;not null;default:false" json:"forbidOverrides"`
-	SortOrder         int                         `gorm:"column:sort_order;not null;default:0;index:idx_sort_order" json:"sortOrder"`
-	CreatedAt         time.Time                   `gorm:"column:created_at;autoCreateTime" json:"createdAt"`
-	UpdatedAt         time.Time                   `gorm:"column:updated_at;autoUpdateTime" json:"updatedAt"`
+	ID                int                  `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
+	PresetID          int                  `gorm:"column:preset_id;not null;index:idx_preset_id" json:"presetId"`
+	Identifier        string               `gorm:"column:identifier;type:varchar(64);not null" json:"identifier"`
+	Name              string               `gorm:"column:name;type:varchar(128);not null" json:"name"`
+	Content           string               `gorm:"column:content;type:text" json:"content"`
+	Role              pb.Role              `gorm:"column:role;type:tinyint unsigned;not null;default:0" json:"role"`
+	IsEnabled         bool                 `gorm:"column:is_enabled;not null;default:true" json:"isEnabled"`
+	InjectionPosition pb.InjectionPosition `gorm:"column:injection_position;type:tinyint unsigned;not null;default:0" json:"injectionPosition"`
+	InjectionDepth    int                  `gorm:"column:injection_depth;not null;default:0" json:"injectionDepth"`
+	ForbidOverrides   bool                 `gorm:"column:forbid_overrides;not null;default:false" json:"forbidOverrides"`
+	SortOrder         int                  `gorm:"column:sort_order;not null;default:0;index:idx_sort_order" json:"sortOrder"`
+	CreatedAt         time.Time            `gorm:"column:created_at;autoCreateTime" json:"createdAt"`
+	UpdatedAt         time.Time            `gorm:"column:updated_at;autoUpdateTime" json:"updatedAt"`
 }
 
 // TableName 返回表名

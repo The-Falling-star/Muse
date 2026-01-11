@@ -3,7 +3,7 @@ package entity
 import (
 	"time"
 
-	"github.com/ling/muse/common/constants"
+	pb "github.com/ling/muse/gen/muse"
 )
 
 // WorldInfo 世界书表实体
@@ -32,17 +32,17 @@ type WorldInfoEntry struct {
 	UID         string `gorm:"column:uid;type:varchar(64)" json:"uid"`
 
 	// 用户可编辑字段
-	KeysList       string                  `gorm:"column:keys_list;type:text;not null" json:"keysList"`
-	SecondaryKeys  string                  `gorm:"column:secondary_keys;type:text" json:"secondaryKeys"`
-	Content        string                  `gorm:"column:content;type:text;not null" json:"content"`
-	Comment        string                  `gorm:"column:comment;type:text" json:"comment"`
-	IsEnabled      bool                    `gorm:"column:is_enabled;not null;default:true" json:"isEnabled"`
-	Constant       bool                    `gorm:"column:constant;not null;default:false" json:"constant"`
-	Selective      bool                    `gorm:"column:selective;not null;default:false" json:"selective"`
-	InsertionOrder int                     `gorm:"column:insertion_order;not null;default:100" json:"insertionOrder"`
-	Position       constants.EntryPosition `gorm:"column:position;type:tinyint unsigned;not null;default:0" json:"position"`
-	Depth          int                     `gorm:"column:depth;not null;default:4" json:"depth"`
-	SortOrder      int                     `gorm:"column:sort_order;not null;default:0" json:"sortOrder"`
+	KeysList       string           `gorm:"column:keys_list;type:text;not null" json:"keysList"`
+	SecondaryKeys  string           `gorm:"column:secondary_keys;type:text" json:"secondaryKeys"`
+	Content        string           `gorm:"column:content;type:text;not null" json:"content"`
+	Comment        string           `gorm:"column:comment;type:text" json:"comment"`
+	IsEnabled      bool             `gorm:"column:is_enabled;not null;default:true" json:"isEnabled"`
+	Constant       bool             `gorm:"column:constant;not null;default:false" json:"constant"`
+	Selective      bool             `gorm:"column:selective;not null;default:false" json:"selective"`
+	InsertionOrder int              `gorm:"column:insertion_order;not null;default:100" json:"insertionOrder"`
+	Position       pb.EntryPosition `gorm:"column:position;type:tinyint unsigned;not null;default:0" json:"position"`
+	Depth          int              `gorm:"column:depth;not null;default:4" json:"depth"`
+	SortOrder      int              `gorm:"column:sort_order;not null;default:0" json:"sortOrder"`
 
 	// 数据库字段
 	CreatedAt time.Time `gorm:"column:created_at;autoCreateTime" json:"createdAt"`

@@ -10,7 +10,6 @@ type User struct {
 	ID              int       `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
 	Username        string    `gorm:"column:username;type:varchar(64);not null;uniqueIndex:uk_username" json:"username"`
 	PasswordHash    string    `gorm:"column:password_hash;type:varchar(255);not null" json:"-"`
-	Email           string    `gorm:"column:email;type:varchar(255)" json:"email"`
 	ActivePersonaID int       `gorm:"column:active_persona_id" json:"activePersonaId"`
 	ActivePresetID  int       `gorm:"column:active_preset_id" json:"activePresetId"`
 	CreatedAt       time.Time `gorm:"column:created_at;autoCreateTime" json:"createdAt"`

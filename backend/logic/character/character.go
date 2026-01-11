@@ -9,17 +9,23 @@ import (
 	"path/filepath"
 	"strings"
 
+	"connectrpc.com/connect"
 	png "github.com/dsoprea/go-png-image-structure/v2"
+	"github.com/ling/muse/common/convert"
 	"github.com/ling/muse/entity"
 	"github.com/ling/muse/entity/sillytavern"
 	pb "github.com/ling/muse/gen/muse"
+	"github.com/ling/muse/repo/database"
 )
 
 type characterImpl struct {
+	charaRepo *database.CharacterRepo
 }
 
 func newCharacter() *characterImpl {
-	return &characterImpl{}
+	return &characterImpl{
+		charaRepo: &database.CharacterRepo{},
+	}
 }
 
 func (c *characterImpl) ListCharacters(ctx context.Context, req *pb.ListCharactersRequest) (*pb.ListCharactersResponse, error) {
@@ -123,8 +129,12 @@ func (c *characterImpl) ImportCharacter(ctx context.Context, req *pb.ImportChara
 		character.Avatar = "data:image/png;base64," + base64.StdEncoding.EncodeToString(fileContent)
 	}
 
+	if err = c.charaRepo.InsertChara(character); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
 	return &pb.ImportCharacterResponse{
-		Character: &pb.Character{},
+		Character: convert.CharaEntityToPb(character),
 	}, nil
 }
 

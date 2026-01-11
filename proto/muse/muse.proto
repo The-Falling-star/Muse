@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package muse.v1;
+package muse;
 
-option go_package = "github.com/ling/muse/gen/muse/v1;musev1";
+option go_package = "github.com/ling/muse/gen/muse;muse";
 
 
 // ================================

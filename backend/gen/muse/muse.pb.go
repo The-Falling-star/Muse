@@ -2,9 +2,9 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: muse/v1/muse.proto
+// source: muse/muse.proto
 
-package musev1
+package muse
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -58,11 +58,11 @@ func (x MessageRole) String() string {
 }
 
 func (MessageRole) Descriptor() protoreflect.EnumDescriptor {
-	return file_muse_v1_muse_proto_enumTypes[0].Descriptor()
+	return file_muse_muse_proto_enumTypes[0].Descriptor()
 }
 
 func (MessageRole) Type() protoreflect.EnumType {
-	return &file_muse_v1_muse_proto_enumTypes[0]
+	return &file_muse_muse_proto_enumTypes[0]
 }
 
 func (x MessageRole) Number() protoreflect.EnumNumber {
@@ -71,7 +71,7 @@ func (x MessageRole) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use MessageRole.Descriptor instead.
 func (MessageRole) EnumDescriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{0}
+	return file_muse_muse_proto_rawDescGZIP(), []int{0}
 }
 
 // PromptItemRole 提示项角色
@@ -111,11 +111,11 @@ func (x PromptItemRole) String() string {
 }
 
 func (PromptItemRole) Descriptor() protoreflect.EnumDescriptor {
-	return file_muse_v1_muse_proto_enumTypes[1].Descriptor()
+	return file_muse_muse_proto_enumTypes[1].Descriptor()
 }
 
 func (PromptItemRole) Type() protoreflect.EnumType {
-	return &file_muse_v1_muse_proto_enumTypes[1]
+	return &file_muse_muse_proto_enumTypes[1]
 }
 
 func (x PromptItemRole) Number() protoreflect.EnumNumber {
@@ -124,7 +124,7 @@ func (x PromptItemRole) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PromptItemRole.Descriptor instead.
 func (PromptItemRole) EnumDescriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{1}
+	return file_muse_muse_proto_rawDescGZIP(), []int{1}
 }
 
 // InjectionPosition 注入位置
@@ -161,11 +161,11 @@ func (x InjectionPosition) String() string {
 }
 
 func (InjectionPosition) Descriptor() protoreflect.EnumDescriptor {
-	return file_muse_v1_muse_proto_enumTypes[2].Descriptor()
+	return file_muse_muse_proto_enumTypes[2].Descriptor()
 }
 
 func (InjectionPosition) Type() protoreflect.EnumType {
-	return &file_muse_v1_muse_proto_enumTypes[2]
+	return &file_muse_muse_proto_enumTypes[2]
 }
 
 func (x InjectionPosition) Number() protoreflect.EnumNumber {
@@ -174,7 +174,7 @@ func (x InjectionPosition) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use InjectionPosition.Descriptor instead.
 func (InjectionPosition) EnumDescriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{2}
+	return file_muse_muse_proto_rawDescGZIP(), []int{2}
 }
 
 // EntryPosition 世界书条目插入位置
@@ -220,11 +220,11 @@ func (x EntryPosition) String() string {
 }
 
 func (EntryPosition) Descriptor() protoreflect.EnumDescriptor {
-	return file_muse_v1_muse_proto_enumTypes[3].Descriptor()
+	return file_muse_muse_proto_enumTypes[3].Descriptor()
 }
 
 func (EntryPosition) Type() protoreflect.EnumType {
-	return &file_muse_v1_muse_proto_enumTypes[3]
+	return &file_muse_muse_proto_enumTypes[3]
 }
 
 func (x EntryPosition) Number() protoreflect.EnumNumber {
@@ -233,7 +233,7 @@ func (x EntryPosition) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use EntryPosition.Descriptor instead.
 func (EntryPosition) EnumDescriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{3}
+	return file_muse_muse_proto_rawDescGZIP(), []int{3}
 }
 
 // APIProvider API提供商
@@ -273,11 +273,11 @@ func (x APIProvider) String() string {
 }
 
 func (APIProvider) Descriptor() protoreflect.EnumDescriptor {
-	return file_muse_v1_muse_proto_enumTypes[4].Descriptor()
+	return file_muse_muse_proto_enumTypes[4].Descriptor()
 }
 
 func (APIProvider) Type() protoreflect.EnumType {
-	return &file_muse_v1_muse_proto_enumTypes[4]
+	return &file_muse_muse_proto_enumTypes[4]
 }
 
 func (x APIProvider) Number() protoreflect.EnumNumber {
@@ -286,32 +286,29 @@ func (x APIProvider) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use APIProvider.Descriptor instead.
 func (APIProvider) EnumDescriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{4}
+	return file_muse_muse_proto_rawDescGZIP(), []int{4}
 }
 
 // Theme 主题
 type Theme int32
 
 const (
-	Theme_THEME_UNSPECIFIED Theme = 0
-	Theme_THEME_AUTO        Theme = 1
-	Theme_THEME_LIGHT       Theme = 2
-	Theme_THEME_DARK        Theme = 3
+	Theme_THEME_AUTO  Theme = 0
+	Theme_THEME_LIGHT Theme = 1
+	Theme_THEME_DARK  Theme = 2
 )
 
 // Enum value maps for Theme.
 var (
 	Theme_name = map[int32]string{
-		0: "THEME_UNSPECIFIED",
-		1: "THEME_AUTO",
-		2: "THEME_LIGHT",
-		3: "THEME_DARK",
+		0: "THEME_AUTO",
+		1: "THEME_LIGHT",
+		2: "THEME_DARK",
 	}
 	Theme_value = map[string]int32{
-		"THEME_UNSPECIFIED": 0,
-		"THEME_AUTO":        1,
-		"THEME_LIGHT":       2,
-		"THEME_DARK":        3,
+		"THEME_AUTO":  0,
+		"THEME_LIGHT": 1,
+		"THEME_DARK":  2,
 	}
 )
 
@@ -326,11 +323,11 @@ func (x Theme) String() string {
 }
 
 func (Theme) Descriptor() protoreflect.EnumDescriptor {
-	return file_muse_v1_muse_proto_enumTypes[5].Descriptor()
+	return file_muse_muse_proto_enumTypes[5].Descriptor()
 }
 
 func (Theme) Type() protoreflect.EnumType {
-	return &file_muse_v1_muse_proto_enumTypes[5]
+	return &file_muse_muse_proto_enumTypes[5]
 }
 
 func (x Theme) Number() protoreflect.EnumNumber {
@@ -339,7 +336,7 @@ func (x Theme) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use Theme.Descriptor instead.
 func (Theme) EnumDescriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{5}
+	return file_muse_muse_proto_rawDescGZIP(), []int{5}
 }
 
 // User 用户信息
@@ -358,7 +355,7 @@ type User struct {
 
 func (x *User) Reset() {
 	*x = User{}
-	mi := &file_muse_v1_muse_proto_msgTypes[0]
+	mi := &file_muse_muse_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -370,7 +367,7 @@ func (x *User) String() string {
 func (*User) ProtoMessage() {}
 
 func (x *User) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[0]
+	mi := &file_muse_muse_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -383,7 +380,7 @@ func (x *User) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use User.ProtoReflect.Descriptor instead.
 func (*User) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{0}
+	return file_muse_muse_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *User) GetId() uint32 {
@@ -451,7 +448,7 @@ type Persona struct {
 
 func (x *Persona) Reset() {
 	*x = Persona{}
-	mi := &file_muse_v1_muse_proto_msgTypes[1]
+	mi := &file_muse_muse_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -463,7 +460,7 @@ func (x *Persona) String() string {
 func (*Persona) ProtoMessage() {}
 
 func (x *Persona) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[1]
+	mi := &file_muse_muse_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -476,7 +473,7 @@ func (x *Persona) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Persona.ProtoReflect.Descriptor instead.
 func (*Persona) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{1}
+	return file_muse_muse_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *Persona) GetId() uint32 {
@@ -533,7 +530,7 @@ type UserSetting struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	Id             uint32                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	UserId         uint32                 `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Theme          Theme                  `protobuf:"varint,3,opt,name=theme,proto3,enum=muse.v1.Theme" json:"theme,omitempty"`
+	Theme          Theme                  `protobuf:"varint,3,opt,name=theme,proto3,enum=muse.Theme" json:"theme,omitempty"`
 	Language       string                 `protobuf:"bytes,4,opt,name=language,proto3" json:"language,omitempty"`
 	SendOnEnter    bool                   `protobuf:"varint,5,opt,name=send_on_enter,json=sendOnEnter,proto3" json:"send_on_enter,omitempty"`
 	ShowTimestamps bool                   `protobuf:"varint,6,opt,name=show_timestamps,json=showTimestamps,proto3" json:"show_timestamps,omitempty"`
@@ -545,7 +542,7 @@ type UserSetting struct {
 
 func (x *UserSetting) Reset() {
 	*x = UserSetting{}
-	mi := &file_muse_v1_muse_proto_msgTypes[2]
+	mi := &file_muse_muse_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -557,7 +554,7 @@ func (x *UserSetting) String() string {
 func (*UserSetting) ProtoMessage() {}
 
 func (x *UserSetting) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[2]
+	mi := &file_muse_muse_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -570,7 +567,7 @@ func (x *UserSetting) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserSetting.ProtoReflect.Descriptor instead.
 func (*UserSetting) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{2}
+	return file_muse_muse_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *UserSetting) GetId() uint32 {
@@ -591,7 +588,7 @@ func (x *UserSetting) GetTheme() Theme {
 	if x != nil {
 		return x.Theme
 	}
-	return Theme_THEME_UNSPECIFIED
+	return Theme_THEME_AUTO
 }
 
 func (x *UserSetting) GetLanguage() string {
@@ -655,7 +652,7 @@ type Character struct {
 
 func (x *Character) Reset() {
 	*x = Character{}
-	mi := &file_muse_v1_muse_proto_msgTypes[3]
+	mi := &file_muse_muse_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -667,7 +664,7 @@ func (x *Character) String() string {
 func (*Character) ProtoMessage() {}
 
 func (x *Character) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[3]
+	mi := &file_muse_muse_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -680,7 +677,7 @@ func (x *Character) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Character.ProtoReflect.Descriptor instead.
 func (*Character) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{3}
+	return file_muse_muse_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *Character) GetId() uint32 {
@@ -814,7 +811,7 @@ type ChatSession struct {
 
 func (x *ChatSession) Reset() {
 	*x = ChatSession{}
-	mi := &file_muse_v1_muse_proto_msgTypes[4]
+	mi := &file_muse_muse_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -826,7 +823,7 @@ func (x *ChatSession) String() string {
 func (*ChatSession) ProtoMessage() {}
 
 func (x *ChatSession) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[4]
+	mi := &file_muse_muse_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -839,7 +836,7 @@ func (x *ChatSession) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ChatSession.ProtoReflect.Descriptor instead.
 func (*ChatSession) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{4}
+	return file_muse_muse_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ChatSession) GetId() uint32 {
@@ -910,7 +907,7 @@ type Message struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
 	Id               uint32                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	SessionId        uint32                 `protobuf:"varint,2,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
-	Role             MessageRole            `protobuf:"varint,3,opt,name=role,proto3,enum=muse.v1.MessageRole" json:"role,omitempty"`
+	Role             MessageRole            `protobuf:"varint,3,opt,name=role,proto3,enum=muse.MessageRole" json:"role,omitempty"`
 	ActiveSwipeIndex int32                  `protobuf:"varint,4,opt,name=active_swipe_index,json=activeSwipeIndex,proto3" json:"active_swipe_index,omitempty"`
 	SortOrder        int32                  `protobuf:"varint,5,opt,name=sort_order,json=sortOrder,proto3" json:"sort_order,omitempty"`
 	CreatedAt        int64                  `protobuf:"varint,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
@@ -923,7 +920,7 @@ type Message struct {
 
 func (x *Message) Reset() {
 	*x = Message{}
-	mi := &file_muse_v1_muse_proto_msgTypes[5]
+	mi := &file_muse_muse_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -935,7 +932,7 @@ func (x *Message) String() string {
 func (*Message) ProtoMessage() {}
 
 func (x *Message) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[5]
+	mi := &file_muse_muse_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -948,7 +945,7 @@ func (x *Message) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Message.ProtoReflect.Descriptor instead.
 func (*Message) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{5}
+	return file_muse_muse_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *Message) GetId() uint32 {
@@ -1021,7 +1018,7 @@ type MessageSwipe struct {
 
 func (x *MessageSwipe) Reset() {
 	*x = MessageSwipe{}
-	mi := &file_muse_v1_muse_proto_msgTypes[6]
+	mi := &file_muse_muse_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1033,7 +1030,7 @@ func (x *MessageSwipe) String() string {
 func (*MessageSwipe) ProtoMessage() {}
 
 func (x *MessageSwipe) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[6]
+	mi := &file_muse_muse_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1046,7 +1043,7 @@ func (x *MessageSwipe) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MessageSwipe.ProtoReflect.Descriptor instead.
 func (*MessageSwipe) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{6}
+	return file_muse_muse_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *MessageSwipe) GetId() uint32 {
@@ -1108,7 +1105,7 @@ type Preset struct {
 
 func (x *Preset) Reset() {
 	*x = Preset{}
-	mi := &file_muse_v1_muse_proto_msgTypes[7]
+	mi := &file_muse_muse_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1120,7 +1117,7 @@ func (x *Preset) String() string {
 func (*Preset) ProtoMessage() {}
 
 func (x *Preset) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[7]
+	mi := &file_muse_muse_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1133,7 +1130,7 @@ func (x *Preset) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Preset.ProtoReflect.Descriptor instead.
 func (*Preset) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{7}
+	return file_muse_muse_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *Preset) GetId() uint32 {
@@ -1242,9 +1239,9 @@ type PromptItem struct {
 	Identifier        string                 `protobuf:"bytes,3,opt,name=identifier,proto3" json:"identifier,omitempty"`
 	Name              string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
 	Content           *string                `protobuf:"bytes,5,opt,name=content,proto3,oneof" json:"content,omitempty"`
-	Role              PromptItemRole         `protobuf:"varint,6,opt,name=role,proto3,enum=muse.v1.PromptItemRole" json:"role,omitempty"`
+	Role              PromptItemRole         `protobuf:"varint,6,opt,name=role,proto3,enum=muse.PromptItemRole" json:"role,omitempty"`
 	IsEnabled         bool                   `protobuf:"varint,7,opt,name=is_enabled,json=isEnabled,proto3" json:"is_enabled,omitempty"`
-	InjectionPosition InjectionPosition      `protobuf:"varint,8,opt,name=injection_position,json=injectionPosition,proto3,enum=muse.v1.InjectionPosition" json:"injection_position,omitempty"`
+	InjectionPosition InjectionPosition      `protobuf:"varint,8,opt,name=injection_position,json=injectionPosition,proto3,enum=muse.InjectionPosition" json:"injection_position,omitempty"`
 	InjectionDepth    int32                  `protobuf:"varint,9,opt,name=injection_depth,json=injectionDepth,proto3" json:"injection_depth,omitempty"`
 	ForbidOverrides   bool                   `protobuf:"varint,10,opt,name=forbid_overrides,json=forbidOverrides,proto3" json:"forbid_overrides,omitempty"`
 	SortOrder         int32                  `protobuf:"varint,11,opt,name=sort_order,json=sortOrder,proto3" json:"sort_order,omitempty"`
@@ -1256,7 +1253,7 @@ type PromptItem struct {
 
 func (x *PromptItem) Reset() {
 	*x = PromptItem{}
-	mi := &file_muse_v1_muse_proto_msgTypes[8]
+	mi := &file_muse_muse_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1268,7 +1265,7 @@ func (x *PromptItem) String() string {
 func (*PromptItem) ProtoMessage() {}
 
 func (x *PromptItem) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[8]
+	mi := &file_muse_muse_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1281,7 +1278,7 @@ func (x *PromptItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PromptItem.ProtoReflect.Descriptor instead.
 func (*PromptItem) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{8}
+	return file_muse_muse_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *PromptItem) GetId() uint32 {
@@ -1398,7 +1395,7 @@ type RegexRule struct {
 
 func (x *RegexRule) Reset() {
 	*x = RegexRule{}
-	mi := &file_muse_v1_muse_proto_msgTypes[9]
+	mi := &file_muse_muse_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1410,7 +1407,7 @@ func (x *RegexRule) String() string {
 func (*RegexRule) ProtoMessage() {}
 
 func (x *RegexRule) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[9]
+	mi := &file_muse_muse_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1423,7 +1420,7 @@ func (x *RegexRule) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RegexRule.ProtoReflect.Descriptor instead.
 func (*RegexRule) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{9}
+	return file_muse_muse_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *RegexRule) GetId() uint32 {
@@ -1542,7 +1539,7 @@ type WorldInfo struct {
 
 func (x *WorldInfo) Reset() {
 	*x = WorldInfo{}
-	mi := &file_muse_v1_muse_proto_msgTypes[10]
+	mi := &file_muse_muse_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1554,7 +1551,7 @@ func (x *WorldInfo) String() string {
 func (*WorldInfo) ProtoMessage() {}
 
 func (x *WorldInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[10]
+	mi := &file_muse_muse_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1567,7 +1564,7 @@ func (x *WorldInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WorldInfo.ProtoReflect.Descriptor instead.
 func (*WorldInfo) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{10}
+	return file_muse_muse_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *WorldInfo) GetId() uint32 {
@@ -1640,7 +1637,7 @@ type WorldInfoEntry struct {
 	Constant       bool                   `protobuf:"varint,9,opt,name=constant,proto3" json:"constant,omitempty"`
 	Selective      bool                   `protobuf:"varint,10,opt,name=selective,proto3" json:"selective,omitempty"`
 	InsertionOrder int32                  `protobuf:"varint,11,opt,name=insertion_order,json=insertionOrder,proto3" json:"insertion_order,omitempty"`
-	Position       EntryPosition          `protobuf:"varint,12,opt,name=position,proto3,enum=muse.v1.EntryPosition" json:"position,omitempty"`
+	Position       EntryPosition          `protobuf:"varint,12,opt,name=position,proto3,enum=muse.EntryPosition" json:"position,omitempty"`
 	Depth          int32                  `protobuf:"varint,13,opt,name=depth,proto3" json:"depth,omitempty"`
 	SortOrder      int32                  `protobuf:"varint,14,opt,name=sort_order,json=sortOrder,proto3" json:"sort_order,omitempty"`
 	CreatedAt      int64                  `protobuf:"varint,15,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
@@ -1651,7 +1648,7 @@ type WorldInfoEntry struct {
 
 func (x *WorldInfoEntry) Reset() {
 	*x = WorldInfoEntry{}
-	mi := &file_muse_v1_muse_proto_msgTypes[11]
+	mi := &file_muse_muse_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1663,7 +1660,7 @@ func (x *WorldInfoEntry) String() string {
 func (*WorldInfoEntry) ProtoMessage() {}
 
 func (x *WorldInfoEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[11]
+	mi := &file_muse_muse_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1676,7 +1673,7 @@ func (x *WorldInfoEntry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WorldInfoEntry.ProtoReflect.Descriptor instead.
 func (*WorldInfoEntry) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{11}
+	return file_muse_muse_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *WorldInfoEntry) GetId() uint32 {
@@ -1797,7 +1794,7 @@ type APIConfig struct {
 	Id            uint32                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	UserId        uint32                 `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	Provider      APIProvider            `protobuf:"varint,4,opt,name=provider,proto3,enum=muse.v1.APIProvider" json:"provider,omitempty"`
+	Provider      APIProvider            `protobuf:"varint,4,opt,name=provider,proto3,enum=muse.APIProvider" json:"provider,omitempty"`
 	ApiKey        string                 `protobuf:"bytes,5,opt,name=api_key,json=apiKey,proto3" json:"api_key,omitempty"` // 创建/更新时使用，查询时不返回
 	BaseUrl       *string                `protobuf:"bytes,6,opt,name=base_url,json=baseUrl,proto3,oneof" json:"base_url,omitempty"`
 	Model         *string                `protobuf:"bytes,7,opt,name=model,proto3,oneof" json:"model,omitempty"`
@@ -1810,7 +1807,7 @@ type APIConfig struct {
 
 func (x *APIConfig) Reset() {
 	*x = APIConfig{}
-	mi := &file_muse_v1_muse_proto_msgTypes[12]
+	mi := &file_muse_muse_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1822,7 +1819,7 @@ func (x *APIConfig) String() string {
 func (*APIConfig) ProtoMessage() {}
 
 func (x *APIConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[12]
+	mi := &file_muse_muse_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1835,7 +1832,7 @@ func (x *APIConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use APIConfig.ProtoReflect.Descriptor instead.
 func (*APIConfig) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{12}
+	return file_muse_muse_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *APIConfig) GetId() uint32 {
@@ -1920,7 +1917,7 @@ type RegisterRequest struct {
 
 func (x *RegisterRequest) Reset() {
 	*x = RegisterRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[13]
+	mi := &file_muse_muse_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1932,7 +1929,7 @@ func (x *RegisterRequest) String() string {
 func (*RegisterRequest) ProtoMessage() {}
 
 func (x *RegisterRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[13]
+	mi := &file_muse_muse_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1945,7 +1942,7 @@ func (x *RegisterRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RegisterRequest.ProtoReflect.Descriptor instead.
 func (*RegisterRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{13}
+	return file_muse_muse_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *RegisterRequest) GetUsername() string {
@@ -1980,7 +1977,7 @@ type RegisterResponse struct {
 
 func (x *RegisterResponse) Reset() {
 	*x = RegisterResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[14]
+	mi := &file_muse_muse_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1992,7 +1989,7 @@ func (x *RegisterResponse) String() string {
 func (*RegisterResponse) ProtoMessage() {}
 
 func (x *RegisterResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[14]
+	mi := &file_muse_muse_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2005,7 +2002,7 @@ func (x *RegisterResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RegisterResponse.ProtoReflect.Descriptor instead.
 func (*RegisterResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{14}
+	return file_muse_muse_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *RegisterResponse) GetUser() *User {
@@ -2033,7 +2030,7 @@ type LoginRequest struct {
 
 func (x *LoginRequest) Reset() {
 	*x = LoginRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[15]
+	mi := &file_muse_muse_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2045,7 +2042,7 @@ func (x *LoginRequest) String() string {
 func (*LoginRequest) ProtoMessage() {}
 
 func (x *LoginRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[15]
+	mi := &file_muse_muse_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2058,7 +2055,7 @@ func (x *LoginRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginRequest.ProtoReflect.Descriptor instead.
 func (*LoginRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{15}
+	return file_muse_muse_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *LoginRequest) GetUsername() string {
@@ -2086,7 +2083,7 @@ type LoginResponse struct {
 
 func (x *LoginResponse) Reset() {
 	*x = LoginResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[16]
+	mi := &file_muse_muse_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2098,7 +2095,7 @@ func (x *LoginResponse) String() string {
 func (*LoginResponse) ProtoMessage() {}
 
 func (x *LoginResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[16]
+	mi := &file_muse_muse_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2111,7 +2108,7 @@ func (x *LoginResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginResponse.ProtoReflect.Descriptor instead.
 func (*LoginResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{16}
+	return file_muse_muse_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *LoginResponse) GetUser() *User {
@@ -2137,7 +2134,7 @@ type GetCurrentUserRequest struct {
 
 func (x *GetCurrentUserRequest) Reset() {
 	*x = GetCurrentUserRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[17]
+	mi := &file_muse_muse_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2149,7 +2146,7 @@ func (x *GetCurrentUserRequest) String() string {
 func (*GetCurrentUserRequest) ProtoMessage() {}
 
 func (x *GetCurrentUserRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[17]
+	mi := &file_muse_muse_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2162,7 +2159,7 @@ func (x *GetCurrentUserRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCurrentUserRequest.ProtoReflect.Descriptor instead.
 func (*GetCurrentUserRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{17}
+	return file_muse_muse_proto_rawDescGZIP(), []int{17}
 }
 
 // 获取当前用户响应
@@ -2175,7 +2172,7 @@ type GetCurrentUserResponse struct {
 
 func (x *GetCurrentUserResponse) Reset() {
 	*x = GetCurrentUserResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[18]
+	mi := &file_muse_muse_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2187,7 +2184,7 @@ func (x *GetCurrentUserResponse) String() string {
 func (*GetCurrentUserResponse) ProtoMessage() {}
 
 func (x *GetCurrentUserResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[18]
+	mi := &file_muse_muse_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2200,7 +2197,7 @@ func (x *GetCurrentUserResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCurrentUserResponse.ProtoReflect.Descriptor instead.
 func (*GetCurrentUserResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{18}
+	return file_muse_muse_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *GetCurrentUserResponse) GetUser() *User {
@@ -2221,7 +2218,7 @@ type ChangePasswordRequest struct {
 
 func (x *ChangePasswordRequest) Reset() {
 	*x = ChangePasswordRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[19]
+	mi := &file_muse_muse_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2233,7 +2230,7 @@ func (x *ChangePasswordRequest) String() string {
 func (*ChangePasswordRequest) ProtoMessage() {}
 
 func (x *ChangePasswordRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[19]
+	mi := &file_muse_muse_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2246,7 +2243,7 @@ func (x *ChangePasswordRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ChangePasswordRequest.ProtoReflect.Descriptor instead.
 func (*ChangePasswordRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{19}
+	return file_muse_muse_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *ChangePasswordRequest) GetOldPassword() string {
@@ -2272,7 +2269,7 @@ type ChangePasswordResponse struct {
 
 func (x *ChangePasswordResponse) Reset() {
 	*x = ChangePasswordResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[20]
+	mi := &file_muse_muse_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2284,7 +2281,7 @@ func (x *ChangePasswordResponse) String() string {
 func (*ChangePasswordResponse) ProtoMessage() {}
 
 func (x *ChangePasswordResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[20]
+	mi := &file_muse_muse_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2297,7 +2294,7 @@ func (x *ChangePasswordResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ChangePasswordResponse.ProtoReflect.Descriptor instead.
 func (*ChangePasswordResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{20}
+	return file_muse_muse_proto_rawDescGZIP(), []int{20}
 }
 
 // 获取人设列表请求
@@ -2309,7 +2306,7 @@ type ListPersonasRequest struct {
 
 func (x *ListPersonasRequest) Reset() {
 	*x = ListPersonasRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[21]
+	mi := &file_muse_muse_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2321,7 +2318,7 @@ func (x *ListPersonasRequest) String() string {
 func (*ListPersonasRequest) ProtoMessage() {}
 
 func (x *ListPersonasRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[21]
+	mi := &file_muse_muse_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2334,7 +2331,7 @@ func (x *ListPersonasRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPersonasRequest.ProtoReflect.Descriptor instead.
 func (*ListPersonasRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{21}
+	return file_muse_muse_proto_rawDescGZIP(), []int{21}
 }
 
 // 获取人设列表响应
@@ -2347,7 +2344,7 @@ type ListPersonasResponse struct {
 
 func (x *ListPersonasResponse) Reset() {
 	*x = ListPersonasResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[22]
+	mi := &file_muse_muse_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2359,7 +2356,7 @@ func (x *ListPersonasResponse) String() string {
 func (*ListPersonasResponse) ProtoMessage() {}
 
 func (x *ListPersonasResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[22]
+	mi := &file_muse_muse_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2372,7 +2369,7 @@ func (x *ListPersonasResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPersonasResponse.ProtoReflect.Descriptor instead.
 func (*ListPersonasResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{22}
+	return file_muse_muse_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *ListPersonasResponse) GetPersonas() []*Persona {
@@ -2392,7 +2389,7 @@ type GetPersonaRequest struct {
 
 func (x *GetPersonaRequest) Reset() {
 	*x = GetPersonaRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[23]
+	mi := &file_muse_muse_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2404,7 +2401,7 @@ func (x *GetPersonaRequest) String() string {
 func (*GetPersonaRequest) ProtoMessage() {}
 
 func (x *GetPersonaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[23]
+	mi := &file_muse_muse_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2417,7 +2414,7 @@ func (x *GetPersonaRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetPersonaRequest.ProtoReflect.Descriptor instead.
 func (*GetPersonaRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{23}
+	return file_muse_muse_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *GetPersonaRequest) GetId() uint32 {
@@ -2437,7 +2434,7 @@ type GetPersonaResponse struct {
 
 func (x *GetPersonaResponse) Reset() {
 	*x = GetPersonaResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[24]
+	mi := &file_muse_muse_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2449,7 +2446,7 @@ func (x *GetPersonaResponse) String() string {
 func (*GetPersonaResponse) ProtoMessage() {}
 
 func (x *GetPersonaResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[24]
+	mi := &file_muse_muse_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2462,7 +2459,7 @@ func (x *GetPersonaResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetPersonaResponse.ProtoReflect.Descriptor instead.
 func (*GetPersonaResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{24}
+	return file_muse_muse_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *GetPersonaResponse) GetPersona() *Persona {
@@ -2484,7 +2481,7 @@ type CreatePersonaRequest struct {
 
 func (x *CreatePersonaRequest) Reset() {
 	*x = CreatePersonaRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[25]
+	mi := &file_muse_muse_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2496,7 +2493,7 @@ func (x *CreatePersonaRequest) String() string {
 func (*CreatePersonaRequest) ProtoMessage() {}
 
 func (x *CreatePersonaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[25]
+	mi := &file_muse_muse_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2509,7 +2506,7 @@ func (x *CreatePersonaRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreatePersonaRequest.ProtoReflect.Descriptor instead.
 func (*CreatePersonaRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{25}
+	return file_muse_muse_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *CreatePersonaRequest) GetName() string {
@@ -2543,7 +2540,7 @@ type CreatePersonaResponse struct {
 
 func (x *CreatePersonaResponse) Reset() {
 	*x = CreatePersonaResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[26]
+	mi := &file_muse_muse_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2555,7 +2552,7 @@ func (x *CreatePersonaResponse) String() string {
 func (*CreatePersonaResponse) ProtoMessage() {}
 
 func (x *CreatePersonaResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[26]
+	mi := &file_muse_muse_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2568,7 +2565,7 @@ func (x *CreatePersonaResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreatePersonaResponse.ProtoReflect.Descriptor instead.
 func (*CreatePersonaResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{26}
+	return file_muse_muse_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *CreatePersonaResponse) GetPersona() *Persona {
@@ -2591,7 +2588,7 @@ type UpdatePersonaRequest struct {
 
 func (x *UpdatePersonaRequest) Reset() {
 	*x = UpdatePersonaRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[27]
+	mi := &file_muse_muse_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2603,7 +2600,7 @@ func (x *UpdatePersonaRequest) String() string {
 func (*UpdatePersonaRequest) ProtoMessage() {}
 
 func (x *UpdatePersonaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[27]
+	mi := &file_muse_muse_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2616,7 +2613,7 @@ func (x *UpdatePersonaRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdatePersonaRequest.ProtoReflect.Descriptor instead.
 func (*UpdatePersonaRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{27}
+	return file_muse_muse_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *UpdatePersonaRequest) GetId() uint32 {
@@ -2657,7 +2654,7 @@ type UpdatePersonaResponse struct {
 
 func (x *UpdatePersonaResponse) Reset() {
 	*x = UpdatePersonaResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[28]
+	mi := &file_muse_muse_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2669,7 +2666,7 @@ func (x *UpdatePersonaResponse) String() string {
 func (*UpdatePersonaResponse) ProtoMessage() {}
 
 func (x *UpdatePersonaResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[28]
+	mi := &file_muse_muse_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2682,7 +2679,7 @@ func (x *UpdatePersonaResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdatePersonaResponse.ProtoReflect.Descriptor instead.
 func (*UpdatePersonaResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{28}
+	return file_muse_muse_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *UpdatePersonaResponse) GetPersona() *Persona {
@@ -2702,7 +2699,7 @@ type DeletePersonaRequest struct {
 
 func (x *DeletePersonaRequest) Reset() {
 	*x = DeletePersonaRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[29]
+	mi := &file_muse_muse_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2714,7 +2711,7 @@ func (x *DeletePersonaRequest) String() string {
 func (*DeletePersonaRequest) ProtoMessage() {}
 
 func (x *DeletePersonaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[29]
+	mi := &file_muse_muse_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2727,7 +2724,7 @@ func (x *DeletePersonaRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeletePersonaRequest.ProtoReflect.Descriptor instead.
 func (*DeletePersonaRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{29}
+	return file_muse_muse_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *DeletePersonaRequest) GetId() uint32 {
@@ -2746,7 +2743,7 @@ type DeletePersonaResponse struct {
 
 func (x *DeletePersonaResponse) Reset() {
 	*x = DeletePersonaResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[30]
+	mi := &file_muse_muse_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2758,7 +2755,7 @@ func (x *DeletePersonaResponse) String() string {
 func (*DeletePersonaResponse) ProtoMessage() {}
 
 func (x *DeletePersonaResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[30]
+	mi := &file_muse_muse_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2771,7 +2768,7 @@ func (x *DeletePersonaResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeletePersonaResponse.ProtoReflect.Descriptor instead.
 func (*DeletePersonaResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{30}
+	return file_muse_muse_proto_rawDescGZIP(), []int{30}
 }
 
 // 设置活跃人设请求
@@ -2784,7 +2781,7 @@ type SetActivePersonaRequest struct {
 
 func (x *SetActivePersonaRequest) Reset() {
 	*x = SetActivePersonaRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[31]
+	mi := &file_muse_muse_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2796,7 +2793,7 @@ func (x *SetActivePersonaRequest) String() string {
 func (*SetActivePersonaRequest) ProtoMessage() {}
 
 func (x *SetActivePersonaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[31]
+	mi := &file_muse_muse_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2809,7 +2806,7 @@ func (x *SetActivePersonaRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetActivePersonaRequest.ProtoReflect.Descriptor instead.
 func (*SetActivePersonaRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{31}
+	return file_muse_muse_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *SetActivePersonaRequest) GetPersonaId() uint32 {
@@ -2828,7 +2825,7 @@ type SetActivePersonaResponse struct {
 
 func (x *SetActivePersonaResponse) Reset() {
 	*x = SetActivePersonaResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[32]
+	mi := &file_muse_muse_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2840,7 +2837,7 @@ func (x *SetActivePersonaResponse) String() string {
 func (*SetActivePersonaResponse) ProtoMessage() {}
 
 func (x *SetActivePersonaResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[32]
+	mi := &file_muse_muse_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2853,7 +2850,7 @@ func (x *SetActivePersonaResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetActivePersonaResponse.ProtoReflect.Descriptor instead.
 func (*SetActivePersonaResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{32}
+	return file_muse_muse_proto_rawDescGZIP(), []int{32}
 }
 
 // 获取用户设置请求
@@ -2865,7 +2862,7 @@ type GetUserSettingRequest struct {
 
 func (x *GetUserSettingRequest) Reset() {
 	*x = GetUserSettingRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[33]
+	mi := &file_muse_muse_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2877,7 +2874,7 @@ func (x *GetUserSettingRequest) String() string {
 func (*GetUserSettingRequest) ProtoMessage() {}
 
 func (x *GetUserSettingRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[33]
+	mi := &file_muse_muse_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2890,7 +2887,7 @@ func (x *GetUserSettingRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetUserSettingRequest.ProtoReflect.Descriptor instead.
 func (*GetUserSettingRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{33}
+	return file_muse_muse_proto_rawDescGZIP(), []int{33}
 }
 
 // 获取用户设置响应
@@ -2903,7 +2900,7 @@ type GetUserSettingResponse struct {
 
 func (x *GetUserSettingResponse) Reset() {
 	*x = GetUserSettingResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[34]
+	mi := &file_muse_muse_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2915,7 +2912,7 @@ func (x *GetUserSettingResponse) String() string {
 func (*GetUserSettingResponse) ProtoMessage() {}
 
 func (x *GetUserSettingResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[34]
+	mi := &file_muse_muse_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2928,7 +2925,7 @@ func (x *GetUserSettingResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetUserSettingResponse.ProtoReflect.Descriptor instead.
 func (*GetUserSettingResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{34}
+	return file_muse_muse_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *GetUserSettingResponse) GetSetting() *UserSetting {
@@ -2941,7 +2938,7 @@ func (x *GetUserSettingResponse) GetSetting() *UserSetting {
 // 更新用户设置请求
 type UpdateUserSettingRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	Theme          Theme                  `protobuf:"varint,1,opt,name=theme,proto3,enum=muse.v1.Theme" json:"theme,omitempty"`
+	Theme          Theme                  `protobuf:"varint,1,opt,name=theme,proto3,enum=muse.Theme" json:"theme,omitempty"`
 	Language       string                 `protobuf:"bytes,2,opt,name=language,proto3" json:"language,omitempty"`
 	SendOnEnter    bool                   `protobuf:"varint,3,opt,name=send_on_enter,json=sendOnEnter,proto3" json:"send_on_enter,omitempty"`
 	ShowTimestamps bool                   `protobuf:"varint,4,opt,name=show_timestamps,json=showTimestamps,proto3" json:"show_timestamps,omitempty"`
@@ -2951,7 +2948,7 @@ type UpdateUserSettingRequest struct {
 
 func (x *UpdateUserSettingRequest) Reset() {
 	*x = UpdateUserSettingRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[35]
+	mi := &file_muse_muse_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2963,7 +2960,7 @@ func (x *UpdateUserSettingRequest) String() string {
 func (*UpdateUserSettingRequest) ProtoMessage() {}
 
 func (x *UpdateUserSettingRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[35]
+	mi := &file_muse_muse_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2976,14 +2973,14 @@ func (x *UpdateUserSettingRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateUserSettingRequest.ProtoReflect.Descriptor instead.
 func (*UpdateUserSettingRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{35}
+	return file_muse_muse_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *UpdateUserSettingRequest) GetTheme() Theme {
 	if x != nil {
 		return x.Theme
 	}
-	return Theme_THEME_UNSPECIFIED
+	return Theme_THEME_AUTO
 }
 
 func (x *UpdateUserSettingRequest) GetLanguage() string {
@@ -3017,7 +3014,7 @@ type UpdateUserSettingResponse struct {
 
 func (x *UpdateUserSettingResponse) Reset() {
 	*x = UpdateUserSettingResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[36]
+	mi := &file_muse_muse_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3029,7 +3026,7 @@ func (x *UpdateUserSettingResponse) String() string {
 func (*UpdateUserSettingResponse) ProtoMessage() {}
 
 func (x *UpdateUserSettingResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[36]
+	mi := &file_muse_muse_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3042,7 +3039,7 @@ func (x *UpdateUserSettingResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateUserSettingResponse.ProtoReflect.Descriptor instead.
 func (*UpdateUserSettingResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{36}
+	return file_muse_muse_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *UpdateUserSettingResponse) GetSetting() *UserSetting {
@@ -3063,7 +3060,7 @@ type ListCharactersRequest struct {
 
 func (x *ListCharactersRequest) Reset() {
 	*x = ListCharactersRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[37]
+	mi := &file_muse_muse_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3075,7 +3072,7 @@ func (x *ListCharactersRequest) String() string {
 func (*ListCharactersRequest) ProtoMessage() {}
 
 func (x *ListCharactersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[37]
+	mi := &file_muse_muse_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3088,7 +3085,7 @@ func (x *ListCharactersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCharactersRequest.ProtoReflect.Descriptor instead.
 func (*ListCharactersRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{37}
+	return file_muse_muse_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *ListCharactersRequest) GetPage() int32 {
@@ -3116,7 +3113,7 @@ type ListCharactersResponse struct {
 
 func (x *ListCharactersResponse) Reset() {
 	*x = ListCharactersResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[38]
+	mi := &file_muse_muse_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3128,7 +3125,7 @@ func (x *ListCharactersResponse) String() string {
 func (*ListCharactersResponse) ProtoMessage() {}
 
 func (x *ListCharactersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[38]
+	mi := &file_muse_muse_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3141,7 +3138,7 @@ func (x *ListCharactersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCharactersResponse.ProtoReflect.Descriptor instead.
 func (*ListCharactersResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{38}
+	return file_muse_muse_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *ListCharactersResponse) GetCharacters() []*Character {
@@ -3168,7 +3165,7 @@ type GetCharacterRequest struct {
 
 func (x *GetCharacterRequest) Reset() {
 	*x = GetCharacterRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[39]
+	mi := &file_muse_muse_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3180,7 +3177,7 @@ func (x *GetCharacterRequest) String() string {
 func (*GetCharacterRequest) ProtoMessage() {}
 
 func (x *GetCharacterRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[39]
+	mi := &file_muse_muse_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3193,7 +3190,7 @@ func (x *GetCharacterRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCharacterRequest.ProtoReflect.Descriptor instead.
 func (*GetCharacterRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{39}
+	return file_muse_muse_proto_rawDescGZIP(), []int{39}
 }
 
 func (x *GetCharacterRequest) GetId() uint32 {
@@ -3213,7 +3210,7 @@ type GetCharacterResponse struct {
 
 func (x *GetCharacterResponse) Reset() {
 	*x = GetCharacterResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[40]
+	mi := &file_muse_muse_proto_msgTypes[40]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3225,7 +3222,7 @@ func (x *GetCharacterResponse) String() string {
 func (*GetCharacterResponse) ProtoMessage() {}
 
 func (x *GetCharacterResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[40]
+	mi := &file_muse_muse_proto_msgTypes[40]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3238,7 +3235,7 @@ func (x *GetCharacterResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCharacterResponse.ProtoReflect.Descriptor instead.
 func (*GetCharacterResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{40}
+	return file_muse_muse_proto_rawDescGZIP(), []int{40}
 }
 
 func (x *GetCharacterResponse) GetCharacter() *Character {
@@ -3267,7 +3264,7 @@ type CreateCharacterRequest struct {
 
 func (x *CreateCharacterRequest) Reset() {
 	*x = CreateCharacterRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[41]
+	mi := &file_muse_muse_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3279,7 +3276,7 @@ func (x *CreateCharacterRequest) String() string {
 func (*CreateCharacterRequest) ProtoMessage() {}
 
 func (x *CreateCharacterRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[41]
+	mi := &file_muse_muse_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3292,7 +3289,7 @@ func (x *CreateCharacterRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateCharacterRequest.ProtoReflect.Descriptor instead.
 func (*CreateCharacterRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{41}
+	return file_muse_muse_proto_rawDescGZIP(), []int{41}
 }
 
 func (x *CreateCharacterRequest) GetName() string {
@@ -3375,7 +3372,7 @@ type CreateCharacterResponse struct {
 
 func (x *CreateCharacterResponse) Reset() {
 	*x = CreateCharacterResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[42]
+	mi := &file_muse_muse_proto_msgTypes[42]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3387,7 +3384,7 @@ func (x *CreateCharacterResponse) String() string {
 func (*CreateCharacterResponse) ProtoMessage() {}
 
 func (x *CreateCharacterResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[42]
+	mi := &file_muse_muse_proto_msgTypes[42]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3400,7 +3397,7 @@ func (x *CreateCharacterResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateCharacterResponse.ProtoReflect.Descriptor instead.
 func (*CreateCharacterResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{42}
+	return file_muse_muse_proto_rawDescGZIP(), []int{42}
 }
 
 func (x *CreateCharacterResponse) GetCharacter() *Character {
@@ -3431,7 +3428,7 @@ type UpdateCharacterRequest struct {
 
 func (x *UpdateCharacterRequest) Reset() {
 	*x = UpdateCharacterRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[43]
+	mi := &file_muse_muse_proto_msgTypes[43]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3443,7 +3440,7 @@ func (x *UpdateCharacterRequest) String() string {
 func (*UpdateCharacterRequest) ProtoMessage() {}
 
 func (x *UpdateCharacterRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[43]
+	mi := &file_muse_muse_proto_msgTypes[43]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3456,7 +3453,7 @@ func (x *UpdateCharacterRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateCharacterRequest.ProtoReflect.Descriptor instead.
 func (*UpdateCharacterRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{43}
+	return file_muse_muse_proto_rawDescGZIP(), []int{43}
 }
 
 func (x *UpdateCharacterRequest) GetId() uint32 {
@@ -3553,7 +3550,7 @@ type UpdateCharacterResponse struct {
 
 func (x *UpdateCharacterResponse) Reset() {
 	*x = UpdateCharacterResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[44]
+	mi := &file_muse_muse_proto_msgTypes[44]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3565,7 +3562,7 @@ func (x *UpdateCharacterResponse) String() string {
 func (*UpdateCharacterResponse) ProtoMessage() {}
 
 func (x *UpdateCharacterResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[44]
+	mi := &file_muse_muse_proto_msgTypes[44]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3578,7 +3575,7 @@ func (x *UpdateCharacterResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateCharacterResponse.ProtoReflect.Descriptor instead.
 func (*UpdateCharacterResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{44}
+	return file_muse_muse_proto_rawDescGZIP(), []int{44}
 }
 
 func (x *UpdateCharacterResponse) GetCharacter() *Character {
@@ -3598,7 +3595,7 @@ type DeleteCharacterRequest struct {
 
 func (x *DeleteCharacterRequest) Reset() {
 	*x = DeleteCharacterRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[45]
+	mi := &file_muse_muse_proto_msgTypes[45]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3610,7 +3607,7 @@ func (x *DeleteCharacterRequest) String() string {
 func (*DeleteCharacterRequest) ProtoMessage() {}
 
 func (x *DeleteCharacterRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[45]
+	mi := &file_muse_muse_proto_msgTypes[45]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3623,7 +3620,7 @@ func (x *DeleteCharacterRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteCharacterRequest.ProtoReflect.Descriptor instead.
 func (*DeleteCharacterRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{45}
+	return file_muse_muse_proto_rawDescGZIP(), []int{45}
 }
 
 func (x *DeleteCharacterRequest) GetId() uint32 {
@@ -3642,7 +3639,7 @@ type DeleteCharacterResponse struct {
 
 func (x *DeleteCharacterResponse) Reset() {
 	*x = DeleteCharacterResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[46]
+	mi := &file_muse_muse_proto_msgTypes[46]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3654,7 +3651,7 @@ func (x *DeleteCharacterResponse) String() string {
 func (*DeleteCharacterResponse) ProtoMessage() {}
 
 func (x *DeleteCharacterResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[46]
+	mi := &file_muse_muse_proto_msgTypes[46]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3667,7 +3664,7 @@ func (x *DeleteCharacterResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteCharacterResponse.ProtoReflect.Descriptor instead.
 func (*DeleteCharacterResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{46}
+	return file_muse_muse_proto_rawDescGZIP(), []int{46}
 }
 
 // 导入角色卡请求
@@ -3681,7 +3678,7 @@ type ImportCharacterRequest struct {
 
 func (x *ImportCharacterRequest) Reset() {
 	*x = ImportCharacterRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[47]
+	mi := &file_muse_muse_proto_msgTypes[47]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3693,7 +3690,7 @@ func (x *ImportCharacterRequest) String() string {
 func (*ImportCharacterRequest) ProtoMessage() {}
 
 func (x *ImportCharacterRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[47]
+	mi := &file_muse_muse_proto_msgTypes[47]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3706,7 +3703,7 @@ func (x *ImportCharacterRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportCharacterRequest.ProtoReflect.Descriptor instead.
 func (*ImportCharacterRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{47}
+	return file_muse_muse_proto_rawDescGZIP(), []int{47}
 }
 
 func (x *ImportCharacterRequest) GetFileContent() []byte {
@@ -3733,7 +3730,7 @@ type ImportCharacterResponse struct {
 
 func (x *ImportCharacterResponse) Reset() {
 	*x = ImportCharacterResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[48]
+	mi := &file_muse_muse_proto_msgTypes[48]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3745,7 +3742,7 @@ func (x *ImportCharacterResponse) String() string {
 func (*ImportCharacterResponse) ProtoMessage() {}
 
 func (x *ImportCharacterResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[48]
+	mi := &file_muse_muse_proto_msgTypes[48]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3758,7 +3755,7 @@ func (x *ImportCharacterResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportCharacterResponse.ProtoReflect.Descriptor instead.
 func (*ImportCharacterResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{48}
+	return file_muse_muse_proto_rawDescGZIP(), []int{48}
 }
 
 func (x *ImportCharacterResponse) GetCharacter() *Character {
@@ -3779,7 +3776,7 @@ type ExportCharacterRequest struct {
 
 func (x *ExportCharacterRequest) Reset() {
 	*x = ExportCharacterRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[49]
+	mi := &file_muse_muse_proto_msgTypes[49]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3791,7 +3788,7 @@ func (x *ExportCharacterRequest) String() string {
 func (*ExportCharacterRequest) ProtoMessage() {}
 
 func (x *ExportCharacterRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[49]
+	mi := &file_muse_muse_proto_msgTypes[49]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3804,7 +3801,7 @@ func (x *ExportCharacterRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportCharacterRequest.ProtoReflect.Descriptor instead.
 func (*ExportCharacterRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{49}
+	return file_muse_muse_proto_rawDescGZIP(), []int{49}
 }
 
 func (x *ExportCharacterRequest) GetId() uint32 {
@@ -3832,7 +3829,7 @@ type ExportCharacterResponse struct {
 
 func (x *ExportCharacterResponse) Reset() {
 	*x = ExportCharacterResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[50]
+	mi := &file_muse_muse_proto_msgTypes[50]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3844,7 +3841,7 @@ func (x *ExportCharacterResponse) String() string {
 func (*ExportCharacterResponse) ProtoMessage() {}
 
 func (x *ExportCharacterResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[50]
+	mi := &file_muse_muse_proto_msgTypes[50]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3857,7 +3854,7 @@ func (x *ExportCharacterResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportCharacterResponse.ProtoReflect.Descriptor instead.
 func (*ExportCharacterResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{50}
+	return file_muse_muse_proto_rawDescGZIP(), []int{50}
 }
 
 func (x *ExportCharacterResponse) GetFileContent() []byte {
@@ -3884,7 +3881,7 @@ type RestoreCharacterWorldInfoRequest struct {
 
 func (x *RestoreCharacterWorldInfoRequest) Reset() {
 	*x = RestoreCharacterWorldInfoRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[51]
+	mi := &file_muse_muse_proto_msgTypes[51]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3896,7 +3893,7 @@ func (x *RestoreCharacterWorldInfoRequest) String() string {
 func (*RestoreCharacterWorldInfoRequest) ProtoMessage() {}
 
 func (x *RestoreCharacterWorldInfoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[51]
+	mi := &file_muse_muse_proto_msgTypes[51]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3909,7 +3906,7 @@ func (x *RestoreCharacterWorldInfoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RestoreCharacterWorldInfoRequest.ProtoReflect.Descriptor instead.
 func (*RestoreCharacterWorldInfoRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{51}
+	return file_muse_muse_proto_rawDescGZIP(), []int{51}
 }
 
 func (x *RestoreCharacterWorldInfoRequest) GetCharacterId() uint32 {
@@ -3929,7 +3926,7 @@ type RestoreCharacterWorldInfoResponse struct {
 
 func (x *RestoreCharacterWorldInfoResponse) Reset() {
 	*x = RestoreCharacterWorldInfoResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[52]
+	mi := &file_muse_muse_proto_msgTypes[52]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3941,7 +3938,7 @@ func (x *RestoreCharacterWorldInfoResponse) String() string {
 func (*RestoreCharacterWorldInfoResponse) ProtoMessage() {}
 
 func (x *RestoreCharacterWorldInfoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[52]
+	mi := &file_muse_muse_proto_msgTypes[52]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3954,7 +3951,7 @@ func (x *RestoreCharacterWorldInfoResponse) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use RestoreCharacterWorldInfoResponse.ProtoReflect.Descriptor instead.
 func (*RestoreCharacterWorldInfoResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{52}
+	return file_muse_muse_proto_rawDescGZIP(), []int{52}
 }
 
 func (x *RestoreCharacterWorldInfoResponse) GetWorldInfo() *WorldInfo {
@@ -3976,7 +3973,7 @@ type ListChatSessionsRequest struct {
 
 func (x *ListChatSessionsRequest) Reset() {
 	*x = ListChatSessionsRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[53]
+	mi := &file_muse_muse_proto_msgTypes[53]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3988,7 +3985,7 @@ func (x *ListChatSessionsRequest) String() string {
 func (*ListChatSessionsRequest) ProtoMessage() {}
 
 func (x *ListChatSessionsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[53]
+	mi := &file_muse_muse_proto_msgTypes[53]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4001,7 +3998,7 @@ func (x *ListChatSessionsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListChatSessionsRequest.ProtoReflect.Descriptor instead.
 func (*ListChatSessionsRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{53}
+	return file_muse_muse_proto_rawDescGZIP(), []int{53}
 }
 
 func (x *ListChatSessionsRequest) GetCharacterId() uint32 {
@@ -4036,7 +4033,7 @@ type ListChatSessionsResponse struct {
 
 func (x *ListChatSessionsResponse) Reset() {
 	*x = ListChatSessionsResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[54]
+	mi := &file_muse_muse_proto_msgTypes[54]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4048,7 +4045,7 @@ func (x *ListChatSessionsResponse) String() string {
 func (*ListChatSessionsResponse) ProtoMessage() {}
 
 func (x *ListChatSessionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[54]
+	mi := &file_muse_muse_proto_msgTypes[54]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4061,7 +4058,7 @@ func (x *ListChatSessionsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListChatSessionsResponse.ProtoReflect.Descriptor instead.
 func (*ListChatSessionsResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{54}
+	return file_muse_muse_proto_rawDescGZIP(), []int{54}
 }
 
 func (x *ListChatSessionsResponse) GetSessions() []*ChatSession {
@@ -4089,7 +4086,7 @@ type GetChatSessionRequest struct {
 
 func (x *GetChatSessionRequest) Reset() {
 	*x = GetChatSessionRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[55]
+	mi := &file_muse_muse_proto_msgTypes[55]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4101,7 +4098,7 @@ func (x *GetChatSessionRequest) String() string {
 func (*GetChatSessionRequest) ProtoMessage() {}
 
 func (x *GetChatSessionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[55]
+	mi := &file_muse_muse_proto_msgTypes[55]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4114,7 +4111,7 @@ func (x *GetChatSessionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetChatSessionRequest.ProtoReflect.Descriptor instead.
 func (*GetChatSessionRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{55}
+	return file_muse_muse_proto_rawDescGZIP(), []int{55}
 }
 
 func (x *GetChatSessionRequest) GetId() uint32 {
@@ -4141,7 +4138,7 @@ type GetChatSessionResponse struct {
 
 func (x *GetChatSessionResponse) Reset() {
 	*x = GetChatSessionResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[56]
+	mi := &file_muse_muse_proto_msgTypes[56]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4153,7 +4150,7 @@ func (x *GetChatSessionResponse) String() string {
 func (*GetChatSessionResponse) ProtoMessage() {}
 
 func (x *GetChatSessionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[56]
+	mi := &file_muse_muse_proto_msgTypes[56]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4166,7 +4163,7 @@ func (x *GetChatSessionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetChatSessionResponse.ProtoReflect.Descriptor instead.
 func (*GetChatSessionResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{56}
+	return file_muse_muse_proto_rawDescGZIP(), []int{56}
 }
 
 func (x *GetChatSessionResponse) GetSession() *ChatSession {
@@ -4187,7 +4184,7 @@ type CreateChatSessionRequest struct {
 
 func (x *CreateChatSessionRequest) Reset() {
 	*x = CreateChatSessionRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[57]
+	mi := &file_muse_muse_proto_msgTypes[57]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4199,7 +4196,7 @@ func (x *CreateChatSessionRequest) String() string {
 func (*CreateChatSessionRequest) ProtoMessage() {}
 
 func (x *CreateChatSessionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[57]
+	mi := &file_muse_muse_proto_msgTypes[57]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4212,7 +4209,7 @@ func (x *CreateChatSessionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateChatSessionRequest.ProtoReflect.Descriptor instead.
 func (*CreateChatSessionRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{57}
+	return file_muse_muse_proto_rawDescGZIP(), []int{57}
 }
 
 func (x *CreateChatSessionRequest) GetCharacterId() uint32 {
@@ -4239,7 +4236,7 @@ type CreateChatSessionResponse struct {
 
 func (x *CreateChatSessionResponse) Reset() {
 	*x = CreateChatSessionResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[58]
+	mi := &file_muse_muse_proto_msgTypes[58]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4251,7 +4248,7 @@ func (x *CreateChatSessionResponse) String() string {
 func (*CreateChatSessionResponse) ProtoMessage() {}
 
 func (x *CreateChatSessionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[58]
+	mi := &file_muse_muse_proto_msgTypes[58]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4264,7 +4261,7 @@ func (x *CreateChatSessionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateChatSessionResponse.ProtoReflect.Descriptor instead.
 func (*CreateChatSessionResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{58}
+	return file_muse_muse_proto_rawDescGZIP(), []int{58}
 }
 
 func (x *CreateChatSessionResponse) GetSession() *ChatSession {
@@ -4286,7 +4283,7 @@ type UpdateChatSessionRequest struct {
 
 func (x *UpdateChatSessionRequest) Reset() {
 	*x = UpdateChatSessionRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[59]
+	mi := &file_muse_muse_proto_msgTypes[59]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4298,7 +4295,7 @@ func (x *UpdateChatSessionRequest) String() string {
 func (*UpdateChatSessionRequest) ProtoMessage() {}
 
 func (x *UpdateChatSessionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[59]
+	mi := &file_muse_muse_proto_msgTypes[59]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4311,7 +4308,7 @@ func (x *UpdateChatSessionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateChatSessionRequest.ProtoReflect.Descriptor instead.
 func (*UpdateChatSessionRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{59}
+	return file_muse_muse_proto_rawDescGZIP(), []int{59}
 }
 
 func (x *UpdateChatSessionRequest) GetId() uint32 {
@@ -4345,7 +4342,7 @@ type UpdateChatSessionResponse struct {
 
 func (x *UpdateChatSessionResponse) Reset() {
 	*x = UpdateChatSessionResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[60]
+	mi := &file_muse_muse_proto_msgTypes[60]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4357,7 +4354,7 @@ func (x *UpdateChatSessionResponse) String() string {
 func (*UpdateChatSessionResponse) ProtoMessage() {}
 
 func (x *UpdateChatSessionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[60]
+	mi := &file_muse_muse_proto_msgTypes[60]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4370,7 +4367,7 @@ func (x *UpdateChatSessionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateChatSessionResponse.ProtoReflect.Descriptor instead.
 func (*UpdateChatSessionResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{60}
+	return file_muse_muse_proto_rawDescGZIP(), []int{60}
 }
 
 func (x *UpdateChatSessionResponse) GetSession() *ChatSession {
@@ -4390,7 +4387,7 @@ type DeleteChatSessionRequest struct {
 
 func (x *DeleteChatSessionRequest) Reset() {
 	*x = DeleteChatSessionRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[61]
+	mi := &file_muse_muse_proto_msgTypes[61]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4402,7 +4399,7 @@ func (x *DeleteChatSessionRequest) String() string {
 func (*DeleteChatSessionRequest) ProtoMessage() {}
 
 func (x *DeleteChatSessionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[61]
+	mi := &file_muse_muse_proto_msgTypes[61]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4415,7 +4412,7 @@ func (x *DeleteChatSessionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteChatSessionRequest.ProtoReflect.Descriptor instead.
 func (*DeleteChatSessionRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{61}
+	return file_muse_muse_proto_rawDescGZIP(), []int{61}
 }
 
 func (x *DeleteChatSessionRequest) GetId() uint32 {
@@ -4434,7 +4431,7 @@ type DeleteChatSessionResponse struct {
 
 func (x *DeleteChatSessionResponse) Reset() {
 	*x = DeleteChatSessionResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[62]
+	mi := &file_muse_muse_proto_msgTypes[62]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4446,7 +4443,7 @@ func (x *DeleteChatSessionResponse) String() string {
 func (*DeleteChatSessionResponse) ProtoMessage() {}
 
 func (x *DeleteChatSessionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[62]
+	mi := &file_muse_muse_proto_msgTypes[62]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4459,7 +4456,7 @@ func (x *DeleteChatSessionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteChatSessionResponse.ProtoReflect.Descriptor instead.
 func (*DeleteChatSessionResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{62}
+	return file_muse_muse_proto_rawDescGZIP(), []int{62}
 }
 
 // 发送消息请求
@@ -4473,7 +4470,7 @@ type SendMessageRequest struct {
 
 func (x *SendMessageRequest) Reset() {
 	*x = SendMessageRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[63]
+	mi := &file_muse_muse_proto_msgTypes[63]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4485,7 +4482,7 @@ func (x *SendMessageRequest) String() string {
 func (*SendMessageRequest) ProtoMessage() {}
 
 func (x *SendMessageRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[63]
+	mi := &file_muse_muse_proto_msgTypes[63]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4498,7 +4495,7 @@ func (x *SendMessageRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendMessageRequest.ProtoReflect.Descriptor instead.
 func (*SendMessageRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{63}
+	return file_muse_muse_proto_rawDescGZIP(), []int{63}
 }
 
 func (x *SendMessageRequest) GetSessionId() uint32 {
@@ -4528,7 +4525,7 @@ type SendMessageResponse struct {
 
 func (x *SendMessageResponse) Reset() {
 	*x = SendMessageResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[64]
+	mi := &file_muse_muse_proto_msgTypes[64]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4540,7 +4537,7 @@ func (x *SendMessageResponse) String() string {
 func (*SendMessageResponse) ProtoMessage() {}
 
 func (x *SendMessageResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[64]
+	mi := &file_muse_muse_proto_msgTypes[64]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4553,7 +4550,7 @@ func (x *SendMessageResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendMessageResponse.ProtoReflect.Descriptor instead.
 func (*SendMessageResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{64}
+	return file_muse_muse_proto_rawDescGZIP(), []int{64}
 }
 
 func (x *SendMessageResponse) GetUserMessage() *Message {
@@ -4594,7 +4591,7 @@ type RegenerateMessageRequest struct {
 
 func (x *RegenerateMessageRequest) Reset() {
 	*x = RegenerateMessageRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[65]
+	mi := &file_muse_muse_proto_msgTypes[65]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4606,7 +4603,7 @@ func (x *RegenerateMessageRequest) String() string {
 func (*RegenerateMessageRequest) ProtoMessage() {}
 
 func (x *RegenerateMessageRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[65]
+	mi := &file_muse_muse_proto_msgTypes[65]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4619,7 +4616,7 @@ func (x *RegenerateMessageRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RegenerateMessageRequest.ProtoReflect.Descriptor instead.
 func (*RegenerateMessageRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{65}
+	return file_muse_muse_proto_rawDescGZIP(), []int{65}
 }
 
 func (x *RegenerateMessageRequest) GetMessageId() uint32 {
@@ -4641,7 +4638,7 @@ type RegenerateMessageResponse struct {
 
 func (x *RegenerateMessageResponse) Reset() {
 	*x = RegenerateMessageResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[66]
+	mi := &file_muse_muse_proto_msgTypes[66]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4653,7 +4650,7 @@ func (x *RegenerateMessageResponse) String() string {
 func (*RegenerateMessageResponse) ProtoMessage() {}
 
 func (x *RegenerateMessageResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[66]
+	mi := &file_muse_muse_proto_msgTypes[66]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4666,7 +4663,7 @@ func (x *RegenerateMessageResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RegenerateMessageResponse.ProtoReflect.Descriptor instead.
 func (*RegenerateMessageResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{66}
+	return file_muse_muse_proto_rawDescGZIP(), []int{66}
 }
 
 func (x *RegenerateMessageResponse) GetNewSwipe() *MessageSwipe {
@@ -4702,7 +4699,7 @@ type EditMessageRequest struct {
 
 func (x *EditMessageRequest) Reset() {
 	*x = EditMessageRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[67]
+	mi := &file_muse_muse_proto_msgTypes[67]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4714,7 +4711,7 @@ func (x *EditMessageRequest) String() string {
 func (*EditMessageRequest) ProtoMessage() {}
 
 func (x *EditMessageRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[67]
+	mi := &file_muse_muse_proto_msgTypes[67]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4727,7 +4724,7 @@ func (x *EditMessageRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EditMessageRequest.ProtoReflect.Descriptor instead.
 func (*EditMessageRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{67}
+	return file_muse_muse_proto_rawDescGZIP(), []int{67}
 }
 
 func (x *EditMessageRequest) GetMessageId() uint32 {
@@ -4761,7 +4758,7 @@ type EditMessageResponse struct {
 
 func (x *EditMessageResponse) Reset() {
 	*x = EditMessageResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[68]
+	mi := &file_muse_muse_proto_msgTypes[68]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4773,7 +4770,7 @@ func (x *EditMessageResponse) String() string {
 func (*EditMessageResponse) ProtoMessage() {}
 
 func (x *EditMessageResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[68]
+	mi := &file_muse_muse_proto_msgTypes[68]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4786,7 +4783,7 @@ func (x *EditMessageResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EditMessageResponse.ProtoReflect.Descriptor instead.
 func (*EditMessageResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{68}
+	return file_muse_muse_proto_rawDescGZIP(), []int{68}
 }
 
 func (x *EditMessageResponse) GetSwipe() *MessageSwipe {
@@ -4806,7 +4803,7 @@ type DeleteMessageRequest struct {
 
 func (x *DeleteMessageRequest) Reset() {
 	*x = DeleteMessageRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[69]
+	mi := &file_muse_muse_proto_msgTypes[69]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4818,7 +4815,7 @@ func (x *DeleteMessageRequest) String() string {
 func (*DeleteMessageRequest) ProtoMessage() {}
 
 func (x *DeleteMessageRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[69]
+	mi := &file_muse_muse_proto_msgTypes[69]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4831,7 +4828,7 @@ func (x *DeleteMessageRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteMessageRequest.ProtoReflect.Descriptor instead.
 func (*DeleteMessageRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{69}
+	return file_muse_muse_proto_rawDescGZIP(), []int{69}
 }
 
 func (x *DeleteMessageRequest) GetMessageId() uint32 {
@@ -4850,7 +4847,7 @@ type DeleteMessageResponse struct {
 
 func (x *DeleteMessageResponse) Reset() {
 	*x = DeleteMessageResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[70]
+	mi := &file_muse_muse_proto_msgTypes[70]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4862,7 +4859,7 @@ func (x *DeleteMessageResponse) String() string {
 func (*DeleteMessageResponse) ProtoMessage() {}
 
 func (x *DeleteMessageResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[70]
+	mi := &file_muse_muse_proto_msgTypes[70]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4875,7 +4872,7 @@ func (x *DeleteMessageResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteMessageResponse.ProtoReflect.Descriptor instead.
 func (*DeleteMessageResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{70}
+	return file_muse_muse_proto_rawDescGZIP(), []int{70}
 }
 
 // 切换Swipe请求
@@ -4889,7 +4886,7 @@ type SwitchSwipeRequest struct {
 
 func (x *SwitchSwipeRequest) Reset() {
 	*x = SwitchSwipeRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[71]
+	mi := &file_muse_muse_proto_msgTypes[71]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4901,7 +4898,7 @@ func (x *SwitchSwipeRequest) String() string {
 func (*SwitchSwipeRequest) ProtoMessage() {}
 
 func (x *SwitchSwipeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[71]
+	mi := &file_muse_muse_proto_msgTypes[71]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4914,7 +4911,7 @@ func (x *SwitchSwipeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SwitchSwipeRequest.ProtoReflect.Descriptor instead.
 func (*SwitchSwipeRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{71}
+	return file_muse_muse_proto_rawDescGZIP(), []int{71}
 }
 
 func (x *SwitchSwipeRequest) GetMessageId() uint32 {
@@ -4941,7 +4938,7 @@ type SwitchSwipeResponse struct {
 
 func (x *SwitchSwipeResponse) Reset() {
 	*x = SwitchSwipeResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[72]
+	mi := &file_muse_muse_proto_msgTypes[72]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4953,7 +4950,7 @@ func (x *SwitchSwipeResponse) String() string {
 func (*SwitchSwipeResponse) ProtoMessage() {}
 
 func (x *SwitchSwipeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[72]
+	mi := &file_muse_muse_proto_msgTypes[72]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4966,7 +4963,7 @@ func (x *SwitchSwipeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SwitchSwipeResponse.ProtoReflect.Descriptor instead.
 func (*SwitchSwipeResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{72}
+	return file_muse_muse_proto_rawDescGZIP(), []int{72}
 }
 
 func (x *SwitchSwipeResponse) GetMessage() *Message {
@@ -4985,7 +4982,7 @@ type ListPresetsRequest struct {
 
 func (x *ListPresetsRequest) Reset() {
 	*x = ListPresetsRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[73]
+	mi := &file_muse_muse_proto_msgTypes[73]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4997,7 +4994,7 @@ func (x *ListPresetsRequest) String() string {
 func (*ListPresetsRequest) ProtoMessage() {}
 
 func (x *ListPresetsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[73]
+	mi := &file_muse_muse_proto_msgTypes[73]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5010,7 +5007,7 @@ func (x *ListPresetsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPresetsRequest.ProtoReflect.Descriptor instead.
 func (*ListPresetsRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{73}
+	return file_muse_muse_proto_rawDescGZIP(), []int{73}
 }
 
 // 获取预设列表响应
@@ -5023,7 +5020,7 @@ type ListPresetsResponse struct {
 
 func (x *ListPresetsResponse) Reset() {
 	*x = ListPresetsResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[74]
+	mi := &file_muse_muse_proto_msgTypes[74]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5035,7 +5032,7 @@ func (x *ListPresetsResponse) String() string {
 func (*ListPresetsResponse) ProtoMessage() {}
 
 func (x *ListPresetsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[74]
+	mi := &file_muse_muse_proto_msgTypes[74]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5048,7 +5045,7 @@ func (x *ListPresetsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPresetsResponse.ProtoReflect.Descriptor instead.
 func (*ListPresetsResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{74}
+	return file_muse_muse_proto_rawDescGZIP(), []int{74}
 }
 
 func (x *ListPresetsResponse) GetPresets() []*Preset {
@@ -5068,7 +5065,7 @@ type GetPresetRequest struct {
 
 func (x *GetPresetRequest) Reset() {
 	*x = GetPresetRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[75]
+	mi := &file_muse_muse_proto_msgTypes[75]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5080,7 +5077,7 @@ func (x *GetPresetRequest) String() string {
 func (*GetPresetRequest) ProtoMessage() {}
 
 func (x *GetPresetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[75]
+	mi := &file_muse_muse_proto_msgTypes[75]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5093,7 +5090,7 @@ func (x *GetPresetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetPresetRequest.ProtoReflect.Descriptor instead.
 func (*GetPresetRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{75}
+	return file_muse_muse_proto_rawDescGZIP(), []int{75}
 }
 
 func (x *GetPresetRequest) GetId() uint32 {
@@ -5113,7 +5110,7 @@ type GetPresetResponse struct {
 
 func (x *GetPresetResponse) Reset() {
 	*x = GetPresetResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[76]
+	mi := &file_muse_muse_proto_msgTypes[76]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5125,7 +5122,7 @@ func (x *GetPresetResponse) String() string {
 func (*GetPresetResponse) ProtoMessage() {}
 
 func (x *GetPresetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[76]
+	mi := &file_muse_muse_proto_msgTypes[76]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5138,7 +5135,7 @@ func (x *GetPresetResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetPresetResponse.ProtoReflect.Descriptor instead.
 func (*GetPresetResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{76}
+	return file_muse_muse_proto_rawDescGZIP(), []int{76}
 }
 
 func (x *GetPresetResponse) GetPreset() *Preset {
@@ -5166,7 +5163,7 @@ type CreatePresetRequest struct {
 
 func (x *CreatePresetRequest) Reset() {
 	*x = CreatePresetRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[77]
+	mi := &file_muse_muse_proto_msgTypes[77]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5178,7 +5175,7 @@ func (x *CreatePresetRequest) String() string {
 func (*CreatePresetRequest) ProtoMessage() {}
 
 func (x *CreatePresetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[77]
+	mi := &file_muse_muse_proto_msgTypes[77]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5191,7 +5188,7 @@ func (x *CreatePresetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreatePresetRequest.ProtoReflect.Descriptor instead.
 func (*CreatePresetRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{77}
+	return file_muse_muse_proto_rawDescGZIP(), []int{77}
 }
 
 func (x *CreatePresetRequest) GetName() string {
@@ -5263,9 +5260,9 @@ type CreatePromptItemRequest struct {
 	Identifier        string                 `protobuf:"bytes,1,opt,name=identifier,proto3" json:"identifier,omitempty"`
 	Name              string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	Content           *string                `protobuf:"bytes,3,opt,name=content,proto3,oneof" json:"content,omitempty"`
-	Role              PromptItemRole         `protobuf:"varint,4,opt,name=role,proto3,enum=muse.v1.PromptItemRole" json:"role,omitempty"`
+	Role              PromptItemRole         `protobuf:"varint,4,opt,name=role,proto3,enum=muse.PromptItemRole" json:"role,omitempty"`
 	IsEnabled         bool                   `protobuf:"varint,5,opt,name=is_enabled,json=isEnabled,proto3" json:"is_enabled,omitempty"`
-	InjectionPosition InjectionPosition      `protobuf:"varint,6,opt,name=injection_position,json=injectionPosition,proto3,enum=muse.v1.InjectionPosition" json:"injection_position,omitempty"`
+	InjectionPosition InjectionPosition      `protobuf:"varint,6,opt,name=injection_position,json=injectionPosition,proto3,enum=muse.InjectionPosition" json:"injection_position,omitempty"`
 	InjectionDepth    int32                  `protobuf:"varint,7,opt,name=injection_depth,json=injectionDepth,proto3" json:"injection_depth,omitempty"`
 	ForbidOverrides   bool                   `protobuf:"varint,8,opt,name=forbid_overrides,json=forbidOverrides,proto3" json:"forbid_overrides,omitempty"`
 	SortOrder         int32                  `protobuf:"varint,9,opt,name=sort_order,json=sortOrder,proto3" json:"sort_order,omitempty"`
@@ -5275,7 +5272,7 @@ type CreatePromptItemRequest struct {
 
 func (x *CreatePromptItemRequest) Reset() {
 	*x = CreatePromptItemRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[78]
+	mi := &file_muse_muse_proto_msgTypes[78]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5287,7 +5284,7 @@ func (x *CreatePromptItemRequest) String() string {
 func (*CreatePromptItemRequest) ProtoMessage() {}
 
 func (x *CreatePromptItemRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[78]
+	mi := &file_muse_muse_proto_msgTypes[78]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5300,7 +5297,7 @@ func (x *CreatePromptItemRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreatePromptItemRequest.ProtoReflect.Descriptor instead.
 func (*CreatePromptItemRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{78}
+	return file_muse_muse_proto_rawDescGZIP(), []int{78}
 }
 
 func (x *CreatePromptItemRequest) GetIdentifier() string {
@@ -5385,7 +5382,7 @@ type CreateRegexRuleRequest struct {
 
 func (x *CreateRegexRuleRequest) Reset() {
 	*x = CreateRegexRuleRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[79]
+	mi := &file_muse_muse_proto_msgTypes[79]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5397,7 +5394,7 @@ func (x *CreateRegexRuleRequest) String() string {
 func (*CreateRegexRuleRequest) ProtoMessage() {}
 
 func (x *CreateRegexRuleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[79]
+	mi := &file_muse_muse_proto_msgTypes[79]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5410,7 +5407,7 @@ func (x *CreateRegexRuleRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateRegexRuleRequest.ProtoReflect.Descriptor instead.
 func (*CreateRegexRuleRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{79}
+	return file_muse_muse_proto_rawDescGZIP(), []int{79}
 }
 
 func (x *CreateRegexRuleRequest) GetName() string {
@@ -5493,7 +5490,7 @@ type CreatePresetResponse struct {
 
 func (x *CreatePresetResponse) Reset() {
 	*x = CreatePresetResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[80]
+	mi := &file_muse_muse_proto_msgTypes[80]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5505,7 +5502,7 @@ func (x *CreatePresetResponse) String() string {
 func (*CreatePresetResponse) ProtoMessage() {}
 
 func (x *CreatePresetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[80]
+	mi := &file_muse_muse_proto_msgTypes[80]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5518,7 +5515,7 @@ func (x *CreatePresetResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreatePresetResponse.ProtoReflect.Descriptor instead.
 func (*CreatePresetResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{80}
+	return file_muse_muse_proto_rawDescGZIP(), []int{80}
 }
 
 func (x *CreatePresetResponse) GetPreset() *Preset {
@@ -5546,7 +5543,7 @@ type UpdatePresetRequest struct {
 
 func (x *UpdatePresetRequest) Reset() {
 	*x = UpdatePresetRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[81]
+	mi := &file_muse_muse_proto_msgTypes[81]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5558,7 +5555,7 @@ func (x *UpdatePresetRequest) String() string {
 func (*UpdatePresetRequest) ProtoMessage() {}
 
 func (x *UpdatePresetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[81]
+	mi := &file_muse_muse_proto_msgTypes[81]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5571,7 +5568,7 @@ func (x *UpdatePresetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdatePresetRequest.ProtoReflect.Descriptor instead.
 func (*UpdatePresetRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{81}
+	return file_muse_muse_proto_rawDescGZIP(), []int{81}
 }
 
 func (x *UpdatePresetRequest) GetId() uint32 {
@@ -5647,7 +5644,7 @@ type UpdatePresetResponse struct {
 
 func (x *UpdatePresetResponse) Reset() {
 	*x = UpdatePresetResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[82]
+	mi := &file_muse_muse_proto_msgTypes[82]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5659,7 +5656,7 @@ func (x *UpdatePresetResponse) String() string {
 func (*UpdatePresetResponse) ProtoMessage() {}
 
 func (x *UpdatePresetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[82]
+	mi := &file_muse_muse_proto_msgTypes[82]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5672,7 +5669,7 @@ func (x *UpdatePresetResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdatePresetResponse.ProtoReflect.Descriptor instead.
 func (*UpdatePresetResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{82}
+	return file_muse_muse_proto_rawDescGZIP(), []int{82}
 }
 
 func (x *UpdatePresetResponse) GetPreset() *Preset {
@@ -5692,7 +5689,7 @@ type DeletePresetRequest struct {
 
 func (x *DeletePresetRequest) Reset() {
 	*x = DeletePresetRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[83]
+	mi := &file_muse_muse_proto_msgTypes[83]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5704,7 +5701,7 @@ func (x *DeletePresetRequest) String() string {
 func (*DeletePresetRequest) ProtoMessage() {}
 
 func (x *DeletePresetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[83]
+	mi := &file_muse_muse_proto_msgTypes[83]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5717,7 +5714,7 @@ func (x *DeletePresetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeletePresetRequest.ProtoReflect.Descriptor instead.
 func (*DeletePresetRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{83}
+	return file_muse_muse_proto_rawDescGZIP(), []int{83}
 }
 
 func (x *DeletePresetRequest) GetId() uint32 {
@@ -5736,7 +5733,7 @@ type DeletePresetResponse struct {
 
 func (x *DeletePresetResponse) Reset() {
 	*x = DeletePresetResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[84]
+	mi := &file_muse_muse_proto_msgTypes[84]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5748,7 +5745,7 @@ func (x *DeletePresetResponse) String() string {
 func (*DeletePresetResponse) ProtoMessage() {}
 
 func (x *DeletePresetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[84]
+	mi := &file_muse_muse_proto_msgTypes[84]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5761,7 +5758,7 @@ func (x *DeletePresetResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeletePresetResponse.ProtoReflect.Descriptor instead.
 func (*DeletePresetResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{84}
+	return file_muse_muse_proto_rawDescGZIP(), []int{84}
 }
 
 // 设置活跃预设请求
@@ -5774,7 +5771,7 @@ type SetActivePresetRequest struct {
 
 func (x *SetActivePresetRequest) Reset() {
 	*x = SetActivePresetRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[85]
+	mi := &file_muse_muse_proto_msgTypes[85]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5786,7 +5783,7 @@ func (x *SetActivePresetRequest) String() string {
 func (*SetActivePresetRequest) ProtoMessage() {}
 
 func (x *SetActivePresetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[85]
+	mi := &file_muse_muse_proto_msgTypes[85]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5799,7 +5796,7 @@ func (x *SetActivePresetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetActivePresetRequest.ProtoReflect.Descriptor instead.
 func (*SetActivePresetRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{85}
+	return file_muse_muse_proto_rawDescGZIP(), []int{85}
 }
 
 func (x *SetActivePresetRequest) GetPresetId() uint32 {
@@ -5818,7 +5815,7 @@ type SetActivePresetResponse struct {
 
 func (x *SetActivePresetResponse) Reset() {
 	*x = SetActivePresetResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[86]
+	mi := &file_muse_muse_proto_msgTypes[86]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5830,7 +5827,7 @@ func (x *SetActivePresetResponse) String() string {
 func (*SetActivePresetResponse) ProtoMessage() {}
 
 func (x *SetActivePresetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[86]
+	mi := &file_muse_muse_proto_msgTypes[86]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5843,7 +5840,7 @@ func (x *SetActivePresetResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetActivePresetResponse.ProtoReflect.Descriptor instead.
 func (*SetActivePresetResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{86}
+	return file_muse_muse_proto_rawDescGZIP(), []int{86}
 }
 
 // 导入预设请求
@@ -5857,7 +5854,7 @@ type ImportPresetRequest struct {
 
 func (x *ImportPresetRequest) Reset() {
 	*x = ImportPresetRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[87]
+	mi := &file_muse_muse_proto_msgTypes[87]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5869,7 +5866,7 @@ func (x *ImportPresetRequest) String() string {
 func (*ImportPresetRequest) ProtoMessage() {}
 
 func (x *ImportPresetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[87]
+	mi := &file_muse_muse_proto_msgTypes[87]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5882,7 +5879,7 @@ func (x *ImportPresetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportPresetRequest.ProtoReflect.Descriptor instead.
 func (*ImportPresetRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{87}
+	return file_muse_muse_proto_rawDescGZIP(), []int{87}
 }
 
 func (x *ImportPresetRequest) GetFileContent() []byte {
@@ -5909,7 +5906,7 @@ type ImportPresetResponse struct {
 
 func (x *ImportPresetResponse) Reset() {
 	*x = ImportPresetResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[88]
+	mi := &file_muse_muse_proto_msgTypes[88]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5921,7 +5918,7 @@ func (x *ImportPresetResponse) String() string {
 func (*ImportPresetResponse) ProtoMessage() {}
 
 func (x *ImportPresetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[88]
+	mi := &file_muse_muse_proto_msgTypes[88]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5934,7 +5931,7 @@ func (x *ImportPresetResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportPresetResponse.ProtoReflect.Descriptor instead.
 func (*ImportPresetResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{88}
+	return file_muse_muse_proto_rawDescGZIP(), []int{88}
 }
 
 func (x *ImportPresetResponse) GetPreset() *Preset {
@@ -5954,7 +5951,7 @@ type ExportPresetRequest struct {
 
 func (x *ExportPresetRequest) Reset() {
 	*x = ExportPresetRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[89]
+	mi := &file_muse_muse_proto_msgTypes[89]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5966,7 +5963,7 @@ func (x *ExportPresetRequest) String() string {
 func (*ExportPresetRequest) ProtoMessage() {}
 
 func (x *ExportPresetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[89]
+	mi := &file_muse_muse_proto_msgTypes[89]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5979,7 +5976,7 @@ func (x *ExportPresetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportPresetRequest.ProtoReflect.Descriptor instead.
 func (*ExportPresetRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{89}
+	return file_muse_muse_proto_rawDescGZIP(), []int{89}
 }
 
 func (x *ExportPresetRequest) GetId() uint32 {
@@ -6000,7 +5997,7 @@ type ExportPresetResponse struct {
 
 func (x *ExportPresetResponse) Reset() {
 	*x = ExportPresetResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[90]
+	mi := &file_muse_muse_proto_msgTypes[90]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6012,7 +6009,7 @@ func (x *ExportPresetResponse) String() string {
 func (*ExportPresetResponse) ProtoMessage() {}
 
 func (x *ExportPresetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[90]
+	mi := &file_muse_muse_proto_msgTypes[90]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6025,7 +6022,7 @@ func (x *ExportPresetResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportPresetResponse.ProtoReflect.Descriptor instead.
 func (*ExportPresetResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{90}
+	return file_muse_muse_proto_rawDescGZIP(), []int{90}
 }
 
 func (x *ExportPresetResponse) GetFileContent() []byte {
@@ -6052,7 +6049,7 @@ type ListPromptItemsRequest struct {
 
 func (x *ListPromptItemsRequest) Reset() {
 	*x = ListPromptItemsRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[91]
+	mi := &file_muse_muse_proto_msgTypes[91]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6064,7 +6061,7 @@ func (x *ListPromptItemsRequest) String() string {
 func (*ListPromptItemsRequest) ProtoMessage() {}
 
 func (x *ListPromptItemsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[91]
+	mi := &file_muse_muse_proto_msgTypes[91]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6077,7 +6074,7 @@ func (x *ListPromptItemsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPromptItemsRequest.ProtoReflect.Descriptor instead.
 func (*ListPromptItemsRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{91}
+	return file_muse_muse_proto_rawDescGZIP(), []int{91}
 }
 
 func (x *ListPromptItemsRequest) GetPresetId() uint32 {
@@ -6097,7 +6094,7 @@ type ListPromptItemsResponse struct {
 
 func (x *ListPromptItemsResponse) Reset() {
 	*x = ListPromptItemsResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[92]
+	mi := &file_muse_muse_proto_msgTypes[92]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6109,7 +6106,7 @@ func (x *ListPromptItemsResponse) String() string {
 func (*ListPromptItemsResponse) ProtoMessage() {}
 
 func (x *ListPromptItemsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[92]
+	mi := &file_muse_muse_proto_msgTypes[92]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6122,7 +6119,7 @@ func (x *ListPromptItemsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPromptItemsResponse.ProtoReflect.Descriptor instead.
 func (*ListPromptItemsResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{92}
+	return file_muse_muse_proto_rawDescGZIP(), []int{92}
 }
 
 func (x *ListPromptItemsResponse) GetItems() []*PromptItem {
@@ -6139,9 +6136,9 @@ type AddPromptItemRequest struct {
 	Identifier        string                 `protobuf:"bytes,2,opt,name=identifier,proto3" json:"identifier,omitempty"`
 	Name              string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
 	Content           *string                `protobuf:"bytes,4,opt,name=content,proto3,oneof" json:"content,omitempty"`
-	Role              PromptItemRole         `protobuf:"varint,5,opt,name=role,proto3,enum=muse.v1.PromptItemRole" json:"role,omitempty"`
+	Role              PromptItemRole         `protobuf:"varint,5,opt,name=role,proto3,enum=muse.PromptItemRole" json:"role,omitempty"`
 	IsEnabled         bool                   `protobuf:"varint,6,opt,name=is_enabled,json=isEnabled,proto3" json:"is_enabled,omitempty"`
-	InjectionPosition InjectionPosition      `protobuf:"varint,7,opt,name=injection_position,json=injectionPosition,proto3,enum=muse.v1.InjectionPosition" json:"injection_position,omitempty"`
+	InjectionPosition InjectionPosition      `protobuf:"varint,7,opt,name=injection_position,json=injectionPosition,proto3,enum=muse.InjectionPosition" json:"injection_position,omitempty"`
 	InjectionDepth    int32                  `protobuf:"varint,8,opt,name=injection_depth,json=injectionDepth,proto3" json:"injection_depth,omitempty"`
 	ForbidOverrides   bool                   `protobuf:"varint,9,opt,name=forbid_overrides,json=forbidOverrides,proto3" json:"forbid_overrides,omitempty"`
 	SortOrder         int32                  `protobuf:"varint,10,opt,name=sort_order,json=sortOrder,proto3" json:"sort_order,omitempty"`
@@ -6151,7 +6148,7 @@ type AddPromptItemRequest struct {
 
 func (x *AddPromptItemRequest) Reset() {
 	*x = AddPromptItemRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[93]
+	mi := &file_muse_muse_proto_msgTypes[93]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6163,7 +6160,7 @@ func (x *AddPromptItemRequest) String() string {
 func (*AddPromptItemRequest) ProtoMessage() {}
 
 func (x *AddPromptItemRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[93]
+	mi := &file_muse_muse_proto_msgTypes[93]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6176,7 +6173,7 @@ func (x *AddPromptItemRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddPromptItemRequest.ProtoReflect.Descriptor instead.
 func (*AddPromptItemRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{93}
+	return file_muse_muse_proto_rawDescGZIP(), []int{93}
 }
 
 func (x *AddPromptItemRequest) GetPresetId() uint32 {
@@ -6259,7 +6256,7 @@ type AddPromptItemResponse struct {
 
 func (x *AddPromptItemResponse) Reset() {
 	*x = AddPromptItemResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[94]
+	mi := &file_muse_muse_proto_msgTypes[94]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6271,7 +6268,7 @@ func (x *AddPromptItemResponse) String() string {
 func (*AddPromptItemResponse) ProtoMessage() {}
 
 func (x *AddPromptItemResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[94]
+	mi := &file_muse_muse_proto_msgTypes[94]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6284,7 +6281,7 @@ func (x *AddPromptItemResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddPromptItemResponse.ProtoReflect.Descriptor instead.
 func (*AddPromptItemResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{94}
+	return file_muse_muse_proto_rawDescGZIP(), []int{94}
 }
 
 func (x *AddPromptItemResponse) GetItem() *PromptItem {
@@ -6301,9 +6298,9 @@ type UpdatePromptItemRequest struct {
 	Identifier        string                 `protobuf:"bytes,2,opt,name=identifier,proto3" json:"identifier,omitempty"`
 	Name              string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
 	Content           *string                `protobuf:"bytes,4,opt,name=content,proto3,oneof" json:"content,omitempty"`
-	Role              PromptItemRole         `protobuf:"varint,5,opt,name=role,proto3,enum=muse.v1.PromptItemRole" json:"role,omitempty"`
+	Role              PromptItemRole         `protobuf:"varint,5,opt,name=role,proto3,enum=muse.PromptItemRole" json:"role,omitempty"`
 	IsEnabled         bool                   `protobuf:"varint,6,opt,name=is_enabled,json=isEnabled,proto3" json:"is_enabled,omitempty"`
-	InjectionPosition InjectionPosition      `protobuf:"varint,7,opt,name=injection_position,json=injectionPosition,proto3,enum=muse.v1.InjectionPosition" json:"injection_position,omitempty"`
+	InjectionPosition InjectionPosition      `protobuf:"varint,7,opt,name=injection_position,json=injectionPosition,proto3,enum=muse.InjectionPosition" json:"injection_position,omitempty"`
 	InjectionDepth    int32                  `protobuf:"varint,8,opt,name=injection_depth,json=injectionDepth,proto3" json:"injection_depth,omitempty"`
 	ForbidOverrides   bool                   `protobuf:"varint,9,opt,name=forbid_overrides,json=forbidOverrides,proto3" json:"forbid_overrides,omitempty"`
 	SortOrder         int32                  `protobuf:"varint,10,opt,name=sort_order,json=sortOrder,proto3" json:"sort_order,omitempty"`
@@ -6313,7 +6310,7 @@ type UpdatePromptItemRequest struct {
 
 func (x *UpdatePromptItemRequest) Reset() {
 	*x = UpdatePromptItemRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[95]
+	mi := &file_muse_muse_proto_msgTypes[95]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6325,7 +6322,7 @@ func (x *UpdatePromptItemRequest) String() string {
 func (*UpdatePromptItemRequest) ProtoMessage() {}
 
 func (x *UpdatePromptItemRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[95]
+	mi := &file_muse_muse_proto_msgTypes[95]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6338,7 +6335,7 @@ func (x *UpdatePromptItemRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdatePromptItemRequest.ProtoReflect.Descriptor instead.
 func (*UpdatePromptItemRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{95}
+	return file_muse_muse_proto_rawDescGZIP(), []int{95}
 }
 
 func (x *UpdatePromptItemRequest) GetId() uint32 {
@@ -6421,7 +6418,7 @@ type UpdatePromptItemResponse struct {
 
 func (x *UpdatePromptItemResponse) Reset() {
 	*x = UpdatePromptItemResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[96]
+	mi := &file_muse_muse_proto_msgTypes[96]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6433,7 +6430,7 @@ func (x *UpdatePromptItemResponse) String() string {
 func (*UpdatePromptItemResponse) ProtoMessage() {}
 
 func (x *UpdatePromptItemResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[96]
+	mi := &file_muse_muse_proto_msgTypes[96]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6446,7 +6443,7 @@ func (x *UpdatePromptItemResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdatePromptItemResponse.ProtoReflect.Descriptor instead.
 func (*UpdatePromptItemResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{96}
+	return file_muse_muse_proto_rawDescGZIP(), []int{96}
 }
 
 func (x *UpdatePromptItemResponse) GetItem() *PromptItem {
@@ -6466,7 +6463,7 @@ type DeletePromptItemRequest struct {
 
 func (x *DeletePromptItemRequest) Reset() {
 	*x = DeletePromptItemRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[97]
+	mi := &file_muse_muse_proto_msgTypes[97]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6478,7 +6475,7 @@ func (x *DeletePromptItemRequest) String() string {
 func (*DeletePromptItemRequest) ProtoMessage() {}
 
 func (x *DeletePromptItemRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[97]
+	mi := &file_muse_muse_proto_msgTypes[97]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6491,7 +6488,7 @@ func (x *DeletePromptItemRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeletePromptItemRequest.ProtoReflect.Descriptor instead.
 func (*DeletePromptItemRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{97}
+	return file_muse_muse_proto_rawDescGZIP(), []int{97}
 }
 
 func (x *DeletePromptItemRequest) GetId() uint32 {
@@ -6510,7 +6507,7 @@ type DeletePromptItemResponse struct {
 
 func (x *DeletePromptItemResponse) Reset() {
 	*x = DeletePromptItemResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[98]
+	mi := &file_muse_muse_proto_msgTypes[98]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6522,7 +6519,7 @@ func (x *DeletePromptItemResponse) String() string {
 func (*DeletePromptItemResponse) ProtoMessage() {}
 
 func (x *DeletePromptItemResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[98]
+	mi := &file_muse_muse_proto_msgTypes[98]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6535,7 +6532,7 @@ func (x *DeletePromptItemResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeletePromptItemResponse.ProtoReflect.Descriptor instead.
 func (*DeletePromptItemResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{98}
+	return file_muse_muse_proto_rawDescGZIP(), []int{98}
 }
 
 // 批量更新提示项排序请求
@@ -6549,7 +6546,7 @@ type UpdatePromptItemsOrderRequest struct {
 
 func (x *UpdatePromptItemsOrderRequest) Reset() {
 	*x = UpdatePromptItemsOrderRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[99]
+	mi := &file_muse_muse_proto_msgTypes[99]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6561,7 +6558,7 @@ func (x *UpdatePromptItemsOrderRequest) String() string {
 func (*UpdatePromptItemsOrderRequest) ProtoMessage() {}
 
 func (x *UpdatePromptItemsOrderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[99]
+	mi := &file_muse_muse_proto_msgTypes[99]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6574,7 +6571,7 @@ func (x *UpdatePromptItemsOrderRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdatePromptItemsOrderRequest.ProtoReflect.Descriptor instead.
 func (*UpdatePromptItemsOrderRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{99}
+	return file_muse_muse_proto_rawDescGZIP(), []int{99}
 }
 
 func (x *UpdatePromptItemsOrderRequest) GetPresetId() uint32 {
@@ -6600,7 +6597,7 @@ type UpdatePromptItemsOrderResponse struct {
 
 func (x *UpdatePromptItemsOrderResponse) Reset() {
 	*x = UpdatePromptItemsOrderResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[100]
+	mi := &file_muse_muse_proto_msgTypes[100]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6612,7 +6609,7 @@ func (x *UpdatePromptItemsOrderResponse) String() string {
 func (*UpdatePromptItemsOrderResponse) ProtoMessage() {}
 
 func (x *UpdatePromptItemsOrderResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[100]
+	mi := &file_muse_muse_proto_msgTypes[100]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6625,7 +6622,7 @@ func (x *UpdatePromptItemsOrderResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdatePromptItemsOrderResponse.ProtoReflect.Descriptor instead.
 func (*UpdatePromptItemsOrderResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{100}
+	return file_muse_muse_proto_rawDescGZIP(), []int{100}
 }
 
 // 获取预设的正则规则列表请求
@@ -6638,7 +6635,7 @@ type ListRegexRulesRequest struct {
 
 func (x *ListRegexRulesRequest) Reset() {
 	*x = ListRegexRulesRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[101]
+	mi := &file_muse_muse_proto_msgTypes[101]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6650,7 +6647,7 @@ func (x *ListRegexRulesRequest) String() string {
 func (*ListRegexRulesRequest) ProtoMessage() {}
 
 func (x *ListRegexRulesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[101]
+	mi := &file_muse_muse_proto_msgTypes[101]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6663,7 +6660,7 @@ func (x *ListRegexRulesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListRegexRulesRequest.ProtoReflect.Descriptor instead.
 func (*ListRegexRulesRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{101}
+	return file_muse_muse_proto_rawDescGZIP(), []int{101}
 }
 
 func (x *ListRegexRulesRequest) GetPresetId() uint32 {
@@ -6683,7 +6680,7 @@ type ListRegexRulesResponse struct {
 
 func (x *ListRegexRulesResponse) Reset() {
 	*x = ListRegexRulesResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[102]
+	mi := &file_muse_muse_proto_msgTypes[102]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6695,7 +6692,7 @@ func (x *ListRegexRulesResponse) String() string {
 func (*ListRegexRulesResponse) ProtoMessage() {}
 
 func (x *ListRegexRulesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[102]
+	mi := &file_muse_muse_proto_msgTypes[102]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6708,7 +6705,7 @@ func (x *ListRegexRulesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListRegexRulesResponse.ProtoReflect.Descriptor instead.
 func (*ListRegexRulesResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{102}
+	return file_muse_muse_proto_rawDescGZIP(), []int{102}
 }
 
 func (x *ListRegexRulesResponse) GetRules() []*RegexRule {
@@ -6738,7 +6735,7 @@ type AddRegexRuleRequest struct {
 
 func (x *AddRegexRuleRequest) Reset() {
 	*x = AddRegexRuleRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[103]
+	mi := &file_muse_muse_proto_msgTypes[103]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6750,7 +6747,7 @@ func (x *AddRegexRuleRequest) String() string {
 func (*AddRegexRuleRequest) ProtoMessage() {}
 
 func (x *AddRegexRuleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[103]
+	mi := &file_muse_muse_proto_msgTypes[103]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6763,7 +6760,7 @@ func (x *AddRegexRuleRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddRegexRuleRequest.ProtoReflect.Descriptor instead.
 func (*AddRegexRuleRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{103}
+	return file_muse_muse_proto_rawDescGZIP(), []int{103}
 }
 
 func (x *AddRegexRuleRequest) GetPresetId() uint32 {
@@ -6853,7 +6850,7 @@ type AddRegexRuleResponse struct {
 
 func (x *AddRegexRuleResponse) Reset() {
 	*x = AddRegexRuleResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[104]
+	mi := &file_muse_muse_proto_msgTypes[104]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6865,7 +6862,7 @@ func (x *AddRegexRuleResponse) String() string {
 func (*AddRegexRuleResponse) ProtoMessage() {}
 
 func (x *AddRegexRuleResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[104]
+	mi := &file_muse_muse_proto_msgTypes[104]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6878,7 +6875,7 @@ func (x *AddRegexRuleResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddRegexRuleResponse.ProtoReflect.Descriptor instead.
 func (*AddRegexRuleResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{104}
+	return file_muse_muse_proto_rawDescGZIP(), []int{104}
 }
 
 func (x *AddRegexRuleResponse) GetRule() *RegexRule {
@@ -6908,7 +6905,7 @@ type UpdateRegexRuleRequest struct {
 
 func (x *UpdateRegexRuleRequest) Reset() {
 	*x = UpdateRegexRuleRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[105]
+	mi := &file_muse_muse_proto_msgTypes[105]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6920,7 +6917,7 @@ func (x *UpdateRegexRuleRequest) String() string {
 func (*UpdateRegexRuleRequest) ProtoMessage() {}
 
 func (x *UpdateRegexRuleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[105]
+	mi := &file_muse_muse_proto_msgTypes[105]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6933,7 +6930,7 @@ func (x *UpdateRegexRuleRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateRegexRuleRequest.ProtoReflect.Descriptor instead.
 func (*UpdateRegexRuleRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{105}
+	return file_muse_muse_proto_rawDescGZIP(), []int{105}
 }
 
 func (x *UpdateRegexRuleRequest) GetId() uint32 {
@@ -7023,7 +7020,7 @@ type UpdateRegexRuleResponse struct {
 
 func (x *UpdateRegexRuleResponse) Reset() {
 	*x = UpdateRegexRuleResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[106]
+	mi := &file_muse_muse_proto_msgTypes[106]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7035,7 +7032,7 @@ func (x *UpdateRegexRuleResponse) String() string {
 func (*UpdateRegexRuleResponse) ProtoMessage() {}
 
 func (x *UpdateRegexRuleResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[106]
+	mi := &file_muse_muse_proto_msgTypes[106]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7048,7 +7045,7 @@ func (x *UpdateRegexRuleResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateRegexRuleResponse.ProtoReflect.Descriptor instead.
 func (*UpdateRegexRuleResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{106}
+	return file_muse_muse_proto_rawDescGZIP(), []int{106}
 }
 
 func (x *UpdateRegexRuleResponse) GetRule() *RegexRule {
@@ -7068,7 +7065,7 @@ type DeleteRegexRuleRequest struct {
 
 func (x *DeleteRegexRuleRequest) Reset() {
 	*x = DeleteRegexRuleRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[107]
+	mi := &file_muse_muse_proto_msgTypes[107]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7080,7 +7077,7 @@ func (x *DeleteRegexRuleRequest) String() string {
 func (*DeleteRegexRuleRequest) ProtoMessage() {}
 
 func (x *DeleteRegexRuleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[107]
+	mi := &file_muse_muse_proto_msgTypes[107]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7093,7 +7090,7 @@ func (x *DeleteRegexRuleRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteRegexRuleRequest.ProtoReflect.Descriptor instead.
 func (*DeleteRegexRuleRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{107}
+	return file_muse_muse_proto_rawDescGZIP(), []int{107}
 }
 
 func (x *DeleteRegexRuleRequest) GetId() uint32 {
@@ -7112,7 +7109,7 @@ type DeleteRegexRuleResponse struct {
 
 func (x *DeleteRegexRuleResponse) Reset() {
 	*x = DeleteRegexRuleResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[108]
+	mi := &file_muse_muse_proto_msgTypes[108]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7124,7 +7121,7 @@ func (x *DeleteRegexRuleResponse) String() string {
 func (*DeleteRegexRuleResponse) ProtoMessage() {}
 
 func (x *DeleteRegexRuleResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[108]
+	mi := &file_muse_muse_proto_msgTypes[108]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7137,7 +7134,7 @@ func (x *DeleteRegexRuleResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteRegexRuleResponse.ProtoReflect.Descriptor instead.
 func (*DeleteRegexRuleResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{108}
+	return file_muse_muse_proto_rawDescGZIP(), []int{108}
 }
 
 // 批量更新正则规则排序请求
@@ -7151,7 +7148,7 @@ type UpdateRegexRulesOrderRequest struct {
 
 func (x *UpdateRegexRulesOrderRequest) Reset() {
 	*x = UpdateRegexRulesOrderRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[109]
+	mi := &file_muse_muse_proto_msgTypes[109]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7163,7 +7160,7 @@ func (x *UpdateRegexRulesOrderRequest) String() string {
 func (*UpdateRegexRulesOrderRequest) ProtoMessage() {}
 
 func (x *UpdateRegexRulesOrderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[109]
+	mi := &file_muse_muse_proto_msgTypes[109]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7176,7 +7173,7 @@ func (x *UpdateRegexRulesOrderRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateRegexRulesOrderRequest.ProtoReflect.Descriptor instead.
 func (*UpdateRegexRulesOrderRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{109}
+	return file_muse_muse_proto_rawDescGZIP(), []int{109}
 }
 
 func (x *UpdateRegexRulesOrderRequest) GetPresetId() uint32 {
@@ -7202,7 +7199,7 @@ type UpdateRegexRulesOrderResponse struct {
 
 func (x *UpdateRegexRulesOrderResponse) Reset() {
 	*x = UpdateRegexRulesOrderResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[110]
+	mi := &file_muse_muse_proto_msgTypes[110]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7214,7 +7211,7 @@ func (x *UpdateRegexRulesOrderResponse) String() string {
 func (*UpdateRegexRulesOrderResponse) ProtoMessage() {}
 
 func (x *UpdateRegexRulesOrderResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[110]
+	mi := &file_muse_muse_proto_msgTypes[110]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7227,7 +7224,7 @@ func (x *UpdateRegexRulesOrderResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateRegexRulesOrderResponse.ProtoReflect.Descriptor instead.
 func (*UpdateRegexRulesOrderResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{110}
+	return file_muse_muse_proto_rawDescGZIP(), []int{110}
 }
 
 // 获取世界书列表请求
@@ -7240,7 +7237,7 @@ type ListWorldInfosRequest struct {
 
 func (x *ListWorldInfosRequest) Reset() {
 	*x = ListWorldInfosRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[111]
+	mi := &file_muse_muse_proto_msgTypes[111]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7252,7 +7249,7 @@ func (x *ListWorldInfosRequest) String() string {
 func (*ListWorldInfosRequest) ProtoMessage() {}
 
 func (x *ListWorldInfosRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[111]
+	mi := &file_muse_muse_proto_msgTypes[111]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7265,7 +7262,7 @@ func (x *ListWorldInfosRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListWorldInfosRequest.ProtoReflect.Descriptor instead.
 func (*ListWorldInfosRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{111}
+	return file_muse_muse_proto_rawDescGZIP(), []int{111}
 }
 
 func (x *ListWorldInfosRequest) GetIsGlobal() bool {
@@ -7285,7 +7282,7 @@ type ListWorldInfosResponse struct {
 
 func (x *ListWorldInfosResponse) Reset() {
 	*x = ListWorldInfosResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[112]
+	mi := &file_muse_muse_proto_msgTypes[112]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7297,7 +7294,7 @@ func (x *ListWorldInfosResponse) String() string {
 func (*ListWorldInfosResponse) ProtoMessage() {}
 
 func (x *ListWorldInfosResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[112]
+	mi := &file_muse_muse_proto_msgTypes[112]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7310,7 +7307,7 @@ func (x *ListWorldInfosResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListWorldInfosResponse.ProtoReflect.Descriptor instead.
 func (*ListWorldInfosResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{112}
+	return file_muse_muse_proto_rawDescGZIP(), []int{112}
 }
 
 func (x *ListWorldInfosResponse) GetWorldInfos() []*WorldInfo {
@@ -7330,7 +7327,7 @@ type GetWorldInfoRequest struct {
 
 func (x *GetWorldInfoRequest) Reset() {
 	*x = GetWorldInfoRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[113]
+	mi := &file_muse_muse_proto_msgTypes[113]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7342,7 +7339,7 @@ func (x *GetWorldInfoRequest) String() string {
 func (*GetWorldInfoRequest) ProtoMessage() {}
 
 func (x *GetWorldInfoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[113]
+	mi := &file_muse_muse_proto_msgTypes[113]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7355,7 +7352,7 @@ func (x *GetWorldInfoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetWorldInfoRequest.ProtoReflect.Descriptor instead.
 func (*GetWorldInfoRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{113}
+	return file_muse_muse_proto_rawDescGZIP(), []int{113}
 }
 
 func (x *GetWorldInfoRequest) GetId() uint32 {
@@ -7375,7 +7372,7 @@ type GetWorldInfoResponse struct {
 
 func (x *GetWorldInfoResponse) Reset() {
 	*x = GetWorldInfoResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[114]
+	mi := &file_muse_muse_proto_msgTypes[114]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7387,7 +7384,7 @@ func (x *GetWorldInfoResponse) String() string {
 func (*GetWorldInfoResponse) ProtoMessage() {}
 
 func (x *GetWorldInfoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[114]
+	mi := &file_muse_muse_proto_msgTypes[114]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7400,7 +7397,7 @@ func (x *GetWorldInfoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetWorldInfoResponse.ProtoReflect.Descriptor instead.
 func (*GetWorldInfoResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{114}
+	return file_muse_muse_proto_rawDescGZIP(), []int{114}
 }
 
 func (x *GetWorldInfoResponse) GetWorldInfo() *WorldInfo {
@@ -7422,7 +7419,7 @@ type CreateWorldInfoRequest struct {
 
 func (x *CreateWorldInfoRequest) Reset() {
 	*x = CreateWorldInfoRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[115]
+	mi := &file_muse_muse_proto_msgTypes[115]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7434,7 +7431,7 @@ func (x *CreateWorldInfoRequest) String() string {
 func (*CreateWorldInfoRequest) ProtoMessage() {}
 
 func (x *CreateWorldInfoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[115]
+	mi := &file_muse_muse_proto_msgTypes[115]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7447,7 +7444,7 @@ func (x *CreateWorldInfoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateWorldInfoRequest.ProtoReflect.Descriptor instead.
 func (*CreateWorldInfoRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{115}
+	return file_muse_muse_proto_rawDescGZIP(), []int{115}
 }
 
 func (x *CreateWorldInfoRequest) GetName() string {
@@ -7481,7 +7478,7 @@ type CreateWorldInfoResponse struct {
 
 func (x *CreateWorldInfoResponse) Reset() {
 	*x = CreateWorldInfoResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[116]
+	mi := &file_muse_muse_proto_msgTypes[116]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7493,7 +7490,7 @@ func (x *CreateWorldInfoResponse) String() string {
 func (*CreateWorldInfoResponse) ProtoMessage() {}
 
 func (x *CreateWorldInfoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[116]
+	mi := &file_muse_muse_proto_msgTypes[116]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7506,7 +7503,7 @@ func (x *CreateWorldInfoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateWorldInfoResponse.ProtoReflect.Descriptor instead.
 func (*CreateWorldInfoResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{116}
+	return file_muse_muse_proto_rawDescGZIP(), []int{116}
 }
 
 func (x *CreateWorldInfoResponse) GetWorldInfo() *WorldInfo {
@@ -7529,7 +7526,7 @@ type UpdateWorldInfoRequest struct {
 
 func (x *UpdateWorldInfoRequest) Reset() {
 	*x = UpdateWorldInfoRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[117]
+	mi := &file_muse_muse_proto_msgTypes[117]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7541,7 +7538,7 @@ func (x *UpdateWorldInfoRequest) String() string {
 func (*UpdateWorldInfoRequest) ProtoMessage() {}
 
 func (x *UpdateWorldInfoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[117]
+	mi := &file_muse_muse_proto_msgTypes[117]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7554,7 +7551,7 @@ func (x *UpdateWorldInfoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateWorldInfoRequest.ProtoReflect.Descriptor instead.
 func (*UpdateWorldInfoRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{117}
+	return file_muse_muse_proto_rawDescGZIP(), []int{117}
 }
 
 func (x *UpdateWorldInfoRequest) GetId() uint32 {
@@ -7595,7 +7592,7 @@ type UpdateWorldInfoResponse struct {
 
 func (x *UpdateWorldInfoResponse) Reset() {
 	*x = UpdateWorldInfoResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[118]
+	mi := &file_muse_muse_proto_msgTypes[118]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7607,7 +7604,7 @@ func (x *UpdateWorldInfoResponse) String() string {
 func (*UpdateWorldInfoResponse) ProtoMessage() {}
 
 func (x *UpdateWorldInfoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[118]
+	mi := &file_muse_muse_proto_msgTypes[118]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7620,7 +7617,7 @@ func (x *UpdateWorldInfoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateWorldInfoResponse.ProtoReflect.Descriptor instead.
 func (*UpdateWorldInfoResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{118}
+	return file_muse_muse_proto_rawDescGZIP(), []int{118}
 }
 
 func (x *UpdateWorldInfoResponse) GetWorldInfo() *WorldInfo {
@@ -7640,7 +7637,7 @@ type DeleteWorldInfoRequest struct {
 
 func (x *DeleteWorldInfoRequest) Reset() {
 	*x = DeleteWorldInfoRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[119]
+	mi := &file_muse_muse_proto_msgTypes[119]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7652,7 +7649,7 @@ func (x *DeleteWorldInfoRequest) String() string {
 func (*DeleteWorldInfoRequest) ProtoMessage() {}
 
 func (x *DeleteWorldInfoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[119]
+	mi := &file_muse_muse_proto_msgTypes[119]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7665,7 +7662,7 @@ func (x *DeleteWorldInfoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteWorldInfoRequest.ProtoReflect.Descriptor instead.
 func (*DeleteWorldInfoRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{119}
+	return file_muse_muse_proto_rawDescGZIP(), []int{119}
 }
 
 func (x *DeleteWorldInfoRequest) GetId() uint32 {
@@ -7684,7 +7681,7 @@ type DeleteWorldInfoResponse struct {
 
 func (x *DeleteWorldInfoResponse) Reset() {
 	*x = DeleteWorldInfoResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[120]
+	mi := &file_muse_muse_proto_msgTypes[120]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7696,7 +7693,7 @@ func (x *DeleteWorldInfoResponse) String() string {
 func (*DeleteWorldInfoResponse) ProtoMessage() {}
 
 func (x *DeleteWorldInfoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[120]
+	mi := &file_muse_muse_proto_msgTypes[120]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7709,7 +7706,7 @@ func (x *DeleteWorldInfoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteWorldInfoResponse.ProtoReflect.Descriptor instead.
 func (*DeleteWorldInfoResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{120}
+	return file_muse_muse_proto_rawDescGZIP(), []int{120}
 }
 
 // 导入世界书请求
@@ -7723,7 +7720,7 @@ type ImportWorldInfoRequest struct {
 
 func (x *ImportWorldInfoRequest) Reset() {
 	*x = ImportWorldInfoRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[121]
+	mi := &file_muse_muse_proto_msgTypes[121]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7735,7 +7732,7 @@ func (x *ImportWorldInfoRequest) String() string {
 func (*ImportWorldInfoRequest) ProtoMessage() {}
 
 func (x *ImportWorldInfoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[121]
+	mi := &file_muse_muse_proto_msgTypes[121]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7748,7 +7745,7 @@ func (x *ImportWorldInfoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportWorldInfoRequest.ProtoReflect.Descriptor instead.
 func (*ImportWorldInfoRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{121}
+	return file_muse_muse_proto_rawDescGZIP(), []int{121}
 }
 
 func (x *ImportWorldInfoRequest) GetFileContent() []byte {
@@ -7775,7 +7772,7 @@ type ImportWorldInfoResponse struct {
 
 func (x *ImportWorldInfoResponse) Reset() {
 	*x = ImportWorldInfoResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[122]
+	mi := &file_muse_muse_proto_msgTypes[122]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7787,7 +7784,7 @@ func (x *ImportWorldInfoResponse) String() string {
 func (*ImportWorldInfoResponse) ProtoMessage() {}
 
 func (x *ImportWorldInfoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[122]
+	mi := &file_muse_muse_proto_msgTypes[122]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7800,7 +7797,7 @@ func (x *ImportWorldInfoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportWorldInfoResponse.ProtoReflect.Descriptor instead.
 func (*ImportWorldInfoResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{122}
+	return file_muse_muse_proto_rawDescGZIP(), []int{122}
 }
 
 func (x *ImportWorldInfoResponse) GetWorldInfo() *WorldInfo {
@@ -7820,7 +7817,7 @@ type ExportWorldInfoRequest struct {
 
 func (x *ExportWorldInfoRequest) Reset() {
 	*x = ExportWorldInfoRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[123]
+	mi := &file_muse_muse_proto_msgTypes[123]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7832,7 +7829,7 @@ func (x *ExportWorldInfoRequest) String() string {
 func (*ExportWorldInfoRequest) ProtoMessage() {}
 
 func (x *ExportWorldInfoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[123]
+	mi := &file_muse_muse_proto_msgTypes[123]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7845,7 +7842,7 @@ func (x *ExportWorldInfoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportWorldInfoRequest.ProtoReflect.Descriptor instead.
 func (*ExportWorldInfoRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{123}
+	return file_muse_muse_proto_rawDescGZIP(), []int{123}
 }
 
 func (x *ExportWorldInfoRequest) GetId() uint32 {
@@ -7866,7 +7863,7 @@ type ExportWorldInfoResponse struct {
 
 func (x *ExportWorldInfoResponse) Reset() {
 	*x = ExportWorldInfoResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[124]
+	mi := &file_muse_muse_proto_msgTypes[124]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7878,7 +7875,7 @@ func (x *ExportWorldInfoResponse) String() string {
 func (*ExportWorldInfoResponse) ProtoMessage() {}
 
 func (x *ExportWorldInfoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[124]
+	mi := &file_muse_muse_proto_msgTypes[124]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7891,7 +7888,7 @@ func (x *ExportWorldInfoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportWorldInfoResponse.ProtoReflect.Descriptor instead.
 func (*ExportWorldInfoResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{124}
+	return file_muse_muse_proto_rawDescGZIP(), []int{124}
 }
 
 func (x *ExportWorldInfoResponse) GetFileContent() []byte {
@@ -7918,7 +7915,7 @@ type ListWorldInfoEntriesRequest struct {
 
 func (x *ListWorldInfoEntriesRequest) Reset() {
 	*x = ListWorldInfoEntriesRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[125]
+	mi := &file_muse_muse_proto_msgTypes[125]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7930,7 +7927,7 @@ func (x *ListWorldInfoEntriesRequest) String() string {
 func (*ListWorldInfoEntriesRequest) ProtoMessage() {}
 
 func (x *ListWorldInfoEntriesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[125]
+	mi := &file_muse_muse_proto_msgTypes[125]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7943,7 +7940,7 @@ func (x *ListWorldInfoEntriesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListWorldInfoEntriesRequest.ProtoReflect.Descriptor instead.
 func (*ListWorldInfoEntriesRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{125}
+	return file_muse_muse_proto_rawDescGZIP(), []int{125}
 }
 
 func (x *ListWorldInfoEntriesRequest) GetWorldInfoId() uint32 {
@@ -7963,7 +7960,7 @@ type ListWorldInfoEntriesResponse struct {
 
 func (x *ListWorldInfoEntriesResponse) Reset() {
 	*x = ListWorldInfoEntriesResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[126]
+	mi := &file_muse_muse_proto_msgTypes[126]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7975,7 +7972,7 @@ func (x *ListWorldInfoEntriesResponse) String() string {
 func (*ListWorldInfoEntriesResponse) ProtoMessage() {}
 
 func (x *ListWorldInfoEntriesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[126]
+	mi := &file_muse_muse_proto_msgTypes[126]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7988,7 +7985,7 @@ func (x *ListWorldInfoEntriesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListWorldInfoEntriesResponse.ProtoReflect.Descriptor instead.
 func (*ListWorldInfoEntriesResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{126}
+	return file_muse_muse_proto_rawDescGZIP(), []int{126}
 }
 
 func (x *ListWorldInfoEntriesResponse) GetEntries() []*WorldInfoEntry {
@@ -8011,7 +8008,7 @@ type AddWorldInfoEntryRequest struct {
 	Constant       bool                   `protobuf:"varint,8,opt,name=constant,proto3" json:"constant,omitempty"`
 	Selective      bool                   `protobuf:"varint,9,opt,name=selective,proto3" json:"selective,omitempty"`
 	InsertionOrder int32                  `protobuf:"varint,10,opt,name=insertion_order,json=insertionOrder,proto3" json:"insertion_order,omitempty"`
-	Position       EntryPosition          `protobuf:"varint,11,opt,name=position,proto3,enum=muse.v1.EntryPosition" json:"position,omitempty"`
+	Position       EntryPosition          `protobuf:"varint,11,opt,name=position,proto3,enum=muse.EntryPosition" json:"position,omitempty"`
 	Depth          int32                  `protobuf:"varint,12,opt,name=depth,proto3" json:"depth,omitempty"`
 	SortOrder      int32                  `protobuf:"varint,13,opt,name=sort_order,json=sortOrder,proto3" json:"sort_order,omitempty"`
 	unknownFields  protoimpl.UnknownFields
@@ -8020,7 +8017,7 @@ type AddWorldInfoEntryRequest struct {
 
 func (x *AddWorldInfoEntryRequest) Reset() {
 	*x = AddWorldInfoEntryRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[127]
+	mi := &file_muse_muse_proto_msgTypes[127]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8032,7 +8029,7 @@ func (x *AddWorldInfoEntryRequest) String() string {
 func (*AddWorldInfoEntryRequest) ProtoMessage() {}
 
 func (x *AddWorldInfoEntryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[127]
+	mi := &file_muse_muse_proto_msgTypes[127]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8045,7 +8042,7 @@ func (x *AddWorldInfoEntryRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddWorldInfoEntryRequest.ProtoReflect.Descriptor instead.
 func (*AddWorldInfoEntryRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{127}
+	return file_muse_muse_proto_rawDescGZIP(), []int{127}
 }
 
 func (x *AddWorldInfoEntryRequest) GetWorldInfoId() uint32 {
@@ -8149,7 +8146,7 @@ type AddWorldInfoEntryResponse struct {
 
 func (x *AddWorldInfoEntryResponse) Reset() {
 	*x = AddWorldInfoEntryResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[128]
+	mi := &file_muse_muse_proto_msgTypes[128]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8161,7 +8158,7 @@ func (x *AddWorldInfoEntryResponse) String() string {
 func (*AddWorldInfoEntryResponse) ProtoMessage() {}
 
 func (x *AddWorldInfoEntryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[128]
+	mi := &file_muse_muse_proto_msgTypes[128]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8174,7 +8171,7 @@ func (x *AddWorldInfoEntryResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddWorldInfoEntryResponse.ProtoReflect.Descriptor instead.
 func (*AddWorldInfoEntryResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{128}
+	return file_muse_muse_proto_rawDescGZIP(), []int{128}
 }
 
 func (x *AddWorldInfoEntryResponse) GetEntry() *WorldInfoEntry {
@@ -8197,7 +8194,7 @@ type UpdateWorldInfoEntryRequest struct {
 	Constant       bool                   `protobuf:"varint,8,opt,name=constant,proto3" json:"constant,omitempty"`
 	Selective      bool                   `protobuf:"varint,9,opt,name=selective,proto3" json:"selective,omitempty"`
 	InsertionOrder int32                  `protobuf:"varint,10,opt,name=insertion_order,json=insertionOrder,proto3" json:"insertion_order,omitempty"`
-	Position       EntryPosition          `protobuf:"varint,11,opt,name=position,proto3,enum=muse.v1.EntryPosition" json:"position,omitempty"`
+	Position       EntryPosition          `protobuf:"varint,11,opt,name=position,proto3,enum=muse.EntryPosition" json:"position,omitempty"`
 	Depth          int32                  `protobuf:"varint,12,opt,name=depth,proto3" json:"depth,omitempty"`
 	SortOrder      int32                  `protobuf:"varint,13,opt,name=sort_order,json=sortOrder,proto3" json:"sort_order,omitempty"`
 	unknownFields  protoimpl.UnknownFields
@@ -8206,7 +8203,7 @@ type UpdateWorldInfoEntryRequest struct {
 
 func (x *UpdateWorldInfoEntryRequest) Reset() {
 	*x = UpdateWorldInfoEntryRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[129]
+	mi := &file_muse_muse_proto_msgTypes[129]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8218,7 +8215,7 @@ func (x *UpdateWorldInfoEntryRequest) String() string {
 func (*UpdateWorldInfoEntryRequest) ProtoMessage() {}
 
 func (x *UpdateWorldInfoEntryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[129]
+	mi := &file_muse_muse_proto_msgTypes[129]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8231,7 +8228,7 @@ func (x *UpdateWorldInfoEntryRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateWorldInfoEntryRequest.ProtoReflect.Descriptor instead.
 func (*UpdateWorldInfoEntryRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{129}
+	return file_muse_muse_proto_rawDescGZIP(), []int{129}
 }
 
 func (x *UpdateWorldInfoEntryRequest) GetId() uint32 {
@@ -8335,7 +8332,7 @@ type UpdateWorldInfoEntryResponse struct {
 
 func (x *UpdateWorldInfoEntryResponse) Reset() {
 	*x = UpdateWorldInfoEntryResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[130]
+	mi := &file_muse_muse_proto_msgTypes[130]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8347,7 +8344,7 @@ func (x *UpdateWorldInfoEntryResponse) String() string {
 func (*UpdateWorldInfoEntryResponse) ProtoMessage() {}
 
 func (x *UpdateWorldInfoEntryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[130]
+	mi := &file_muse_muse_proto_msgTypes[130]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8360,7 +8357,7 @@ func (x *UpdateWorldInfoEntryResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateWorldInfoEntryResponse.ProtoReflect.Descriptor instead.
 func (*UpdateWorldInfoEntryResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{130}
+	return file_muse_muse_proto_rawDescGZIP(), []int{130}
 }
 
 func (x *UpdateWorldInfoEntryResponse) GetEntry() *WorldInfoEntry {
@@ -8380,7 +8377,7 @@ type DeleteWorldInfoEntryRequest struct {
 
 func (x *DeleteWorldInfoEntryRequest) Reset() {
 	*x = DeleteWorldInfoEntryRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[131]
+	mi := &file_muse_muse_proto_msgTypes[131]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8392,7 +8389,7 @@ func (x *DeleteWorldInfoEntryRequest) String() string {
 func (*DeleteWorldInfoEntryRequest) ProtoMessage() {}
 
 func (x *DeleteWorldInfoEntryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[131]
+	mi := &file_muse_muse_proto_msgTypes[131]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8405,7 +8402,7 @@ func (x *DeleteWorldInfoEntryRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteWorldInfoEntryRequest.ProtoReflect.Descriptor instead.
 func (*DeleteWorldInfoEntryRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{131}
+	return file_muse_muse_proto_rawDescGZIP(), []int{131}
 }
 
 func (x *DeleteWorldInfoEntryRequest) GetId() uint32 {
@@ -8424,7 +8421,7 @@ type DeleteWorldInfoEntryResponse struct {
 
 func (x *DeleteWorldInfoEntryResponse) Reset() {
 	*x = DeleteWorldInfoEntryResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[132]
+	mi := &file_muse_muse_proto_msgTypes[132]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8436,7 +8433,7 @@ func (x *DeleteWorldInfoEntryResponse) String() string {
 func (*DeleteWorldInfoEntryResponse) ProtoMessage() {}
 
 func (x *DeleteWorldInfoEntryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[132]
+	mi := &file_muse_muse_proto_msgTypes[132]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8449,7 +8446,7 @@ func (x *DeleteWorldInfoEntryResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteWorldInfoEntryResponse.ProtoReflect.Descriptor instead.
 func (*DeleteWorldInfoEntryResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{132}
+	return file_muse_muse_proto_rawDescGZIP(), []int{132}
 }
 
 // 批量更新世界书条目排序请求
@@ -8463,7 +8460,7 @@ type UpdateWorldInfoEntriesOrderRequest struct {
 
 func (x *UpdateWorldInfoEntriesOrderRequest) Reset() {
 	*x = UpdateWorldInfoEntriesOrderRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[133]
+	mi := &file_muse_muse_proto_msgTypes[133]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8475,7 +8472,7 @@ func (x *UpdateWorldInfoEntriesOrderRequest) String() string {
 func (*UpdateWorldInfoEntriesOrderRequest) ProtoMessage() {}
 
 func (x *UpdateWorldInfoEntriesOrderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[133]
+	mi := &file_muse_muse_proto_msgTypes[133]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8488,7 +8485,7 @@ func (x *UpdateWorldInfoEntriesOrderRequest) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use UpdateWorldInfoEntriesOrderRequest.ProtoReflect.Descriptor instead.
 func (*UpdateWorldInfoEntriesOrderRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{133}
+	return file_muse_muse_proto_rawDescGZIP(), []int{133}
 }
 
 func (x *UpdateWorldInfoEntriesOrderRequest) GetWorldInfoId() uint32 {
@@ -8514,7 +8511,7 @@ type UpdateWorldInfoEntriesOrderResponse struct {
 
 func (x *UpdateWorldInfoEntriesOrderResponse) Reset() {
 	*x = UpdateWorldInfoEntriesOrderResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[134]
+	mi := &file_muse_muse_proto_msgTypes[134]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8526,7 +8523,7 @@ func (x *UpdateWorldInfoEntriesOrderResponse) String() string {
 func (*UpdateWorldInfoEntriesOrderResponse) ProtoMessage() {}
 
 func (x *UpdateWorldInfoEntriesOrderResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[134]
+	mi := &file_muse_muse_proto_msgTypes[134]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8539,7 +8536,7 @@ func (x *UpdateWorldInfoEntriesOrderResponse) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use UpdateWorldInfoEntriesOrderResponse.ProtoReflect.Descriptor instead.
 func (*UpdateWorldInfoEntriesOrderResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{134}
+	return file_muse_muse_proto_rawDescGZIP(), []int{134}
 }
 
 // 获取API配置列表请求
@@ -8551,7 +8548,7 @@ type ListAPIConfigsRequest struct {
 
 func (x *ListAPIConfigsRequest) Reset() {
 	*x = ListAPIConfigsRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[135]
+	mi := &file_muse_muse_proto_msgTypes[135]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8563,7 +8560,7 @@ func (x *ListAPIConfigsRequest) String() string {
 func (*ListAPIConfigsRequest) ProtoMessage() {}
 
 func (x *ListAPIConfigsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[135]
+	mi := &file_muse_muse_proto_msgTypes[135]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8576,7 +8573,7 @@ func (x *ListAPIConfigsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListAPIConfigsRequest.ProtoReflect.Descriptor instead.
 func (*ListAPIConfigsRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{135}
+	return file_muse_muse_proto_rawDescGZIP(), []int{135}
 }
 
 // 获取API配置列表响应
@@ -8589,7 +8586,7 @@ type ListAPIConfigsResponse struct {
 
 func (x *ListAPIConfigsResponse) Reset() {
 	*x = ListAPIConfigsResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[136]
+	mi := &file_muse_muse_proto_msgTypes[136]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8601,7 +8598,7 @@ func (x *ListAPIConfigsResponse) String() string {
 func (*ListAPIConfigsResponse) ProtoMessage() {}
 
 func (x *ListAPIConfigsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[136]
+	mi := &file_muse_muse_proto_msgTypes[136]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8614,7 +8611,7 @@ func (x *ListAPIConfigsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListAPIConfigsResponse.ProtoReflect.Descriptor instead.
 func (*ListAPIConfigsResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{136}
+	return file_muse_muse_proto_rawDescGZIP(), []int{136}
 }
 
 func (x *ListAPIConfigsResponse) GetConfigs() []*APIConfig {
@@ -8634,7 +8631,7 @@ type GetAPIConfigRequest struct {
 
 func (x *GetAPIConfigRequest) Reset() {
 	*x = GetAPIConfigRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[137]
+	mi := &file_muse_muse_proto_msgTypes[137]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8646,7 +8643,7 @@ func (x *GetAPIConfigRequest) String() string {
 func (*GetAPIConfigRequest) ProtoMessage() {}
 
 func (x *GetAPIConfigRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[137]
+	mi := &file_muse_muse_proto_msgTypes[137]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8659,7 +8656,7 @@ func (x *GetAPIConfigRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAPIConfigRequest.ProtoReflect.Descriptor instead.
 func (*GetAPIConfigRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{137}
+	return file_muse_muse_proto_rawDescGZIP(), []int{137}
 }
 
 func (x *GetAPIConfigRequest) GetId() uint32 {
@@ -8679,7 +8676,7 @@ type GetAPIConfigResponse struct {
 
 func (x *GetAPIConfigResponse) Reset() {
 	*x = GetAPIConfigResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[138]
+	mi := &file_muse_muse_proto_msgTypes[138]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8691,7 +8688,7 @@ func (x *GetAPIConfigResponse) String() string {
 func (*GetAPIConfigResponse) ProtoMessage() {}
 
 func (x *GetAPIConfigResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[138]
+	mi := &file_muse_muse_proto_msgTypes[138]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8704,7 +8701,7 @@ func (x *GetAPIConfigResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAPIConfigResponse.ProtoReflect.Descriptor instead.
 func (*GetAPIConfigResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{138}
+	return file_muse_muse_proto_rawDescGZIP(), []int{138}
 }
 
 func (x *GetAPIConfigResponse) GetConfig() *APIConfig {
@@ -8718,7 +8715,7 @@ func (x *GetAPIConfigResponse) GetConfig() *APIConfig {
 type CreateAPIConfigRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Provider      APIProvider            `protobuf:"varint,2,opt,name=provider,proto3,enum=muse.v1.APIProvider" json:"provider,omitempty"`
+	Provider      APIProvider            `protobuf:"varint,2,opt,name=provider,proto3,enum=muse.APIProvider" json:"provider,omitempty"`
 	ApiKey        string                 `protobuf:"bytes,3,opt,name=api_key,json=apiKey,proto3" json:"api_key,omitempty"`
 	BaseUrl       *string                `protobuf:"bytes,4,opt,name=base_url,json=baseUrl,proto3,oneof" json:"base_url,omitempty"`
 	Model         *string                `protobuf:"bytes,5,opt,name=model,proto3,oneof" json:"model,omitempty"`
@@ -8728,7 +8725,7 @@ type CreateAPIConfigRequest struct {
 
 func (x *CreateAPIConfigRequest) Reset() {
 	*x = CreateAPIConfigRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[139]
+	mi := &file_muse_muse_proto_msgTypes[139]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8740,7 +8737,7 @@ func (x *CreateAPIConfigRequest) String() string {
 func (*CreateAPIConfigRequest) ProtoMessage() {}
 
 func (x *CreateAPIConfigRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[139]
+	mi := &file_muse_muse_proto_msgTypes[139]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8753,7 +8750,7 @@ func (x *CreateAPIConfigRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateAPIConfigRequest.ProtoReflect.Descriptor instead.
 func (*CreateAPIConfigRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{139}
+	return file_muse_muse_proto_rawDescGZIP(), []int{139}
 }
 
 func (x *CreateAPIConfigRequest) GetName() string {
@@ -8801,7 +8798,7 @@ type CreateAPIConfigResponse struct {
 
 func (x *CreateAPIConfigResponse) Reset() {
 	*x = CreateAPIConfigResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[140]
+	mi := &file_muse_muse_proto_msgTypes[140]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8813,7 +8810,7 @@ func (x *CreateAPIConfigResponse) String() string {
 func (*CreateAPIConfigResponse) ProtoMessage() {}
 
 func (x *CreateAPIConfigResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[140]
+	mi := &file_muse_muse_proto_msgTypes[140]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8826,7 +8823,7 @@ func (x *CreateAPIConfigResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateAPIConfigResponse.ProtoReflect.Descriptor instead.
 func (*CreateAPIConfigResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{140}
+	return file_muse_muse_proto_rawDescGZIP(), []int{140}
 }
 
 func (x *CreateAPIConfigResponse) GetConfig() *APIConfig {
@@ -8841,7 +8838,7 @@ type UpdateAPIConfigRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            uint32                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Provider      APIProvider            `protobuf:"varint,3,opt,name=provider,proto3,enum=muse.v1.APIProvider" json:"provider,omitempty"`
+	Provider      APIProvider            `protobuf:"varint,3,opt,name=provider,proto3,enum=muse.APIProvider" json:"provider,omitempty"`
 	ApiKey        *string                `protobuf:"bytes,4,opt,name=api_key,json=apiKey,proto3,oneof" json:"api_key,omitempty"` // 可选，不传则不更新
 	BaseUrl       *string                `protobuf:"bytes,5,opt,name=base_url,json=baseUrl,proto3,oneof" json:"base_url,omitempty"`
 	Model         *string                `protobuf:"bytes,6,opt,name=model,proto3,oneof" json:"model,omitempty"`
@@ -8851,7 +8848,7 @@ type UpdateAPIConfigRequest struct {
 
 func (x *UpdateAPIConfigRequest) Reset() {
 	*x = UpdateAPIConfigRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[141]
+	mi := &file_muse_muse_proto_msgTypes[141]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8863,7 +8860,7 @@ func (x *UpdateAPIConfigRequest) String() string {
 func (*UpdateAPIConfigRequest) ProtoMessage() {}
 
 func (x *UpdateAPIConfigRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[141]
+	mi := &file_muse_muse_proto_msgTypes[141]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8876,7 +8873,7 @@ func (x *UpdateAPIConfigRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateAPIConfigRequest.ProtoReflect.Descriptor instead.
 func (*UpdateAPIConfigRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{141}
+	return file_muse_muse_proto_rawDescGZIP(), []int{141}
 }
 
 func (x *UpdateAPIConfigRequest) GetId() uint32 {
@@ -8931,7 +8928,7 @@ type UpdateAPIConfigResponse struct {
 
 func (x *UpdateAPIConfigResponse) Reset() {
 	*x = UpdateAPIConfigResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[142]
+	mi := &file_muse_muse_proto_msgTypes[142]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8943,7 +8940,7 @@ func (x *UpdateAPIConfigResponse) String() string {
 func (*UpdateAPIConfigResponse) ProtoMessage() {}
 
 func (x *UpdateAPIConfigResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[142]
+	mi := &file_muse_muse_proto_msgTypes[142]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8956,7 +8953,7 @@ func (x *UpdateAPIConfigResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateAPIConfigResponse.ProtoReflect.Descriptor instead.
 func (*UpdateAPIConfigResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{142}
+	return file_muse_muse_proto_rawDescGZIP(), []int{142}
 }
 
 func (x *UpdateAPIConfigResponse) GetConfig() *APIConfig {
@@ -8976,7 +8973,7 @@ type DeleteAPIConfigRequest struct {
 
 func (x *DeleteAPIConfigRequest) Reset() {
 	*x = DeleteAPIConfigRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[143]
+	mi := &file_muse_muse_proto_msgTypes[143]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8988,7 +8985,7 @@ func (x *DeleteAPIConfigRequest) String() string {
 func (*DeleteAPIConfigRequest) ProtoMessage() {}
 
 func (x *DeleteAPIConfigRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[143]
+	mi := &file_muse_muse_proto_msgTypes[143]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9001,7 +8998,7 @@ func (x *DeleteAPIConfigRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteAPIConfigRequest.ProtoReflect.Descriptor instead.
 func (*DeleteAPIConfigRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{143}
+	return file_muse_muse_proto_rawDescGZIP(), []int{143}
 }
 
 func (x *DeleteAPIConfigRequest) GetId() uint32 {
@@ -9020,7 +9017,7 @@ type DeleteAPIConfigResponse struct {
 
 func (x *DeleteAPIConfigResponse) Reset() {
 	*x = DeleteAPIConfigResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[144]
+	mi := &file_muse_muse_proto_msgTypes[144]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9032,7 +9029,7 @@ func (x *DeleteAPIConfigResponse) String() string {
 func (*DeleteAPIConfigResponse) ProtoMessage() {}
 
 func (x *DeleteAPIConfigResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[144]
+	mi := &file_muse_muse_proto_msgTypes[144]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9045,7 +9042,7 @@ func (x *DeleteAPIConfigResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteAPIConfigResponse.ProtoReflect.Descriptor instead.
 func (*DeleteAPIConfigResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{144}
+	return file_muse_muse_proto_rawDescGZIP(), []int{144}
 }
 
 // 设置活跃API配置请求
@@ -9058,7 +9055,7 @@ type SetActiveAPIConfigRequest struct {
 
 func (x *SetActiveAPIConfigRequest) Reset() {
 	*x = SetActiveAPIConfigRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[145]
+	mi := &file_muse_muse_proto_msgTypes[145]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9070,7 +9067,7 @@ func (x *SetActiveAPIConfigRequest) String() string {
 func (*SetActiveAPIConfigRequest) ProtoMessage() {}
 
 func (x *SetActiveAPIConfigRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[145]
+	mi := &file_muse_muse_proto_msgTypes[145]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9083,7 +9080,7 @@ func (x *SetActiveAPIConfigRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetActiveAPIConfigRequest.ProtoReflect.Descriptor instead.
 func (*SetActiveAPIConfigRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{145}
+	return file_muse_muse_proto_rawDescGZIP(), []int{145}
 }
 
 func (x *SetActiveAPIConfigRequest) GetConfigId() uint32 {
@@ -9102,7 +9099,7 @@ type SetActiveAPIConfigResponse struct {
 
 func (x *SetActiveAPIConfigResponse) Reset() {
 	*x = SetActiveAPIConfigResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[146]
+	mi := &file_muse_muse_proto_msgTypes[146]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9114,7 +9111,7 @@ func (x *SetActiveAPIConfigResponse) String() string {
 func (*SetActiveAPIConfigResponse) ProtoMessage() {}
 
 func (x *SetActiveAPIConfigResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[146]
+	mi := &file_muse_muse_proto_msgTypes[146]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9127,7 +9124,7 @@ func (x *SetActiveAPIConfigResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetActiveAPIConfigResponse.ProtoReflect.Descriptor instead.
 func (*SetActiveAPIConfigResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{146}
+	return file_muse_muse_proto_rawDescGZIP(), []int{146}
 }
 
 // 测试API配置请求
@@ -9140,7 +9137,7 @@ type TestAPIConfigRequest struct {
 
 func (x *TestAPIConfigRequest) Reset() {
 	*x = TestAPIConfigRequest{}
-	mi := &file_muse_v1_muse_proto_msgTypes[147]
+	mi := &file_muse_muse_proto_msgTypes[147]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9152,7 +9149,7 @@ func (x *TestAPIConfigRequest) String() string {
 func (*TestAPIConfigRequest) ProtoMessage() {}
 
 func (x *TestAPIConfigRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[147]
+	mi := &file_muse_muse_proto_msgTypes[147]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9165,7 +9162,7 @@ func (x *TestAPIConfigRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestAPIConfigRequest.ProtoReflect.Descriptor instead.
 func (*TestAPIConfigRequest) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{147}
+	return file_muse_muse_proto_rawDescGZIP(), []int{147}
 }
 
 func (x *TestAPIConfigRequest) GetId() uint32 {
@@ -9187,7 +9184,7 @@ type TestAPIConfigResponse struct {
 
 func (x *TestAPIConfigResponse) Reset() {
 	*x = TestAPIConfigResponse{}
-	mi := &file_muse_v1_muse_proto_msgTypes[148]
+	mi := &file_muse_muse_proto_msgTypes[148]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9199,7 +9196,7 @@ func (x *TestAPIConfigResponse) String() string {
 func (*TestAPIConfigResponse) ProtoMessage() {}
 
 func (x *TestAPIConfigResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_v1_muse_proto_msgTypes[148]
+	mi := &file_muse_muse_proto_msgTypes[148]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9212,7 +9209,7 @@ func (x *TestAPIConfigResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestAPIConfigResponse.ProtoReflect.Descriptor instead.
 func (*TestAPIConfigResponse) Descriptor() ([]byte, []int) {
-	return file_muse_v1_muse_proto_rawDescGZIP(), []int{148}
+	return file_muse_muse_proto_rawDescGZIP(), []int{148}
 }
 
 func (x *TestAPIConfigResponse) GetSuccess() bool {
@@ -9236,11 +9233,11 @@ func (x *TestAPIConfigResponse) GetModelInfo() string {
 	return ""
 }
 
-var File_muse_v1_muse_proto protoreflect.FileDescriptor
+var File_muse_muse_proto protoreflect.FileDescriptor
 
-const file_muse_v1_muse_proto_rawDesc = "" +
+const file_muse_muse_proto_rawDesc = "" +
 	"\n" +
-	"\x12muse/v1/muse.proto\x12\amuse.v1\"\xa0\x02\n" +
+	"\x0fmuse/muse.proto\x12\x04muse\"\xa0\x02\n" +
 	"\x04User\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x1a\n" +
 	"\busername\x18\x02 \x01(\tR\busername\x12\x19\n" +
@@ -9265,18 +9262,18 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"\n" +
 	"updated_at\x18\a \x01(\x03R\tupdatedAtB\t\n" +
 	"\a_avatarB\x0e\n" +
-	"\f_description\"\x83\x02\n" +
+	"\f_description\"\x80\x02\n" +
 	"\vUserSetting\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x17\n" +
-	"\auser_id\x18\x02 \x01(\rR\x06userId\x12$\n" +
-	"\x05theme\x18\x03 \x01(\x0e2\x0e.muse.v1.ThemeR\x05theme\x12\x1a\n" +
+	"\auser_id\x18\x02 \x01(\rR\x06userId\x12!\n" +
+	"\x05theme\x18\x03 \x01(\x0e2\v.muse.ThemeR\x05theme\x12\x1a\n" +
 	"\blanguage\x18\x04 \x01(\tR\blanguage\x12\"\n" +
 	"\rsend_on_enter\x18\x05 \x01(\bR\vsendOnEnter\x12'\n" +
 	"\x0fshow_timestamps\x18\x06 \x01(\bR\x0eshowTimestamps\x12\x1d\n" +
 	"\n" +
 	"created_at\x18\a \x01(\x03R\tcreatedAt\x12\x1d\n" +
 	"\n" +
-	"updated_at\x18\b \x01(\x03R\tupdatedAt\"\xdf\x05\n" +
+	"updated_at\x18\b \x01(\x03R\tupdatedAt\"\xdc\x05\n" +
 	"\tCharacter\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\rR\x06userId\x12\x12\n" +
@@ -9295,9 +9292,9 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\x0e \x01(\x03R\tcreatedAt\x12\x1d\n" +
 	"\n" +
-	"updated_at\x18\x0f \x01(\x03R\tupdatedAt\x126\n" +
+	"updated_at\x18\x0f \x01(\x03R\tupdatedAt\x123\n" +
 	"\n" +
-	"world_info\x18\x10 \x01(\v2\x12.muse.v1.WorldInfoH\tR\tworldInfo\x88\x01\x01B\t\n" +
+	"world_info\x18\x10 \x01(\v2\x0f.muse.WorldInfoH\tR\tworldInfo\x88\x01\x01B\t\n" +
 	"\a_avatarB\x0e\n" +
 	"\f_descriptionB\x0e\n" +
 	"\f_personalityB\v\n" +
@@ -9307,7 +9304,7 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"\x0e_creator_notesB\x10\n" +
 	"\x0e_system_promptB\x10\n" +
 	"\x0e_world_info_idB\r\n" +
-	"\v_world_info\"\xc6\x02\n" +
+	"\v_world_info\"\xc0\x02\n" +
 	"\vChatSession\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\rR\x06userId\x12!\n" +
@@ -9317,25 +9314,25 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\x06 \x01(\x03R\tcreatedAt\x12\x1d\n" +
 	"\n" +
-	"updated_at\x18\a \x01(\x03R\tupdatedAt\x125\n" +
-	"\tcharacter\x18\b \x01(\v2\x12.muse.v1.CharacterH\x01R\tcharacter\x88\x01\x01\x12,\n" +
-	"\bmessages\x18\t \x03(\v2\x10.muse.v1.MessageR\bmessagesB\a\n" +
+	"updated_at\x18\a \x01(\x03R\tupdatedAt\x122\n" +
+	"\tcharacter\x18\b \x01(\v2\x0f.muse.CharacterH\x01R\tcharacter\x88\x01\x01\x12)\n" +
+	"\bmessages\x18\t \x03(\v2\r.muse.MessageR\bmessagesB\a\n" +
 	"\x05_nameB\f\n" +
 	"\n" +
-	"_character\"\x9c\x02\n" +
+	"_character\"\x96\x02\n" +
 	"\aMessage\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x1d\n" +
 	"\n" +
-	"session_id\x18\x02 \x01(\rR\tsessionId\x12(\n" +
-	"\x04role\x18\x03 \x01(\x0e2\x14.muse.v1.MessageRoleR\x04role\x12,\n" +
+	"session_id\x18\x02 \x01(\rR\tsessionId\x12%\n" +
+	"\x04role\x18\x03 \x01(\x0e2\x11.muse.MessageRoleR\x04role\x12,\n" +
 	"\x12active_swipe_index\x18\x04 \x01(\x05R\x10activeSwipeIndex\x12\x1d\n" +
 	"\n" +
 	"sort_order\x18\x05 \x01(\x05R\tsortOrder\x12\x1d\n" +
 	"\n" +
 	"created_at\x18\x06 \x01(\x03R\tcreatedAt\x12\x1d\n" +
 	"\n" +
-	"updated_at\x18\a \x01(\x03R\tupdatedAt\x12-\n" +
-	"\x06swipes\x18\b \x03(\v2\x15.muse.v1.MessageSwipeR\x06swipes\"\x95\x01\n" +
+	"updated_at\x18\a \x01(\x03R\tupdatedAt\x12*\n" +
+	"\x06swipes\x18\b \x03(\v2\x12.muse.MessageSwipeR\x06swipes\"\x95\x01\n" +
 	"\fMessageSwipe\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x1d\n" +
 	"\n" +
@@ -9344,7 +9341,7 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"\n" +
 	"sort_order\x18\x04 \x01(\x05R\tsortOrder\x12\x1d\n" +
 	"\n" +
-	"created_at\x18\x05 \x01(\x03R\tcreatedAt\"\xcd\x03\n" +
+	"created_at\x18\x05 \x01(\x03R\tcreatedAt\"\xc7\x03\n" +
 	"\x06Preset\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\rR\x06userId\x12\x12\n" +
@@ -9361,10 +9358,10 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\v \x01(\x03R\tcreatedAt\x12\x1d\n" +
 	"\n" +
-	"updated_at\x18\f \x01(\x03R\tupdatedAt\x126\n" +
-	"\fprompt_items\x18\r \x03(\v2\x13.muse.v1.PromptItemR\vpromptItems\x123\n" +
-	"\vregex_rules\x18\x0e \x03(\v2\x12.muse.v1.RegexRuleR\n" +
-	"regexRules\"\xe0\x03\n" +
+	"updated_at\x18\f \x01(\x03R\tupdatedAt\x123\n" +
+	"\fprompt_items\x18\r \x03(\v2\x10.muse.PromptItemR\vpromptItems\x120\n" +
+	"\vregex_rules\x18\x0e \x03(\v2\x0f.muse.RegexRuleR\n" +
+	"regexRules\"\xda\x03\n" +
 	"\n" +
 	"PromptItem\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x1b\n" +
@@ -9373,11 +9370,11 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"identifier\x18\x03 \x01(\tR\n" +
 	"identifier\x12\x12\n" +
 	"\x04name\x18\x04 \x01(\tR\x04name\x12\x1d\n" +
-	"\acontent\x18\x05 \x01(\tH\x00R\acontent\x88\x01\x01\x12+\n" +
-	"\x04role\x18\x06 \x01(\x0e2\x17.muse.v1.PromptItemRoleR\x04role\x12\x1d\n" +
+	"\acontent\x18\x05 \x01(\tH\x00R\acontent\x88\x01\x01\x12(\n" +
+	"\x04role\x18\x06 \x01(\x0e2\x14.muse.PromptItemRoleR\x04role\x12\x1d\n" +
 	"\n" +
-	"is_enabled\x18\a \x01(\bR\tisEnabled\x12I\n" +
-	"\x12injection_position\x18\b \x01(\x0e2\x1a.muse.v1.InjectionPositionR\x11injectionPosition\x12'\n" +
+	"is_enabled\x18\a \x01(\bR\tisEnabled\x12F\n" +
+	"\x12injection_position\x18\b \x01(\x0e2\x17.muse.InjectionPositionR\x11injectionPosition\x12'\n" +
 	"\x0finjection_depth\x18\t \x01(\x05R\x0einjectionDepth\x12)\n" +
 	"\x10forbid_overrides\x18\n" +
 	" \x01(\bR\x0fforbidOverrides\x12\x1d\n" +
@@ -9413,7 +9410,7 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"\n" +
 	"_min_depthB\f\n" +
 	"\n" +
-	"_max_depth\"\x8d\x02\n" +
+	"_max_depth\"\x8a\x02\n" +
 	"\tWorldInfo\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\rR\x06userId\x12\x12\n" +
@@ -9423,9 +9420,9 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\x06 \x01(\x03R\tcreatedAt\x12\x1d\n" +
 	"\n" +
-	"updated_at\x18\a \x01(\x03R\tupdatedAt\x121\n" +
-	"\aentries\x18\b \x03(\v2\x17.muse.v1.WorldInfoEntryR\aentriesB\x0e\n" +
-	"\f_description\"\xad\x04\n" +
+	"updated_at\x18\a \x01(\x03R\tupdatedAt\x12.\n" +
+	"\aentries\x18\b \x03(\v2\x14.muse.WorldInfoEntryR\aentriesB\x0e\n" +
+	"\f_description\"\xaa\x04\n" +
 	"\x0eWorldInfoEntry\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\"\n" +
 	"\rworld_info_id\x18\x02 \x01(\rR\vworldInfoId\x12\x15\n" +
@@ -9439,8 +9436,8 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"\bconstant\x18\t \x01(\bR\bconstant\x12\x1c\n" +
 	"\tselective\x18\n" +
 	" \x01(\bR\tselective\x12'\n" +
-	"\x0finsertion_order\x18\v \x01(\x05R\x0einsertionOrder\x122\n" +
-	"\bposition\x18\f \x01(\x0e2\x16.muse.v1.EntryPositionR\bposition\x12\x14\n" +
+	"\x0finsertion_order\x18\v \x01(\x05R\x0einsertionOrder\x12/\n" +
+	"\bposition\x18\f \x01(\x0e2\x13.muse.EntryPositionR\bposition\x12\x14\n" +
 	"\x05depth\x18\r \x01(\x05R\x05depth\x12\x1d\n" +
 	"\n" +
 	"sort_order\x18\x0e \x01(\x05R\tsortOrder\x12\x1d\n" +
@@ -9451,12 +9448,12 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"\x04_uidB\x11\n" +
 	"\x0f_secondary_keysB\n" +
 	"\n" +
-	"\b_comment\"\xc0\x02\n" +
+	"\b_comment\"\xbd\x02\n" +
 	"\tAPIConfig\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\rR\x06userId\x12\x12\n" +
-	"\x04name\x18\x03 \x01(\tR\x04name\x120\n" +
-	"\bprovider\x18\x04 \x01(\x0e2\x14.muse.v1.APIProviderR\bprovider\x12\x17\n" +
+	"\x04name\x18\x03 \x01(\tR\x04name\x12-\n" +
+	"\bprovider\x18\x04 \x01(\x0e2\x11.muse.APIProviderR\bprovider\x12\x17\n" +
 	"\aapi_key\x18\x05 \x01(\tR\x06apiKey\x12\x1e\n" +
 	"\bbase_url\x18\x06 \x01(\tH\x00R\abaseUrl\x88\x01\x01\x12\x19\n" +
 	"\x05model\x18\a \x01(\tH\x01R\x05model\x88\x01\x01\x12\x1b\n" +
@@ -9472,47 +9469,50 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\x12\x19\n" +
 	"\x05email\x18\x03 \x01(\tH\x00R\x05email\x88\x01\x01B\b\n" +
-	"\x06_email\"K\n" +
-	"\x10RegisterResponse\x12!\n" +
-	"\x04user\x18\x01 \x01(\v2\r.muse.v1.UserR\x04user\x12\x14\n" +
+	"\x06_email\"H\n" +
+	"\x10RegisterResponse\x12\x1e\n" +
+	"\x04user\x18\x01 \x01(\v2\n" +
+	".muse.UserR\x04user\x12\x14\n" +
 	"\x05token\x18\x02 \x01(\tR\x05token\"F\n" +
 	"\fLoginRequest\x12\x1a\n" +
 	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
-	"\bpassword\x18\x02 \x01(\tR\bpassword\"H\n" +
-	"\rLoginResponse\x12!\n" +
-	"\x04user\x18\x01 \x01(\v2\r.muse.v1.UserR\x04user\x12\x14\n" +
+	"\bpassword\x18\x02 \x01(\tR\bpassword\"E\n" +
+	"\rLoginResponse\x12\x1e\n" +
+	"\x04user\x18\x01 \x01(\v2\n" +
+	".muse.UserR\x04user\x12\x14\n" +
 	"\x05token\x18\x02 \x01(\tR\x05token\"\x17\n" +
-	"\x15GetCurrentUserRequest\";\n" +
-	"\x16GetCurrentUserResponse\x12!\n" +
-	"\x04user\x18\x01 \x01(\v2\r.muse.v1.UserR\x04user\"]\n" +
+	"\x15GetCurrentUserRequest\"8\n" +
+	"\x16GetCurrentUserResponse\x12\x1e\n" +
+	"\x04user\x18\x01 \x01(\v2\n" +
+	".muse.UserR\x04user\"]\n" +
 	"\x15ChangePasswordRequest\x12!\n" +
 	"\fold_password\x18\x01 \x01(\tR\voldPassword\x12!\n" +
 	"\fnew_password\x18\x02 \x01(\tR\vnewPassword\"\x18\n" +
 	"\x16ChangePasswordResponse\"\x15\n" +
-	"\x13ListPersonasRequest\"D\n" +
-	"\x14ListPersonasResponse\x12,\n" +
-	"\bpersonas\x18\x01 \x03(\v2\x10.muse.v1.PersonaR\bpersonas\"#\n" +
+	"\x13ListPersonasRequest\"A\n" +
+	"\x14ListPersonasResponse\x12)\n" +
+	"\bpersonas\x18\x01 \x03(\v2\r.muse.PersonaR\bpersonas\"#\n" +
 	"\x11GetPersonaRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\rR\x02id\"@\n" +
-	"\x12GetPersonaResponse\x12*\n" +
-	"\apersona\x18\x01 \x01(\v2\x10.muse.v1.PersonaR\apersona\"\x89\x01\n" +
+	"\x02id\x18\x01 \x01(\rR\x02id\"=\n" +
+	"\x12GetPersonaResponse\x12'\n" +
+	"\apersona\x18\x01 \x01(\v2\r.muse.PersonaR\apersona\"\x89\x01\n" +
 	"\x14CreatePersonaRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1b\n" +
 	"\x06avatar\x18\x02 \x01(\tH\x00R\x06avatar\x88\x01\x01\x12%\n" +
 	"\vdescription\x18\x03 \x01(\tH\x01R\vdescription\x88\x01\x01B\t\n" +
 	"\a_avatarB\x0e\n" +
-	"\f_description\"C\n" +
-	"\x15CreatePersonaResponse\x12*\n" +
-	"\apersona\x18\x01 \x01(\v2\x10.muse.v1.PersonaR\apersona\"\x99\x01\n" +
+	"\f_description\"@\n" +
+	"\x15CreatePersonaResponse\x12'\n" +
+	"\apersona\x18\x01 \x01(\v2\r.muse.PersonaR\apersona\"\x99\x01\n" +
 	"\x14UpdatePersonaRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1b\n" +
 	"\x06avatar\x18\x03 \x01(\tH\x00R\x06avatar\x88\x01\x01\x12%\n" +
 	"\vdescription\x18\x04 \x01(\tH\x01R\vdescription\x88\x01\x01B\t\n" +
 	"\a_avatarB\x0e\n" +
-	"\f_description\"C\n" +
-	"\x15UpdatePersonaResponse\x12*\n" +
-	"\apersona\x18\x01 \x01(\v2\x10.muse.v1.PersonaR\apersona\"&\n" +
+	"\f_description\"@\n" +
+	"\x15UpdatePersonaResponse\x12'\n" +
+	"\apersona\x18\x01 \x01(\v2\r.muse.PersonaR\apersona\"&\n" +
 	"\x14DeletePersonaRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\"\x17\n" +
 	"\x15DeletePersonaResponse\"8\n" +
@@ -9520,31 +9520,31 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"\n" +
 	"persona_id\x18\x01 \x01(\rR\tpersonaId\"\x1a\n" +
 	"\x18SetActivePersonaResponse\"\x17\n" +
-	"\x15GetUserSettingRequest\"H\n" +
-	"\x16GetUserSettingResponse\x12.\n" +
-	"\asetting\x18\x01 \x01(\v2\x14.muse.v1.UserSettingR\asetting\"\xa9\x01\n" +
-	"\x18UpdateUserSettingRequest\x12$\n" +
-	"\x05theme\x18\x01 \x01(\x0e2\x0e.muse.v1.ThemeR\x05theme\x12\x1a\n" +
+	"\x15GetUserSettingRequest\"E\n" +
+	"\x16GetUserSettingResponse\x12+\n" +
+	"\asetting\x18\x01 \x01(\v2\x11.muse.UserSettingR\asetting\"\xa6\x01\n" +
+	"\x18UpdateUserSettingRequest\x12!\n" +
+	"\x05theme\x18\x01 \x01(\x0e2\v.muse.ThemeR\x05theme\x12\x1a\n" +
 	"\blanguage\x18\x02 \x01(\tR\blanguage\x12\"\n" +
 	"\rsend_on_enter\x18\x03 \x01(\bR\vsendOnEnter\x12'\n" +
-	"\x0fshow_timestamps\x18\x04 \x01(\bR\x0eshowTimestamps\"K\n" +
-	"\x19UpdateUserSettingResponse\x12.\n" +
-	"\asetting\x18\x01 \x01(\v2\x14.muse.v1.UserSettingR\asetting\"i\n" +
+	"\x0fshow_timestamps\x18\x04 \x01(\bR\x0eshowTimestamps\"H\n" +
+	"\x19UpdateUserSettingResponse\x12+\n" +
+	"\asetting\x18\x01 \x01(\v2\x11.muse.UserSettingR\asetting\"i\n" +
 	"\x15ListCharactersRequest\x12\x17\n" +
 	"\x04page\x18\x01 \x01(\x05H\x00R\x04page\x88\x01\x01\x12 \n" +
 	"\tpage_size\x18\x02 \x01(\x05H\x01R\bpageSize\x88\x01\x01B\a\n" +
 	"\x05_pageB\f\n" +
 	"\n" +
-	"_page_size\"b\n" +
-	"\x16ListCharactersResponse\x122\n" +
+	"_page_size\"_\n" +
+	"\x16ListCharactersResponse\x12/\n" +
 	"\n" +
-	"characters\x18\x01 \x03(\v2\x12.muse.v1.CharacterR\n" +
+	"characters\x18\x01 \x03(\v2\x0f.muse.CharacterR\n" +
 	"characters\x12\x14\n" +
 	"\x05total\x18\x02 \x01(\x05R\x05total\"%\n" +
 	"\x13GetCharacterRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\rR\x02id\"H\n" +
-	"\x14GetCharacterResponse\x120\n" +
-	"\tcharacter\x18\x01 \x01(\v2\x12.muse.v1.CharacterR\tcharacter\"\xa4\x04\n" +
+	"\x02id\x18\x01 \x01(\rR\x02id\"E\n" +
+	"\x14GetCharacterResponse\x12-\n" +
+	"\tcharacter\x18\x01 \x01(\v2\x0f.muse.CharacterR\tcharacter\"\xa4\x04\n" +
 	"\x16CreateCharacterRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1b\n" +
 	"\x06avatar\x18\x02 \x01(\tH\x00R\x06avatar\x88\x01\x01\x12%\n" +
@@ -9565,9 +9565,9 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"\x11_example_dialogueB\x10\n" +
 	"\x0e_creator_notesB\x10\n" +
 	"\x0e_system_promptB\x10\n" +
-	"\x0e_world_info_id\"K\n" +
-	"\x17CreateCharacterResponse\x120\n" +
-	"\tcharacter\x18\x01 \x01(\v2\x12.muse.v1.CharacterR\tcharacter\"\xce\x04\n" +
+	"\x0e_world_info_id\"H\n" +
+	"\x17CreateCharacterResponse\x12-\n" +
+	"\tcharacter\x18\x01 \x01(\v2\x0f.muse.CharacterR\tcharacter\"\xce\x04\n" +
 	"\x16UpdateCharacterRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1b\n" +
@@ -9590,17 +9590,17 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"\x11_example_dialogueB\x10\n" +
 	"\x0e_creator_notesB\x10\n" +
 	"\x0e_system_promptB\x10\n" +
-	"\x0e_world_info_id\"K\n" +
-	"\x17UpdateCharacterResponse\x120\n" +
-	"\tcharacter\x18\x01 \x01(\v2\x12.muse.v1.CharacterR\tcharacter\"(\n" +
+	"\x0e_world_info_id\"H\n" +
+	"\x17UpdateCharacterResponse\x12-\n" +
+	"\tcharacter\x18\x01 \x01(\v2\x0f.muse.CharacterR\tcharacter\"(\n" +
 	"\x16DeleteCharacterRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\"\x19\n" +
 	"\x17DeleteCharacterResponse\"X\n" +
 	"\x16ImportCharacterRequest\x12!\n" +
 	"\ffile_content\x18\x01 \x01(\fR\vfileContent\x12\x1b\n" +
-	"\tfile_name\x18\x02 \x01(\tR\bfileName\"K\n" +
-	"\x17ImportCharacterResponse\x120\n" +
-	"\tcharacter\x18\x01 \x01(\v2\x12.muse.v1.CharacterR\tcharacter\"@\n" +
+	"\tfile_name\x18\x02 \x01(\tR\bfileName\"H\n" +
+	"\x17ImportCharacterResponse\x12-\n" +
+	"\tcharacter\x18\x01 \x01(\v2\x0f.muse.CharacterR\tcharacter\"@\n" +
 	"\x16ExportCharacterRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x16\n" +
 	"\x06format\x18\x02 \x01(\tR\x06format\"Y\n" +
@@ -9608,10 +9608,10 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"\ffile_content\x18\x01 \x01(\fR\vfileContent\x12\x1b\n" +
 	"\tfile_name\x18\x02 \x01(\tR\bfileName\"E\n" +
 	" RestoreCharacterWorldInfoRequest\x12!\n" +
-	"\fcharacter_id\x18\x01 \x01(\rR\vcharacterId\"V\n" +
-	"!RestoreCharacterWorldInfoResponse\x121\n" +
+	"\fcharacter_id\x18\x01 \x01(\rR\vcharacterId\"S\n" +
+	"!RestoreCharacterWorldInfoResponse\x12.\n" +
 	"\n" +
-	"world_info\x18\x01 \x01(\v2\x12.muse.v1.WorldInfoR\tworldInfo\"\xa4\x01\n" +
+	"world_info\x18\x01 \x01(\v2\x0f.muse.WorldInfoR\tworldInfo\"\xa4\x01\n" +
 	"\x17ListChatSessionsRequest\x12&\n" +
 	"\fcharacter_id\x18\x01 \x01(\rH\x00R\vcharacterId\x88\x01\x01\x12\x17\n" +
 	"\x04page\x18\x02 \x01(\x05H\x01R\x04page\x88\x01\x01\x12 \n" +
@@ -9619,46 +9619,46 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"\r_character_idB\a\n" +
 	"\x05_pageB\f\n" +
 	"\n" +
-	"_page_size\"b\n" +
-	"\x18ListChatSessionsResponse\x120\n" +
-	"\bsessions\x18\x01 \x03(\v2\x14.muse.v1.ChatSessionR\bsessions\x12\x14\n" +
+	"_page_size\"_\n" +
+	"\x18ListChatSessionsResponse\x12-\n" +
+	"\bsessions\x18\x01 \x03(\v2\x11.muse.ChatSessionR\bsessions\x12\x14\n" +
 	"\x05total\x18\x02 \x01(\x05R\x05total\"R\n" +
 	"\x15GetChatSessionRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12)\n" +
-	"\x10include_messages\x18\x02 \x01(\bR\x0fincludeMessages\"H\n" +
-	"\x16GetChatSessionResponse\x12.\n" +
-	"\asession\x18\x01 \x01(\v2\x14.muse.v1.ChatSessionR\asession\"_\n" +
+	"\x10include_messages\x18\x02 \x01(\bR\x0fincludeMessages\"E\n" +
+	"\x16GetChatSessionResponse\x12+\n" +
+	"\asession\x18\x01 \x01(\v2\x11.muse.ChatSessionR\asession\"_\n" +
 	"\x18CreateChatSessionRequest\x12!\n" +
 	"\fcharacter_id\x18\x01 \x01(\rR\vcharacterId\x12\x17\n" +
 	"\x04name\x18\x02 \x01(\tH\x00R\x04name\x88\x01\x01B\a\n" +
-	"\x05_name\"K\n" +
-	"\x19CreateChatSessionResponse\x12.\n" +
-	"\asession\x18\x01 \x01(\v2\x14.muse.v1.ChatSessionR\asession\"f\n" +
+	"\x05_name\"H\n" +
+	"\x19CreateChatSessionResponse\x12+\n" +
+	"\asession\x18\x01 \x01(\v2\x11.muse.ChatSessionR\asession\"f\n" +
 	"\x18UpdateChatSessionRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x17\n" +
 	"\x04name\x18\x02 \x01(\tH\x00R\x04name\x88\x01\x01\x12\x18\n" +
 	"\aversion\x18\x03 \x01(\rR\aversionB\a\n" +
-	"\x05_name\"K\n" +
-	"\x19UpdateChatSessionResponse\x12.\n" +
-	"\asession\x18\x01 \x01(\v2\x14.muse.v1.ChatSessionR\asession\"*\n" +
+	"\x05_name\"H\n" +
+	"\x19UpdateChatSessionResponse\x12+\n" +
+	"\asession\x18\x01 \x01(\v2\x11.muse.ChatSessionR\asession\"*\n" +
 	"\x18DeleteChatSessionRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\"\x1b\n" +
 	"\x19DeleteChatSessionResponse\"M\n" +
 	"\x12SendMessageRequest\x12\x1d\n" +
 	"\n" +
 	"session_id\x18\x01 \x01(\rR\tsessionId\x12\x18\n" +
-	"\acontent\x18\x02 \x01(\tR\acontent\"\xcf\x01\n" +
-	"\x13SendMessageResponse\x123\n" +
-	"\fuser_message\x18\x01 \x01(\v2\x10.muse.v1.MessageR\vuserMessage\x12=\n" +
-	"\x11assistant_message\x18\x02 \x01(\v2\x10.muse.v1.MessageR\x10assistantMessage\x12#\n" +
+	"\acontent\x18\x02 \x01(\tR\acontent\"\xc9\x01\n" +
+	"\x13SendMessageResponse\x120\n" +
+	"\fuser_message\x18\x01 \x01(\v2\r.muse.MessageR\vuserMessage\x12:\n" +
+	"\x11assistant_message\x18\x02 \x01(\v2\r.muse.MessageR\x10assistantMessage\x12#\n" +
 	"\rcontent_delta\x18\x03 \x01(\tR\fcontentDelta\x12\x1f\n" +
 	"\vis_complete\x18\x04 \x01(\bR\n" +
 	"isComplete\"9\n" +
 	"\x18RegenerateMessageRequest\x12\x1d\n" +
 	"\n" +
-	"message_id\x18\x01 \x01(\rR\tmessageId\"\x95\x01\n" +
-	"\x19RegenerateMessageResponse\x122\n" +
-	"\tnew_swipe\x18\x01 \x01(\v2\x15.muse.v1.MessageSwipeR\bnewSwipe\x12#\n" +
+	"message_id\x18\x01 \x01(\rR\tmessageId\"\x92\x01\n" +
+	"\x19RegenerateMessageResponse\x12/\n" +
+	"\tnew_swipe\x18\x01 \x01(\v2\x12.muse.MessageSwipeR\bnewSwipe\x12#\n" +
 	"\rcontent_delta\x18\x02 \x01(\tR\fcontentDelta\x12\x1f\n" +
 	"\vis_complete\x18\x03 \x01(\bR\n" +
 	"isComplete\"h\n" +
@@ -9666,9 +9666,9 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"\n" +
 	"message_id\x18\x01 \x01(\rR\tmessageId\x12\x19\n" +
 	"\bswipe_id\x18\x02 \x01(\rR\aswipeId\x12\x18\n" +
-	"\acontent\x18\x03 \x01(\tR\acontent\"B\n" +
-	"\x13EditMessageResponse\x12+\n" +
-	"\x05swipe\x18\x01 \x01(\v2\x15.muse.v1.MessageSwipeR\x05swipe\"5\n" +
+	"\acontent\x18\x03 \x01(\tR\acontent\"?\n" +
+	"\x13EditMessageResponse\x12(\n" +
+	"\x05swipe\x18\x01 \x01(\v2\x12.muse.MessageSwipeR\x05swipe\"5\n" +
 	"\x14DeleteMessageRequest\x12\x1d\n" +
 	"\n" +
 	"message_id\x18\x01 \x01(\rR\tmessageId\"\x17\n" +
@@ -9677,16 +9677,16 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"\n" +
 	"message_id\x18\x01 \x01(\rR\tmessageId\x12\x1f\n" +
 	"\vswipe_index\x18\x02 \x01(\x05R\n" +
-	"swipeIndex\"A\n" +
-	"\x13SwitchSwipeResponse\x12*\n" +
-	"\amessage\x18\x01 \x01(\v2\x10.muse.v1.MessageR\amessage\"\x14\n" +
-	"\x12ListPresetsRequest\"@\n" +
-	"\x13ListPresetsResponse\x12)\n" +
-	"\apresets\x18\x01 \x03(\v2\x0f.muse.v1.PresetR\apresets\"\"\n" +
+	"swipeIndex\">\n" +
+	"\x13SwitchSwipeResponse\x12'\n" +
+	"\amessage\x18\x01 \x01(\v2\r.muse.MessageR\amessage\"\x14\n" +
+	"\x12ListPresetsRequest\"=\n" +
+	"\x13ListPresetsResponse\x12&\n" +
+	"\apresets\x18\x01 \x03(\v2\f.muse.PresetR\apresets\"\"\n" +
 	"\x10GetPresetRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\rR\x02id\"<\n" +
-	"\x11GetPresetResponse\x12'\n" +
-	"\x06preset\x18\x01 \x01(\v2\x0f.muse.v1.PresetR\x06preset\"\xf3\x02\n" +
+	"\x02id\x18\x01 \x01(\rR\x02id\"9\n" +
+	"\x11GetPresetResponse\x12$\n" +
+	"\x06preset\x18\x01 \x01(\v2\f.muse.PresetR\x06preset\"\xed\x02\n" +
 	"\x13CreatePresetRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
 	"\vtemperature\x18\x02 \x01(\x01R\vtemperature\x12\x13\n" +
@@ -9695,20 +9695,20 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"\n" +
 	"max_tokens\x18\x05 \x01(\x05R\tmaxTokens\x12+\n" +
 	"\x11frequency_penalty\x18\x06 \x01(\x01R\x10frequencyPenalty\x12)\n" +
-	"\x10presence_penalty\x18\a \x01(\x01R\x0fpresencePenalty\x12C\n" +
-	"\fprompt_items\x18\b \x03(\v2 .muse.v1.CreatePromptItemRequestR\vpromptItems\x12@\n" +
-	"\vregex_rules\x18\t \x03(\v2\x1f.muse.v1.CreateRegexRuleRequestR\n" +
-	"regexRules\"\x82\x03\n" +
+	"\x10presence_penalty\x18\a \x01(\x01R\x0fpresencePenalty\x12@\n" +
+	"\fprompt_items\x18\b \x03(\v2\x1d.muse.CreatePromptItemRequestR\vpromptItems\x12=\n" +
+	"\vregex_rules\x18\t \x03(\v2\x1c.muse.CreateRegexRuleRequestR\n" +
+	"regexRules\"\xfc\x02\n" +
 	"\x17CreatePromptItemRequest\x12\x1e\n" +
 	"\n" +
 	"identifier\x18\x01 \x01(\tR\n" +
 	"identifier\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1d\n" +
-	"\acontent\x18\x03 \x01(\tH\x00R\acontent\x88\x01\x01\x12+\n" +
-	"\x04role\x18\x04 \x01(\x0e2\x17.muse.v1.PromptItemRoleR\x04role\x12\x1d\n" +
+	"\acontent\x18\x03 \x01(\tH\x00R\acontent\x88\x01\x01\x12(\n" +
+	"\x04role\x18\x04 \x01(\x0e2\x14.muse.PromptItemRoleR\x04role\x12\x1d\n" +
 	"\n" +
-	"is_enabled\x18\x05 \x01(\bR\tisEnabled\x12I\n" +
-	"\x12injection_position\x18\x06 \x01(\x0e2\x1a.muse.v1.InjectionPositionR\x11injectionPosition\x12'\n" +
+	"is_enabled\x18\x05 \x01(\bR\tisEnabled\x12F\n" +
+	"\x12injection_position\x18\x06 \x01(\x0e2\x17.muse.InjectionPositionR\x11injectionPosition\x12'\n" +
 	"\x0finjection_depth\x18\a \x01(\x05R\x0einjectionDepth\x12)\n" +
 	"\x10forbid_overrides\x18\b \x01(\bR\x0fforbidOverrides\x12\x1d\n" +
 	"\n" +
@@ -9733,9 +9733,9 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"\n" +
 	"_min_depthB\f\n" +
 	"\n" +
-	"_max_depth\"?\n" +
-	"\x14CreatePresetResponse\x12'\n" +
-	"\x06preset\x18\x01 \x01(\v2\x0f.muse.v1.PresetR\x06preset\"\x96\x02\n" +
+	"_max_depth\"<\n" +
+	"\x14CreatePresetResponse\x12$\n" +
+	"\x06preset\x18\x01 \x01(\v2\f.muse.PresetR\x06preset\"\x96\x02\n" +
 	"\x13UpdatePresetRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
@@ -9746,9 +9746,9 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"max_tokens\x18\x06 \x01(\x05R\tmaxTokens\x12+\n" +
 	"\x11frequency_penalty\x18\a \x01(\x01R\x10frequencyPenalty\x12)\n" +
 	"\x10presence_penalty\x18\b \x01(\x01R\x0fpresencePenalty\x12\x18\n" +
-	"\aversion\x18\t \x01(\rR\aversion\"?\n" +
-	"\x14UpdatePresetResponse\x12'\n" +
-	"\x06preset\x18\x01 \x01(\v2\x0f.muse.v1.PresetR\x06preset\"%\n" +
+	"\aversion\x18\t \x01(\rR\aversion\"<\n" +
+	"\x14UpdatePresetResponse\x12$\n" +
+	"\x06preset\x18\x01 \x01(\v2\f.muse.PresetR\x06preset\"%\n" +
 	"\x13DeletePresetRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\"\x16\n" +
 	"\x14DeletePresetResponse\"5\n" +
@@ -9757,29 +9757,49 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"\x17SetActivePresetResponse\"U\n" +
 	"\x13ImportPresetRequest\x12!\n" +
 	"\ffile_content\x18\x01 \x01(\fR\vfileContent\x12\x1b\n" +
-	"\tfile_name\x18\x02 \x01(\tR\bfileName\"?\n" +
-	"\x14ImportPresetResponse\x12'\n" +
-	"\x06preset\x18\x01 \x01(\v2\x0f.muse.v1.PresetR\x06preset\"%\n" +
+	"\tfile_name\x18\x02 \x01(\tR\bfileName\"<\n" +
+	"\x14ImportPresetResponse\x12$\n" +
+	"\x06preset\x18\x01 \x01(\v2\f.muse.PresetR\x06preset\"%\n" +
 	"\x13ExportPresetRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\"V\n" +
 	"\x14ExportPresetResponse\x12!\n" +
 	"\ffile_content\x18\x01 \x01(\fR\vfileContent\x12\x1b\n" +
 	"\tfile_name\x18\x02 \x01(\tR\bfileName\"5\n" +
 	"\x16ListPromptItemsRequest\x12\x1b\n" +
-	"\tpreset_id\x18\x01 \x01(\rR\bpresetId\"D\n" +
-	"\x17ListPromptItemsResponse\x12)\n" +
-	"\x05items\x18\x01 \x03(\v2\x13.muse.v1.PromptItemR\x05items\"\x9c\x03\n" +
+	"\tpreset_id\x18\x01 \x01(\rR\bpresetId\"A\n" +
+	"\x17ListPromptItemsResponse\x12&\n" +
+	"\x05items\x18\x01 \x03(\v2\x10.muse.PromptItemR\x05items\"\x96\x03\n" +
 	"\x14AddPromptItemRequest\x12\x1b\n" +
 	"\tpreset_id\x18\x01 \x01(\rR\bpresetId\x12\x1e\n" +
 	"\n" +
 	"identifier\x18\x02 \x01(\tR\n" +
 	"identifier\x12\x12\n" +
 	"\x04name\x18\x03 \x01(\tR\x04name\x12\x1d\n" +
-	"\acontent\x18\x04 \x01(\tH\x00R\acontent\x88\x01\x01\x12+\n" +
-	"\x04role\x18\x05 \x01(\x0e2\x17.muse.v1.PromptItemRoleR\x04role\x12\x1d\n" +
+	"\acontent\x18\x04 \x01(\tH\x00R\acontent\x88\x01\x01\x12(\n" +
+	"\x04role\x18\x05 \x01(\x0e2\x14.muse.PromptItemRoleR\x04role\x12\x1d\n" +
 	"\n" +
-	"is_enabled\x18\x06 \x01(\bR\tisEnabled\x12I\n" +
-	"\x12injection_position\x18\a \x01(\x0e2\x1a.muse.v1.InjectionPositionR\x11injectionPosition\x12'\n" +
+	"is_enabled\x18\x06 \x01(\bR\tisEnabled\x12F\n" +
+	"\x12injection_position\x18\a \x01(\x0e2\x17.muse.InjectionPositionR\x11injectionPosition\x12'\n" +
+	"\x0finjection_depth\x18\b \x01(\x05R\x0einjectionDepth\x12)\n" +
+	"\x10forbid_overrides\x18\t \x01(\bR\x0fforbidOverrides\x12\x1d\n" +
+	"\n" +
+	"sort_order\x18\n" +
+	" \x01(\x05R\tsortOrderB\n" +
+	"\n" +
+	"\b_content\"=\n" +
+	"\x15AddPromptItemResponse\x12$\n" +
+	"\x04item\x18\x01 \x01(\v2\x10.muse.PromptItemR\x04item\"\x8c\x03\n" +
+	"\x17UpdatePromptItemRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\rR\x02id\x12\x1e\n" +
+	"\n" +
+	"identifier\x18\x02 \x01(\tR\n" +
+	"identifier\x12\x12\n" +
+	"\x04name\x18\x03 \x01(\tR\x04name\x12\x1d\n" +
+	"\acontent\x18\x04 \x01(\tH\x00R\acontent\x88\x01\x01\x12(\n" +
+	"\x04role\x18\x05 \x01(\x0e2\x14.muse.PromptItemRoleR\x04role\x12\x1d\n" +
+	"\n" +
+	"is_enabled\x18\x06 \x01(\bR\tisEnabled\x12F\n" +
+	"\x12injection_position\x18\a \x01(\x0e2\x17.muse.InjectionPositionR\x11injectionPosition\x12'\n" +
 	"\x0finjection_depth\x18\b \x01(\x05R\x0einjectionDepth\x12)\n" +
 	"\x10forbid_overrides\x18\t \x01(\bR\x0fforbidOverrides\x12\x1d\n" +
 	"\n" +
@@ -9787,28 +9807,8 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	" \x01(\x05R\tsortOrderB\n" +
 	"\n" +
 	"\b_content\"@\n" +
-	"\x15AddPromptItemResponse\x12'\n" +
-	"\x04item\x18\x01 \x01(\v2\x13.muse.v1.PromptItemR\x04item\"\x92\x03\n" +
-	"\x17UpdatePromptItemRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\rR\x02id\x12\x1e\n" +
-	"\n" +
-	"identifier\x18\x02 \x01(\tR\n" +
-	"identifier\x12\x12\n" +
-	"\x04name\x18\x03 \x01(\tR\x04name\x12\x1d\n" +
-	"\acontent\x18\x04 \x01(\tH\x00R\acontent\x88\x01\x01\x12+\n" +
-	"\x04role\x18\x05 \x01(\x0e2\x17.muse.v1.PromptItemRoleR\x04role\x12\x1d\n" +
-	"\n" +
-	"is_enabled\x18\x06 \x01(\bR\tisEnabled\x12I\n" +
-	"\x12injection_position\x18\a \x01(\x0e2\x1a.muse.v1.InjectionPositionR\x11injectionPosition\x12'\n" +
-	"\x0finjection_depth\x18\b \x01(\x05R\x0einjectionDepth\x12)\n" +
-	"\x10forbid_overrides\x18\t \x01(\bR\x0fforbidOverrides\x12\x1d\n" +
-	"\n" +
-	"sort_order\x18\n" +
-	" \x01(\x05R\tsortOrderB\n" +
-	"\n" +
-	"\b_content\"C\n" +
-	"\x18UpdatePromptItemResponse\x12'\n" +
-	"\x04item\x18\x01 \x01(\v2\x13.muse.v1.PromptItemR\x04item\")\n" +
+	"\x18UpdatePromptItemResponse\x12$\n" +
+	"\x04item\x18\x01 \x01(\v2\x10.muse.PromptItemR\x04item\")\n" +
 	"\x17DeletePromptItemRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\"\x1a\n" +
 	"\x18DeletePromptItemResponse\"W\n" +
@@ -9817,9 +9817,9 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"\bitem_ids\x18\x02 \x03(\rR\aitemIds\" \n" +
 	"\x1eUpdatePromptItemsOrderResponse\"4\n" +
 	"\x15ListRegexRulesRequest\x12\x1b\n" +
-	"\tpreset_id\x18\x01 \x01(\rR\bpresetId\"B\n" +
-	"\x16ListRegexRulesResponse\x12(\n" +
-	"\x05rules\x18\x01 \x03(\v2\x12.muse.v1.RegexRuleR\x05rules\"\xb7\x03\n" +
+	"\tpreset_id\x18\x01 \x01(\rR\bpresetId\"?\n" +
+	"\x16ListRegexRulesResponse\x12%\n" +
+	"\x05rules\x18\x01 \x03(\v2\x0f.muse.RegexRuleR\x05rules\"\xb7\x03\n" +
 	"\x13AddRegexRuleRequest\x12\x1b\n" +
 	"\tpreset_id\x18\x01 \x01(\rR\bpresetId\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12!\n" +
@@ -9839,9 +9839,9 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"\n" +
 	"_min_depthB\f\n" +
 	"\n" +
-	"_max_depth\">\n" +
-	"\x14AddRegexRuleResponse\x12&\n" +
-	"\x04rule\x18\x01 \x01(\v2\x12.muse.v1.RegexRuleR\x04rule\"\xad\x03\n" +
+	"_max_depth\";\n" +
+	"\x14AddRegexRuleResponse\x12#\n" +
+	"\x04rule\x18\x01 \x01(\v2\x0f.muse.RegexRuleR\x04rule\"\xad\x03\n" +
 	"\x16UpdateRegexRuleRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12!\n" +
@@ -9861,9 +9861,9 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"\n" +
 	"_min_depthB\f\n" +
 	"\n" +
-	"_max_depth\"A\n" +
-	"\x17UpdateRegexRuleResponse\x12&\n" +
-	"\x04rule\x18\x01 \x01(\v2\x12.muse.v1.RegexRuleR\x04rule\"(\n" +
+	"_max_depth\">\n" +
+	"\x17UpdateRegexRuleResponse\x12#\n" +
+	"\x04rule\x18\x01 \x01(\v2\x0f.muse.RegexRuleR\x04rule\"(\n" +
 	"\x16DeleteRegexRuleRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\"\x19\n" +
 	"\x17DeleteRegexRuleResponse\"V\n" +
@@ -9874,50 +9874,50 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"\x15ListWorldInfosRequest\x12 \n" +
 	"\tis_global\x18\x01 \x01(\bH\x00R\bisGlobal\x88\x01\x01B\f\n" +
 	"\n" +
-	"_is_global\"M\n" +
-	"\x16ListWorldInfosResponse\x123\n" +
-	"\vworld_infos\x18\x01 \x03(\v2\x12.muse.v1.WorldInfoR\n" +
+	"_is_global\"J\n" +
+	"\x16ListWorldInfosResponse\x120\n" +
+	"\vworld_infos\x18\x01 \x03(\v2\x0f.muse.WorldInfoR\n" +
 	"worldInfos\"%\n" +
 	"\x13GetWorldInfoRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\rR\x02id\"I\n" +
-	"\x14GetWorldInfoResponse\x121\n" +
+	"\x02id\x18\x01 \x01(\rR\x02id\"F\n" +
+	"\x14GetWorldInfoResponse\x12.\n" +
 	"\n" +
-	"world_info\x18\x01 \x01(\v2\x12.muse.v1.WorldInfoR\tworldInfo\"\x80\x01\n" +
+	"world_info\x18\x01 \x01(\v2\x0f.muse.WorldInfoR\tworldInfo\"\x80\x01\n" +
 	"\x16CreateWorldInfoRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12%\n" +
 	"\vdescription\x18\x02 \x01(\tH\x00R\vdescription\x88\x01\x01\x12\x1b\n" +
 	"\tis_global\x18\x03 \x01(\bR\bisGlobalB\x0e\n" +
-	"\f_description\"L\n" +
-	"\x17CreateWorldInfoResponse\x121\n" +
+	"\f_description\"I\n" +
+	"\x17CreateWorldInfoResponse\x12.\n" +
 	"\n" +
-	"world_info\x18\x01 \x01(\v2\x12.muse.v1.WorldInfoR\tworldInfo\"\x90\x01\n" +
+	"world_info\x18\x01 \x01(\v2\x0f.muse.WorldInfoR\tworldInfo\"\x90\x01\n" +
 	"\x16UpdateWorldInfoRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12%\n" +
 	"\vdescription\x18\x03 \x01(\tH\x00R\vdescription\x88\x01\x01\x12\x1b\n" +
 	"\tis_global\x18\x04 \x01(\bR\bisGlobalB\x0e\n" +
-	"\f_description\"L\n" +
-	"\x17UpdateWorldInfoResponse\x121\n" +
+	"\f_description\"I\n" +
+	"\x17UpdateWorldInfoResponse\x12.\n" +
 	"\n" +
-	"world_info\x18\x01 \x01(\v2\x12.muse.v1.WorldInfoR\tworldInfo\"(\n" +
+	"world_info\x18\x01 \x01(\v2\x0f.muse.WorldInfoR\tworldInfo\"(\n" +
 	"\x16DeleteWorldInfoRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\"\x19\n" +
 	"\x17DeleteWorldInfoResponse\"X\n" +
 	"\x16ImportWorldInfoRequest\x12!\n" +
 	"\ffile_content\x18\x01 \x01(\fR\vfileContent\x12\x1b\n" +
-	"\tfile_name\x18\x02 \x01(\tR\bfileName\"L\n" +
-	"\x17ImportWorldInfoResponse\x121\n" +
+	"\tfile_name\x18\x02 \x01(\tR\bfileName\"I\n" +
+	"\x17ImportWorldInfoResponse\x12.\n" +
 	"\n" +
-	"world_info\x18\x01 \x01(\v2\x12.muse.v1.WorldInfoR\tworldInfo\"(\n" +
+	"world_info\x18\x01 \x01(\v2\x0f.muse.WorldInfoR\tworldInfo\"(\n" +
 	"\x16ExportWorldInfoRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\"Y\n" +
 	"\x17ExportWorldInfoResponse\x12!\n" +
 	"\ffile_content\x18\x01 \x01(\fR\vfileContent\x12\x1b\n" +
 	"\tfile_name\x18\x02 \x01(\tR\bfileName\"A\n" +
 	"\x1bListWorldInfoEntriesRequest\x12\"\n" +
-	"\rworld_info_id\x18\x01 \x01(\rR\vworldInfoId\"Q\n" +
-	"\x1cListWorldInfoEntriesResponse\x121\n" +
-	"\aentries\x18\x01 \x03(\v2\x17.muse.v1.WorldInfoEntryR\aentries\"\xe9\x03\n" +
+	"\rworld_info_id\x18\x01 \x01(\rR\vworldInfoId\"N\n" +
+	"\x1cListWorldInfoEntriesResponse\x12.\n" +
+	"\aentries\x18\x01 \x03(\v2\x14.muse.WorldInfoEntryR\aentries\"\xe6\x03\n" +
 	"\x18AddWorldInfoEntryRequest\x12\"\n" +
 	"\rworld_info_id\x18\x01 \x01(\rR\vworldInfoId\x12\x15\n" +
 	"\x03uid\x18\x02 \x01(\tH\x00R\x03uid\x88\x01\x01\x12\x1b\n" +
@@ -9930,17 +9930,17 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"\bconstant\x18\b \x01(\bR\bconstant\x12\x1c\n" +
 	"\tselective\x18\t \x01(\bR\tselective\x12'\n" +
 	"\x0finsertion_order\x18\n" +
-	" \x01(\x05R\x0einsertionOrder\x122\n" +
-	"\bposition\x18\v \x01(\x0e2\x16.muse.v1.EntryPositionR\bposition\x12\x14\n" +
+	" \x01(\x05R\x0einsertionOrder\x12/\n" +
+	"\bposition\x18\v \x01(\x0e2\x13.muse.EntryPositionR\bposition\x12\x14\n" +
 	"\x05depth\x18\f \x01(\x05R\x05depth\x12\x1d\n" +
 	"\n" +
 	"sort_order\x18\r \x01(\x05R\tsortOrderB\x06\n" +
 	"\x04_uidB\x11\n" +
 	"\x0f_secondary_keysB\n" +
 	"\n" +
-	"\b_comment\"J\n" +
-	"\x19AddWorldInfoEntryResponse\x12-\n" +
-	"\x05entry\x18\x01 \x01(\v2\x17.muse.v1.WorldInfoEntryR\x05entry\"\xd8\x03\n" +
+	"\b_comment\"G\n" +
+	"\x19AddWorldInfoEntryResponse\x12*\n" +
+	"\x05entry\x18\x01 \x01(\v2\x14.muse.WorldInfoEntryR\x05entry\"\xd5\x03\n" +
 	"\x1bUpdateWorldInfoEntryRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x15\n" +
 	"\x03uid\x18\x02 \x01(\tH\x00R\x03uid\x88\x01\x01\x12\x1b\n" +
@@ -9953,17 +9953,17 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"\bconstant\x18\b \x01(\bR\bconstant\x12\x1c\n" +
 	"\tselective\x18\t \x01(\bR\tselective\x12'\n" +
 	"\x0finsertion_order\x18\n" +
-	" \x01(\x05R\x0einsertionOrder\x122\n" +
-	"\bposition\x18\v \x01(\x0e2\x16.muse.v1.EntryPositionR\bposition\x12\x14\n" +
+	" \x01(\x05R\x0einsertionOrder\x12/\n" +
+	"\bposition\x18\v \x01(\x0e2\x13.muse.EntryPositionR\bposition\x12\x14\n" +
 	"\x05depth\x18\f \x01(\x05R\x05depth\x12\x1d\n" +
 	"\n" +
 	"sort_order\x18\r \x01(\x05R\tsortOrderB\x06\n" +
 	"\x04_uidB\x11\n" +
 	"\x0f_secondary_keysB\n" +
 	"\n" +
-	"\b_comment\"M\n" +
-	"\x1cUpdateWorldInfoEntryResponse\x12-\n" +
-	"\x05entry\x18\x01 \x01(\v2\x17.muse.v1.WorldInfoEntryR\x05entry\"-\n" +
+	"\b_comment\"J\n" +
+	"\x1cUpdateWorldInfoEntryResponse\x12*\n" +
+	"\x05entry\x18\x01 \x01(\v2\x14.muse.WorldInfoEntryR\x05entry\"-\n" +
 	"\x1bDeleteWorldInfoEntryRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\"\x1e\n" +
 	"\x1cDeleteWorldInfoEntryResponse\"e\n" +
@@ -9971,36 +9971,36 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"\rworld_info_id\x18\x01 \x01(\rR\vworldInfoId\x12\x1b\n" +
 	"\tentry_ids\x18\x02 \x03(\rR\bentryIds\"%\n" +
 	"#UpdateWorldInfoEntriesOrderResponse\"\x17\n" +
-	"\x15ListAPIConfigsRequest\"F\n" +
-	"\x16ListAPIConfigsResponse\x12,\n" +
-	"\aconfigs\x18\x01 \x03(\v2\x12.muse.v1.APIConfigR\aconfigs\"%\n" +
+	"\x15ListAPIConfigsRequest\"C\n" +
+	"\x16ListAPIConfigsResponse\x12)\n" +
+	"\aconfigs\x18\x01 \x03(\v2\x0f.muse.APIConfigR\aconfigs\"%\n" +
 	"\x13GetAPIConfigRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\rR\x02id\"B\n" +
-	"\x14GetAPIConfigResponse\x12*\n" +
-	"\x06config\x18\x01 \x01(\v2\x12.muse.v1.APIConfigR\x06config\"\xc9\x01\n" +
+	"\x02id\x18\x01 \x01(\rR\x02id\"?\n" +
+	"\x14GetAPIConfigResponse\x12'\n" +
+	"\x06config\x18\x01 \x01(\v2\x0f.muse.APIConfigR\x06config\"\xc6\x01\n" +
 	"\x16CreateAPIConfigRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x120\n" +
-	"\bprovider\x18\x02 \x01(\x0e2\x14.muse.v1.APIProviderR\bprovider\x12\x17\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12-\n" +
+	"\bprovider\x18\x02 \x01(\x0e2\x11.muse.APIProviderR\bprovider\x12\x17\n" +
 	"\aapi_key\x18\x03 \x01(\tR\x06apiKey\x12\x1e\n" +
 	"\bbase_url\x18\x04 \x01(\tH\x00R\abaseUrl\x88\x01\x01\x12\x19\n" +
 	"\x05model\x18\x05 \x01(\tH\x01R\x05model\x88\x01\x01B\v\n" +
 	"\t_base_urlB\b\n" +
-	"\x06_model\"E\n" +
-	"\x17CreateAPIConfigResponse\x12*\n" +
-	"\x06config\x18\x01 \x01(\v2\x12.muse.v1.APIConfigR\x06config\"\xea\x01\n" +
+	"\x06_model\"B\n" +
+	"\x17CreateAPIConfigResponse\x12'\n" +
+	"\x06config\x18\x01 \x01(\v2\x0f.muse.APIConfigR\x06config\"\xe7\x01\n" +
 	"\x16UpdateAPIConfigRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x120\n" +
-	"\bprovider\x18\x03 \x01(\x0e2\x14.muse.v1.APIProviderR\bprovider\x12\x1c\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12-\n" +
+	"\bprovider\x18\x03 \x01(\x0e2\x11.muse.APIProviderR\bprovider\x12\x1c\n" +
 	"\aapi_key\x18\x04 \x01(\tH\x00R\x06apiKey\x88\x01\x01\x12\x1e\n" +
 	"\bbase_url\x18\x05 \x01(\tH\x01R\abaseUrl\x88\x01\x01\x12\x19\n" +
 	"\x05model\x18\x06 \x01(\tH\x02R\x05model\x88\x01\x01B\n" +
 	"\n" +
 	"\b_api_keyB\v\n" +
 	"\t_base_urlB\b\n" +
-	"\x06_model\"E\n" +
-	"\x17UpdateAPIConfigResponse\x12*\n" +
-	"\x06config\x18\x01 \x01(\v2\x12.muse.v1.APIConfigR\x06config\"(\n" +
+	"\x06_model\"B\n" +
+	"\x17UpdateAPIConfigResponse\x12'\n" +
+	"\x06config\x18\x01 \x01(\v2\x0f.muse.APIConfigR\x06config\"(\n" +
 	"\x16DeleteAPIConfigRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\"\x19\n" +
 	"\x17DeleteAPIConfigResponse\"8\n" +
@@ -10041,474 +10041,473 @@ const file_muse_v1_muse_proto_rawDesc = "" +
 	"\x18API_PROVIDER_UNSPECIFIED\x10\x00\x12\x17\n" +
 	"\x13API_PROVIDER_OPENAI\x10\x01\x12\x17\n" +
 	"\x13API_PROVIDER_CLAUDE\x10\x02\x12\x17\n" +
-	"\x13API_PROVIDER_GEMINI\x10\x03*O\n" +
-	"\x05Theme\x12\x15\n" +
-	"\x11THEME_UNSPECIFIED\x10\x00\x12\x0e\n" +
+	"\x13API_PROVIDER_GEMINI\x10\x03*8\n" +
+	"\x05Theme\x12\x0e\n" +
 	"\n" +
-	"THEME_AUTO\x10\x01\x12\x0f\n" +
-	"\vTHEME_LIGHT\x10\x02\x12\x0e\n" +
+	"THEME_AUTO\x10\x00\x12\x0f\n" +
+	"\vTHEME_LIGHT\x10\x01\x12\x0e\n" +
 	"\n" +
-	"THEME_DARK\x10\x032\xac\x02\n" +
-	"\vAuthService\x12?\n" +
-	"\bRegister\x12\x18.muse.v1.RegisterRequest\x1a\x19.muse.v1.RegisterResponse\x126\n" +
-	"\x05Login\x12\x15.muse.v1.LoginRequest\x1a\x16.muse.v1.LoginResponse\x12Q\n" +
-	"\x0eGetCurrentUser\x12\x1e.muse.v1.GetCurrentUserRequest\x1a\x1f.muse.v1.GetCurrentUserResponse\x12Q\n" +
-	"\x0eChangePassword\x12\x1e.muse.v1.ChangePasswordRequest\x1a\x1f.muse.v1.ChangePasswordResponse2\xed\x03\n" +
-	"\x0ePersonaService\x12K\n" +
-	"\fListPersonas\x12\x1c.muse.v1.ListPersonasRequest\x1a\x1d.muse.v1.ListPersonasResponse\x12E\n" +
+	"THEME_DARK\x10\x022\x94\x02\n" +
+	"\vAuthService\x129\n" +
+	"\bRegister\x12\x15.muse.RegisterRequest\x1a\x16.muse.RegisterResponse\x120\n" +
+	"\x05Login\x12\x12.muse.LoginRequest\x1a\x13.muse.LoginResponse\x12K\n" +
+	"\x0eGetCurrentUser\x12\x1b.muse.GetCurrentUserRequest\x1a\x1c.muse.GetCurrentUserResponse\x12K\n" +
+	"\x0eChangePassword\x12\x1b.muse.ChangePasswordRequest\x1a\x1c.muse.ChangePasswordResponse2\xc9\x03\n" +
+	"\x0ePersonaService\x12E\n" +
+	"\fListPersonas\x12\x19.muse.ListPersonasRequest\x1a\x1a.muse.ListPersonasResponse\x12?\n" +
 	"\n" +
-	"GetPersona\x12\x1a.muse.v1.GetPersonaRequest\x1a\x1b.muse.v1.GetPersonaResponse\x12N\n" +
-	"\rCreatePersona\x12\x1d.muse.v1.CreatePersonaRequest\x1a\x1e.muse.v1.CreatePersonaResponse\x12N\n" +
-	"\rUpdatePersona\x12\x1d.muse.v1.UpdatePersonaRequest\x1a\x1e.muse.v1.UpdatePersonaResponse\x12N\n" +
-	"\rDeletePersona\x12\x1d.muse.v1.DeletePersonaRequest\x1a\x1e.muse.v1.DeletePersonaResponse\x12W\n" +
-	"\x10SetActivePersona\x12 .muse.v1.SetActivePersonaRequest\x1a!.muse.v1.SetActivePersonaResponse2\xc3\x01\n" +
-	"\x12UserSettingService\x12Q\n" +
-	"\x0eGetUserSetting\x12\x1e.muse.v1.GetUserSettingRequest\x1a\x1f.muse.v1.GetUserSettingResponse\x12Z\n" +
-	"\x11UpdateUserSetting\x12!.muse.v1.UpdateUserSettingRequest\x1a\".muse.v1.UpdateUserSettingResponse2\xd4\x05\n" +
-	"\x10CharacterService\x12Q\n" +
-	"\x0eListCharacters\x12\x1e.muse.v1.ListCharactersRequest\x1a\x1f.muse.v1.ListCharactersResponse\x12K\n" +
-	"\fGetCharacter\x12\x1c.muse.v1.GetCharacterRequest\x1a\x1d.muse.v1.GetCharacterResponse\x12T\n" +
-	"\x0fCreateCharacter\x12\x1f.muse.v1.CreateCharacterRequest\x1a .muse.v1.CreateCharacterResponse\x12T\n" +
-	"\x0fUpdateCharacter\x12\x1f.muse.v1.UpdateCharacterRequest\x1a .muse.v1.UpdateCharacterResponse\x12T\n" +
-	"\x0fDeleteCharacter\x12\x1f.muse.v1.DeleteCharacterRequest\x1a .muse.v1.DeleteCharacterResponse\x12T\n" +
-	"\x0fImportCharacter\x12\x1f.muse.v1.ImportCharacterRequest\x1a .muse.v1.ImportCharacterResponse\x12T\n" +
-	"\x0fExportCharacter\x12\x1f.muse.v1.ExportCharacterRequest\x1a .muse.v1.ExportCharacterResponse\x12r\n" +
-	"\x19RestoreCharacterWorldInfo\x12).muse.v1.RestoreCharacterWorldInfoRequest\x1a*.muse.v1.RestoreCharacterWorldInfoResponse2\xdb\x06\n" +
-	"\vChatService\x12W\n" +
-	"\x10ListChatSessions\x12 .muse.v1.ListChatSessionsRequest\x1a!.muse.v1.ListChatSessionsResponse\x12Q\n" +
-	"\x0eGetChatSession\x12\x1e.muse.v1.GetChatSessionRequest\x1a\x1f.muse.v1.GetChatSessionResponse\x12Z\n" +
-	"\x11CreateChatSession\x12!.muse.v1.CreateChatSessionRequest\x1a\".muse.v1.CreateChatSessionResponse\x12Z\n" +
-	"\x11UpdateChatSession\x12!.muse.v1.UpdateChatSessionRequest\x1a\".muse.v1.UpdateChatSessionResponse\x12Z\n" +
-	"\x11DeleteChatSession\x12!.muse.v1.DeleteChatSessionRequest\x1a\".muse.v1.DeleteChatSessionResponse\x12J\n" +
-	"\vSendMessage\x12\x1b.muse.v1.SendMessageRequest\x1a\x1c.muse.v1.SendMessageResponse0\x01\x12\\\n" +
-	"\x11RegenerateMessage\x12!.muse.v1.RegenerateMessageRequest\x1a\".muse.v1.RegenerateMessageResponse0\x01\x12H\n" +
-	"\vEditMessage\x12\x1b.muse.v1.EditMessageRequest\x1a\x1c.muse.v1.EditMessageResponse\x12N\n" +
-	"\rDeleteMessage\x12\x1d.muse.v1.DeleteMessageRequest\x1a\x1e.muse.v1.DeleteMessageResponse\x12H\n" +
-	"\vSwitchSwipe\x12\x1b.muse.v1.SwitchSwipeRequest\x1a\x1c.muse.v1.SwitchSwipeResponse2\xf4\x04\n" +
-	"\rPresetService\x12H\n" +
-	"\vListPresets\x12\x1b.muse.v1.ListPresetsRequest\x1a\x1c.muse.v1.ListPresetsResponse\x12B\n" +
-	"\tGetPreset\x12\x19.muse.v1.GetPresetRequest\x1a\x1a.muse.v1.GetPresetResponse\x12K\n" +
-	"\fCreatePreset\x12\x1c.muse.v1.CreatePresetRequest\x1a\x1d.muse.v1.CreatePresetResponse\x12K\n" +
-	"\fUpdatePreset\x12\x1c.muse.v1.UpdatePresetRequest\x1a\x1d.muse.v1.UpdatePresetResponse\x12K\n" +
-	"\fDeletePreset\x12\x1c.muse.v1.DeletePresetRequest\x1a\x1d.muse.v1.DeletePresetResponse\x12T\n" +
-	"\x0fSetActivePreset\x12\x1f.muse.v1.SetActivePresetRequest\x1a .muse.v1.SetActivePresetResponse\x12K\n" +
-	"\fImportPreset\x12\x1c.muse.v1.ImportPresetRequest\x1a\x1d.muse.v1.ImportPresetResponse\x12K\n" +
-	"\fExportPreset\x12\x1c.muse.v1.ExportPresetRequest\x1a\x1d.muse.v1.ExportPresetResponse2\xd6\x03\n" +
-	"\x11PromptItemService\x12T\n" +
-	"\x0fListPromptItems\x12\x1f.muse.v1.ListPromptItemsRequest\x1a .muse.v1.ListPromptItemsResponse\x12N\n" +
-	"\rAddPromptItem\x12\x1d.muse.v1.AddPromptItemRequest\x1a\x1e.muse.v1.AddPromptItemResponse\x12W\n" +
-	"\x10UpdatePromptItem\x12 .muse.v1.UpdatePromptItemRequest\x1a!.muse.v1.UpdatePromptItemResponse\x12W\n" +
-	"\x10DeletePromptItem\x12 .muse.v1.DeletePromptItemRequest\x1a!.muse.v1.DeletePromptItemResponse\x12i\n" +
-	"\x16UpdatePromptItemsOrder\x12&.muse.v1.UpdatePromptItemsOrderRequest\x1a'.muse.v1.UpdatePromptItemsOrderResponse2\xc6\x03\n" +
-	"\x10RegexRuleService\x12Q\n" +
-	"\x0eListRegexRules\x12\x1e.muse.v1.ListRegexRulesRequest\x1a\x1f.muse.v1.ListRegexRulesResponse\x12K\n" +
-	"\fAddRegexRule\x12\x1c.muse.v1.AddRegexRuleRequest\x1a\x1d.muse.v1.AddRegexRuleResponse\x12T\n" +
-	"\x0fUpdateRegexRule\x12\x1f.muse.v1.UpdateRegexRuleRequest\x1a .muse.v1.UpdateRegexRuleResponse\x12T\n" +
-	"\x0fDeleteRegexRule\x12\x1f.muse.v1.DeleteRegexRuleRequest\x1a .muse.v1.DeleteRegexRuleResponse\x12f\n" +
-	"\x15UpdateRegexRulesOrder\x12%.muse.v1.UpdateRegexRulesOrderRequest\x1a&.muse.v1.UpdateRegexRulesOrderResponse2\xe0\x04\n" +
-	"\x10WorldInfoService\x12Q\n" +
-	"\x0eListWorldInfos\x12\x1e.muse.v1.ListWorldInfosRequest\x1a\x1f.muse.v1.ListWorldInfosResponse\x12K\n" +
-	"\fGetWorldInfo\x12\x1c.muse.v1.GetWorldInfoRequest\x1a\x1d.muse.v1.GetWorldInfoResponse\x12T\n" +
-	"\x0fCreateWorldInfo\x12\x1f.muse.v1.CreateWorldInfoRequest\x1a .muse.v1.CreateWorldInfoResponse\x12T\n" +
-	"\x0fUpdateWorldInfo\x12\x1f.muse.v1.UpdateWorldInfoRequest\x1a .muse.v1.UpdateWorldInfoResponse\x12T\n" +
-	"\x0fDeleteWorldInfo\x12\x1f.muse.v1.DeleteWorldInfoRequest\x1a .muse.v1.DeleteWorldInfoResponse\x12T\n" +
-	"\x0fImportWorldInfo\x12\x1f.muse.v1.ImportWorldInfoRequest\x1a .muse.v1.ImportWorldInfoResponse\x12T\n" +
-	"\x0fExportWorldInfo\x12\x1f.muse.v1.ExportWorldInfoRequest\x1a .muse.v1.ExportWorldInfoResponse2\x9c\x04\n" +
-	"\x15WorldInfoEntryService\x12c\n" +
-	"\x14ListWorldInfoEntries\x12$.muse.v1.ListWorldInfoEntriesRequest\x1a%.muse.v1.ListWorldInfoEntriesResponse\x12Z\n" +
-	"\x11AddWorldInfoEntry\x12!.muse.v1.AddWorldInfoEntryRequest\x1a\".muse.v1.AddWorldInfoEntryResponse\x12c\n" +
-	"\x14UpdateWorldInfoEntry\x12$.muse.v1.UpdateWorldInfoEntryRequest\x1a%.muse.v1.UpdateWorldInfoEntryResponse\x12c\n" +
-	"\x14DeleteWorldInfoEntry\x12$.muse.v1.DeleteWorldInfoEntryRequest\x1a%.muse.v1.DeleteWorldInfoEntryResponse\x12x\n" +
-	"\x1bUpdateWorldInfoEntriesOrder\x12+.muse.v1.UpdateWorldInfoEntriesOrderRequest\x1a,.muse.v1.UpdateWorldInfoEntriesOrderResponse2\xe3\x04\n" +
-	"\x10APIConfigService\x12Q\n" +
-	"\x0eListAPIConfigs\x12\x1e.muse.v1.ListAPIConfigsRequest\x1a\x1f.muse.v1.ListAPIConfigsResponse\x12K\n" +
-	"\fGetAPIConfig\x12\x1c.muse.v1.GetAPIConfigRequest\x1a\x1d.muse.v1.GetAPIConfigResponse\x12T\n" +
-	"\x0fCreateAPIConfig\x12\x1f.muse.v1.CreateAPIConfigRequest\x1a .muse.v1.CreateAPIConfigResponse\x12T\n" +
-	"\x0fUpdateAPIConfig\x12\x1f.muse.v1.UpdateAPIConfigRequest\x1a .muse.v1.UpdateAPIConfigResponse\x12T\n" +
-	"\x0fDeleteAPIConfig\x12\x1f.muse.v1.DeleteAPIConfigRequest\x1a .muse.v1.DeleteAPIConfigResponse\x12]\n" +
-	"\x12SetActiveAPIConfig\x12\".muse.v1.SetActiveAPIConfigRequest\x1a#.muse.v1.SetActiveAPIConfigResponse\x12N\n" +
-	"\rTestAPIConfig\x12\x1d.muse.v1.TestAPIConfigRequest\x1a\x1e.muse.v1.TestAPIConfigResponseB~\n" +
-	"\vcom.muse.v1B\tMuseProtoP\x01Z'github.com/ling/muse/gen/muse/v1;musev1\xa2\x02\x03MXX\xaa\x02\aMuse.V1\xca\x02\aMuse\\V1\xe2\x02\x13Muse\\V1\\GPBMetadata\xea\x02\bMuse::V1b\x06proto3"
+	"GetPersona\x12\x17.muse.GetPersonaRequest\x1a\x18.muse.GetPersonaResponse\x12H\n" +
+	"\rCreatePersona\x12\x1a.muse.CreatePersonaRequest\x1a\x1b.muse.CreatePersonaResponse\x12H\n" +
+	"\rUpdatePersona\x12\x1a.muse.UpdatePersonaRequest\x1a\x1b.muse.UpdatePersonaResponse\x12H\n" +
+	"\rDeletePersona\x12\x1a.muse.DeletePersonaRequest\x1a\x1b.muse.DeletePersonaResponse\x12Q\n" +
+	"\x10SetActivePersona\x12\x1d.muse.SetActivePersonaRequest\x1a\x1e.muse.SetActivePersonaResponse2\xb7\x01\n" +
+	"\x12UserSettingService\x12K\n" +
+	"\x0eGetUserSetting\x12\x1b.muse.GetUserSettingRequest\x1a\x1c.muse.GetUserSettingResponse\x12T\n" +
+	"\x11UpdateUserSetting\x12\x1e.muse.UpdateUserSettingRequest\x1a\x1f.muse.UpdateUserSettingResponse2\xa4\x05\n" +
+	"\x10CharacterService\x12K\n" +
+	"\x0eListCharacters\x12\x1b.muse.ListCharactersRequest\x1a\x1c.muse.ListCharactersResponse\x12E\n" +
+	"\fGetCharacter\x12\x19.muse.GetCharacterRequest\x1a\x1a.muse.GetCharacterResponse\x12N\n" +
+	"\x0fCreateCharacter\x12\x1c.muse.CreateCharacterRequest\x1a\x1d.muse.CreateCharacterResponse\x12N\n" +
+	"\x0fUpdateCharacter\x12\x1c.muse.UpdateCharacterRequest\x1a\x1d.muse.UpdateCharacterResponse\x12N\n" +
+	"\x0fDeleteCharacter\x12\x1c.muse.DeleteCharacterRequest\x1a\x1d.muse.DeleteCharacterResponse\x12N\n" +
+	"\x0fImportCharacter\x12\x1c.muse.ImportCharacterRequest\x1a\x1d.muse.ImportCharacterResponse\x12N\n" +
+	"\x0fExportCharacter\x12\x1c.muse.ExportCharacterRequest\x1a\x1d.muse.ExportCharacterResponse\x12l\n" +
+	"\x19RestoreCharacterWorldInfo\x12&.muse.RestoreCharacterWorldInfoRequest\x1a'.muse.RestoreCharacterWorldInfoResponse2\x9f\x06\n" +
+	"\vChatService\x12Q\n" +
+	"\x10ListChatSessions\x12\x1d.muse.ListChatSessionsRequest\x1a\x1e.muse.ListChatSessionsResponse\x12K\n" +
+	"\x0eGetChatSession\x12\x1b.muse.GetChatSessionRequest\x1a\x1c.muse.GetChatSessionResponse\x12T\n" +
+	"\x11CreateChatSession\x12\x1e.muse.CreateChatSessionRequest\x1a\x1f.muse.CreateChatSessionResponse\x12T\n" +
+	"\x11UpdateChatSession\x12\x1e.muse.UpdateChatSessionRequest\x1a\x1f.muse.UpdateChatSessionResponse\x12T\n" +
+	"\x11DeleteChatSession\x12\x1e.muse.DeleteChatSessionRequest\x1a\x1f.muse.DeleteChatSessionResponse\x12D\n" +
+	"\vSendMessage\x12\x18.muse.SendMessageRequest\x1a\x19.muse.SendMessageResponse0\x01\x12V\n" +
+	"\x11RegenerateMessage\x12\x1e.muse.RegenerateMessageRequest\x1a\x1f.muse.RegenerateMessageResponse0\x01\x12B\n" +
+	"\vEditMessage\x12\x18.muse.EditMessageRequest\x1a\x19.muse.EditMessageResponse\x12H\n" +
+	"\rDeleteMessage\x12\x1a.muse.DeleteMessageRequest\x1a\x1b.muse.DeleteMessageResponse\x12B\n" +
+	"\vSwitchSwipe\x12\x18.muse.SwitchSwipeRequest\x1a\x19.muse.SwitchSwipeResponse2\xc4\x04\n" +
+	"\rPresetService\x12B\n" +
+	"\vListPresets\x12\x18.muse.ListPresetsRequest\x1a\x19.muse.ListPresetsResponse\x12<\n" +
+	"\tGetPreset\x12\x16.muse.GetPresetRequest\x1a\x17.muse.GetPresetResponse\x12E\n" +
+	"\fCreatePreset\x12\x19.muse.CreatePresetRequest\x1a\x1a.muse.CreatePresetResponse\x12E\n" +
+	"\fUpdatePreset\x12\x19.muse.UpdatePresetRequest\x1a\x1a.muse.UpdatePresetResponse\x12E\n" +
+	"\fDeletePreset\x12\x19.muse.DeletePresetRequest\x1a\x1a.muse.DeletePresetResponse\x12N\n" +
+	"\x0fSetActivePreset\x12\x1c.muse.SetActivePresetRequest\x1a\x1d.muse.SetActivePresetResponse\x12E\n" +
+	"\fImportPreset\x12\x19.muse.ImportPresetRequest\x1a\x1a.muse.ImportPresetResponse\x12E\n" +
+	"\fExportPreset\x12\x19.muse.ExportPresetRequest\x1a\x1a.muse.ExportPresetResponse2\xb8\x03\n" +
+	"\x11PromptItemService\x12N\n" +
+	"\x0fListPromptItems\x12\x1c.muse.ListPromptItemsRequest\x1a\x1d.muse.ListPromptItemsResponse\x12H\n" +
+	"\rAddPromptItem\x12\x1a.muse.AddPromptItemRequest\x1a\x1b.muse.AddPromptItemResponse\x12Q\n" +
+	"\x10UpdatePromptItem\x12\x1d.muse.UpdatePromptItemRequest\x1a\x1e.muse.UpdatePromptItemResponse\x12Q\n" +
+	"\x10DeletePromptItem\x12\x1d.muse.DeletePromptItemRequest\x1a\x1e.muse.DeletePromptItemResponse\x12c\n" +
+	"\x16UpdatePromptItemsOrder\x12#.muse.UpdatePromptItemsOrderRequest\x1a$.muse.UpdatePromptItemsOrderResponse2\xa8\x03\n" +
+	"\x10RegexRuleService\x12K\n" +
+	"\x0eListRegexRules\x12\x1b.muse.ListRegexRulesRequest\x1a\x1c.muse.ListRegexRulesResponse\x12E\n" +
+	"\fAddRegexRule\x12\x19.muse.AddRegexRuleRequest\x1a\x1a.muse.AddRegexRuleResponse\x12N\n" +
+	"\x0fUpdateRegexRule\x12\x1c.muse.UpdateRegexRuleRequest\x1a\x1d.muse.UpdateRegexRuleResponse\x12N\n" +
+	"\x0fDeleteRegexRule\x12\x1c.muse.DeleteRegexRuleRequest\x1a\x1d.muse.DeleteRegexRuleResponse\x12`\n" +
+	"\x15UpdateRegexRulesOrder\x12\".muse.UpdateRegexRulesOrderRequest\x1a#.muse.UpdateRegexRulesOrderResponse2\xb6\x04\n" +
+	"\x10WorldInfoService\x12K\n" +
+	"\x0eListWorldInfos\x12\x1b.muse.ListWorldInfosRequest\x1a\x1c.muse.ListWorldInfosResponse\x12E\n" +
+	"\fGetWorldInfo\x12\x19.muse.GetWorldInfoRequest\x1a\x1a.muse.GetWorldInfoResponse\x12N\n" +
+	"\x0fCreateWorldInfo\x12\x1c.muse.CreateWorldInfoRequest\x1a\x1d.muse.CreateWorldInfoResponse\x12N\n" +
+	"\x0fUpdateWorldInfo\x12\x1c.muse.UpdateWorldInfoRequest\x1a\x1d.muse.UpdateWorldInfoResponse\x12N\n" +
+	"\x0fDeleteWorldInfo\x12\x1c.muse.DeleteWorldInfoRequest\x1a\x1d.muse.DeleteWorldInfoResponse\x12N\n" +
+	"\x0fImportWorldInfo\x12\x1c.muse.ImportWorldInfoRequest\x1a\x1d.muse.ImportWorldInfoResponse\x12N\n" +
+	"\x0fExportWorldInfo\x12\x1c.muse.ExportWorldInfoRequest\x1a\x1d.muse.ExportWorldInfoResponse2\xfe\x03\n" +
+	"\x15WorldInfoEntryService\x12]\n" +
+	"\x14ListWorldInfoEntries\x12!.muse.ListWorldInfoEntriesRequest\x1a\".muse.ListWorldInfoEntriesResponse\x12T\n" +
+	"\x11AddWorldInfoEntry\x12\x1e.muse.AddWorldInfoEntryRequest\x1a\x1f.muse.AddWorldInfoEntryResponse\x12]\n" +
+	"\x14UpdateWorldInfoEntry\x12!.muse.UpdateWorldInfoEntryRequest\x1a\".muse.UpdateWorldInfoEntryResponse\x12]\n" +
+	"\x14DeleteWorldInfoEntry\x12!.muse.DeleteWorldInfoEntryRequest\x1a\".muse.DeleteWorldInfoEntryResponse\x12r\n" +
+	"\x1bUpdateWorldInfoEntriesOrder\x12(.muse.UpdateWorldInfoEntriesOrderRequest\x1a).muse.UpdateWorldInfoEntriesOrderResponse2\xb9\x04\n" +
+	"\x10APIConfigService\x12K\n" +
+	"\x0eListAPIConfigs\x12\x1b.muse.ListAPIConfigsRequest\x1a\x1c.muse.ListAPIConfigsResponse\x12E\n" +
+	"\fGetAPIConfig\x12\x19.muse.GetAPIConfigRequest\x1a\x1a.muse.GetAPIConfigResponse\x12N\n" +
+	"\x0fCreateAPIConfig\x12\x1c.muse.CreateAPIConfigRequest\x1a\x1d.muse.CreateAPIConfigResponse\x12N\n" +
+	"\x0fUpdateAPIConfig\x12\x1c.muse.UpdateAPIConfigRequest\x1a\x1d.muse.UpdateAPIConfigResponse\x12N\n" +
+	"\x0fDeleteAPIConfig\x12\x1c.muse.DeleteAPIConfigRequest\x1a\x1d.muse.DeleteAPIConfigResponse\x12W\n" +
+	"\x12SetActiveAPIConfig\x12\x1f.muse.SetActiveAPIConfigRequest\x1a .muse.SetActiveAPIConfigResponse\x12H\n" +
+	"\rTestAPIConfig\x12\x1a.muse.TestAPIConfigRequest\x1a\x1b.muse.TestAPIConfigResponseBd\n" +
+	"\bcom.museB\tMuseProtoP\x01Z\x1dgithub.com/ling/muse/gen/muse\xa2\x02\x03MXX\xaa\x02\x04Muse\xca\x02\x04Muse\xe2\x02\x10Muse\\GPBMetadata\xea\x02\x04Museb\x06proto3"
 
 var (
-	file_muse_v1_muse_proto_rawDescOnce sync.Once
-	file_muse_v1_muse_proto_rawDescData []byte
+	file_muse_muse_proto_rawDescOnce sync.Once
+	file_muse_muse_proto_rawDescData []byte
 )
 
-func file_muse_v1_muse_proto_rawDescGZIP() []byte {
-	file_muse_v1_muse_proto_rawDescOnce.Do(func() {
-		file_muse_v1_muse_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_muse_v1_muse_proto_rawDesc), len(file_muse_v1_muse_proto_rawDesc)))
+func file_muse_muse_proto_rawDescGZIP() []byte {
+	file_muse_muse_proto_rawDescOnce.Do(func() {
+		file_muse_muse_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_muse_muse_proto_rawDesc), len(file_muse_muse_proto_rawDesc)))
 	})
-	return file_muse_v1_muse_proto_rawDescData
+	return file_muse_muse_proto_rawDescData
 }
 
-var file_muse_v1_muse_proto_enumTypes = make([]protoimpl.EnumInfo, 6)
-var file_muse_v1_muse_proto_msgTypes = make([]protoimpl.MessageInfo, 149)
-var file_muse_v1_muse_proto_goTypes = []any{
-	(MessageRole)(0),                            // 0: muse.v1.MessageRole
-	(PromptItemRole)(0),                         // 1: muse.v1.PromptItemRole
-	(InjectionPosition)(0),                      // 2: muse.v1.InjectionPosition
-	(EntryPosition)(0),                          // 3: muse.v1.EntryPosition
-	(APIProvider)(0),                            // 4: muse.v1.APIProvider
-	(Theme)(0),                                  // 5: muse.v1.Theme
-	(*User)(nil),                                // 6: muse.v1.User
-	(*Persona)(nil),                             // 7: muse.v1.Persona
-	(*UserSetting)(nil),                         // 8: muse.v1.UserSetting
-	(*Character)(nil),                           // 9: muse.v1.Character
-	(*ChatSession)(nil),                         // 10: muse.v1.ChatSession
-	(*Message)(nil),                             // 11: muse.v1.Message
-	(*MessageSwipe)(nil),                        // 12: muse.v1.MessageSwipe
-	(*Preset)(nil),                              // 13: muse.v1.Preset
-	(*PromptItem)(nil),                          // 14: muse.v1.PromptItem
-	(*RegexRule)(nil),                           // 15: muse.v1.RegexRule
-	(*WorldInfo)(nil),                           // 16: muse.v1.WorldInfo
-	(*WorldInfoEntry)(nil),                      // 17: muse.v1.WorldInfoEntry
-	(*APIConfig)(nil),                           // 18: muse.v1.APIConfig
-	(*RegisterRequest)(nil),                     // 19: muse.v1.RegisterRequest
-	(*RegisterResponse)(nil),                    // 20: muse.v1.RegisterResponse
-	(*LoginRequest)(nil),                        // 21: muse.v1.LoginRequest
-	(*LoginResponse)(nil),                       // 22: muse.v1.LoginResponse
-	(*GetCurrentUserRequest)(nil),               // 23: muse.v1.GetCurrentUserRequest
-	(*GetCurrentUserResponse)(nil),              // 24: muse.v1.GetCurrentUserResponse
-	(*ChangePasswordRequest)(nil),               // 25: muse.v1.ChangePasswordRequest
-	(*ChangePasswordResponse)(nil),              // 26: muse.v1.ChangePasswordResponse
-	(*ListPersonasRequest)(nil),                 // 27: muse.v1.ListPersonasRequest
-	(*ListPersonasResponse)(nil),                // 28: muse.v1.ListPersonasResponse
-	(*GetPersonaRequest)(nil),                   // 29: muse.v1.GetPersonaRequest
-	(*GetPersonaResponse)(nil),                  // 30: muse.v1.GetPersonaResponse
-	(*CreatePersonaRequest)(nil),                // 31: muse.v1.CreatePersonaRequest
-	(*CreatePersonaResponse)(nil),               // 32: muse.v1.CreatePersonaResponse
-	(*UpdatePersonaRequest)(nil),                // 33: muse.v1.UpdatePersonaRequest
-	(*UpdatePersonaResponse)(nil),               // 34: muse.v1.UpdatePersonaResponse
-	(*DeletePersonaRequest)(nil),                // 35: muse.v1.DeletePersonaRequest
-	(*DeletePersonaResponse)(nil),               // 36: muse.v1.DeletePersonaResponse
-	(*SetActivePersonaRequest)(nil),             // 37: muse.v1.SetActivePersonaRequest
-	(*SetActivePersonaResponse)(nil),            // 38: muse.v1.SetActivePersonaResponse
-	(*GetUserSettingRequest)(nil),               // 39: muse.v1.GetUserSettingRequest
-	(*GetUserSettingResponse)(nil),              // 40: muse.v1.GetUserSettingResponse
-	(*UpdateUserSettingRequest)(nil),            // 41: muse.v1.UpdateUserSettingRequest
-	(*UpdateUserSettingResponse)(nil),           // 42: muse.v1.UpdateUserSettingResponse
-	(*ListCharactersRequest)(nil),               // 43: muse.v1.ListCharactersRequest
-	(*ListCharactersResponse)(nil),              // 44: muse.v1.ListCharactersResponse
-	(*GetCharacterRequest)(nil),                 // 45: muse.v1.GetCharacterRequest
-	(*GetCharacterResponse)(nil),                // 46: muse.v1.GetCharacterResponse
-	(*CreateCharacterRequest)(nil),              // 47: muse.v1.CreateCharacterRequest
-	(*CreateCharacterResponse)(nil),             // 48: muse.v1.CreateCharacterResponse
-	(*UpdateCharacterRequest)(nil),              // 49: muse.v1.UpdateCharacterRequest
-	(*UpdateCharacterResponse)(nil),             // 50: muse.v1.UpdateCharacterResponse
-	(*DeleteCharacterRequest)(nil),              // 51: muse.v1.DeleteCharacterRequest
-	(*DeleteCharacterResponse)(nil),             // 52: muse.v1.DeleteCharacterResponse
-	(*ImportCharacterRequest)(nil),              // 53: muse.v1.ImportCharacterRequest
-	(*ImportCharacterResponse)(nil),             // 54: muse.v1.ImportCharacterResponse
-	(*ExportCharacterRequest)(nil),              // 55: muse.v1.ExportCharacterRequest
-	(*ExportCharacterResponse)(nil),             // 56: muse.v1.ExportCharacterResponse
-	(*RestoreCharacterWorldInfoRequest)(nil),    // 57: muse.v1.RestoreCharacterWorldInfoRequest
-	(*RestoreCharacterWorldInfoResponse)(nil),   // 58: muse.v1.RestoreCharacterWorldInfoResponse
-	(*ListChatSessionsRequest)(nil),             // 59: muse.v1.ListChatSessionsRequest
-	(*ListChatSessionsResponse)(nil),            // 60: muse.v1.ListChatSessionsResponse
-	(*GetChatSessionRequest)(nil),               // 61: muse.v1.GetChatSessionRequest
-	(*GetChatSessionResponse)(nil),              // 62: muse.v1.GetChatSessionResponse
-	(*CreateChatSessionRequest)(nil),            // 63: muse.v1.CreateChatSessionRequest
-	(*CreateChatSessionResponse)(nil),           // 64: muse.v1.CreateChatSessionResponse
-	(*UpdateChatSessionRequest)(nil),            // 65: muse.v1.UpdateChatSessionRequest
-	(*UpdateChatSessionResponse)(nil),           // 66: muse.v1.UpdateChatSessionResponse
-	(*DeleteChatSessionRequest)(nil),            // 67: muse.v1.DeleteChatSessionRequest
-	(*DeleteChatSessionResponse)(nil),           // 68: muse.v1.DeleteChatSessionResponse
-	(*SendMessageRequest)(nil),                  // 69: muse.v1.SendMessageRequest
-	(*SendMessageResponse)(nil),                 // 70: muse.v1.SendMessageResponse
-	(*RegenerateMessageRequest)(nil),            // 71: muse.v1.RegenerateMessageRequest
-	(*RegenerateMessageResponse)(nil),           // 72: muse.v1.RegenerateMessageResponse
-	(*EditMessageRequest)(nil),                  // 73: muse.v1.EditMessageRequest
-	(*EditMessageResponse)(nil),                 // 74: muse.v1.EditMessageResponse
-	(*DeleteMessageRequest)(nil),                // 75: muse.v1.DeleteMessageRequest
-	(*DeleteMessageResponse)(nil),               // 76: muse.v1.DeleteMessageResponse
-	(*SwitchSwipeRequest)(nil),                  // 77: muse.v1.SwitchSwipeRequest
-	(*SwitchSwipeResponse)(nil),                 // 78: muse.v1.SwitchSwipeResponse
-	(*ListPresetsRequest)(nil),                  // 79: muse.v1.ListPresetsRequest
-	(*ListPresetsResponse)(nil),                 // 80: muse.v1.ListPresetsResponse
-	(*GetPresetRequest)(nil),                    // 81: muse.v1.GetPresetRequest
-	(*GetPresetResponse)(nil),                   // 82: muse.v1.GetPresetResponse
-	(*CreatePresetRequest)(nil),                 // 83: muse.v1.CreatePresetRequest
-	(*CreatePromptItemRequest)(nil),             // 84: muse.v1.CreatePromptItemRequest
-	(*CreateRegexRuleRequest)(nil),              // 85: muse.v1.CreateRegexRuleRequest
-	(*CreatePresetResponse)(nil),                // 86: muse.v1.CreatePresetResponse
-	(*UpdatePresetRequest)(nil),                 // 87: muse.v1.UpdatePresetRequest
-	(*UpdatePresetResponse)(nil),                // 88: muse.v1.UpdatePresetResponse
-	(*DeletePresetRequest)(nil),                 // 89: muse.v1.DeletePresetRequest
-	(*DeletePresetResponse)(nil),                // 90: muse.v1.DeletePresetResponse
-	(*SetActivePresetRequest)(nil),              // 91: muse.v1.SetActivePresetRequest
-	(*SetActivePresetResponse)(nil),             // 92: muse.v1.SetActivePresetResponse
-	(*ImportPresetRequest)(nil),                 // 93: muse.v1.ImportPresetRequest
-	(*ImportPresetResponse)(nil),                // 94: muse.v1.ImportPresetResponse
-	(*ExportPresetRequest)(nil),                 // 95: muse.v1.ExportPresetRequest
-	(*ExportPresetResponse)(nil),                // 96: muse.v1.ExportPresetResponse
-	(*ListPromptItemsRequest)(nil),              // 97: muse.v1.ListPromptItemsRequest
-	(*ListPromptItemsResponse)(nil),             // 98: muse.v1.ListPromptItemsResponse
-	(*AddPromptItemRequest)(nil),                // 99: muse.v1.AddPromptItemRequest
-	(*AddPromptItemResponse)(nil),               // 100: muse.v1.AddPromptItemResponse
-	(*UpdatePromptItemRequest)(nil),             // 101: muse.v1.UpdatePromptItemRequest
-	(*UpdatePromptItemResponse)(nil),            // 102: muse.v1.UpdatePromptItemResponse
-	(*DeletePromptItemRequest)(nil),             // 103: muse.v1.DeletePromptItemRequest
-	(*DeletePromptItemResponse)(nil),            // 104: muse.v1.DeletePromptItemResponse
-	(*UpdatePromptItemsOrderRequest)(nil),       // 105: muse.v1.UpdatePromptItemsOrderRequest
-	(*UpdatePromptItemsOrderResponse)(nil),      // 106: muse.v1.UpdatePromptItemsOrderResponse
-	(*ListRegexRulesRequest)(nil),               // 107: muse.v1.ListRegexRulesRequest
-	(*ListRegexRulesResponse)(nil),              // 108: muse.v1.ListRegexRulesResponse
-	(*AddRegexRuleRequest)(nil),                 // 109: muse.v1.AddRegexRuleRequest
-	(*AddRegexRuleResponse)(nil),                // 110: muse.v1.AddRegexRuleResponse
-	(*UpdateRegexRuleRequest)(nil),              // 111: muse.v1.UpdateRegexRuleRequest
-	(*UpdateRegexRuleResponse)(nil),             // 112: muse.v1.UpdateRegexRuleResponse
-	(*DeleteRegexRuleRequest)(nil),              // 113: muse.v1.DeleteRegexRuleRequest
-	(*DeleteRegexRuleResponse)(nil),             // 114: muse.v1.DeleteRegexRuleResponse
-	(*UpdateRegexRulesOrderRequest)(nil),        // 115: muse.v1.UpdateRegexRulesOrderRequest
-	(*UpdateRegexRulesOrderResponse)(nil),       // 116: muse.v1.UpdateRegexRulesOrderResponse
-	(*ListWorldInfosRequest)(nil),               // 117: muse.v1.ListWorldInfosRequest
-	(*ListWorldInfosResponse)(nil),              // 118: muse.v1.ListWorldInfosResponse
-	(*GetWorldInfoRequest)(nil),                 // 119: muse.v1.GetWorldInfoRequest
-	(*GetWorldInfoResponse)(nil),                // 120: muse.v1.GetWorldInfoResponse
-	(*CreateWorldInfoRequest)(nil),              // 121: muse.v1.CreateWorldInfoRequest
-	(*CreateWorldInfoResponse)(nil),             // 122: muse.v1.CreateWorldInfoResponse
-	(*UpdateWorldInfoRequest)(nil),              // 123: muse.v1.UpdateWorldInfoRequest
-	(*UpdateWorldInfoResponse)(nil),             // 124: muse.v1.UpdateWorldInfoResponse
-	(*DeleteWorldInfoRequest)(nil),              // 125: muse.v1.DeleteWorldInfoRequest
-	(*DeleteWorldInfoResponse)(nil),             // 126: muse.v1.DeleteWorldInfoResponse
-	(*ImportWorldInfoRequest)(nil),              // 127: muse.v1.ImportWorldInfoRequest
-	(*ImportWorldInfoResponse)(nil),             // 128: muse.v1.ImportWorldInfoResponse
-	(*ExportWorldInfoRequest)(nil),              // 129: muse.v1.ExportWorldInfoRequest
-	(*ExportWorldInfoResponse)(nil),             // 130: muse.v1.ExportWorldInfoResponse
-	(*ListWorldInfoEntriesRequest)(nil),         // 131: muse.v1.ListWorldInfoEntriesRequest
-	(*ListWorldInfoEntriesResponse)(nil),        // 132: muse.v1.ListWorldInfoEntriesResponse
-	(*AddWorldInfoEntryRequest)(nil),            // 133: muse.v1.AddWorldInfoEntryRequest
-	(*AddWorldInfoEntryResponse)(nil),           // 134: muse.v1.AddWorldInfoEntryResponse
-	(*UpdateWorldInfoEntryRequest)(nil),         // 135: muse.v1.UpdateWorldInfoEntryRequest
-	(*UpdateWorldInfoEntryResponse)(nil),        // 136: muse.v1.UpdateWorldInfoEntryResponse
-	(*DeleteWorldInfoEntryRequest)(nil),         // 137: muse.v1.DeleteWorldInfoEntryRequest
-	(*DeleteWorldInfoEntryResponse)(nil),        // 138: muse.v1.DeleteWorldInfoEntryResponse
-	(*UpdateWorldInfoEntriesOrderRequest)(nil),  // 139: muse.v1.UpdateWorldInfoEntriesOrderRequest
-	(*UpdateWorldInfoEntriesOrderResponse)(nil), // 140: muse.v1.UpdateWorldInfoEntriesOrderResponse
-	(*ListAPIConfigsRequest)(nil),               // 141: muse.v1.ListAPIConfigsRequest
-	(*ListAPIConfigsResponse)(nil),              // 142: muse.v1.ListAPIConfigsResponse
-	(*GetAPIConfigRequest)(nil),                 // 143: muse.v1.GetAPIConfigRequest
-	(*GetAPIConfigResponse)(nil),                // 144: muse.v1.GetAPIConfigResponse
-	(*CreateAPIConfigRequest)(nil),              // 145: muse.v1.CreateAPIConfigRequest
-	(*CreateAPIConfigResponse)(nil),             // 146: muse.v1.CreateAPIConfigResponse
-	(*UpdateAPIConfigRequest)(nil),              // 147: muse.v1.UpdateAPIConfigRequest
-	(*UpdateAPIConfigResponse)(nil),             // 148: muse.v1.UpdateAPIConfigResponse
-	(*DeleteAPIConfigRequest)(nil),              // 149: muse.v1.DeleteAPIConfigRequest
-	(*DeleteAPIConfigResponse)(nil),             // 150: muse.v1.DeleteAPIConfigResponse
-	(*SetActiveAPIConfigRequest)(nil),           // 151: muse.v1.SetActiveAPIConfigRequest
-	(*SetActiveAPIConfigResponse)(nil),          // 152: muse.v1.SetActiveAPIConfigResponse
-	(*TestAPIConfigRequest)(nil),                // 153: muse.v1.TestAPIConfigRequest
-	(*TestAPIConfigResponse)(nil),               // 154: muse.v1.TestAPIConfigResponse
+var file_muse_muse_proto_enumTypes = make([]protoimpl.EnumInfo, 6)
+var file_muse_muse_proto_msgTypes = make([]protoimpl.MessageInfo, 149)
+var file_muse_muse_proto_goTypes = []any{
+	(MessageRole)(0),                            // 0: muse.MessageRole
+	(PromptItemRole)(0),                         // 1: muse.PromptItemRole
+	(InjectionPosition)(0),                      // 2: muse.InjectionPosition
+	(EntryPosition)(0),                          // 3: muse.EntryPosition
+	(APIProvider)(0),                            // 4: muse.APIProvider
+	(Theme)(0),                                  // 5: muse.Theme
+	(*User)(nil),                                // 6: muse.User
+	(*Persona)(nil),                             // 7: muse.Persona
+	(*UserSetting)(nil),                         // 8: muse.UserSetting
+	(*Character)(nil),                           // 9: muse.Character
+	(*ChatSession)(nil),                         // 10: muse.ChatSession
+	(*Message)(nil),                             // 11: muse.Message
+	(*MessageSwipe)(nil),                        // 12: muse.MessageSwipe
+	(*Preset)(nil),                              // 13: muse.Preset
+	(*PromptItem)(nil),                          // 14: muse.PromptItem
+	(*RegexRule)(nil),                           // 15: muse.RegexRule
+	(*WorldInfo)(nil),                           // 16: muse.WorldInfo
+	(*WorldInfoEntry)(nil),                      // 17: muse.WorldInfoEntry
+	(*APIConfig)(nil),                           // 18: muse.APIConfig
+	(*RegisterRequest)(nil),                     // 19: muse.RegisterRequest
+	(*RegisterResponse)(nil),                    // 20: muse.RegisterResponse
+	(*LoginRequest)(nil),                        // 21: muse.LoginRequest
+	(*LoginResponse)(nil),                       // 22: muse.LoginResponse
+	(*GetCurrentUserRequest)(nil),               // 23: muse.GetCurrentUserRequest
+	(*GetCurrentUserResponse)(nil),              // 24: muse.GetCurrentUserResponse
+	(*ChangePasswordRequest)(nil),               // 25: muse.ChangePasswordRequest
+	(*ChangePasswordResponse)(nil),              // 26: muse.ChangePasswordResponse
+	(*ListPersonasRequest)(nil),                 // 27: muse.ListPersonasRequest
+	(*ListPersonasResponse)(nil),                // 28: muse.ListPersonasResponse
+	(*GetPersonaRequest)(nil),                   // 29: muse.GetPersonaRequest
+	(*GetPersonaResponse)(nil),                  // 30: muse.GetPersonaResponse
+	(*CreatePersonaRequest)(nil),                // 31: muse.CreatePersonaRequest
+	(*CreatePersonaResponse)(nil),               // 32: muse.CreatePersonaResponse
+	(*UpdatePersonaRequest)(nil),                // 33: muse.UpdatePersonaRequest
+	(*UpdatePersonaResponse)(nil),               // 34: muse.UpdatePersonaResponse
+	(*DeletePersonaRequest)(nil),                // 35: muse.DeletePersonaRequest
+	(*DeletePersonaResponse)(nil),               // 36: muse.DeletePersonaResponse
+	(*SetActivePersonaRequest)(nil),             // 37: muse.SetActivePersonaRequest
+	(*SetActivePersonaResponse)(nil),            // 38: muse.SetActivePersonaResponse
+	(*GetUserSettingRequest)(nil),               // 39: muse.GetUserSettingRequest
+	(*GetUserSettingResponse)(nil),              // 40: muse.GetUserSettingResponse
+	(*UpdateUserSettingRequest)(nil),            // 41: muse.UpdateUserSettingRequest
+	(*UpdateUserSettingResponse)(nil),           // 42: muse.UpdateUserSettingResponse
+	(*ListCharactersRequest)(nil),               // 43: muse.ListCharactersRequest
+	(*ListCharactersResponse)(nil),              // 44: muse.ListCharactersResponse
+	(*GetCharacterRequest)(nil),                 // 45: muse.GetCharacterRequest
+	(*GetCharacterResponse)(nil),                // 46: muse.GetCharacterResponse
+	(*CreateCharacterRequest)(nil),              // 47: muse.CreateCharacterRequest
+	(*CreateCharacterResponse)(nil),             // 48: muse.CreateCharacterResponse
+	(*UpdateCharacterRequest)(nil),              // 49: muse.UpdateCharacterRequest
+	(*UpdateCharacterResponse)(nil),             // 50: muse.UpdateCharacterResponse
+	(*DeleteCharacterRequest)(nil),              // 51: muse.DeleteCharacterRequest
+	(*DeleteCharacterResponse)(nil),             // 52: muse.DeleteCharacterResponse
+	(*ImportCharacterRequest)(nil),              // 53: muse.ImportCharacterRequest
+	(*ImportCharacterResponse)(nil),             // 54: muse.ImportCharacterResponse
+	(*ExportCharacterRequest)(nil),              // 55: muse.ExportCharacterRequest
+	(*ExportCharacterResponse)(nil),             // 56: muse.ExportCharacterResponse
+	(*RestoreCharacterWorldInfoRequest)(nil),    // 57: muse.RestoreCharacterWorldInfoRequest
+	(*RestoreCharacterWorldInfoResponse)(nil),   // 58: muse.RestoreCharacterWorldInfoResponse
+	(*ListChatSessionsRequest)(nil),             // 59: muse.ListChatSessionsRequest
+	(*ListChatSessionsResponse)(nil),            // 60: muse.ListChatSessionsResponse
+	(*GetChatSessionRequest)(nil),               // 61: muse.GetChatSessionRequest
+	(*GetChatSessionResponse)(nil),              // 62: muse.GetChatSessionResponse
+	(*CreateChatSessionRequest)(nil),            // 63: muse.CreateChatSessionRequest
+	(*CreateChatSessionResponse)(nil),           // 64: muse.CreateChatSessionResponse
+	(*UpdateChatSessionRequest)(nil),            // 65: muse.UpdateChatSessionRequest
+	(*UpdateChatSessionResponse)(nil),           // 66: muse.UpdateChatSessionResponse
+	(*DeleteChatSessionRequest)(nil),            // 67: muse.DeleteChatSessionRequest
+	(*DeleteChatSessionResponse)(nil),           // 68: muse.DeleteChatSessionResponse
+	(*SendMessageRequest)(nil),                  // 69: muse.SendMessageRequest
+	(*SendMessageResponse)(nil),                 // 70: muse.SendMessageResponse
+	(*RegenerateMessageRequest)(nil),            // 71: muse.RegenerateMessageRequest
+	(*RegenerateMessageResponse)(nil),           // 72: muse.RegenerateMessageResponse
+	(*EditMessageRequest)(nil),                  // 73: muse.EditMessageRequest
+	(*EditMessageResponse)(nil),                 // 74: muse.EditMessageResponse
+	(*DeleteMessageRequest)(nil),                // 75: muse.DeleteMessageRequest
+	(*DeleteMessageResponse)(nil),               // 76: muse.DeleteMessageResponse
+	(*SwitchSwipeRequest)(nil),                  // 77: muse.SwitchSwipeRequest
+	(*SwitchSwipeResponse)(nil),                 // 78: muse.SwitchSwipeResponse
+	(*ListPresetsRequest)(nil),                  // 79: muse.ListPresetsRequest
+	(*ListPresetsResponse)(nil),                 // 80: muse.ListPresetsResponse
+	(*GetPresetRequest)(nil),                    // 81: muse.GetPresetRequest
+	(*GetPresetResponse)(nil),                   // 82: muse.GetPresetResponse
+	(*CreatePresetRequest)(nil),                 // 83: muse.CreatePresetRequest
+	(*CreatePromptItemRequest)(nil),             // 84: muse.CreatePromptItemRequest
+	(*CreateRegexRuleRequest)(nil),              // 85: muse.CreateRegexRuleRequest
+	(*CreatePresetResponse)(nil),                // 86: muse.CreatePresetResponse
+	(*UpdatePresetRequest)(nil),                 // 87: muse.UpdatePresetRequest
+	(*UpdatePresetResponse)(nil),                // 88: muse.UpdatePresetResponse
+	(*DeletePresetRequest)(nil),                 // 89: muse.DeletePresetRequest
+	(*DeletePresetResponse)(nil),                // 90: muse.DeletePresetResponse
+	(*SetActivePresetRequest)(nil),              // 91: muse.SetActivePresetRequest
+	(*SetActivePresetResponse)(nil),             // 92: muse.SetActivePresetResponse
+	(*ImportPresetRequest)(nil),                 // 93: muse.ImportPresetRequest
+	(*ImportPresetResponse)(nil),                // 94: muse.ImportPresetResponse
+	(*ExportPresetRequest)(nil),                 // 95: muse.ExportPresetRequest
+	(*ExportPresetResponse)(nil),                // 96: muse.ExportPresetResponse
+	(*ListPromptItemsRequest)(nil),              // 97: muse.ListPromptItemsRequest
+	(*ListPromptItemsResponse)(nil),             // 98: muse.ListPromptItemsResponse
+	(*AddPromptItemRequest)(nil),                // 99: muse.AddPromptItemRequest
+	(*AddPromptItemResponse)(nil),               // 100: muse.AddPromptItemResponse
+	(*UpdatePromptItemRequest)(nil),             // 101: muse.UpdatePromptItemRequest
+	(*UpdatePromptItemResponse)(nil),            // 102: muse.UpdatePromptItemResponse
+	(*DeletePromptItemRequest)(nil),             // 103: muse.DeletePromptItemRequest
+	(*DeletePromptItemResponse)(nil),            // 104: muse.DeletePromptItemResponse
+	(*UpdatePromptItemsOrderRequest)(nil),       // 105: muse.UpdatePromptItemsOrderRequest
+	(*UpdatePromptItemsOrderResponse)(nil),      // 106: muse.UpdatePromptItemsOrderResponse
+	(*ListRegexRulesRequest)(nil),               // 107: muse.ListRegexRulesRequest
+	(*ListRegexRulesResponse)(nil),              // 108: muse.ListRegexRulesResponse
+	(*AddRegexRuleRequest)(nil),                 // 109: muse.AddRegexRuleRequest
+	(*AddRegexRuleResponse)(nil),                // 110: muse.AddRegexRuleResponse
+	(*UpdateRegexRuleRequest)(nil),              // 111: muse.UpdateRegexRuleRequest
+	(*UpdateRegexRuleResponse)(nil),             // 112: muse.UpdateRegexRuleResponse
+	(*DeleteRegexRuleRequest)(nil),              // 113: muse.DeleteRegexRuleRequest
+	(*DeleteRegexRuleResponse)(nil),             // 114: muse.DeleteRegexRuleResponse
+	(*UpdateRegexRulesOrderRequest)(nil),        // 115: muse.UpdateRegexRulesOrderRequest
+	(*UpdateRegexRulesOrderResponse)(nil),       // 116: muse.UpdateRegexRulesOrderResponse
+	(*ListWorldInfosRequest)(nil),               // 117: muse.ListWorldInfosRequest
+	(*ListWorldInfosResponse)(nil),              // 118: muse.ListWorldInfosResponse
+	(*GetWorldInfoRequest)(nil),                 // 119: muse.GetWorldInfoRequest
+	(*GetWorldInfoResponse)(nil),                // 120: muse.GetWorldInfoResponse
+	(*CreateWorldInfoRequest)(nil),              // 121: muse.CreateWorldInfoRequest
+	(*CreateWorldInfoResponse)(nil),             // 122: muse.CreateWorldInfoResponse
+	(*UpdateWorldInfoRequest)(nil),              // 123: muse.UpdateWorldInfoRequest
+	(*UpdateWorldInfoResponse)(nil),             // 124: muse.UpdateWorldInfoResponse
+	(*DeleteWorldInfoRequest)(nil),              // 125: muse.DeleteWorldInfoRequest
+	(*DeleteWorldInfoResponse)(nil),             // 126: muse.DeleteWorldInfoResponse
+	(*ImportWorldInfoRequest)(nil),              // 127: muse.ImportWorldInfoRequest
+	(*ImportWorldInfoResponse)(nil),             // 128: muse.ImportWorldInfoResponse
+	(*ExportWorldInfoRequest)(nil),              // 129: muse.ExportWorldInfoRequest
+	(*ExportWorldInfoResponse)(nil),             // 130: muse.ExportWorldInfoResponse
+	(*ListWorldInfoEntriesRequest)(nil),         // 131: muse.ListWorldInfoEntriesRequest
+	(*ListWorldInfoEntriesResponse)(nil),        // 132: muse.ListWorldInfoEntriesResponse
+	(*AddWorldInfoEntryRequest)(nil),            // 133: muse.AddWorldInfoEntryRequest
+	(*AddWorldInfoEntryResponse)(nil),           // 134: muse.AddWorldInfoEntryResponse
+	(*UpdateWorldInfoEntryRequest)(nil),         // 135: muse.UpdateWorldInfoEntryRequest
+	(*UpdateWorldInfoEntryResponse)(nil),        // 136: muse.UpdateWorldInfoEntryResponse
+	(*DeleteWorldInfoEntryRequest)(nil),         // 137: muse.DeleteWorldInfoEntryRequest
+	(*DeleteWorldInfoEntryResponse)(nil),        // 138: muse.DeleteWorldInfoEntryResponse
+	(*UpdateWorldInfoEntriesOrderRequest)(nil),  // 139: muse.UpdateWorldInfoEntriesOrderRequest
+	(*UpdateWorldInfoEntriesOrderResponse)(nil), // 140: muse.UpdateWorldInfoEntriesOrderResponse
+	(*ListAPIConfigsRequest)(nil),               // 141: muse.ListAPIConfigsRequest
+	(*ListAPIConfigsResponse)(nil),              // 142: muse.ListAPIConfigsResponse
+	(*GetAPIConfigRequest)(nil),                 // 143: muse.GetAPIConfigRequest
+	(*GetAPIConfigResponse)(nil),                // 144: muse.GetAPIConfigResponse
+	(*CreateAPIConfigRequest)(nil),              // 145: muse.CreateAPIConfigRequest
+	(*CreateAPIConfigResponse)(nil),             // 146: muse.CreateAPIConfigResponse
+	(*UpdateAPIConfigRequest)(nil),              // 147: muse.UpdateAPIConfigRequest
+	(*UpdateAPIConfigResponse)(nil),             // 148: muse.UpdateAPIConfigResponse
+	(*DeleteAPIConfigRequest)(nil),              // 149: muse.DeleteAPIConfigRequest
+	(*DeleteAPIConfigResponse)(nil),             // 150: muse.DeleteAPIConfigResponse
+	(*SetActiveAPIConfigRequest)(nil),           // 151: muse.SetActiveAPIConfigRequest
+	(*SetActiveAPIConfigResponse)(nil),          // 152: muse.SetActiveAPIConfigResponse
+	(*TestAPIConfigRequest)(nil),                // 153: muse.TestAPIConfigRequest
+	(*TestAPIConfigResponse)(nil),               // 154: muse.TestAPIConfigResponse
 }
-var file_muse_v1_muse_proto_depIdxs = []int32{
-	5,   // 0: muse.v1.UserSetting.theme:type_name -> muse.v1.Theme
-	16,  // 1: muse.v1.Character.world_info:type_name -> muse.v1.WorldInfo
-	9,   // 2: muse.v1.ChatSession.character:type_name -> muse.v1.Character
-	11,  // 3: muse.v1.ChatSession.messages:type_name -> muse.v1.Message
-	0,   // 4: muse.v1.Message.role:type_name -> muse.v1.MessageRole
-	12,  // 5: muse.v1.Message.swipes:type_name -> muse.v1.MessageSwipe
-	14,  // 6: muse.v1.Preset.prompt_items:type_name -> muse.v1.PromptItem
-	15,  // 7: muse.v1.Preset.regex_rules:type_name -> muse.v1.RegexRule
-	1,   // 8: muse.v1.PromptItem.role:type_name -> muse.v1.PromptItemRole
-	2,   // 9: muse.v1.PromptItem.injection_position:type_name -> muse.v1.InjectionPosition
-	17,  // 10: muse.v1.WorldInfo.entries:type_name -> muse.v1.WorldInfoEntry
-	3,   // 11: muse.v1.WorldInfoEntry.position:type_name -> muse.v1.EntryPosition
-	4,   // 12: muse.v1.APIConfig.provider:type_name -> muse.v1.APIProvider
-	6,   // 13: muse.v1.RegisterResponse.user:type_name -> muse.v1.User
-	6,   // 14: muse.v1.LoginResponse.user:type_name -> muse.v1.User
-	6,   // 15: muse.v1.GetCurrentUserResponse.user:type_name -> muse.v1.User
-	7,   // 16: muse.v1.ListPersonasResponse.personas:type_name -> muse.v1.Persona
-	7,   // 17: muse.v1.GetPersonaResponse.persona:type_name -> muse.v1.Persona
-	7,   // 18: muse.v1.CreatePersonaResponse.persona:type_name -> muse.v1.Persona
-	7,   // 19: muse.v1.UpdatePersonaResponse.persona:type_name -> muse.v1.Persona
-	8,   // 20: muse.v1.GetUserSettingResponse.setting:type_name -> muse.v1.UserSetting
-	5,   // 21: muse.v1.UpdateUserSettingRequest.theme:type_name -> muse.v1.Theme
-	8,   // 22: muse.v1.UpdateUserSettingResponse.setting:type_name -> muse.v1.UserSetting
-	9,   // 23: muse.v1.ListCharactersResponse.characters:type_name -> muse.v1.Character
-	9,   // 24: muse.v1.GetCharacterResponse.character:type_name -> muse.v1.Character
-	9,   // 25: muse.v1.CreateCharacterResponse.character:type_name -> muse.v1.Character
-	9,   // 26: muse.v1.UpdateCharacterResponse.character:type_name -> muse.v1.Character
-	9,   // 27: muse.v1.ImportCharacterResponse.character:type_name -> muse.v1.Character
-	16,  // 28: muse.v1.RestoreCharacterWorldInfoResponse.world_info:type_name -> muse.v1.WorldInfo
-	10,  // 29: muse.v1.ListChatSessionsResponse.sessions:type_name -> muse.v1.ChatSession
-	10,  // 30: muse.v1.GetChatSessionResponse.session:type_name -> muse.v1.ChatSession
-	10,  // 31: muse.v1.CreateChatSessionResponse.session:type_name -> muse.v1.ChatSession
-	10,  // 32: muse.v1.UpdateChatSessionResponse.session:type_name -> muse.v1.ChatSession
-	11,  // 33: muse.v1.SendMessageResponse.user_message:type_name -> muse.v1.Message
-	11,  // 34: muse.v1.SendMessageResponse.assistant_message:type_name -> muse.v1.Message
-	12,  // 35: muse.v1.RegenerateMessageResponse.new_swipe:type_name -> muse.v1.MessageSwipe
-	12,  // 36: muse.v1.EditMessageResponse.swipe:type_name -> muse.v1.MessageSwipe
-	11,  // 37: muse.v1.SwitchSwipeResponse.message:type_name -> muse.v1.Message
-	13,  // 38: muse.v1.ListPresetsResponse.presets:type_name -> muse.v1.Preset
-	13,  // 39: muse.v1.GetPresetResponse.preset:type_name -> muse.v1.Preset
-	84,  // 40: muse.v1.CreatePresetRequest.prompt_items:type_name -> muse.v1.CreatePromptItemRequest
-	85,  // 41: muse.v1.CreatePresetRequest.regex_rules:type_name -> muse.v1.CreateRegexRuleRequest
-	1,   // 42: muse.v1.CreatePromptItemRequest.role:type_name -> muse.v1.PromptItemRole
-	2,   // 43: muse.v1.CreatePromptItemRequest.injection_position:type_name -> muse.v1.InjectionPosition
-	13,  // 44: muse.v1.CreatePresetResponse.preset:type_name -> muse.v1.Preset
-	13,  // 45: muse.v1.UpdatePresetResponse.preset:type_name -> muse.v1.Preset
-	13,  // 46: muse.v1.ImportPresetResponse.preset:type_name -> muse.v1.Preset
-	14,  // 47: muse.v1.ListPromptItemsResponse.items:type_name -> muse.v1.PromptItem
-	1,   // 48: muse.v1.AddPromptItemRequest.role:type_name -> muse.v1.PromptItemRole
-	2,   // 49: muse.v1.AddPromptItemRequest.injection_position:type_name -> muse.v1.InjectionPosition
-	14,  // 50: muse.v1.AddPromptItemResponse.item:type_name -> muse.v1.PromptItem
-	1,   // 51: muse.v1.UpdatePromptItemRequest.role:type_name -> muse.v1.PromptItemRole
-	2,   // 52: muse.v1.UpdatePromptItemRequest.injection_position:type_name -> muse.v1.InjectionPosition
-	14,  // 53: muse.v1.UpdatePromptItemResponse.item:type_name -> muse.v1.PromptItem
-	15,  // 54: muse.v1.ListRegexRulesResponse.rules:type_name -> muse.v1.RegexRule
-	15,  // 55: muse.v1.AddRegexRuleResponse.rule:type_name -> muse.v1.RegexRule
-	15,  // 56: muse.v1.UpdateRegexRuleResponse.rule:type_name -> muse.v1.RegexRule
-	16,  // 57: muse.v1.ListWorldInfosResponse.world_infos:type_name -> muse.v1.WorldInfo
-	16,  // 58: muse.v1.GetWorldInfoResponse.world_info:type_name -> muse.v1.WorldInfo
-	16,  // 59: muse.v1.CreateWorldInfoResponse.world_info:type_name -> muse.v1.WorldInfo
-	16,  // 60: muse.v1.UpdateWorldInfoResponse.world_info:type_name -> muse.v1.WorldInfo
-	16,  // 61: muse.v1.ImportWorldInfoResponse.world_info:type_name -> muse.v1.WorldInfo
-	17,  // 62: muse.v1.ListWorldInfoEntriesResponse.entries:type_name -> muse.v1.WorldInfoEntry
-	3,   // 63: muse.v1.AddWorldInfoEntryRequest.position:type_name -> muse.v1.EntryPosition
-	17,  // 64: muse.v1.AddWorldInfoEntryResponse.entry:type_name -> muse.v1.WorldInfoEntry
-	3,   // 65: muse.v1.UpdateWorldInfoEntryRequest.position:type_name -> muse.v1.EntryPosition
-	17,  // 66: muse.v1.UpdateWorldInfoEntryResponse.entry:type_name -> muse.v1.WorldInfoEntry
-	18,  // 67: muse.v1.ListAPIConfigsResponse.configs:type_name -> muse.v1.APIConfig
-	18,  // 68: muse.v1.GetAPIConfigResponse.config:type_name -> muse.v1.APIConfig
-	4,   // 69: muse.v1.CreateAPIConfigRequest.provider:type_name -> muse.v1.APIProvider
-	18,  // 70: muse.v1.CreateAPIConfigResponse.config:type_name -> muse.v1.APIConfig
-	4,   // 71: muse.v1.UpdateAPIConfigRequest.provider:type_name -> muse.v1.APIProvider
-	18,  // 72: muse.v1.UpdateAPIConfigResponse.config:type_name -> muse.v1.APIConfig
-	19,  // 73: muse.v1.AuthService.Register:input_type -> muse.v1.RegisterRequest
-	21,  // 74: muse.v1.AuthService.Login:input_type -> muse.v1.LoginRequest
-	23,  // 75: muse.v1.AuthService.GetCurrentUser:input_type -> muse.v1.GetCurrentUserRequest
-	25,  // 76: muse.v1.AuthService.ChangePassword:input_type -> muse.v1.ChangePasswordRequest
-	27,  // 77: muse.v1.PersonaService.ListPersonas:input_type -> muse.v1.ListPersonasRequest
-	29,  // 78: muse.v1.PersonaService.GetPersona:input_type -> muse.v1.GetPersonaRequest
-	31,  // 79: muse.v1.PersonaService.CreatePersona:input_type -> muse.v1.CreatePersonaRequest
-	33,  // 80: muse.v1.PersonaService.UpdatePersona:input_type -> muse.v1.UpdatePersonaRequest
-	35,  // 81: muse.v1.PersonaService.DeletePersona:input_type -> muse.v1.DeletePersonaRequest
-	37,  // 82: muse.v1.PersonaService.SetActivePersona:input_type -> muse.v1.SetActivePersonaRequest
-	39,  // 83: muse.v1.UserSettingService.GetUserSetting:input_type -> muse.v1.GetUserSettingRequest
-	41,  // 84: muse.v1.UserSettingService.UpdateUserSetting:input_type -> muse.v1.UpdateUserSettingRequest
-	43,  // 85: muse.v1.CharacterService.ListCharacters:input_type -> muse.v1.ListCharactersRequest
-	45,  // 86: muse.v1.CharacterService.GetCharacter:input_type -> muse.v1.GetCharacterRequest
-	47,  // 87: muse.v1.CharacterService.CreateCharacter:input_type -> muse.v1.CreateCharacterRequest
-	49,  // 88: muse.v1.CharacterService.UpdateCharacter:input_type -> muse.v1.UpdateCharacterRequest
-	51,  // 89: muse.v1.CharacterService.DeleteCharacter:input_type -> muse.v1.DeleteCharacterRequest
-	53,  // 90: muse.v1.CharacterService.ImportCharacter:input_type -> muse.v1.ImportCharacterRequest
-	55,  // 91: muse.v1.CharacterService.ExportCharacter:input_type -> muse.v1.ExportCharacterRequest
-	57,  // 92: muse.v1.CharacterService.RestoreCharacterWorldInfo:input_type -> muse.v1.RestoreCharacterWorldInfoRequest
-	59,  // 93: muse.v1.ChatService.ListChatSessions:input_type -> muse.v1.ListChatSessionsRequest
-	61,  // 94: muse.v1.ChatService.GetChatSession:input_type -> muse.v1.GetChatSessionRequest
-	63,  // 95: muse.v1.ChatService.CreateChatSession:input_type -> muse.v1.CreateChatSessionRequest
-	65,  // 96: muse.v1.ChatService.UpdateChatSession:input_type -> muse.v1.UpdateChatSessionRequest
-	67,  // 97: muse.v1.ChatService.DeleteChatSession:input_type -> muse.v1.DeleteChatSessionRequest
-	69,  // 98: muse.v1.ChatService.SendMessage:input_type -> muse.v1.SendMessageRequest
-	71,  // 99: muse.v1.ChatService.RegenerateMessage:input_type -> muse.v1.RegenerateMessageRequest
-	73,  // 100: muse.v1.ChatService.EditMessage:input_type -> muse.v1.EditMessageRequest
-	75,  // 101: muse.v1.ChatService.DeleteMessage:input_type -> muse.v1.DeleteMessageRequest
-	77,  // 102: muse.v1.ChatService.SwitchSwipe:input_type -> muse.v1.SwitchSwipeRequest
-	79,  // 103: muse.v1.PresetService.ListPresets:input_type -> muse.v1.ListPresetsRequest
-	81,  // 104: muse.v1.PresetService.GetPreset:input_type -> muse.v1.GetPresetRequest
-	83,  // 105: muse.v1.PresetService.CreatePreset:input_type -> muse.v1.CreatePresetRequest
-	87,  // 106: muse.v1.PresetService.UpdatePreset:input_type -> muse.v1.UpdatePresetRequest
-	89,  // 107: muse.v1.PresetService.DeletePreset:input_type -> muse.v1.DeletePresetRequest
-	91,  // 108: muse.v1.PresetService.SetActivePreset:input_type -> muse.v1.SetActivePresetRequest
-	93,  // 109: muse.v1.PresetService.ImportPreset:input_type -> muse.v1.ImportPresetRequest
-	95,  // 110: muse.v1.PresetService.ExportPreset:input_type -> muse.v1.ExportPresetRequest
-	97,  // 111: muse.v1.PromptItemService.ListPromptItems:input_type -> muse.v1.ListPromptItemsRequest
-	99,  // 112: muse.v1.PromptItemService.AddPromptItem:input_type -> muse.v1.AddPromptItemRequest
-	101, // 113: muse.v1.PromptItemService.UpdatePromptItem:input_type -> muse.v1.UpdatePromptItemRequest
-	103, // 114: muse.v1.PromptItemService.DeletePromptItem:input_type -> muse.v1.DeletePromptItemRequest
-	105, // 115: muse.v1.PromptItemService.UpdatePromptItemsOrder:input_type -> muse.v1.UpdatePromptItemsOrderRequest
-	107, // 116: muse.v1.RegexRuleService.ListRegexRules:input_type -> muse.v1.ListRegexRulesRequest
-	109, // 117: muse.v1.RegexRuleService.AddRegexRule:input_type -> muse.v1.AddRegexRuleRequest
-	111, // 118: muse.v1.RegexRuleService.UpdateRegexRule:input_type -> muse.v1.UpdateRegexRuleRequest
-	113, // 119: muse.v1.RegexRuleService.DeleteRegexRule:input_type -> muse.v1.DeleteRegexRuleRequest
-	115, // 120: muse.v1.RegexRuleService.UpdateRegexRulesOrder:input_type -> muse.v1.UpdateRegexRulesOrderRequest
-	117, // 121: muse.v1.WorldInfoService.ListWorldInfos:input_type -> muse.v1.ListWorldInfosRequest
-	119, // 122: muse.v1.WorldInfoService.GetWorldInfo:input_type -> muse.v1.GetWorldInfoRequest
-	121, // 123: muse.v1.WorldInfoService.CreateWorldInfo:input_type -> muse.v1.CreateWorldInfoRequest
-	123, // 124: muse.v1.WorldInfoService.UpdateWorldInfo:input_type -> muse.v1.UpdateWorldInfoRequest
-	125, // 125: muse.v1.WorldInfoService.DeleteWorldInfo:input_type -> muse.v1.DeleteWorldInfoRequest
-	127, // 126: muse.v1.WorldInfoService.ImportWorldInfo:input_type -> muse.v1.ImportWorldInfoRequest
-	129, // 127: muse.v1.WorldInfoService.ExportWorldInfo:input_type -> muse.v1.ExportWorldInfoRequest
-	131, // 128: muse.v1.WorldInfoEntryService.ListWorldInfoEntries:input_type -> muse.v1.ListWorldInfoEntriesRequest
-	133, // 129: muse.v1.WorldInfoEntryService.AddWorldInfoEntry:input_type -> muse.v1.AddWorldInfoEntryRequest
-	135, // 130: muse.v1.WorldInfoEntryService.UpdateWorldInfoEntry:input_type -> muse.v1.UpdateWorldInfoEntryRequest
-	137, // 131: muse.v1.WorldInfoEntryService.DeleteWorldInfoEntry:input_type -> muse.v1.DeleteWorldInfoEntryRequest
-	139, // 132: muse.v1.WorldInfoEntryService.UpdateWorldInfoEntriesOrder:input_type -> muse.v1.UpdateWorldInfoEntriesOrderRequest
-	141, // 133: muse.v1.APIConfigService.ListAPIConfigs:input_type -> muse.v1.ListAPIConfigsRequest
-	143, // 134: muse.v1.APIConfigService.GetAPIConfig:input_type -> muse.v1.GetAPIConfigRequest
-	145, // 135: muse.v1.APIConfigService.CreateAPIConfig:input_type -> muse.v1.CreateAPIConfigRequest
-	147, // 136: muse.v1.APIConfigService.UpdateAPIConfig:input_type -> muse.v1.UpdateAPIConfigRequest
-	149, // 137: muse.v1.APIConfigService.DeleteAPIConfig:input_type -> muse.v1.DeleteAPIConfigRequest
-	151, // 138: muse.v1.APIConfigService.SetActiveAPIConfig:input_type -> muse.v1.SetActiveAPIConfigRequest
-	153, // 139: muse.v1.APIConfigService.TestAPIConfig:input_type -> muse.v1.TestAPIConfigRequest
-	20,  // 140: muse.v1.AuthService.Register:output_type -> muse.v1.RegisterResponse
-	22,  // 141: muse.v1.AuthService.Login:output_type -> muse.v1.LoginResponse
-	24,  // 142: muse.v1.AuthService.GetCurrentUser:output_type -> muse.v1.GetCurrentUserResponse
-	26,  // 143: muse.v1.AuthService.ChangePassword:output_type -> muse.v1.ChangePasswordResponse
-	28,  // 144: muse.v1.PersonaService.ListPersonas:output_type -> muse.v1.ListPersonasResponse
-	30,  // 145: muse.v1.PersonaService.GetPersona:output_type -> muse.v1.GetPersonaResponse
-	32,  // 146: muse.v1.PersonaService.CreatePersona:output_type -> muse.v1.CreatePersonaResponse
-	34,  // 147: muse.v1.PersonaService.UpdatePersona:output_type -> muse.v1.UpdatePersonaResponse
-	36,  // 148: muse.v1.PersonaService.DeletePersona:output_type -> muse.v1.DeletePersonaResponse
-	38,  // 149: muse.v1.PersonaService.SetActivePersona:output_type -> muse.v1.SetActivePersonaResponse
-	40,  // 150: muse.v1.UserSettingService.GetUserSetting:output_type -> muse.v1.GetUserSettingResponse
-	42,  // 151: muse.v1.UserSettingService.UpdateUserSetting:output_type -> muse.v1.UpdateUserSettingResponse
-	44,  // 152: muse.v1.CharacterService.ListCharacters:output_type -> muse.v1.ListCharactersResponse
-	46,  // 153: muse.v1.CharacterService.GetCharacter:output_type -> muse.v1.GetCharacterResponse
-	48,  // 154: muse.v1.CharacterService.CreateCharacter:output_type -> muse.v1.CreateCharacterResponse
-	50,  // 155: muse.v1.CharacterService.UpdateCharacter:output_type -> muse.v1.UpdateCharacterResponse
-	52,  // 156: muse.v1.CharacterService.DeleteCharacter:output_type -> muse.v1.DeleteCharacterResponse
-	54,  // 157: muse.v1.CharacterService.ImportCharacter:output_type -> muse.v1.ImportCharacterResponse
-	56,  // 158: muse.v1.CharacterService.ExportCharacter:output_type -> muse.v1.ExportCharacterResponse
-	58,  // 159: muse.v1.CharacterService.RestoreCharacterWorldInfo:output_type -> muse.v1.RestoreCharacterWorldInfoResponse
-	60,  // 160: muse.v1.ChatService.ListChatSessions:output_type -> muse.v1.ListChatSessionsResponse
-	62,  // 161: muse.v1.ChatService.GetChatSession:output_type -> muse.v1.GetChatSessionResponse
-	64,  // 162: muse.v1.ChatService.CreateChatSession:output_type -> muse.v1.CreateChatSessionResponse
-	66,  // 163: muse.v1.ChatService.UpdateChatSession:output_type -> muse.v1.UpdateChatSessionResponse
-	68,  // 164: muse.v1.ChatService.DeleteChatSession:output_type -> muse.v1.DeleteChatSessionResponse
-	70,  // 165: muse.v1.ChatService.SendMessage:output_type -> muse.v1.SendMessageResponse
-	72,  // 166: muse.v1.ChatService.RegenerateMessage:output_type -> muse.v1.RegenerateMessageResponse
-	74,  // 167: muse.v1.ChatService.EditMessage:output_type -> muse.v1.EditMessageResponse
-	76,  // 168: muse.v1.ChatService.DeleteMessage:output_type -> muse.v1.DeleteMessageResponse
-	78,  // 169: muse.v1.ChatService.SwitchSwipe:output_type -> muse.v1.SwitchSwipeResponse
-	80,  // 170: muse.v1.PresetService.ListPresets:output_type -> muse.v1.ListPresetsResponse
-	82,  // 171: muse.v1.PresetService.GetPreset:output_type -> muse.v1.GetPresetResponse
-	86,  // 172: muse.v1.PresetService.CreatePreset:output_type -> muse.v1.CreatePresetResponse
-	88,  // 173: muse.v1.PresetService.UpdatePreset:output_type -> muse.v1.UpdatePresetResponse
-	90,  // 174: muse.v1.PresetService.DeletePreset:output_type -> muse.v1.DeletePresetResponse
-	92,  // 175: muse.v1.PresetService.SetActivePreset:output_type -> muse.v1.SetActivePresetResponse
-	94,  // 176: muse.v1.PresetService.ImportPreset:output_type -> muse.v1.ImportPresetResponse
-	96,  // 177: muse.v1.PresetService.ExportPreset:output_type -> muse.v1.ExportPresetResponse
-	98,  // 178: muse.v1.PromptItemService.ListPromptItems:output_type -> muse.v1.ListPromptItemsResponse
-	100, // 179: muse.v1.PromptItemService.AddPromptItem:output_type -> muse.v1.AddPromptItemResponse
-	102, // 180: muse.v1.PromptItemService.UpdatePromptItem:output_type -> muse.v1.UpdatePromptItemResponse
-	104, // 181: muse.v1.PromptItemService.DeletePromptItem:output_type -> muse.v1.DeletePromptItemResponse
-	106, // 182: muse.v1.PromptItemService.UpdatePromptItemsOrder:output_type -> muse.v1.UpdatePromptItemsOrderResponse
-	108, // 183: muse.v1.RegexRuleService.ListRegexRules:output_type -> muse.v1.ListRegexRulesResponse
-	110, // 184: muse.v1.RegexRuleService.AddRegexRule:output_type -> muse.v1.AddRegexRuleResponse
-	112, // 185: muse.v1.RegexRuleService.UpdateRegexRule:output_type -> muse.v1.UpdateRegexRuleResponse
-	114, // 186: muse.v1.RegexRuleService.DeleteRegexRule:output_type -> muse.v1.DeleteRegexRuleResponse
-	116, // 187: muse.v1.RegexRuleService.UpdateRegexRulesOrder:output_type -> muse.v1.UpdateRegexRulesOrderResponse
-	118, // 188: muse.v1.WorldInfoService.ListWorldInfos:output_type -> muse.v1.ListWorldInfosResponse
-	120, // 189: muse.v1.WorldInfoService.GetWorldInfo:output_type -> muse.v1.GetWorldInfoResponse
-	122, // 190: muse.v1.WorldInfoService.CreateWorldInfo:output_type -> muse.v1.CreateWorldInfoResponse
-	124, // 191: muse.v1.WorldInfoService.UpdateWorldInfo:output_type -> muse.v1.UpdateWorldInfoResponse
-	126, // 192: muse.v1.WorldInfoService.DeleteWorldInfo:output_type -> muse.v1.DeleteWorldInfoResponse
-	128, // 193: muse.v1.WorldInfoService.ImportWorldInfo:output_type -> muse.v1.ImportWorldInfoResponse
-	130, // 194: muse.v1.WorldInfoService.ExportWorldInfo:output_type -> muse.v1.ExportWorldInfoResponse
-	132, // 195: muse.v1.WorldInfoEntryService.ListWorldInfoEntries:output_type -> muse.v1.ListWorldInfoEntriesResponse
-	134, // 196: muse.v1.WorldInfoEntryService.AddWorldInfoEntry:output_type -> muse.v1.AddWorldInfoEntryResponse
-	136, // 197: muse.v1.WorldInfoEntryService.UpdateWorldInfoEntry:output_type -> muse.v1.UpdateWorldInfoEntryResponse
-	138, // 198: muse.v1.WorldInfoEntryService.DeleteWorldInfoEntry:output_type -> muse.v1.DeleteWorldInfoEntryResponse
-	140, // 199: muse.v1.WorldInfoEntryService.UpdateWorldInfoEntriesOrder:output_type -> muse.v1.UpdateWorldInfoEntriesOrderResponse
-	142, // 200: muse.v1.APIConfigService.ListAPIConfigs:output_type -> muse.v1.ListAPIConfigsResponse
-	144, // 201: muse.v1.APIConfigService.GetAPIConfig:output_type -> muse.v1.GetAPIConfigResponse
-	146, // 202: muse.v1.APIConfigService.CreateAPIConfig:output_type -> muse.v1.CreateAPIConfigResponse
-	148, // 203: muse.v1.APIConfigService.UpdateAPIConfig:output_type -> muse.v1.UpdateAPIConfigResponse
-	150, // 204: muse.v1.APIConfigService.DeleteAPIConfig:output_type -> muse.v1.DeleteAPIConfigResponse
-	152, // 205: muse.v1.APIConfigService.SetActiveAPIConfig:output_type -> muse.v1.SetActiveAPIConfigResponse
-	154, // 206: muse.v1.APIConfigService.TestAPIConfig:output_type -> muse.v1.TestAPIConfigResponse
+var file_muse_muse_proto_depIdxs = []int32{
+	5,   // 0: muse.UserSetting.theme:type_name -> muse.Theme
+	16,  // 1: muse.Character.world_info:type_name -> muse.WorldInfo
+	9,   // 2: muse.ChatSession.character:type_name -> muse.Character
+	11,  // 3: muse.ChatSession.messages:type_name -> muse.Message
+	0,   // 4: muse.Message.role:type_name -> muse.MessageRole
+	12,  // 5: muse.Message.swipes:type_name -> muse.MessageSwipe
+	14,  // 6: muse.Preset.prompt_items:type_name -> muse.PromptItem
+	15,  // 7: muse.Preset.regex_rules:type_name -> muse.RegexRule
+	1,   // 8: muse.PromptItem.role:type_name -> muse.PromptItemRole
+	2,   // 9: muse.PromptItem.injection_position:type_name -> muse.InjectionPosition
+	17,  // 10: muse.WorldInfo.entries:type_name -> muse.WorldInfoEntry
+	3,   // 11: muse.WorldInfoEntry.position:type_name -> muse.EntryPosition
+	4,   // 12: muse.APIConfig.provider:type_name -> muse.APIProvider
+	6,   // 13: muse.RegisterResponse.user:type_name -> muse.User
+	6,   // 14: muse.LoginResponse.user:type_name -> muse.User
+	6,   // 15: muse.GetCurrentUserResponse.user:type_name -> muse.User
+	7,   // 16: muse.ListPersonasResponse.personas:type_name -> muse.Persona
+	7,   // 17: muse.GetPersonaResponse.persona:type_name -> muse.Persona
+	7,   // 18: muse.CreatePersonaResponse.persona:type_name -> muse.Persona
+	7,   // 19: muse.UpdatePersonaResponse.persona:type_name -> muse.Persona
+	8,   // 20: muse.GetUserSettingResponse.setting:type_name -> muse.UserSetting
+	5,   // 21: muse.UpdateUserSettingRequest.theme:type_name -> muse.Theme
+	8,   // 22: muse.UpdateUserSettingResponse.setting:type_name -> muse.UserSetting
+	9,   // 23: muse.ListCharactersResponse.characters:type_name -> muse.Character
+	9,   // 24: muse.GetCharacterResponse.character:type_name -> muse.Character
+	9,   // 25: muse.CreateCharacterResponse.character:type_name -> muse.Character
+	9,   // 26: muse.UpdateCharacterResponse.character:type_name -> muse.Character
+	9,   // 27: muse.ImportCharacterResponse.character:type_name -> muse.Character
+	16,  // 28: muse.RestoreCharacterWorldInfoResponse.world_info:type_name -> muse.WorldInfo
+	10,  // 29: muse.ListChatSessionsResponse.sessions:type_name -> muse.ChatSession
+	10,  // 30: muse.GetChatSessionResponse.session:type_name -> muse.ChatSession
+	10,  // 31: muse.CreateChatSessionResponse.session:type_name -> muse.ChatSession
+	10,  // 32: muse.UpdateChatSessionResponse.session:type_name -> muse.ChatSession
+	11,  // 33: muse.SendMessageResponse.user_message:type_name -> muse.Message
+	11,  // 34: muse.SendMessageResponse.assistant_message:type_name -> muse.Message
+	12,  // 35: muse.RegenerateMessageResponse.new_swipe:type_name -> muse.MessageSwipe
+	12,  // 36: muse.EditMessageResponse.swipe:type_name -> muse.MessageSwipe
+	11,  // 37: muse.SwitchSwipeResponse.message:type_name -> muse.Message
+	13,  // 38: muse.ListPresetsResponse.presets:type_name -> muse.Preset
+	13,  // 39: muse.GetPresetResponse.preset:type_name -> muse.Preset
+	84,  // 40: muse.CreatePresetRequest.prompt_items:type_name -> muse.CreatePromptItemRequest
+	85,  // 41: muse.CreatePresetRequest.regex_rules:type_name -> muse.CreateRegexRuleRequest
+	1,   // 42: muse.CreatePromptItemRequest.role:type_name -> muse.PromptItemRole
+	2,   // 43: muse.CreatePromptItemRequest.injection_position:type_name -> muse.InjectionPosition
+	13,  // 44: muse.CreatePresetResponse.preset:type_name -> muse.Preset
+	13,  // 45: muse.UpdatePresetResponse.preset:type_name -> muse.Preset
+	13,  // 46: muse.ImportPresetResponse.preset:type_name -> muse.Preset
+	14,  // 47: muse.ListPromptItemsResponse.items:type_name -> muse.PromptItem
+	1,   // 48: muse.AddPromptItemRequest.role:type_name -> muse.PromptItemRole
+	2,   // 49: muse.AddPromptItemRequest.injection_position:type_name -> muse.InjectionPosition
+	14,  // 50: muse.AddPromptItemResponse.item:type_name -> muse.PromptItem
+	1,   // 51: muse.UpdatePromptItemRequest.role:type_name -> muse.PromptItemRole
+	2,   // 52: muse.UpdatePromptItemRequest.injection_position:type_name -> muse.InjectionPosition
+	14,  // 53: muse.UpdatePromptItemResponse.item:type_name -> muse.PromptItem
+	15,  // 54: muse.ListRegexRulesResponse.rules:type_name -> muse.RegexRule
+	15,  // 55: muse.AddRegexRuleResponse.rule:type_name -> muse.RegexRule
+	15,  // 56: muse.UpdateRegexRuleResponse.rule:type_name -> muse.RegexRule
+	16,  // 57: muse.ListWorldInfosResponse.world_infos:type_name -> muse.WorldInfo
+	16,  // 58: muse.GetWorldInfoResponse.world_info:type_name -> muse.WorldInfo
+	16,  // 59: muse.CreateWorldInfoResponse.world_info:type_name -> muse.WorldInfo
+	16,  // 60: muse.UpdateWorldInfoResponse.world_info:type_name -> muse.WorldInfo
+	16,  // 61: muse.ImportWorldInfoResponse.world_info:type_name -> muse.WorldInfo
+	17,  // 62: muse.ListWorldInfoEntriesResponse.entries:type_name -> muse.WorldInfoEntry
+	3,   // 63: muse.AddWorldInfoEntryRequest.position:type_name -> muse.EntryPosition
+	17,  // 64: muse.AddWorldInfoEntryResponse.entry:type_name -> muse.WorldInfoEntry
+	3,   // 65: muse.UpdateWorldInfoEntryRequest.position:type_name -> muse.EntryPosition
+	17,  // 66: muse.UpdateWorldInfoEntryResponse.entry:type_name -> muse.WorldInfoEntry
+	18,  // 67: muse.ListAPIConfigsResponse.configs:type_name -> muse.APIConfig
+	18,  // 68: muse.GetAPIConfigResponse.config:type_name -> muse.APIConfig
+	4,   // 69: muse.CreateAPIConfigRequest.provider:type_name -> muse.APIProvider
+	18,  // 70: muse.CreateAPIConfigResponse.config:type_name -> muse.APIConfig
+	4,   // 71: muse.UpdateAPIConfigRequest.provider:type_name -> muse.APIProvider
+	18,  // 72: muse.UpdateAPIConfigResponse.config:type_name -> muse.APIConfig
+	19,  // 73: muse.AuthService.Register:input_type -> muse.RegisterRequest
+	21,  // 74: muse.AuthService.Login:input_type -> muse.LoginRequest
+	23,  // 75: muse.AuthService.GetCurrentUser:input_type -> muse.GetCurrentUserRequest
+	25,  // 76: muse.AuthService.ChangePassword:input_type -> muse.ChangePasswordRequest
+	27,  // 77: muse.PersonaService.ListPersonas:input_type -> muse.ListPersonasRequest
+	29,  // 78: muse.PersonaService.GetPersona:input_type -> muse.GetPersonaRequest
+	31,  // 79: muse.PersonaService.CreatePersona:input_type -> muse.CreatePersonaRequest
+	33,  // 80: muse.PersonaService.UpdatePersona:input_type -> muse.UpdatePersonaRequest
+	35,  // 81: muse.PersonaService.DeletePersona:input_type -> muse.DeletePersonaRequest
+	37,  // 82: muse.PersonaService.SetActivePersona:input_type -> muse.SetActivePersonaRequest
+	39,  // 83: muse.UserSettingService.GetUserSetting:input_type -> muse.GetUserSettingRequest
+	41,  // 84: muse.UserSettingService.UpdateUserSetting:input_type -> muse.UpdateUserSettingRequest
+	43,  // 85: muse.CharacterService.ListCharacters:input_type -> muse.ListCharactersRequest
+	45,  // 86: muse.CharacterService.GetCharacter:input_type -> muse.GetCharacterRequest
+	47,  // 87: muse.CharacterService.CreateCharacter:input_type -> muse.CreateCharacterRequest
+	49,  // 88: muse.CharacterService.UpdateCharacter:input_type -> muse.UpdateCharacterRequest
+	51,  // 89: muse.CharacterService.DeleteCharacter:input_type -> muse.DeleteCharacterRequest
+	53,  // 90: muse.CharacterService.ImportCharacter:input_type -> muse.ImportCharacterRequest
+	55,  // 91: muse.CharacterService.ExportCharacter:input_type -> muse.ExportCharacterRequest
+	57,  // 92: muse.CharacterService.RestoreCharacterWorldInfo:input_type -> muse.RestoreCharacterWorldInfoRequest
+	59,  // 93: muse.ChatService.ListChatSessions:input_type -> muse.ListChatSessionsRequest
+	61,  // 94: muse.ChatService.GetChatSession:input_type -> muse.GetChatSessionRequest
+	63,  // 95: muse.ChatService.CreateChatSession:input_type -> muse.CreateChatSessionRequest
+	65,  // 96: muse.ChatService.UpdateChatSession:input_type -> muse.UpdateChatSessionRequest
+	67,  // 97: muse.ChatService.DeleteChatSession:input_type -> muse.DeleteChatSessionRequest
+	69,  // 98: muse.ChatService.SendMessage:input_type -> muse.SendMessageRequest
+	71,  // 99: muse.ChatService.RegenerateMessage:input_type -> muse.RegenerateMessageRequest
+	73,  // 100: muse.ChatService.EditMessage:input_type -> muse.EditMessageRequest
+	75,  // 101: muse.ChatService.DeleteMessage:input_type -> muse.DeleteMessageRequest
+	77,  // 102: muse.ChatService.SwitchSwipe:input_type -> muse.SwitchSwipeRequest
+	79,  // 103: muse.PresetService.ListPresets:input_type -> muse.ListPresetsRequest
+	81,  // 104: muse.PresetService.GetPreset:input_type -> muse.GetPresetRequest
+	83,  // 105: muse.PresetService.CreatePreset:input_type -> muse.CreatePresetRequest
+	87,  // 106: muse.PresetService.UpdatePreset:input_type -> muse.UpdatePresetRequest
+	89,  // 107: muse.PresetService.DeletePreset:input_type -> muse.DeletePresetRequest
+	91,  // 108: muse.PresetService.SetActivePreset:input_type -> muse.SetActivePresetRequest
+	93,  // 109: muse.PresetService.ImportPreset:input_type -> muse.ImportPresetRequest
+	95,  // 110: muse.PresetService.ExportPreset:input_type -> muse.ExportPresetRequest
+	97,  // 111: muse.PromptItemService.ListPromptItems:input_type -> muse.ListPromptItemsRequest
+	99,  // 112: muse.PromptItemService.AddPromptItem:input_type -> muse.AddPromptItemRequest
+	101, // 113: muse.PromptItemService.UpdatePromptItem:input_type -> muse.UpdatePromptItemRequest
+	103, // 114: muse.PromptItemService.DeletePromptItem:input_type -> muse.DeletePromptItemRequest
+	105, // 115: muse.PromptItemService.UpdatePromptItemsOrder:input_type -> muse.UpdatePromptItemsOrderRequest
+	107, // 116: muse.RegexRuleService.ListRegexRules:input_type -> muse.ListRegexRulesRequest
+	109, // 117: muse.RegexRuleService.AddRegexRule:input_type -> muse.AddRegexRuleRequest
+	111, // 118: muse.RegexRuleService.UpdateRegexRule:input_type -> muse.UpdateRegexRuleRequest
+	113, // 119: muse.RegexRuleService.DeleteRegexRule:input_type -> muse.DeleteRegexRuleRequest
+	115, // 120: muse.RegexRuleService.UpdateRegexRulesOrder:input_type -> muse.UpdateRegexRulesOrderRequest
+	117, // 121: muse.WorldInfoService.ListWorldInfos:input_type -> muse.ListWorldInfosRequest
+	119, // 122: muse.WorldInfoService.GetWorldInfo:input_type -> muse.GetWorldInfoRequest
+	121, // 123: muse.WorldInfoService.CreateWorldInfo:input_type -> muse.CreateWorldInfoRequest
+	123, // 124: muse.WorldInfoService.UpdateWorldInfo:input_type -> muse.UpdateWorldInfoRequest
+	125, // 125: muse.WorldInfoService.DeleteWorldInfo:input_type -> muse.DeleteWorldInfoRequest
+	127, // 126: muse.WorldInfoService.ImportWorldInfo:input_type -> muse.ImportWorldInfoRequest
+	129, // 127: muse.WorldInfoService.ExportWorldInfo:input_type -> muse.ExportWorldInfoRequest
+	131, // 128: muse.WorldInfoEntryService.ListWorldInfoEntries:input_type -> muse.ListWorldInfoEntriesRequest
+	133, // 129: muse.WorldInfoEntryService.AddWorldInfoEntry:input_type -> muse.AddWorldInfoEntryRequest
+	135, // 130: muse.WorldInfoEntryService.UpdateWorldInfoEntry:input_type -> muse.UpdateWorldInfoEntryRequest
+	137, // 131: muse.WorldInfoEntryService.DeleteWorldInfoEntry:input_type -> muse.DeleteWorldInfoEntryRequest
+	139, // 132: muse.WorldInfoEntryService.UpdateWorldInfoEntriesOrder:input_type -> muse.UpdateWorldInfoEntriesOrderRequest
+	141, // 133: muse.APIConfigService.ListAPIConfigs:input_type -> muse.ListAPIConfigsRequest
+	143, // 134: muse.APIConfigService.GetAPIConfig:input_type -> muse.GetAPIConfigRequest
+	145, // 135: muse.APIConfigService.CreateAPIConfig:input_type -> muse.CreateAPIConfigRequest
+	147, // 136: muse.APIConfigService.UpdateAPIConfig:input_type -> muse.UpdateAPIConfigRequest
+	149, // 137: muse.APIConfigService.DeleteAPIConfig:input_type -> muse.DeleteAPIConfigRequest
+	151, // 138: muse.APIConfigService.SetActiveAPIConfig:input_type -> muse.SetActiveAPIConfigRequest
+	153, // 139: muse.APIConfigService.TestAPIConfig:input_type -> muse.TestAPIConfigRequest
+	20,  // 140: muse.AuthService.Register:output_type -> muse.RegisterResponse
+	22,  // 141: muse.AuthService.Login:output_type -> muse.LoginResponse
+	24,  // 142: muse.AuthService.GetCurrentUser:output_type -> muse.GetCurrentUserResponse
+	26,  // 143: muse.AuthService.ChangePassword:output_type -> muse.ChangePasswordResponse
+	28,  // 144: muse.PersonaService.ListPersonas:output_type -> muse.ListPersonasResponse
+	30,  // 145: muse.PersonaService.GetPersona:output_type -> muse.GetPersonaResponse
+	32,  // 146: muse.PersonaService.CreatePersona:output_type -> muse.CreatePersonaResponse
+	34,  // 147: muse.PersonaService.UpdatePersona:output_type -> muse.UpdatePersonaResponse
+	36,  // 148: muse.PersonaService.DeletePersona:output_type -> muse.DeletePersonaResponse
+	38,  // 149: muse.PersonaService.SetActivePersona:output_type -> muse.SetActivePersonaResponse
+	40,  // 150: muse.UserSettingService.GetUserSetting:output_type -> muse.GetUserSettingResponse
+	42,  // 151: muse.UserSettingService.UpdateUserSetting:output_type -> muse.UpdateUserSettingResponse
+	44,  // 152: muse.CharacterService.ListCharacters:output_type -> muse.ListCharactersResponse
+	46,  // 153: muse.CharacterService.GetCharacter:output_type -> muse.GetCharacterResponse
+	48,  // 154: muse.CharacterService.CreateCharacter:output_type -> muse.CreateCharacterResponse
+	50,  // 155: muse.CharacterService.UpdateCharacter:output_type -> muse.UpdateCharacterResponse
+	52,  // 156: muse.CharacterService.DeleteCharacter:output_type -> muse.DeleteCharacterResponse
+	54,  // 157: muse.CharacterService.ImportCharacter:output_type -> muse.ImportCharacterResponse
+	56,  // 158: muse.CharacterService.ExportCharacter:output_type -> muse.ExportCharacterResponse
+	58,  // 159: muse.CharacterService.RestoreCharacterWorldInfo:output_type -> muse.RestoreCharacterWorldInfoResponse
+	60,  // 160: muse.ChatService.ListChatSessions:output_type -> muse.ListChatSessionsResponse
+	62,  // 161: muse.ChatService.GetChatSession:output_type -> muse.GetChatSessionResponse
+	64,  // 162: muse.ChatService.CreateChatSession:output_type -> muse.CreateChatSessionResponse
+	66,  // 163: muse.ChatService.UpdateChatSession:output_type -> muse.UpdateChatSessionResponse
+	68,  // 164: muse.ChatService.DeleteChatSession:output_type -> muse.DeleteChatSessionResponse
+	70,  // 165: muse.ChatService.SendMessage:output_type -> muse.SendMessageResponse
+	72,  // 166: muse.ChatService.RegenerateMessage:output_type -> muse.RegenerateMessageResponse
+	74,  // 167: muse.ChatService.EditMessage:output_type -> muse.EditMessageResponse
+	76,  // 168: muse.ChatService.DeleteMessage:output_type -> muse.DeleteMessageResponse
+	78,  // 169: muse.ChatService.SwitchSwipe:output_type -> muse.SwitchSwipeResponse
+	80,  // 170: muse.PresetService.ListPresets:output_type -> muse.ListPresetsResponse
+	82,  // 171: muse.PresetService.GetPreset:output_type -> muse.GetPresetResponse
+	86,  // 172: muse.PresetService.CreatePreset:output_type -> muse.CreatePresetResponse
+	88,  // 173: muse.PresetService.UpdatePreset:output_type -> muse.UpdatePresetResponse
+	90,  // 174: muse.PresetService.DeletePreset:output_type -> muse.DeletePresetResponse
+	92,  // 175: muse.PresetService.SetActivePreset:output_type -> muse.SetActivePresetResponse
+	94,  // 176: muse.PresetService.ImportPreset:output_type -> muse.ImportPresetResponse
+	96,  // 177: muse.PresetService.ExportPreset:output_type -> muse.ExportPresetResponse
+	98,  // 178: muse.PromptItemService.ListPromptItems:output_type -> muse.ListPromptItemsResponse
+	100, // 179: muse.PromptItemService.AddPromptItem:output_type -> muse.AddPromptItemResponse
+	102, // 180: muse.PromptItemService.UpdatePromptItem:output_type -> muse.UpdatePromptItemResponse
+	104, // 181: muse.PromptItemService.DeletePromptItem:output_type -> muse.DeletePromptItemResponse
+	106, // 182: muse.PromptItemService.UpdatePromptItemsOrder:output_type -> muse.UpdatePromptItemsOrderResponse
+	108, // 183: muse.RegexRuleService.ListRegexRules:output_type -> muse.ListRegexRulesResponse
+	110, // 184: muse.RegexRuleService.AddRegexRule:output_type -> muse.AddRegexRuleResponse
+	112, // 185: muse.RegexRuleService.UpdateRegexRule:output_type -> muse.UpdateRegexRuleResponse
+	114, // 186: muse.RegexRuleService.DeleteRegexRule:output_type -> muse.DeleteRegexRuleResponse
+	116, // 187: muse.RegexRuleService.UpdateRegexRulesOrder:output_type -> muse.UpdateRegexRulesOrderResponse
+	118, // 188: muse.WorldInfoService.ListWorldInfos:output_type -> muse.ListWorldInfosResponse
+	120, // 189: muse.WorldInfoService.GetWorldInfo:output_type -> muse.GetWorldInfoResponse
+	122, // 190: muse.WorldInfoService.CreateWorldInfo:output_type -> muse.CreateWorldInfoResponse
+	124, // 191: muse.WorldInfoService.UpdateWorldInfo:output_type -> muse.UpdateWorldInfoResponse
+	126, // 192: muse.WorldInfoService.DeleteWorldInfo:output_type -> muse.DeleteWorldInfoResponse
+	128, // 193: muse.WorldInfoService.ImportWorldInfo:output_type -> muse.ImportWorldInfoResponse
+	130, // 194: muse.WorldInfoService.ExportWorldInfo:output_type -> muse.ExportWorldInfoResponse
+	132, // 195: muse.WorldInfoEntryService.ListWorldInfoEntries:output_type -> muse.ListWorldInfoEntriesResponse
+	134, // 196: muse.WorldInfoEntryService.AddWorldInfoEntry:output_type -> muse.AddWorldInfoEntryResponse
+	136, // 197: muse.WorldInfoEntryService.UpdateWorldInfoEntry:output_type -> muse.UpdateWorldInfoEntryResponse
+	138, // 198: muse.WorldInfoEntryService.DeleteWorldInfoEntry:output_type -> muse.DeleteWorldInfoEntryResponse
+	140, // 199: muse.WorldInfoEntryService.UpdateWorldInfoEntriesOrder:output_type -> muse.UpdateWorldInfoEntriesOrderResponse
+	142, // 200: muse.APIConfigService.ListAPIConfigs:output_type -> muse.ListAPIConfigsResponse
+	144, // 201: muse.APIConfigService.GetAPIConfig:output_type -> muse.GetAPIConfigResponse
+	146, // 202: muse.APIConfigService.CreateAPIConfig:output_type -> muse.CreateAPIConfigResponse
+	148, // 203: muse.APIConfigService.UpdateAPIConfig:output_type -> muse.UpdateAPIConfigResponse
+	150, // 204: muse.APIConfigService.DeleteAPIConfig:output_type -> muse.DeleteAPIConfigResponse
+	152, // 205: muse.APIConfigService.SetActiveAPIConfig:output_type -> muse.SetActiveAPIConfigResponse
+	154, // 206: muse.APIConfigService.TestAPIConfig:output_type -> muse.TestAPIConfigResponse
 	140, // [140:207] is the sub-list for method output_type
 	73,  // [73:140] is the sub-list for method input_type
 	73,  // [73:73] is the sub-list for extension type_name
@@ -10516,59 +10515,59 @@ var file_muse_v1_muse_proto_depIdxs = []int32{
 	0,   // [0:73] is the sub-list for field type_name
 }
 
-func init() { file_muse_v1_muse_proto_init() }
-func file_muse_v1_muse_proto_init() {
-	if File_muse_v1_muse_proto != nil {
+func init() { file_muse_muse_proto_init() }
+func file_muse_muse_proto_init() {
+	if File_muse_muse_proto != nil {
 		return
 	}
-	file_muse_v1_muse_proto_msgTypes[0].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[1].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[3].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[4].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[8].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[9].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[10].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[11].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[12].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[13].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[25].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[27].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[37].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[41].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[43].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[53].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[57].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[59].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[78].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[79].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[93].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[95].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[103].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[105].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[111].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[115].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[117].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[127].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[129].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[139].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[141].OneofWrappers = []any{}
-	file_muse_v1_muse_proto_msgTypes[148].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[0].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[1].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[3].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[4].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[8].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[9].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[10].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[11].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[12].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[13].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[25].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[27].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[37].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[41].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[43].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[53].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[57].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[59].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[78].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[79].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[93].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[95].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[103].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[105].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[111].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[115].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[117].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[127].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[129].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[139].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[141].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[148].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_muse_v1_muse_proto_rawDesc), len(file_muse_v1_muse_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_muse_muse_proto_rawDesc), len(file_muse_muse_proto_rawDesc)),
 			NumEnums:      6,
 			NumMessages:   149,
 			NumExtensions: 0,
 			NumServices:   11,
 		},
-		GoTypes:           file_muse_v1_muse_proto_goTypes,
-		DependencyIndexes: file_muse_v1_muse_proto_depIdxs,
-		EnumInfos:         file_muse_v1_muse_proto_enumTypes,
-		MessageInfos:      file_muse_v1_muse_proto_msgTypes,
+		GoTypes:           file_muse_muse_proto_goTypes,
+		DependencyIndexes: file_muse_muse_proto_depIdxs,
+		EnumInfos:         file_muse_muse_proto_enumTypes,
+		MessageInfos:      file_muse_muse_proto_msgTypes,
 	}.Build()
-	File_muse_v1_muse_proto = out.File
-	file_muse_v1_muse_proto_goTypes = nil
-	file_muse_v1_muse_proto_depIdxs = nil
+	File_muse_muse_proto = out.File
+	file_muse_muse_proto_goTypes = nil
+	file_muse_muse_proto_depIdxs = nil
 }

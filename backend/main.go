@@ -40,22 +40,17 @@ func main() {
 
 	// 创建HTTP服务器
 	mux := http.NewServeMux()
-	mux.Handle(museconnect.NewAuthServiceHandler(api.NewAuthServer()))
-	mux.Handle(museconnect.NewPersonaServiceHandler(api.NewPersonaServer()))
-	mux.Handle(museconnect.NewUserSettingServiceHandler(api.NewUserSettingServer()))
+	mux.Handle(museconnect.NewUserServiceHandler(api.NewUserServer()))
 	mux.Handle(museconnect.NewCharacterServiceHandler(api.NewCharacterServer()))
 	mux.Handle(museconnect.NewChatServiceHandler(api.NewChatServer()))
 	mux.Handle(museconnect.NewPresetServiceHandler(api.NewPresetServer()))
-	mux.Handle(museconnect.NewPromptItemServiceHandler(api.NewPromptItemServer()))
 	mux.Handle(museconnect.NewRegexRuleServiceHandler(api.NewRegexRuleServer()))
 	mux.Handle(museconnect.NewWorldInfoServiceHandler(api.NewWorldInfoServer()))
-	mux.Handle(museconnect.NewWorldInfoEntryServiceHandler(api.NewWorldInfoEntryServer()))
-	mux.Handle(museconnect.NewAPIConfigServiceHandler(api.NewAPIConfigServer()))
 
 	// 健康检查端点
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("ok"))
+		_, _ = w.Write([]byte("ok"))
 	})
 
 	server := &http.Server{

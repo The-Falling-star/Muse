@@ -52,3 +52,28 @@ func (p *presetImpl) ExportPreset(ctx context.Context, req *pb.ExportPresetReque
 	//TODO implement me
 	panic("implement me")
 }
+
+func (p *presetImpl) ListPromptItems(ctx context.Context, req *pb.ListPromptItemsRequest) (*pb.ListPromptItemsResponse, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (p *presetImpl) AddPromptItem(ctx context.Context, req *pb.AddPromptItemRequest) (*pb.AddPromptItemResponse, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (p *presetImpl) UpdatePromptItem(ctx context.Context, req *pb.UpdatePromptItemRequest) (*pb.UpdatePromptItemResponse, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (p *presetImpl) DeletePromptItem(ctx context.Context, req *pb.DeletePromptItemRequest) (*pb.DeletePromptItemResponse, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (p *presetImpl) UpdatePromptItemsOrder(ctx context.Context, req *pb.UpdatePromptItemsOrderRequest) (*pb.UpdatePromptItemsOrderResponse, error) {
+	//TODO implement me
+	panic("implement me")
+}

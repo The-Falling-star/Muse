@@ -22,7 +22,8 @@ func InitDatabase(cfg *DatabaseConfig) error {
 	var err error
 
 	gormConfig := &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Info),
+		Logger:                                   logger.Default.LogMode(logger.Info),
+		DisableForeignKeyConstraintWhenMigrating: true, // 禁用外键约束
 	}
 
 	if cfg.IsSQLite() {
@@ -45,15 +46,6 @@ func initSQLite(cfg *DatabaseConfig, gormConfig *gorm.Config) (*gorm.DB, error) 
 	database, err := gorm.Open(sqlite.Open(cfg.SQLitePath), gormConfig)
 	if err != nil {
 		return nil, fmt.Errorf("连接SQLite数据库失败: %w", err)
-	}
-
-	// SQLite 开启外键约束
-	sqlDB, err := database.DB()
-	if err != nil {
-		return nil, fmt.Errorf("获取数据库实例失败: %w", err)
-	}
-	if _, err := sqlDB.Exec("PRAGMA foreign_keys = ON"); err != nil {
-		return nil, fmt.Errorf("开启外键约束失败: %w", err)
 	}
 
 	// SQLite 模式自动建表

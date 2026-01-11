@@ -2,7 +2,7 @@
 package constants
 
 // MessageRole 消息角色枚举
-type MessageRole uint8
+type MessageRole int
 
 const (
 	// MessageRoleSystem 系统消息
@@ -28,7 +28,7 @@ func (r MessageRole) String() string {
 }
 
 // PromptItemRole 提示项角色枚举
-type PromptItemRole uint8
+type PromptItemRole int
 
 const (
 	// PromptItemRoleSystem 系统角色
@@ -54,7 +54,7 @@ func (r PromptItemRole) String() string {
 }
 
 // InjectionPosition 注入位置枚举
-type InjectionPosition uint8
+type InjectionPosition int
 
 const (
 	// InjectionPositionRelative 相对位置
@@ -64,7 +64,7 @@ const (
 )
 
 // EntryPosition 世界书条目插入位置枚举
-type EntryPosition uint8
+type EntryPosition int
 
 const (
 	// EntryPositionBeforeChar 角色定义之前
@@ -98,7 +98,7 @@ func (p EntryPosition) String() string {
 }
 
 // APIProvider API提供商枚举
-type APIProvider uint8
+type APIProvider int
 
 const (
 	// APIProviderOpenAI OpenAI兼容协议
@@ -124,7 +124,7 @@ func (p APIProvider) String() string {
 }
 
 // Theme 主题枚举
-type Theme uint8
+type Theme uint
 
 const (
 	// ThemeAuto 跟随系统
@@ -150,7 +150,7 @@ func (t Theme) String() string {
 }
 
 // RegexAffectFlags 正则规则作用范围位掩码
-type RegexAffectFlags uint32
+type RegexAffectFlags uint
 
 const (
 	// RegexAffectUserInput 作用于用户输入

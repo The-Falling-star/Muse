@@ -63,30 +63,30 @@ enum Theme {
 
 // User 用户信息
 message User {
-  uint32 id = 1;
+  int32 id = 1;
   string username = 2;
-  optional string email = 3;
-  optional uint32 active_persona_id = 4;
-  optional uint32 active_preset_id = 5;
+  string email = 3;
+  int32 active_persona_id = 4;
+  int32 active_preset_id = 5;
   int64 created_at = 6;
   int64 updated_at = 7;
 }
 
 // Persona 用户人设
 message Persona {
-  uint32 id = 1;
-  uint32 user_id = 2;
+  int32 id = 1;
+  int32 user_id = 2;
   string name = 3;
-  optional string avatar = 4;
-  optional string description = 5;
+  string avatar = 4;
+  string description = 5;
   int64 created_at = 6;
   int64 updated_at = 7;
 }
 
 // UserSetting 用户设置
 message UserSetting {
-  uint32 id = 1;
-  uint32 user_id = 2;
+  int32 id = 1;
+  int32 user_id = 2;
   Theme theme = 3;
   string language = 4;
   bool send_on_enter = 5;
@@ -101,23 +101,23 @@ message UserSetting {
 
 // Character 角色卡
 message Character {
-  uint32 id = 1;
-  uint32 user_id = 2;
+  int32 id = 1;
+  int32 user_id = 2;
   string name = 3;
-  optional string avatar = 4;
-  optional string description = 5;
-  optional string personality = 6;
-  optional string scenario = 7;
-  optional string first_message = 8;
-  optional string example_dialogue = 9;
-  optional string creator_notes = 10;
-  optional string system_prompt = 11;
-  optional uint32 world_info_id = 12;
-  uint32 version = 13;
+  string avatar = 4;
+  string description = 5;
+  string personality = 6;
+  string scenario = 7;
+  string first_message = 8;
+  string example_dialogue = 9;
+  string creator_notes = 10;
+  string system_prompt = 11;
+  int32 world_info_id = 12;
+  int64 version = 13;
   int64 created_at = 14;
   int64 updated_at = 15;
   // 关联的世界书（可选加载）
-  optional WorldInfo world_info = 16;
+  WorldInfo world_info = 16;
 }
 
 // ================================
@@ -126,22 +126,22 @@ message Character {
 
 // ChatSession 聊天会话
 message ChatSession {
-  uint32 id = 1;
-  uint32 user_id = 2;
-  uint32 character_id = 3;
-  optional string name = 4;
-  uint32 version = 5;
+  int32 id = 1;
+  int32 user_id = 2;
+  int32 character_id = 3;
+  string name = 4;
+  int64 version = 5;
   int64 created_at = 6;
   int64 updated_at = 7;
   // 关联数据（可选加载）
-  optional Character character = 8;
+  Character character = 8;
   repeated Message messages = 9;
 }
 
 // Message 消息
 message Message {
-  uint32 id = 1;
-  uint32 session_id = 2;
+  int32 id = 1;
+  int32 session_id = 2;
   MessageRole role = 3;
   int32 active_swipe_index = 4;
   int32 sort_order = 5;
@@ -153,8 +153,8 @@ message Message {
 
 // MessageSwipe 消息内容（单个swipe）
 message MessageSwipe {
-  uint32 id = 1;
-  uint32 message_id = 2;
+  int32 id = 1;
+  int32 message_id = 2;
   string content = 3;
   int32 sort_order = 4;
   int64 created_at = 5;
@@ -166,8 +166,8 @@ message MessageSwipe {
 
 // Preset 预设
 message Preset {
-  uint32 id = 1;
-  uint32 user_id = 2;
+  int32 id = 1;
+  int32 user_id = 2;
   string name = 3;
   double temperature = 4;
   double top_p = 5;
@@ -175,7 +175,7 @@ message Preset {
   int32 max_tokens = 7;
   double frequency_penalty = 8;
   double presence_penalty = 9;
-  uint32 version = 10;
+  int64 version = 10;
   int64 created_at = 11;
   int64 updated_at = 12;
   // 关联数据（可选加载）
@@ -185,11 +185,11 @@ message Preset {
 
 // PromptItem 提示项
 message PromptItem {
-  uint32 id = 1;
-  uint32 preset_id = 2;
+  int32 id = 1;
+  int32 preset_id = 2;
   string identifier = 3;
   string name = 4;
-  optional string content = 5;
+  string content = 5;
   PromptItemRole role = 6;
   bool is_enabled = 7;
   InjectionPosition injection_position = 8;
@@ -202,17 +202,17 @@ message PromptItem {
 
 // RegexRule 正则规则
 message RegexRule {
-  uint32 id = 1;
-  uint32 preset_id = 2;
+  int32 id = 1;
+  int32 preset_id = 2;
   string name = 3;
   string find_pattern = 4;
-  optional string replace_pattern = 5;
+  string replace_pattern = 5;
   bool is_enabled = 6;
   bool run_on_edit = 7;
   bool substitute_regex = 8;
-  optional int32 min_depth = 9;
-  optional int32 max_depth = 10;
-  uint32 affect_flags = 11;  // 位掩码
+  int32 min_depth = 9;
+  int32 max_depth = 10;
+  int64 affect_flags = 11;  // 位掩码
   int32 sort_order = 12;
   int64 created_at = 13;
   int64 updated_at = 14;
@@ -224,10 +224,10 @@ message RegexRule {
 
 // WorldInfo 世界书
 message WorldInfo {
-  uint32 id = 1;
-  uint32 user_id = 2;
+  int32 id = 1;
+  int32 user_id = 2;
   string name = 3;
-  optional string description = 4;
+  string description = 4;
   bool is_global = 5;
   int64 created_at = 6;
   int64 updated_at = 7;
@@ -237,13 +237,13 @@ message WorldInfo {
 
 // WorldInfoEntry 世界书条目
 message WorldInfoEntry {
-  uint32 id = 1;
-  uint32 world_info_id = 2;
-  optional string uid = 3;
+  int32 id = 1;
+  int32 world_info_id = 2;
+  string uid = 3;
   string keys_list = 4;
-  optional string secondary_keys = 5;
+  string secondary_keys = 5;
   string content = 6;
-  optional string comment = 7;
+  string comment = 7;
   bool is_enabled = 8;
   bool constant = 9;
   bool selective = 10;
@@ -256,25 +256,25 @@ message WorldInfoEntry {
 }
 
 // ================================
-// API配置相关消息
+// API配置相关
 // ================================
 
 // APIConfig API配置
 message APIConfig {
-  uint32 id = 1;
-  uint32 user_id = 2;
+  int32 id = 1;
+  int32 user_id = 2;
   string name = 3;
   APIProvider provider = 4;
   string api_key = 5;  // 创建/更新时使用，查询时不返回
-  optional string base_url = 6;
-  optional string model = 7;
+  string base_url = 6;
+  string model = 7;
   bool is_active = 8;
   int64 created_at = 9;
   int64 updated_at = 10;
 }
 
 // ================================
-// 认证服务
+// 认证
 // ================================
 
 // 注册请求
@@ -319,20 +319,8 @@ message ChangePasswordRequest {
 // 修改密码响应
 message ChangePasswordResponse {}
 
-// 认证服务
-service AuthService {
-  // 用户注册
-  rpc Register(RegisterRequest) returns (RegisterResponse);
-  // 用户登录
-  rpc Login(LoginRequest) returns (LoginResponse);
-  // 获取当前用户信息
-  rpc GetCurrentUser(GetCurrentUserRequest) returns (GetCurrentUserResponse);
-  // 修改密码
-  rpc ChangePassword(ChangePasswordRequest) returns (ChangePasswordResponse);
-}
-
 // ================================
-// 人设服务
+// 用户服务（包含认证、人设、用户设置和API配置的管理）
 // ================================
 
 // 获取人设列表请求
@@ -345,7 +333,7 @@ message ListPersonasResponse {
 
 // 获取单个人设请求
 message GetPersonaRequest {
-  uint32 id = 1;
+  int32 id = 1;
 }
 
 // 获取单个人设响应
@@ -367,7 +355,7 @@ message CreatePersonaResponse {
 
 // 更新人设请求
 message UpdatePersonaRequest {
-  uint32 id = 1;
+  int32 id = 1;
   string name = 2;
   optional string avatar = 3;
   optional string description = 4;
@@ -380,7 +368,7 @@ message UpdatePersonaResponse {
 
 // 删除人设请求
 message DeletePersonaRequest {
-  uint32 id = 1;
+  int32 id = 1;
 }
 
 // 删除人设响应
@@ -388,30 +376,14 @@ message DeletePersonaResponse {}
 
 // 设置活跃人设请求
 message SetActivePersonaRequest {
-  uint32 persona_id = 1;
+  int32 persona_id = 1;
 }
 
 // 设置活跃人设响应
 message SetActivePersonaResponse {}
 
-// 人设服务
-service PersonaService {
-  // 获取人设列表
-  rpc ListPersonas(ListPersonasRequest) returns (ListPersonasResponse);
-  // 获取单个人设
-  rpc GetPersona(GetPersonaRequest) returns (GetPersonaResponse);
-  // 创建人设
-  rpc CreatePersona(CreatePersonaRequest) returns (CreatePersonaResponse);
-  // 更新人设
-  rpc UpdatePersona(UpdatePersonaRequest) returns (UpdatePersonaResponse);
-  // 删除人设
-  rpc DeletePersona(DeletePersonaRequest) returns (DeletePersonaResponse);
-  // 设置活跃人设
-  rpc SetActivePersona(SetActivePersonaRequest) returns (SetActivePersonaResponse);
-}
-
 // ================================
-// 用户设置服务
+// 用户设置
 // ================================
 
 // 获取用户设置请求
@@ -435,12 +407,128 @@ message UpdateUserSettingResponse {
   UserSetting setting = 1;
 }
 
-// 用户设置服务
-service UserSettingService {
+// ================================
+// API配置
+// ================================
+
+// 获取API配置列表请求
+message ListAPIConfigsRequest {}
+
+// 获取API配置列表响应
+message ListAPIConfigsResponse {
+  repeated APIConfig configs = 1;
+}
+
+// 获取单个API配置请求
+message GetAPIConfigRequest {
+  int32 id = 1;
+}
+
+// 获取单个API配置响应
+message GetAPIConfigResponse {
+  APIConfig config = 1;
+}
+
+// 创建API配置请求
+message CreateAPIConfigRequest {
+  string name = 1;
+  APIProvider provider = 2;
+  string api_key = 3;
+  optional string base_url = 4;
+  optional string model = 5;
+}
+
+// 创建API配置响应
+message CreateAPIConfigResponse {
+  APIConfig config = 1;
+}
+
+// 更新API配置请求
+message UpdateAPIConfigRequest {
+  int32 id = 1;
+  string name = 2;
+  APIProvider provider = 3;
+  optional string api_key = 4;  // 可选，不传则不更新
+  optional string base_url = 5;
+  optional string model = 6;
+}
+
+// 更新API配置响应
+message UpdateAPIConfigResponse {
+  APIConfig config = 1;
+}
+
+// 删除API配置请求
+message DeleteAPIConfigRequest {
+  int32 id = 1;
+}
+
+// 删除API配置响应
+message DeleteAPIConfigResponse {}
+
+// 设置活跃API配置请求
+message SetActiveAPIConfigRequest {
+  int32 config_id = 1;
+}
+
+// 设置活跃API配置响应
+message SetActiveAPIConfigResponse {}
+
+// 测试API配置请求
+message TestAPIConfigRequest {
+  int32 id = 1;
+}
+
+// 测试API配置响应
+message TestAPIConfigResponse {
+  bool success = 1;
+  optional string error_message = 2;
+  optional string model_info = 3;  // 返回的模型信息
+}
+
+// 用户服务（包含认证、人设、用户设置和API配置的管理）
+service UserService {
+  // 用户注册
+  rpc Register(RegisterRequest) returns (RegisterResponse);
+  // 用户登录
+  rpc Login(LoginRequest) returns (LoginResponse);
+  // 获取当前用户信息
+  rpc GetCurrentUser(GetCurrentUserRequest) returns (GetCurrentUserResponse);
+  // 修改密码
+  rpc ChangePassword(ChangePasswordRequest) returns (ChangePasswordResponse);
+
+  // 获取人设列表
+  rpc ListPersonas(ListPersonasRequest) returns (ListPersonasResponse);
+  // 获取单个人设
+  rpc GetPersona(GetPersonaRequest) returns (GetPersonaResponse);
+  // 创建人设
+  rpc CreatePersona(CreatePersonaRequest) returns (CreatePersonaResponse);
+  // 更新人设
+  rpc UpdatePersona(UpdatePersonaRequest) returns (UpdatePersonaResponse);
+  // 删除人设
+  rpc DeletePersona(DeletePersonaRequest) returns (DeletePersonaResponse);
+  // 设置活跃人设
+  rpc SetActivePersona(SetActivePersonaRequest) returns (SetActivePersonaResponse);
+
   // 获取用户设置
   rpc GetUserSetting(GetUserSettingRequest) returns (GetUserSettingResponse);
   // 更新用户设置
   rpc UpdateUserSetting(UpdateUserSettingRequest) returns (UpdateUserSettingResponse);
+
+  // 获取API配置列表
+  rpc ListAPIConfigs(ListAPIConfigsRequest) returns (ListAPIConfigsResponse);
+  // 获取单个API配置
+  rpc GetAPIConfig(GetAPIConfigRequest) returns (GetAPIConfigResponse);
+  // 创建API配置
+  rpc CreateAPIConfig(CreateAPIConfigRequest) returns (CreateAPIConfigResponse);
+  // 更新API配置
+  rpc UpdateAPIConfig(UpdateAPIConfigRequest) returns (UpdateAPIConfigResponse);
+  // 删除API配置
+  rpc DeleteAPIConfig(DeleteAPIConfigRequest) returns (DeleteAPIConfigResponse);
+  // 设置活跃API配置
+  rpc SetActiveAPIConfig(SetActiveAPIConfigRequest) returns (SetActiveAPIConfigResponse);
+  // 测试API配置连接
+  rpc TestAPIConfig(TestAPIConfigRequest) returns (TestAPIConfigResponse);
 }
 
 // ================================
@@ -461,7 +549,7 @@ message ListCharactersResponse {
 
 // 获取单个角色卡请求
 message GetCharacterRequest {
-  uint32 id = 1;
+  int32 id = 1;
 }
 
 // 获取单个角色卡响应
@@ -480,7 +568,7 @@ message CreateCharacterRequest {
   optional string example_dialogue = 7;
   optional string creator_notes = 8;
   optional string system_prompt = 9;
-  optional uint32 world_info_id = 10;
+  optional int32 world_info_id = 10;
 }
 
 // 创建角色卡响应
@@ -490,7 +578,7 @@ message CreateCharacterResponse {
 
 // 更新角色卡请求
 message UpdateCharacterRequest {
-  uint32 id = 1;
+  int32 id = 1;
   string name = 2;
   optional string avatar = 3;
   optional string description = 4;
@@ -500,8 +588,8 @@ message UpdateCharacterRequest {
   optional string example_dialogue = 8;
   optional string creator_notes = 9;
   optional string system_prompt = 10;
-  optional uint32 world_info_id = 11;
-  uint32 version = 12;  // 乐观锁版本号
+  optional int32 world_info_id = 11;
+  int64 version = 12;  // 乐观锁版本号
 }
 
 // 更新角色卡响应
@@ -511,7 +599,7 @@ message UpdateCharacterResponse {
 
 // 删除角色卡请求
 message DeleteCharacterRequest {
-  uint32 id = 1;
+  int32 id = 1;
 }
 
 // 删除角色卡响应
@@ -530,7 +618,7 @@ message ImportCharacterResponse {
 
 // 导出角色卡请求
 message ExportCharacterRequest {
-  uint32 id = 1;
+  int32 id = 1;
   string format = 2;  // "png" 或 "json"
 }
 
@@ -542,7 +630,7 @@ message ExportCharacterResponse {
 
 // 恢复角色卡世界书请求
 message RestoreCharacterWorldInfoRequest {
-  uint32 character_id = 1;
+  int32 character_id = 1;
 }
 
 // 恢复角色卡世界书响应
@@ -576,7 +664,7 @@ service CharacterService {
 
 // 获取会话列表请求
 message ListChatSessionsRequest {
-  optional uint32 character_id = 1;  // 可选，按角色筛选
+  optional int32 character_id = 1;  // 可选，按角色筛选
   optional int32 page = 2;
   optional int32 page_size = 3;
 }
@@ -589,7 +677,7 @@ message ListChatSessionsResponse {
 
 // 获取单个会话请求
 message GetChatSessionRequest {
-  uint32 id = 1;
+  int32 id = 1;
   bool include_messages = 2;  // 是否包含消息
 }
 
@@ -600,7 +688,7 @@ message GetChatSessionResponse {
 
 // 创建会话请求
 message CreateChatSessionRequest {
-  uint32 character_id = 1;
+  int32 character_id = 1;
   optional string name = 2;
 }
 
@@ -611,9 +699,9 @@ message CreateChatSessionResponse {
 
 // 更新会话请求
 message UpdateChatSessionRequest {
-  uint32 id = 1;
+  int32 id = 1;
   optional string name = 2;
-  uint32 version = 3;  // 乐观锁版本号
+  int64 version = 3;  // 乐观锁版本号
 }
 
 // 更新会话响应
@@ -623,7 +711,7 @@ message UpdateChatSessionResponse {
 
 // 删除会话请求
 message DeleteChatSessionRequest {
-  uint32 id = 1;
+  int32 id = 1;
 }
 
 // 删除会话响应
@@ -631,7 +719,7 @@ message DeleteChatSessionResponse {}
 
 // 发送消息请求
 message SendMessageRequest {
-  uint32 session_id = 1;
+  int32 session_id = 1;
   string content = 2;
 }
 
@@ -645,7 +733,7 @@ message SendMessageResponse {
 
 // 重新生成消息请求
 message RegenerateMessageRequest {
-  uint32 message_id = 1;  // 要重新生成的AI消息ID
+  int32 message_id = 1;  // 要重新生成的AI消息ID
 }
 
 // 重新生成消息响应（流式）
@@ -657,8 +745,8 @@ message RegenerateMessageResponse {
 
 // 编辑消息请求
 message EditMessageRequest {
-  uint32 message_id = 1;
-  uint32 swipe_id = 2;     // 要编辑的swipe ID
+  int32 message_id = 1;
+  int32 swipe_id = 2;     // 要编辑的swipe ID
   string content = 3;      // 新内容
 }
 
@@ -669,7 +757,7 @@ message EditMessageResponse {
 
 // 删除消息请求
 message DeleteMessageRequest {
-  uint32 message_id = 1;
+  int32 message_id = 1;
 }
 
 // 删除消息响应
@@ -677,7 +765,7 @@ message DeleteMessageResponse {}
 
 // 切换Swipe请求
 message SwitchSwipeRequest {
-  uint32 message_id = 1;
+  int32 message_id = 1;
   int32 swipe_index = 2;
 }
 
@@ -724,7 +812,7 @@ message ListPresetsResponse {
 
 // 获取单个预设请求
 message GetPresetRequest {
-  uint32 id = 1;
+  int32 id = 1;
 }
 
 // 获取单个预设响应
@@ -768,7 +856,7 @@ message CreateRegexRuleRequest {
   bool substitute_regex = 6;
   optional int32 min_depth = 7;
   optional int32 max_depth = 8;
-  uint32 affect_flags = 9;
+  int64 affect_flags = 9;
   int32 sort_order = 10;
 }
 
@@ -779,7 +867,7 @@ message CreatePresetResponse {
 
 // 更新预设请求
 message UpdatePresetRequest {
-  uint32 id = 1;
+  int32 id = 1;
   string name = 2;
   double temperature = 3;
   double top_p = 4;
@@ -787,7 +875,7 @@ message UpdatePresetRequest {
   int32 max_tokens = 6;
   double frequency_penalty = 7;
   double presence_penalty = 8;
-  uint32 version = 9;  // 乐观锁版本号
+  int64 version = 9;  // 乐观锁版本号
 }
 
 // 更新预设响应
@@ -797,7 +885,7 @@ message UpdatePresetResponse {
 
 // 删除预设请求
 message DeletePresetRequest {
-  uint32 id = 1;
+  int32 id = 1;
 }
 
 // 删除预设响应
@@ -805,7 +893,7 @@ message DeletePresetResponse {}
 
 // 设置活跃预设请求
 message SetActivePresetRequest {
-  uint32 preset_id = 1;
+  int32 preset_id = 1;
 }
 
 // 设置活跃预设响应
@@ -824,7 +912,7 @@ message ImportPresetResponse {
 
 // 导出预设请求
 message ExportPresetRequest {
-  uint32 id = 1;
+  int32 id = 1;
 }
 
 // 导出预设响应
@@ -833,33 +921,9 @@ message ExportPresetResponse {
   string file_name = 2;
 }
 
-// 预设服务
-service PresetService {
-  // 获取预设列表
-  rpc ListPresets(ListPresetsRequest) returns (ListPresetsResponse);
-  // 获取单个预设
-  rpc GetPreset(GetPresetRequest) returns (GetPresetResponse);
-  // 创建预设
-  rpc CreatePreset(CreatePresetRequest) returns (CreatePresetResponse);
-  // 更新预设
-  rpc UpdatePreset(UpdatePresetRequest) returns (UpdatePresetResponse);
-  // 删除预设
-  rpc DeletePreset(DeletePresetRequest) returns (DeletePresetResponse);
-  // 设置活跃预设
-  rpc SetActivePreset(SetActivePresetRequest) returns (SetActivePresetResponse);
-  // 导入预设（支持SillyTavern格式）
-  rpc ImportPreset(ImportPresetRequest) returns (ImportPresetResponse);
-  // 导出预设
-  rpc ExportPreset(ExportPresetRequest) returns (ExportPresetResponse);
-}
-
-// ================================
-// 提示项服务
-// ================================
-
 // 获取预设的提示项列表请求
 message ListPromptItemsRequest {
-  uint32 preset_id = 1;
+  int32 preset_id = 1;
 }
 
 // 获取预设的提示项列表响应
@@ -869,7 +933,7 @@ message ListPromptItemsResponse {
 
 // 创建提示项请求
 message AddPromptItemRequest {
-  uint32 preset_id = 1;
+  int32 preset_id = 1;
   string identifier = 2;
   string name = 3;
   optional string content = 4;
@@ -888,7 +952,7 @@ message AddPromptItemResponse {
 
 // 更新提示项请求
 message UpdatePromptItemRequest {
-  uint32 id = 1;
+  int32 id = 1;
   string identifier = 2;
   string name = 3;
   optional string content = 4;
@@ -907,7 +971,7 @@ message UpdatePromptItemResponse {
 
 // 删除提示项请求
 message DeletePromptItemRequest {
-  uint32 id = 1;
+  int32 id = 1;
 }
 
 // 删除提示项响应
@@ -915,15 +979,32 @@ message DeletePromptItemResponse {}
 
 // 批量更新提示项排序请求
 message UpdatePromptItemsOrderRequest {
-  uint32 preset_id = 1;
-  repeated uint32 item_ids = 2;  // 按新顺序排列的ID列表
+  int32 preset_id = 1;
+  repeated int32 item_ids = 2;  // 按新顺序排列的ID列表
 }
 
 // 批量更新提示项排序响应
 message UpdatePromptItemsOrderResponse {}
 
-// 提示项服务
-service PromptItemService {
+// 预设服务（包含预设和提示项的管理）
+service PresetService {
+  // 获取预设列表
+  rpc ListPresets(ListPresetsRequest) returns (ListPresetsResponse);
+  // 获取单个预设
+  rpc GetPreset(GetPresetRequest) returns (GetPresetResponse);
+  // 创建预设
+  rpc CreatePreset(CreatePresetRequest) returns (CreatePresetResponse);
+  // 更新预设
+  rpc UpdatePreset(UpdatePresetRequest) returns (UpdatePresetResponse);
+  // 删除预设
+  rpc DeletePreset(DeletePresetRequest) returns (DeletePresetResponse);
+  // 设置活跃预设
+  rpc SetActivePreset(SetActivePresetRequest) returns (SetActivePresetResponse);
+  // 导入预设（支持SillyTavern格式）
+  rpc ImportPreset(ImportPresetRequest) returns (ImportPresetResponse);
+  // 导出预设
+  rpc ExportPreset(ExportPresetRequest) returns (ExportPresetResponse);
+
   // 获取预设的提示项列表
   rpc ListPromptItems(ListPromptItemsRequest) returns (ListPromptItemsResponse);
   // 添加提示项
@@ -942,7 +1023,7 @@ service PromptItemService {
 
 // 获取预设的正则规则列表请求
 message ListRegexRulesRequest {
-  uint32 preset_id = 1;
+  int32 preset_id = 1;
 }
 
 // 获取预设的正则规则列表响应
@@ -952,7 +1033,7 @@ message ListRegexRulesResponse {
 
 // 添加正则规则请求
 message AddRegexRuleRequest {
-  uint32 preset_id = 1;
+  int32 preset_id = 1;
   string name = 2;
   string find_pattern = 3;
   optional string replace_pattern = 4;
@@ -961,7 +1042,7 @@ message AddRegexRuleRequest {
   bool substitute_regex = 7;
   optional int32 min_depth = 8;
   optional int32 max_depth = 9;
-  uint32 affect_flags = 10;
+  int64 affect_flags = 10;
   int32 sort_order = 11;
 }
 
@@ -972,7 +1053,7 @@ message AddRegexRuleResponse {
 
 // 更新正则规则请求
 message UpdateRegexRuleRequest {
-  uint32 id = 1;
+  int32 id = 1;
   string name = 2;
   string find_pattern = 3;
   optional string replace_pattern = 4;
@@ -981,7 +1062,7 @@ message UpdateRegexRuleRequest {
   bool substitute_regex = 7;
   optional int32 min_depth = 8;
   optional int32 max_depth = 9;
-  uint32 affect_flags = 10;
+  int64 affect_flags = 10;
   int32 sort_order = 11;
 }
 
@@ -992,7 +1073,7 @@ message UpdateRegexRuleResponse {
 
 // 删除正则规则请求
 message DeleteRegexRuleRequest {
-  uint32 id = 1;
+  int32 id = 1;
 }
 
 // 删除正则规则响应
@@ -1000,8 +1081,8 @@ message DeleteRegexRuleResponse {}
 
 // 批量更新正则规则排序请求
 message UpdateRegexRulesOrderRequest {
-  uint32 preset_id = 1;
-  repeated uint32 rule_ids = 2;  // 按新顺序排列的ID列表
+  int32 preset_id = 1;
+  repeated int32 rule_ids = 2;  // 按新顺序排列的ID列表
 }
 
 // 批量更新正则规则排序响应
@@ -1037,7 +1118,7 @@ message ListWorldInfosResponse {
 
 // 获取单个世界书请求
 message GetWorldInfoRequest {
-  uint32 id = 1;
+  int32 id = 1;
 }
 
 // 获取单个世界书响应
@@ -1059,7 +1140,7 @@ message CreateWorldInfoResponse {
 
 // 更新世界书请求
 message UpdateWorldInfoRequest {
-  uint32 id = 1;
+  int32 id = 1;
   string name = 2;
   optional string description = 3;
   bool is_global = 4;
@@ -1072,7 +1153,7 @@ message UpdateWorldInfoResponse {
 
 // 删除世界书请求
 message DeleteWorldInfoRequest {
-  uint32 id = 1;
+  int32 id = 1;
 }
 
 // 删除世界书响应
@@ -1091,7 +1172,7 @@ message ImportWorldInfoResponse {
 
 // 导出世界书请求
 message ExportWorldInfoRequest {
-  uint32 id = 1;
+  int32 id = 1;
 }
 
 // 导出世界书响应
@@ -1100,31 +1181,9 @@ message ExportWorldInfoResponse {
   string file_name = 2;
 }
 
-// 世界书服务
-service WorldInfoService {
-  // 获取世界书列表
-  rpc ListWorldInfos(ListWorldInfosRequest) returns (ListWorldInfosResponse);
-  // 获取单个世界书
-  rpc GetWorldInfo(GetWorldInfoRequest) returns (GetWorldInfoResponse);
-  // 创建世界书
-  rpc CreateWorldInfo(CreateWorldInfoRequest) returns (CreateWorldInfoResponse);
-  // 更新世界书
-  rpc UpdateWorldInfo(UpdateWorldInfoRequest) returns (UpdateWorldInfoResponse);
-  // 删除世界书
-  rpc DeleteWorldInfo(DeleteWorldInfoRequest) returns (DeleteWorldInfoResponse);
-  // 导入世界书（支持SillyTavern格式）
-  rpc ImportWorldInfo(ImportWorldInfoRequest) returns (ImportWorldInfoResponse);
-  // 导出世界书
-  rpc ExportWorldInfo(ExportWorldInfoRequest) returns (ExportWorldInfoResponse);
-}
-
-// ================================
-// 世界书条目服务
-// ================================
-
 // 获取世界书条目列表请求
 message ListWorldInfoEntriesRequest {
-  uint32 world_info_id = 1;
+  int32 world_info_id = 1;
 }
 
 // 获取世界书条目列表响应
@@ -1134,7 +1193,7 @@ message ListWorldInfoEntriesResponse {
 
 // 添加世界书条目请求
 message AddWorldInfoEntryRequest {
-  uint32 world_info_id = 1;
+  int32 world_info_id = 1;
   optional string uid = 2;
   string keys_list = 3;
   optional string secondary_keys = 4;
@@ -1156,7 +1215,7 @@ message AddWorldInfoEntryResponse {
 
 // 更新世界书条目请求
 message UpdateWorldInfoEntryRequest {
-  uint32 id = 1;
+  int32 id = 1;
   optional string uid = 2;
   string keys_list = 3;
   optional string secondary_keys = 4;
@@ -1178,7 +1237,7 @@ message UpdateWorldInfoEntryResponse {
 
 // 删除世界书条目请求
 message DeleteWorldInfoEntryRequest {
-  uint32 id = 1;
+  int32 id = 1;
 }
 
 // 删除世界书条目响应
@@ -1186,15 +1245,30 @@ message DeleteWorldInfoEntryResponse {}
 
 // 批量更新世界书条目排序请求
 message UpdateWorldInfoEntriesOrderRequest {
-  uint32 world_info_id = 1;
-  repeated uint32 entry_ids = 2;  // 按新顺序排列的ID列表
+  int32 world_info_id = 1;
+  repeated int32 entry_ids = 2;  // 按新顺序排列的ID列表
 }
 
 // 批量更新世界书条目排序响应
 message UpdateWorldInfoEntriesOrderResponse {}
 
-// 世界书条目服务
-service WorldInfoEntryService {
+// 世界书服务（包含世界书和世界书条目的管理）
+service WorldInfoService {
+  // 获取世界书列表
+  rpc ListWorldInfos(ListWorldInfosRequest) returns (ListWorldInfosResponse);
+  // 获取单个世界书
+  rpc GetWorldInfo(GetWorldInfoRequest) returns (GetWorldInfoResponse);
+  // 创建世界书
+  rpc CreateWorldInfo(CreateWorldInfoRequest) returns (CreateWorldInfoResponse);
+  // 更新世界书
+  rpc UpdateWorldInfo(UpdateWorldInfoRequest) returns (UpdateWorldInfoResponse);
+  // 删除世界书
+  rpc DeleteWorldInfo(DeleteWorldInfoRequest) returns (DeleteWorldInfoResponse);
+  // 导入世界书（支持SillyTavern格式）
+  rpc ImportWorldInfo(ImportWorldInfoRequest) returns (ImportWorldInfoResponse);
+  // 导出世界书
+  rpc ExportWorldInfo(ExportWorldInfoRequest) returns (ExportWorldInfoResponse);
+
   // 获取世界书条目列表
   rpc ListWorldInfoEntries(ListWorldInfoEntriesRequest) returns (ListWorldInfoEntriesResponse);
   // 添加世界书条目
@@ -1207,99 +1281,4 @@ service WorldInfoEntryService {
   rpc UpdateWorldInfoEntriesOrder(UpdateWorldInfoEntriesOrderRequest) returns (UpdateWorldInfoEntriesOrderResponse);
 }
 
-// ================================
-// API配置服务
-// ================================
 
-// 获取API配置列表请求
-message ListAPIConfigsRequest {}
-
-// 获取API配置列表响应
-message ListAPIConfigsResponse {
-  repeated APIConfig configs = 1;
-}
-
-// 获取单个API配置请求
-message GetAPIConfigRequest {
-  uint32 id = 1;
-}
-
-// 获取单个API配置响应
-message GetAPIConfigResponse {
-  APIConfig config = 1;
-}
-
-// 创建API配置请求
-message CreateAPIConfigRequest {
-  string name = 1;
-  APIProvider provider = 2;
-  string api_key = 3;
-  optional string base_url = 4;
-  optional string model = 5;
-}
-
-// 创建API配置响应
-message CreateAPIConfigResponse {
-  APIConfig config = 1;
-}
-
-// 更新API配置请求
-message UpdateAPIConfigRequest {
-  uint32 id = 1;
-  string name = 2;
-  APIProvider provider = 3;
-  optional string api_key = 4;  // 可选，不传则不更新
-  optional string base_url = 5;
-  optional string model = 6;
-}
-
-// 更新API配置响应
-message UpdateAPIConfigResponse {
-  APIConfig config = 1;
-}
-
-// 删除API配置请求
-message DeleteAPIConfigRequest {
-  uint32 id = 1;
-}
-
-// 删除API配置响应
-message DeleteAPIConfigResponse {}
-
-// 设置活跃API配置请求
-message SetActiveAPIConfigRequest {
-  uint32 config_id = 1;
-}
-
-// 设置活跃API配置响应
-message SetActiveAPIConfigResponse {}
-
-// 测试API配置请求
-message TestAPIConfigRequest {
-  uint32 id = 1;
-}
-
-// 测试API配置响应
-message TestAPIConfigResponse {
-  bool success = 1;
-  optional string error_message = 2;
-  optional string model_info = 3;  // 返回的模型信息
-}
-
-// API配置服务
-service APIConfigService {
-  // 获取API配置列表
-  rpc ListAPIConfigs(ListAPIConfigsRequest) returns (ListAPIConfigsResponse);
-  // 获取单个API配置
-  rpc GetAPIConfig(GetAPIConfigRequest) returns (GetAPIConfigResponse);
-  // 创建API配置
-  rpc CreateAPIConfig(CreateAPIConfigRequest) returns (CreateAPIConfigResponse);
-  // 更新API配置
-  rpc UpdateAPIConfig(UpdateAPIConfigRequest) returns (UpdateAPIConfigResponse);
-  // 删除API配置
-  rpc DeleteAPIConfig(DeleteAPIConfigRequest) returns (DeleteAPIConfigResponse);
-  // 设置活跃API配置
-  rpc SetActiveAPIConfig(SetActiveAPIConfigRequest) returns (SetActiveAPIConfigResponse);
-  // 测试API配置连接
-  rpc TestAPIConfig(TestAPIConfigRequest) returns (TestAPIConfigResponse);
-}

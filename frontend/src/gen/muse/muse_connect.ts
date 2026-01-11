@@ -7,17 +7,17 @@ import { AddPromptItemRequest, AddPromptItemResponse, AddRegexRuleRequest, AddRe
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
- * 认证服务
+ * 用户服务（包含认证、人设、用户设置和API配置的管理）
  *
- * @generated from service muse.AuthService
+ * @generated from service muse.UserService
  */
-export const AuthService = {
-  typeName: "muse.AuthService",
+export const UserService = {
+  typeName: "muse.UserService",
   methods: {
     /**
      * 用户注册
      *
-     * @generated from rpc muse.AuthService.Register
+     * @generated from rpc muse.UserService.Register
      */
     register: {
       name: "Register",
@@ -28,7 +28,7 @@ export const AuthService = {
     /**
      * 用户登录
      *
-     * @generated from rpc muse.AuthService.Login
+     * @generated from rpc muse.UserService.Login
      */
     login: {
       name: "Login",
@@ -39,7 +39,7 @@ export const AuthService = {
     /**
      * 获取当前用户信息
      *
-     * @generated from rpc muse.AuthService.GetCurrentUser
+     * @generated from rpc muse.UserService.GetCurrentUser
      */
     getCurrentUser: {
       name: "GetCurrentUser",
@@ -50,7 +50,7 @@ export const AuthService = {
     /**
      * 修改密码
      *
-     * @generated from rpc muse.AuthService.ChangePassword
+     * @generated from rpc muse.UserService.ChangePassword
      */
     changePassword: {
       name: "ChangePassword",
@@ -58,21 +58,10 @@ export const AuthService = {
       O: ChangePasswordResponse,
       kind: MethodKind.Unary,
     },
-  }
-} as const;
-
-/**
- * 人设服务
- *
- * @generated from service muse.PersonaService
- */
-export const PersonaService = {
-  typeName: "muse.PersonaService",
-  methods: {
     /**
      * 获取人设列表
      *
-     * @generated from rpc muse.PersonaService.ListPersonas
+     * @generated from rpc muse.UserService.ListPersonas
      */
     listPersonas: {
       name: "ListPersonas",
@@ -83,7 +72,7 @@ export const PersonaService = {
     /**
      * 获取单个人设
      *
-     * @generated from rpc muse.PersonaService.GetPersona
+     * @generated from rpc muse.UserService.GetPersona
      */
     getPersona: {
       name: "GetPersona",
@@ -94,7 +83,7 @@ export const PersonaService = {
     /**
      * 创建人设
      *
-     * @generated from rpc muse.PersonaService.CreatePersona
+     * @generated from rpc muse.UserService.CreatePersona
      */
     createPersona: {
       name: "CreatePersona",
@@ -105,7 +94,7 @@ export const PersonaService = {
     /**
      * 更新人设
      *
-     * @generated from rpc muse.PersonaService.UpdatePersona
+     * @generated from rpc muse.UserService.UpdatePersona
      */
     updatePersona: {
       name: "UpdatePersona",
@@ -116,7 +105,7 @@ export const PersonaService = {
     /**
      * 删除人设
      *
-     * @generated from rpc muse.PersonaService.DeletePersona
+     * @generated from rpc muse.UserService.DeletePersona
      */
     deletePersona: {
       name: "DeletePersona",
@@ -127,7 +116,7 @@ export const PersonaService = {
     /**
      * 设置活跃人设
      *
-     * @generated from rpc muse.PersonaService.SetActivePersona
+     * @generated from rpc muse.UserService.SetActivePersona
      */
     setActivePersona: {
       name: "SetActivePersona",
@@ -135,21 +124,10 @@ export const PersonaService = {
       O: SetActivePersonaResponse,
       kind: MethodKind.Unary,
     },
-  }
-} as const;
-
-/**
- * 用户设置服务
- *
- * @generated from service muse.UserSettingService
- */
-export const UserSettingService = {
-  typeName: "muse.UserSettingService",
-  methods: {
     /**
      * 获取用户设置
      *
-     * @generated from rpc muse.UserSettingService.GetUserSetting
+     * @generated from rpc muse.UserService.GetUserSetting
      */
     getUserSetting: {
       name: "GetUserSetting",
@@ -160,12 +138,89 @@ export const UserSettingService = {
     /**
      * 更新用户设置
      *
-     * @generated from rpc muse.UserSettingService.UpdateUserSetting
+     * @generated from rpc muse.UserService.UpdateUserSetting
      */
     updateUserSetting: {
       name: "UpdateUserSetting",
       I: UpdateUserSettingRequest,
       O: UpdateUserSettingResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * 获取API配置列表
+     *
+     * @generated from rpc muse.UserService.ListAPIConfigs
+     */
+    listAPIConfigs: {
+      name: "ListAPIConfigs",
+      I: ListAPIConfigsRequest,
+      O: ListAPIConfigsResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * 获取单个API配置
+     *
+     * @generated from rpc muse.UserService.GetAPIConfig
+     */
+    getAPIConfig: {
+      name: "GetAPIConfig",
+      I: GetAPIConfigRequest,
+      O: GetAPIConfigResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * 创建API配置
+     *
+     * @generated from rpc muse.UserService.CreateAPIConfig
+     */
+    createAPIConfig: {
+      name: "CreateAPIConfig",
+      I: CreateAPIConfigRequest,
+      O: CreateAPIConfigResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * 更新API配置
+     *
+     * @generated from rpc muse.UserService.UpdateAPIConfig
+     */
+    updateAPIConfig: {
+      name: "UpdateAPIConfig",
+      I: UpdateAPIConfigRequest,
+      O: UpdateAPIConfigResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * 删除API配置
+     *
+     * @generated from rpc muse.UserService.DeleteAPIConfig
+     */
+    deleteAPIConfig: {
+      name: "DeleteAPIConfig",
+      I: DeleteAPIConfigRequest,
+      O: DeleteAPIConfigResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * 设置活跃API配置
+     *
+     * @generated from rpc muse.UserService.SetActiveAPIConfig
+     */
+    setActiveAPIConfig: {
+      name: "SetActiveAPIConfig",
+      I: SetActiveAPIConfigRequest,
+      O: SetActiveAPIConfigResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * 测试API配置连接
+     *
+     * @generated from rpc muse.UserService.TestAPIConfig
+     */
+    testAPIConfig: {
+      name: "TestAPIConfig",
+      I: TestAPIConfigRequest,
+      O: TestAPIConfigResponse,
       kind: MethodKind.Unary,
     },
   }
@@ -392,7 +447,7 @@ export const ChatService = {
 } as const;
 
 /**
- * 预设服务
+ * 预设服务（包含预设和提示项的管理）
  *
  * @generated from service muse.PresetService
  */
@@ -487,21 +542,10 @@ export const PresetService = {
       O: ExportPresetResponse,
       kind: MethodKind.Unary,
     },
-  }
-} as const;
-
-/**
- * 提示项服务
- *
- * @generated from service muse.PromptItemService
- */
-export const PromptItemService = {
-  typeName: "muse.PromptItemService",
-  methods: {
     /**
      * 获取预设的提示项列表
      *
-     * @generated from rpc muse.PromptItemService.ListPromptItems
+     * @generated from rpc muse.PresetService.ListPromptItems
      */
     listPromptItems: {
       name: "ListPromptItems",
@@ -512,7 +556,7 @@ export const PromptItemService = {
     /**
      * 添加提示项
      *
-     * @generated from rpc muse.PromptItemService.AddPromptItem
+     * @generated from rpc muse.PresetService.AddPromptItem
      */
     addPromptItem: {
       name: "AddPromptItem",
@@ -523,7 +567,7 @@ export const PromptItemService = {
     /**
      * 更新提示项
      *
-     * @generated from rpc muse.PromptItemService.UpdatePromptItem
+     * @generated from rpc muse.PresetService.UpdatePromptItem
      */
     updatePromptItem: {
       name: "UpdatePromptItem",
@@ -534,7 +578,7 @@ export const PromptItemService = {
     /**
      * 删除提示项
      *
-     * @generated from rpc muse.PromptItemService.DeletePromptItem
+     * @generated from rpc muse.PresetService.DeletePromptItem
      */
     deletePromptItem: {
       name: "DeletePromptItem",
@@ -545,7 +589,7 @@ export const PromptItemService = {
     /**
      * 批量更新提示项排序
      *
-     * @generated from rpc muse.PromptItemService.UpdatePromptItemsOrder
+     * @generated from rpc muse.PresetService.UpdatePromptItemsOrder
      */
     updatePromptItemsOrder: {
       name: "UpdatePromptItemsOrder",
@@ -623,7 +667,7 @@ export const RegexRuleService = {
 } as const;
 
 /**
- * 世界书服务
+ * 世界书服务（包含世界书和世界书条目的管理）
  *
  * @generated from service muse.WorldInfoService
  */
@@ -707,21 +751,10 @@ export const WorldInfoService = {
       O: ExportWorldInfoResponse,
       kind: MethodKind.Unary,
     },
-  }
-} as const;
-
-/**
- * 世界书条目服务
- *
- * @generated from service muse.WorldInfoEntryService
- */
-export const WorldInfoEntryService = {
-  typeName: "muse.WorldInfoEntryService",
-  methods: {
     /**
      * 获取世界书条目列表
      *
-     * @generated from rpc muse.WorldInfoEntryService.ListWorldInfoEntries
+     * @generated from rpc muse.WorldInfoService.ListWorldInfoEntries
      */
     listWorldInfoEntries: {
       name: "ListWorldInfoEntries",
@@ -732,7 +765,7 @@ export const WorldInfoEntryService = {
     /**
      * 添加世界书条目
      *
-     * @generated from rpc muse.WorldInfoEntryService.AddWorldInfoEntry
+     * @generated from rpc muse.WorldInfoService.AddWorldInfoEntry
      */
     addWorldInfoEntry: {
       name: "AddWorldInfoEntry",
@@ -743,7 +776,7 @@ export const WorldInfoEntryService = {
     /**
      * 更新世界书条目
      *
-     * @generated from rpc muse.WorldInfoEntryService.UpdateWorldInfoEntry
+     * @generated from rpc muse.WorldInfoService.UpdateWorldInfoEntry
      */
     updateWorldInfoEntry: {
       name: "UpdateWorldInfoEntry",
@@ -754,7 +787,7 @@ export const WorldInfoEntryService = {
     /**
      * 删除世界书条目
      *
-     * @generated from rpc muse.WorldInfoEntryService.DeleteWorldInfoEntry
+     * @generated from rpc muse.WorldInfoService.DeleteWorldInfoEntry
      */
     deleteWorldInfoEntry: {
       name: "DeleteWorldInfoEntry",
@@ -765,100 +798,12 @@ export const WorldInfoEntryService = {
     /**
      * 批量更新世界书条目排序
      *
-     * @generated from rpc muse.WorldInfoEntryService.UpdateWorldInfoEntriesOrder
+     * @generated from rpc muse.WorldInfoService.UpdateWorldInfoEntriesOrder
      */
     updateWorldInfoEntriesOrder: {
       name: "UpdateWorldInfoEntriesOrder",
       I: UpdateWorldInfoEntriesOrderRequest,
       O: UpdateWorldInfoEntriesOrderResponse,
-      kind: MethodKind.Unary,
-    },
-  }
-} as const;
-
-/**
- * API配置服务
- *
- * @generated from service muse.APIConfigService
- */
-export const APIConfigService = {
-  typeName: "muse.APIConfigService",
-  methods: {
-    /**
-     * 获取API配置列表
-     *
-     * @generated from rpc muse.APIConfigService.ListAPIConfigs
-     */
-    listAPIConfigs: {
-      name: "ListAPIConfigs",
-      I: ListAPIConfigsRequest,
-      O: ListAPIConfigsResponse,
-      kind: MethodKind.Unary,
-    },
-    /**
-     * 获取单个API配置
-     *
-     * @generated from rpc muse.APIConfigService.GetAPIConfig
-     */
-    getAPIConfig: {
-      name: "GetAPIConfig",
-      I: GetAPIConfigRequest,
-      O: GetAPIConfigResponse,
-      kind: MethodKind.Unary,
-    },
-    /**
-     * 创建API配置
-     *
-     * @generated from rpc muse.APIConfigService.CreateAPIConfig
-     */
-    createAPIConfig: {
-      name: "CreateAPIConfig",
-      I: CreateAPIConfigRequest,
-      O: CreateAPIConfigResponse,
-      kind: MethodKind.Unary,
-    },
-    /**
-     * 更新API配置
-     *
-     * @generated from rpc muse.APIConfigService.UpdateAPIConfig
-     */
-    updateAPIConfig: {
-      name: "UpdateAPIConfig",
-      I: UpdateAPIConfigRequest,
-      O: UpdateAPIConfigResponse,
-      kind: MethodKind.Unary,
-    },
-    /**
-     * 删除API配置
-     *
-     * @generated from rpc muse.APIConfigService.DeleteAPIConfig
-     */
-    deleteAPIConfig: {
-      name: "DeleteAPIConfig",
-      I: DeleteAPIConfigRequest,
-      O: DeleteAPIConfigResponse,
-      kind: MethodKind.Unary,
-    },
-    /**
-     * 设置活跃API配置
-     *
-     * @generated from rpc muse.APIConfigService.SetActiveAPIConfig
-     */
-    setActiveAPIConfig: {
-      name: "SetActiveAPIConfig",
-      I: SetActiveAPIConfigRequest,
-      O: SetActiveAPIConfigResponse,
-      kind: MethodKind.Unary,
-    },
-    /**
-     * 测试API配置连接
-     *
-     * @generated from rpc muse.APIConfigService.TestAPIConfig
-     */
-    testAPIConfig: {
-      name: "TestAPIConfig",
-      I: TestAPIConfigRequest,
-      O: TestAPIConfigResponse,
       kind: MethodKind.Unary,
     },
   }

@@ -21,28 +21,18 @@ import (
 const _ = connect.IsAtLeastVersion1_13_0
 
 const (
-	// AuthServiceName is the fully-qualified name of the AuthService service.
-	AuthServiceName = "muse.AuthService"
-	// PersonaServiceName is the fully-qualified name of the PersonaService service.
-	PersonaServiceName = "muse.PersonaService"
-	// UserSettingServiceName is the fully-qualified name of the UserSettingService service.
-	UserSettingServiceName = "muse.UserSettingService"
+	// UserServiceName is the fully-qualified name of the UserService service.
+	UserServiceName = "muse.UserService"
 	// CharacterServiceName is the fully-qualified name of the CharacterService service.
 	CharacterServiceName = "muse.CharacterService"
 	// ChatServiceName is the fully-qualified name of the ChatService service.
 	ChatServiceName = "muse.ChatService"
 	// PresetServiceName is the fully-qualified name of the PresetService service.
 	PresetServiceName = "muse.PresetService"
-	// PromptItemServiceName is the fully-qualified name of the PromptItemService service.
-	PromptItemServiceName = "muse.PromptItemService"
 	// RegexRuleServiceName is the fully-qualified name of the RegexRuleService service.
 	RegexRuleServiceName = "muse.RegexRuleService"
 	// WorldInfoServiceName is the fully-qualified name of the WorldInfoService service.
 	WorldInfoServiceName = "muse.WorldInfoService"
-	// WorldInfoEntryServiceName is the fully-qualified name of the WorldInfoEntryService service.
-	WorldInfoEntryServiceName = "muse.WorldInfoEntryService"
-	// APIConfigServiceName is the fully-qualified name of the APIConfigService service.
-	APIConfigServiceName = "muse.APIConfigService"
 )
 
 // These constants are the fully-qualified names of the RPCs defined in this package. They're
@@ -53,40 +43,60 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
-	// AuthServiceRegisterProcedure is the fully-qualified name of the AuthService's Register RPC.
-	AuthServiceRegisterProcedure = "/muse.AuthService/Register"
-	// AuthServiceLoginProcedure is the fully-qualified name of the AuthService's Login RPC.
-	AuthServiceLoginProcedure = "/muse.AuthService/Login"
-	// AuthServiceGetCurrentUserProcedure is the fully-qualified name of the AuthService's
+	// UserServiceRegisterProcedure is the fully-qualified name of the UserService's Register RPC.
+	UserServiceRegisterProcedure = "/muse.UserService/Register"
+	// UserServiceLoginProcedure is the fully-qualified name of the UserService's Login RPC.
+	UserServiceLoginProcedure = "/muse.UserService/Login"
+	// UserServiceGetCurrentUserProcedure is the fully-qualified name of the UserService's
 	// GetCurrentUser RPC.
-	AuthServiceGetCurrentUserProcedure = "/muse.AuthService/GetCurrentUser"
-	// AuthServiceChangePasswordProcedure is the fully-qualified name of the AuthService's
+	UserServiceGetCurrentUserProcedure = "/muse.UserService/GetCurrentUser"
+	// UserServiceChangePasswordProcedure is the fully-qualified name of the UserService's
 	// ChangePassword RPC.
-	AuthServiceChangePasswordProcedure = "/muse.AuthService/ChangePassword"
-	// PersonaServiceListPersonasProcedure is the fully-qualified name of the PersonaService's
-	// ListPersonas RPC.
-	PersonaServiceListPersonasProcedure = "/muse.PersonaService/ListPersonas"
-	// PersonaServiceGetPersonaProcedure is the fully-qualified name of the PersonaService's GetPersona
+	UserServiceChangePasswordProcedure = "/muse.UserService/ChangePassword"
+	// UserServiceListPersonasProcedure is the fully-qualified name of the UserService's ListPersonas
 	// RPC.
-	PersonaServiceGetPersonaProcedure = "/muse.PersonaService/GetPersona"
-	// PersonaServiceCreatePersonaProcedure is the fully-qualified name of the PersonaService's
-	// CreatePersona RPC.
-	PersonaServiceCreatePersonaProcedure = "/muse.PersonaService/CreatePersona"
-	// PersonaServiceUpdatePersonaProcedure is the fully-qualified name of the PersonaService's
-	// UpdatePersona RPC.
-	PersonaServiceUpdatePersonaProcedure = "/muse.PersonaService/UpdatePersona"
-	// PersonaServiceDeletePersonaProcedure is the fully-qualified name of the PersonaService's
-	// DeletePersona RPC.
-	PersonaServiceDeletePersonaProcedure = "/muse.PersonaService/DeletePersona"
-	// PersonaServiceSetActivePersonaProcedure is the fully-qualified name of the PersonaService's
+	UserServiceListPersonasProcedure = "/muse.UserService/ListPersonas"
+	// UserServiceGetPersonaProcedure is the fully-qualified name of the UserService's GetPersona RPC.
+	UserServiceGetPersonaProcedure = "/muse.UserService/GetPersona"
+	// UserServiceCreatePersonaProcedure is the fully-qualified name of the UserService's CreatePersona
+	// RPC.
+	UserServiceCreatePersonaProcedure = "/muse.UserService/CreatePersona"
+	// UserServiceUpdatePersonaProcedure is the fully-qualified name of the UserService's UpdatePersona
+	// RPC.
+	UserServiceUpdatePersonaProcedure = "/muse.UserService/UpdatePersona"
+	// UserServiceDeletePersonaProcedure is the fully-qualified name of the UserService's DeletePersona
+	// RPC.
+	UserServiceDeletePersonaProcedure = "/muse.UserService/DeletePersona"
+	// UserServiceSetActivePersonaProcedure is the fully-qualified name of the UserService's
 	// SetActivePersona RPC.
-	PersonaServiceSetActivePersonaProcedure = "/muse.PersonaService/SetActivePersona"
-	// UserSettingServiceGetUserSettingProcedure is the fully-qualified name of the UserSettingService's
+	UserServiceSetActivePersonaProcedure = "/muse.UserService/SetActivePersona"
+	// UserServiceGetUserSettingProcedure is the fully-qualified name of the UserService's
 	// GetUserSetting RPC.
-	UserSettingServiceGetUserSettingProcedure = "/muse.UserSettingService/GetUserSetting"
-	// UserSettingServiceUpdateUserSettingProcedure is the fully-qualified name of the
-	// UserSettingService's UpdateUserSetting RPC.
-	UserSettingServiceUpdateUserSettingProcedure = "/muse.UserSettingService/UpdateUserSetting"
+	UserServiceGetUserSettingProcedure = "/muse.UserService/GetUserSetting"
+	// UserServiceUpdateUserSettingProcedure is the fully-qualified name of the UserService's
+	// UpdateUserSetting RPC.
+	UserServiceUpdateUserSettingProcedure = "/muse.UserService/UpdateUserSetting"
+	// UserServiceListAPIConfigsProcedure is the fully-qualified name of the UserService's
+	// ListAPIConfigs RPC.
+	UserServiceListAPIConfigsProcedure = "/muse.UserService/ListAPIConfigs"
+	// UserServiceGetAPIConfigProcedure is the fully-qualified name of the UserService's GetAPIConfig
+	// RPC.
+	UserServiceGetAPIConfigProcedure = "/muse.UserService/GetAPIConfig"
+	// UserServiceCreateAPIConfigProcedure is the fully-qualified name of the UserService's
+	// CreateAPIConfig RPC.
+	UserServiceCreateAPIConfigProcedure = "/muse.UserService/CreateAPIConfig"
+	// UserServiceUpdateAPIConfigProcedure is the fully-qualified name of the UserService's
+	// UpdateAPIConfig RPC.
+	UserServiceUpdateAPIConfigProcedure = "/muse.UserService/UpdateAPIConfig"
+	// UserServiceDeleteAPIConfigProcedure is the fully-qualified name of the UserService's
+	// DeleteAPIConfig RPC.
+	UserServiceDeleteAPIConfigProcedure = "/muse.UserService/DeleteAPIConfig"
+	// UserServiceSetActiveAPIConfigProcedure is the fully-qualified name of the UserService's
+	// SetActiveAPIConfig RPC.
+	UserServiceSetActiveAPIConfigProcedure = "/muse.UserService/SetActiveAPIConfig"
+	// UserServiceTestAPIConfigProcedure is the fully-qualified name of the UserService's TestAPIConfig
+	// RPC.
+	UserServiceTestAPIConfigProcedure = "/muse.UserService/TestAPIConfig"
 	// CharacterServiceListCharactersProcedure is the fully-qualified name of the CharacterService's
 	// ListCharacters RPC.
 	CharacterServiceListCharactersProcedure = "/muse.CharacterService/ListCharacters"
@@ -161,21 +171,21 @@ const (
 	// PresetServiceExportPresetProcedure is the fully-qualified name of the PresetService's
 	// ExportPreset RPC.
 	PresetServiceExportPresetProcedure = "/muse.PresetService/ExportPreset"
-	// PromptItemServiceListPromptItemsProcedure is the fully-qualified name of the PromptItemService's
+	// PresetServiceListPromptItemsProcedure is the fully-qualified name of the PresetService's
 	// ListPromptItems RPC.
-	PromptItemServiceListPromptItemsProcedure = "/muse.PromptItemService/ListPromptItems"
-	// PromptItemServiceAddPromptItemProcedure is the fully-qualified name of the PromptItemService's
+	PresetServiceListPromptItemsProcedure = "/muse.PresetService/ListPromptItems"
+	// PresetServiceAddPromptItemProcedure is the fully-qualified name of the PresetService's
 	// AddPromptItem RPC.
-	PromptItemServiceAddPromptItemProcedure = "/muse.PromptItemService/AddPromptItem"
-	// PromptItemServiceUpdatePromptItemProcedure is the fully-qualified name of the PromptItemService's
+	PresetServiceAddPromptItemProcedure = "/muse.PresetService/AddPromptItem"
+	// PresetServiceUpdatePromptItemProcedure is the fully-qualified name of the PresetService's
 	// UpdatePromptItem RPC.
-	PromptItemServiceUpdatePromptItemProcedure = "/muse.PromptItemService/UpdatePromptItem"
-	// PromptItemServiceDeletePromptItemProcedure is the fully-qualified name of the PromptItemService's
+	PresetServiceUpdatePromptItemProcedure = "/muse.PresetService/UpdatePromptItem"
+	// PresetServiceDeletePromptItemProcedure is the fully-qualified name of the PresetService's
 	// DeletePromptItem RPC.
-	PromptItemServiceDeletePromptItemProcedure = "/muse.PromptItemService/DeletePromptItem"
-	// PromptItemServiceUpdatePromptItemsOrderProcedure is the fully-qualified name of the
-	// PromptItemService's UpdatePromptItemsOrder RPC.
-	PromptItemServiceUpdatePromptItemsOrderProcedure = "/muse.PromptItemService/UpdatePromptItemsOrder"
+	PresetServiceDeletePromptItemProcedure = "/muse.PresetService/DeletePromptItem"
+	// PresetServiceUpdatePromptItemsOrderProcedure is the fully-qualified name of the PresetService's
+	// UpdatePromptItemsOrder RPC.
+	PresetServiceUpdatePromptItemsOrderProcedure = "/muse.PresetService/UpdatePromptItemsOrder"
 	// RegexRuleServiceListRegexRulesProcedure is the fully-qualified name of the RegexRuleService's
 	// ListRegexRules RPC.
 	RegexRuleServiceListRegexRulesProcedure = "/muse.RegexRuleService/ListRegexRules"
@@ -212,46 +222,25 @@ const (
 	// WorldInfoServiceExportWorldInfoProcedure is the fully-qualified name of the WorldInfoService's
 	// ExportWorldInfo RPC.
 	WorldInfoServiceExportWorldInfoProcedure = "/muse.WorldInfoService/ExportWorldInfo"
-	// WorldInfoEntryServiceListWorldInfoEntriesProcedure is the fully-qualified name of the
-	// WorldInfoEntryService's ListWorldInfoEntries RPC.
-	WorldInfoEntryServiceListWorldInfoEntriesProcedure = "/muse.WorldInfoEntryService/ListWorldInfoEntries"
-	// WorldInfoEntryServiceAddWorldInfoEntryProcedure is the fully-qualified name of the
-	// WorldInfoEntryService's AddWorldInfoEntry RPC.
-	WorldInfoEntryServiceAddWorldInfoEntryProcedure = "/muse.WorldInfoEntryService/AddWorldInfoEntry"
-	// WorldInfoEntryServiceUpdateWorldInfoEntryProcedure is the fully-qualified name of the
-	// WorldInfoEntryService's UpdateWorldInfoEntry RPC.
-	WorldInfoEntryServiceUpdateWorldInfoEntryProcedure = "/muse.WorldInfoEntryService/UpdateWorldInfoEntry"
-	// WorldInfoEntryServiceDeleteWorldInfoEntryProcedure is the fully-qualified name of the
-	// WorldInfoEntryService's DeleteWorldInfoEntry RPC.
-	WorldInfoEntryServiceDeleteWorldInfoEntryProcedure = "/muse.WorldInfoEntryService/DeleteWorldInfoEntry"
-	// WorldInfoEntryServiceUpdateWorldInfoEntriesOrderProcedure is the fully-qualified name of the
-	// WorldInfoEntryService's UpdateWorldInfoEntriesOrder RPC.
-	WorldInfoEntryServiceUpdateWorldInfoEntriesOrderProcedure = "/muse.WorldInfoEntryService/UpdateWorldInfoEntriesOrder"
-	// APIConfigServiceListAPIConfigsProcedure is the fully-qualified name of the APIConfigService's
-	// ListAPIConfigs RPC.
-	APIConfigServiceListAPIConfigsProcedure = "/muse.APIConfigService/ListAPIConfigs"
-	// APIConfigServiceGetAPIConfigProcedure is the fully-qualified name of the APIConfigService's
-	// GetAPIConfig RPC.
-	APIConfigServiceGetAPIConfigProcedure = "/muse.APIConfigService/GetAPIConfig"
-	// APIConfigServiceCreateAPIConfigProcedure is the fully-qualified name of the APIConfigService's
-	// CreateAPIConfig RPC.
-	APIConfigServiceCreateAPIConfigProcedure = "/muse.APIConfigService/CreateAPIConfig"
-	// APIConfigServiceUpdateAPIConfigProcedure is the fully-qualified name of the APIConfigService's
-	// UpdateAPIConfig RPC.
-	APIConfigServiceUpdateAPIConfigProcedure = "/muse.APIConfigService/UpdateAPIConfig"
-	// APIConfigServiceDeleteAPIConfigProcedure is the fully-qualified name of the APIConfigService's
-	// DeleteAPIConfig RPC.
-	APIConfigServiceDeleteAPIConfigProcedure = "/muse.APIConfigService/DeleteAPIConfig"
-	// APIConfigServiceSetActiveAPIConfigProcedure is the fully-qualified name of the APIConfigService's
-	// SetActiveAPIConfig RPC.
-	APIConfigServiceSetActiveAPIConfigProcedure = "/muse.APIConfigService/SetActiveAPIConfig"
-	// APIConfigServiceTestAPIConfigProcedure is the fully-qualified name of the APIConfigService's
-	// TestAPIConfig RPC.
-	APIConfigServiceTestAPIConfigProcedure = "/muse.APIConfigService/TestAPIConfig"
+	// WorldInfoServiceListWorldInfoEntriesProcedure is the fully-qualified name of the
+	// WorldInfoService's ListWorldInfoEntries RPC.
+	WorldInfoServiceListWorldInfoEntriesProcedure = "/muse.WorldInfoService/ListWorldInfoEntries"
+	// WorldInfoServiceAddWorldInfoEntryProcedure is the fully-qualified name of the WorldInfoService's
+	// AddWorldInfoEntry RPC.
+	WorldInfoServiceAddWorldInfoEntryProcedure = "/muse.WorldInfoService/AddWorldInfoEntry"
+	// WorldInfoServiceUpdateWorldInfoEntryProcedure is the fully-qualified name of the
+	// WorldInfoService's UpdateWorldInfoEntry RPC.
+	WorldInfoServiceUpdateWorldInfoEntryProcedure = "/muse.WorldInfoService/UpdateWorldInfoEntry"
+	// WorldInfoServiceDeleteWorldInfoEntryProcedure is the fully-qualified name of the
+	// WorldInfoService's DeleteWorldInfoEntry RPC.
+	WorldInfoServiceDeleteWorldInfoEntryProcedure = "/muse.WorldInfoService/DeleteWorldInfoEntry"
+	// WorldInfoServiceUpdateWorldInfoEntriesOrderProcedure is the fully-qualified name of the
+	// WorldInfoService's UpdateWorldInfoEntriesOrder RPC.
+	WorldInfoServiceUpdateWorldInfoEntriesOrderProcedure = "/muse.WorldInfoService/UpdateWorldInfoEntriesOrder"
 )
 
-// AuthServiceClient is a client for the muse.AuthService service.
-type AuthServiceClient interface {
+// UserServiceClient is a client for the muse.UserService service.
+type UserServiceClient interface {
 	// 用户注册
 	Register(context.Context, *connect.Request[muse.RegisterRequest]) (*connect.Response[muse.RegisterResponse], error)
 	// 用户登录
@@ -260,76 +249,286 @@ type AuthServiceClient interface {
 	GetCurrentUser(context.Context, *connect.Request[muse.GetCurrentUserRequest]) (*connect.Response[muse.GetCurrentUserResponse], error)
 	// 修改密码
 	ChangePassword(context.Context, *connect.Request[muse.ChangePasswordRequest]) (*connect.Response[muse.ChangePasswordResponse], error)
+	// 获取人设列表
+	ListPersonas(context.Context, *connect.Request[muse.ListPersonasRequest]) (*connect.Response[muse.ListPersonasResponse], error)
+	// 获取单个人设
+	GetPersona(context.Context, *connect.Request[muse.GetPersonaRequest]) (*connect.Response[muse.GetPersonaResponse], error)
+	// 创建人设
+	CreatePersona(context.Context, *connect.Request[muse.CreatePersonaRequest]) (*connect.Response[muse.CreatePersonaResponse], error)
+	// 更新人设
+	UpdatePersona(context.Context, *connect.Request[muse.UpdatePersonaRequest]) (*connect.Response[muse.UpdatePersonaResponse], error)
+	// 删除人设
+	DeletePersona(context.Context, *connect.Request[muse.DeletePersonaRequest]) (*connect.Response[muse.DeletePersonaResponse], error)
+	// 设置活跃人设
+	SetActivePersona(context.Context, *connect.Request[muse.SetActivePersonaRequest]) (*connect.Response[muse.SetActivePersonaResponse], error)
+	// 获取用户设置
+	GetUserSetting(context.Context, *connect.Request[muse.GetUserSettingRequest]) (*connect.Response[muse.GetUserSettingResponse], error)
+	// 更新用户设置
+	UpdateUserSetting(context.Context, *connect.Request[muse.UpdateUserSettingRequest]) (*connect.Response[muse.UpdateUserSettingResponse], error)
+	// 获取API配置列表
+	ListAPIConfigs(context.Context, *connect.Request[muse.ListAPIConfigsRequest]) (*connect.Response[muse.ListAPIConfigsResponse], error)
+	// 获取单个API配置
+	GetAPIConfig(context.Context, *connect.Request[muse.GetAPIConfigRequest]) (*connect.Response[muse.GetAPIConfigResponse], error)
+	// 创建API配置
+	CreateAPIConfig(context.Context, *connect.Request[muse.CreateAPIConfigRequest]) (*connect.Response[muse.CreateAPIConfigResponse], error)
+	// 更新API配置
+	UpdateAPIConfig(context.Context, *connect.Request[muse.UpdateAPIConfigRequest]) (*connect.Response[muse.UpdateAPIConfigResponse], error)
+	// 删除API配置
+	DeleteAPIConfig(context.Context, *connect.Request[muse.DeleteAPIConfigRequest]) (*connect.Response[muse.DeleteAPIConfigResponse], error)
+	// 设置活跃API配置
+	SetActiveAPIConfig(context.Context, *connect.Request[muse.SetActiveAPIConfigRequest]) (*connect.Response[muse.SetActiveAPIConfigResponse], error)
+	// 测试API配置连接
+	TestAPIConfig(context.Context, *connect.Request[muse.TestAPIConfigRequest]) (*connect.Response[muse.TestAPIConfigResponse], error)
 }
 
-// NewAuthServiceClient constructs a client for the muse.AuthService service. By default, it uses
+// NewUserServiceClient constructs a client for the muse.UserService service. By default, it uses
 // the Connect protocol with the binary Protobuf Codec, asks for gzipped responses, and sends
 // uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the connect.WithGRPC() or
 // connect.WithGRPCWeb() options.
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewAuthServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) AuthServiceClient {
+func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) UserServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
-	authServiceMethods := muse.File_muse_muse_proto.Services().ByName("AuthService").Methods()
-	return &authServiceClient{
+	userServiceMethods := muse.File_muse_muse_proto.Services().ByName("UserService").Methods()
+	return &userServiceClient{
 		register: connect.NewClient[muse.RegisterRequest, muse.RegisterResponse](
 			httpClient,
-			baseURL+AuthServiceRegisterProcedure,
-			connect.WithSchema(authServiceMethods.ByName("Register")),
+			baseURL+UserServiceRegisterProcedure,
+			connect.WithSchema(userServiceMethods.ByName("Register")),
 			connect.WithClientOptions(opts...),
 		),
 		login: connect.NewClient[muse.LoginRequest, muse.LoginResponse](
 			httpClient,
-			baseURL+AuthServiceLoginProcedure,
-			connect.WithSchema(authServiceMethods.ByName("Login")),
+			baseURL+UserServiceLoginProcedure,
+			connect.WithSchema(userServiceMethods.ByName("Login")),
 			connect.WithClientOptions(opts...),
 		),
 		getCurrentUser: connect.NewClient[muse.GetCurrentUserRequest, muse.GetCurrentUserResponse](
 			httpClient,
-			baseURL+AuthServiceGetCurrentUserProcedure,
-			connect.WithSchema(authServiceMethods.ByName("GetCurrentUser")),
+			baseURL+UserServiceGetCurrentUserProcedure,
+			connect.WithSchema(userServiceMethods.ByName("GetCurrentUser")),
 			connect.WithClientOptions(opts...),
 		),
 		changePassword: connect.NewClient[muse.ChangePasswordRequest, muse.ChangePasswordResponse](
 			httpClient,
-			baseURL+AuthServiceChangePasswordProcedure,
-			connect.WithSchema(authServiceMethods.ByName("ChangePassword")),
+			baseURL+UserServiceChangePasswordProcedure,
+			connect.WithSchema(userServiceMethods.ByName("ChangePassword")),
+			connect.WithClientOptions(opts...),
+		),
+		listPersonas: connect.NewClient[muse.ListPersonasRequest, muse.ListPersonasResponse](
+			httpClient,
+			baseURL+UserServiceListPersonasProcedure,
+			connect.WithSchema(userServiceMethods.ByName("ListPersonas")),
+			connect.WithClientOptions(opts...),
+		),
+		getPersona: connect.NewClient[muse.GetPersonaRequest, muse.GetPersonaResponse](
+			httpClient,
+			baseURL+UserServiceGetPersonaProcedure,
+			connect.WithSchema(userServiceMethods.ByName("GetPersona")),
+			connect.WithClientOptions(opts...),
+		),
+		createPersona: connect.NewClient[muse.CreatePersonaRequest, muse.CreatePersonaResponse](
+			httpClient,
+			baseURL+UserServiceCreatePersonaProcedure,
+			connect.WithSchema(userServiceMethods.ByName("CreatePersona")),
+			connect.WithClientOptions(opts...),
+		),
+		updatePersona: connect.NewClient[muse.UpdatePersonaRequest, muse.UpdatePersonaResponse](
+			httpClient,
+			baseURL+UserServiceUpdatePersonaProcedure,
+			connect.WithSchema(userServiceMethods.ByName("UpdatePersona")),
+			connect.WithClientOptions(opts...),
+		),
+		deletePersona: connect.NewClient[muse.DeletePersonaRequest, muse.DeletePersonaResponse](
+			httpClient,
+			baseURL+UserServiceDeletePersonaProcedure,
+			connect.WithSchema(userServiceMethods.ByName("DeletePersona")),
+			connect.WithClientOptions(opts...),
+		),
+		setActivePersona: connect.NewClient[muse.SetActivePersonaRequest, muse.SetActivePersonaResponse](
+			httpClient,
+			baseURL+UserServiceSetActivePersonaProcedure,
+			connect.WithSchema(userServiceMethods.ByName("SetActivePersona")),
+			connect.WithClientOptions(opts...),
+		),
+		getUserSetting: connect.NewClient[muse.GetUserSettingRequest, muse.GetUserSettingResponse](
+			httpClient,
+			baseURL+UserServiceGetUserSettingProcedure,
+			connect.WithSchema(userServiceMethods.ByName("GetUserSetting")),
+			connect.WithClientOptions(opts...),
+		),
+		updateUserSetting: connect.NewClient[muse.UpdateUserSettingRequest, muse.UpdateUserSettingResponse](
+			httpClient,
+			baseURL+UserServiceUpdateUserSettingProcedure,
+			connect.WithSchema(userServiceMethods.ByName("UpdateUserSetting")),
+			connect.WithClientOptions(opts...),
+		),
+		listAPIConfigs: connect.NewClient[muse.ListAPIConfigsRequest, muse.ListAPIConfigsResponse](
+			httpClient,
+			baseURL+UserServiceListAPIConfigsProcedure,
+			connect.WithSchema(userServiceMethods.ByName("ListAPIConfigs")),
+			connect.WithClientOptions(opts...),
+		),
+		getAPIConfig: connect.NewClient[muse.GetAPIConfigRequest, muse.GetAPIConfigResponse](
+			httpClient,
+			baseURL+UserServiceGetAPIConfigProcedure,
+			connect.WithSchema(userServiceMethods.ByName("GetAPIConfig")),
+			connect.WithClientOptions(opts...),
+		),
+		createAPIConfig: connect.NewClient[muse.CreateAPIConfigRequest, muse.CreateAPIConfigResponse](
+			httpClient,
+			baseURL+UserServiceCreateAPIConfigProcedure,
+			connect.WithSchema(userServiceMethods.ByName("CreateAPIConfig")),
+			connect.WithClientOptions(opts...),
+		),
+		updateAPIConfig: connect.NewClient[muse.UpdateAPIConfigRequest, muse.UpdateAPIConfigResponse](
+			httpClient,
+			baseURL+UserServiceUpdateAPIConfigProcedure,
+			connect.WithSchema(userServiceMethods.ByName("UpdateAPIConfig")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteAPIConfig: connect.NewClient[muse.DeleteAPIConfigRequest, muse.DeleteAPIConfigResponse](
+			httpClient,
+			baseURL+UserServiceDeleteAPIConfigProcedure,
+			connect.WithSchema(userServiceMethods.ByName("DeleteAPIConfig")),
+			connect.WithClientOptions(opts...),
+		),
+		setActiveAPIConfig: connect.NewClient[muse.SetActiveAPIConfigRequest, muse.SetActiveAPIConfigResponse](
+			httpClient,
+			baseURL+UserServiceSetActiveAPIConfigProcedure,
+			connect.WithSchema(userServiceMethods.ByName("SetActiveAPIConfig")),
+			connect.WithClientOptions(opts...),
+		),
+		testAPIConfig: connect.NewClient[muse.TestAPIConfigRequest, muse.TestAPIConfigResponse](
+			httpClient,
+			baseURL+UserServiceTestAPIConfigProcedure,
+			connect.WithSchema(userServiceMethods.ByName("TestAPIConfig")),
 			connect.WithClientOptions(opts...),
 		),
 	}
 }
 
-// authServiceClient implements AuthServiceClient.
-type authServiceClient struct {
-	register       *connect.Client[muse.RegisterRequest, muse.RegisterResponse]
-	login          *connect.Client[muse.LoginRequest, muse.LoginResponse]
-	getCurrentUser *connect.Client[muse.GetCurrentUserRequest, muse.GetCurrentUserResponse]
-	changePassword *connect.Client[muse.ChangePasswordRequest, muse.ChangePasswordResponse]
+// userServiceClient implements UserServiceClient.
+type userServiceClient struct {
+	register           *connect.Client[muse.RegisterRequest, muse.RegisterResponse]
+	login              *connect.Client[muse.LoginRequest, muse.LoginResponse]
+	getCurrentUser     *connect.Client[muse.GetCurrentUserRequest, muse.GetCurrentUserResponse]
+	changePassword     *connect.Client[muse.ChangePasswordRequest, muse.ChangePasswordResponse]
+	listPersonas       *connect.Client[muse.ListPersonasRequest, muse.ListPersonasResponse]
+	getPersona         *connect.Client[muse.GetPersonaRequest, muse.GetPersonaResponse]
+	createPersona      *connect.Client[muse.CreatePersonaRequest, muse.CreatePersonaResponse]
+	updatePersona      *connect.Client[muse.UpdatePersonaRequest, muse.UpdatePersonaResponse]
+	deletePersona      *connect.Client[muse.DeletePersonaRequest, muse.DeletePersonaResponse]
+	setActivePersona   *connect.Client[muse.SetActivePersonaRequest, muse.SetActivePersonaResponse]
+	getUserSetting     *connect.Client[muse.GetUserSettingRequest, muse.GetUserSettingResponse]
+	updateUserSetting  *connect.Client[muse.UpdateUserSettingRequest, muse.UpdateUserSettingResponse]
+	listAPIConfigs     *connect.Client[muse.ListAPIConfigsRequest, muse.ListAPIConfigsResponse]
+	getAPIConfig       *connect.Client[muse.GetAPIConfigRequest, muse.GetAPIConfigResponse]
+	createAPIConfig    *connect.Client[muse.CreateAPIConfigRequest, muse.CreateAPIConfigResponse]
+	updateAPIConfig    *connect.Client[muse.UpdateAPIConfigRequest, muse.UpdateAPIConfigResponse]
+	deleteAPIConfig    *connect.Client[muse.DeleteAPIConfigRequest, muse.DeleteAPIConfigResponse]
+	setActiveAPIConfig *connect.Client[muse.SetActiveAPIConfigRequest, muse.SetActiveAPIConfigResponse]
+	testAPIConfig      *connect.Client[muse.TestAPIConfigRequest, muse.TestAPIConfigResponse]
 }
 
-// Register calls muse.AuthService.Register.
-func (c *authServiceClient) Register(ctx context.Context, req *connect.Request[muse.RegisterRequest]) (*connect.Response[muse.RegisterResponse], error) {
+// Register calls muse.UserService.Register.
+func (c *userServiceClient) Register(ctx context.Context, req *connect.Request[muse.RegisterRequest]) (*connect.Response[muse.RegisterResponse], error) {
 	return c.register.CallUnary(ctx, req)
 }
 
-// Login calls muse.AuthService.Login.
-func (c *authServiceClient) Login(ctx context.Context, req *connect.Request[muse.LoginRequest]) (*connect.Response[muse.LoginResponse], error) {
+// Login calls muse.UserService.Login.
+func (c *userServiceClient) Login(ctx context.Context, req *connect.Request[muse.LoginRequest]) (*connect.Response[muse.LoginResponse], error) {
 	return c.login.CallUnary(ctx, req)
 }
 
-// GetCurrentUser calls muse.AuthService.GetCurrentUser.
-func (c *authServiceClient) GetCurrentUser(ctx context.Context, req *connect.Request[muse.GetCurrentUserRequest]) (*connect.Response[muse.GetCurrentUserResponse], error) {
+// GetCurrentUser calls muse.UserService.GetCurrentUser.
+func (c *userServiceClient) GetCurrentUser(ctx context.Context, req *connect.Request[muse.GetCurrentUserRequest]) (*connect.Response[muse.GetCurrentUserResponse], error) {
 	return c.getCurrentUser.CallUnary(ctx, req)
 }
 
-// ChangePassword calls muse.AuthService.ChangePassword.
-func (c *authServiceClient) ChangePassword(ctx context.Context, req *connect.Request[muse.ChangePasswordRequest]) (*connect.Response[muse.ChangePasswordResponse], error) {
+// ChangePassword calls muse.UserService.ChangePassword.
+func (c *userServiceClient) ChangePassword(ctx context.Context, req *connect.Request[muse.ChangePasswordRequest]) (*connect.Response[muse.ChangePasswordResponse], error) {
 	return c.changePassword.CallUnary(ctx, req)
 }
 
-// AuthServiceHandler is an implementation of the muse.AuthService service.
-type AuthServiceHandler interface {
+// ListPersonas calls muse.UserService.ListPersonas.
+func (c *userServiceClient) ListPersonas(ctx context.Context, req *connect.Request[muse.ListPersonasRequest]) (*connect.Response[muse.ListPersonasResponse], error) {
+	return c.listPersonas.CallUnary(ctx, req)
+}
+
+// GetPersona calls muse.UserService.GetPersona.
+func (c *userServiceClient) GetPersona(ctx context.Context, req *connect.Request[muse.GetPersonaRequest]) (*connect.Response[muse.GetPersonaResponse], error) {
+	return c.getPersona.CallUnary(ctx, req)
+}
+
+// CreatePersona calls muse.UserService.CreatePersona.
+func (c *userServiceClient) CreatePersona(ctx context.Context, req *connect.Request[muse.CreatePersonaRequest]) (*connect.Response[muse.CreatePersonaResponse], error) {
+	return c.createPersona.CallUnary(ctx, req)
+}
+
+// UpdatePersona calls muse.UserService.UpdatePersona.
+func (c *userServiceClient) UpdatePersona(ctx context.Context, req *connect.Request[muse.UpdatePersonaRequest]) (*connect.Response[muse.UpdatePersonaResponse], error) {
+	return c.updatePersona.CallUnary(ctx, req)
+}
+
+// DeletePersona calls muse.UserService.DeletePersona.
+func (c *userServiceClient) DeletePersona(ctx context.Context, req *connect.Request[muse.DeletePersonaRequest]) (*connect.Response[muse.DeletePersonaResponse], error) {
+	return c.deletePersona.CallUnary(ctx, req)
+}
+
+// SetActivePersona calls muse.UserService.SetActivePersona.
+func (c *userServiceClient) SetActivePersona(ctx context.Context, req *connect.Request[muse.SetActivePersonaRequest]) (*connect.Response[muse.SetActivePersonaResponse], error) {
+	return c.setActivePersona.CallUnary(ctx, req)
+}
+
+// GetUserSetting calls muse.UserService.GetUserSetting.
+func (c *userServiceClient) GetUserSetting(ctx context.Context, req *connect.Request[muse.GetUserSettingRequest]) (*connect.Response[muse.GetUserSettingResponse], error) {
+	return c.getUserSetting.CallUnary(ctx, req)
+}
+
+// UpdateUserSetting calls muse.UserService.UpdateUserSetting.
+func (c *userServiceClient) UpdateUserSetting(ctx context.Context, req *connect.Request[muse.UpdateUserSettingRequest]) (*connect.Response[muse.UpdateUserSettingResponse], error) {
+	return c.updateUserSetting.CallUnary(ctx, req)
+}
+
+// ListAPIConfigs calls muse.UserService.ListAPIConfigs.
+func (c *userServiceClient) ListAPIConfigs(ctx context.Context, req *connect.Request[muse.ListAPIConfigsRequest]) (*connect.Response[muse.ListAPIConfigsResponse], error) {
+	return c.listAPIConfigs.CallUnary(ctx, req)
+}
+
+// GetAPIConfig calls muse.UserService.GetAPIConfig.
+func (c *userServiceClient) GetAPIConfig(ctx context.Context, req *connect.Request[muse.GetAPIConfigRequest]) (*connect.Response[muse.GetAPIConfigResponse], error) {
+	return c.getAPIConfig.CallUnary(ctx, req)
+}
+
+// CreateAPIConfig calls muse.UserService.CreateAPIConfig.
+func (c *userServiceClient) CreateAPIConfig(ctx context.Context, req *connect.Request[muse.CreateAPIConfigRequest]) (*connect.Response[muse.CreateAPIConfigResponse], error) {
+	return c.createAPIConfig.CallUnary(ctx, req)
+}
+
+// UpdateAPIConfig calls muse.UserService.UpdateAPIConfig.
+func (c *userServiceClient) UpdateAPIConfig(ctx context.Context, req *connect.Request[muse.UpdateAPIConfigRequest]) (*connect.Response[muse.UpdateAPIConfigResponse], error) {
+	return c.updateAPIConfig.CallUnary(ctx, req)
+}
+
+// DeleteAPIConfig calls muse.UserService.DeleteAPIConfig.
+func (c *userServiceClient) DeleteAPIConfig(ctx context.Context, req *connect.Request[muse.DeleteAPIConfigRequest]) (*connect.Response[muse.DeleteAPIConfigResponse], error) {
+	return c.deleteAPIConfig.CallUnary(ctx, req)
+}
+
+// SetActiveAPIConfig calls muse.UserService.SetActiveAPIConfig.
+func (c *userServiceClient) SetActiveAPIConfig(ctx context.Context, req *connect.Request[muse.SetActiveAPIConfigRequest]) (*connect.Response[muse.SetActiveAPIConfigResponse], error) {
+	return c.setActiveAPIConfig.CallUnary(ctx, req)
+}
+
+// TestAPIConfig calls muse.UserService.TestAPIConfig.
+func (c *userServiceClient) TestAPIConfig(ctx context.Context, req *connect.Request[muse.TestAPIConfigRequest]) (*connect.Response[muse.TestAPIConfigResponse], error) {
+	return c.testAPIConfig.CallUnary(ctx, req)
+}
+
+// UserServiceHandler is an implementation of the muse.UserService service.
+type UserServiceHandler interface {
 	// 用户注册
 	Register(context.Context, *connect.Request[muse.RegisterRequest]) (*connect.Response[muse.RegisterResponse], error)
 	// 用户登录
@@ -338,384 +537,282 @@ type AuthServiceHandler interface {
 	GetCurrentUser(context.Context, *connect.Request[muse.GetCurrentUserRequest]) (*connect.Response[muse.GetCurrentUserResponse], error)
 	// 修改密码
 	ChangePassword(context.Context, *connect.Request[muse.ChangePasswordRequest]) (*connect.Response[muse.ChangePasswordResponse], error)
+	// 获取人设列表
+	ListPersonas(context.Context, *connect.Request[muse.ListPersonasRequest]) (*connect.Response[muse.ListPersonasResponse], error)
+	// 获取单个人设
+	GetPersona(context.Context, *connect.Request[muse.GetPersonaRequest]) (*connect.Response[muse.GetPersonaResponse], error)
+	// 创建人设
+	CreatePersona(context.Context, *connect.Request[muse.CreatePersonaRequest]) (*connect.Response[muse.CreatePersonaResponse], error)
+	// 更新人设
+	UpdatePersona(context.Context, *connect.Request[muse.UpdatePersonaRequest]) (*connect.Response[muse.UpdatePersonaResponse], error)
+	// 删除人设
+	DeletePersona(context.Context, *connect.Request[muse.DeletePersonaRequest]) (*connect.Response[muse.DeletePersonaResponse], error)
+	// 设置活跃人设
+	SetActivePersona(context.Context, *connect.Request[muse.SetActivePersonaRequest]) (*connect.Response[muse.SetActivePersonaResponse], error)
+	// 获取用户设置
+	GetUserSetting(context.Context, *connect.Request[muse.GetUserSettingRequest]) (*connect.Response[muse.GetUserSettingResponse], error)
+	// 更新用户设置
+	UpdateUserSetting(context.Context, *connect.Request[muse.UpdateUserSettingRequest]) (*connect.Response[muse.UpdateUserSettingResponse], error)
+	// 获取API配置列表
+	ListAPIConfigs(context.Context, *connect.Request[muse.ListAPIConfigsRequest]) (*connect.Response[muse.ListAPIConfigsResponse], error)
+	// 获取单个API配置
+	GetAPIConfig(context.Context, *connect.Request[muse.GetAPIConfigRequest]) (*connect.Response[muse.GetAPIConfigResponse], error)
+	// 创建API配置
+	CreateAPIConfig(context.Context, *connect.Request[muse.CreateAPIConfigRequest]) (*connect.Response[muse.CreateAPIConfigResponse], error)
+	// 更新API配置
+	UpdateAPIConfig(context.Context, *connect.Request[muse.UpdateAPIConfigRequest]) (*connect.Response[muse.UpdateAPIConfigResponse], error)
+	// 删除API配置
+	DeleteAPIConfig(context.Context, *connect.Request[muse.DeleteAPIConfigRequest]) (*connect.Response[muse.DeleteAPIConfigResponse], error)
+	// 设置活跃API配置
+	SetActiveAPIConfig(context.Context, *connect.Request[muse.SetActiveAPIConfigRequest]) (*connect.Response[muse.SetActiveAPIConfigResponse], error)
+	// 测试API配置连接
+	TestAPIConfig(context.Context, *connect.Request[muse.TestAPIConfigRequest]) (*connect.Response[muse.TestAPIConfigResponse], error)
 }
 
-// NewAuthServiceHandler builds an HTTP handler from the service implementation. It returns the path
+// NewUserServiceHandler builds an HTTP handler from the service implementation. It returns the path
 // on which to mount the handler and the handler itself.
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
-	authServiceMethods := muse.File_muse_muse_proto.Services().ByName("AuthService").Methods()
-	authServiceRegisterHandler := connect.NewUnaryHandler(
-		AuthServiceRegisterProcedure,
+func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	userServiceMethods := muse.File_muse_muse_proto.Services().ByName("UserService").Methods()
+	userServiceRegisterHandler := connect.NewUnaryHandler(
+		UserServiceRegisterProcedure,
 		svc.Register,
-		connect.WithSchema(authServiceMethods.ByName("Register")),
+		connect.WithSchema(userServiceMethods.ByName("Register")),
 		connect.WithHandlerOptions(opts...),
 	)
-	authServiceLoginHandler := connect.NewUnaryHandler(
-		AuthServiceLoginProcedure,
+	userServiceLoginHandler := connect.NewUnaryHandler(
+		UserServiceLoginProcedure,
 		svc.Login,
-		connect.WithSchema(authServiceMethods.ByName("Login")),
+		connect.WithSchema(userServiceMethods.ByName("Login")),
 		connect.WithHandlerOptions(opts...),
 	)
-	authServiceGetCurrentUserHandler := connect.NewUnaryHandler(
-		AuthServiceGetCurrentUserProcedure,
+	userServiceGetCurrentUserHandler := connect.NewUnaryHandler(
+		UserServiceGetCurrentUserProcedure,
 		svc.GetCurrentUser,
-		connect.WithSchema(authServiceMethods.ByName("GetCurrentUser")),
+		connect.WithSchema(userServiceMethods.ByName("GetCurrentUser")),
 		connect.WithHandlerOptions(opts...),
 	)
-	authServiceChangePasswordHandler := connect.NewUnaryHandler(
-		AuthServiceChangePasswordProcedure,
+	userServiceChangePasswordHandler := connect.NewUnaryHandler(
+		UserServiceChangePasswordProcedure,
 		svc.ChangePassword,
-		connect.WithSchema(authServiceMethods.ByName("ChangePassword")),
+		connect.WithSchema(userServiceMethods.ByName("ChangePassword")),
 		connect.WithHandlerOptions(opts...),
 	)
-	return "/muse.AuthService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		switch r.URL.Path {
-		case AuthServiceRegisterProcedure:
-			authServiceRegisterHandler.ServeHTTP(w, r)
-		case AuthServiceLoginProcedure:
-			authServiceLoginHandler.ServeHTTP(w, r)
-		case AuthServiceGetCurrentUserProcedure:
-			authServiceGetCurrentUserHandler.ServeHTTP(w, r)
-		case AuthServiceChangePasswordProcedure:
-			authServiceChangePasswordHandler.ServeHTTP(w, r)
-		default:
-			http.NotFound(w, r)
-		}
-	})
-}
-
-// UnimplementedAuthServiceHandler returns CodeUnimplemented from all methods.
-type UnimplementedAuthServiceHandler struct{}
-
-func (UnimplementedAuthServiceHandler) Register(context.Context, *connect.Request[muse.RegisterRequest]) (*connect.Response[muse.RegisterResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.AuthService.Register is not implemented"))
-}
-
-func (UnimplementedAuthServiceHandler) Login(context.Context, *connect.Request[muse.LoginRequest]) (*connect.Response[muse.LoginResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.AuthService.Login is not implemented"))
-}
-
-func (UnimplementedAuthServiceHandler) GetCurrentUser(context.Context, *connect.Request[muse.GetCurrentUserRequest]) (*connect.Response[muse.GetCurrentUserResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.AuthService.GetCurrentUser is not implemented"))
-}
-
-func (UnimplementedAuthServiceHandler) ChangePassword(context.Context, *connect.Request[muse.ChangePasswordRequest]) (*connect.Response[muse.ChangePasswordResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.AuthService.ChangePassword is not implemented"))
-}
-
-// PersonaServiceClient is a client for the muse.PersonaService service.
-type PersonaServiceClient interface {
-	// 获取人设列表
-	ListPersonas(context.Context, *connect.Request[muse.ListPersonasRequest]) (*connect.Response[muse.ListPersonasResponse], error)
-	// 获取单个人设
-	GetPersona(context.Context, *connect.Request[muse.GetPersonaRequest]) (*connect.Response[muse.GetPersonaResponse], error)
-	// 创建人设
-	CreatePersona(context.Context, *connect.Request[muse.CreatePersonaRequest]) (*connect.Response[muse.CreatePersonaResponse], error)
-	// 更新人设
-	UpdatePersona(context.Context, *connect.Request[muse.UpdatePersonaRequest]) (*connect.Response[muse.UpdatePersonaResponse], error)
-	// 删除人设
-	DeletePersona(context.Context, *connect.Request[muse.DeletePersonaRequest]) (*connect.Response[muse.DeletePersonaResponse], error)
-	// 设置活跃人设
-	SetActivePersona(context.Context, *connect.Request[muse.SetActivePersonaRequest]) (*connect.Response[muse.SetActivePersonaResponse], error)
-}
-
-// NewPersonaServiceClient constructs a client for the muse.PersonaService service. By default, it
-// uses the Connect protocol with the binary Protobuf Codec, asks for gzipped responses, and sends
-// uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the connect.WithGRPC() or
-// connect.WithGRPCWeb() options.
-//
-// The URL supplied here should be the base URL for the Connect or gRPC server (for example,
-// http://api.acme.com or https://acme.com/grpc).
-func NewPersonaServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) PersonaServiceClient {
-	baseURL = strings.TrimRight(baseURL, "/")
-	personaServiceMethods := muse.File_muse_muse_proto.Services().ByName("PersonaService").Methods()
-	return &personaServiceClient{
-		listPersonas: connect.NewClient[muse.ListPersonasRequest, muse.ListPersonasResponse](
-			httpClient,
-			baseURL+PersonaServiceListPersonasProcedure,
-			connect.WithSchema(personaServiceMethods.ByName("ListPersonas")),
-			connect.WithClientOptions(opts...),
-		),
-		getPersona: connect.NewClient[muse.GetPersonaRequest, muse.GetPersonaResponse](
-			httpClient,
-			baseURL+PersonaServiceGetPersonaProcedure,
-			connect.WithSchema(personaServiceMethods.ByName("GetPersona")),
-			connect.WithClientOptions(opts...),
-		),
-		createPersona: connect.NewClient[muse.CreatePersonaRequest, muse.CreatePersonaResponse](
-			httpClient,
-			baseURL+PersonaServiceCreatePersonaProcedure,
-			connect.WithSchema(personaServiceMethods.ByName("CreatePersona")),
-			connect.WithClientOptions(opts...),
-		),
-		updatePersona: connect.NewClient[muse.UpdatePersonaRequest, muse.UpdatePersonaResponse](
-			httpClient,
-			baseURL+PersonaServiceUpdatePersonaProcedure,
-			connect.WithSchema(personaServiceMethods.ByName("UpdatePersona")),
-			connect.WithClientOptions(opts...),
-		),
-		deletePersona: connect.NewClient[muse.DeletePersonaRequest, muse.DeletePersonaResponse](
-			httpClient,
-			baseURL+PersonaServiceDeletePersonaProcedure,
-			connect.WithSchema(personaServiceMethods.ByName("DeletePersona")),
-			connect.WithClientOptions(opts...),
-		),
-		setActivePersona: connect.NewClient[muse.SetActivePersonaRequest, muse.SetActivePersonaResponse](
-			httpClient,
-			baseURL+PersonaServiceSetActivePersonaProcedure,
-			connect.WithSchema(personaServiceMethods.ByName("SetActivePersona")),
-			connect.WithClientOptions(opts...),
-		),
-	}
-}
-
-// personaServiceClient implements PersonaServiceClient.
-type personaServiceClient struct {
-	listPersonas     *connect.Client[muse.ListPersonasRequest, muse.ListPersonasResponse]
-	getPersona       *connect.Client[muse.GetPersonaRequest, muse.GetPersonaResponse]
-	createPersona    *connect.Client[muse.CreatePersonaRequest, muse.CreatePersonaResponse]
-	updatePersona    *connect.Client[muse.UpdatePersonaRequest, muse.UpdatePersonaResponse]
-	deletePersona    *connect.Client[muse.DeletePersonaRequest, muse.DeletePersonaResponse]
-	setActivePersona *connect.Client[muse.SetActivePersonaRequest, muse.SetActivePersonaResponse]
-}
-
-// ListPersonas calls muse.PersonaService.ListPersonas.
-func (c *personaServiceClient) ListPersonas(ctx context.Context, req *connect.Request[muse.ListPersonasRequest]) (*connect.Response[muse.ListPersonasResponse], error) {
-	return c.listPersonas.CallUnary(ctx, req)
-}
-
-// GetPersona calls muse.PersonaService.GetPersona.
-func (c *personaServiceClient) GetPersona(ctx context.Context, req *connect.Request[muse.GetPersonaRequest]) (*connect.Response[muse.GetPersonaResponse], error) {
-	return c.getPersona.CallUnary(ctx, req)
-}
-
-// CreatePersona calls muse.PersonaService.CreatePersona.
-func (c *personaServiceClient) CreatePersona(ctx context.Context, req *connect.Request[muse.CreatePersonaRequest]) (*connect.Response[muse.CreatePersonaResponse], error) {
-	return c.createPersona.CallUnary(ctx, req)
-}
-
-// UpdatePersona calls muse.PersonaService.UpdatePersona.
-func (c *personaServiceClient) UpdatePersona(ctx context.Context, req *connect.Request[muse.UpdatePersonaRequest]) (*connect.Response[muse.UpdatePersonaResponse], error) {
-	return c.updatePersona.CallUnary(ctx, req)
-}
-
-// DeletePersona calls muse.PersonaService.DeletePersona.
-func (c *personaServiceClient) DeletePersona(ctx context.Context, req *connect.Request[muse.DeletePersonaRequest]) (*connect.Response[muse.DeletePersonaResponse], error) {
-	return c.deletePersona.CallUnary(ctx, req)
-}
-
-// SetActivePersona calls muse.PersonaService.SetActivePersona.
-func (c *personaServiceClient) SetActivePersona(ctx context.Context, req *connect.Request[muse.SetActivePersonaRequest]) (*connect.Response[muse.SetActivePersonaResponse], error) {
-	return c.setActivePersona.CallUnary(ctx, req)
-}
-
-// PersonaServiceHandler is an implementation of the muse.PersonaService service.
-type PersonaServiceHandler interface {
-	// 获取人设列表
-	ListPersonas(context.Context, *connect.Request[muse.ListPersonasRequest]) (*connect.Response[muse.ListPersonasResponse], error)
-	// 获取单个人设
-	GetPersona(context.Context, *connect.Request[muse.GetPersonaRequest]) (*connect.Response[muse.GetPersonaResponse], error)
-	// 创建人设
-	CreatePersona(context.Context, *connect.Request[muse.CreatePersonaRequest]) (*connect.Response[muse.CreatePersonaResponse], error)
-	// 更新人设
-	UpdatePersona(context.Context, *connect.Request[muse.UpdatePersonaRequest]) (*connect.Response[muse.UpdatePersonaResponse], error)
-	// 删除人设
-	DeletePersona(context.Context, *connect.Request[muse.DeletePersonaRequest]) (*connect.Response[muse.DeletePersonaResponse], error)
-	// 设置活跃人设
-	SetActivePersona(context.Context, *connect.Request[muse.SetActivePersonaRequest]) (*connect.Response[muse.SetActivePersonaResponse], error)
-}
-
-// NewPersonaServiceHandler builds an HTTP handler from the service implementation. It returns the
-// path on which to mount the handler and the handler itself.
-//
-// By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
-// and JSON codecs. They also support gzip compression.
-func NewPersonaServiceHandler(svc PersonaServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
-	personaServiceMethods := muse.File_muse_muse_proto.Services().ByName("PersonaService").Methods()
-	personaServiceListPersonasHandler := connect.NewUnaryHandler(
-		PersonaServiceListPersonasProcedure,
+	userServiceListPersonasHandler := connect.NewUnaryHandler(
+		UserServiceListPersonasProcedure,
 		svc.ListPersonas,
-		connect.WithSchema(personaServiceMethods.ByName("ListPersonas")),
+		connect.WithSchema(userServiceMethods.ByName("ListPersonas")),
 		connect.WithHandlerOptions(opts...),
 	)
-	personaServiceGetPersonaHandler := connect.NewUnaryHandler(
-		PersonaServiceGetPersonaProcedure,
+	userServiceGetPersonaHandler := connect.NewUnaryHandler(
+		UserServiceGetPersonaProcedure,
 		svc.GetPersona,
-		connect.WithSchema(personaServiceMethods.ByName("GetPersona")),
+		connect.WithSchema(userServiceMethods.ByName("GetPersona")),
 		connect.WithHandlerOptions(opts...),
 	)
-	personaServiceCreatePersonaHandler := connect.NewUnaryHandler(
-		PersonaServiceCreatePersonaProcedure,
+	userServiceCreatePersonaHandler := connect.NewUnaryHandler(
+		UserServiceCreatePersonaProcedure,
 		svc.CreatePersona,
-		connect.WithSchema(personaServiceMethods.ByName("CreatePersona")),
+		connect.WithSchema(userServiceMethods.ByName("CreatePersona")),
 		connect.WithHandlerOptions(opts...),
 	)
-	personaServiceUpdatePersonaHandler := connect.NewUnaryHandler(
-		PersonaServiceUpdatePersonaProcedure,
+	userServiceUpdatePersonaHandler := connect.NewUnaryHandler(
+		UserServiceUpdatePersonaProcedure,
 		svc.UpdatePersona,
-		connect.WithSchema(personaServiceMethods.ByName("UpdatePersona")),
+		connect.WithSchema(userServiceMethods.ByName("UpdatePersona")),
 		connect.WithHandlerOptions(opts...),
 	)
-	personaServiceDeletePersonaHandler := connect.NewUnaryHandler(
-		PersonaServiceDeletePersonaProcedure,
+	userServiceDeletePersonaHandler := connect.NewUnaryHandler(
+		UserServiceDeletePersonaProcedure,
 		svc.DeletePersona,
-		connect.WithSchema(personaServiceMethods.ByName("DeletePersona")),
+		connect.WithSchema(userServiceMethods.ByName("DeletePersona")),
 		connect.WithHandlerOptions(opts...),
 	)
-	personaServiceSetActivePersonaHandler := connect.NewUnaryHandler(
-		PersonaServiceSetActivePersonaProcedure,
+	userServiceSetActivePersonaHandler := connect.NewUnaryHandler(
+		UserServiceSetActivePersonaProcedure,
 		svc.SetActivePersona,
-		connect.WithSchema(personaServiceMethods.ByName("SetActivePersona")),
+		connect.WithSchema(userServiceMethods.ByName("SetActivePersona")),
 		connect.WithHandlerOptions(opts...),
 	)
-	return "/muse.PersonaService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		switch r.URL.Path {
-		case PersonaServiceListPersonasProcedure:
-			personaServiceListPersonasHandler.ServeHTTP(w, r)
-		case PersonaServiceGetPersonaProcedure:
-			personaServiceGetPersonaHandler.ServeHTTP(w, r)
-		case PersonaServiceCreatePersonaProcedure:
-			personaServiceCreatePersonaHandler.ServeHTTP(w, r)
-		case PersonaServiceUpdatePersonaProcedure:
-			personaServiceUpdatePersonaHandler.ServeHTTP(w, r)
-		case PersonaServiceDeletePersonaProcedure:
-			personaServiceDeletePersonaHandler.ServeHTTP(w, r)
-		case PersonaServiceSetActivePersonaProcedure:
-			personaServiceSetActivePersonaHandler.ServeHTTP(w, r)
-		default:
-			http.NotFound(w, r)
-		}
-	})
-}
-
-// UnimplementedPersonaServiceHandler returns CodeUnimplemented from all methods.
-type UnimplementedPersonaServiceHandler struct{}
-
-func (UnimplementedPersonaServiceHandler) ListPersonas(context.Context, *connect.Request[muse.ListPersonasRequest]) (*connect.Response[muse.ListPersonasResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PersonaService.ListPersonas is not implemented"))
-}
-
-func (UnimplementedPersonaServiceHandler) GetPersona(context.Context, *connect.Request[muse.GetPersonaRequest]) (*connect.Response[muse.GetPersonaResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PersonaService.GetPersona is not implemented"))
-}
-
-func (UnimplementedPersonaServiceHandler) CreatePersona(context.Context, *connect.Request[muse.CreatePersonaRequest]) (*connect.Response[muse.CreatePersonaResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PersonaService.CreatePersona is not implemented"))
-}
-
-func (UnimplementedPersonaServiceHandler) UpdatePersona(context.Context, *connect.Request[muse.UpdatePersonaRequest]) (*connect.Response[muse.UpdatePersonaResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PersonaService.UpdatePersona is not implemented"))
-}
-
-func (UnimplementedPersonaServiceHandler) DeletePersona(context.Context, *connect.Request[muse.DeletePersonaRequest]) (*connect.Response[muse.DeletePersonaResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PersonaService.DeletePersona is not implemented"))
-}
-
-func (UnimplementedPersonaServiceHandler) SetActivePersona(context.Context, *connect.Request[muse.SetActivePersonaRequest]) (*connect.Response[muse.SetActivePersonaResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PersonaService.SetActivePersona is not implemented"))
-}
-
-// UserSettingServiceClient is a client for the muse.UserSettingService service.
-type UserSettingServiceClient interface {
-	// 获取用户设置
-	GetUserSetting(context.Context, *connect.Request[muse.GetUserSettingRequest]) (*connect.Response[muse.GetUserSettingResponse], error)
-	// 更新用户设置
-	UpdateUserSetting(context.Context, *connect.Request[muse.UpdateUserSettingRequest]) (*connect.Response[muse.UpdateUserSettingResponse], error)
-}
-
-// NewUserSettingServiceClient constructs a client for the muse.UserSettingService service. By
-// default, it uses the Connect protocol with the binary Protobuf Codec, asks for gzipped responses,
-// and sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the
-// connect.WithGRPC() or connect.WithGRPCWeb() options.
-//
-// The URL supplied here should be the base URL for the Connect or gRPC server (for example,
-// http://api.acme.com or https://acme.com/grpc).
-func NewUserSettingServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) UserSettingServiceClient {
-	baseURL = strings.TrimRight(baseURL, "/")
-	userSettingServiceMethods := muse.File_muse_muse_proto.Services().ByName("UserSettingService").Methods()
-	return &userSettingServiceClient{
-		getUserSetting: connect.NewClient[muse.GetUserSettingRequest, muse.GetUserSettingResponse](
-			httpClient,
-			baseURL+UserSettingServiceGetUserSettingProcedure,
-			connect.WithSchema(userSettingServiceMethods.ByName("GetUserSetting")),
-			connect.WithClientOptions(opts...),
-		),
-		updateUserSetting: connect.NewClient[muse.UpdateUserSettingRequest, muse.UpdateUserSettingResponse](
-			httpClient,
-			baseURL+UserSettingServiceUpdateUserSettingProcedure,
-			connect.WithSchema(userSettingServiceMethods.ByName("UpdateUserSetting")),
-			connect.WithClientOptions(opts...),
-		),
-	}
-}
-
-// userSettingServiceClient implements UserSettingServiceClient.
-type userSettingServiceClient struct {
-	getUserSetting    *connect.Client[muse.GetUserSettingRequest, muse.GetUserSettingResponse]
-	updateUserSetting *connect.Client[muse.UpdateUserSettingRequest, muse.UpdateUserSettingResponse]
-}
-
-// GetUserSetting calls muse.UserSettingService.GetUserSetting.
-func (c *userSettingServiceClient) GetUserSetting(ctx context.Context, req *connect.Request[muse.GetUserSettingRequest]) (*connect.Response[muse.GetUserSettingResponse], error) {
-	return c.getUserSetting.CallUnary(ctx, req)
-}
-
-// UpdateUserSetting calls muse.UserSettingService.UpdateUserSetting.
-func (c *userSettingServiceClient) UpdateUserSetting(ctx context.Context, req *connect.Request[muse.UpdateUserSettingRequest]) (*connect.Response[muse.UpdateUserSettingResponse], error) {
-	return c.updateUserSetting.CallUnary(ctx, req)
-}
-
-// UserSettingServiceHandler is an implementation of the muse.UserSettingService service.
-type UserSettingServiceHandler interface {
-	// 获取用户设置
-	GetUserSetting(context.Context, *connect.Request[muse.GetUserSettingRequest]) (*connect.Response[muse.GetUserSettingResponse], error)
-	// 更新用户设置
-	UpdateUserSetting(context.Context, *connect.Request[muse.UpdateUserSettingRequest]) (*connect.Response[muse.UpdateUserSettingResponse], error)
-}
-
-// NewUserSettingServiceHandler builds an HTTP handler from the service implementation. It returns
-// the path on which to mount the handler and the handler itself.
-//
-// By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
-// and JSON codecs. They also support gzip compression.
-func NewUserSettingServiceHandler(svc UserSettingServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
-	userSettingServiceMethods := muse.File_muse_muse_proto.Services().ByName("UserSettingService").Methods()
-	userSettingServiceGetUserSettingHandler := connect.NewUnaryHandler(
-		UserSettingServiceGetUserSettingProcedure,
+	userServiceGetUserSettingHandler := connect.NewUnaryHandler(
+		UserServiceGetUserSettingProcedure,
 		svc.GetUserSetting,
-		connect.WithSchema(userSettingServiceMethods.ByName("GetUserSetting")),
+		connect.WithSchema(userServiceMethods.ByName("GetUserSetting")),
 		connect.WithHandlerOptions(opts...),
 	)
-	userSettingServiceUpdateUserSettingHandler := connect.NewUnaryHandler(
-		UserSettingServiceUpdateUserSettingProcedure,
+	userServiceUpdateUserSettingHandler := connect.NewUnaryHandler(
+		UserServiceUpdateUserSettingProcedure,
 		svc.UpdateUserSetting,
-		connect.WithSchema(userSettingServiceMethods.ByName("UpdateUserSetting")),
+		connect.WithSchema(userServiceMethods.ByName("UpdateUserSetting")),
 		connect.WithHandlerOptions(opts...),
 	)
-	return "/muse.UserSettingService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	userServiceListAPIConfigsHandler := connect.NewUnaryHandler(
+		UserServiceListAPIConfigsProcedure,
+		svc.ListAPIConfigs,
+		connect.WithSchema(userServiceMethods.ByName("ListAPIConfigs")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceGetAPIConfigHandler := connect.NewUnaryHandler(
+		UserServiceGetAPIConfigProcedure,
+		svc.GetAPIConfig,
+		connect.WithSchema(userServiceMethods.ByName("GetAPIConfig")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceCreateAPIConfigHandler := connect.NewUnaryHandler(
+		UserServiceCreateAPIConfigProcedure,
+		svc.CreateAPIConfig,
+		connect.WithSchema(userServiceMethods.ByName("CreateAPIConfig")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceUpdateAPIConfigHandler := connect.NewUnaryHandler(
+		UserServiceUpdateAPIConfigProcedure,
+		svc.UpdateAPIConfig,
+		connect.WithSchema(userServiceMethods.ByName("UpdateAPIConfig")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceDeleteAPIConfigHandler := connect.NewUnaryHandler(
+		UserServiceDeleteAPIConfigProcedure,
+		svc.DeleteAPIConfig,
+		connect.WithSchema(userServiceMethods.ByName("DeleteAPIConfig")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceSetActiveAPIConfigHandler := connect.NewUnaryHandler(
+		UserServiceSetActiveAPIConfigProcedure,
+		svc.SetActiveAPIConfig,
+		connect.WithSchema(userServiceMethods.ByName("SetActiveAPIConfig")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceTestAPIConfigHandler := connect.NewUnaryHandler(
+		UserServiceTestAPIConfigProcedure,
+		svc.TestAPIConfig,
+		connect.WithSchema(userServiceMethods.ByName("TestAPIConfig")),
+		connect.WithHandlerOptions(opts...),
+	)
+	return "/muse.UserService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case UserSettingServiceGetUserSettingProcedure:
-			userSettingServiceGetUserSettingHandler.ServeHTTP(w, r)
-		case UserSettingServiceUpdateUserSettingProcedure:
-			userSettingServiceUpdateUserSettingHandler.ServeHTTP(w, r)
+		case UserServiceRegisterProcedure:
+			userServiceRegisterHandler.ServeHTTP(w, r)
+		case UserServiceLoginProcedure:
+			userServiceLoginHandler.ServeHTTP(w, r)
+		case UserServiceGetCurrentUserProcedure:
+			userServiceGetCurrentUserHandler.ServeHTTP(w, r)
+		case UserServiceChangePasswordProcedure:
+			userServiceChangePasswordHandler.ServeHTTP(w, r)
+		case UserServiceListPersonasProcedure:
+			userServiceListPersonasHandler.ServeHTTP(w, r)
+		case UserServiceGetPersonaProcedure:
+			userServiceGetPersonaHandler.ServeHTTP(w, r)
+		case UserServiceCreatePersonaProcedure:
+			userServiceCreatePersonaHandler.ServeHTTP(w, r)
+		case UserServiceUpdatePersonaProcedure:
+			userServiceUpdatePersonaHandler.ServeHTTP(w, r)
+		case UserServiceDeletePersonaProcedure:
+			userServiceDeletePersonaHandler.ServeHTTP(w, r)
+		case UserServiceSetActivePersonaProcedure:
+			userServiceSetActivePersonaHandler.ServeHTTP(w, r)
+		case UserServiceGetUserSettingProcedure:
+			userServiceGetUserSettingHandler.ServeHTTP(w, r)
+		case UserServiceUpdateUserSettingProcedure:
+			userServiceUpdateUserSettingHandler.ServeHTTP(w, r)
+		case UserServiceListAPIConfigsProcedure:
+			userServiceListAPIConfigsHandler.ServeHTTP(w, r)
+		case UserServiceGetAPIConfigProcedure:
+			userServiceGetAPIConfigHandler.ServeHTTP(w, r)
+		case UserServiceCreateAPIConfigProcedure:
+			userServiceCreateAPIConfigHandler.ServeHTTP(w, r)
+		case UserServiceUpdateAPIConfigProcedure:
+			userServiceUpdateAPIConfigHandler.ServeHTTP(w, r)
+		case UserServiceDeleteAPIConfigProcedure:
+			userServiceDeleteAPIConfigHandler.ServeHTTP(w, r)
+		case UserServiceSetActiveAPIConfigProcedure:
+			userServiceSetActiveAPIConfigHandler.ServeHTTP(w, r)
+		case UserServiceTestAPIConfigProcedure:
+			userServiceTestAPIConfigHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
 	})
 }
 
-// UnimplementedUserSettingServiceHandler returns CodeUnimplemented from all methods.
-type UnimplementedUserSettingServiceHandler struct{}
+// UnimplementedUserServiceHandler returns CodeUnimplemented from all methods.
+type UnimplementedUserServiceHandler struct{}
 
-func (UnimplementedUserSettingServiceHandler) GetUserSetting(context.Context, *connect.Request[muse.GetUserSettingRequest]) (*connect.Response[muse.GetUserSettingResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserSettingService.GetUserSetting is not implemented"))
+func (UnimplementedUserServiceHandler) Register(context.Context, *connect.Request[muse.RegisterRequest]) (*connect.Response[muse.RegisterResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.Register is not implemented"))
 }
 
-func (UnimplementedUserSettingServiceHandler) UpdateUserSetting(context.Context, *connect.Request[muse.UpdateUserSettingRequest]) (*connect.Response[muse.UpdateUserSettingResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserSettingService.UpdateUserSetting is not implemented"))
+func (UnimplementedUserServiceHandler) Login(context.Context, *connect.Request[muse.LoginRequest]) (*connect.Response[muse.LoginResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.Login is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) GetCurrentUser(context.Context, *connect.Request[muse.GetCurrentUserRequest]) (*connect.Response[muse.GetCurrentUserResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.GetCurrentUser is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) ChangePassword(context.Context, *connect.Request[muse.ChangePasswordRequest]) (*connect.Response[muse.ChangePasswordResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.ChangePassword is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) ListPersonas(context.Context, *connect.Request[muse.ListPersonasRequest]) (*connect.Response[muse.ListPersonasResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.ListPersonas is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) GetPersona(context.Context, *connect.Request[muse.GetPersonaRequest]) (*connect.Response[muse.GetPersonaResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.GetPersona is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) CreatePersona(context.Context, *connect.Request[muse.CreatePersonaRequest]) (*connect.Response[muse.CreatePersonaResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.CreatePersona is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) UpdatePersona(context.Context, *connect.Request[muse.UpdatePersonaRequest]) (*connect.Response[muse.UpdatePersonaResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.UpdatePersona is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) DeletePersona(context.Context, *connect.Request[muse.DeletePersonaRequest]) (*connect.Response[muse.DeletePersonaResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.DeletePersona is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) SetActivePersona(context.Context, *connect.Request[muse.SetActivePersonaRequest]) (*connect.Response[muse.SetActivePersonaResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.SetActivePersona is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) GetUserSetting(context.Context, *connect.Request[muse.GetUserSettingRequest]) (*connect.Response[muse.GetUserSettingResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.GetUserSetting is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) UpdateUserSetting(context.Context, *connect.Request[muse.UpdateUserSettingRequest]) (*connect.Response[muse.UpdateUserSettingResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.UpdateUserSetting is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) ListAPIConfigs(context.Context, *connect.Request[muse.ListAPIConfigsRequest]) (*connect.Response[muse.ListAPIConfigsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.ListAPIConfigs is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) GetAPIConfig(context.Context, *connect.Request[muse.GetAPIConfigRequest]) (*connect.Response[muse.GetAPIConfigResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.GetAPIConfig is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) CreateAPIConfig(context.Context, *connect.Request[muse.CreateAPIConfigRequest]) (*connect.Response[muse.CreateAPIConfigResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.CreateAPIConfig is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) UpdateAPIConfig(context.Context, *connect.Request[muse.UpdateAPIConfigRequest]) (*connect.Response[muse.UpdateAPIConfigResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.UpdateAPIConfig is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) DeleteAPIConfig(context.Context, *connect.Request[muse.DeleteAPIConfigRequest]) (*connect.Response[muse.DeleteAPIConfigResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.DeleteAPIConfig is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) SetActiveAPIConfig(context.Context, *connect.Request[muse.SetActiveAPIConfigRequest]) (*connect.Response[muse.SetActiveAPIConfigResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.SetActiveAPIConfig is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) TestAPIConfig(context.Context, *connect.Request[muse.TestAPIConfigRequest]) (*connect.Response[muse.TestAPIConfigResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.TestAPIConfig is not implemented"))
 }
 
 // CharacterServiceClient is a client for the muse.CharacterService service.
@@ -1328,6 +1425,16 @@ type PresetServiceClient interface {
 	ImportPreset(context.Context, *connect.Request[muse.ImportPresetRequest]) (*connect.Response[muse.ImportPresetResponse], error)
 	// 导出预设
 	ExportPreset(context.Context, *connect.Request[muse.ExportPresetRequest]) (*connect.Response[muse.ExportPresetResponse], error)
+	// 获取预设的提示项列表
+	ListPromptItems(context.Context, *connect.Request[muse.ListPromptItemsRequest]) (*connect.Response[muse.ListPromptItemsResponse], error)
+	// 添加提示项
+	AddPromptItem(context.Context, *connect.Request[muse.AddPromptItemRequest]) (*connect.Response[muse.AddPromptItemResponse], error)
+	// 更新提示项
+	UpdatePromptItem(context.Context, *connect.Request[muse.UpdatePromptItemRequest]) (*connect.Response[muse.UpdatePromptItemResponse], error)
+	// 删除提示项
+	DeletePromptItem(context.Context, *connect.Request[muse.DeletePromptItemRequest]) (*connect.Response[muse.DeletePromptItemResponse], error)
+	// 批量更新提示项排序
+	UpdatePromptItemsOrder(context.Context, *connect.Request[muse.UpdatePromptItemsOrderRequest]) (*connect.Response[muse.UpdatePromptItemsOrderResponse], error)
 }
 
 // NewPresetServiceClient constructs a client for the muse.PresetService service. By default, it
@@ -1389,19 +1496,54 @@ func NewPresetServiceClient(httpClient connect.HTTPClient, baseURL string, opts 
 			connect.WithSchema(presetServiceMethods.ByName("ExportPreset")),
 			connect.WithClientOptions(opts...),
 		),
+		listPromptItems: connect.NewClient[muse.ListPromptItemsRequest, muse.ListPromptItemsResponse](
+			httpClient,
+			baseURL+PresetServiceListPromptItemsProcedure,
+			connect.WithSchema(presetServiceMethods.ByName("ListPromptItems")),
+			connect.WithClientOptions(opts...),
+		),
+		addPromptItem: connect.NewClient[muse.AddPromptItemRequest, muse.AddPromptItemResponse](
+			httpClient,
+			baseURL+PresetServiceAddPromptItemProcedure,
+			connect.WithSchema(presetServiceMethods.ByName("AddPromptItem")),
+			connect.WithClientOptions(opts...),
+		),
+		updatePromptItem: connect.NewClient[muse.UpdatePromptItemRequest, muse.UpdatePromptItemResponse](
+			httpClient,
+			baseURL+PresetServiceUpdatePromptItemProcedure,
+			connect.WithSchema(presetServiceMethods.ByName("UpdatePromptItem")),
+			connect.WithClientOptions(opts...),
+		),
+		deletePromptItem: connect.NewClient[muse.DeletePromptItemRequest, muse.DeletePromptItemResponse](
+			httpClient,
+			baseURL+PresetServiceDeletePromptItemProcedure,
+			connect.WithSchema(presetServiceMethods.ByName("DeletePromptItem")),
+			connect.WithClientOptions(opts...),
+		),
+		updatePromptItemsOrder: connect.NewClient[muse.UpdatePromptItemsOrderRequest, muse.UpdatePromptItemsOrderResponse](
+			httpClient,
+			baseURL+PresetServiceUpdatePromptItemsOrderProcedure,
+			connect.WithSchema(presetServiceMethods.ByName("UpdatePromptItemsOrder")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // presetServiceClient implements PresetServiceClient.
 type presetServiceClient struct {
-	listPresets     *connect.Client[muse.ListPresetsRequest, muse.ListPresetsResponse]
-	getPreset       *connect.Client[muse.GetPresetRequest, muse.GetPresetResponse]
-	createPreset    *connect.Client[muse.CreatePresetRequest, muse.CreatePresetResponse]
-	updatePreset    *connect.Client[muse.UpdatePresetRequest, muse.UpdatePresetResponse]
-	deletePreset    *connect.Client[muse.DeletePresetRequest, muse.DeletePresetResponse]
-	setActivePreset *connect.Client[muse.SetActivePresetRequest, muse.SetActivePresetResponse]
-	importPreset    *connect.Client[muse.ImportPresetRequest, muse.ImportPresetResponse]
-	exportPreset    *connect.Client[muse.ExportPresetRequest, muse.ExportPresetResponse]
+	listPresets            *connect.Client[muse.ListPresetsRequest, muse.ListPresetsResponse]
+	getPreset              *connect.Client[muse.GetPresetRequest, muse.GetPresetResponse]
+	createPreset           *connect.Client[muse.CreatePresetRequest, muse.CreatePresetResponse]
+	updatePreset           *connect.Client[muse.UpdatePresetRequest, muse.UpdatePresetResponse]
+	deletePreset           *connect.Client[muse.DeletePresetRequest, muse.DeletePresetResponse]
+	setActivePreset        *connect.Client[muse.SetActivePresetRequest, muse.SetActivePresetResponse]
+	importPreset           *connect.Client[muse.ImportPresetRequest, muse.ImportPresetResponse]
+	exportPreset           *connect.Client[muse.ExportPresetRequest, muse.ExportPresetResponse]
+	listPromptItems        *connect.Client[muse.ListPromptItemsRequest, muse.ListPromptItemsResponse]
+	addPromptItem          *connect.Client[muse.AddPromptItemRequest, muse.AddPromptItemResponse]
+	updatePromptItem       *connect.Client[muse.UpdatePromptItemRequest, muse.UpdatePromptItemResponse]
+	deletePromptItem       *connect.Client[muse.DeletePromptItemRequest, muse.DeletePromptItemResponse]
+	updatePromptItemsOrder *connect.Client[muse.UpdatePromptItemsOrderRequest, muse.UpdatePromptItemsOrderResponse]
 }
 
 // ListPresets calls muse.PresetService.ListPresets.
@@ -1444,6 +1586,31 @@ func (c *presetServiceClient) ExportPreset(ctx context.Context, req *connect.Req
 	return c.exportPreset.CallUnary(ctx, req)
 }
 
+// ListPromptItems calls muse.PresetService.ListPromptItems.
+func (c *presetServiceClient) ListPromptItems(ctx context.Context, req *connect.Request[muse.ListPromptItemsRequest]) (*connect.Response[muse.ListPromptItemsResponse], error) {
+	return c.listPromptItems.CallUnary(ctx, req)
+}
+
+// AddPromptItem calls muse.PresetService.AddPromptItem.
+func (c *presetServiceClient) AddPromptItem(ctx context.Context, req *connect.Request[muse.AddPromptItemRequest]) (*connect.Response[muse.AddPromptItemResponse], error) {
+	return c.addPromptItem.CallUnary(ctx, req)
+}
+
+// UpdatePromptItem calls muse.PresetService.UpdatePromptItem.
+func (c *presetServiceClient) UpdatePromptItem(ctx context.Context, req *connect.Request[muse.UpdatePromptItemRequest]) (*connect.Response[muse.UpdatePromptItemResponse], error) {
+	return c.updatePromptItem.CallUnary(ctx, req)
+}
+
+// DeletePromptItem calls muse.PresetService.DeletePromptItem.
+func (c *presetServiceClient) DeletePromptItem(ctx context.Context, req *connect.Request[muse.DeletePromptItemRequest]) (*connect.Response[muse.DeletePromptItemResponse], error) {
+	return c.deletePromptItem.CallUnary(ctx, req)
+}
+
+// UpdatePromptItemsOrder calls muse.PresetService.UpdatePromptItemsOrder.
+func (c *presetServiceClient) UpdatePromptItemsOrder(ctx context.Context, req *connect.Request[muse.UpdatePromptItemsOrderRequest]) (*connect.Response[muse.UpdatePromptItemsOrderResponse], error) {
+	return c.updatePromptItemsOrder.CallUnary(ctx, req)
+}
+
 // PresetServiceHandler is an implementation of the muse.PresetService service.
 type PresetServiceHandler interface {
 	// 获取预设列表
@@ -1462,6 +1629,16 @@ type PresetServiceHandler interface {
 	ImportPreset(context.Context, *connect.Request[muse.ImportPresetRequest]) (*connect.Response[muse.ImportPresetResponse], error)
 	// 导出预设
 	ExportPreset(context.Context, *connect.Request[muse.ExportPresetRequest]) (*connect.Response[muse.ExportPresetResponse], error)
+	// 获取预设的提示项列表
+	ListPromptItems(context.Context, *connect.Request[muse.ListPromptItemsRequest]) (*connect.Response[muse.ListPromptItemsResponse], error)
+	// 添加提示项
+	AddPromptItem(context.Context, *connect.Request[muse.AddPromptItemRequest]) (*connect.Response[muse.AddPromptItemResponse], error)
+	// 更新提示项
+	UpdatePromptItem(context.Context, *connect.Request[muse.UpdatePromptItemRequest]) (*connect.Response[muse.UpdatePromptItemResponse], error)
+	// 删除提示项
+	DeletePromptItem(context.Context, *connect.Request[muse.DeletePromptItemRequest]) (*connect.Response[muse.DeletePromptItemResponse], error)
+	// 批量更新提示项排序
+	UpdatePromptItemsOrder(context.Context, *connect.Request[muse.UpdatePromptItemsOrderRequest]) (*connect.Response[muse.UpdatePromptItemsOrderResponse], error)
 }
 
 // NewPresetServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -1519,6 +1696,36 @@ func NewPresetServiceHandler(svc PresetServiceHandler, opts ...connect.HandlerOp
 		connect.WithSchema(presetServiceMethods.ByName("ExportPreset")),
 		connect.WithHandlerOptions(opts...),
 	)
+	presetServiceListPromptItemsHandler := connect.NewUnaryHandler(
+		PresetServiceListPromptItemsProcedure,
+		svc.ListPromptItems,
+		connect.WithSchema(presetServiceMethods.ByName("ListPromptItems")),
+		connect.WithHandlerOptions(opts...),
+	)
+	presetServiceAddPromptItemHandler := connect.NewUnaryHandler(
+		PresetServiceAddPromptItemProcedure,
+		svc.AddPromptItem,
+		connect.WithSchema(presetServiceMethods.ByName("AddPromptItem")),
+		connect.WithHandlerOptions(opts...),
+	)
+	presetServiceUpdatePromptItemHandler := connect.NewUnaryHandler(
+		PresetServiceUpdatePromptItemProcedure,
+		svc.UpdatePromptItem,
+		connect.WithSchema(presetServiceMethods.ByName("UpdatePromptItem")),
+		connect.WithHandlerOptions(opts...),
+	)
+	presetServiceDeletePromptItemHandler := connect.NewUnaryHandler(
+		PresetServiceDeletePromptItemProcedure,
+		svc.DeletePromptItem,
+		connect.WithSchema(presetServiceMethods.ByName("DeletePromptItem")),
+		connect.WithHandlerOptions(opts...),
+	)
+	presetServiceUpdatePromptItemsOrderHandler := connect.NewUnaryHandler(
+		PresetServiceUpdatePromptItemsOrderProcedure,
+		svc.UpdatePromptItemsOrder,
+		connect.WithSchema(presetServiceMethods.ByName("UpdatePromptItemsOrder")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/muse.PresetService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case PresetServiceListPresetsProcedure:
@@ -1537,6 +1744,16 @@ func NewPresetServiceHandler(svc PresetServiceHandler, opts ...connect.HandlerOp
 			presetServiceImportPresetHandler.ServeHTTP(w, r)
 		case PresetServiceExportPresetProcedure:
 			presetServiceExportPresetHandler.ServeHTTP(w, r)
+		case PresetServiceListPromptItemsProcedure:
+			presetServiceListPromptItemsHandler.ServeHTTP(w, r)
+		case PresetServiceAddPromptItemProcedure:
+			presetServiceAddPromptItemHandler.ServeHTTP(w, r)
+		case PresetServiceUpdatePromptItemProcedure:
+			presetServiceUpdatePromptItemHandler.ServeHTTP(w, r)
+		case PresetServiceDeletePromptItemProcedure:
+			presetServiceDeletePromptItemHandler.ServeHTTP(w, r)
+		case PresetServiceUpdatePromptItemsOrderProcedure:
+			presetServiceUpdatePromptItemsOrderHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -1578,188 +1795,24 @@ func (UnimplementedPresetServiceHandler) ExportPreset(context.Context, *connect.
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PresetService.ExportPreset is not implemented"))
 }
 
-// PromptItemServiceClient is a client for the muse.PromptItemService service.
-type PromptItemServiceClient interface {
-	// 获取预设的提示项列表
-	ListPromptItems(context.Context, *connect.Request[muse.ListPromptItemsRequest]) (*connect.Response[muse.ListPromptItemsResponse], error)
-	// 添加提示项
-	AddPromptItem(context.Context, *connect.Request[muse.AddPromptItemRequest]) (*connect.Response[muse.AddPromptItemResponse], error)
-	// 更新提示项
-	UpdatePromptItem(context.Context, *connect.Request[muse.UpdatePromptItemRequest]) (*connect.Response[muse.UpdatePromptItemResponse], error)
-	// 删除提示项
-	DeletePromptItem(context.Context, *connect.Request[muse.DeletePromptItemRequest]) (*connect.Response[muse.DeletePromptItemResponse], error)
-	// 批量更新提示项排序
-	UpdatePromptItemsOrder(context.Context, *connect.Request[muse.UpdatePromptItemsOrderRequest]) (*connect.Response[muse.UpdatePromptItemsOrderResponse], error)
+func (UnimplementedPresetServiceHandler) ListPromptItems(context.Context, *connect.Request[muse.ListPromptItemsRequest]) (*connect.Response[muse.ListPromptItemsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PresetService.ListPromptItems is not implemented"))
 }
 
-// NewPromptItemServiceClient constructs a client for the muse.PromptItemService service. By
-// default, it uses the Connect protocol with the binary Protobuf Codec, asks for gzipped responses,
-// and sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the
-// connect.WithGRPC() or connect.WithGRPCWeb() options.
-//
-// The URL supplied here should be the base URL for the Connect or gRPC server (for example,
-// http://api.acme.com or https://acme.com/grpc).
-func NewPromptItemServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) PromptItemServiceClient {
-	baseURL = strings.TrimRight(baseURL, "/")
-	promptItemServiceMethods := muse.File_muse_muse_proto.Services().ByName("PromptItemService").Methods()
-	return &promptItemServiceClient{
-		listPromptItems: connect.NewClient[muse.ListPromptItemsRequest, muse.ListPromptItemsResponse](
-			httpClient,
-			baseURL+PromptItemServiceListPromptItemsProcedure,
-			connect.WithSchema(promptItemServiceMethods.ByName("ListPromptItems")),
-			connect.WithClientOptions(opts...),
-		),
-		addPromptItem: connect.NewClient[muse.AddPromptItemRequest, muse.AddPromptItemResponse](
-			httpClient,
-			baseURL+PromptItemServiceAddPromptItemProcedure,
-			connect.WithSchema(promptItemServiceMethods.ByName("AddPromptItem")),
-			connect.WithClientOptions(opts...),
-		),
-		updatePromptItem: connect.NewClient[muse.UpdatePromptItemRequest, muse.UpdatePromptItemResponse](
-			httpClient,
-			baseURL+PromptItemServiceUpdatePromptItemProcedure,
-			connect.WithSchema(promptItemServiceMethods.ByName("UpdatePromptItem")),
-			connect.WithClientOptions(opts...),
-		),
-		deletePromptItem: connect.NewClient[muse.DeletePromptItemRequest, muse.DeletePromptItemResponse](
-			httpClient,
-			baseURL+PromptItemServiceDeletePromptItemProcedure,
-			connect.WithSchema(promptItemServiceMethods.ByName("DeletePromptItem")),
-			connect.WithClientOptions(opts...),
-		),
-		updatePromptItemsOrder: connect.NewClient[muse.UpdatePromptItemsOrderRequest, muse.UpdatePromptItemsOrderResponse](
-			httpClient,
-			baseURL+PromptItemServiceUpdatePromptItemsOrderProcedure,
-			connect.WithSchema(promptItemServiceMethods.ByName("UpdatePromptItemsOrder")),
-			connect.WithClientOptions(opts...),
-		),
-	}
+func (UnimplementedPresetServiceHandler) AddPromptItem(context.Context, *connect.Request[muse.AddPromptItemRequest]) (*connect.Response[muse.AddPromptItemResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PresetService.AddPromptItem is not implemented"))
 }
 
-// promptItemServiceClient implements PromptItemServiceClient.
-type promptItemServiceClient struct {
-	listPromptItems        *connect.Client[muse.ListPromptItemsRequest, muse.ListPromptItemsResponse]
-	addPromptItem          *connect.Client[muse.AddPromptItemRequest, muse.AddPromptItemResponse]
-	updatePromptItem       *connect.Client[muse.UpdatePromptItemRequest, muse.UpdatePromptItemResponse]
-	deletePromptItem       *connect.Client[muse.DeletePromptItemRequest, muse.DeletePromptItemResponse]
-	updatePromptItemsOrder *connect.Client[muse.UpdatePromptItemsOrderRequest, muse.UpdatePromptItemsOrderResponse]
+func (UnimplementedPresetServiceHandler) UpdatePromptItem(context.Context, *connect.Request[muse.UpdatePromptItemRequest]) (*connect.Response[muse.UpdatePromptItemResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PresetService.UpdatePromptItem is not implemented"))
 }
 
-// ListPromptItems calls muse.PromptItemService.ListPromptItems.
-func (c *promptItemServiceClient) ListPromptItems(ctx context.Context, req *connect.Request[muse.ListPromptItemsRequest]) (*connect.Response[muse.ListPromptItemsResponse], error) {
-	return c.listPromptItems.CallUnary(ctx, req)
+func (UnimplementedPresetServiceHandler) DeletePromptItem(context.Context, *connect.Request[muse.DeletePromptItemRequest]) (*connect.Response[muse.DeletePromptItemResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PresetService.DeletePromptItem is not implemented"))
 }
 
-// AddPromptItem calls muse.PromptItemService.AddPromptItem.
-func (c *promptItemServiceClient) AddPromptItem(ctx context.Context, req *connect.Request[muse.AddPromptItemRequest]) (*connect.Response[muse.AddPromptItemResponse], error) {
-	return c.addPromptItem.CallUnary(ctx, req)
-}
-
-// UpdatePromptItem calls muse.PromptItemService.UpdatePromptItem.
-func (c *promptItemServiceClient) UpdatePromptItem(ctx context.Context, req *connect.Request[muse.UpdatePromptItemRequest]) (*connect.Response[muse.UpdatePromptItemResponse], error) {
-	return c.updatePromptItem.CallUnary(ctx, req)
-}
-
-// DeletePromptItem calls muse.PromptItemService.DeletePromptItem.
-func (c *promptItemServiceClient) DeletePromptItem(ctx context.Context, req *connect.Request[muse.DeletePromptItemRequest]) (*connect.Response[muse.DeletePromptItemResponse], error) {
-	return c.deletePromptItem.CallUnary(ctx, req)
-}
-
-// UpdatePromptItemsOrder calls muse.PromptItemService.UpdatePromptItemsOrder.
-func (c *promptItemServiceClient) UpdatePromptItemsOrder(ctx context.Context, req *connect.Request[muse.UpdatePromptItemsOrderRequest]) (*connect.Response[muse.UpdatePromptItemsOrderResponse], error) {
-	return c.updatePromptItemsOrder.CallUnary(ctx, req)
-}
-
-// PromptItemServiceHandler is an implementation of the muse.PromptItemService service.
-type PromptItemServiceHandler interface {
-	// 获取预设的提示项列表
-	ListPromptItems(context.Context, *connect.Request[muse.ListPromptItemsRequest]) (*connect.Response[muse.ListPromptItemsResponse], error)
-	// 添加提示项
-	AddPromptItem(context.Context, *connect.Request[muse.AddPromptItemRequest]) (*connect.Response[muse.AddPromptItemResponse], error)
-	// 更新提示项
-	UpdatePromptItem(context.Context, *connect.Request[muse.UpdatePromptItemRequest]) (*connect.Response[muse.UpdatePromptItemResponse], error)
-	// 删除提示项
-	DeletePromptItem(context.Context, *connect.Request[muse.DeletePromptItemRequest]) (*connect.Response[muse.DeletePromptItemResponse], error)
-	// 批量更新提示项排序
-	UpdatePromptItemsOrder(context.Context, *connect.Request[muse.UpdatePromptItemsOrderRequest]) (*connect.Response[muse.UpdatePromptItemsOrderResponse], error)
-}
-
-// NewPromptItemServiceHandler builds an HTTP handler from the service implementation. It returns
-// the path on which to mount the handler and the handler itself.
-//
-// By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
-// and JSON codecs. They also support gzip compression.
-func NewPromptItemServiceHandler(svc PromptItemServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
-	promptItemServiceMethods := muse.File_muse_muse_proto.Services().ByName("PromptItemService").Methods()
-	promptItemServiceListPromptItemsHandler := connect.NewUnaryHandler(
-		PromptItemServiceListPromptItemsProcedure,
-		svc.ListPromptItems,
-		connect.WithSchema(promptItemServiceMethods.ByName("ListPromptItems")),
-		connect.WithHandlerOptions(opts...),
-	)
-	promptItemServiceAddPromptItemHandler := connect.NewUnaryHandler(
-		PromptItemServiceAddPromptItemProcedure,
-		svc.AddPromptItem,
-		connect.WithSchema(promptItemServiceMethods.ByName("AddPromptItem")),
-		connect.WithHandlerOptions(opts...),
-	)
-	promptItemServiceUpdatePromptItemHandler := connect.NewUnaryHandler(
-		PromptItemServiceUpdatePromptItemProcedure,
-		svc.UpdatePromptItem,
-		connect.WithSchema(promptItemServiceMethods.ByName("UpdatePromptItem")),
-		connect.WithHandlerOptions(opts...),
-	)
-	promptItemServiceDeletePromptItemHandler := connect.NewUnaryHandler(
-		PromptItemServiceDeletePromptItemProcedure,
-		svc.DeletePromptItem,
-		connect.WithSchema(promptItemServiceMethods.ByName("DeletePromptItem")),
-		connect.WithHandlerOptions(opts...),
-	)
-	promptItemServiceUpdatePromptItemsOrderHandler := connect.NewUnaryHandler(
-		PromptItemServiceUpdatePromptItemsOrderProcedure,
-		svc.UpdatePromptItemsOrder,
-		connect.WithSchema(promptItemServiceMethods.ByName("UpdatePromptItemsOrder")),
-		connect.WithHandlerOptions(opts...),
-	)
-	return "/muse.PromptItemService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		switch r.URL.Path {
-		case PromptItemServiceListPromptItemsProcedure:
-			promptItemServiceListPromptItemsHandler.ServeHTTP(w, r)
-		case PromptItemServiceAddPromptItemProcedure:
-			promptItemServiceAddPromptItemHandler.ServeHTTP(w, r)
-		case PromptItemServiceUpdatePromptItemProcedure:
-			promptItemServiceUpdatePromptItemHandler.ServeHTTP(w, r)
-		case PromptItemServiceDeletePromptItemProcedure:
-			promptItemServiceDeletePromptItemHandler.ServeHTTP(w, r)
-		case PromptItemServiceUpdatePromptItemsOrderProcedure:
-			promptItemServiceUpdatePromptItemsOrderHandler.ServeHTTP(w, r)
-		default:
-			http.NotFound(w, r)
-		}
-	})
-}
-
-// UnimplementedPromptItemServiceHandler returns CodeUnimplemented from all methods.
-type UnimplementedPromptItemServiceHandler struct{}
-
-func (UnimplementedPromptItemServiceHandler) ListPromptItems(context.Context, *connect.Request[muse.ListPromptItemsRequest]) (*connect.Response[muse.ListPromptItemsResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PromptItemService.ListPromptItems is not implemented"))
-}
-
-func (UnimplementedPromptItemServiceHandler) AddPromptItem(context.Context, *connect.Request[muse.AddPromptItemRequest]) (*connect.Response[muse.AddPromptItemResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PromptItemService.AddPromptItem is not implemented"))
-}
-
-func (UnimplementedPromptItemServiceHandler) UpdatePromptItem(context.Context, *connect.Request[muse.UpdatePromptItemRequest]) (*connect.Response[muse.UpdatePromptItemResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PromptItemService.UpdatePromptItem is not implemented"))
-}
-
-func (UnimplementedPromptItemServiceHandler) DeletePromptItem(context.Context, *connect.Request[muse.DeletePromptItemRequest]) (*connect.Response[muse.DeletePromptItemResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PromptItemService.DeletePromptItem is not implemented"))
-}
-
-func (UnimplementedPromptItemServiceHandler) UpdatePromptItemsOrder(context.Context, *connect.Request[muse.UpdatePromptItemsOrderRequest]) (*connect.Response[muse.UpdatePromptItemsOrderResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PromptItemService.UpdatePromptItemsOrder is not implemented"))
+func (UnimplementedPresetServiceHandler) UpdatePromptItemsOrder(context.Context, *connect.Request[muse.UpdatePromptItemsOrderRequest]) (*connect.Response[muse.UpdatePromptItemsOrderResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PresetService.UpdatePromptItemsOrder is not implemented"))
 }
 
 // RegexRuleServiceClient is a client for the muse.RegexRuleService service.
@@ -1962,6 +2015,16 @@ type WorldInfoServiceClient interface {
 	ImportWorldInfo(context.Context, *connect.Request[muse.ImportWorldInfoRequest]) (*connect.Response[muse.ImportWorldInfoResponse], error)
 	// 导出世界书
 	ExportWorldInfo(context.Context, *connect.Request[muse.ExportWorldInfoRequest]) (*connect.Response[muse.ExportWorldInfoResponse], error)
+	// 获取世界书条目列表
+	ListWorldInfoEntries(context.Context, *connect.Request[muse.ListWorldInfoEntriesRequest]) (*connect.Response[muse.ListWorldInfoEntriesResponse], error)
+	// 添加世界书条目
+	AddWorldInfoEntry(context.Context, *connect.Request[muse.AddWorldInfoEntryRequest]) (*connect.Response[muse.AddWorldInfoEntryResponse], error)
+	// 更新世界书条目
+	UpdateWorldInfoEntry(context.Context, *connect.Request[muse.UpdateWorldInfoEntryRequest]) (*connect.Response[muse.UpdateWorldInfoEntryResponse], error)
+	// 删除世界书条目
+	DeleteWorldInfoEntry(context.Context, *connect.Request[muse.DeleteWorldInfoEntryRequest]) (*connect.Response[muse.DeleteWorldInfoEntryResponse], error)
+	// 批量更新世界书条目排序
+	UpdateWorldInfoEntriesOrder(context.Context, *connect.Request[muse.UpdateWorldInfoEntriesOrderRequest]) (*connect.Response[muse.UpdateWorldInfoEntriesOrderResponse], error)
 }
 
 // NewWorldInfoServiceClient constructs a client for the muse.WorldInfoService service. By default,
@@ -2017,18 +2080,53 @@ func NewWorldInfoServiceClient(httpClient connect.HTTPClient, baseURL string, op
 			connect.WithSchema(worldInfoServiceMethods.ByName("ExportWorldInfo")),
 			connect.WithClientOptions(opts...),
 		),
+		listWorldInfoEntries: connect.NewClient[muse.ListWorldInfoEntriesRequest, muse.ListWorldInfoEntriesResponse](
+			httpClient,
+			baseURL+WorldInfoServiceListWorldInfoEntriesProcedure,
+			connect.WithSchema(worldInfoServiceMethods.ByName("ListWorldInfoEntries")),
+			connect.WithClientOptions(opts...),
+		),
+		addWorldInfoEntry: connect.NewClient[muse.AddWorldInfoEntryRequest, muse.AddWorldInfoEntryResponse](
+			httpClient,
+			baseURL+WorldInfoServiceAddWorldInfoEntryProcedure,
+			connect.WithSchema(worldInfoServiceMethods.ByName("AddWorldInfoEntry")),
+			connect.WithClientOptions(opts...),
+		),
+		updateWorldInfoEntry: connect.NewClient[muse.UpdateWorldInfoEntryRequest, muse.UpdateWorldInfoEntryResponse](
+			httpClient,
+			baseURL+WorldInfoServiceUpdateWorldInfoEntryProcedure,
+			connect.WithSchema(worldInfoServiceMethods.ByName("UpdateWorldInfoEntry")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteWorldInfoEntry: connect.NewClient[muse.DeleteWorldInfoEntryRequest, muse.DeleteWorldInfoEntryResponse](
+			httpClient,
+			baseURL+WorldInfoServiceDeleteWorldInfoEntryProcedure,
+			connect.WithSchema(worldInfoServiceMethods.ByName("DeleteWorldInfoEntry")),
+			connect.WithClientOptions(opts...),
+		),
+		updateWorldInfoEntriesOrder: connect.NewClient[muse.UpdateWorldInfoEntriesOrderRequest, muse.UpdateWorldInfoEntriesOrderResponse](
+			httpClient,
+			baseURL+WorldInfoServiceUpdateWorldInfoEntriesOrderProcedure,
+			connect.WithSchema(worldInfoServiceMethods.ByName("UpdateWorldInfoEntriesOrder")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // worldInfoServiceClient implements WorldInfoServiceClient.
 type worldInfoServiceClient struct {
-	listWorldInfos  *connect.Client[muse.ListWorldInfosRequest, muse.ListWorldInfosResponse]
-	getWorldInfo    *connect.Client[muse.GetWorldInfoRequest, muse.GetWorldInfoResponse]
-	createWorldInfo *connect.Client[muse.CreateWorldInfoRequest, muse.CreateWorldInfoResponse]
-	updateWorldInfo *connect.Client[muse.UpdateWorldInfoRequest, muse.UpdateWorldInfoResponse]
-	deleteWorldInfo *connect.Client[muse.DeleteWorldInfoRequest, muse.DeleteWorldInfoResponse]
-	importWorldInfo *connect.Client[muse.ImportWorldInfoRequest, muse.ImportWorldInfoResponse]
-	exportWorldInfo *connect.Client[muse.ExportWorldInfoRequest, muse.ExportWorldInfoResponse]
+	listWorldInfos              *connect.Client[muse.ListWorldInfosRequest, muse.ListWorldInfosResponse]
+	getWorldInfo                *connect.Client[muse.GetWorldInfoRequest, muse.GetWorldInfoResponse]
+	createWorldInfo             *connect.Client[muse.CreateWorldInfoRequest, muse.CreateWorldInfoResponse]
+	updateWorldInfo             *connect.Client[muse.UpdateWorldInfoRequest, muse.UpdateWorldInfoResponse]
+	deleteWorldInfo             *connect.Client[muse.DeleteWorldInfoRequest, muse.DeleteWorldInfoResponse]
+	importWorldInfo             *connect.Client[muse.ImportWorldInfoRequest, muse.ImportWorldInfoResponse]
+	exportWorldInfo             *connect.Client[muse.ExportWorldInfoRequest, muse.ExportWorldInfoResponse]
+	listWorldInfoEntries        *connect.Client[muse.ListWorldInfoEntriesRequest, muse.ListWorldInfoEntriesResponse]
+	addWorldInfoEntry           *connect.Client[muse.AddWorldInfoEntryRequest, muse.AddWorldInfoEntryResponse]
+	updateWorldInfoEntry        *connect.Client[muse.UpdateWorldInfoEntryRequest, muse.UpdateWorldInfoEntryResponse]
+	deleteWorldInfoEntry        *connect.Client[muse.DeleteWorldInfoEntryRequest, muse.DeleteWorldInfoEntryResponse]
+	updateWorldInfoEntriesOrder *connect.Client[muse.UpdateWorldInfoEntriesOrderRequest, muse.UpdateWorldInfoEntriesOrderResponse]
 }
 
 // ListWorldInfos calls muse.WorldInfoService.ListWorldInfos.
@@ -2066,6 +2164,31 @@ func (c *worldInfoServiceClient) ExportWorldInfo(ctx context.Context, req *conne
 	return c.exportWorldInfo.CallUnary(ctx, req)
 }
 
+// ListWorldInfoEntries calls muse.WorldInfoService.ListWorldInfoEntries.
+func (c *worldInfoServiceClient) ListWorldInfoEntries(ctx context.Context, req *connect.Request[muse.ListWorldInfoEntriesRequest]) (*connect.Response[muse.ListWorldInfoEntriesResponse], error) {
+	return c.listWorldInfoEntries.CallUnary(ctx, req)
+}
+
+// AddWorldInfoEntry calls muse.WorldInfoService.AddWorldInfoEntry.
+func (c *worldInfoServiceClient) AddWorldInfoEntry(ctx context.Context, req *connect.Request[muse.AddWorldInfoEntryRequest]) (*connect.Response[muse.AddWorldInfoEntryResponse], error) {
+	return c.addWorldInfoEntry.CallUnary(ctx, req)
+}
+
+// UpdateWorldInfoEntry calls muse.WorldInfoService.UpdateWorldInfoEntry.
+func (c *worldInfoServiceClient) UpdateWorldInfoEntry(ctx context.Context, req *connect.Request[muse.UpdateWorldInfoEntryRequest]) (*connect.Response[muse.UpdateWorldInfoEntryResponse], error) {
+	return c.updateWorldInfoEntry.CallUnary(ctx, req)
+}
+
+// DeleteWorldInfoEntry calls muse.WorldInfoService.DeleteWorldInfoEntry.
+func (c *worldInfoServiceClient) DeleteWorldInfoEntry(ctx context.Context, req *connect.Request[muse.DeleteWorldInfoEntryRequest]) (*connect.Response[muse.DeleteWorldInfoEntryResponse], error) {
+	return c.deleteWorldInfoEntry.CallUnary(ctx, req)
+}
+
+// UpdateWorldInfoEntriesOrder calls muse.WorldInfoService.UpdateWorldInfoEntriesOrder.
+func (c *worldInfoServiceClient) UpdateWorldInfoEntriesOrder(ctx context.Context, req *connect.Request[muse.UpdateWorldInfoEntriesOrderRequest]) (*connect.Response[muse.UpdateWorldInfoEntriesOrderResponse], error) {
+	return c.updateWorldInfoEntriesOrder.CallUnary(ctx, req)
+}
+
 // WorldInfoServiceHandler is an implementation of the muse.WorldInfoService service.
 type WorldInfoServiceHandler interface {
 	// 获取世界书列表
@@ -2082,6 +2205,16 @@ type WorldInfoServiceHandler interface {
 	ImportWorldInfo(context.Context, *connect.Request[muse.ImportWorldInfoRequest]) (*connect.Response[muse.ImportWorldInfoResponse], error)
 	// 导出世界书
 	ExportWorldInfo(context.Context, *connect.Request[muse.ExportWorldInfoRequest]) (*connect.Response[muse.ExportWorldInfoResponse], error)
+	// 获取世界书条目列表
+	ListWorldInfoEntries(context.Context, *connect.Request[muse.ListWorldInfoEntriesRequest]) (*connect.Response[muse.ListWorldInfoEntriesResponse], error)
+	// 添加世界书条目
+	AddWorldInfoEntry(context.Context, *connect.Request[muse.AddWorldInfoEntryRequest]) (*connect.Response[muse.AddWorldInfoEntryResponse], error)
+	// 更新世界书条目
+	UpdateWorldInfoEntry(context.Context, *connect.Request[muse.UpdateWorldInfoEntryRequest]) (*connect.Response[muse.UpdateWorldInfoEntryResponse], error)
+	// 删除世界书条目
+	DeleteWorldInfoEntry(context.Context, *connect.Request[muse.DeleteWorldInfoEntryRequest]) (*connect.Response[muse.DeleteWorldInfoEntryResponse], error)
+	// 批量更新世界书条目排序
+	UpdateWorldInfoEntriesOrder(context.Context, *connect.Request[muse.UpdateWorldInfoEntriesOrderRequest]) (*connect.Response[muse.UpdateWorldInfoEntriesOrderResponse], error)
 }
 
 // NewWorldInfoServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -2133,6 +2266,36 @@ func NewWorldInfoServiceHandler(svc WorldInfoServiceHandler, opts ...connect.Han
 		connect.WithSchema(worldInfoServiceMethods.ByName("ExportWorldInfo")),
 		connect.WithHandlerOptions(opts...),
 	)
+	worldInfoServiceListWorldInfoEntriesHandler := connect.NewUnaryHandler(
+		WorldInfoServiceListWorldInfoEntriesProcedure,
+		svc.ListWorldInfoEntries,
+		connect.WithSchema(worldInfoServiceMethods.ByName("ListWorldInfoEntries")),
+		connect.WithHandlerOptions(opts...),
+	)
+	worldInfoServiceAddWorldInfoEntryHandler := connect.NewUnaryHandler(
+		WorldInfoServiceAddWorldInfoEntryProcedure,
+		svc.AddWorldInfoEntry,
+		connect.WithSchema(worldInfoServiceMethods.ByName("AddWorldInfoEntry")),
+		connect.WithHandlerOptions(opts...),
+	)
+	worldInfoServiceUpdateWorldInfoEntryHandler := connect.NewUnaryHandler(
+		WorldInfoServiceUpdateWorldInfoEntryProcedure,
+		svc.UpdateWorldInfoEntry,
+		connect.WithSchema(worldInfoServiceMethods.ByName("UpdateWorldInfoEntry")),
+		connect.WithHandlerOptions(opts...),
+	)
+	worldInfoServiceDeleteWorldInfoEntryHandler := connect.NewUnaryHandler(
+		WorldInfoServiceDeleteWorldInfoEntryProcedure,
+		svc.DeleteWorldInfoEntry,
+		connect.WithSchema(worldInfoServiceMethods.ByName("DeleteWorldInfoEntry")),
+		connect.WithHandlerOptions(opts...),
+	)
+	worldInfoServiceUpdateWorldInfoEntriesOrderHandler := connect.NewUnaryHandler(
+		WorldInfoServiceUpdateWorldInfoEntriesOrderProcedure,
+		svc.UpdateWorldInfoEntriesOrder,
+		connect.WithSchema(worldInfoServiceMethods.ByName("UpdateWorldInfoEntriesOrder")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/muse.WorldInfoService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case WorldInfoServiceListWorldInfosProcedure:
@@ -2149,6 +2312,16 @@ func NewWorldInfoServiceHandler(svc WorldInfoServiceHandler, opts ...connect.Han
 			worldInfoServiceImportWorldInfoHandler.ServeHTTP(w, r)
 		case WorldInfoServiceExportWorldInfoProcedure:
 			worldInfoServiceExportWorldInfoHandler.ServeHTTP(w, r)
+		case WorldInfoServiceListWorldInfoEntriesProcedure:
+			worldInfoServiceListWorldInfoEntriesHandler.ServeHTTP(w, r)
+		case WorldInfoServiceAddWorldInfoEntryProcedure:
+			worldInfoServiceAddWorldInfoEntryHandler.ServeHTTP(w, r)
+		case WorldInfoServiceUpdateWorldInfoEntryProcedure:
+			worldInfoServiceUpdateWorldInfoEntryHandler.ServeHTTP(w, r)
+		case WorldInfoServiceDeleteWorldInfoEntryProcedure:
+			worldInfoServiceDeleteWorldInfoEntryHandler.ServeHTTP(w, r)
+		case WorldInfoServiceUpdateWorldInfoEntriesOrderProcedure:
+			worldInfoServiceUpdateWorldInfoEntriesOrderHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -2186,426 +2359,22 @@ func (UnimplementedWorldInfoServiceHandler) ExportWorldInfo(context.Context, *co
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.WorldInfoService.ExportWorldInfo is not implemented"))
 }
 
-// WorldInfoEntryServiceClient is a client for the muse.WorldInfoEntryService service.
-type WorldInfoEntryServiceClient interface {
-	// 获取世界书条目列表
-	ListWorldInfoEntries(context.Context, *connect.Request[muse.ListWorldInfoEntriesRequest]) (*connect.Response[muse.ListWorldInfoEntriesResponse], error)
-	// 添加世界书条目
-	AddWorldInfoEntry(context.Context, *connect.Request[muse.AddWorldInfoEntryRequest]) (*connect.Response[muse.AddWorldInfoEntryResponse], error)
-	// 更新世界书条目
-	UpdateWorldInfoEntry(context.Context, *connect.Request[muse.UpdateWorldInfoEntryRequest]) (*connect.Response[muse.UpdateWorldInfoEntryResponse], error)
-	// 删除世界书条目
-	DeleteWorldInfoEntry(context.Context, *connect.Request[muse.DeleteWorldInfoEntryRequest]) (*connect.Response[muse.DeleteWorldInfoEntryResponse], error)
-	// 批量更新世界书条目排序
-	UpdateWorldInfoEntriesOrder(context.Context, *connect.Request[muse.UpdateWorldInfoEntriesOrderRequest]) (*connect.Response[muse.UpdateWorldInfoEntriesOrderResponse], error)
+func (UnimplementedWorldInfoServiceHandler) ListWorldInfoEntries(context.Context, *connect.Request[muse.ListWorldInfoEntriesRequest]) (*connect.Response[muse.ListWorldInfoEntriesResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.WorldInfoService.ListWorldInfoEntries is not implemented"))
 }
 
-// NewWorldInfoEntryServiceClient constructs a client for the muse.WorldInfoEntryService service. By
-// default, it uses the Connect protocol with the binary Protobuf Codec, asks for gzipped responses,
-// and sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the
-// connect.WithGRPC() or connect.WithGRPCWeb() options.
-//
-// The URL supplied here should be the base URL for the Connect or gRPC server (for example,
-// http://api.acme.com or https://acme.com/grpc).
-func NewWorldInfoEntryServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) WorldInfoEntryServiceClient {
-	baseURL = strings.TrimRight(baseURL, "/")
-	worldInfoEntryServiceMethods := muse.File_muse_muse_proto.Services().ByName("WorldInfoEntryService").Methods()
-	return &worldInfoEntryServiceClient{
-		listWorldInfoEntries: connect.NewClient[muse.ListWorldInfoEntriesRequest, muse.ListWorldInfoEntriesResponse](
-			httpClient,
-			baseURL+WorldInfoEntryServiceListWorldInfoEntriesProcedure,
-			connect.WithSchema(worldInfoEntryServiceMethods.ByName("ListWorldInfoEntries")),
-			connect.WithClientOptions(opts...),
-		),
-		addWorldInfoEntry: connect.NewClient[muse.AddWorldInfoEntryRequest, muse.AddWorldInfoEntryResponse](
-			httpClient,
-			baseURL+WorldInfoEntryServiceAddWorldInfoEntryProcedure,
-			connect.WithSchema(worldInfoEntryServiceMethods.ByName("AddWorldInfoEntry")),
-			connect.WithClientOptions(opts...),
-		),
-		updateWorldInfoEntry: connect.NewClient[muse.UpdateWorldInfoEntryRequest, muse.UpdateWorldInfoEntryResponse](
-			httpClient,
-			baseURL+WorldInfoEntryServiceUpdateWorldInfoEntryProcedure,
-			connect.WithSchema(worldInfoEntryServiceMethods.ByName("UpdateWorldInfoEntry")),
-			connect.WithClientOptions(opts...),
-		),
-		deleteWorldInfoEntry: connect.NewClient[muse.DeleteWorldInfoEntryRequest, muse.DeleteWorldInfoEntryResponse](
-			httpClient,
-			baseURL+WorldInfoEntryServiceDeleteWorldInfoEntryProcedure,
-			connect.WithSchema(worldInfoEntryServiceMethods.ByName("DeleteWorldInfoEntry")),
-			connect.WithClientOptions(opts...),
-		),
-		updateWorldInfoEntriesOrder: connect.NewClient[muse.UpdateWorldInfoEntriesOrderRequest, muse.UpdateWorldInfoEntriesOrderResponse](
-			httpClient,
-			baseURL+WorldInfoEntryServiceUpdateWorldInfoEntriesOrderProcedure,
-			connect.WithSchema(worldInfoEntryServiceMethods.ByName("UpdateWorldInfoEntriesOrder")),
-			connect.WithClientOptions(opts...),
-		),
-	}
+func (UnimplementedWorldInfoServiceHandler) AddWorldInfoEntry(context.Context, *connect.Request[muse.AddWorldInfoEntryRequest]) (*connect.Response[muse.AddWorldInfoEntryResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.WorldInfoService.AddWorldInfoEntry is not implemented"))
 }
 
-// worldInfoEntryServiceClient implements WorldInfoEntryServiceClient.
-type worldInfoEntryServiceClient struct {
-	listWorldInfoEntries        *connect.Client[muse.ListWorldInfoEntriesRequest, muse.ListWorldInfoEntriesResponse]
-	addWorldInfoEntry           *connect.Client[muse.AddWorldInfoEntryRequest, muse.AddWorldInfoEntryResponse]
-	updateWorldInfoEntry        *connect.Client[muse.UpdateWorldInfoEntryRequest, muse.UpdateWorldInfoEntryResponse]
-	deleteWorldInfoEntry        *connect.Client[muse.DeleteWorldInfoEntryRequest, muse.DeleteWorldInfoEntryResponse]
-	updateWorldInfoEntriesOrder *connect.Client[muse.UpdateWorldInfoEntriesOrderRequest, muse.UpdateWorldInfoEntriesOrderResponse]
+func (UnimplementedWorldInfoServiceHandler) UpdateWorldInfoEntry(context.Context, *connect.Request[muse.UpdateWorldInfoEntryRequest]) (*connect.Response[muse.UpdateWorldInfoEntryResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.WorldInfoService.UpdateWorldInfoEntry is not implemented"))
 }
 
-// ListWorldInfoEntries calls muse.WorldInfoEntryService.ListWorldInfoEntries.
-func (c *worldInfoEntryServiceClient) ListWorldInfoEntries(ctx context.Context, req *connect.Request[muse.ListWorldInfoEntriesRequest]) (*connect.Response[muse.ListWorldInfoEntriesResponse], error) {
-	return c.listWorldInfoEntries.CallUnary(ctx, req)
+func (UnimplementedWorldInfoServiceHandler) DeleteWorldInfoEntry(context.Context, *connect.Request[muse.DeleteWorldInfoEntryRequest]) (*connect.Response[muse.DeleteWorldInfoEntryResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.WorldInfoService.DeleteWorldInfoEntry is not implemented"))
 }
 
-// AddWorldInfoEntry calls muse.WorldInfoEntryService.AddWorldInfoEntry.
-func (c *worldInfoEntryServiceClient) AddWorldInfoEntry(ctx context.Context, req *connect.Request[muse.AddWorldInfoEntryRequest]) (*connect.Response[muse.AddWorldInfoEntryResponse], error) {
-	return c.addWorldInfoEntry.CallUnary(ctx, req)
-}
-
-// UpdateWorldInfoEntry calls muse.WorldInfoEntryService.UpdateWorldInfoEntry.
-func (c *worldInfoEntryServiceClient) UpdateWorldInfoEntry(ctx context.Context, req *connect.Request[muse.UpdateWorldInfoEntryRequest]) (*connect.Response[muse.UpdateWorldInfoEntryResponse], error) {
-	return c.updateWorldInfoEntry.CallUnary(ctx, req)
-}
-
-// DeleteWorldInfoEntry calls muse.WorldInfoEntryService.DeleteWorldInfoEntry.
-func (c *worldInfoEntryServiceClient) DeleteWorldInfoEntry(ctx context.Context, req *connect.Request[muse.DeleteWorldInfoEntryRequest]) (*connect.Response[muse.DeleteWorldInfoEntryResponse], error) {
-	return c.deleteWorldInfoEntry.CallUnary(ctx, req)
-}
-
-// UpdateWorldInfoEntriesOrder calls muse.WorldInfoEntryService.UpdateWorldInfoEntriesOrder.
-func (c *worldInfoEntryServiceClient) UpdateWorldInfoEntriesOrder(ctx context.Context, req *connect.Request[muse.UpdateWorldInfoEntriesOrderRequest]) (*connect.Response[muse.UpdateWorldInfoEntriesOrderResponse], error) {
-	return c.updateWorldInfoEntriesOrder.CallUnary(ctx, req)
-}
-
-// WorldInfoEntryServiceHandler is an implementation of the muse.WorldInfoEntryService service.
-type WorldInfoEntryServiceHandler interface {
-	// 获取世界书条目列表
-	ListWorldInfoEntries(context.Context, *connect.Request[muse.ListWorldInfoEntriesRequest]) (*connect.Response[muse.ListWorldInfoEntriesResponse], error)
-	// 添加世界书条目
-	AddWorldInfoEntry(context.Context, *connect.Request[muse.AddWorldInfoEntryRequest]) (*connect.Response[muse.AddWorldInfoEntryResponse], error)
-	// 更新世界书条目
-	UpdateWorldInfoEntry(context.Context, *connect.Request[muse.UpdateWorldInfoEntryRequest]) (*connect.Response[muse.UpdateWorldInfoEntryResponse], error)
-	// 删除世界书条目
-	DeleteWorldInfoEntry(context.Context, *connect.Request[muse.DeleteWorldInfoEntryRequest]) (*connect.Response[muse.DeleteWorldInfoEntryResponse], error)
-	// 批量更新世界书条目排序
-	UpdateWorldInfoEntriesOrder(context.Context, *connect.Request[muse.UpdateWorldInfoEntriesOrderRequest]) (*connect.Response[muse.UpdateWorldInfoEntriesOrderResponse], error)
-}
-
-// NewWorldInfoEntryServiceHandler builds an HTTP handler from the service implementation. It
-// returns the path on which to mount the handler and the handler itself.
-//
-// By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
-// and JSON codecs. They also support gzip compression.
-func NewWorldInfoEntryServiceHandler(svc WorldInfoEntryServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
-	worldInfoEntryServiceMethods := muse.File_muse_muse_proto.Services().ByName("WorldInfoEntryService").Methods()
-	worldInfoEntryServiceListWorldInfoEntriesHandler := connect.NewUnaryHandler(
-		WorldInfoEntryServiceListWorldInfoEntriesProcedure,
-		svc.ListWorldInfoEntries,
-		connect.WithSchema(worldInfoEntryServiceMethods.ByName("ListWorldInfoEntries")),
-		connect.WithHandlerOptions(opts...),
-	)
-	worldInfoEntryServiceAddWorldInfoEntryHandler := connect.NewUnaryHandler(
-		WorldInfoEntryServiceAddWorldInfoEntryProcedure,
-		svc.AddWorldInfoEntry,
-		connect.WithSchema(worldInfoEntryServiceMethods.ByName("AddWorldInfoEntry")),
-		connect.WithHandlerOptions(opts...),
-	)
-	worldInfoEntryServiceUpdateWorldInfoEntryHandler := connect.NewUnaryHandler(
-		WorldInfoEntryServiceUpdateWorldInfoEntryProcedure,
-		svc.UpdateWorldInfoEntry,
-		connect.WithSchema(worldInfoEntryServiceMethods.ByName("UpdateWorldInfoEntry")),
-		connect.WithHandlerOptions(opts...),
-	)
-	worldInfoEntryServiceDeleteWorldInfoEntryHandler := connect.NewUnaryHandler(
-		WorldInfoEntryServiceDeleteWorldInfoEntryProcedure,
-		svc.DeleteWorldInfoEntry,
-		connect.WithSchema(worldInfoEntryServiceMethods.ByName("DeleteWorldInfoEntry")),
-		connect.WithHandlerOptions(opts...),
-	)
-	worldInfoEntryServiceUpdateWorldInfoEntriesOrderHandler := connect.NewUnaryHandler(
-		WorldInfoEntryServiceUpdateWorldInfoEntriesOrderProcedure,
-		svc.UpdateWorldInfoEntriesOrder,
-		connect.WithSchema(worldInfoEntryServiceMethods.ByName("UpdateWorldInfoEntriesOrder")),
-		connect.WithHandlerOptions(opts...),
-	)
-	return "/muse.WorldInfoEntryService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		switch r.URL.Path {
-		case WorldInfoEntryServiceListWorldInfoEntriesProcedure:
-			worldInfoEntryServiceListWorldInfoEntriesHandler.ServeHTTP(w, r)
-		case WorldInfoEntryServiceAddWorldInfoEntryProcedure:
-			worldInfoEntryServiceAddWorldInfoEntryHandler.ServeHTTP(w, r)
-		case WorldInfoEntryServiceUpdateWorldInfoEntryProcedure:
-			worldInfoEntryServiceUpdateWorldInfoEntryHandler.ServeHTTP(w, r)
-		case WorldInfoEntryServiceDeleteWorldInfoEntryProcedure:
-			worldInfoEntryServiceDeleteWorldInfoEntryHandler.ServeHTTP(w, r)
-		case WorldInfoEntryServiceUpdateWorldInfoEntriesOrderProcedure:
-			worldInfoEntryServiceUpdateWorldInfoEntriesOrderHandler.ServeHTTP(w, r)
-		default:
-			http.NotFound(w, r)
-		}
-	})
-}
-
-// UnimplementedWorldInfoEntryServiceHandler returns CodeUnimplemented from all methods.
-type UnimplementedWorldInfoEntryServiceHandler struct{}
-
-func (UnimplementedWorldInfoEntryServiceHandler) ListWorldInfoEntries(context.Context, *connect.Request[muse.ListWorldInfoEntriesRequest]) (*connect.Response[muse.ListWorldInfoEntriesResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.WorldInfoEntryService.ListWorldInfoEntries is not implemented"))
-}
-
-func (UnimplementedWorldInfoEntryServiceHandler) AddWorldInfoEntry(context.Context, *connect.Request[muse.AddWorldInfoEntryRequest]) (*connect.Response[muse.AddWorldInfoEntryResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.WorldInfoEntryService.AddWorldInfoEntry is not implemented"))
-}
-
-func (UnimplementedWorldInfoEntryServiceHandler) UpdateWorldInfoEntry(context.Context, *connect.Request[muse.UpdateWorldInfoEntryRequest]) (*connect.Response[muse.UpdateWorldInfoEntryResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.WorldInfoEntryService.UpdateWorldInfoEntry is not implemented"))
-}
-
-func (UnimplementedWorldInfoEntryServiceHandler) DeleteWorldInfoEntry(context.Context, *connect.Request[muse.DeleteWorldInfoEntryRequest]) (*connect.Response[muse.DeleteWorldInfoEntryResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.WorldInfoEntryService.DeleteWorldInfoEntry is not implemented"))
-}
-
-func (UnimplementedWorldInfoEntryServiceHandler) UpdateWorldInfoEntriesOrder(context.Context, *connect.Request[muse.UpdateWorldInfoEntriesOrderRequest]) (*connect.Response[muse.UpdateWorldInfoEntriesOrderResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.WorldInfoEntryService.UpdateWorldInfoEntriesOrder is not implemented"))
-}
-
-// APIConfigServiceClient is a client for the muse.APIConfigService service.
-type APIConfigServiceClient interface {
-	// 获取API配置列表
-	ListAPIConfigs(context.Context, *connect.Request[muse.ListAPIConfigsRequest]) (*connect.Response[muse.ListAPIConfigsResponse], error)
-	// 获取单个API配置
-	GetAPIConfig(context.Context, *connect.Request[muse.GetAPIConfigRequest]) (*connect.Response[muse.GetAPIConfigResponse], error)
-	// 创建API配置
-	CreateAPIConfig(context.Context, *connect.Request[muse.CreateAPIConfigRequest]) (*connect.Response[muse.CreateAPIConfigResponse], error)
-	// 更新API配置
-	UpdateAPIConfig(context.Context, *connect.Request[muse.UpdateAPIConfigRequest]) (*connect.Response[muse.UpdateAPIConfigResponse], error)
-	// 删除API配置
-	DeleteAPIConfig(context.Context, *connect.Request[muse.DeleteAPIConfigRequest]) (*connect.Response[muse.DeleteAPIConfigResponse], error)
-	// 设置活跃API配置
-	SetActiveAPIConfig(context.Context, *connect.Request[muse.SetActiveAPIConfigRequest]) (*connect.Response[muse.SetActiveAPIConfigResponse], error)
-	// 测试API配置连接
-	TestAPIConfig(context.Context, *connect.Request[muse.TestAPIConfigRequest]) (*connect.Response[muse.TestAPIConfigResponse], error)
-}
-
-// NewAPIConfigServiceClient constructs a client for the muse.APIConfigService service. By default,
-// it uses the Connect protocol with the binary Protobuf Codec, asks for gzipped responses, and
-// sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the connect.WithGRPC()
-// or connect.WithGRPCWeb() options.
-//
-// The URL supplied here should be the base URL for the Connect or gRPC server (for example,
-// http://api.acme.com or https://acme.com/grpc).
-func NewAPIConfigServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) APIConfigServiceClient {
-	baseURL = strings.TrimRight(baseURL, "/")
-	aPIConfigServiceMethods := muse.File_muse_muse_proto.Services().ByName("APIConfigService").Methods()
-	return &aPIConfigServiceClient{
-		listAPIConfigs: connect.NewClient[muse.ListAPIConfigsRequest, muse.ListAPIConfigsResponse](
-			httpClient,
-			baseURL+APIConfigServiceListAPIConfigsProcedure,
-			connect.WithSchema(aPIConfigServiceMethods.ByName("ListAPIConfigs")),
-			connect.WithClientOptions(opts...),
-		),
-		getAPIConfig: connect.NewClient[muse.GetAPIConfigRequest, muse.GetAPIConfigResponse](
-			httpClient,
-			baseURL+APIConfigServiceGetAPIConfigProcedure,
-			connect.WithSchema(aPIConfigServiceMethods.ByName("GetAPIConfig")),
-			connect.WithClientOptions(opts...),
-		),
-		createAPIConfig: connect.NewClient[muse.CreateAPIConfigRequest, muse.CreateAPIConfigResponse](
-			httpClient,
-			baseURL+APIConfigServiceCreateAPIConfigProcedure,
-			connect.WithSchema(aPIConfigServiceMethods.ByName("CreateAPIConfig")),
-			connect.WithClientOptions(opts...),
-		),
-		updateAPIConfig: connect.NewClient[muse.UpdateAPIConfigRequest, muse.UpdateAPIConfigResponse](
-			httpClient,
-			baseURL+APIConfigServiceUpdateAPIConfigProcedure,
-			connect.WithSchema(aPIConfigServiceMethods.ByName("UpdateAPIConfig")),
-			connect.WithClientOptions(opts...),
-		),
-		deleteAPIConfig: connect.NewClient[muse.DeleteAPIConfigRequest, muse.DeleteAPIConfigResponse](
-			httpClient,
-			baseURL+APIConfigServiceDeleteAPIConfigProcedure,
-			connect.WithSchema(aPIConfigServiceMethods.ByName("DeleteAPIConfig")),
-			connect.WithClientOptions(opts...),
-		),
-		setActiveAPIConfig: connect.NewClient[muse.SetActiveAPIConfigRequest, muse.SetActiveAPIConfigResponse](
-			httpClient,
-			baseURL+APIConfigServiceSetActiveAPIConfigProcedure,
-			connect.WithSchema(aPIConfigServiceMethods.ByName("SetActiveAPIConfig")),
-			connect.WithClientOptions(opts...),
-		),
-		testAPIConfig: connect.NewClient[muse.TestAPIConfigRequest, muse.TestAPIConfigResponse](
-			httpClient,
-			baseURL+APIConfigServiceTestAPIConfigProcedure,
-			connect.WithSchema(aPIConfigServiceMethods.ByName("TestAPIConfig")),
-			connect.WithClientOptions(opts...),
-		),
-	}
-}
-
-// aPIConfigServiceClient implements APIConfigServiceClient.
-type aPIConfigServiceClient struct {
-	listAPIConfigs     *connect.Client[muse.ListAPIConfigsRequest, muse.ListAPIConfigsResponse]
-	getAPIConfig       *connect.Client[muse.GetAPIConfigRequest, muse.GetAPIConfigResponse]
-	createAPIConfig    *connect.Client[muse.CreateAPIConfigRequest, muse.CreateAPIConfigResponse]
-	updateAPIConfig    *connect.Client[muse.UpdateAPIConfigRequest, muse.UpdateAPIConfigResponse]
-	deleteAPIConfig    *connect.Client[muse.DeleteAPIConfigRequest, muse.DeleteAPIConfigResponse]
-	setActiveAPIConfig *connect.Client[muse.SetActiveAPIConfigRequest, muse.SetActiveAPIConfigResponse]
-	testAPIConfig      *connect.Client[muse.TestAPIConfigRequest, muse.TestAPIConfigResponse]
-}
-
-// ListAPIConfigs calls muse.APIConfigService.ListAPIConfigs.
-func (c *aPIConfigServiceClient) ListAPIConfigs(ctx context.Context, req *connect.Request[muse.ListAPIConfigsRequest]) (*connect.Response[muse.ListAPIConfigsResponse], error) {
-	return c.listAPIConfigs.CallUnary(ctx, req)
-}
-
-// GetAPIConfig calls muse.APIConfigService.GetAPIConfig.
-func (c *aPIConfigServiceClient) GetAPIConfig(ctx context.Context, req *connect.Request[muse.GetAPIConfigRequest]) (*connect.Response[muse.GetAPIConfigResponse], error) {
-	return c.getAPIConfig.CallUnary(ctx, req)
-}
-
-// CreateAPIConfig calls muse.APIConfigService.CreateAPIConfig.
-func (c *aPIConfigServiceClient) CreateAPIConfig(ctx context.Context, req *connect.Request[muse.CreateAPIConfigRequest]) (*connect.Response[muse.CreateAPIConfigResponse], error) {
-	return c.createAPIConfig.CallUnary(ctx, req)
-}
-
-// UpdateAPIConfig calls muse.APIConfigService.UpdateAPIConfig.
-func (c *aPIConfigServiceClient) UpdateAPIConfig(ctx context.Context, req *connect.Request[muse.UpdateAPIConfigRequest]) (*connect.Response[muse.UpdateAPIConfigResponse], error) {
-	return c.updateAPIConfig.CallUnary(ctx, req)
-}
-
-// DeleteAPIConfig calls muse.APIConfigService.DeleteAPIConfig.
-func (c *aPIConfigServiceClient) DeleteAPIConfig(ctx context.Context, req *connect.Request[muse.DeleteAPIConfigRequest]) (*connect.Response[muse.DeleteAPIConfigResponse], error) {
-	return c.deleteAPIConfig.CallUnary(ctx, req)
-}
-
-// SetActiveAPIConfig calls muse.APIConfigService.SetActiveAPIConfig.
-func (c *aPIConfigServiceClient) SetActiveAPIConfig(ctx context.Context, req *connect.Request[muse.SetActiveAPIConfigRequest]) (*connect.Response[muse.SetActiveAPIConfigResponse], error) {
-	return c.setActiveAPIConfig.CallUnary(ctx, req)
-}
-
-// TestAPIConfig calls muse.APIConfigService.TestAPIConfig.
-func (c *aPIConfigServiceClient) TestAPIConfig(ctx context.Context, req *connect.Request[muse.TestAPIConfigRequest]) (*connect.Response[muse.TestAPIConfigResponse], error) {
-	return c.testAPIConfig.CallUnary(ctx, req)
-}
-
-// APIConfigServiceHandler is an implementation of the muse.APIConfigService service.
-type APIConfigServiceHandler interface {
-	// 获取API配置列表
-	ListAPIConfigs(context.Context, *connect.Request[muse.ListAPIConfigsRequest]) (*connect.Response[muse.ListAPIConfigsResponse], error)
-	// 获取单个API配置
-	GetAPIConfig(context.Context, *connect.Request[muse.GetAPIConfigRequest]) (*connect.Response[muse.GetAPIConfigResponse], error)
-	// 创建API配置
-	CreateAPIConfig(context.Context, *connect.Request[muse.CreateAPIConfigRequest]) (*connect.Response[muse.CreateAPIConfigResponse], error)
-	// 更新API配置
-	UpdateAPIConfig(context.Context, *connect.Request[muse.UpdateAPIConfigRequest]) (*connect.Response[muse.UpdateAPIConfigResponse], error)
-	// 删除API配置
-	DeleteAPIConfig(context.Context, *connect.Request[muse.DeleteAPIConfigRequest]) (*connect.Response[muse.DeleteAPIConfigResponse], error)
-	// 设置活跃API配置
-	SetActiveAPIConfig(context.Context, *connect.Request[muse.SetActiveAPIConfigRequest]) (*connect.Response[muse.SetActiveAPIConfigResponse], error)
-	// 测试API配置连接
-	TestAPIConfig(context.Context, *connect.Request[muse.TestAPIConfigRequest]) (*connect.Response[muse.TestAPIConfigResponse], error)
-}
-
-// NewAPIConfigServiceHandler builds an HTTP handler from the service implementation. It returns the
-// path on which to mount the handler and the handler itself.
-//
-// By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
-// and JSON codecs. They also support gzip compression.
-func NewAPIConfigServiceHandler(svc APIConfigServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
-	aPIConfigServiceMethods := muse.File_muse_muse_proto.Services().ByName("APIConfigService").Methods()
-	aPIConfigServiceListAPIConfigsHandler := connect.NewUnaryHandler(
-		APIConfigServiceListAPIConfigsProcedure,
-		svc.ListAPIConfigs,
-		connect.WithSchema(aPIConfigServiceMethods.ByName("ListAPIConfigs")),
-		connect.WithHandlerOptions(opts...),
-	)
-	aPIConfigServiceGetAPIConfigHandler := connect.NewUnaryHandler(
-		APIConfigServiceGetAPIConfigProcedure,
-		svc.GetAPIConfig,
-		connect.WithSchema(aPIConfigServiceMethods.ByName("GetAPIConfig")),
-		connect.WithHandlerOptions(opts...),
-	)
-	aPIConfigServiceCreateAPIConfigHandler := connect.NewUnaryHandler(
-		APIConfigServiceCreateAPIConfigProcedure,
-		svc.CreateAPIConfig,
-		connect.WithSchema(aPIConfigServiceMethods.ByName("CreateAPIConfig")),
-		connect.WithHandlerOptions(opts...),
-	)
-	aPIConfigServiceUpdateAPIConfigHandler := connect.NewUnaryHandler(
-		APIConfigServiceUpdateAPIConfigProcedure,
-		svc.UpdateAPIConfig,
-		connect.WithSchema(aPIConfigServiceMethods.ByName("UpdateAPIConfig")),
-		connect.WithHandlerOptions(opts...),
-	)
-	aPIConfigServiceDeleteAPIConfigHandler := connect.NewUnaryHandler(
-		APIConfigServiceDeleteAPIConfigProcedure,
-		svc.DeleteAPIConfig,
-		connect.WithSchema(aPIConfigServiceMethods.ByName("DeleteAPIConfig")),
-		connect.WithHandlerOptions(opts...),
-	)
-	aPIConfigServiceSetActiveAPIConfigHandler := connect.NewUnaryHandler(
-		APIConfigServiceSetActiveAPIConfigProcedure,
-		svc.SetActiveAPIConfig,
-		connect.WithSchema(aPIConfigServiceMethods.ByName("SetActiveAPIConfig")),
-		connect.WithHandlerOptions(opts...),
-	)
-	aPIConfigServiceTestAPIConfigHandler := connect.NewUnaryHandler(
-		APIConfigServiceTestAPIConfigProcedure,
-		svc.TestAPIConfig,
-		connect.WithSchema(aPIConfigServiceMethods.ByName("TestAPIConfig")),
-		connect.WithHandlerOptions(opts...),
-	)
-	return "/muse.APIConfigService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		switch r.URL.Path {
-		case APIConfigServiceListAPIConfigsProcedure:
-			aPIConfigServiceListAPIConfigsHandler.ServeHTTP(w, r)
-		case APIConfigServiceGetAPIConfigProcedure:
-			aPIConfigServiceGetAPIConfigHandler.ServeHTTP(w, r)
-		case APIConfigServiceCreateAPIConfigProcedure:
-			aPIConfigServiceCreateAPIConfigHandler.ServeHTTP(w, r)
-		case APIConfigServiceUpdateAPIConfigProcedure:
-			aPIConfigServiceUpdateAPIConfigHandler.ServeHTTP(w, r)
-		case APIConfigServiceDeleteAPIConfigProcedure:
-			aPIConfigServiceDeleteAPIConfigHandler.ServeHTTP(w, r)
-		case APIConfigServiceSetActiveAPIConfigProcedure:
-			aPIConfigServiceSetActiveAPIConfigHandler.ServeHTTP(w, r)
-		case APIConfigServiceTestAPIConfigProcedure:
-			aPIConfigServiceTestAPIConfigHandler.ServeHTTP(w, r)
-		default:
-			http.NotFound(w, r)
-		}
-	})
-}
-
-// UnimplementedAPIConfigServiceHandler returns CodeUnimplemented from all methods.
-type UnimplementedAPIConfigServiceHandler struct{}
-
-func (UnimplementedAPIConfigServiceHandler) ListAPIConfigs(context.Context, *connect.Request[muse.ListAPIConfigsRequest]) (*connect.Response[muse.ListAPIConfigsResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.APIConfigService.ListAPIConfigs is not implemented"))
-}
-
-func (UnimplementedAPIConfigServiceHandler) GetAPIConfig(context.Context, *connect.Request[muse.GetAPIConfigRequest]) (*connect.Response[muse.GetAPIConfigResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.APIConfigService.GetAPIConfig is not implemented"))
-}
-
-func (UnimplementedAPIConfigServiceHandler) CreateAPIConfig(context.Context, *connect.Request[muse.CreateAPIConfigRequest]) (*connect.Response[muse.CreateAPIConfigResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.APIConfigService.CreateAPIConfig is not implemented"))
-}
-
-func (UnimplementedAPIConfigServiceHandler) UpdateAPIConfig(context.Context, *connect.Request[muse.UpdateAPIConfigRequest]) (*connect.Response[muse.UpdateAPIConfigResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.APIConfigService.UpdateAPIConfig is not implemented"))
-}
-
-func (UnimplementedAPIConfigServiceHandler) DeleteAPIConfig(context.Context, *connect.Request[muse.DeleteAPIConfigRequest]) (*connect.Response[muse.DeleteAPIConfigResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.APIConfigService.DeleteAPIConfig is not implemented"))
-}
-
-func (UnimplementedAPIConfigServiceHandler) SetActiveAPIConfig(context.Context, *connect.Request[muse.SetActiveAPIConfigRequest]) (*connect.Response[muse.SetActiveAPIConfigResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.APIConfigService.SetActiveAPIConfig is not implemented"))
-}
-
-func (UnimplementedAPIConfigServiceHandler) TestAPIConfig(context.Context, *connect.Request[muse.TestAPIConfigRequest]) (*connect.Response[muse.TestAPIConfigResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.APIConfigService.TestAPIConfig is not implemented"))
+func (UnimplementedWorldInfoServiceHandler) UpdateWorldInfoEntriesOrder(context.Context, *connect.Request[muse.UpdateWorldInfoEntriesOrderRequest]) (*connect.Response[muse.UpdateWorldInfoEntriesOrderResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.WorldInfoService.UpdateWorldInfoEntriesOrder is not implemented"))
 }

@@ -47,3 +47,28 @@ func (w *worldInfoImpl) ExportWorldInfo(ctx context.Context, req *pb.ExportWorld
 	//TODO implement me
 	panic("implement me")
 }
+
+func (w *worldInfoImpl) ListWorldInfoEntries(ctx context.Context, req *pb.ListWorldInfoEntriesRequest) (*pb.ListWorldInfoEntriesResponse, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (w *worldInfoImpl) AddWorldInfoEntry(ctx context.Context, req *pb.AddWorldInfoEntryRequest) (*pb.AddWorldInfoEntryResponse, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (w *worldInfoImpl) UpdateWorldInfoEntry(ctx context.Context, req *pb.UpdateWorldInfoEntryRequest) (*pb.UpdateWorldInfoEntryResponse, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (w *worldInfoImpl) DeleteWorldInfoEntry(ctx context.Context, req *pb.DeleteWorldInfoEntryRequest) (*pb.DeleteWorldInfoEntryResponse, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (w *worldInfoImpl) UpdateWorldInfoEntriesOrder(ctx context.Context, req *pb.UpdateWorldInfoEntriesOrderRequest) (*pb.UpdateWorldInfoEntriesOrderResponse, error) {
+	//TODO implement me
+	panic("implement me")
+}

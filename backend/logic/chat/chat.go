@@ -2,11 +2,11 @@ package chat
 
 import (
 	"context"
-	"fmt"
 	"strings"
 
 	"connectrpc.com/connect"
 	"github.com/ling/muse/common/convert"
+	"github.com/ling/muse/common/errs"
 	"github.com/ling/muse/entity"
 	pb "github.com/ling/muse/gen/muse"
 	"github.com/ling/muse/repo/database"
@@ -45,7 +45,7 @@ func (c *chatImpl) ListChatSessions(ctx context.Context, req *pb.ListChatSession
 	// 从数据库获取会话列表
 	sessions, total, err := c.chatRepo.ListSessions(defaultUserID, characterID, page, pageSize)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	// 转换为pb格式
@@ -63,16 +63,16 @@ func (c *chatImpl) ListChatSessions(ctx context.Context, req *pb.ListChatSession
 func (c *chatImpl) GetChatSession(ctx context.Context, req *pb.GetChatSessionRequest) (*pb.GetChatSessionResponse, error) {
 	id := int(req.GetId())
 	if id <= 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的会话ID"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidSessionID)
 	}
 
 	// 从数据库获取会话
 	session, err := c.chatRepo.GetSessionByID(id, defaultUserID)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 	if session == nil {
-		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("会话不存在"))
+		return nil, errs.NewStandard(connect.CodeNotFound, errs.SessionNotFound)
 	}
 
 	return &pb.GetChatSessionResponse{
@@ -84,7 +84,7 @@ func (c *chatImpl) CreateChatSession(ctx context.Context, req *pb.CreateChatSess
 	// 参数校验
 	characterID := int(req.GetCharacterId())
 	if characterID <= 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("角色ID不能为空"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidCharacterID)
 	}
 
 	name := strings.TrimSpace(req.GetName())
@@ -102,13 +102,13 @@ func (c *chatImpl) CreateChatSession(ctx context.Context, req *pb.CreateChatSess
 
 	// 保存到数据库
 	if err := c.chatRepo.CreateSession(session); err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	// 重新获取完整数据（包含关联）
 	fullSession, err := c.chatRepo.GetSessionByID(session.ID, defaultUserID)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	return &pb.CreateChatSessionResponse{
@@ -119,27 +119,27 @@ func (c *chatImpl) CreateChatSession(ctx context.Context, req *pb.CreateChatSess
 func (c *chatImpl) UpdateChatSession(ctx context.Context, req *pb.UpdateChatSessionRequest) (*pb.UpdateChatSessionResponse, error) {
 	id := int(req.GetId())
 	if id <= 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的会话ID"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidSessionID)
 	}
 
 	// 参数校验
 	name := strings.TrimSpace(req.GetName())
 	if name == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("会话名称不能为空"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptySessionName)
 	}
 
 	// 获取当前会话
 	session, err := c.chatRepo.GetSessionByID(id, defaultUserID)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 	if session == nil {
-		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("会话不存在"))
+		return nil, errs.NewStandard(connect.CodeNotFound, errs.SessionNotFound)
 	}
 
 	// 检查版本号
 	if int64(session.Version) != req.GetVersion() {
-		return nil, connect.NewError(connect.CodeAborted, fmt.Errorf("数据已被修改，请刷新后重试"))
+		return nil, errs.NewStandard(connect.CodeAborted, errs.DataConflict)
 	}
 
 	// 更新会话字段
@@ -147,13 +147,13 @@ func (c *chatImpl) UpdateChatSession(ctx context.Context, req *pb.UpdateChatSess
 
 	// 更新数据库
 	if err := c.chatRepo.UpdateSession(session); err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	// 重新获取更新后的会话（包含关联数据）
 	updatedSession, err := c.chatRepo.GetSessionByID(id, defaultUserID)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	return &pb.UpdateChatSessionResponse{
@@ -164,12 +164,12 @@ func (c *chatImpl) UpdateChatSession(ctx context.Context, req *pb.UpdateChatSess
 func (c *chatImpl) DeleteChatSession(ctx context.Context, req *pb.DeleteChatSessionRequest) (*pb.DeleteChatSessionResponse, error) {
 	id := int(req.GetId())
 	if id <= 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的会话ID"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidSessionID)
 	}
 
 	// 删除会话（会级联删除关联的消息和swipes）
 	if err := c.chatRepo.DeleteSession(id, defaultUserID); err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	return &pb.DeleteChatSessionResponse{}, nil

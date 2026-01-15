@@ -2,6 +2,7 @@ package character
 
 import (
 	"bytes"
+	"compress/gzip"
 	"context"
 	"encoding/base64"
 	"encoding/json"
@@ -12,6 +13,7 @@ import (
 	"connectrpc.com/connect"
 	png "github.com/dsoprea/go-png-image-structure/v2"
 	"github.com/ling/muse/common/convert"
+	"github.com/ling/muse/common/errs"
 	"github.com/ling/muse/entity"
 	"github.com/ling/muse/entity/sillytavern"
 	pb "github.com/ling/muse/gen/muse"
@@ -50,7 +52,7 @@ func (c *characterImpl) ListCharacters(ctx context.Context, req *pb.ListCharacte
 	// 从数据库获取角色列表
 	characters, total, err := c.charaRepo.List(defaultUserID, page, pageSize)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	// 转换为pb格式
@@ -68,16 +70,16 @@ func (c *characterImpl) ListCharacters(ctx context.Context, req *pb.ListCharacte
 func (c *characterImpl) GetCharacter(ctx context.Context, req *pb.GetCharacterRequest) (*pb.GetCharacterResponse, error) {
 	id := int(req.GetId())
 	if id <= 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的角色ID"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidCharacterID)
 	}
 
 	// 从数据库获取角色
 	character, err := c.charaRepo.GetByID(id, defaultUserID)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 	if character == nil {
-		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("角色不存在"))
+		return nil, errs.NewStandard(connect.CodeNotFound, errs.CharacterNotFound)
 	}
 
 	return &pb.GetCharacterResponse{
@@ -89,7 +91,7 @@ func (c *characterImpl) CreateCharacter(ctx context.Context, req *pb.CreateChara
 	// 参数校验
 	name := strings.TrimSpace(req.GetName())
 	if name == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("角色名称不能为空"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptyCharacterName)
 	}
 
 	// 构建角色实体
@@ -111,7 +113,7 @@ func (c *characterImpl) CreateCharacter(ctx context.Context, req *pb.CreateChara
 
 	// 保存到数据库
 	if err := c.charaRepo.Create(character); err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	return &pb.CreateCharacterResponse{
@@ -122,27 +124,27 @@ func (c *characterImpl) CreateCharacter(ctx context.Context, req *pb.CreateChara
 func (c *characterImpl) UpdateCharacter(ctx context.Context, req *pb.UpdateCharacterRequest) (*pb.UpdateCharacterResponse, error) {
 	id := int(req.GetId())
 	if id <= 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的角色ID"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidCharacterID)
 	}
 
 	// 参数校验
 	name := strings.TrimSpace(req.GetName())
 	if name == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("角色名称不能为空"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptyCharacterName)
 	}
 
 	// 获取当前角色
 	character, err := c.charaRepo.GetByID(id, defaultUserID)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 	if character == nil {
-		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("角色不存在"))
+		return nil, errs.NewStandard(connect.CodeNotFound, errs.CharacterNotFound)
 	}
 
 	// 检查版本号
 	if int64(character.Version) != req.GetVersion() {
-		return nil, connect.NewError(connect.CodeAborted, fmt.Errorf("数据已被修改，请刷新后重试"))
+		return nil, errs.NewStandard(connect.CodeAborted, errs.DataConflict)
 	}
 
 	// 更新角色字段
@@ -168,13 +170,13 @@ func (c *characterImpl) UpdateCharacter(ctx context.Context, req *pb.UpdateChara
 
 	// 更新数据库
 	if err := c.charaRepo.Update(character); err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	// 重新获取更新后的角色（包含关联数据）
 	updatedCharacter, err := c.charaRepo.GetByID(id, defaultUserID)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	return &pb.UpdateCharacterResponse{
@@ -185,12 +187,12 @@ func (c *characterImpl) UpdateCharacter(ctx context.Context, req *pb.UpdateChara
 func (c *characterImpl) DeleteCharacter(ctx context.Context, req *pb.DeleteCharacterRequest) (*pb.DeleteCharacterResponse, error) {
 	id := int(req.GetId())
 	if id <= 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的角色ID"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidCharacterID)
 	}
 
 	// 删除角色
 	if err := c.charaRepo.Delete(id, defaultUserID); err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	return &pb.DeleteCharacterResponse{}, nil
@@ -210,20 +212,63 @@ func (c *characterImpl) ImportCharacter(ctx context.Context, req *pb.ImportChara
 		// 从PNG图片中解析角色卡
 		card, err = readFromPNG(fileContent)
 		if err != nil {
-			return nil, err
+			return nil, errs.NewStandardf(connect.CodeInvalidArgument, "无法解析PNG文件: %v", err)
 		}
 	case ".json":
 		// 直接解析JSON格式
 		card = &sillytavern.CharacterCard{}
 		if err := json.Unmarshal(fileContent, card); err != nil {
-			return nil, err
+			return nil, errs.NewStandardf(connect.CodeInvalidArgument, "无法解析JSON文件: %v", err)
 		}
 	default:
-		return nil, fmt.Errorf("unsupported file format: %s", ext)
+		return nil, errs.NewStandardf(connect.CodeInvalidArgument, "不支持的文件格式: %s", ext)
 	}
 
-	// 将角色卡数据转换为entity.Character
+	worldBook := getWorldBookFromCard(card)
+	var buf bytes.Buffer
+	zip := gzip.NewWriter(&buf)
+	defer zip.Close()
+	worldBookJson, _ := json.Marshal(worldBook)
+	if _, err = zip.Write(worldBookJson); err != nil {
+		return nil, errs.NewStandardf(connect.CodeInternal, "压缩世界书失败： %v", err)
+	}
+	character := &entity.Character{
+		UserID:          defaultUserID,
+		Name:            card.Name,
+		Description:     card.Description,
+		FirstMessage:    card.FirstMes,
+		ExampleDialogue: card.MesExample,
+		CreatorNotes:    card.CreatorNotes,
+		WorldInfoBackup: buf.Bytes(),
+	}
 
+	// 如果有图片数据（从V3 assets中提取），设置头像
+	if len(card.Assets) > 0 {
+		for _, asset := range card.Assets {
+			if asset.Type == "icon" && asset.URI != "" {
+				// 如果是data URI，直接使用；否则可能需要下载
+				character.Avatar = asset.URI
+				break
+			}
+		}
+	}
+
+	// 如果PNG本身作为头像，将其转为base64 data URI
+	if character.Avatar == "" && ext == ".png" {
+		character.Avatar = "data:image/png;base64," + base64.StdEncoding.EncodeToString(fileContent)
+	}
+
+	if err := c.charaRepo.Create(character); err != nil {
+		return nil, err
+	}
+
+	return &pb.ImportCharacterResponse{
+		Character: convert.CharaEntityToPb(character),
+	}, nil
+}
+
+func getWorldBookFromCard(card *sillytavern.CharacterCard) entity.WorldInfo {
+	// 将角色卡数据转换为entity.Character
 	worldBook := entity.WorldInfo{
 		Name:        card.CharacterBook.Name,
 		Description: card.CharacterBook.Description,
@@ -246,90 +291,52 @@ func (c *characterImpl) ImportCharacter(ctx context.Context, req *pb.ImportChara
 			SortOrder: i,
 		})
 	}
-
-	character := &entity.Character{
-		Name:            card.Name,
-		Description:     card.Description,
-		FirstMessage:    card.FirstMes,
-		ExampleDialogue: card.MesExample,
-		CreatorNotes:    card.CreatorNotes,
-		WorldInfo:       worldBook,
-	}
-
-	// 如果有图片数据（从V3 assets中提取），设置头像
-	if len(card.Assets) > 0 {
-		for _, asset := range card.Assets {
-			if asset.Type == "icon" && asset.URI != "" {
-				// 如果是data URI，直接使用；否则可能需要下载
-				character.Avatar = asset.URI
-				break
-			}
-		}
-	}
-
-	// 如果PNG本身作为头像，将其转为base64 data URI
-	if character.Avatar == "" && ext == ".png" {
-		character.Avatar = "data:image/png;base64," + base64.StdEncoding.EncodeToString(fileContent)
-	}
-
-	if err = c.charaRepo.Create(character); err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
-	}
-
-	return &pb.ImportCharacterResponse{
-		Character: convert.CharaEntityToPb(character),
-	}, nil
+	return worldBook
 }
 
 func (c *characterImpl) ExportCharacter(ctx context.Context, req *pb.ExportCharacterRequest) (*pb.ExportCharacterResponse, error) {
-	// TODO: 从数据库获取角色数据
-	// character, err := c.repo.GetCharacter(ctx, req.GetId())
-	// if err != nil {
-	//     return nil, err
-	// }
+	character, err := c.charaRepo.GetByID(int(req.GetId()), defaultUserID)
+	if err != nil {
+		return nil, err
+	}
+	if character == nil {
+		return nil, errs.NewStandard(connect.CodeNotFound, errs.CharacterNotFound)
+	}
 
-	// 目前先返回未实现错误，等数据库层完成后再补充
-	// 下面是导出逻辑的示例代码，展示如何使用 charcard.WriteToPNG
+	// 将角色数据转换为CharacterCard
+	card := &sillytavern.CharacterCard{
+		Name:         character.Name,
+		Description:  character.Description,
+		FirstMes:     character.FirstMessage,
+		MesExample:   character.ExampleDialogue,
+		CreatorNotes: character.CreatorNotes,
+	}
 
-	/*
-		// 将角色数据转换为CharacterCard
-		card := &charcard.SillyTavernCharacterCard{
-			Name:        character.Name,
-			Description: derefString(character.Description),
-			Personality: derefString(character.Personality),
-			Scenario:    derefString(character.Scenario),
-			FirstMes:    derefString(character.FirstMessage),
-			MesExample:  derefString(character.ExampleDialogue),
-			CreatorNotes: derefString(character.CreatorNotes),
-			SystemPrompt: derefString(character.SystemPrompt),
-		}
+	// 获取原始头像PNG数据
+	// 如果头像是data URI格式，需要解码
+	var avatarPNG []byte
+	if character.Avatar != "" && strings.HasPrefix(character.Avatar, "data:image/png;base64,") {
+		avatarPNG, _ = base64.StdEncoding.DecodeString(strings.TrimPrefix(character.Avatar, "data:image/png;base64,"))
+	}
 
-		// 获取原始头像PNG数据
-		// 如果头像是data URI格式，需要解码
-		var avatarPNG []byte
-		if character.Avatar != nil && strings.HasPrefix(*character.Avatar, "data:image/png;base64,") {
-			avatarPNG, _ = base64.StdEncoding.DecodeString(strings.TrimPrefix(*character.Avatar, "data:image/png;base64,"))
-		}
+	// 如果没有头像，使用默认空白PNG
+	if len(avatarPNG) == 0 {
+		// 创建一个1x1的透明PNG作为默认头像
+		// 这是一个最小的有效PNG文件
+		avatarPNG, _ = base64.StdEncoding.DecodeString("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==")
+	}
 
-		// 如果没有头像，使用默认空白PNG
-		if len(avatarPNG) == 0 {
-			avatarPNG = defaultPNG // 需要提供一个默认PNG
-		}
+	// 将角色卡数据写入PNG
+	pngData, pngErr := WriteToPNG(avatarPNG, card)
+	if pngErr != nil {
+		return nil, errs.NewStandardf(connect.CodeInternal, "写入角色卡到PNG失败: %v", pngErr)
+	}
 
-		// 将角色卡数据写入PNG
-		pngData, err := charcard.WriteToPNG(avatarPNG, card)
-		if err != nil {
-			return nil, err
-		}
-
-		fileName := fmt.Sprintf("%s.png", character.Name)
-		return &pb.ExportCharacterResponse{
-			FileContent: pngData,
-			FileName:    fileName,
-		}, nil
-	*/
-
-	panic("implement me: waiting for database layer")
+	fileName := fmt.Sprintf("%s.png", character.Name)
+	return &pb.ExportCharacterResponse{
+		FileContent: pngData,
+		FileName:    fileName,
+	}, nil
 }
 
 func (c *characterImpl) RestoreCharacterWorldInfo(ctx context.Context, req *pb.RestoreCharacterWorldInfoRequest) (*pb.RestoreCharacterWorldInfoResponse, error) {
@@ -468,7 +475,7 @@ func WriteToPNG(originalPNG []byte, card *sillytavern.CharacterCard) ([]byte, er
 
 	// 写入到buffer
 	var buf bytes.Buffer
-	if err := newCs.WriteTo(&buf); err != nil {
+	if err = newCs.WriteTo(&buf); err != nil {
 		return nil, err
 	}
 

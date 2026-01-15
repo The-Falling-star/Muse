@@ -2,11 +2,11 @@ package world_info
 
 import (
 	"context"
-	"fmt"
 	"strings"
 
 	"connectrpc.com/connect"
 	"github.com/ling/muse/common/convert"
+	"github.com/ling/muse/common/errs"
 	"github.com/ling/muse/entity"
 	pb "github.com/ling/muse/gen/muse"
 	"github.com/ling/muse/repo/database"
@@ -29,7 +29,7 @@ func (w *worldInfoImpl) ListWorldInfos(ctx context.Context, req *pb.ListWorldInf
 	// 从数据库获取世界书列表（不分页）
 	worldInfos, _, err := w.worldInfoRepo.List(defaultUserID, 1, 1000)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	// 转换为pb格式
@@ -46,16 +46,16 @@ func (w *worldInfoImpl) ListWorldInfos(ctx context.Context, req *pb.ListWorldInf
 func (w *worldInfoImpl) GetWorldInfo(ctx context.Context, req *pb.GetWorldInfoRequest) (*pb.GetWorldInfoResponse, error) {
 	id := int(req.GetId())
 	if id <= 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的世界书ID"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidWorldInfoID)
 	}
 
 	// 从数据库获取世界书
 	worldInfo, err := w.worldInfoRepo.GetByID(id, defaultUserID)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 	if worldInfo == nil {
-		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("世界书不存在"))
+		return nil, errs.NewStandard(connect.CodeNotFound, errs.WorldInfoNotFound)
 	}
 
 	return &pb.GetWorldInfoResponse{
@@ -67,7 +67,7 @@ func (w *worldInfoImpl) CreateWorldInfo(ctx context.Context, req *pb.CreateWorld
 	// 参数校验
 	name := strings.TrimSpace(req.GetName())
 	if name == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("世界书名称不能为空"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptyWorldInfoName)
 	}
 
 	// 构建世界书实体
@@ -80,13 +80,13 @@ func (w *worldInfoImpl) CreateWorldInfo(ctx context.Context, req *pb.CreateWorld
 
 	// 保存到数据库
 	if err := w.worldInfoRepo.Create(worldInfo); err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	// 重新获取完整数据（包含关联）
 	fullWorldInfo, err := w.worldInfoRepo.GetByID(worldInfo.ID, defaultUserID)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	return &pb.CreateWorldInfoResponse{
@@ -97,22 +97,22 @@ func (w *worldInfoImpl) CreateWorldInfo(ctx context.Context, req *pb.CreateWorld
 func (w *worldInfoImpl) UpdateWorldInfo(ctx context.Context, req *pb.UpdateWorldInfoRequest) (*pb.UpdateWorldInfoResponse, error) {
 	id := int(req.GetId())
 	if id <= 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的世界书ID"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidWorldInfoID)
 	}
 
 	// 参数校验
 	name := strings.TrimSpace(req.GetName())
 	if name == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("世界书名称不能为空"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptyWorldInfoName)
 	}
 
 	// 获取当前世界书
 	worldInfo, err := w.worldInfoRepo.GetByID(id, defaultUserID)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 	if worldInfo == nil {
-		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("世界书不存在"))
+		return nil, errs.NewStandard(connect.CodeNotFound, errs.WorldInfoNotFound)
 	}
 
 	// 更新世界书字段
@@ -124,13 +124,13 @@ func (w *worldInfoImpl) UpdateWorldInfo(ctx context.Context, req *pb.UpdateWorld
 
 	// 更新数据库
 	if err := w.worldInfoRepo.Update(worldInfo); err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	// 重新获取更新后的世界书（包含关联数据）
 	updatedWorldInfo, err := w.worldInfoRepo.GetByID(id, defaultUserID)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	return &pb.UpdateWorldInfoResponse{
@@ -141,12 +141,12 @@ func (w *worldInfoImpl) UpdateWorldInfo(ctx context.Context, req *pb.UpdateWorld
 func (w *worldInfoImpl) DeleteWorldInfo(ctx context.Context, req *pb.DeleteWorldInfoRequest) (*pb.DeleteWorldInfoResponse, error) {
 	id := int(req.GetId())
 	if id <= 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的世界书ID"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidWorldInfoID)
 	}
 
 	// 删除世界书（会级联删除关联的条目）
 	if err := w.worldInfoRepo.Delete(id, defaultUserID); err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	return &pb.DeleteWorldInfoResponse{}, nil
@@ -155,13 +155,13 @@ func (w *worldInfoImpl) DeleteWorldInfo(ctx context.Context, req *pb.DeleteWorld
 func (w *worldInfoImpl) ListWorldInfoEntries(ctx context.Context, req *pb.ListWorldInfoEntriesRequest) (*pb.ListWorldInfoEntriesResponse, error) {
 	worldInfoID := int(req.GetWorldInfoId())
 	if worldInfoID <= 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的世界书ID"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidWorldInfoID)
 	}
 
 	// 从数据库获取条目列表
 	entries, err := w.worldInfoRepo.ListEntries(worldInfoID)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	// 转换为pb格式
@@ -179,17 +179,17 @@ func (w *worldInfoImpl) AddWorldInfoEntry(ctx context.Context, req *pb.AddWorldI
 	// 参数校验
 	worldInfoID := int(req.GetWorldInfoId())
 	if worldInfoID <= 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的世界书ID"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidWorldInfoID)
 	}
 
 	keysList := strings.TrimSpace(req.GetKeysList())
 	if keysList == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("关键词列表不能为空"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptyKeysList)
 	}
 
 	content := strings.TrimSpace(req.GetContent())
 	if content == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("内容不能为空"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptyContent)
 	}
 
 	// 构建条目实体
@@ -211,13 +211,13 @@ func (w *worldInfoImpl) AddWorldInfoEntry(ctx context.Context, req *pb.AddWorldI
 
 	// 保存到数据库
 	if err := w.worldInfoRepo.CreateEntry(entry); err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	// 重新获取完整数据
 	fullEntry, err := w.worldInfoRepo.GetEntryByID(entry.ID)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	return &pb.AddWorldInfoEntryResponse{
@@ -228,27 +228,27 @@ func (w *worldInfoImpl) AddWorldInfoEntry(ctx context.Context, req *pb.AddWorldI
 func (w *worldInfoImpl) UpdateWorldInfoEntry(ctx context.Context, req *pb.UpdateWorldInfoEntryRequest) (*pb.UpdateWorldInfoEntryResponse, error) {
 	id := int(req.GetId())
 	if id <= 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的条目ID"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidWorldInfoEntryID)
 	}
 
 	// 参数校验
 	keysList := strings.TrimSpace(req.GetKeysList())
 	if keysList == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("关键词列表不能为空"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptyKeysList)
 	}
 
 	content := strings.TrimSpace(req.GetContent())
 	if content == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("内容不能为空"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptyContent)
 	}
 
 	// 获取当前条目
 	entry, err := w.worldInfoRepo.GetEntryByID(id)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 	if entry == nil {
-		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("条目不存在"))
+		return nil, errs.NewStandard(connect.CodeNotFound, errs.WorldInfoEntryNotFound)
 	}
 
 	// 更新条目字段
@@ -267,13 +267,13 @@ func (w *worldInfoImpl) UpdateWorldInfoEntry(ctx context.Context, req *pb.Update
 
 	// 更新数据库
 	if err := w.worldInfoRepo.UpdateEntry(entry); err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	// 重新获取更新后的条目
 	updatedEntry, err := w.worldInfoRepo.GetEntryByID(id)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	return &pb.UpdateWorldInfoEntryResponse{
@@ -284,12 +284,12 @@ func (w *worldInfoImpl) UpdateWorldInfoEntry(ctx context.Context, req *pb.Update
 func (w *worldInfoImpl) DeleteWorldInfoEntry(ctx context.Context, req *pb.DeleteWorldInfoEntryRequest) (*pb.DeleteWorldInfoEntryResponse, error) {
 	id := int(req.GetId())
 	if id <= 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的条目ID"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidWorldInfoEntryID)
 	}
 
 	// 删除条目
 	if err := w.worldInfoRepo.DeleteEntry(id); err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	return &pb.DeleteWorldInfoEntryResponse{}, nil
@@ -298,11 +298,11 @@ func (w *worldInfoImpl) DeleteWorldInfoEntry(ctx context.Context, req *pb.Delete
 func (w *worldInfoImpl) UpdateWorldInfoEntriesOrder(ctx context.Context, req *pb.UpdateWorldInfoEntriesOrderRequest) (*pb.UpdateWorldInfoEntriesOrderResponse, error) {
 	worldInfoID := int(req.GetWorldInfoId())
 	if worldInfoID <= 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的世界书ID"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidWorldInfoID)
 	}
 
 	if len(req.EntryIds) == 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("排序数据不能为空"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptySortData)
 	}
 
 	// 构建排序映射
@@ -313,7 +313,7 @@ func (w *worldInfoImpl) UpdateWorldInfoEntriesOrder(ctx context.Context, req *pb
 
 	// 更新排序
 	if err := w.worldInfoRepo.UpdateEntriesOrder(worldInfoID, entryOrders); err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	return &pb.UpdateWorldInfoEntriesOrderResponse{}, nil

@@ -2,11 +2,11 @@ package preset
 
 import (
 	"context"
-	"fmt"
 	"strings"
 
 	"connectrpc.com/connect"
 	"github.com/ling/muse/common/convert"
+	"github.com/ling/muse/common/errs"
 	"github.com/ling/muse/entity"
 	pb "github.com/ling/muse/gen/muse"
 	"github.com/ling/muse/repo/database"
@@ -29,7 +29,7 @@ func (p *presetImpl) ListPresets(ctx context.Context, req *pb.ListPresetsRequest
 	// 从数据库获取预设列表（不分页）
 	presets, _, err := p.presetRepo.List(defaultUserID, 1, 1000)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	// 转换为pb格式
@@ -46,16 +46,16 @@ func (p *presetImpl) ListPresets(ctx context.Context, req *pb.ListPresetsRequest
 func (p *presetImpl) GetPreset(ctx context.Context, req *pb.GetPresetRequest) (*pb.GetPresetResponse, error) {
 	id := int(req.GetId())
 	if id <= 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的预设ID"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidPresetID)
 	}
 
 	// 从数据库获取预设
 	preset, err := p.presetRepo.GetByID(id, defaultUserID)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 	if preset == nil {
-		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("预设不存在"))
+		return nil, errs.NewStandard(connect.CodeNotFound, errs.PresetNotFound)
 	}
 
 	return &pb.GetPresetResponse{
@@ -67,7 +67,7 @@ func (p *presetImpl) CreatePreset(ctx context.Context, req *pb.CreatePresetReque
 	// 参数校验
 	name := strings.TrimSpace(req.GetName())
 	if name == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("预设名称不能为空"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptyPresetName)
 	}
 
 	// 构建预设实体
@@ -85,13 +85,13 @@ func (p *presetImpl) CreatePreset(ctx context.Context, req *pb.CreatePresetReque
 
 	// 保存到数据库
 	if err := p.presetRepo.Create(preset); err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	// 重新获取完整数据（包含关联）
 	fullPreset, err := p.presetRepo.GetByID(preset.ID, defaultUserID)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	return &pb.CreatePresetResponse{
@@ -102,27 +102,27 @@ func (p *presetImpl) CreatePreset(ctx context.Context, req *pb.CreatePresetReque
 func (p *presetImpl) UpdatePreset(ctx context.Context, req *pb.UpdatePresetRequest) (*pb.UpdatePresetResponse, error) {
 	id := int(req.GetId())
 	if id <= 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的预设ID"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidPresetID)
 	}
 
 	// 参数校验
 	name := strings.TrimSpace(req.GetName())
 	if name == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("预设名称不能为空"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptyPresetName)
 	}
 
 	// 获取当前预设
 	preset, err := p.presetRepo.GetByID(id, defaultUserID)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 	if preset == nil {
-		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("预设不存在"))
+		return nil, errs.NewStandard(connect.CodeNotFound, errs.PresetNotFound)
 	}
 
 	// 检查版本号
 	if int64(preset.Version) != req.GetVersion() {
-		return nil, connect.NewError(connect.CodeAborted, fmt.Errorf("数据已被修改，请刷新后重试"))
+		return nil, errs.NewStandard(connect.CodeAborted, errs.DataConflict)
 	}
 
 	// 更新预设字段
@@ -136,13 +136,13 @@ func (p *presetImpl) UpdatePreset(ctx context.Context, req *pb.UpdatePresetReque
 
 	// 更新数据库
 	if err := p.presetRepo.Update(preset); err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	// 重新获取更新后的预设（包含关联数据）
 	updatedPreset, err := p.presetRepo.GetByID(id, defaultUserID)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	return &pb.UpdatePresetResponse{
@@ -153,12 +153,12 @@ func (p *presetImpl) UpdatePreset(ctx context.Context, req *pb.UpdatePresetReque
 func (p *presetImpl) DeletePreset(ctx context.Context, req *pb.DeletePresetRequest) (*pb.DeletePresetResponse, error) {
 	id := int(req.GetId())
 	if id <= 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的预设ID"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidPresetID)
 	}
 
 	// 删除预设（会级联删除关联的提示项）
 	if err := p.presetRepo.Delete(id, defaultUserID); err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	return &pb.DeletePresetResponse{}, nil
@@ -167,13 +167,13 @@ func (p *presetImpl) DeletePreset(ctx context.Context, req *pb.DeletePresetReque
 func (p *presetImpl) ListPromptItems(ctx context.Context, req *pb.ListPromptItemsRequest) (*pb.ListPromptItemsResponse, error) {
 	presetID := int(req.GetPresetId())
 	if presetID <= 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的预设ID"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidPresetID)
 	}
 
 	// 从数据库获取提示项列表
 	items, err := p.presetRepo.ListPromptItems(presetID)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	// 转换为pb格式
@@ -191,12 +191,12 @@ func (p *presetImpl) AddPromptItem(ctx context.Context, req *pb.AddPromptItemReq
 	// 参数校验
 	presetID := int(req.GetPresetId())
 	if presetID <= 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的预设ID"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidPresetID)
 	}
 
 	name := strings.TrimSpace(req.GetName())
 	if name == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("提示项名称不能为空"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptyPromptItemName)
 	}
 
 	// 构建提示项实体
@@ -215,13 +215,13 @@ func (p *presetImpl) AddPromptItem(ctx context.Context, req *pb.AddPromptItemReq
 
 	// 保存到数据库
 	if err := p.presetRepo.CreatePromptItem(item); err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	// 重新获取完整数据
 	fullItem, err := p.presetRepo.GetPromptItemByID(item.ID)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	return &pb.AddPromptItemResponse{
@@ -232,22 +232,22 @@ func (p *presetImpl) AddPromptItem(ctx context.Context, req *pb.AddPromptItemReq
 func (p *presetImpl) UpdatePromptItem(ctx context.Context, req *pb.UpdatePromptItemRequest) (*pb.UpdatePromptItemResponse, error) {
 	id := int(req.GetId())
 	if id <= 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的提示项ID"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidPromptItemID)
 	}
 
 	// 参数校验
 	name := strings.TrimSpace(req.Name)
 	if name == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("提示项名称不能为空"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptyPromptItemName)
 	}
 
 	// 获取当前提示项
 	item, err := p.presetRepo.GetPromptItemByID(id)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 	if item == nil {
-		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("提示项不存在"))
+		return nil, errs.NewStandard(connect.CodeNotFound, errs.PromptItemNotFound)
 	}
 
 	// 更新提示项字段
@@ -265,13 +265,13 @@ func (p *presetImpl) UpdatePromptItem(ctx context.Context, req *pb.UpdatePromptI
 
 	// 更新数据库
 	if err := p.presetRepo.UpdatePromptItem(item); err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	// 重新获取更新后的提示项
 	updatedItem, err := p.presetRepo.GetPromptItemByID(id)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	return &pb.UpdatePromptItemResponse{
@@ -282,12 +282,12 @@ func (p *presetImpl) UpdatePromptItem(ctx context.Context, req *pb.UpdatePromptI
 func (p *presetImpl) DeletePromptItem(ctx context.Context, req *pb.DeletePromptItemRequest) (*pb.DeletePromptItemResponse, error) {
 	id := int(req.GetId())
 	if id <= 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的提示项ID"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidPromptItemID)
 	}
 
 	// 删除提示项
 	if err := p.presetRepo.DeletePromptItem(id); err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	return &pb.DeletePromptItemResponse{}, nil
@@ -296,11 +296,11 @@ func (p *presetImpl) DeletePromptItem(ctx context.Context, req *pb.DeletePromptI
 func (p *presetImpl) UpdatePromptItemsOrder(ctx context.Context, req *pb.UpdatePromptItemsOrderRequest) (*pb.UpdatePromptItemsOrderResponse, error) {
 	presetID := int(req.GetPresetId())
 	if presetID <= 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的预设ID"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidPresetID)
 	}
 
 	if len(req.ItemIds) == 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("排序数据不能为空"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptySortData)
 	}
 
 	// 构建排序映射
@@ -311,7 +311,7 @@ func (p *presetImpl) UpdatePromptItemsOrder(ctx context.Context, req *pb.UpdateP
 
 	// 更新排序
 	if err := p.presetRepo.UpdatePromptItemsOrder(presetID, itemOrders); err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	return &pb.UpdatePromptItemsOrderResponse{}, nil

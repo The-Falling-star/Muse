@@ -3,6 +3,8 @@ package database
 import (
 	"errors"
 
+	"connectrpc.com/connect"
+	"github.com/ling/muse/common/errs"
 	"github.com/ling/muse/config"
 	"github.com/ling/muse/entity"
 	"gorm.io/gorm"
@@ -13,14 +15,17 @@ type CharacterRepo struct {
 }
 
 // Create 创建角色
-func (c *CharacterRepo) Create(character *entity.Character) error {
+func (c *CharacterRepo) Create(character *entity.Character) *connect.Error {
 	db := config.GetDB()
 	result := db.Create(character)
-	return result.Error
+	if result.Error != nil {
+		return errs.NewStandardf(connect.CodeInternal, "数据库创建失败: %v", result.Error)
+	}
+	return nil
 }
 
 // GetByID 根据ID获取角色
-func (c *CharacterRepo) GetByID(id int, userID int) (*entity.Character, error) {
+func (c *CharacterRepo) GetByID(id int, userID int) (*entity.Character, *connect.Error) {
 	db := config.GetDB()
 	var character entity.Character
 	result := db.Where("id = ? AND user_id = ?", id, userID).
@@ -29,20 +34,20 @@ func (c *CharacterRepo) GetByID(id int, userID int) (*entity.Character, error) {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return nil, nil
 		}
-		return nil, result.Error
+		return nil, errs.NewStandardf(connect.CodeInternal, "数据库查询失败: %v", result.Error)
 	}
 	return &character, nil
 }
 
 // List 获取角色列表
-func (c *CharacterRepo) List(userID int, page int, pageSize int) ([]*entity.Character, int64, error) {
+func (c *CharacterRepo) List(userID int, page int, pageSize int) ([]*entity.Character, int64, *connect.Error) {
 	db := config.GetDB()
 	var characters []*entity.Character
 	var total int64
 
 	// 计算总数
 	if err := db.Model(&entity.Character{}).Where("user_id = ?", userID).Count(&total).Error; err != nil {
-		return nil, 0, err
+		return nil, 0, errs.NewStandardf(connect.CodeInternal, "数据库查询失败: %v", err)
 	}
 
 	// 分页查询 - 只查询列表展示需要的字段
@@ -55,14 +60,14 @@ func (c *CharacterRepo) List(userID int, page int, pageSize int) ([]*entity.Char
 		Limit(pageSize).
 		Find(&characters)
 	if result.Error != nil {
-		return nil, 0, result.Error
+		return nil, 0, errs.NewStandardf(connect.CodeInternal, "数据库查询失败: %v", result.Error)
 	}
 
 	return characters, total, nil
 }
 
 // Update 更新角色
-func (c *CharacterRepo) Update(character *entity.Character) error {
+func (c *CharacterRepo) Update(character *entity.Character) *connect.Error {
 	db := config.GetDB()
 
 	// 使用乐观锁更新
@@ -80,11 +85,11 @@ func (c *CharacterRepo) Update(character *entity.Character) error {
 		})
 
 	if result.Error != nil {
-		return result.Error
+		return errs.NewStandardf(connect.CodeInternal, "数据库更新失败: %v", result.Error)
 	}
 
 	if result.RowsAffected == 0 {
-		return errors.New("更新失败：记录不存在或版本号不匹配")
+		return errs.NewStandard(connect.CodeNotFound, "角色不存在或已被修改")
 	}
 
 	// 更新内存中的版本号
@@ -93,14 +98,14 @@ func (c *CharacterRepo) Update(character *entity.Character) error {
 }
 
 // Delete 删除角色
-func (c *CharacterRepo) Delete(id int, userID int) error {
+func (c *CharacterRepo) Delete(id int, userID int) *connect.Error {
 	db := config.GetDB()
 	result := db.Where("id = ? AND user_id = ?", id, userID).Delete(&entity.Character{})
 	if result.Error != nil {
-		return result.Error
+		return errs.NewStandardf(connect.CodeInternal, "数据库删除失败: %v", result.Error)
 	}
 	if result.RowsAffected == 0 {
-		return errors.New("删除失败：记录不存在")
+		return errs.NewStandard(connect.CodeNotFound, "角色不存在")
 	}
 	return nil
 }

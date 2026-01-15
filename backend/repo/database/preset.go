@@ -3,6 +3,8 @@ package database
 import (
 	"errors"
 
+	"connectrpc.com/connect"
+	"github.com/ling/muse/common/errs"
 	"github.com/ling/muse/config"
 	"github.com/ling/muse/entity"
 	"gorm.io/gorm"
@@ -13,14 +15,17 @@ type PresetRepo struct {
 }
 
 // Create 创建预设
-func (p *PresetRepo) Create(preset *entity.Preset) error {
+func (p *PresetRepo) Create(preset *entity.Preset) *connect.Error {
 	db := config.GetDB()
 	result := db.Create(preset)
-	return result.Error
+	if result.Error != nil {
+		return errs.NewStandardf(connect.CodeInternal, "创建预设失败: %v", result.Error)
+	}
+	return nil
 }
 
 // GetByID 根据ID获取预设
-func (p *PresetRepo) GetByID(id int, userID int) (*entity.Preset, error) {
+func (p *PresetRepo) GetByID(id int, userID int) (*entity.Preset, *connect.Error) {
 	db := config.GetDB()
 	var preset entity.Preset
 	result := db.Where("id = ? AND user_id = ?", id, userID).
@@ -29,20 +34,20 @@ func (p *PresetRepo) GetByID(id int, userID int) (*entity.Preset, error) {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return nil, nil
 		}
-		return nil, result.Error
+		return nil, errs.NewStandardf(connect.CodeInternal, "获取预设失败: %v", result.Error)
 	}
 	return &preset, nil
 }
 
 // List 获取预设列表
-func (p *PresetRepo) List(userID int, page int, pageSize int) ([]*entity.Preset, int64, error) {
+func (p *PresetRepo) List(userID int, page int, pageSize int) ([]*entity.Preset, int64, *connect.Error) {
 	db := config.GetDB()
 	var presets []*entity.Preset
 	var total int64
 
 	// 计算总数
 	if err := db.Model(&entity.Preset{}).Where("user_id = ?", userID).Count(&total).Error; err != nil {
-		return nil, 0, err
+		return nil, 0, errs.NewStandardf(connect.CodeInternal, "查询预设总数失败: %v", err)
 	}
 
 	// 分页查询 - 不加载关联的PromptItems和RegexRules
@@ -53,14 +58,14 @@ func (p *PresetRepo) List(userID int, page int, pageSize int) ([]*entity.Preset,
 		Limit(pageSize).
 		Find(&presets)
 	if result.Error != nil {
-		return nil, 0, result.Error
+		return nil, 0, errs.NewStandardf(connect.CodeInternal, "查询预设列表失败: %v", result.Error)
 	}
 
 	return presets, total, nil
 }
 
 // Update 更新预设
-func (p *PresetRepo) Update(preset *entity.Preset) error {
+func (p *PresetRepo) Update(preset *entity.Preset) *connect.Error {
 	db := config.GetDB()
 
 	// 使用乐观锁更新
@@ -78,11 +83,11 @@ func (p *PresetRepo) Update(preset *entity.Preset) error {
 		})
 
 	if result.Error != nil {
-		return result.Error
+		return errs.NewStandardf(connect.CodeInternal, "更新预设失败: %v", result.Error)
 	}
 
 	if result.RowsAffected == 0 {
-		return errors.New("更新失败：记录不存在或版本号不匹配")
+		return errs.NewStandard(connect.CodeAborted, "更新预设失败：记录不存在或版本号不匹配")
 	}
 
 	// 更新内存中的版本号
@@ -91,7 +96,7 @@ func (p *PresetRepo) Update(preset *entity.Preset) error {
 }
 
 // Delete 删除预设
-func (p *PresetRepo) Delete(id int, userID int) error {
+func (p *PresetRepo) Delete(id int, userID int) *connect.Error {
 	db := config.GetDB()
 
 	// 开启事务
@@ -105,32 +110,38 @@ func (p *PresetRepo) Delete(id int, userID int) error {
 	// 删除关联的提示项
 	if err := tx.Where("preset_id = ?", id).Delete(&entity.PromptItem{}).Error; err != nil {
 		tx.Rollback()
-		return err
+		return errs.NewStandardf(connect.CodeInternal, "删除预设失败：删除关联的提示项时出错: %v", err)
 	}
 
 	// 删除预设
 	result := tx.Where("id = ? AND user_id = ?", id, userID).Delete(&entity.Preset{})
 	if result.Error != nil {
 		tx.Rollback()
-		return result.Error
+		return errs.NewStandardf(connect.CodeInternal, "删除预设失败: %v", result.Error)
 	}
 	if result.RowsAffected == 0 {
 		tx.Rollback()
-		return errors.New("删除失败：记录不存在")
+		return errs.NewStandard(connect.CodeNotFound, "删除预设失败：记录不存在")
 	}
 
-	return tx.Commit().Error
+	if err := tx.Commit().Error; err != nil {
+		return errs.NewStandardf(connect.CodeInternal, "删除预设失败：提交事务时出错: %v", err)
+	}
+	return nil
 }
 
 // CreatePromptItem 创建提示项
-func (p *PresetRepo) CreatePromptItem(item *entity.PromptItem) error {
+func (p *PresetRepo) CreatePromptItem(item *entity.PromptItem) *connect.Error {
 	db := config.GetDB()
 	result := db.Create(item)
-	return result.Error
+	if result.Error != nil {
+		return errs.NewStandardf(connect.CodeInternal, "创建提示项失败: %v", result.Error)
+	}
+	return nil
 }
 
 // GetPromptItemByID 根据ID获取提示项
-func (p *PresetRepo) GetPromptItemByID(id int) (*entity.PromptItem, error) {
+func (p *PresetRepo) GetPromptItemByID(id int) (*entity.PromptItem, *connect.Error) {
 	db := config.GetDB()
 	var item entity.PromptItem
 	result := db.Where("id = ?", id).First(&item)
@@ -138,26 +149,26 @@ func (p *PresetRepo) GetPromptItemByID(id int) (*entity.PromptItem, error) {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return nil, nil
 		}
-		return nil, result.Error
+		return nil, errs.NewStandardf(connect.CodeInternal, "获取提示项失败: %v", result.Error)
 	}
 	return &item, nil
 }
 
 // ListPromptItems 获取预设的提示项列表
-func (p *PresetRepo) ListPromptItems(presetID int) ([]*entity.PromptItem, error) {
+func (p *PresetRepo) ListPromptItems(presetID int) ([]*entity.PromptItem, *connect.Error) {
 	db := config.GetDB()
 	var items []*entity.PromptItem
 	result := db.Where("preset_id = ?", presetID).
 		Order("sort_order ASC").
 		Find(&items)
 	if result.Error != nil {
-		return nil, result.Error
+		return nil, errs.NewStandardf(connect.CodeInternal, "获取提示项列表失败: %v", result.Error)
 	}
 	return items, nil
 }
 
 // UpdatePromptItem 更新提示项
-func (p *PresetRepo) UpdatePromptItem(item *entity.PromptItem) error {
+func (p *PresetRepo) UpdatePromptItem(item *entity.PromptItem) *connect.Error {
 	db := config.GetDB()
 	result := db.Model(item).
 		Where("id = ?", item.ID).
@@ -172,26 +183,26 @@ func (p *PresetRepo) UpdatePromptItem(item *entity.PromptItem) error {
 			"sort_order":         item.SortOrder,
 		})
 	if result.Error != nil {
-		return result.Error
+		return errs.NewStandardf(connect.CodeInternal, "更新提示项失败: %v", result.Error)
 	}
 	return nil
 }
 
 // DeletePromptItem 删除提示项
-func (p *PresetRepo) DeletePromptItem(id int) error {
+func (p *PresetRepo) DeletePromptItem(id int) *connect.Error {
 	db := config.GetDB()
 	result := db.Where("id = ?", id).Delete(&entity.PromptItem{})
 	if result.Error != nil {
-		return result.Error
+		return errs.NewStandardf(connect.CodeInternal, "删除提示项失败: %v", result.Error)
 	}
 	if result.RowsAffected == 0 {
-		return errors.New("删除失败：记录不存在")
+		return errs.NewStandard(connect.CodeNotFound, "删除提示项失败：记录不存在")
 	}
 	return nil
 }
 
 // UpdatePromptItemsOrder 更新提示项排序
-func (p *PresetRepo) UpdatePromptItemsOrder(presetID int, itemOrders map[int]int) error {
+func (p *PresetRepo) UpdatePromptItemsOrder(presetID int, itemOrders map[int]int) *connect.Error {
 	db := config.GetDB()
 	tx := db.Begin()
 	defer func() {
@@ -205,9 +216,12 @@ func (p *PresetRepo) UpdatePromptItemsOrder(presetID int, itemOrders map[int]int
 			Where("id = ? AND preset_id = ?", itemID, presetID).
 			Update("sort_order", sortOrder).Error; err != nil {
 			tx.Rollback()
-			return err
+			return errs.NewStandardf(connect.CodeInternal, "更新提示项排序失败: %v", err)
 		}
 	}
 
-	return tx.Commit().Error
+	if err := tx.Commit().Error; err != nil {
+		return errs.NewStandardf(connect.CodeInternal, "更新提示项排序失败：提交事务时出错: %v", err)
+	}
+	return nil
 }

@@ -3,6 +3,8 @@ package database
 import (
 	"errors"
 
+	"connectrpc.com/connect"
+	"github.com/ling/muse/common/errs"
 	"github.com/ling/muse/config"
 	"github.com/ling/muse/entity"
 	"gorm.io/gorm"
@@ -13,14 +15,17 @@ type RegexRuleRepo struct {
 }
 
 // Create 创建正则规则
-func (r *RegexRuleRepo) Create(rule *entity.RegexRule) error {
+func (r *RegexRuleRepo) Create(rule *entity.RegexRule) *connect.Error {
 	db := config.GetDB()
 	result := db.Create(rule)
-	return result.Error
+	if result.Error != nil {
+		return errs.NewStandardf(connect.CodeInternal, "创建正则规则失败: %v", result.Error)
+	}
+	return nil
 }
 
 // GetByID 根据ID获取正则规则
-func (r *RegexRuleRepo) GetByID(id int) (*entity.RegexRule, error) {
+func (r *RegexRuleRepo) GetByID(id int) (*entity.RegexRule, *connect.Error) {
 	db := config.GetDB()
 	var rule entity.RegexRule
 	result := db.Where("id = ?", id).First(&rule)
@@ -28,26 +33,26 @@ func (r *RegexRuleRepo) GetByID(id int) (*entity.RegexRule, error) {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return nil, nil
 		}
-		return nil, result.Error
+		return nil, errs.NewStandardf(connect.CodeInternal, "获取正则规则失败: %v", result.Error)
 	}
 	return &rule, nil
 }
 
 // List 获取预设的正则规则列表
-func (r *RegexRuleRepo) List(presetID int) ([]*entity.RegexRule, error) {
+func (r *RegexRuleRepo) List(presetID int) ([]*entity.RegexRule, *connect.Error) {
 	db := config.GetDB()
 	var rules []*entity.RegexRule
 	result := db.Where("preset_id = ?", presetID).
 		Order("sort_order ASC").
 		Find(&rules)
 	if result.Error != nil {
-		return nil, result.Error
+		return nil, errs.NewStandardf(connect.CodeInternal, "获取正则规则列表失败: %v", result.Error)
 	}
 	return rules, nil
 }
 
 // Update 更新正则规则
-func (r *RegexRuleRepo) Update(rule *entity.RegexRule) error {
+func (r *RegexRuleRepo) Update(rule *entity.RegexRule) *connect.Error {
 	db := config.GetDB()
 	result := db.Model(rule).
 		Where("id = ?", rule.ID).
@@ -68,26 +73,26 @@ func (r *RegexRuleRepo) Update(rule *entity.RegexRule) error {
 			"sort_order":                 rule.SortOrder,
 		})
 	if result.Error != nil {
-		return result.Error
+		return errs.NewStandardf(connect.CodeInternal, "更新正则规则失败: %v", result.Error)
 	}
 	return nil
 }
 
 // Delete 删除正则规则
-func (r *RegexRuleRepo) Delete(id int) error {
+func (r *RegexRuleRepo) Delete(id int) *connect.Error {
 	db := config.GetDB()
 	result := db.Where("id = ?", id).Delete(&entity.RegexRule{})
 	if result.Error != nil {
-		return result.Error
+		return errs.NewStandardf(connect.CodeInternal, "删除正则规则失败: %v", result.Error)
 	}
 	if result.RowsAffected == 0 {
-		return errors.New("删除失败：记录不存在")
+		return errs.NewStandard(connect.CodeNotFound, "删除正则规则失败：记录不存在")
 	}
 	return nil
 }
 
 // UpdateRulesOrder 更新正则规则排序
-func (r *RegexRuleRepo) UpdateRulesOrder(presetID int, ruleOrders map[int]int) error {
+func (r *RegexRuleRepo) UpdateRulesOrder(presetID int, ruleOrders map[int]int) *connect.Error {
 	db := config.GetDB()
 	tx := db.Begin()
 	defer func() {
@@ -101,9 +106,12 @@ func (r *RegexRuleRepo) UpdateRulesOrder(presetID int, ruleOrders map[int]int) e
 			Where("id = ? AND preset_id = ?", ruleID, presetID).
 			Update("sort_order", sortOrder).Error; err != nil {
 			tx.Rollback()
-			return err
+			return errs.NewStandardf(connect.CodeInternal, "更新正则规则排序失败: %v", err)
 		}
 	}
 
-	return tx.Commit().Error
+	if err := tx.Commit().Error; err != nil {
+		return errs.NewStandardf(connect.CodeInternal, "更新正则规则排序失败：提交事务时出错: %v", err)
+	}
+	return nil
 }

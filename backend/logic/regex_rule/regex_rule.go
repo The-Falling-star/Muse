@@ -2,11 +2,11 @@ package regex_rule
 
 import (
 	"context"
-	"fmt"
 	"strings"
 
 	"connectrpc.com/connect"
 	"github.com/ling/muse/common/convert"
+	"github.com/ling/muse/common/errs"
 	"github.com/ling/muse/entity"
 	pb "github.com/ling/muse/gen/muse"
 	"github.com/ling/muse/repo/database"
@@ -25,13 +25,13 @@ func newRegexRule() *regexRuleImpl {
 func (r *regexRuleImpl) ListRegexRules(ctx context.Context, req *pb.ListRegexRulesRequest) (*pb.ListRegexRulesResponse, error) {
 	presetID := int(req.GetPresetId())
 	if presetID <= 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的预设ID"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidPresetID)
 	}
 
 	// 从数据库获取正则规则列表
 	rules, err := r.regexRuleRepo.List(presetID)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	// 转换为pb格式
@@ -49,22 +49,22 @@ func (r *regexRuleImpl) AddRegexRule(ctx context.Context, req *pb.AddRegexRuleRe
 	// 参数校验
 	presetID := int(req.GetPresetId())
 	if presetID <= 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的预设ID"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidPresetID)
 	}
 
 	name := strings.TrimSpace(req.GetName())
 	if name == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("规则名称不能为空"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptyRegexRuleName)
 	}
 
 	findPattern := strings.TrimSpace(req.GetFindPattern())
 	if findPattern == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("查找模式不能为空"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptyFindPattern)
 	}
 
 	affectFlags := req.GetAffectFlags()
 	if affectFlags == nil {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("影响标志不能为空"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptyAffectFlags)
 	}
 
 	// 构建正则规则实体
@@ -88,13 +88,13 @@ func (r *regexRuleImpl) AddRegexRule(ctx context.Context, req *pb.AddRegexRuleRe
 
 	// 保存到数据库
 	if err := r.regexRuleRepo.Create(rule); err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	// 重新获取完整数据
 	fullRule, err := r.regexRuleRepo.GetByID(rule.ID)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	return &pb.AddRegexRuleResponse{
@@ -105,32 +105,32 @@ func (r *regexRuleImpl) AddRegexRule(ctx context.Context, req *pb.AddRegexRuleRe
 func (r *regexRuleImpl) UpdateRegexRule(ctx context.Context, req *pb.UpdateRegexRuleRequest) (*pb.UpdateRegexRuleResponse, error) {
 	id := int(req.GetId())
 	if id <= 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的规则ID"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidRegexRuleID)
 	}
 
 	// 参数校验
 	name := strings.TrimSpace(req.GetName())
 	if name == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("规则名称不能为空"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptyRegexRuleName)
 	}
 
 	findPattern := strings.TrimSpace(req.GetFindPattern())
 	if findPattern == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("查找模式不能为空"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptyFindPattern)
 	}
 
 	affectFlags := req.GetAffectFlags()
 	if affectFlags == nil {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("影响标志不能为空"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptyAffectFlags)
 	}
 
 	// 获取当前规则
 	rule, err := r.regexRuleRepo.GetByID(id)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 	if rule == nil {
-		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("规则不存在"))
+		return nil, errs.NewStandard(connect.CodeNotFound, errs.RegexRuleNotFound)
 	}
 
 	// 更新规则字段
@@ -151,13 +151,13 @@ func (r *regexRuleImpl) UpdateRegexRule(ctx context.Context, req *pb.UpdateRegex
 
 	// 更新数据库
 	if err := r.regexRuleRepo.Update(rule); err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	// 重新获取更新后的规则
 	updatedRule, err := r.regexRuleRepo.GetByID(id)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	return &pb.UpdateRegexRuleResponse{
@@ -168,12 +168,12 @@ func (r *regexRuleImpl) UpdateRegexRule(ctx context.Context, req *pb.UpdateRegex
 func (r *regexRuleImpl) DeleteRegexRule(ctx context.Context, req *pb.DeleteRegexRuleRequest) (*pb.DeleteRegexRuleResponse, error) {
 	id := int(req.GetId())
 	if id <= 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的规则ID"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidRegexRuleID)
 	}
 
 	// 删除规则
 	if err := r.regexRuleRepo.Delete(id); err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	return &pb.DeleteRegexRuleResponse{}, nil
@@ -182,11 +182,11 @@ func (r *regexRuleImpl) DeleteRegexRule(ctx context.Context, req *pb.DeleteRegex
 func (r *regexRuleImpl) UpdateRegexRulesOrder(ctx context.Context, req *pb.UpdateRegexRulesOrderRequest) (*pb.UpdateRegexRulesOrderResponse, error) {
 	presetID := int(req.GetPresetId())
 	if presetID <= 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的预设ID"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidPresetID)
 	}
 
 	if len(req.RuleIds) == 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("排序数据不能为空"))
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptySortData)
 	}
 
 	// 构建排序映射
@@ -197,7 +197,7 @@ func (r *regexRuleImpl) UpdateRegexRulesOrder(ctx context.Context, req *pb.Updat
 
 	// 更新排序
 	if err := r.regexRuleRepo.UpdateRulesOrder(presetID, ruleOrders); err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, err
 	}
 
 	return &pb.UpdateRegexRulesOrderResponse{}, nil

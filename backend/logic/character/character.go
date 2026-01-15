@@ -18,6 +18,9 @@ import (
 	"github.com/ling/muse/repo/database"
 )
 
+// 默认用户ID，待认证功能完成后替换
+const defaultUserID = 1
+
 type characterImpl struct {
 	charaRepo *database.CharacterRepo
 }
@@ -29,28 +32,168 @@ func newCharacter() *characterImpl {
 }
 
 func (c *characterImpl) ListCharacters(ctx context.Context, req *pb.ListCharactersRequest) (*pb.ListCharactersResponse, error) {
-	//TODO implement me
-	panic("implement me")
+	// 获取分页参数
+	page := int(req.GetPage())
+	pageSize := int(req.GetPageSize())
+
+	// 设置默认值
+	if page <= 0 {
+		page = 1
+	}
+	if pageSize <= 0 {
+		pageSize = 20
+	}
+	if pageSize > 100 {
+		pageSize = 100
+	}
+
+	// 从数据库获取角色列表
+	characters, total, err := c.charaRepo.List(defaultUserID, page, pageSize)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	// 转换为pb格式
+	pbCharacters := make([]*pb.Character, 0, len(characters))
+	for _, character := range characters {
+		pbCharacters = append(pbCharacters, convert.CharaEntityToPb(character))
+	}
+
+	return &pb.ListCharactersResponse{
+		Characters: pbCharacters,
+		Total:      int32(total),
+	}, nil
 }
 
 func (c *characterImpl) GetCharacter(ctx context.Context, req *pb.GetCharacterRequest) (*pb.GetCharacterResponse, error) {
-	//TODO implement me
-	panic("implement me")
+	id := int(req.GetId())
+	if id <= 0 {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的角色ID"))
+	}
+
+	// 从数据库获取角色
+	character, err := c.charaRepo.GetByID(id, defaultUserID)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	if character == nil {
+		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("角色不存在"))
+	}
+
+	return &pb.GetCharacterResponse{
+		Character: convert.CharaEntityToPb(character),
+	}, nil
 }
 
 func (c *characterImpl) CreateCharacter(ctx context.Context, req *pb.CreateCharacterRequest) (*pb.CreateCharacterResponse, error) {
-	//TODO implement me
-	panic("implement me")
+	// 参数校验
+	name := strings.TrimSpace(req.GetName())
+	if name == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("角色名称不能为空"))
+	}
+
+	// 构建角色实体
+	character := &entity.Character{
+		UserID:          defaultUserID,
+		Name:            name,
+		Avatar:          req.GetAvatar(),
+		Description:     req.GetDescription(),
+		FirstMessage:    req.GetFirstMessage(),
+		ExampleDialogue: req.GetExampleDialogue(),
+		CreatorNotes:    req.GetCreatorNotes(),
+		Version:         1,
+	}
+
+	// 设置关联的世界信息ID
+	if req.WorldInfoId != nil {
+		character.WorldInfoID = int(*req.WorldInfoId)
+	}
+
+	// 保存到数据库
+	if err := c.charaRepo.Create(character); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	return &pb.CreateCharacterResponse{
+		Character: convert.CharaEntityToPb(character),
+	}, nil
 }
 
 func (c *characterImpl) UpdateCharacter(ctx context.Context, req *pb.UpdateCharacterRequest) (*pb.UpdateCharacterResponse, error) {
-	//TODO implement me
-	panic("implement me")
+	id := int(req.GetId())
+	if id <= 0 {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的角色ID"))
+	}
+
+	// 参数校验
+	name := strings.TrimSpace(req.GetName())
+	if name == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("角色名称不能为空"))
+	}
+
+	// 获取当前角色
+	character, err := c.charaRepo.GetByID(id, defaultUserID)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	if character == nil {
+		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("角色不存在"))
+	}
+
+	// 检查版本号
+	if int64(character.Version) != req.GetVersion() {
+		return nil, connect.NewError(connect.CodeAborted, fmt.Errorf("数据已被修改，请刷新后重试"))
+	}
+
+	// 更新角色字段
+	character.Name = name
+	if req.Avatar != nil {
+		character.Avatar = *req.Avatar
+	}
+	if req.Description != nil {
+		character.Description = *req.Description
+	}
+	if req.FirstMessage != nil {
+		character.FirstMessage = *req.FirstMessage
+	}
+	if req.ExampleDialogue != nil {
+		character.ExampleDialogue = *req.ExampleDialogue
+	}
+	if req.CreatorNotes != nil {
+		character.CreatorNotes = *req.CreatorNotes
+	}
+	if req.WorldInfoId != nil {
+		character.WorldInfoID = int(*req.WorldInfoId)
+	}
+
+	// 更新数据库
+	if err := c.charaRepo.Update(character); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	// 重新获取更新后的角色（包含关联数据）
+	updatedCharacter, err := c.charaRepo.GetByID(id, defaultUserID)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	return &pb.UpdateCharacterResponse{
+		Character: convert.CharaEntityToPb(updatedCharacter),
+	}, nil
 }
 
 func (c *characterImpl) DeleteCharacter(ctx context.Context, req *pb.DeleteCharacterRequest) (*pb.DeleteCharacterResponse, error) {
-	//TODO implement me
-	panic("implement me")
+	id := int(req.GetId())
+	if id <= 0 {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("无效的角色ID"))
+	}
+
+	// 删除角色
+	if err := c.charaRepo.Delete(id, defaultUserID); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	return &pb.DeleteCharacterResponse{}, nil
 }
 
 func (c *characterImpl) ImportCharacter(ctx context.Context, req *pb.ImportCharacterRequest) (*pb.ImportCharacterResponse, error) {
@@ -129,7 +272,7 @@ func (c *characterImpl) ImportCharacter(ctx context.Context, req *pb.ImportChara
 		character.Avatar = "data:image/png;base64," + base64.StdEncoding.EncodeToString(fileContent)
 	}
 
-	if err = c.charaRepo.InsertChara(character); err != nil {
+	if err = c.charaRepo.Create(character); err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 

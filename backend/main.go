@@ -10,9 +10,11 @@ import (
 	"syscall"
 	"time"
 
+	"connectrpc.com/connect"
 	"github.com/ling/muse/api"
 	"github.com/ling/muse/config"
 	"github.com/ling/muse/gen/muse/museconnect"
+	middleware "github.com/ling/muse/middleware"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -38,14 +40,38 @@ func main() {
 		}
 	}()
 
+	// 创建认证中间件（跳过注册、登录和健康检查接口）
+	authInterceptor := middleware.AuthInterceptor([]string{
+		museconnect.UserServiceRegisterProcedure, // 注册接口
+		museconnect.UserServiceLoginProcedure,    // 登录接口
+	})
+
 	// 创建HTTP服务器
 	mux := http.NewServeMux()
-	mux.Handle(museconnect.NewUserServiceHandler(api.NewUserServer()))
-	mux.Handle(museconnect.NewCharacterServiceHandler(api.NewCharacterServer()))
-	mux.Handle(museconnect.NewChatServiceHandler(api.NewChatServer()))
-	mux.Handle(museconnect.NewPresetServiceHandler(api.NewPresetServer()))
-	mux.Handle(museconnect.NewRegexRuleServiceHandler(api.NewRegexRuleServer()))
-	mux.Handle(museconnect.NewWorldInfoServiceHandler(api.NewWorldInfoServer()))
+	mux.Handle(museconnect.NewUserServiceHandler(
+		api.NewUserServer(),
+		connect.WithInterceptors(authInterceptor),
+	))
+	mux.Handle(museconnect.NewCharacterServiceHandler(
+		api.NewCharacterServer(),
+		connect.WithInterceptors(authInterceptor),
+	))
+	mux.Handle(museconnect.NewChatServiceHandler(
+		api.NewChatServer(),
+		connect.WithInterceptors(authInterceptor),
+	))
+	mux.Handle(museconnect.NewPresetServiceHandler(
+		api.NewPresetServer(),
+		connect.WithInterceptors(authInterceptor),
+	))
+	mux.Handle(museconnect.NewRegexRuleServiceHandler(
+		api.NewRegexRuleServer(),
+		connect.WithInterceptors(authInterceptor),
+	))
+	mux.Handle(museconnect.NewWorldInfoServiceHandler(
+		api.NewWorldInfoServer(),
+		connect.WithInterceptors(authInterceptor),
+	))
 
 	// 健康检查端点
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {

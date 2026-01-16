@@ -11,6 +11,7 @@ import (
 type Config struct {
 	Server   ServerConfig   `mapstructure:"server"`
 	Database DatabaseConfig `mapstructure:"database"`
+	Auth     AuthConfig     `mapstructure:"auth"`
 }
 
 // ServerConfig 服务器配置
@@ -36,6 +37,11 @@ type DatabaseConfig struct {
 	Charset      string `mapstructure:"charset"`     // MySQL 字符集
 	MaxIdleConns int    `mapstructure:"max_idle_conns"`
 	MaxOpenConns int    `mapstructure:"max_open_conns"`
+}
+
+// AuthConfig 认证配置
+type AuthConfig struct {
+	JWTSecret string `mapstructure:"jwt_secret"` // JWT 加密密钥
 }
 
 // IsSQLite 判断是否使用SQLite
@@ -77,6 +83,7 @@ func Load(configPath string) (*Config, error) {
 	viper.SetDefault("database.charset", "utf8mb4")
 	viper.SetDefault("database.max_idle_conns", 10)
 	viper.SetDefault("database.max_open_conns", 100)
+	viper.SetDefault("auth.jwt_secret", "your-secret-key-change-in-production") // JWT密钥
 
 	if err := viper.ReadInConfig(); err != nil {
 		return nil, fmt.Errorf("读取配置文件失败: %w", err)
@@ -94,4 +101,9 @@ func Load(configPath string) (*Config, error) {
 // Get 获取全局配置实例
 func Get() *Config {
 	return globalConfig
+}
+
+// SetGlobal 设置全局配置实例（主要用于测试）
+func SetGlobal(cfg *Config) {
+	globalConfig = cfg
 }

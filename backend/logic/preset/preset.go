@@ -2,12 +2,14 @@ package preset
 
 import (
 	"context"
+	"encoding/json"
 	"strings"
 
 	"connectrpc.com/connect"
 	"github.com/ling/muse/common/convert"
 	"github.com/ling/muse/common/errs"
 	"github.com/ling/muse/entity"
+	"github.com/ling/muse/entity/sillytavern"
 	pb "github.com/ling/muse/gen/muse"
 	"github.com/ling/muse/repo/database"
 )
@@ -323,8 +325,65 @@ func (p *presetImpl) SetActivePreset(ctx context.Context, req *pb.SetActivePrese
 }
 
 func (p *presetImpl) ImportPreset(ctx context.Context, req *pb.ImportPresetRequest) (*pb.ImportPresetResponse, error) {
-	//TODO implement me
-	panic("implement me")
+	fileContent := req.GetFileContent()
+	fileName := strings.TrimSpace(req.GetFileName())
+
+	// 移除 UTF-8 BOM（如果存在）
+	if len(fileContent) >= 3 && fileContent[0] == 0xEF && fileContent[1] == 0xBB && fileContent[2] == 0xBF {
+		fileContent = fileContent[3:]
+	}
+
+	// 解析 SillyTavern 预设文件
+	stPreset := &sillytavern.OpenAIPreset{}
+	if err := json.Unmarshal(fileContent, stPreset); err != nil {
+		return nil, errs.NewStandardf(connect.CodeInvalidArgument, "无效的预设文件: %v", err.Error())
+	}
+
+	// 生成预设名称：优先使用文件名，否则使用默认名称
+	presetName := "导入的预设"
+	if fileName != "" {
+		// 移除文件扩展名
+		presetName = strings.TrimSuffix(fileName, ".json")
+	}
+
+	// 使用 convert 包转换为 Muse 预设实体
+	preset := convert.STPresetToEntity(stPreset, defaultUserID, presetName)
+
+	// 保存预设到数据库
+	if err := p.presetRepo.Create(preset); err != nil {
+		return nil, err
+	}
+
+	// 转换并保存提示项
+	if len(stPreset.Prompts) > 0 {
+		// 构建 prompt_order 映射，用于确定启用状态和排序
+		promptOrderMap := convert.BuildPromptOrderMap(stPreset.PromptOrder)
+
+		for i, stPrompt := range stPreset.Prompts {
+			// 跳过 marker 类型的占位符提示项
+			if stPrompt.Marker {
+				continue
+			}
+
+			// 使用 convert 包转换提示项
+			item := convert.STPromptToEntity(preset.ID, &stPrompt, i, promptOrderMap)
+
+			if err := p.presetRepo.CreatePromptItem(item); err != nil {
+				// 即使提示项创建失败，也不影响预设的创建
+				continue
+			}
+		}
+	}
+
+	// 重新获取完整预设数据（包含关联的提示项）
+	fullPreset, err := p.presetRepo.GetByID(preset.ID, defaultUserID)
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.ImportPresetResponse{
+		Preset: convert.PresetEntityToPb(fullPreset),
+	}, nil
 }
 
 func (p *presetImpl) ExportPreset(ctx context.Context, req *pb.ExportPresetRequest) (*pb.ExportPresetResponse, error) {

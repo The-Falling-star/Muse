@@ -3,6 +3,7 @@ package convert
 import (
 	"strings"
 
+	"github.com/ling/muse/config"
 	"github.com/ling/muse/entity"
 	"github.com/ling/muse/entity/sillytavern"
 	pb "github.com/ling/muse/gen/muse"
@@ -307,5 +308,89 @@ func ConvertSTRole(role string) pb.Role {
 		return pb.Role_Assistant
 	default:
 		return pb.Role_System // 默认为系统角色
+	}
+}
+
+// ==================== 用户相关转换函数 ====================
+
+// UserEntityToPb 将用户实体类转换为pb
+func UserEntityToPb(user *entity.User) *pb.SysUser {
+	return &pb.SysUser{
+		Id:              int32(user.ID),
+		Username:        user.Username,
+		ActivePersonaId: int32(user.ActivePersonaID),
+		ActivePresetId:  int32(user.ActivePresetID),
+		CreatedAt:       user.CreatedAt.Unix(),
+		UpdatedAt:       user.UpdatedAt.Unix(),
+	}
+}
+
+// PersonaEntityToPb 将人设实体类转换为pb
+func PersonaEntityToPb(persona *entity.Persona) *pb.Persona {
+	return &pb.Persona{
+		Id:          int32(persona.ID),
+		UserId:      int32(persona.UserID),
+		Name:        persona.Name,
+		Avatar:      persona.Avatar,
+		Description: persona.Description,
+		CreatedAt:   persona.CreatedAt.Unix(),
+		UpdatedAt:   persona.UpdatedAt.Unix(),
+	}
+}
+
+// UserSettingEntityToPb 将用户设置实体类转换为pb
+func UserSettingEntityToPb(setting *entity.UserSetting) *pb.UserSetting {
+	return &pb.UserSetting{
+		Id:             int32(setting.ID),
+		UserId:         int32(setting.UserID),
+		Theme:          pb.Theme(setting.Theme),
+		Language:       setting.Language,
+		SendOnEnter:    setting.SendOnEnter,
+		ShowTimestamps: setting.ShowTimestamps,
+		CreatedAt:      setting.CreatedAt.Unix(),
+		UpdatedAt:      setting.UpdatedAt.Unix(),
+	}
+}
+
+// APIConfigEntityToPb 将API配置实体类转换为pb（不包含API Key）
+func APIConfigEntityToPb(config *entity.APIConfig) *pb.APIConfig {
+	return &pb.APIConfig{
+		Id:        int32(config.ID),
+		UserId:    int32(config.UserID),
+		Name:      config.Name,
+		Provider:  config.Provider,
+		ApiKey:    config.APIKey,
+		BaseUrl:   config.BaseURL,
+		Model:     config.Model,
+		IsActive:  config.IsActive,
+		CreatedAt: config.CreatedAt.Unix(),
+		UpdatedAt: config.UpdatedAt.Unix(),
+	}
+}
+
+// APIConfigEntityToPbWithKey 将API配置实体类转换为pb（包含API Key）
+// 根据配置决定是否返回API Key，以及是否返回加密后的密文
+func APIConfigEntityToPbWithKey(apiConfig *entity.APIConfig) *pb.APIConfig {
+	apiKey := ""
+
+	// 检查配置是否允许获取API Key
+	apiEncryptCfg := config.Get().APIEncrypt
+	if apiEncryptCfg.AllowGetKey {
+		// 如果启用了加密，直接返回数据库中的密文（前端需要解密）
+		// 如果没有启用加密，返回明文
+		apiKey = apiConfig.APIKey
+	}
+
+	return &pb.APIConfig{
+		Id:        int32(apiConfig.ID),
+		UserId:    int32(apiConfig.UserID),
+		Name:      apiConfig.Name,
+		Provider:  apiConfig.Provider,
+		ApiKey:    apiKey,
+		BaseUrl:   apiConfig.BaseURL,
+		Model:     apiConfig.Model,
+		IsActive:  apiConfig.IsActive,
+		CreatedAt: apiConfig.CreatedAt.Unix(),
+		UpdatedAt: apiConfig.UpdatedAt.Unix(),
 	}
 }

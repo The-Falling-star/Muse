@@ -8,6 +8,15 @@ auth:
   # JWT 加密密钥，生产环境请务必修改为随机字符串
   jwt_secret: "your-secret-key-change-in-production"
 
+# API密钥加密配置
+api_encrypt:
+  # 加密密钥，生产环境请务必修改为强随机字符串
+  # 如果启用加密，前端需要使用相同的密钥进行解密
+  encryption_key: "your-encryption-key-change-in-production"
+  # 是否允许前端获取API密钥（如果启用加密，返回的是密文）
+  # 如果设置为false，前端将无法获取API密钥
+  allow_get_key: true
+
 database:
   # 数据库驱动: sqlite 或 mysql
   # sqlite: 生产环境推荐，无需额外安装数据库，数据存储在本地文件

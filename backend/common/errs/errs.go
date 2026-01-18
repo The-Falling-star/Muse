@@ -44,6 +44,31 @@ const (
 	EmptyKeysList           = "关键词列表不能为空"
 	EmptyContent            = "内容不能为空"
 	WorldInfoEntryNotFound  = "条目不存在"
+
+	// User
+	InvalidUserID      = "无效的用户ID"
+	EmptyUsername      = "用户名不能为空"
+	EmptyPassword      = "密码不能为空"
+	UserNotFound       = "用户不存在"
+	UserAlreadyExists  = "用户已存在"
+	InvalidPassword    = "密码错误"
+	InvalidOldPassword = "原密码错误"
+
+	// Persona
+	InvalidPersonaID = "无效的人设ID"
+	EmptyPersonaName = "人设名称不能为空"
+	PersonaNotFound  = "人设不存在"
+
+	// User Setting
+	InvalidUserSettingID = "无效的用户设置ID"
+	UserSettingNotFound  = "用户设置不存在"
+
+	// API Config
+	InvalidAPIConfigID = "无效的API配置ID"
+	EmptyAPIConfigName = "API配置名称不能为空"
+	APIConfigNotFound  = "API配置不存在"
+	EmptyAPIKey        = "API Key不能为空"
+	InvalidAPIProvider = "无效的API提供商"
 )
 
 // New 创建错误

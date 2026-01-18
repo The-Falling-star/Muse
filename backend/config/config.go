@@ -9,9 +9,10 @@ import (
 
 // Config 应用配置结构
 type Config struct {
-	Server   ServerConfig   `mapstructure:"server"`
-	Database DatabaseConfig `mapstructure:"database"`
-	Auth     AuthConfig     `mapstructure:"auth"`
+	Server     ServerConfig     `mapstructure:"server"`
+	Database   DatabaseConfig   `mapstructure:"database"`
+	Auth       AuthConfig       `mapstructure:"auth"`
+	APIEncrypt APIEncryptConfig `mapstructure:"api_encrypt"`
 }
 
 // ServerConfig 服务器配置
@@ -41,7 +42,16 @@ type DatabaseConfig struct {
 
 // AuthConfig 认证配置
 type AuthConfig struct {
-	JWTSecret string `mapstructure:"jwt_secret"` // JWT 加密密钥
+	JWTSecret     string `mapstructure:"jwt_secret"` // JWT 加密密钥
+	SkipAuth      bool   `mapstructure:"skip_auth"`
+	AdminUsername string `mapstructure:"admin_username"`
+	AdminUserId   int    `mapstructure:"admin_user_id"`
+}
+
+// APIEncryptConfig API密钥加密配置
+type APIEncryptConfig struct {
+	EncryptionKey string `mapstructure:"encryption_key"` // 加密密钥（用于AES-256）
+	AllowGetKey   bool   `mapstructure:"allow_get_key"`  // 是否允许前端获取API密钥
 }
 
 // IsSQLite 判断是否使用SQLite
@@ -84,6 +94,8 @@ func Load(configPath string) (*Config, error) {
 	viper.SetDefault("database.max_idle_conns", 10)
 	viper.SetDefault("database.max_open_conns", 100)
 	viper.SetDefault("auth.jwt_secret", "your-secret-key-change-in-production") // JWT密钥
+	viper.SetDefault("api_encrypt.enabled", false)                              // 默认不启用API密钥加密
+	viper.SetDefault("api_encrypt.allow_get_key", true)                         // 默认允许获取API密钥
 
 	if err := viper.ReadInConfig(); err != nil {
 		return nil, fmt.Errorf("读取配置文件失败: %w", err)

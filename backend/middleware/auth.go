@@ -27,6 +27,11 @@ func AuthInterceptor(skipProcedures []string) connect.UnaryInterceptorFunc {
 
 	return func(next connect.UnaryFunc) connect.UnaryFunc {
 		return func(ctx context.Context, req connect.AnyRequest) (connect.AnyResponse, error) {
+			if config.Get().Auth.SkipAuth {
+				ctx = context.WithValue(ctx, "userId", config.Get().Auth.AdminUserId)
+				return next(ctx, req)
+			}
+
 			// 跳过无需认证的接口
 			if skipMap[req.Spec().Procedure] {
 				return next(ctx, req)

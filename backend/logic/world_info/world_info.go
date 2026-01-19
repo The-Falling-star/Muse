@@ -2,12 +2,14 @@ package world_info
 
 import (
 	"context"
+	"encoding/json"
 	"strings"
 
 	"connectrpc.com/connect"
 	"github.com/ling/muse/common/convert"
 	"github.com/ling/muse/common/errs"
 	"github.com/ling/muse/entity"
+	"github.com/ling/muse/entity/sillytavern"
 	pb "github.com/ling/muse/gen/muse"
 	"github.com/ling/muse/repo/database"
 )
@@ -320,11 +322,93 @@ func (w *worldInfoImpl) UpdateWorldInfoEntriesOrder(ctx context.Context, req *pb
 }
 
 func (w *worldInfoImpl) ImportWorldInfo(ctx context.Context, req *pb.ImportWorldInfoRequest) (*pb.ImportWorldInfoResponse, error) {
-	//TODO implement me
-	panic("implement me")
+	// 参数校验
+	if len(req.GetFileContent()) == 0 {
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptyFileContent)
+	}
+
+	// 解析 JSON 文件内容
+	var stWorldBook sillytavern.WorldBook
+	if err := json.Unmarshal(req.GetFileContent(), &stWorldBook); err != nil {
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidWorldInfoFile)
+	}
+
+	// 校验文件格式（必须包含 entries）
+	if stWorldBook.Entries == nil {
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidWorldInfoFile)
+	}
+
+	// 从文件名获取世界书名称（去掉 .json 后缀）
+	worldInfoName := strings.TrimSuffix(req.GetFileName(), ".json")
+	if worldInfoName == "" {
+		worldInfoName = "Imported World Info"
+	}
+
+	// 转换为 Muse 实体
+	worldInfo := convert.STWorldInfoToEntity(&stWorldBook, defaultUserID, worldInfoName)
+
+	// 保存世界书到数据库
+	if err := w.worldInfoRepo.Create(worldInfo); err != nil {
+		return nil, err
+	}
+
+	// 导入条目
+	if len(stWorldBook.Entries) > 0 {
+		entries := make([]*entity.WorldInfoEntry, 0, len(stWorldBook.Entries))
+		sortOrder := 0
+		for _, stEntry := range stWorldBook.Entries {
+			entry := convert.STBookEntryToEntity(worldInfo.ID, &stEntry, sortOrder)
+			entries = append(entries, entry)
+			sortOrder++
+		}
+
+		// 批量创建条目
+		if err := w.worldInfoRepo.BatchCreateEntries(entries); err != nil {
+			// 条目创建失败，但世界书已创建，记录日志但不返回错误
+			// 可以考虑在未来添加事务支持
+		}
+	}
+
+	// 重新获取完整的世界书（包含条目）
+	fullWorldInfo, err := w.worldInfoRepo.GetByID(worldInfo.ID, defaultUserID)
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.ImportWorldInfoResponse{
+		WorldInfo: convert.WorldInfoEntityToPb(fullWorldInfo),
+	}, nil
 }
 
 func (w *worldInfoImpl) ExportWorldInfo(ctx context.Context, req *pb.ExportWorldInfoRequest) (*pb.ExportWorldInfoResponse, error) {
-	//TODO implement me
-	panic("implement me")
+	id := int(req.GetId())
+	if id <= 0 {
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidWorldInfoID)
+	}
+
+	// 从数据库获取世界书（包含所有条目）
+	worldInfo, err := w.worldInfoRepo.GetByID(id, defaultUserID)
+	if err != nil {
+		return nil, err
+	}
+	if worldInfo == nil {
+		return nil, errs.NewStandard(connect.CodeNotFound, errs.WorldInfoNotFound)
+	}
+
+	// 转换为 SillyTavern 格式
+	stWorldBook := convert.EntityToSTWorldInfo(worldInfo)
+
+	// 序列化为 JSON
+	fileContent, jsonErr := json.MarshalIndent(stWorldBook, "", "  ")
+	if jsonErr != nil {
+		return nil, errs.NewStandardf(connect.CodeInternal, "序列化世界书失败: %v", jsonErr)
+	}
+
+	// 生成文件名
+	fileName := worldInfo.Name + ".json"
+
+	return &pb.ExportWorldInfoResponse{
+		FileContent: fileContent,
+		FileName:    fileName,
+	}, nil
 }

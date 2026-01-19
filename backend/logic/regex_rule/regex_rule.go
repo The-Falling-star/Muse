@@ -2,12 +2,15 @@ package regex_rule
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 	"strings"
 
 	"connectrpc.com/connect"
 	"github.com/ling/muse/common/convert"
 	"github.com/ling/muse/common/errs"
 	"github.com/ling/muse/entity"
+	"github.com/ling/muse/entity/sillytavern"
 	pb "github.com/ling/muse/gen/muse"
 	"github.com/ling/muse/repo/database"
 )
@@ -201,4 +204,98 @@ func (r *regexRuleImpl) UpdateRegexRulesOrder(ctx context.Context, req *pb.Updat
 	}
 
 	return &pb.UpdateRegexRulesOrderResponse{}, nil
+}
+
+func (r *regexRuleImpl) ImportRegexRules(ctx context.Context, req *pb.ImportRegexRulesRequest) (*pb.ImportRegexRulesResponse, error) {
+	fileContent := req.GetFileContent()
+
+	// 移除 UTF-8 BOM（如果存在）
+	if len(fileContent) >= 3 && fileContent[0] == 0xEF && fileContent[1] == 0xBB && fileContent[2] == 0xBF {
+		fileContent = fileContent[3:]
+	}
+
+	// 尝试解析为数组或单个对象
+	var stScripts []sillytavern.RegexScript
+	if err := json.Unmarshal(fileContent, &stScripts); err != nil {
+		// 尝试解析为单个对象
+		var singleScript sillytavern.RegexScript
+		if err = json.Unmarshal(fileContent, &singleScript); err != nil {
+			return nil, errs.NewStandardf(connect.CodeInvalidArgument, "无效的正则规则文件: %v", err)
+		}
+		stScripts = []sillytavern.RegexScript{singleScript}
+	}
+
+	if len(stScripts) == 0 {
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, "正则规则文件为空")
+	}
+
+	// 导入的都是全局正则（preset_id = 0）
+	const presetID = 0
+
+	// 获取当前最大排序号
+	maxOrder, err := r.regexRuleRepo.GetMaxSortOrder(presetID)
+	if err != nil {
+		return nil, err
+	}
+
+	// 转换为 Muse 正则规则实体
+	rules := make([]*entity.RegexRule, 0, len(stScripts))
+	for i, stScript := range stScripts {
+		if stScript.ScriptName == "" {
+			continue // 跳过没有名称的脚本
+		}
+
+		rule := convert.STRegexToEntity(&stScript, presetID, 0, maxOrder+i+1)
+		rules = append(rules, rule)
+	}
+
+	if len(rules) == 0 {
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, "没有有效的正则规则可导入")
+	}
+
+	// 批量创建
+	if err = r.regexRuleRepo.BatchCreate(rules); err != nil {
+		return nil, err
+	}
+
+	return &pb.ImportRegexRulesResponse{}, nil
+}
+
+func (r *regexRuleImpl) ExportRegexRules(ctx context.Context, req *pb.ExportRegexRulesRequest) (*pb.ExportRegexRulesResponse, error) {
+	presetID := int(req.GetPresetId()) // 0 表示全局正则
+
+	// 获取正则规则列表
+	rules, err := r.regexRuleRepo.List(presetID)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(rules) == 0 {
+		return nil, errs.NewStandard(connect.CodeNotFound, "没有可导出的正则规则")
+	}
+
+	// 转换为 SillyTavern 格式
+	stScripts := make([]sillytavern.RegexScript, 0, len(rules))
+	for _, rule := range rules {
+		stScripts = append(stScripts, convert.EntityToSTRegex(rule))
+	}
+
+	// 序列化为 JSON
+	fileContent, jsonErr := json.MarshalIndent(stScripts, "", "  ")
+	if jsonErr != nil {
+		return nil, errs.NewStandardf(connect.CodeInternal, "序列化正则规则失败: %v", jsonErr)
+	}
+
+	// 生成文件名
+	fileName := "regex-rules.json"
+	if presetID > 0 {
+		fileName = fmt.Sprintf("regex-rules-preset-%d.json", presetID)
+	} else {
+		fileName = "regex-rules-global.json"
+	}
+
+	return &pb.ExportRegexRulesResponse{
+		FileContent: fileContent,
+		FileName:    fileName,
+	}, nil
 }

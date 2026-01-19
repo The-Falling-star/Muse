@@ -200,7 +200,8 @@ message RegexAffectFlags {
 // RegexRule 正则规则
 message RegexRule {
   int32 id = 1;
-  int32 preset_id = 2;
+  int32 preset_id = 2;        // 关联的预设ID（0 表示全局正则）
+  int32 character_id = 15;    // 关联的角色ID（0 表示非角色范围正则）
   string name = 3;
   string find_pattern = 4;
   string replace_pattern = 5;
@@ -1084,6 +1085,27 @@ message UpdateRegexRulesOrderRequest {
 // 批量更新正则规则排序响应
 message UpdateRegexRulesOrderResponse {}
 
+// 导入正则规则请求
+// 导入的都是全局正则（preset_id = 0）
+message ImportRegexRulesRequest {
+  bytes file_content = 1;  // JSON文件内容
+  string file_name = 2;
+}
+
+// 导入正则规则响应
+message ImportRegexRulesResponse {}
+
+// 导出正则规则请求
+message ExportRegexRulesRequest {
+  int32 preset_id = 1;
+}
+
+// 导出正则规则响应
+message ExportRegexRulesResponse {
+  bytes file_content = 1;
+  string file_name = 2;
+}
+
 // 正则规则服务
 service RegexRuleService {
   // 获取预设的正则规则列表
@@ -1096,6 +1118,10 @@ service RegexRuleService {
   rpc DeleteRegexRule(DeleteRegexRuleRequest) returns (DeleteRegexRuleResponse);
   // 批量更新正则规则排序
   rpc UpdateRegexRulesOrder(UpdateRegexRulesOrderRequest) returns (UpdateRegexRulesOrderResponse);
+  // 导入正则规则
+  rpc ImportRegexRules(ImportRegexRulesRequest) returns (ImportRegexRulesResponse);
+  // 导出正则规则
+  rpc ExportRegexRules(ExportRegexRulesRequest) returns (ExportRegexRulesResponse);
 }
 
 // ================================

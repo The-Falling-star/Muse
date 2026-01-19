@@ -18,6 +18,10 @@ type RegexRule interface {
 	DeleteRegexRule(ctx context.Context, req *pb.DeleteRegexRuleRequest) (*pb.DeleteRegexRuleResponse, error)
 	// UpdateRegexRulesOrder 更新正则规则的排序
 	UpdateRegexRulesOrder(ctx context.Context, req *pb.UpdateRegexRulesOrderRequest) (*pb.UpdateRegexRulesOrderResponse, error)
+	// ImportRegexRules 导入正则规则
+	ImportRegexRules(ctx context.Context, req *pb.ImportRegexRulesRequest) (*pb.ImportRegexRulesResponse, error)
+	// ExportRegexRules 导出正则规则
+	ExportRegexRules(ctx context.Context, req *pb.ExportRegexRulesRequest) (*pb.ExportRegexRulesResponse, error)
 }
 
 // NewRegexRule 创建一个新的RegexRule实例

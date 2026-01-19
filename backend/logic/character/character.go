@@ -24,12 +24,14 @@ import (
 const defaultUserID = 1
 
 type characterImpl struct {
-	charaRepo *database.CharacterRepo
+	charaRepo     *database.CharacterRepo
+	regexRuleRepo *database.RegexRuleRepo
 }
 
 func newCharacter() *characterImpl {
 	return &characterImpl{
-		charaRepo: &database.CharacterRepo{},
+		charaRepo:     &database.CharacterRepo{},
+		regexRuleRepo: &database.RegexRuleRepo{},
 	}
 }
 
@@ -262,6 +264,22 @@ func (c *characterImpl) ImportCharacter(ctx context.Context, req *pb.ImportChara
 		return nil, err
 	}
 
+	// 导入角色卡内嵌的正则脚本（Scoped Scripts）
+	if card.Extensions != nil && len(card.Extensions.RegexScripts) > 0 {
+		regexRules := make([]*entity.RegexRule, 0, len(card.Extensions.RegexScripts))
+		for i, stScript := range card.Extensions.RegexScripts {
+			// 使用 convert 包转换正则脚本，关联到新创建的角色（presetID=0 表示非预设正则）
+			rule := convert.STRegexToEntity(&stScript, 0, character.ID, i)
+			regexRules = append(regexRules, rule)
+		}
+
+		// 批量创建正则规则
+		if err = c.regexRuleRepo.BatchCreate(regexRules); err != nil {
+			// 即使正则规则创建失败，也不影响角色卡的导入
+			// 可以记录日志但不返回错误
+		}
+	}
+
 	return &pb.ImportCharacterResponse{
 		Character: convert.CharaEntityToPb(character),
 	}, nil
@@ -286,7 +304,7 @@ func getWorldBookFromCard(card *sillytavern.CharacterCard) entity.WorldInfo {
 			Constant:       entry.Constant,
 			Selective:      entry.Selective,
 			InsertionOrder: entry.InsertionOrder,
-			// Position:       entry.Position, TODO
+			// Position:       entry.Position, TODO: 需要将字符串位置转换为枚举
 			Depth:     entry.Depth,
 			SortOrder: i,
 		})

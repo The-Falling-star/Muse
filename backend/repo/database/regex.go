@@ -115,3 +115,31 @@ func (r *RegexRuleRepo) UpdateRulesOrder(presetID int, ruleOrders map[int]int) *
 	}
 	return nil
 }
+
+// BatchCreate 批量创建正则规则
+func (r *RegexRuleRepo) BatchCreate(rules []*entity.RegexRule) *connect.Error {
+	if len(rules) == 0 {
+		return nil
+	}
+	db := config.GetDB()
+	result := db.Create(rules)
+	if result.Error != nil {
+		return errs.NewStandardf(connect.CodeInternal, "批量创建正则规则失败: %v", result.Error)
+	}
+	return nil
+}
+
+// GetMaxSortOrder 获取预设下正则规则的最大排序号
+// presetID 为 0 时表示全局正则
+func (r *RegexRuleRepo) GetMaxSortOrder(presetID int) (int, *connect.Error) {
+	db := config.GetDB()
+	var maxOrder int
+	result := db.Model(&entity.RegexRule{}).
+		Where("preset_id = ?", presetID).
+		Select("COALESCE(MAX(sort_order), -1)").
+		Scan(&maxOrder)
+	if result.Error != nil {
+		return 0, errs.NewStandardf(connect.CodeInternal, "获取最大排序号失败: %v", result.Error)
+	}
+	return maxOrder, nil
+}

@@ -70,3 +70,25 @@ func (r *RegexRuleServer) UpdateRegexRulesOrder(ctx context.Context,
 	}
 	return connect.NewResponse(resp), nil
 }
+
+// ImportRegexRules 导入正则规则
+func (r *RegexRuleServer) ImportRegexRules(ctx context.Context,
+	c *connect.Request[pb.ImportRegexRulesRequest]) (
+	*connect.Response[pb.ImportRegexRulesResponse], error) {
+	resp, err := r.regexRule.ImportRegexRules(ctx, c.Msg)
+	if err != nil {
+		return nil, err
+	}
+	return connect.NewResponse(resp), nil
+}
+
+// ExportRegexRules 导出正则规则
+func (r *RegexRuleServer) ExportRegexRules(ctx context.Context,
+	c *connect.Request[pb.ExportRegexRulesRequest]) (
+	*connect.Response[pb.ExportRegexRulesResponse], error) {
+	resp, err := r.regexRule.ExportRegexRules(ctx, c.Msg)
+	if err != nil {
+		return nil, err
+	}
+	return connect.NewResponse(resp), nil
+}

@@ -44,6 +44,8 @@ const (
 	EmptyKeysList           = "关键词列表不能为空"
 	EmptyContent            = "内容不能为空"
 	WorldInfoEntryNotFound  = "条目不存在"
+	EmptyFileContent        = "文件内容不能为空"
+	InvalidWorldInfoFile    = "无效的世界书文件格式"
 
 	// User
 	InvalidUserID      = "无效的用户ID"

@@ -129,6 +129,19 @@ func (w *WorldInfoRepo) CreateEntry(entry *entity.WorldInfoEntry) *connect.Error
 	return nil
 }
 
+// BatchCreateEntries 批量创建世界书条目
+func (w *WorldInfoRepo) BatchCreateEntries(entries []*entity.WorldInfoEntry) *connect.Error {
+	if len(entries) == 0 {
+		return nil
+	}
+	db := config.GetDB()
+	result := db.Create(&entries)
+	if result.Error != nil {
+		return errs.NewStandardf(connect.CodeInternal, "批量创建世界书条目失败: %v", result.Error)
+	}
+	return nil
+}
+
 // GetEntryByID 根据ID获取世界书条目
 func (w *WorldInfoRepo) GetEntryByID(id int) (*entity.WorldInfoEntry, *connect.Error) {
 	db := config.GetDB()

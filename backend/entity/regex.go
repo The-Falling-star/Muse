@@ -5,9 +5,12 @@ import (
 )
 
 // RegexRule 正则规则表实体
+// PresetID 为 0 表示全局正则规则，不依附于任何预设
+// CharacterID 为 0 表示非角色范围正则，否则关联到特定角色（Scoped Scripts）
 type RegexRule struct {
 	ID                      int       `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
-	PresetID                int       `gorm:"column:preset_id;not null;index:idx_preset_id" json:"presetId"`
+	PresetID                int       `gorm:"column:preset_id;default:0;index:idx_preset_id" json:"presetId"`
+	CharacterID             int       `gorm:"column:character_id;default:0;index:idx_character_id" json:"characterId"`
 	Name                    string    `gorm:"column:name;type:varchar(128);not null" json:"name"`
 	FindPattern             string    `gorm:"column:find_pattern;type:text;not null" json:"findPattern"`
 	ReplacePattern          string    `gorm:"column:replace_pattern;type:text" json:"replacePattern,omitempty"`

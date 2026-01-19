@@ -18,12 +18,14 @@ import (
 const defaultUserID = 1
 
 type presetImpl struct {
-	presetRepo *database.PresetRepo
+	presetRepo    *database.PresetRepo
+	regexRuleRepo *database.RegexRuleRepo
 }
 
 func newPreset() *presetImpl {
 	return &presetImpl{
-		presetRepo: &database.PresetRepo{},
+		presetRepo:    &database.PresetRepo{},
+		regexRuleRepo: &database.RegexRuleRepo{},
 	}
 }
 
@@ -372,6 +374,22 @@ func (p *presetImpl) ImportPreset(ctx context.Context, req *pb.ImportPresetReque
 				// 即使提示项创建失败，也不影响预设的创建
 				continue
 			}
+		}
+	}
+
+	// 导入预设内嵌的正则脚本
+	if stPreset.Extensions != nil && len(stPreset.Extensions.RegexScripts) > 0 {
+		regexRules := make([]*entity.RegexRule, 0, len(stPreset.Extensions.RegexScripts))
+		for i, stScript := range stPreset.Extensions.RegexScripts {
+			// 使用 convert 包转换正则脚本，关联到新创建的预设（characterID=0 表示非角色范围正则）
+			rule := convert.STRegexToEntity(&stScript, preset.ID, 0, i)
+			regexRules = append(regexRules, rule)
+		}
+
+		// 批量创建正则规则
+		if err := p.regexRuleRepo.BatchCreate(regexRules); err != nil {
+			// 即使正则规则创建失败，也不影响预设的导入
+			// 可以记录日志但不返回错误
 		}
 	}
 

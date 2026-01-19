@@ -1368,7 +1368,8 @@ func (x *RegexAffectFlags) GetPrompt() bool {
 type RegexRule struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
 	Id              int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	PresetId        int32                  `protobuf:"varint,2,opt,name=preset_id,json=presetId,proto3" json:"preset_id,omitempty"`
+	PresetId        int32                  `protobuf:"varint,2,opt,name=preset_id,json=presetId,proto3" json:"preset_id,omitempty"`           // 关联的预设ID（0 表示全局正则）
+	CharacterId     int32                  `protobuf:"varint,15,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"` // 关联的角色ID（0 表示非角色范围正则）
 	Name            string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
 	FindPattern     string                 `protobuf:"bytes,4,opt,name=find_pattern,json=findPattern,proto3" json:"find_pattern,omitempty"`
 	ReplacePattern  string                 `protobuf:"bytes,5,opt,name=replace_pattern,json=replacePattern,proto3" json:"replace_pattern,omitempty"`
@@ -1425,6 +1426,13 @@ func (x *RegexRule) GetId() int32 {
 func (x *RegexRule) GetPresetId() int32 {
 	if x != nil {
 		return x.PresetId
+	}
+	return 0
+}
+
+func (x *RegexRule) GetCharacterId() int32 {
+	if x != nil {
+		return x.CharacterId
 	}
 	return 0
 }
@@ -7905,6 +7913,195 @@ func (*UpdateRegexRulesOrderResponse) Descriptor() ([]byte, []int) {
 	return file_muse_muse_proto_rawDescGZIP(), []int{125}
 }
 
+// 导入正则规则请求
+// 导入的都是全局正则（preset_id = 0）
+type ImportRegexRulesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FileContent   []byte                 `protobuf:"bytes,1,opt,name=file_content,json=fileContent,proto3" json:"file_content,omitempty"` // JSON文件内容
+	FileName      string                 `protobuf:"bytes,2,opt,name=file_name,json=fileName,proto3" json:"file_name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ImportRegexRulesRequest) Reset() {
+	*x = ImportRegexRulesRequest{}
+	mi := &file_muse_muse_proto_msgTypes[126]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ImportRegexRulesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ImportRegexRulesRequest) ProtoMessage() {}
+
+func (x *ImportRegexRulesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_muse_muse_proto_msgTypes[126]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ImportRegexRulesRequest.ProtoReflect.Descriptor instead.
+func (*ImportRegexRulesRequest) Descriptor() ([]byte, []int) {
+	return file_muse_muse_proto_rawDescGZIP(), []int{126}
+}
+
+func (x *ImportRegexRulesRequest) GetFileContent() []byte {
+	if x != nil {
+		return x.FileContent
+	}
+	return nil
+}
+
+func (x *ImportRegexRulesRequest) GetFileName() string {
+	if x != nil {
+		return x.FileName
+	}
+	return ""
+}
+
+// 导入正则规则响应
+type ImportRegexRulesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ImportRegexRulesResponse) Reset() {
+	*x = ImportRegexRulesResponse{}
+	mi := &file_muse_muse_proto_msgTypes[127]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ImportRegexRulesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ImportRegexRulesResponse) ProtoMessage() {}
+
+func (x *ImportRegexRulesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_muse_muse_proto_msgTypes[127]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ImportRegexRulesResponse.ProtoReflect.Descriptor instead.
+func (*ImportRegexRulesResponse) Descriptor() ([]byte, []int) {
+	return file_muse_muse_proto_rawDescGZIP(), []int{127}
+}
+
+// 导出正则规则请求
+type ExportRegexRulesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PresetId      int32                  `protobuf:"varint,1,opt,name=preset_id,json=presetId,proto3" json:"preset_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ExportRegexRulesRequest) Reset() {
+	*x = ExportRegexRulesRequest{}
+	mi := &file_muse_muse_proto_msgTypes[128]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ExportRegexRulesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ExportRegexRulesRequest) ProtoMessage() {}
+
+func (x *ExportRegexRulesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_muse_muse_proto_msgTypes[128]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ExportRegexRulesRequest.ProtoReflect.Descriptor instead.
+func (*ExportRegexRulesRequest) Descriptor() ([]byte, []int) {
+	return file_muse_muse_proto_rawDescGZIP(), []int{128}
+}
+
+func (x *ExportRegexRulesRequest) GetPresetId() int32 {
+	if x != nil {
+		return x.PresetId
+	}
+	return 0
+}
+
+// 导出正则规则响应
+type ExportRegexRulesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FileContent   []byte                 `protobuf:"bytes,1,opt,name=file_content,json=fileContent,proto3" json:"file_content,omitempty"`
+	FileName      string                 `protobuf:"bytes,2,opt,name=file_name,json=fileName,proto3" json:"file_name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ExportRegexRulesResponse) Reset() {
+	*x = ExportRegexRulesResponse{}
+	mi := &file_muse_muse_proto_msgTypes[129]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ExportRegexRulesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ExportRegexRulesResponse) ProtoMessage() {}
+
+func (x *ExportRegexRulesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_muse_muse_proto_msgTypes[129]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ExportRegexRulesResponse.ProtoReflect.Descriptor instead.
+func (*ExportRegexRulesResponse) Descriptor() ([]byte, []int) {
+	return file_muse_muse_proto_rawDescGZIP(), []int{129}
+}
+
+func (x *ExportRegexRulesResponse) GetFileContent() []byte {
+	if x != nil {
+		return x.FileContent
+	}
+	return nil
+}
+
+func (x *ExportRegexRulesResponse) GetFileName() string {
+	if x != nil {
+		return x.FileName
+	}
+	return ""
+}
+
 // 获取世界书列表请求
 type ListWorldInfosRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -7915,7 +8112,7 @@ type ListWorldInfosRequest struct {
 
 func (x *ListWorldInfosRequest) Reset() {
 	*x = ListWorldInfosRequest{}
-	mi := &file_muse_muse_proto_msgTypes[126]
+	mi := &file_muse_muse_proto_msgTypes[130]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7927,7 +8124,7 @@ func (x *ListWorldInfosRequest) String() string {
 func (*ListWorldInfosRequest) ProtoMessage() {}
 
 func (x *ListWorldInfosRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_muse_proto_msgTypes[126]
+	mi := &file_muse_muse_proto_msgTypes[130]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7940,7 +8137,7 @@ func (x *ListWorldInfosRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListWorldInfosRequest.ProtoReflect.Descriptor instead.
 func (*ListWorldInfosRequest) Descriptor() ([]byte, []int) {
-	return file_muse_muse_proto_rawDescGZIP(), []int{126}
+	return file_muse_muse_proto_rawDescGZIP(), []int{130}
 }
 
 func (x *ListWorldInfosRequest) GetIsGlobal() bool {
@@ -7960,7 +8157,7 @@ type ListWorldInfosResponse struct {
 
 func (x *ListWorldInfosResponse) Reset() {
 	*x = ListWorldInfosResponse{}
-	mi := &file_muse_muse_proto_msgTypes[127]
+	mi := &file_muse_muse_proto_msgTypes[131]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7972,7 +8169,7 @@ func (x *ListWorldInfosResponse) String() string {
 func (*ListWorldInfosResponse) ProtoMessage() {}
 
 func (x *ListWorldInfosResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_muse_proto_msgTypes[127]
+	mi := &file_muse_muse_proto_msgTypes[131]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7985,7 +8182,7 @@ func (x *ListWorldInfosResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListWorldInfosResponse.ProtoReflect.Descriptor instead.
 func (*ListWorldInfosResponse) Descriptor() ([]byte, []int) {
-	return file_muse_muse_proto_rawDescGZIP(), []int{127}
+	return file_muse_muse_proto_rawDescGZIP(), []int{131}
 }
 
 func (x *ListWorldInfosResponse) GetWorldInfos() []*WorldInfo {
@@ -8005,7 +8202,7 @@ type GetWorldInfoRequest struct {
 
 func (x *GetWorldInfoRequest) Reset() {
 	*x = GetWorldInfoRequest{}
-	mi := &file_muse_muse_proto_msgTypes[128]
+	mi := &file_muse_muse_proto_msgTypes[132]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8017,7 +8214,7 @@ func (x *GetWorldInfoRequest) String() string {
 func (*GetWorldInfoRequest) ProtoMessage() {}
 
 func (x *GetWorldInfoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_muse_proto_msgTypes[128]
+	mi := &file_muse_muse_proto_msgTypes[132]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8030,7 +8227,7 @@ func (x *GetWorldInfoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetWorldInfoRequest.ProtoReflect.Descriptor instead.
 func (*GetWorldInfoRequest) Descriptor() ([]byte, []int) {
-	return file_muse_muse_proto_rawDescGZIP(), []int{128}
+	return file_muse_muse_proto_rawDescGZIP(), []int{132}
 }
 
 func (x *GetWorldInfoRequest) GetId() int32 {
@@ -8050,7 +8247,7 @@ type GetWorldInfoResponse struct {
 
 func (x *GetWorldInfoResponse) Reset() {
 	*x = GetWorldInfoResponse{}
-	mi := &file_muse_muse_proto_msgTypes[129]
+	mi := &file_muse_muse_proto_msgTypes[133]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8062,7 +8259,7 @@ func (x *GetWorldInfoResponse) String() string {
 func (*GetWorldInfoResponse) ProtoMessage() {}
 
 func (x *GetWorldInfoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_muse_proto_msgTypes[129]
+	mi := &file_muse_muse_proto_msgTypes[133]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8075,7 +8272,7 @@ func (x *GetWorldInfoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetWorldInfoResponse.ProtoReflect.Descriptor instead.
 func (*GetWorldInfoResponse) Descriptor() ([]byte, []int) {
-	return file_muse_muse_proto_rawDescGZIP(), []int{129}
+	return file_muse_muse_proto_rawDescGZIP(), []int{133}
 }
 
 func (x *GetWorldInfoResponse) GetWorldInfo() *WorldInfo {
@@ -8097,7 +8294,7 @@ type CreateWorldInfoRequest struct {
 
 func (x *CreateWorldInfoRequest) Reset() {
 	*x = CreateWorldInfoRequest{}
-	mi := &file_muse_muse_proto_msgTypes[130]
+	mi := &file_muse_muse_proto_msgTypes[134]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8109,7 +8306,7 @@ func (x *CreateWorldInfoRequest) String() string {
 func (*CreateWorldInfoRequest) ProtoMessage() {}
 
 func (x *CreateWorldInfoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_muse_proto_msgTypes[130]
+	mi := &file_muse_muse_proto_msgTypes[134]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8122,7 +8319,7 @@ func (x *CreateWorldInfoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateWorldInfoRequest.ProtoReflect.Descriptor instead.
 func (*CreateWorldInfoRequest) Descriptor() ([]byte, []int) {
-	return file_muse_muse_proto_rawDescGZIP(), []int{130}
+	return file_muse_muse_proto_rawDescGZIP(), []int{134}
 }
 
 func (x *CreateWorldInfoRequest) GetName() string {
@@ -8156,7 +8353,7 @@ type CreateWorldInfoResponse struct {
 
 func (x *CreateWorldInfoResponse) Reset() {
 	*x = CreateWorldInfoResponse{}
-	mi := &file_muse_muse_proto_msgTypes[131]
+	mi := &file_muse_muse_proto_msgTypes[135]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8168,7 +8365,7 @@ func (x *CreateWorldInfoResponse) String() string {
 func (*CreateWorldInfoResponse) ProtoMessage() {}
 
 func (x *CreateWorldInfoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_muse_proto_msgTypes[131]
+	mi := &file_muse_muse_proto_msgTypes[135]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8181,7 +8378,7 @@ func (x *CreateWorldInfoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateWorldInfoResponse.ProtoReflect.Descriptor instead.
 func (*CreateWorldInfoResponse) Descriptor() ([]byte, []int) {
-	return file_muse_muse_proto_rawDescGZIP(), []int{131}
+	return file_muse_muse_proto_rawDescGZIP(), []int{135}
 }
 
 func (x *CreateWorldInfoResponse) GetWorldInfo() *WorldInfo {
@@ -8204,7 +8401,7 @@ type UpdateWorldInfoRequest struct {
 
 func (x *UpdateWorldInfoRequest) Reset() {
 	*x = UpdateWorldInfoRequest{}
-	mi := &file_muse_muse_proto_msgTypes[132]
+	mi := &file_muse_muse_proto_msgTypes[136]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8216,7 +8413,7 @@ func (x *UpdateWorldInfoRequest) String() string {
 func (*UpdateWorldInfoRequest) ProtoMessage() {}
 
 func (x *UpdateWorldInfoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_muse_proto_msgTypes[132]
+	mi := &file_muse_muse_proto_msgTypes[136]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8229,7 +8426,7 @@ func (x *UpdateWorldInfoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateWorldInfoRequest.ProtoReflect.Descriptor instead.
 func (*UpdateWorldInfoRequest) Descriptor() ([]byte, []int) {
-	return file_muse_muse_proto_rawDescGZIP(), []int{132}
+	return file_muse_muse_proto_rawDescGZIP(), []int{136}
 }
 
 func (x *UpdateWorldInfoRequest) GetId() int32 {
@@ -8270,7 +8467,7 @@ type UpdateWorldInfoResponse struct {
 
 func (x *UpdateWorldInfoResponse) Reset() {
 	*x = UpdateWorldInfoResponse{}
-	mi := &file_muse_muse_proto_msgTypes[133]
+	mi := &file_muse_muse_proto_msgTypes[137]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8282,7 +8479,7 @@ func (x *UpdateWorldInfoResponse) String() string {
 func (*UpdateWorldInfoResponse) ProtoMessage() {}
 
 func (x *UpdateWorldInfoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_muse_proto_msgTypes[133]
+	mi := &file_muse_muse_proto_msgTypes[137]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8295,7 +8492,7 @@ func (x *UpdateWorldInfoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateWorldInfoResponse.ProtoReflect.Descriptor instead.
 func (*UpdateWorldInfoResponse) Descriptor() ([]byte, []int) {
-	return file_muse_muse_proto_rawDescGZIP(), []int{133}
+	return file_muse_muse_proto_rawDescGZIP(), []int{137}
 }
 
 func (x *UpdateWorldInfoResponse) GetWorldInfo() *WorldInfo {
@@ -8315,7 +8512,7 @@ type DeleteWorldInfoRequest struct {
 
 func (x *DeleteWorldInfoRequest) Reset() {
 	*x = DeleteWorldInfoRequest{}
-	mi := &file_muse_muse_proto_msgTypes[134]
+	mi := &file_muse_muse_proto_msgTypes[138]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8327,7 +8524,7 @@ func (x *DeleteWorldInfoRequest) String() string {
 func (*DeleteWorldInfoRequest) ProtoMessage() {}
 
 func (x *DeleteWorldInfoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_muse_proto_msgTypes[134]
+	mi := &file_muse_muse_proto_msgTypes[138]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8340,7 +8537,7 @@ func (x *DeleteWorldInfoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteWorldInfoRequest.ProtoReflect.Descriptor instead.
 func (*DeleteWorldInfoRequest) Descriptor() ([]byte, []int) {
-	return file_muse_muse_proto_rawDescGZIP(), []int{134}
+	return file_muse_muse_proto_rawDescGZIP(), []int{138}
 }
 
 func (x *DeleteWorldInfoRequest) GetId() int32 {
@@ -8359,7 +8556,7 @@ type DeleteWorldInfoResponse struct {
 
 func (x *DeleteWorldInfoResponse) Reset() {
 	*x = DeleteWorldInfoResponse{}
-	mi := &file_muse_muse_proto_msgTypes[135]
+	mi := &file_muse_muse_proto_msgTypes[139]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8371,7 +8568,7 @@ func (x *DeleteWorldInfoResponse) String() string {
 func (*DeleteWorldInfoResponse) ProtoMessage() {}
 
 func (x *DeleteWorldInfoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_muse_proto_msgTypes[135]
+	mi := &file_muse_muse_proto_msgTypes[139]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8384,7 +8581,7 @@ func (x *DeleteWorldInfoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteWorldInfoResponse.ProtoReflect.Descriptor instead.
 func (*DeleteWorldInfoResponse) Descriptor() ([]byte, []int) {
-	return file_muse_muse_proto_rawDescGZIP(), []int{135}
+	return file_muse_muse_proto_rawDescGZIP(), []int{139}
 }
 
 // 导入世界书请求
@@ -8398,7 +8595,7 @@ type ImportWorldInfoRequest struct {
 
 func (x *ImportWorldInfoRequest) Reset() {
 	*x = ImportWorldInfoRequest{}
-	mi := &file_muse_muse_proto_msgTypes[136]
+	mi := &file_muse_muse_proto_msgTypes[140]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8410,7 +8607,7 @@ func (x *ImportWorldInfoRequest) String() string {
 func (*ImportWorldInfoRequest) ProtoMessage() {}
 
 func (x *ImportWorldInfoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_muse_proto_msgTypes[136]
+	mi := &file_muse_muse_proto_msgTypes[140]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8423,7 +8620,7 @@ func (x *ImportWorldInfoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportWorldInfoRequest.ProtoReflect.Descriptor instead.
 func (*ImportWorldInfoRequest) Descriptor() ([]byte, []int) {
-	return file_muse_muse_proto_rawDescGZIP(), []int{136}
+	return file_muse_muse_proto_rawDescGZIP(), []int{140}
 }
 
 func (x *ImportWorldInfoRequest) GetFileContent() []byte {
@@ -8450,7 +8647,7 @@ type ImportWorldInfoResponse struct {
 
 func (x *ImportWorldInfoResponse) Reset() {
 	*x = ImportWorldInfoResponse{}
-	mi := &file_muse_muse_proto_msgTypes[137]
+	mi := &file_muse_muse_proto_msgTypes[141]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8462,7 +8659,7 @@ func (x *ImportWorldInfoResponse) String() string {
 func (*ImportWorldInfoResponse) ProtoMessage() {}
 
 func (x *ImportWorldInfoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_muse_proto_msgTypes[137]
+	mi := &file_muse_muse_proto_msgTypes[141]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8475,7 +8672,7 @@ func (x *ImportWorldInfoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportWorldInfoResponse.ProtoReflect.Descriptor instead.
 func (*ImportWorldInfoResponse) Descriptor() ([]byte, []int) {
-	return file_muse_muse_proto_rawDescGZIP(), []int{137}
+	return file_muse_muse_proto_rawDescGZIP(), []int{141}
 }
 
 func (x *ImportWorldInfoResponse) GetWorldInfo() *WorldInfo {
@@ -8495,7 +8692,7 @@ type ExportWorldInfoRequest struct {
 
 func (x *ExportWorldInfoRequest) Reset() {
 	*x = ExportWorldInfoRequest{}
-	mi := &file_muse_muse_proto_msgTypes[138]
+	mi := &file_muse_muse_proto_msgTypes[142]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8507,7 +8704,7 @@ func (x *ExportWorldInfoRequest) String() string {
 func (*ExportWorldInfoRequest) ProtoMessage() {}
 
 func (x *ExportWorldInfoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_muse_proto_msgTypes[138]
+	mi := &file_muse_muse_proto_msgTypes[142]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8520,7 +8717,7 @@ func (x *ExportWorldInfoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportWorldInfoRequest.ProtoReflect.Descriptor instead.
 func (*ExportWorldInfoRequest) Descriptor() ([]byte, []int) {
-	return file_muse_muse_proto_rawDescGZIP(), []int{138}
+	return file_muse_muse_proto_rawDescGZIP(), []int{142}
 }
 
 func (x *ExportWorldInfoRequest) GetId() int32 {
@@ -8541,7 +8738,7 @@ type ExportWorldInfoResponse struct {
 
 func (x *ExportWorldInfoResponse) Reset() {
 	*x = ExportWorldInfoResponse{}
-	mi := &file_muse_muse_proto_msgTypes[139]
+	mi := &file_muse_muse_proto_msgTypes[143]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8553,7 +8750,7 @@ func (x *ExportWorldInfoResponse) String() string {
 func (*ExportWorldInfoResponse) ProtoMessage() {}
 
 func (x *ExportWorldInfoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_muse_proto_msgTypes[139]
+	mi := &file_muse_muse_proto_msgTypes[143]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8566,7 +8763,7 @@ func (x *ExportWorldInfoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportWorldInfoResponse.ProtoReflect.Descriptor instead.
 func (*ExportWorldInfoResponse) Descriptor() ([]byte, []int) {
-	return file_muse_muse_proto_rawDescGZIP(), []int{139}
+	return file_muse_muse_proto_rawDescGZIP(), []int{143}
 }
 
 func (x *ExportWorldInfoResponse) GetFileContent() []byte {
@@ -8593,7 +8790,7 @@ type ListWorldInfoEntriesRequest struct {
 
 func (x *ListWorldInfoEntriesRequest) Reset() {
 	*x = ListWorldInfoEntriesRequest{}
-	mi := &file_muse_muse_proto_msgTypes[140]
+	mi := &file_muse_muse_proto_msgTypes[144]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8605,7 +8802,7 @@ func (x *ListWorldInfoEntriesRequest) String() string {
 func (*ListWorldInfoEntriesRequest) ProtoMessage() {}
 
 func (x *ListWorldInfoEntriesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_muse_proto_msgTypes[140]
+	mi := &file_muse_muse_proto_msgTypes[144]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8618,7 +8815,7 @@ func (x *ListWorldInfoEntriesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListWorldInfoEntriesRequest.ProtoReflect.Descriptor instead.
 func (*ListWorldInfoEntriesRequest) Descriptor() ([]byte, []int) {
-	return file_muse_muse_proto_rawDescGZIP(), []int{140}
+	return file_muse_muse_proto_rawDescGZIP(), []int{144}
 }
 
 func (x *ListWorldInfoEntriesRequest) GetWorldInfoId() int32 {
@@ -8638,7 +8835,7 @@ type ListWorldInfoEntriesResponse struct {
 
 func (x *ListWorldInfoEntriesResponse) Reset() {
 	*x = ListWorldInfoEntriesResponse{}
-	mi := &file_muse_muse_proto_msgTypes[141]
+	mi := &file_muse_muse_proto_msgTypes[145]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8650,7 +8847,7 @@ func (x *ListWorldInfoEntriesResponse) String() string {
 func (*ListWorldInfoEntriesResponse) ProtoMessage() {}
 
 func (x *ListWorldInfoEntriesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_muse_proto_msgTypes[141]
+	mi := &file_muse_muse_proto_msgTypes[145]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8663,7 +8860,7 @@ func (x *ListWorldInfoEntriesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListWorldInfoEntriesResponse.ProtoReflect.Descriptor instead.
 func (*ListWorldInfoEntriesResponse) Descriptor() ([]byte, []int) {
-	return file_muse_muse_proto_rawDescGZIP(), []int{141}
+	return file_muse_muse_proto_rawDescGZIP(), []int{145}
 }
 
 func (x *ListWorldInfoEntriesResponse) GetEntries() []*WorldInfoEntry {
@@ -8695,7 +8892,7 @@ type AddWorldInfoEntryRequest struct {
 
 func (x *AddWorldInfoEntryRequest) Reset() {
 	*x = AddWorldInfoEntryRequest{}
-	mi := &file_muse_muse_proto_msgTypes[142]
+	mi := &file_muse_muse_proto_msgTypes[146]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8707,7 +8904,7 @@ func (x *AddWorldInfoEntryRequest) String() string {
 func (*AddWorldInfoEntryRequest) ProtoMessage() {}
 
 func (x *AddWorldInfoEntryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_muse_proto_msgTypes[142]
+	mi := &file_muse_muse_proto_msgTypes[146]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8720,7 +8917,7 @@ func (x *AddWorldInfoEntryRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddWorldInfoEntryRequest.ProtoReflect.Descriptor instead.
 func (*AddWorldInfoEntryRequest) Descriptor() ([]byte, []int) {
-	return file_muse_muse_proto_rawDescGZIP(), []int{142}
+	return file_muse_muse_proto_rawDescGZIP(), []int{146}
 }
 
 func (x *AddWorldInfoEntryRequest) GetWorldInfoId() int32 {
@@ -8824,7 +9021,7 @@ type AddWorldInfoEntryResponse struct {
 
 func (x *AddWorldInfoEntryResponse) Reset() {
 	*x = AddWorldInfoEntryResponse{}
-	mi := &file_muse_muse_proto_msgTypes[143]
+	mi := &file_muse_muse_proto_msgTypes[147]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8836,7 +9033,7 @@ func (x *AddWorldInfoEntryResponse) String() string {
 func (*AddWorldInfoEntryResponse) ProtoMessage() {}
 
 func (x *AddWorldInfoEntryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_muse_proto_msgTypes[143]
+	mi := &file_muse_muse_proto_msgTypes[147]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8849,7 +9046,7 @@ func (x *AddWorldInfoEntryResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddWorldInfoEntryResponse.ProtoReflect.Descriptor instead.
 func (*AddWorldInfoEntryResponse) Descriptor() ([]byte, []int) {
-	return file_muse_muse_proto_rawDescGZIP(), []int{143}
+	return file_muse_muse_proto_rawDescGZIP(), []int{147}
 }
 
 func (x *AddWorldInfoEntryResponse) GetEntry() *WorldInfoEntry {
@@ -8881,7 +9078,7 @@ type UpdateWorldInfoEntryRequest struct {
 
 func (x *UpdateWorldInfoEntryRequest) Reset() {
 	*x = UpdateWorldInfoEntryRequest{}
-	mi := &file_muse_muse_proto_msgTypes[144]
+	mi := &file_muse_muse_proto_msgTypes[148]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8893,7 +9090,7 @@ func (x *UpdateWorldInfoEntryRequest) String() string {
 func (*UpdateWorldInfoEntryRequest) ProtoMessage() {}
 
 func (x *UpdateWorldInfoEntryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_muse_proto_msgTypes[144]
+	mi := &file_muse_muse_proto_msgTypes[148]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8906,7 +9103,7 @@ func (x *UpdateWorldInfoEntryRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateWorldInfoEntryRequest.ProtoReflect.Descriptor instead.
 func (*UpdateWorldInfoEntryRequest) Descriptor() ([]byte, []int) {
-	return file_muse_muse_proto_rawDescGZIP(), []int{144}
+	return file_muse_muse_proto_rawDescGZIP(), []int{148}
 }
 
 func (x *UpdateWorldInfoEntryRequest) GetId() int32 {
@@ -9010,7 +9207,7 @@ type UpdateWorldInfoEntryResponse struct {
 
 func (x *UpdateWorldInfoEntryResponse) Reset() {
 	*x = UpdateWorldInfoEntryResponse{}
-	mi := &file_muse_muse_proto_msgTypes[145]
+	mi := &file_muse_muse_proto_msgTypes[149]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9022,7 +9219,7 @@ func (x *UpdateWorldInfoEntryResponse) String() string {
 func (*UpdateWorldInfoEntryResponse) ProtoMessage() {}
 
 func (x *UpdateWorldInfoEntryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_muse_proto_msgTypes[145]
+	mi := &file_muse_muse_proto_msgTypes[149]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9035,7 +9232,7 @@ func (x *UpdateWorldInfoEntryResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateWorldInfoEntryResponse.ProtoReflect.Descriptor instead.
 func (*UpdateWorldInfoEntryResponse) Descriptor() ([]byte, []int) {
-	return file_muse_muse_proto_rawDescGZIP(), []int{145}
+	return file_muse_muse_proto_rawDescGZIP(), []int{149}
 }
 
 func (x *UpdateWorldInfoEntryResponse) GetEntry() *WorldInfoEntry {
@@ -9055,7 +9252,7 @@ type DeleteWorldInfoEntryRequest struct {
 
 func (x *DeleteWorldInfoEntryRequest) Reset() {
 	*x = DeleteWorldInfoEntryRequest{}
-	mi := &file_muse_muse_proto_msgTypes[146]
+	mi := &file_muse_muse_proto_msgTypes[150]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9067,7 +9264,7 @@ func (x *DeleteWorldInfoEntryRequest) String() string {
 func (*DeleteWorldInfoEntryRequest) ProtoMessage() {}
 
 func (x *DeleteWorldInfoEntryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_muse_proto_msgTypes[146]
+	mi := &file_muse_muse_proto_msgTypes[150]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9080,7 +9277,7 @@ func (x *DeleteWorldInfoEntryRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteWorldInfoEntryRequest.ProtoReflect.Descriptor instead.
 func (*DeleteWorldInfoEntryRequest) Descriptor() ([]byte, []int) {
-	return file_muse_muse_proto_rawDescGZIP(), []int{146}
+	return file_muse_muse_proto_rawDescGZIP(), []int{150}
 }
 
 func (x *DeleteWorldInfoEntryRequest) GetId() int32 {
@@ -9099,7 +9296,7 @@ type DeleteWorldInfoEntryResponse struct {
 
 func (x *DeleteWorldInfoEntryResponse) Reset() {
 	*x = DeleteWorldInfoEntryResponse{}
-	mi := &file_muse_muse_proto_msgTypes[147]
+	mi := &file_muse_muse_proto_msgTypes[151]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9111,7 +9308,7 @@ func (x *DeleteWorldInfoEntryResponse) String() string {
 func (*DeleteWorldInfoEntryResponse) ProtoMessage() {}
 
 func (x *DeleteWorldInfoEntryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_muse_proto_msgTypes[147]
+	mi := &file_muse_muse_proto_msgTypes[151]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9124,7 +9321,7 @@ func (x *DeleteWorldInfoEntryResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteWorldInfoEntryResponse.ProtoReflect.Descriptor instead.
 func (*DeleteWorldInfoEntryResponse) Descriptor() ([]byte, []int) {
-	return file_muse_muse_proto_rawDescGZIP(), []int{147}
+	return file_muse_muse_proto_rawDescGZIP(), []int{151}
 }
 
 // 批量更新世界书条目排序请求
@@ -9138,7 +9335,7 @@ type UpdateWorldInfoEntriesOrderRequest struct {
 
 func (x *UpdateWorldInfoEntriesOrderRequest) Reset() {
 	*x = UpdateWorldInfoEntriesOrderRequest{}
-	mi := &file_muse_muse_proto_msgTypes[148]
+	mi := &file_muse_muse_proto_msgTypes[152]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9150,7 +9347,7 @@ func (x *UpdateWorldInfoEntriesOrderRequest) String() string {
 func (*UpdateWorldInfoEntriesOrderRequest) ProtoMessage() {}
 
 func (x *UpdateWorldInfoEntriesOrderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_muse_proto_msgTypes[148]
+	mi := &file_muse_muse_proto_msgTypes[152]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9163,7 +9360,7 @@ func (x *UpdateWorldInfoEntriesOrderRequest) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use UpdateWorldInfoEntriesOrderRequest.ProtoReflect.Descriptor instead.
 func (*UpdateWorldInfoEntriesOrderRequest) Descriptor() ([]byte, []int) {
-	return file_muse_muse_proto_rawDescGZIP(), []int{148}
+	return file_muse_muse_proto_rawDescGZIP(), []int{152}
 }
 
 func (x *UpdateWorldInfoEntriesOrderRequest) GetWorldInfoId() int32 {
@@ -9189,7 +9386,7 @@ type UpdateWorldInfoEntriesOrderResponse struct {
 
 func (x *UpdateWorldInfoEntriesOrderResponse) Reset() {
 	*x = UpdateWorldInfoEntriesOrderResponse{}
-	mi := &file_muse_muse_proto_msgTypes[149]
+	mi := &file_muse_muse_proto_msgTypes[153]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9201,7 +9398,7 @@ func (x *UpdateWorldInfoEntriesOrderResponse) String() string {
 func (*UpdateWorldInfoEntriesOrderResponse) ProtoMessage() {}
 
 func (x *UpdateWorldInfoEntriesOrderResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_muse_proto_msgTypes[149]
+	mi := &file_muse_muse_proto_msgTypes[153]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9214,7 +9411,7 @@ func (x *UpdateWorldInfoEntriesOrderResponse) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use UpdateWorldInfoEntriesOrderResponse.ProtoReflect.Descriptor instead.
 func (*UpdateWorldInfoEntriesOrderResponse) Descriptor() ([]byte, []int) {
-	return file_muse_muse_proto_rawDescGZIP(), []int{149}
+	return file_muse_muse_proto_rawDescGZIP(), []int{153}
 }
 
 var File_muse_muse_proto protoreflect.FileDescriptor
@@ -9355,10 +9552,11 @@ const file_muse_muse_proto_rawDesc = "" +
 	"\rslash_command\x18\x03 \x01(\bR\fslashCommand\x12\x1d\n" +
 	"\n" +
 	"world_info\x18\x04 \x01(\bR\tworldInfo\x12\x16\n" +
-	"\x06prompt\x18\x05 \x01(\bR\x06prompt\"\xd4\x03\n" +
+	"\x06prompt\x18\x05 \x01(\bR\x06prompt\"\xf7\x03\n" +
 	"\tRegexRule\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x1b\n" +
-	"\tpreset_id\x18\x02 \x01(\x05R\bpresetId\x12\x12\n" +
+	"\tpreset_id\x18\x02 \x01(\x05R\bpresetId\x12!\n" +
+	"\fcharacter_id\x18\x0f \x01(\x05R\vcharacterId\x12\x12\n" +
 	"\x04name\x18\x03 \x01(\tR\x04name\x12!\n" +
 	"\ffind_pattern\x18\x04 \x01(\tR\vfindPattern\x12'\n" +
 	"\x0freplace_pattern\x18\x05 \x01(\tR\x0ereplacePattern\x12\x1d\n" +
@@ -9871,7 +10069,16 @@ const file_muse_muse_proto_rawDesc = "" +
 	"\x1cUpdateRegexRulesOrderRequest\x12\x1b\n" +
 	"\tpreset_id\x18\x01 \x01(\x05R\bpresetId\x12\x19\n" +
 	"\brule_ids\x18\x02 \x03(\x05R\aruleIds\"\x1f\n" +
-	"\x1dUpdateRegexRulesOrderResponse\"G\n" +
+	"\x1dUpdateRegexRulesOrderResponse\"Y\n" +
+	"\x17ImportRegexRulesRequest\x12!\n" +
+	"\ffile_content\x18\x01 \x01(\fR\vfileContent\x12\x1b\n" +
+	"\tfile_name\x18\x02 \x01(\tR\bfileName\"\x1a\n" +
+	"\x18ImportRegexRulesResponse\"6\n" +
+	"\x17ExportRegexRulesRequest\x12\x1b\n" +
+	"\tpreset_id\x18\x01 \x01(\x05R\bpresetId\"Z\n" +
+	"\x18ExportRegexRulesResponse\x12!\n" +
+	"\ffile_content\x18\x01 \x01(\fR\vfileContent\x12\x1b\n" +
+	"\tfile_name\x18\x02 \x01(\tR\bfileName\"G\n" +
 	"\x15ListWorldInfosRequest\x12 \n" +
 	"\tis_global\x18\x01 \x01(\bH\x00R\bisGlobal\x88\x01\x01B\f\n" +
 	"\n" +
@@ -10056,13 +10263,15 @@ const file_muse_muse_proto_rawDesc = "" +
 	"\rAddPromptItem\x12\x1a.muse.AddPromptItemRequest\x1a\x1b.muse.AddPromptItemResponse\x12Q\n" +
 	"\x10UpdatePromptItem\x12\x1d.muse.UpdatePromptItemRequest\x1a\x1e.muse.UpdatePromptItemResponse\x12Q\n" +
 	"\x10DeletePromptItem\x12\x1d.muse.DeletePromptItemRequest\x1a\x1e.muse.DeletePromptItemResponse\x12c\n" +
-	"\x16UpdatePromptItemsOrder\x12#.muse.UpdatePromptItemsOrderRequest\x1a$.muse.UpdatePromptItemsOrderResponse2\xa8\x03\n" +
+	"\x16UpdatePromptItemsOrder\x12#.muse.UpdatePromptItemsOrderRequest\x1a$.muse.UpdatePromptItemsOrderResponse2\xce\x04\n" +
 	"\x10RegexRuleService\x12K\n" +
 	"\x0eListRegexRules\x12\x1b.muse.ListRegexRulesRequest\x1a\x1c.muse.ListRegexRulesResponse\x12E\n" +
 	"\fAddRegexRule\x12\x19.muse.AddRegexRuleRequest\x1a\x1a.muse.AddRegexRuleResponse\x12N\n" +
 	"\x0fUpdateRegexRule\x12\x1c.muse.UpdateRegexRuleRequest\x1a\x1d.muse.UpdateRegexRuleResponse\x12N\n" +
 	"\x0fDeleteRegexRule\x12\x1c.muse.DeleteRegexRuleRequest\x1a\x1d.muse.DeleteRegexRuleResponse\x12`\n" +
-	"\x15UpdateRegexRulesOrder\x12\".muse.UpdateRegexRulesOrderRequest\x1a#.muse.UpdateRegexRulesOrderResponse2\x9d\b\n" +
+	"\x15UpdateRegexRulesOrder\x12\".muse.UpdateRegexRulesOrderRequest\x1a#.muse.UpdateRegexRulesOrderResponse\x12Q\n" +
+	"\x10ImportRegexRules\x12\x1d.muse.ImportRegexRulesRequest\x1a\x1e.muse.ImportRegexRulesResponse\x12Q\n" +
+	"\x10ExportRegexRules\x12\x1d.muse.ExportRegexRulesRequest\x1a\x1e.muse.ExportRegexRulesResponse2\x9d\b\n" +
 	"\x10WorldInfoService\x12K\n" +
 	"\x0eListWorldInfos\x12\x1b.muse.ListWorldInfosRequest\x1a\x1c.muse.ListWorldInfosResponse\x12E\n" +
 	"\fGetWorldInfo\x12\x19.muse.GetWorldInfoRequest\x1a\x1a.muse.GetWorldInfoResponse\x12N\n" +
@@ -10091,7 +10300,7 @@ func file_muse_muse_proto_rawDescGZIP() []byte {
 }
 
 var file_muse_muse_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
-var file_muse_muse_proto_msgTypes = make([]protoimpl.MessageInfo, 150)
+var file_muse_muse_proto_msgTypes = make([]protoimpl.MessageInfo, 154)
 var file_muse_muse_proto_goTypes = []any{
 	(Role)(0),                                   // 0: muse.Role
 	(InjectionPosition)(0),                      // 1: muse.InjectionPosition
@@ -10224,30 +10433,34 @@ var file_muse_muse_proto_goTypes = []any{
 	(*DeleteRegexRuleResponse)(nil),             // 128: muse.DeleteRegexRuleResponse
 	(*UpdateRegexRulesOrderRequest)(nil),        // 129: muse.UpdateRegexRulesOrderRequest
 	(*UpdateRegexRulesOrderResponse)(nil),       // 130: muse.UpdateRegexRulesOrderResponse
-	(*ListWorldInfosRequest)(nil),               // 131: muse.ListWorldInfosRequest
-	(*ListWorldInfosResponse)(nil),              // 132: muse.ListWorldInfosResponse
-	(*GetWorldInfoRequest)(nil),                 // 133: muse.GetWorldInfoRequest
-	(*GetWorldInfoResponse)(nil),                // 134: muse.GetWorldInfoResponse
-	(*CreateWorldInfoRequest)(nil),              // 135: muse.CreateWorldInfoRequest
-	(*CreateWorldInfoResponse)(nil),             // 136: muse.CreateWorldInfoResponse
-	(*UpdateWorldInfoRequest)(nil),              // 137: muse.UpdateWorldInfoRequest
-	(*UpdateWorldInfoResponse)(nil),             // 138: muse.UpdateWorldInfoResponse
-	(*DeleteWorldInfoRequest)(nil),              // 139: muse.DeleteWorldInfoRequest
-	(*DeleteWorldInfoResponse)(nil),             // 140: muse.DeleteWorldInfoResponse
-	(*ImportWorldInfoRequest)(nil),              // 141: muse.ImportWorldInfoRequest
-	(*ImportWorldInfoResponse)(nil),             // 142: muse.ImportWorldInfoResponse
-	(*ExportWorldInfoRequest)(nil),              // 143: muse.ExportWorldInfoRequest
-	(*ExportWorldInfoResponse)(nil),             // 144: muse.ExportWorldInfoResponse
-	(*ListWorldInfoEntriesRequest)(nil),         // 145: muse.ListWorldInfoEntriesRequest
-	(*ListWorldInfoEntriesResponse)(nil),        // 146: muse.ListWorldInfoEntriesResponse
-	(*AddWorldInfoEntryRequest)(nil),            // 147: muse.AddWorldInfoEntryRequest
-	(*AddWorldInfoEntryResponse)(nil),           // 148: muse.AddWorldInfoEntryResponse
-	(*UpdateWorldInfoEntryRequest)(nil),         // 149: muse.UpdateWorldInfoEntryRequest
-	(*UpdateWorldInfoEntryResponse)(nil),        // 150: muse.UpdateWorldInfoEntryResponse
-	(*DeleteWorldInfoEntryRequest)(nil),         // 151: muse.DeleteWorldInfoEntryRequest
-	(*DeleteWorldInfoEntryResponse)(nil),        // 152: muse.DeleteWorldInfoEntryResponse
-	(*UpdateWorldInfoEntriesOrderRequest)(nil),  // 153: muse.UpdateWorldInfoEntriesOrderRequest
-	(*UpdateWorldInfoEntriesOrderResponse)(nil), // 154: muse.UpdateWorldInfoEntriesOrderResponse
+	(*ImportRegexRulesRequest)(nil),             // 131: muse.ImportRegexRulesRequest
+	(*ImportRegexRulesResponse)(nil),            // 132: muse.ImportRegexRulesResponse
+	(*ExportRegexRulesRequest)(nil),             // 133: muse.ExportRegexRulesRequest
+	(*ExportRegexRulesResponse)(nil),            // 134: muse.ExportRegexRulesResponse
+	(*ListWorldInfosRequest)(nil),               // 135: muse.ListWorldInfosRequest
+	(*ListWorldInfosResponse)(nil),              // 136: muse.ListWorldInfosResponse
+	(*GetWorldInfoRequest)(nil),                 // 137: muse.GetWorldInfoRequest
+	(*GetWorldInfoResponse)(nil),                // 138: muse.GetWorldInfoResponse
+	(*CreateWorldInfoRequest)(nil),              // 139: muse.CreateWorldInfoRequest
+	(*CreateWorldInfoResponse)(nil),             // 140: muse.CreateWorldInfoResponse
+	(*UpdateWorldInfoRequest)(nil),              // 141: muse.UpdateWorldInfoRequest
+	(*UpdateWorldInfoResponse)(nil),             // 142: muse.UpdateWorldInfoResponse
+	(*DeleteWorldInfoRequest)(nil),              // 143: muse.DeleteWorldInfoRequest
+	(*DeleteWorldInfoResponse)(nil),             // 144: muse.DeleteWorldInfoResponse
+	(*ImportWorldInfoRequest)(nil),              // 145: muse.ImportWorldInfoRequest
+	(*ImportWorldInfoResponse)(nil),             // 146: muse.ImportWorldInfoResponse
+	(*ExportWorldInfoRequest)(nil),              // 147: muse.ExportWorldInfoRequest
+	(*ExportWorldInfoResponse)(nil),             // 148: muse.ExportWorldInfoResponse
+	(*ListWorldInfoEntriesRequest)(nil),         // 149: muse.ListWorldInfoEntriesRequest
+	(*ListWorldInfoEntriesResponse)(nil),        // 150: muse.ListWorldInfoEntriesResponse
+	(*AddWorldInfoEntryRequest)(nil),            // 151: muse.AddWorldInfoEntryRequest
+	(*AddWorldInfoEntryResponse)(nil),           // 152: muse.AddWorldInfoEntryResponse
+	(*UpdateWorldInfoEntryRequest)(nil),         // 153: muse.UpdateWorldInfoEntryRequest
+	(*UpdateWorldInfoEntryResponse)(nil),        // 154: muse.UpdateWorldInfoEntryResponse
+	(*DeleteWorldInfoEntryRequest)(nil),         // 155: muse.DeleteWorldInfoEntryRequest
+	(*DeleteWorldInfoEntryResponse)(nil),        // 156: muse.DeleteWorldInfoEntryResponse
+	(*UpdateWorldInfoEntriesOrderRequest)(nil),  // 157: muse.UpdateWorldInfoEntriesOrderRequest
+	(*UpdateWorldInfoEntriesOrderResponse)(nil), // 158: muse.UpdateWorldInfoEntriesOrderResponse
 }
 var file_muse_muse_proto_depIdxs = []int32{
 	4,   // 0: muse.UserSetting.theme:type_name -> muse.Theme
@@ -10382,87 +10595,91 @@ var file_muse_muse_proto_depIdxs = []int32{
 	125, // 129: muse.RegexRuleService.UpdateRegexRule:input_type -> muse.UpdateRegexRuleRequest
 	127, // 130: muse.RegexRuleService.DeleteRegexRule:input_type -> muse.DeleteRegexRuleRequest
 	129, // 131: muse.RegexRuleService.UpdateRegexRulesOrder:input_type -> muse.UpdateRegexRulesOrderRequest
-	131, // 132: muse.WorldInfoService.ListWorldInfos:input_type -> muse.ListWorldInfosRequest
-	133, // 133: muse.WorldInfoService.GetWorldInfo:input_type -> muse.GetWorldInfoRequest
-	135, // 134: muse.WorldInfoService.CreateWorldInfo:input_type -> muse.CreateWorldInfoRequest
-	137, // 135: muse.WorldInfoService.UpdateWorldInfo:input_type -> muse.UpdateWorldInfoRequest
-	139, // 136: muse.WorldInfoService.DeleteWorldInfo:input_type -> muse.DeleteWorldInfoRequest
-	141, // 137: muse.WorldInfoService.ImportWorldInfo:input_type -> muse.ImportWorldInfoRequest
-	143, // 138: muse.WorldInfoService.ExportWorldInfo:input_type -> muse.ExportWorldInfoRequest
-	145, // 139: muse.WorldInfoService.ListWorldInfoEntries:input_type -> muse.ListWorldInfoEntriesRequest
-	147, // 140: muse.WorldInfoService.AddWorldInfoEntry:input_type -> muse.AddWorldInfoEntryRequest
-	149, // 141: muse.WorldInfoService.UpdateWorldInfoEntry:input_type -> muse.UpdateWorldInfoEntryRequest
-	151, // 142: muse.WorldInfoService.DeleteWorldInfoEntry:input_type -> muse.DeleteWorldInfoEntryRequest
-	153, // 143: muse.WorldInfoService.UpdateWorldInfoEntriesOrder:input_type -> muse.UpdateWorldInfoEntriesOrderRequest
-	20,  // 144: muse.UserService.Register:output_type -> muse.RegisterResponse
-	22,  // 145: muse.UserService.Login:output_type -> muse.LoginResponse
-	24,  // 146: muse.UserService.GetCurrentUser:output_type -> muse.GetCurrentUserResponse
-	26,  // 147: muse.UserService.ChangePassword:output_type -> muse.ChangePasswordResponse
-	28,  // 148: muse.UserService.ListPersonas:output_type -> muse.ListPersonasResponse
-	30,  // 149: muse.UserService.GetPersona:output_type -> muse.GetPersonaResponse
-	32,  // 150: muse.UserService.CreatePersona:output_type -> muse.CreatePersonaResponse
-	34,  // 151: muse.UserService.UpdatePersona:output_type -> muse.UpdatePersonaResponse
-	36,  // 152: muse.UserService.DeletePersona:output_type -> muse.DeletePersonaResponse
-	38,  // 153: muse.UserService.SetActivePersona:output_type -> muse.SetActivePersonaResponse
-	40,  // 154: muse.UserService.GetUserSetting:output_type -> muse.GetUserSettingResponse
-	42,  // 155: muse.UserService.UpdateUserSetting:output_type -> muse.UpdateUserSettingResponse
-	44,  // 156: muse.UserService.ListAPIConfigs:output_type -> muse.ListAPIConfigsResponse
-	46,  // 157: muse.UserService.GetAPIConfig:output_type -> muse.GetAPIConfigResponse
-	48,  // 158: muse.UserService.CreateAPIConfig:output_type -> muse.CreateAPIConfigResponse
-	50,  // 159: muse.UserService.UpdateAPIConfig:output_type -> muse.UpdateAPIConfigResponse
-	52,  // 160: muse.UserService.DeleteAPIConfig:output_type -> muse.DeleteAPIConfigResponse
-	54,  // 161: muse.UserService.SetActiveAPIConfig:output_type -> muse.SetActiveAPIConfigResponse
-	56,  // 162: muse.UserService.TestAPIConfig:output_type -> muse.TestAPIConfigResponse
-	58,  // 163: muse.CharacterService.ListCharacters:output_type -> muse.ListCharactersResponse
-	60,  // 164: muse.CharacterService.GetCharacter:output_type -> muse.GetCharacterResponse
-	62,  // 165: muse.CharacterService.CreateCharacter:output_type -> muse.CreateCharacterResponse
-	64,  // 166: muse.CharacterService.UpdateCharacter:output_type -> muse.UpdateCharacterResponse
-	66,  // 167: muse.CharacterService.DeleteCharacter:output_type -> muse.DeleteCharacterResponse
-	68,  // 168: muse.CharacterService.ImportCharacter:output_type -> muse.ImportCharacterResponse
-	70,  // 169: muse.CharacterService.ExportCharacter:output_type -> muse.ExportCharacterResponse
-	72,  // 170: muse.CharacterService.RestoreCharacterWorldInfo:output_type -> muse.RestoreCharacterWorldInfoResponse
-	74,  // 171: muse.ChatService.ListChatSessions:output_type -> muse.ListChatSessionsResponse
-	76,  // 172: muse.ChatService.GetChatSession:output_type -> muse.GetChatSessionResponse
-	78,  // 173: muse.ChatService.CreateChatSession:output_type -> muse.CreateChatSessionResponse
-	80,  // 174: muse.ChatService.UpdateChatSession:output_type -> muse.UpdateChatSessionResponse
-	82,  // 175: muse.ChatService.DeleteChatSession:output_type -> muse.DeleteChatSessionResponse
-	84,  // 176: muse.ChatService.SendMessage:output_type -> muse.SendMessageResponse
-	86,  // 177: muse.ChatService.RegenerateMessage:output_type -> muse.RegenerateMessageResponse
-	88,  // 178: muse.ChatService.EditMessage:output_type -> muse.EditMessageResponse
-	90,  // 179: muse.ChatService.DeleteMessage:output_type -> muse.DeleteMessageResponse
-	92,  // 180: muse.ChatService.SwitchSwipe:output_type -> muse.SwitchSwipeResponse
-	94,  // 181: muse.PresetService.ListPresets:output_type -> muse.ListPresetsResponse
-	96,  // 182: muse.PresetService.GetPreset:output_type -> muse.GetPresetResponse
-	100, // 183: muse.PresetService.CreatePreset:output_type -> muse.CreatePresetResponse
-	102, // 184: muse.PresetService.UpdatePreset:output_type -> muse.UpdatePresetResponse
-	104, // 185: muse.PresetService.DeletePreset:output_type -> muse.DeletePresetResponse
-	106, // 186: muse.PresetService.SetActivePreset:output_type -> muse.SetActivePresetResponse
-	108, // 187: muse.PresetService.ImportPreset:output_type -> muse.ImportPresetResponse
-	110, // 188: muse.PresetService.ExportPreset:output_type -> muse.ExportPresetResponse
-	112, // 189: muse.PresetService.ListPromptItems:output_type -> muse.ListPromptItemsResponse
-	114, // 190: muse.PresetService.AddPromptItem:output_type -> muse.AddPromptItemResponse
-	116, // 191: muse.PresetService.UpdatePromptItem:output_type -> muse.UpdatePromptItemResponse
-	118, // 192: muse.PresetService.DeletePromptItem:output_type -> muse.DeletePromptItemResponse
-	120, // 193: muse.PresetService.UpdatePromptItemsOrder:output_type -> muse.UpdatePromptItemsOrderResponse
-	122, // 194: muse.RegexRuleService.ListRegexRules:output_type -> muse.ListRegexRulesResponse
-	124, // 195: muse.RegexRuleService.AddRegexRule:output_type -> muse.AddRegexRuleResponse
-	126, // 196: muse.RegexRuleService.UpdateRegexRule:output_type -> muse.UpdateRegexRuleResponse
-	128, // 197: muse.RegexRuleService.DeleteRegexRule:output_type -> muse.DeleteRegexRuleResponse
-	130, // 198: muse.RegexRuleService.UpdateRegexRulesOrder:output_type -> muse.UpdateRegexRulesOrderResponse
-	132, // 199: muse.WorldInfoService.ListWorldInfos:output_type -> muse.ListWorldInfosResponse
-	134, // 200: muse.WorldInfoService.GetWorldInfo:output_type -> muse.GetWorldInfoResponse
-	136, // 201: muse.WorldInfoService.CreateWorldInfo:output_type -> muse.CreateWorldInfoResponse
-	138, // 202: muse.WorldInfoService.UpdateWorldInfo:output_type -> muse.UpdateWorldInfoResponse
-	140, // 203: muse.WorldInfoService.DeleteWorldInfo:output_type -> muse.DeleteWorldInfoResponse
-	142, // 204: muse.WorldInfoService.ImportWorldInfo:output_type -> muse.ImportWorldInfoResponse
-	144, // 205: muse.WorldInfoService.ExportWorldInfo:output_type -> muse.ExportWorldInfoResponse
-	146, // 206: muse.WorldInfoService.ListWorldInfoEntries:output_type -> muse.ListWorldInfoEntriesResponse
-	148, // 207: muse.WorldInfoService.AddWorldInfoEntry:output_type -> muse.AddWorldInfoEntryResponse
-	150, // 208: muse.WorldInfoService.UpdateWorldInfoEntry:output_type -> muse.UpdateWorldInfoEntryResponse
-	152, // 209: muse.WorldInfoService.DeleteWorldInfoEntry:output_type -> muse.DeleteWorldInfoEntryResponse
-	154, // 210: muse.WorldInfoService.UpdateWorldInfoEntriesOrder:output_type -> muse.UpdateWorldInfoEntriesOrderResponse
-	144, // [144:211] is the sub-list for method output_type
-	77,  // [77:144] is the sub-list for method input_type
+	131, // 132: muse.RegexRuleService.ImportRegexRules:input_type -> muse.ImportRegexRulesRequest
+	133, // 133: muse.RegexRuleService.ExportRegexRules:input_type -> muse.ExportRegexRulesRequest
+	135, // 134: muse.WorldInfoService.ListWorldInfos:input_type -> muse.ListWorldInfosRequest
+	137, // 135: muse.WorldInfoService.GetWorldInfo:input_type -> muse.GetWorldInfoRequest
+	139, // 136: muse.WorldInfoService.CreateWorldInfo:input_type -> muse.CreateWorldInfoRequest
+	141, // 137: muse.WorldInfoService.UpdateWorldInfo:input_type -> muse.UpdateWorldInfoRequest
+	143, // 138: muse.WorldInfoService.DeleteWorldInfo:input_type -> muse.DeleteWorldInfoRequest
+	145, // 139: muse.WorldInfoService.ImportWorldInfo:input_type -> muse.ImportWorldInfoRequest
+	147, // 140: muse.WorldInfoService.ExportWorldInfo:input_type -> muse.ExportWorldInfoRequest
+	149, // 141: muse.WorldInfoService.ListWorldInfoEntries:input_type -> muse.ListWorldInfoEntriesRequest
+	151, // 142: muse.WorldInfoService.AddWorldInfoEntry:input_type -> muse.AddWorldInfoEntryRequest
+	153, // 143: muse.WorldInfoService.UpdateWorldInfoEntry:input_type -> muse.UpdateWorldInfoEntryRequest
+	155, // 144: muse.WorldInfoService.DeleteWorldInfoEntry:input_type -> muse.DeleteWorldInfoEntryRequest
+	157, // 145: muse.WorldInfoService.UpdateWorldInfoEntriesOrder:input_type -> muse.UpdateWorldInfoEntriesOrderRequest
+	20,  // 146: muse.UserService.Register:output_type -> muse.RegisterResponse
+	22,  // 147: muse.UserService.Login:output_type -> muse.LoginResponse
+	24,  // 148: muse.UserService.GetCurrentUser:output_type -> muse.GetCurrentUserResponse
+	26,  // 149: muse.UserService.ChangePassword:output_type -> muse.ChangePasswordResponse
+	28,  // 150: muse.UserService.ListPersonas:output_type -> muse.ListPersonasResponse
+	30,  // 151: muse.UserService.GetPersona:output_type -> muse.GetPersonaResponse
+	32,  // 152: muse.UserService.CreatePersona:output_type -> muse.CreatePersonaResponse
+	34,  // 153: muse.UserService.UpdatePersona:output_type -> muse.UpdatePersonaResponse
+	36,  // 154: muse.UserService.DeletePersona:output_type -> muse.DeletePersonaResponse
+	38,  // 155: muse.UserService.SetActivePersona:output_type -> muse.SetActivePersonaResponse
+	40,  // 156: muse.UserService.GetUserSetting:output_type -> muse.GetUserSettingResponse
+	42,  // 157: muse.UserService.UpdateUserSetting:output_type -> muse.UpdateUserSettingResponse
+	44,  // 158: muse.UserService.ListAPIConfigs:output_type -> muse.ListAPIConfigsResponse
+	46,  // 159: muse.UserService.GetAPIConfig:output_type -> muse.GetAPIConfigResponse
+	48,  // 160: muse.UserService.CreateAPIConfig:output_type -> muse.CreateAPIConfigResponse
+	50,  // 161: muse.UserService.UpdateAPIConfig:output_type -> muse.UpdateAPIConfigResponse
+	52,  // 162: muse.UserService.DeleteAPIConfig:output_type -> muse.DeleteAPIConfigResponse
+	54,  // 163: muse.UserService.SetActiveAPIConfig:output_type -> muse.SetActiveAPIConfigResponse
+	56,  // 164: muse.UserService.TestAPIConfig:output_type -> muse.TestAPIConfigResponse
+	58,  // 165: muse.CharacterService.ListCharacters:output_type -> muse.ListCharactersResponse
+	60,  // 166: muse.CharacterService.GetCharacter:output_type -> muse.GetCharacterResponse
+	62,  // 167: muse.CharacterService.CreateCharacter:output_type -> muse.CreateCharacterResponse
+	64,  // 168: muse.CharacterService.UpdateCharacter:output_type -> muse.UpdateCharacterResponse
+	66,  // 169: muse.CharacterService.DeleteCharacter:output_type -> muse.DeleteCharacterResponse
+	68,  // 170: muse.CharacterService.ImportCharacter:output_type -> muse.ImportCharacterResponse
+	70,  // 171: muse.CharacterService.ExportCharacter:output_type -> muse.ExportCharacterResponse
+	72,  // 172: muse.CharacterService.RestoreCharacterWorldInfo:output_type -> muse.RestoreCharacterWorldInfoResponse
+	74,  // 173: muse.ChatService.ListChatSessions:output_type -> muse.ListChatSessionsResponse
+	76,  // 174: muse.ChatService.GetChatSession:output_type -> muse.GetChatSessionResponse
+	78,  // 175: muse.ChatService.CreateChatSession:output_type -> muse.CreateChatSessionResponse
+	80,  // 176: muse.ChatService.UpdateChatSession:output_type -> muse.UpdateChatSessionResponse
+	82,  // 177: muse.ChatService.DeleteChatSession:output_type -> muse.DeleteChatSessionResponse
+	84,  // 178: muse.ChatService.SendMessage:output_type -> muse.SendMessageResponse
+	86,  // 179: muse.ChatService.RegenerateMessage:output_type -> muse.RegenerateMessageResponse
+	88,  // 180: muse.ChatService.EditMessage:output_type -> muse.EditMessageResponse
+	90,  // 181: muse.ChatService.DeleteMessage:output_type -> muse.DeleteMessageResponse
+	92,  // 182: muse.ChatService.SwitchSwipe:output_type -> muse.SwitchSwipeResponse
+	94,  // 183: muse.PresetService.ListPresets:output_type -> muse.ListPresetsResponse
+	96,  // 184: muse.PresetService.GetPreset:output_type -> muse.GetPresetResponse
+	100, // 185: muse.PresetService.CreatePreset:output_type -> muse.CreatePresetResponse
+	102, // 186: muse.PresetService.UpdatePreset:output_type -> muse.UpdatePresetResponse
+	104, // 187: muse.PresetService.DeletePreset:output_type -> muse.DeletePresetResponse
+	106, // 188: muse.PresetService.SetActivePreset:output_type -> muse.SetActivePresetResponse
+	108, // 189: muse.PresetService.ImportPreset:output_type -> muse.ImportPresetResponse
+	110, // 190: muse.PresetService.ExportPreset:output_type -> muse.ExportPresetResponse
+	112, // 191: muse.PresetService.ListPromptItems:output_type -> muse.ListPromptItemsResponse
+	114, // 192: muse.PresetService.AddPromptItem:output_type -> muse.AddPromptItemResponse
+	116, // 193: muse.PresetService.UpdatePromptItem:output_type -> muse.UpdatePromptItemResponse
+	118, // 194: muse.PresetService.DeletePromptItem:output_type -> muse.DeletePromptItemResponse
+	120, // 195: muse.PresetService.UpdatePromptItemsOrder:output_type -> muse.UpdatePromptItemsOrderResponse
+	122, // 196: muse.RegexRuleService.ListRegexRules:output_type -> muse.ListRegexRulesResponse
+	124, // 197: muse.RegexRuleService.AddRegexRule:output_type -> muse.AddRegexRuleResponse
+	126, // 198: muse.RegexRuleService.UpdateRegexRule:output_type -> muse.UpdateRegexRuleResponse
+	128, // 199: muse.RegexRuleService.DeleteRegexRule:output_type -> muse.DeleteRegexRuleResponse
+	130, // 200: muse.RegexRuleService.UpdateRegexRulesOrder:output_type -> muse.UpdateRegexRulesOrderResponse
+	132, // 201: muse.RegexRuleService.ImportRegexRules:output_type -> muse.ImportRegexRulesResponse
+	134, // 202: muse.RegexRuleService.ExportRegexRules:output_type -> muse.ExportRegexRulesResponse
+	136, // 203: muse.WorldInfoService.ListWorldInfos:output_type -> muse.ListWorldInfosResponse
+	138, // 204: muse.WorldInfoService.GetWorldInfo:output_type -> muse.GetWorldInfoResponse
+	140, // 205: muse.WorldInfoService.CreateWorldInfo:output_type -> muse.CreateWorldInfoResponse
+	142, // 206: muse.WorldInfoService.UpdateWorldInfo:output_type -> muse.UpdateWorldInfoResponse
+	144, // 207: muse.WorldInfoService.DeleteWorldInfo:output_type -> muse.DeleteWorldInfoResponse
+	146, // 208: muse.WorldInfoService.ImportWorldInfo:output_type -> muse.ImportWorldInfoResponse
+	148, // 209: muse.WorldInfoService.ExportWorldInfo:output_type -> muse.ExportWorldInfoResponse
+	150, // 210: muse.WorldInfoService.ListWorldInfoEntries:output_type -> muse.ListWorldInfoEntriesResponse
+	152, // 211: muse.WorldInfoService.AddWorldInfoEntry:output_type -> muse.AddWorldInfoEntryResponse
+	154, // 212: muse.WorldInfoService.UpdateWorldInfoEntry:output_type -> muse.UpdateWorldInfoEntryResponse
+	156, // 213: muse.WorldInfoService.DeleteWorldInfoEntry:output_type -> muse.DeleteWorldInfoEntryResponse
+	158, // 214: muse.WorldInfoService.UpdateWorldInfoEntriesOrder:output_type -> muse.UpdateWorldInfoEntriesOrderResponse
+	146, // [146:215] is the sub-list for method output_type
+	77,  // [77:146] is the sub-list for method input_type
 	77,  // [77:77] is the sub-list for extension type_name
 	77,  // [77:77] is the sub-list for extension extendee
 	0,   // [0:77] is the sub-list for field type_name
@@ -10490,18 +10707,18 @@ func file_muse_muse_proto_init() {
 	file_muse_muse_proto_msgTypes[110].OneofWrappers = []any{}
 	file_muse_muse_proto_msgTypes[118].OneofWrappers = []any{}
 	file_muse_muse_proto_msgTypes[120].OneofWrappers = []any{}
-	file_muse_muse_proto_msgTypes[126].OneofWrappers = []any{}
 	file_muse_muse_proto_msgTypes[130].OneofWrappers = []any{}
-	file_muse_muse_proto_msgTypes[132].OneofWrappers = []any{}
-	file_muse_muse_proto_msgTypes[142].OneofWrappers = []any{}
-	file_muse_muse_proto_msgTypes[144].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[134].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[136].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[146].OneofWrappers = []any{}
+	file_muse_muse_proto_msgTypes[148].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_muse_muse_proto_rawDesc), len(file_muse_muse_proto_rawDesc)),
 			NumEnums:      5,
-			NumMessages:   150,
+			NumMessages:   154,
 			NumExtensions: 0,
 			NumServices:   6,
 		},

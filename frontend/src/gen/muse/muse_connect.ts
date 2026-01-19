@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { AddPromptItemRequest, AddPromptItemResponse, AddRegexRuleRequest, AddRegexRuleResponse, AddWorldInfoEntryRequest, AddWorldInfoEntryResponse, ChangePasswordRequest, ChangePasswordResponse, CreateAPIConfigRequest, CreateAPIConfigResponse, CreateCharacterRequest, CreateCharacterResponse, CreateChatSessionRequest, CreateChatSessionResponse, CreatePersonaRequest, CreatePersonaResponse, CreatePresetRequest, CreatePresetResponse, CreateWorldInfoRequest, CreateWorldInfoResponse, DeleteAPIConfigRequest, DeleteAPIConfigResponse, DeleteCharacterRequest, DeleteCharacterResponse, DeleteChatSessionRequest, DeleteChatSessionResponse, DeleteMessageRequest, DeleteMessageResponse, DeletePersonaRequest, DeletePersonaResponse, DeletePresetRequest, DeletePresetResponse, DeletePromptItemRequest, DeletePromptItemResponse, DeleteRegexRuleRequest, DeleteRegexRuleResponse, DeleteWorldInfoEntryRequest, DeleteWorldInfoEntryResponse, DeleteWorldInfoRequest, DeleteWorldInfoResponse, EditMessageRequest, EditMessageResponse, ExportCharacterRequest, ExportCharacterResponse, ExportPresetRequest, ExportPresetResponse, ExportWorldInfoRequest, ExportWorldInfoResponse, GetAPIConfigRequest, GetAPIConfigResponse, GetCharacterRequest, GetCharacterResponse, GetChatSessionRequest, GetChatSessionResponse, GetCurrentUserRequest, GetCurrentUserResponse, GetPersonaRequest, GetPersonaResponse, GetPresetRequest, GetPresetResponse, GetUserSettingRequest, GetUserSettingResponse, GetWorldInfoRequest, GetWorldInfoResponse, ImportCharacterRequest, ImportCharacterResponse, ImportPresetRequest, ImportPresetResponse, ImportWorldInfoRequest, ImportWorldInfoResponse, ListAPIConfigsRequest, ListAPIConfigsResponse, ListCharactersRequest, ListCharactersResponse, ListChatSessionsRequest, ListChatSessionsResponse, ListPersonasRequest, ListPersonasResponse, ListPresetsRequest, ListPresetsResponse, ListPromptItemsRequest, ListPromptItemsResponse, ListRegexRulesRequest, ListRegexRulesResponse, ListWorldInfoEntriesRequest, ListWorldInfoEntriesResponse, ListWorldInfosRequest, ListWorldInfosResponse, LoginRequest, LoginResponse, RegenerateMessageRequest, RegenerateMessageResponse, RegisterRequest, RegisterResponse, RestoreCharacterWorldInfoRequest, RestoreCharacterWorldInfoResponse, SendMessageRequest, SendMessageResponse, SetActiveAPIConfigRequest, SetActiveAPIConfigResponse, SetActivePersonaRequest, SetActivePersonaResponse, SetActivePresetRequest, SetActivePresetResponse, SwitchSwipeRequest, SwitchSwipeResponse, TestAPIConfigRequest, TestAPIConfigResponse, UpdateAPIConfigRequest, UpdateAPIConfigResponse, UpdateCharacterRequest, UpdateCharacterResponse, UpdateChatSessionRequest, UpdateChatSessionResponse, UpdatePersonaRequest, UpdatePersonaResponse, UpdatePresetRequest, UpdatePresetResponse, UpdatePromptItemRequest, UpdatePromptItemResponse, UpdatePromptItemsOrderRequest, UpdatePromptItemsOrderResponse, UpdateRegexRuleRequest, UpdateRegexRuleResponse, UpdateRegexRulesOrderRequest, UpdateRegexRulesOrderResponse, UpdateUserSettingRequest, UpdateUserSettingResponse, UpdateWorldInfoEntriesOrderRequest, UpdateWorldInfoEntriesOrderResponse, UpdateWorldInfoEntryRequest, UpdateWorldInfoEntryResponse, UpdateWorldInfoRequest, UpdateWorldInfoResponse } from "./muse_pb";
+import { AddPromptItemRequest, AddPromptItemResponse, AddRegexRuleRequest, AddRegexRuleResponse, AddWorldInfoEntryRequest, AddWorldInfoEntryResponse, ChangePasswordRequest, ChangePasswordResponse, CreateAPIConfigRequest, CreateAPIConfigResponse, CreateCharacterRequest, CreateCharacterResponse, CreateChatSessionRequest, CreateChatSessionResponse, CreatePersonaRequest, CreatePersonaResponse, CreatePresetRequest, CreatePresetResponse, CreateWorldInfoRequest, CreateWorldInfoResponse, DeleteAPIConfigRequest, DeleteAPIConfigResponse, DeleteCharacterRequest, DeleteCharacterResponse, DeleteChatSessionRequest, DeleteChatSessionResponse, DeleteMessageRequest, DeleteMessageResponse, DeletePersonaRequest, DeletePersonaResponse, DeletePresetRequest, DeletePresetResponse, DeletePromptItemRequest, DeletePromptItemResponse, DeleteRegexRuleRequest, DeleteRegexRuleResponse, DeleteWorldInfoEntryRequest, DeleteWorldInfoEntryResponse, DeleteWorldInfoRequest, DeleteWorldInfoResponse, EditMessageRequest, EditMessageResponse, ExportCharacterRequest, ExportCharacterResponse, ExportPresetRequest, ExportPresetResponse, ExportRegexRulesRequest, ExportRegexRulesResponse, ExportWorldInfoRequest, ExportWorldInfoResponse, GetAPIConfigRequest, GetAPIConfigResponse, GetCharacterRequest, GetCharacterResponse, GetChatSessionRequest, GetChatSessionResponse, GetCurrentUserRequest, GetCurrentUserResponse, GetPersonaRequest, GetPersonaResponse, GetPresetRequest, GetPresetResponse, GetUserSettingRequest, GetUserSettingResponse, GetWorldInfoRequest, GetWorldInfoResponse, ImportCharacterRequest, ImportCharacterResponse, ImportPresetRequest, ImportPresetResponse, ImportRegexRulesRequest, ImportRegexRulesResponse, ImportWorldInfoRequest, ImportWorldInfoResponse, ListAPIConfigsRequest, ListAPIConfigsResponse, ListCharactersRequest, ListCharactersResponse, ListChatSessionsRequest, ListChatSessionsResponse, ListPersonasRequest, ListPersonasResponse, ListPresetsRequest, ListPresetsResponse, ListPromptItemsRequest, ListPromptItemsResponse, ListRegexRulesRequest, ListRegexRulesResponse, ListWorldInfoEntriesRequest, ListWorldInfoEntriesResponse, ListWorldInfosRequest, ListWorldInfosResponse, LoginRequest, LoginResponse, RegenerateMessageRequest, RegenerateMessageResponse, RegisterRequest, RegisterResponse, RestoreCharacterWorldInfoRequest, RestoreCharacterWorldInfoResponse, SendMessageRequest, SendMessageResponse, SetActiveAPIConfigRequest, SetActiveAPIConfigResponse, SetActivePersonaRequest, SetActivePersonaResponse, SetActivePresetRequest, SetActivePresetResponse, SwitchSwipeRequest, SwitchSwipeResponse, TestAPIConfigRequest, TestAPIConfigResponse, UpdateAPIConfigRequest, UpdateAPIConfigResponse, UpdateCharacterRequest, UpdateCharacterResponse, UpdateChatSessionRequest, UpdateChatSessionResponse, UpdatePersonaRequest, UpdatePersonaResponse, UpdatePresetRequest, UpdatePresetResponse, UpdatePromptItemRequest, UpdatePromptItemResponse, UpdatePromptItemsOrderRequest, UpdatePromptItemsOrderResponse, UpdateRegexRuleRequest, UpdateRegexRuleResponse, UpdateRegexRulesOrderRequest, UpdateRegexRulesOrderResponse, UpdateUserSettingRequest, UpdateUserSettingResponse, UpdateWorldInfoEntriesOrderRequest, UpdateWorldInfoEntriesOrderResponse, UpdateWorldInfoEntryRequest, UpdateWorldInfoEntryResponse, UpdateWorldInfoRequest, UpdateWorldInfoResponse } from "./muse_pb";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -661,6 +661,28 @@ export const RegexRuleService = {
       name: "UpdateRegexRulesOrder",
       I: UpdateRegexRulesOrderRequest,
       O: UpdateRegexRulesOrderResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * 导入正则规则
+     *
+     * @generated from rpc muse.RegexRuleService.ImportRegexRules
+     */
+    importRegexRules: {
+      name: "ImportRegexRules",
+      I: ImportRegexRulesRequest,
+      O: ImportRegexRulesResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * 导出正则规则
+     *
+     * @generated from rpc muse.RegexRuleService.ExportRegexRules
+     */
+    exportRegexRules: {
+      name: "ExportRegexRules",
+      I: ExportRegexRulesRequest,
+      O: ExportRegexRulesResponse,
       kind: MethodKind.Unary,
     },
   }

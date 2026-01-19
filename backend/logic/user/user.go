@@ -292,7 +292,7 @@ func (u *userImpl) UpdatePersona(ctx context.Context, req *pb.UpdatePersonaReque
 		persona.Description = *req.Description
 	}
 
-	if err := u.userRepo.UpdatePersona(persona); err != nil {
+	if err = u.userRepo.UpdatePersona(persona); err != nil {
 		return nil, err
 	}
 
@@ -315,7 +315,7 @@ func (u *userImpl) DeletePersona(ctx context.Context, req *pb.DeletePersonaReque
 	}
 
 	// 删除人设
-	if err := u.userRepo.DeletePersona(id, userID); err != nil {
+	if err = u.userRepo.DeletePersona(id, userID); err != nil {
 		return nil, err
 	}
 
@@ -371,7 +371,7 @@ func (u *userImpl) GetUserSetting(ctx context.Context, req *pb.GetUserSettingReq
 			SendOnEnter:    true,
 			ShowTimestamps: true,
 		}
-		if err := u.userRepo.CreateUserSetting(setting); err != nil {
+		if err = u.userRepo.CreateUserSetting(setting); err != nil {
 			return nil, err
 		}
 	}
@@ -408,11 +408,11 @@ func (u *userImpl) UpdateUserSetting(ctx context.Context, req *pb.UpdateUserSett
 	setting.ShowTimestamps = req.GetShowTimestamps()
 
 	if setting.ID == 0 {
-		if err := u.userRepo.CreateUserSetting(setting); err != nil {
+		if err = u.userRepo.CreateUserSetting(setting); err != nil {
 			return nil, err
 		}
 	} else {
-		if err := u.userRepo.UpdateUserSetting(setting); err != nil {
+		if err = u.userRepo.UpdateUserSetting(setting); err != nil {
 			return nil, err
 		}
 	}
@@ -583,7 +583,7 @@ func (u *userImpl) UpdateAPIConfig(ctx context.Context, req *pb.UpdateAPIConfigR
 		apiConfig.Model = *req.Model
 	}
 
-	if err := u.userRepo.UpdateAPIConfig(apiConfig); err != nil {
+	if err = u.userRepo.UpdateAPIConfig(apiConfig); err != nil {
 		return nil, err
 	}
 
@@ -606,7 +606,7 @@ func (u *userImpl) DeleteAPIConfig(ctx context.Context, req *pb.DeleteAPIConfigR
 	}
 
 	// 删除API配置
-	if err := u.userRepo.DeleteAPIConfig(id, userID); err != nil {
+	if err = u.userRepo.DeleteAPIConfig(id, userID); err != nil {
 		return nil, err
 	}
 
@@ -627,7 +627,7 @@ func (u *userImpl) SetActiveAPIConfig(ctx context.Context, req *pb.SetActiveAPIC
 	}
 
 	// 激活API配置
-	if err := u.userRepo.ActivateAPIConfig(configID, userID); err != nil {
+	if err = u.userRepo.ActivateAPIConfig(configID, userID); err != nil {
 		return nil, err
 	}
 

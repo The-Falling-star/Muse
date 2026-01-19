@@ -201,6 +201,12 @@ const (
 	// RegexRuleServiceUpdateRegexRulesOrderProcedure is the fully-qualified name of the
 	// RegexRuleService's UpdateRegexRulesOrder RPC.
 	RegexRuleServiceUpdateRegexRulesOrderProcedure = "/muse.RegexRuleService/UpdateRegexRulesOrder"
+	// RegexRuleServiceImportRegexRulesProcedure is the fully-qualified name of the RegexRuleService's
+	// ImportRegexRules RPC.
+	RegexRuleServiceImportRegexRulesProcedure = "/muse.RegexRuleService/ImportRegexRules"
+	// RegexRuleServiceExportRegexRulesProcedure is the fully-qualified name of the RegexRuleService's
+	// ExportRegexRules RPC.
+	RegexRuleServiceExportRegexRulesProcedure = "/muse.RegexRuleService/ExportRegexRules"
 	// WorldInfoServiceListWorldInfosProcedure is the fully-qualified name of the WorldInfoService's
 	// ListWorldInfos RPC.
 	WorldInfoServiceListWorldInfosProcedure = "/muse.WorldInfoService/ListWorldInfos"
@@ -1827,6 +1833,10 @@ type RegexRuleServiceClient interface {
 	DeleteRegexRule(context.Context, *connect.Request[muse.DeleteRegexRuleRequest]) (*connect.Response[muse.DeleteRegexRuleResponse], error)
 	// 批量更新正则规则排序
 	UpdateRegexRulesOrder(context.Context, *connect.Request[muse.UpdateRegexRulesOrderRequest]) (*connect.Response[muse.UpdateRegexRulesOrderResponse], error)
+	// 导入正则规则
+	ImportRegexRules(context.Context, *connect.Request[muse.ImportRegexRulesRequest]) (*connect.Response[muse.ImportRegexRulesResponse], error)
+	// 导出正则规则
+	ExportRegexRules(context.Context, *connect.Request[muse.ExportRegexRulesRequest]) (*connect.Response[muse.ExportRegexRulesResponse], error)
 }
 
 // NewRegexRuleServiceClient constructs a client for the muse.RegexRuleService service. By default,
@@ -1870,6 +1880,18 @@ func NewRegexRuleServiceClient(httpClient connect.HTTPClient, baseURL string, op
 			connect.WithSchema(regexRuleServiceMethods.ByName("UpdateRegexRulesOrder")),
 			connect.WithClientOptions(opts...),
 		),
+		importRegexRules: connect.NewClient[muse.ImportRegexRulesRequest, muse.ImportRegexRulesResponse](
+			httpClient,
+			baseURL+RegexRuleServiceImportRegexRulesProcedure,
+			connect.WithSchema(regexRuleServiceMethods.ByName("ImportRegexRules")),
+			connect.WithClientOptions(opts...),
+		),
+		exportRegexRules: connect.NewClient[muse.ExportRegexRulesRequest, muse.ExportRegexRulesResponse](
+			httpClient,
+			baseURL+RegexRuleServiceExportRegexRulesProcedure,
+			connect.WithSchema(regexRuleServiceMethods.ByName("ExportRegexRules")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -1880,6 +1902,8 @@ type regexRuleServiceClient struct {
 	updateRegexRule       *connect.Client[muse.UpdateRegexRuleRequest, muse.UpdateRegexRuleResponse]
 	deleteRegexRule       *connect.Client[muse.DeleteRegexRuleRequest, muse.DeleteRegexRuleResponse]
 	updateRegexRulesOrder *connect.Client[muse.UpdateRegexRulesOrderRequest, muse.UpdateRegexRulesOrderResponse]
+	importRegexRules      *connect.Client[muse.ImportRegexRulesRequest, muse.ImportRegexRulesResponse]
+	exportRegexRules      *connect.Client[muse.ExportRegexRulesRequest, muse.ExportRegexRulesResponse]
 }
 
 // ListRegexRules calls muse.RegexRuleService.ListRegexRules.
@@ -1907,6 +1931,16 @@ func (c *regexRuleServiceClient) UpdateRegexRulesOrder(ctx context.Context, req 
 	return c.updateRegexRulesOrder.CallUnary(ctx, req)
 }
 
+// ImportRegexRules calls muse.RegexRuleService.ImportRegexRules.
+func (c *regexRuleServiceClient) ImportRegexRules(ctx context.Context, req *connect.Request[muse.ImportRegexRulesRequest]) (*connect.Response[muse.ImportRegexRulesResponse], error) {
+	return c.importRegexRules.CallUnary(ctx, req)
+}
+
+// ExportRegexRules calls muse.RegexRuleService.ExportRegexRules.
+func (c *regexRuleServiceClient) ExportRegexRules(ctx context.Context, req *connect.Request[muse.ExportRegexRulesRequest]) (*connect.Response[muse.ExportRegexRulesResponse], error) {
+	return c.exportRegexRules.CallUnary(ctx, req)
+}
+
 // RegexRuleServiceHandler is an implementation of the muse.RegexRuleService service.
 type RegexRuleServiceHandler interface {
 	// 获取预设的正则规则列表
@@ -1919,6 +1953,10 @@ type RegexRuleServiceHandler interface {
 	DeleteRegexRule(context.Context, *connect.Request[muse.DeleteRegexRuleRequest]) (*connect.Response[muse.DeleteRegexRuleResponse], error)
 	// 批量更新正则规则排序
 	UpdateRegexRulesOrder(context.Context, *connect.Request[muse.UpdateRegexRulesOrderRequest]) (*connect.Response[muse.UpdateRegexRulesOrderResponse], error)
+	// 导入正则规则
+	ImportRegexRules(context.Context, *connect.Request[muse.ImportRegexRulesRequest]) (*connect.Response[muse.ImportRegexRulesResponse], error)
+	// 导出正则规则
+	ExportRegexRules(context.Context, *connect.Request[muse.ExportRegexRulesRequest]) (*connect.Response[muse.ExportRegexRulesResponse], error)
 }
 
 // NewRegexRuleServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -1958,6 +1996,18 @@ func NewRegexRuleServiceHandler(svc RegexRuleServiceHandler, opts ...connect.Han
 		connect.WithSchema(regexRuleServiceMethods.ByName("UpdateRegexRulesOrder")),
 		connect.WithHandlerOptions(opts...),
 	)
+	regexRuleServiceImportRegexRulesHandler := connect.NewUnaryHandler(
+		RegexRuleServiceImportRegexRulesProcedure,
+		svc.ImportRegexRules,
+		connect.WithSchema(regexRuleServiceMethods.ByName("ImportRegexRules")),
+		connect.WithHandlerOptions(opts...),
+	)
+	regexRuleServiceExportRegexRulesHandler := connect.NewUnaryHandler(
+		RegexRuleServiceExportRegexRulesProcedure,
+		svc.ExportRegexRules,
+		connect.WithSchema(regexRuleServiceMethods.ByName("ExportRegexRules")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/muse.RegexRuleService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case RegexRuleServiceListRegexRulesProcedure:
@@ -1970,6 +2020,10 @@ func NewRegexRuleServiceHandler(svc RegexRuleServiceHandler, opts ...connect.Han
 			regexRuleServiceDeleteRegexRuleHandler.ServeHTTP(w, r)
 		case RegexRuleServiceUpdateRegexRulesOrderProcedure:
 			regexRuleServiceUpdateRegexRulesOrderHandler.ServeHTTP(w, r)
+		case RegexRuleServiceImportRegexRulesProcedure:
+			regexRuleServiceImportRegexRulesHandler.ServeHTTP(w, r)
+		case RegexRuleServiceExportRegexRulesProcedure:
+			regexRuleServiceExportRegexRulesHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -1997,6 +2051,14 @@ func (UnimplementedRegexRuleServiceHandler) DeleteRegexRule(context.Context, *co
 
 func (UnimplementedRegexRuleServiceHandler) UpdateRegexRulesOrder(context.Context, *connect.Request[muse.UpdateRegexRulesOrderRequest]) (*connect.Response[muse.UpdateRegexRulesOrderResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.RegexRuleService.UpdateRegexRulesOrder is not implemented"))
+}
+
+func (UnimplementedRegexRuleServiceHandler) ImportRegexRules(context.Context, *connect.Request[muse.ImportRegexRulesRequest]) (*connect.Response[muse.ImportRegexRulesResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.RegexRuleService.ImportRegexRules is not implemented"))
+}
+
+func (UnimplementedRegexRuleServiceHandler) ExportRegexRules(context.Context, *connect.Request[muse.ExportRegexRulesRequest]) (*connect.Response[muse.ExportRegexRulesResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.RegexRuleService.ExportRegexRules is not implemented"))
 }
 
 // WorldInfoServiceClient is a client for the muse.WorldInfoService service.

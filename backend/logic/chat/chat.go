@@ -14,11 +14,13 @@ import (
 	"github.com/ling/muse/repo/database"
 )
 
-// 默认用户ID，待认证功能完成后替换
-const defaultUserID = 1
-
 type chatImpl struct {
-	chatRepo *database.ChatRepo
+	chatRepo      *database.ChatRepo
+	presetRepo    *database.PresetRepo
+	worldInfoRepo *database.WorldInfoRepo
+	regexRepo     *database.RegexRuleRepo
+	charRepo      *database.CharacterRepo
+	sessionMap    map[int]*entity.ChatSession
 }
 
 func newChat() *chatImpl {
@@ -69,9 +71,9 @@ func (c *chatImpl) GetChatSession(ctx context.Context, req *pb.GetChatSessionReq
 	if id <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidSessionID)
 	}
-
+	userId := jwt.GetUserId(ctx)
 	// 从数据库获取会话
-	session, err := c.chatRepo.GetSessionByID(id, defaultUserID)
+	session, err := c.chatRepo.GetSessionByID(id, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -91,6 +93,8 @@ func (c *chatImpl) CreateChatSession(ctx context.Context, req *pb.CreateChatSess
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidCharacterID)
 	}
 
+	userId := jwt.GetUserId(ctx)
+
 	name := strings.TrimSpace(req.GetName())
 	if name == "" {
 		name = "新会话"
@@ -98,7 +102,7 @@ func (c *chatImpl) CreateChatSession(ctx context.Context, req *pb.CreateChatSess
 
 	// 构建会话实体
 	session := &entity.ChatSession{
-		UserID:      defaultUserID,
+		UserID:      userId,
 		CharacterID: characterID,
 		Name:        name,
 		Version:     1,
@@ -110,7 +114,7 @@ func (c *chatImpl) CreateChatSession(ctx context.Context, req *pb.CreateChatSess
 	}
 
 	// 重新获取完整数据（包含关联）
-	fullSession, err := c.chatRepo.GetSessionByID(session.ID, defaultUserID)
+	fullSession, err := c.chatRepo.GetSessionByID(session.ID, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -153,9 +157,10 @@ func (c *chatImpl) DeleteChatSession(ctx context.Context, req *pb.DeleteChatSess
 	if id <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidSessionID)
 	}
+	userId := jwt.GetUserId(ctx)
 
 	// 删除会话（会级联删除关联的消息和swipes）
-	if err := c.chatRepo.DeleteSession(id, defaultUserID); err != nil {
+	if err := c.chatRepo.DeleteSession(id, userId); err != nil {
 		return nil, err
 	}
 
@@ -185,4 +190,32 @@ func (c *chatImpl) DeleteMessage(ctx context.Context, req *pb.DeleteMessageReque
 func (c *chatImpl) SwitchSwipe(ctx context.Context, req *pb.SwitchSwipeRequest) (*pb.SwitchSwipeResponse, error) {
 	//TODO implement me
 	panic("implement me")
+}
+
+func (c *chatImpl) send(ctx context.Context, req *pb.SendMessageRequest) (string, error) {
+	// 先加载会话信息
+
+	// 加载所有启用的世界书
+
+	// 将部分世界书插入到会话信息对应的深度中
+
+	// 加载预设
+
+	// 根据预设调节世界书和会话顺序
+
+	// 插入预设提示项目
+
+	// 加载所有启用的正则规则
+
+	// 匹配, 校验, 替换正则对应的内容
+
+	// 得出完成的大模型请求内容
+
+	// 发送给大模型
+
+	// 将对话存入数据库
+
+	// 返回给前端
+
+	return "", nil
 }

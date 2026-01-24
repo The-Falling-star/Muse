@@ -80,12 +80,13 @@ func (g *Gemini) StreamGenerateContent(ctx context.Context, apiKey, model string
 	input []Message) <-chan StreamStruct {
 
 	resultChan := make(chan StreamStruct)
-	defer close(resultChan)
 	if apiKey == "" {
-		resultChan <- StreamStruct{
-			Done:  true,
-			Error: errs.NewStandardf(connect.CodeInvalidArgument, "API Key不能为空"),
-		}
+		go func() {
+			resultChan <- StreamStruct{
+				Done:  true,
+				Error: errs.NewStandardf(connect.CodeInvalidArgument, "API Key不能为空"),
+			}
+		}()
 		return resultChan
 	}
 

@@ -114,9 +114,6 @@ func (u *userImpl) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginRe
 func (u *userImpl) GetCurrentUser(ctx context.Context, req *pb.GetCurrentUserRequest) (*pb.GetCurrentUserResponse, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
-	if err != nil {
-		return nil, err
-	}
 
 	// 查找用户
 	user, err := u.userRepo.GetByID(userID)
@@ -135,9 +132,6 @@ func (u *userImpl) GetCurrentUser(ctx context.Context, req *pb.GetCurrentUserReq
 func (u *userImpl) ChangePassword(ctx context.Context, req *pb.ChangePasswordRequest) (*pb.ChangePasswordResponse, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
-	if err != nil {
-		return nil, err
-	}
 
 	// 参数校验
 	if req.GetOldPassword() == "" {
@@ -157,14 +151,14 @@ func (u *userImpl) ChangePassword(ctx context.Context, req *pb.ChangePasswordReq
 	}
 
 	// 验证旧密码
-	if err = verifyPassword(user.PasswordHash, req.GetOldPassword()); err != nil {
+	if err := verifyPassword(user.PasswordHash, req.GetOldPassword()); err != nil {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidOldPassword)
 	}
 
 	// 加密新密码
-	hashedPassword, err := hashPassword(req.GetNewPassword())
-	if err != nil {
-		return nil, errs.NewStandardf(connect.CodeInternal, "密码加密失败: %v", err)
+	hashedPassword, hashErr := hashPassword(req.GetNewPassword())
+	if hashErr != nil {
+		return nil, errs.NewStandardf(connect.CodeInternal, "密码加密失败: %v", hashErr)
 	}
 
 	// 更新密码
@@ -179,9 +173,6 @@ func (u *userImpl) ChangePassword(ctx context.Context, req *pb.ChangePasswordReq
 func (u *userImpl) ListPersonas(ctx context.Context, req *pb.ListPersonasRequest) (*pb.ListPersonasResponse, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
-	if err != nil {
-		return nil, err
-	}
 
 	// 获取人设列表
 	personas, err := u.userRepo.ListPersonas(userID)
@@ -203,9 +194,6 @@ func (u *userImpl) ListPersonas(ctx context.Context, req *pb.ListPersonasRequest
 func (u *userImpl) GetPersona(ctx context.Context, req *pb.GetPersonaRequest) (*pb.GetPersonaResponse, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
-	if err != nil {
-		return nil, err
-	}
 
 	// 参数校验
 	id := int(req.GetId())
@@ -230,9 +218,6 @@ func (u *userImpl) GetPersona(ctx context.Context, req *pb.GetPersonaRequest) (*
 func (u *userImpl) CreatePersona(ctx context.Context, req *pb.CreatePersonaRequest) (*pb.CreatePersonaResponse, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
-	if err != nil {
-		return nil, err
-	}
 
 	// 参数校验
 	name := strings.TrimSpace(req.GetName())
@@ -260,9 +245,6 @@ func (u *userImpl) CreatePersona(ctx context.Context, req *pb.CreatePersonaReque
 func (u *userImpl) UpdatePersona(ctx context.Context, req *pb.UpdatePersonaRequest) (*pb.UpdatePersonaResponse, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
-	if err != nil {
-		return nil, err
-	}
 
 	// 参数校验
 	id := int(req.GetId())
@@ -304,9 +286,6 @@ func (u *userImpl) UpdatePersona(ctx context.Context, req *pb.UpdatePersonaReque
 func (u *userImpl) DeletePersona(ctx context.Context, req *pb.DeletePersonaRequest) (*pb.DeletePersonaResponse, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
-	if err != nil {
-		return nil, err
-	}
 
 	// 参数校验
 	id := int(req.GetId())
@@ -315,7 +294,7 @@ func (u *userImpl) DeletePersona(ctx context.Context, req *pb.DeletePersonaReque
 	}
 
 	// 删除人设
-	if err = u.userRepo.DeletePersona(id, userID); err != nil {
+	if err := u.userRepo.DeletePersona(id, userID); err != nil {
 		return nil, err
 	}
 
@@ -325,9 +304,6 @@ func (u *userImpl) DeletePersona(ctx context.Context, req *pb.DeletePersonaReque
 func (u *userImpl) SetActivePersona(ctx context.Context, req *pb.SetActivePersonaRequest) (*pb.SetActivePersonaResponse, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
-	if err != nil {
-		return nil, err
-	}
 
 	// 参数校验
 	personaID := int(req.GetPersonaId())
@@ -336,7 +312,7 @@ func (u *userImpl) SetActivePersona(ctx context.Context, req *pb.SetActivePerson
 	}
 
 	// 验证人设是否存在
-	_, err = u.userRepo.GetPersonaByID(personaID, userID)
+	_, err := u.userRepo.GetPersonaByID(personaID, userID)
 	if err != nil {
 		return nil, err
 	}
@@ -352,9 +328,6 @@ func (u *userImpl) SetActivePersona(ctx context.Context, req *pb.SetActivePerson
 func (u *userImpl) GetUserSetting(ctx context.Context, req *pb.GetUserSettingRequest) (*pb.GetUserSettingResponse, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
-	if err != nil {
-		return nil, err
-	}
 
 	// 获取用户设置
 	setting, err := u.userRepo.GetUserSettingByUserID(userID)
@@ -384,9 +357,6 @@ func (u *userImpl) GetUserSetting(ctx context.Context, req *pb.GetUserSettingReq
 func (u *userImpl) UpdateUserSetting(ctx context.Context, req *pb.UpdateUserSettingRequest) (*pb.UpdateUserSettingResponse, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
-	if err != nil {
-		return nil, err
-	}
 
 	// 获取用户设置
 	setting, err := u.userRepo.GetUserSettingByUserID(userID)
@@ -425,9 +395,6 @@ func (u *userImpl) UpdateUserSetting(ctx context.Context, req *pb.UpdateUserSett
 func (u *userImpl) ListAPIConfigs(ctx context.Context, req *pb.ListAPIConfigsRequest) (*pb.ListAPIConfigsResponse, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
-	if err != nil {
-		return nil, err
-	}
 
 	// 获取API配置列表
 	configs, err := u.userRepo.ListAPIConfigs(userID)
@@ -453,9 +420,6 @@ func (u *userImpl) ListAPIConfigs(ctx context.Context, req *pb.ListAPIConfigsReq
 func (u *userImpl) GetAPIConfig(ctx context.Context, req *pb.GetAPIConfigRequest) (*pb.GetAPIConfigResponse, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
-	if err != nil {
-		return nil, err
-	}
 
 	// 参数校验
 	id := int(req.GetId())
@@ -484,9 +448,6 @@ func (u *userImpl) GetAPIConfig(ctx context.Context, req *pb.GetAPIConfigRequest
 func (u *userImpl) CreateAPIConfig(ctx context.Context, req *pb.CreateAPIConfigRequest) (*pb.CreateAPIConfigResponse, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
-	if err != nil {
-		return nil, err
-	}
 
 	// 参数校验
 	name := strings.TrimSpace(req.GetName())
@@ -536,9 +497,6 @@ func (u *userImpl) CreateAPIConfig(ctx context.Context, req *pb.CreateAPIConfigR
 func (u *userImpl) UpdateAPIConfig(ctx context.Context, req *pb.UpdateAPIConfigRequest) (*pb.UpdateAPIConfigResponse, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
-	if err != nil {
-		return nil, err
-	}
 
 	// 参数校验
 	id := int(req.GetId())
@@ -595,9 +553,6 @@ func (u *userImpl) UpdateAPIConfig(ctx context.Context, req *pb.UpdateAPIConfigR
 func (u *userImpl) DeleteAPIConfig(ctx context.Context, req *pb.DeleteAPIConfigRequest) (*pb.DeleteAPIConfigResponse, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
-	if err != nil {
-		return nil, err
-	}
 
 	// 参数校验
 	id := int(req.GetId())
@@ -606,7 +561,7 @@ func (u *userImpl) DeleteAPIConfig(ctx context.Context, req *pb.DeleteAPIConfigR
 	}
 
 	// 删除API配置
-	if err = u.userRepo.DeleteAPIConfig(id, userID); err != nil {
+	if err := u.userRepo.DeleteAPIConfig(id, userID); err != nil {
 		return nil, err
 	}
 
@@ -616,9 +571,6 @@ func (u *userImpl) DeleteAPIConfig(ctx context.Context, req *pb.DeleteAPIConfigR
 func (u *userImpl) SetActiveAPIConfig(ctx context.Context, req *pb.SetActiveAPIConfigRequest) (*pb.SetActiveAPIConfigResponse, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
-	if err != nil {
-		return nil, err
-	}
 
 	// 参数校验
 	configID := int(req.GetConfigId())
@@ -627,7 +579,7 @@ func (u *userImpl) SetActiveAPIConfig(ctx context.Context, req *pb.SetActiveAPIC
 	}
 
 	// 激活API配置
-	if err = u.userRepo.ActivateAPIConfig(configID, userID); err != nil {
+	if err := u.userRepo.ActivateAPIConfig(configID, userID); err != nil {
 		return nil, err
 	}
 
@@ -637,9 +589,6 @@ func (u *userImpl) SetActiveAPIConfig(ctx context.Context, req *pb.SetActiveAPIC
 func (u *userImpl) TestAPIConfig(ctx context.Context, req *pb.TestAPIConfigRequest) (*pb.TestAPIConfigResponse, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
-	if err != nil {
-		return nil, err
-	}
 
 	// 参数校验
 	id := int(req.GetId())

@@ -11,12 +11,13 @@ type Preset struct {
 	ID               int       `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
 	UserID           int       `gorm:"column:user_id;not null;index:idx_user_id" json:"userId"`
 	Name             string    `gorm:"column:name;type:varchar(128);not null" json:"name"`
-	Temperature      float64   `gorm:"column:temperature;type:decimal(3,2);not null;default:1.00" json:"temperature"`
-	TopP             float64   `gorm:"column:top_p;type:decimal(3,2);not null;default:1.00" json:"topP"`
+	Temperature      float32   `gorm:"column:temperature;type:decimal(3,2);not null;default:1.00" json:"temperature"`
+	TopP             float32   `gorm:"column:top_p;type:decimal(3,2);not null;default:1.00" json:"topP"`
 	TopK             int       `gorm:"column:top_k;not null;default:0" json:"topK"`
 	MaxTokens        int       `gorm:"column:max_tokens;not null;default:2048" json:"maxTokens"`
-	FrequencyPenalty float64   `gorm:"column:frequency_penalty;type:decimal(3,2);not null;default:0.00" json:"frequencyPenalty"`
-	PresencePenalty  float64   `gorm:"column:presence_penalty;type:decimal(3,2);not null;default:0.00" json:"presencePenalty"`
+	FrequencyPenalty float32   `gorm:"column:frequency_penalty;type:decimal(3,2);not null;default:0.00" json:"frequencyPenalty"`
+	PresencePenalty  float32   `gorm:"column:presence_penalty;type:decimal(3,2);not null;default:0.00" json:"presencePenalty"`
+	CandidateCount   int       `gorm:"column:candidate_count;not null;default:1" json:"candidateCount"` // 候选回复数量
 	Version          int       `gorm:"column:version;not null;default:1" json:"version"`
 	CreatedAt        time.Time `gorm:"column:created_at;autoCreateTime" json:"createdAt"`
 	UpdatedAt        time.Time `gorm:"column:updated_at;autoUpdateTime" json:"updatedAt"`

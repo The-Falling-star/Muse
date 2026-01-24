@@ -127,6 +127,7 @@ func PresetEntityToPb(preset *entity.Preset) *pb.Preset {
 		MaxTokens:        int32(preset.MaxTokens),
 		FrequencyPenalty: preset.FrequencyPenalty,
 		PresencePenalty:  preset.PresencePenalty,
+		CandidateCount:   int32(preset.CandidateCount),
 		Version:          int64(preset.Version),
 		CreatedAt:        preset.CreatedAt.Unix(),
 		UpdatedAt:        preset.UpdatedAt.Unix(),

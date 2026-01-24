@@ -169,14 +169,14 @@ type OpenAIPreset struct {
 	CustomModel          string `json:"custom_model"`           // 自定义模型 ID
 
 	// ============ 基础生成参数 ============
-	Temperature       float64 `json:"temperature"`        // 温度
-	FrequencyPenalty  float64 `json:"frequency_penalty"`  // 频率惩罚
-	PresencePenalty   float64 `json:"presence_penalty"`   // 存在惩罚
-	TopP              float64 `json:"top_p"`              // Top P
+	Temperature       float32 `json:"temperature"`        // 温度
+	FrequencyPenalty  float32 `json:"frequency_penalty"`  // 频率惩罚
+	PresencePenalty   float32 `json:"presence_penalty"`   // 存在惩罚
+	TopP              float32 `json:"top_p"`              // Top P
 	TopK              int     `json:"top_k"`              // Top K
-	TopA              float64 `json:"top_a"`              // Top A
-	MinP              float64 `json:"min_p"`              // Min P
-	RepetitionPenalty float64 `json:"repetition_penalty"` // 重复惩罚
+	TopA              float32 `json:"top_a"`              // Top A
+	MinP              float32 `json:"min_p"`              // Min P
+	RepetitionPenalty float32 `json:"repetition_penalty"` // 重复惩罚
 	Seed              int     `json:"seed"`               // 随机种子 (-1 表示随机)
 	N                 int     `json:"n"`                  // 生成数量
 

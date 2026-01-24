@@ -157,15 +157,16 @@ message Preset {
   int32 id = 1;
   int32 user_id = 2;
   string name = 3;
-  double temperature = 4;
-  double top_p = 5;
+  float temperature = 4;
+  float top_p = 5;
   int32 top_k = 6;
   int32 max_tokens = 7;
-  double frequency_penalty = 8;
-  double presence_penalty = 9;
+  float frequency_penalty = 8;
+  float presence_penalty = 9;
   int64 version = 10;
   int64 created_at = 11;
   int64 updated_at = 12;
+  int32 candidate_count = 15; // 候选回复数量
   // 关联数据（可选加载）
   repeated PromptItem prompt_items = 13;
   repeated RegexRule regex_rules = 14;
@@ -210,7 +211,7 @@ message RegexRule {
   bool substitute_regex = 8;
   int32 min_depth = 9;
   int32 max_depth = 10;
-  RegexAffectFlags affect_flags = 11;
+  RegexAffectFlags affect_flags = 11; // 作用范围
   int32 sort_order = 12;
   int64 created_at = 13;
   int64 updated_at = 14;
@@ -722,10 +723,9 @@ message SendMessageRequest {
 
 // 发送消息响应（流式）
 message SendMessageResponse {
-  Message user_message = 1;       // 用户消息（首次返回）
-  Message assistant_message = 2;  // AI消息（首次返回结构，后续返回内容增量）
-  string content_delta = 3;       // 内容增量
-  bool is_complete = 4;           // 是否完成
+  int32 index = 1; // 多个候选回复时，候选回复的下标
+  string content = 2;
+  bool is_complete = 3;           // 是否完成
 }
 
 // 重新生成消息请求
@@ -820,12 +820,12 @@ message GetPresetResponse {
 // 创建预设请求
 message CreatePresetRequest {
   string name = 1;
-  double temperature = 2;
-  double top_p = 3;
+  float temperature = 2;
+  float top_p = 3;
   int32 top_k = 4;
   int32 max_tokens = 5;
-  double frequency_penalty = 6;
-  double presence_penalty = 7;
+  float frequency_penalty = 6;
+  float presence_penalty = 7;
   repeated CreatePromptItemRequest prompt_items = 8;
   repeated CreateRegexRuleRequest regex_rules = 9;
 }
@@ -866,12 +866,12 @@ message CreatePresetResponse {
 message UpdatePresetRequest {
   int32 id = 1;
   string name = 2;
-  double temperature = 3;
-  double top_p = 4;
+  float temperature = 3;
+  float top_p = 4;
   int32 top_k = 5;
   int32 max_tokens = 6;
-  double frequency_penalty = 7;
-  double presence_penalty = 8;
+  float frequency_penalty = 7;
+  float presence_penalty = 8;
   int64 version = 9;  // 乐观锁版本号
 }
 

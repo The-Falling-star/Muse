@@ -14,7 +14,7 @@ import (
 	"github.com/ling/muse/api"
 	"github.com/ling/muse/config"
 	"github.com/ling/muse/gen/muse/museconnect"
-	middleware "github.com/ling/muse/middleware"
+	"github.com/ling/muse/middleware"
 
 	log "github.com/sirupsen/logrus"
 )

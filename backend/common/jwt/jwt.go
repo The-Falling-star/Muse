@@ -4,9 +4,7 @@ import (
 	"context"
 	"time"
 
-	"connectrpc.com/connect"
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/ling/muse/common/errs"
 	"github.com/ling/muse/config"
 	"github.com/ling/muse/middleware"
 )
@@ -49,9 +47,9 @@ func ParseJWT(tokenString string) (*middleware.JWTClaims, error) {
 }
 
 // GetUserId 获取用户Id
-func GetUserId(ctx context.Context) (int, error) {
+func GetUserId(ctx context.Context) int {
 	if userId, ok := ctx.Value("userId").(int); ok && userId != 0 {
-		return userId, nil
+		return userId
 	}
-	return 0, errs.NewStandardf(connect.CodeUnauthenticated, "无userId")
+	return 0
 }

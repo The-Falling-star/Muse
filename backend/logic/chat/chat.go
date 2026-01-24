@@ -5,8 +5,10 @@ import (
 	"strings"
 
 	"connectrpc.com/connect"
+	"github.com/ling/muse/common/constrant"
 	"github.com/ling/muse/common/convert"
 	"github.com/ling/muse/common/errs"
+	"github.com/ling/muse/common/jwt"
 	"github.com/ling/muse/entity"
 	pb "github.com/ling/muse/gen/muse"
 	"github.com/ling/muse/repo/database"
@@ -33,17 +35,18 @@ func (c *chatImpl) ListChatSessions(ctx context.Context, req *pb.ListChatSession
 
 	// 设置默认值
 	if page <= 0 {
-		page = 1
+		page = constrant.DefaultPageNum
 	}
 	if pageSize <= 0 {
-		pageSize = 20
+		pageSize = constrant.DefaultPageSize
 	}
-	if pageSize > 100 {
-		pageSize = 100
+	if pageSize > constrant.MaxPageSize {
+		pageSize = constrant.MaxPageSize
 	}
 
 	// 从数据库获取会话列表
-	sessions, total, err := c.chatRepo.ListSessions(defaultUserID, characterID, page, pageSize)
+	userId := jwt.GetUserId(ctx)
+	sessions, total, err := c.chatRepo.ListSessions(userId, characterID, page, pageSize)
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +63,8 @@ func (c *chatImpl) ListChatSessions(ctx context.Context, req *pb.ListChatSession
 	}, nil
 }
 
-func (c *chatImpl) GetChatSession(ctx context.Context, req *pb.GetChatSessionRequest) (*pb.GetChatSessionResponse, error) {
+func (c *chatImpl) GetChatSession(ctx context.Context, req *pb.GetChatSessionRequest) (
+	*pb.GetChatSessionResponse, error) {
 	id := int(req.GetId())
 	if id <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidSessionID)
@@ -127,31 +131,14 @@ func (c *chatImpl) UpdateChatSession(ctx context.Context, req *pb.UpdateChatSess
 	if name == "" {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptySessionName)
 	}
-
-	// 获取当前会话
-	session, err := c.chatRepo.GetSessionByID(id, defaultUserID)
+	userId := jwt.GetUserId(ctx)
+	// 更新数据库
+	_, err := c.chatRepo.UpdateSession(int(req.GetId()), userId, int(req.GetVersion()), req.GetName())
 	if err != nil {
 		return nil, err
 	}
-	if session == nil {
-		return nil, errs.NewStandard(connect.CodeNotFound, errs.SessionNotFound)
-	}
-
-	// 检查版本号
-	if int64(session.Version) != req.GetVersion() {
-		return nil, errs.NewStandard(connect.CodeAborted, errs.DataConflict)
-	}
-
-	// 更新会话字段
-	session.Name = name
-
-	// 更新数据库
-	if err := c.chatRepo.UpdateSession(session); err != nil {
-		return nil, err
-	}
-
 	// 重新获取更新后的会话（包含关联数据）
-	updatedSession, err := c.chatRepo.GetSessionByID(id, defaultUserID)
+	updatedSession, err := c.chatRepo.GetSessionByID(id, userId)
 	if err != nil {
 		return nil, err
 	}

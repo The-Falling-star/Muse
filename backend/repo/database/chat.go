@@ -40,7 +40,7 @@ func (c *ChatRepo) GetSessionByID(id int, userID int) (*entity.ChatSession, *con
 }
 
 // ListSessions 获取会话列表
-func (c *ChatRepo) ListSessions(userID int, characterID int, page int, pageSize int) ([]*entity.ChatSession, int64, *connect.Error) {
+func (c *ChatRepo) ListSessions(userID, characterID, page, pageSize int) ([]*entity.ChatSession, int64, *connect.Error) {
 	db := config.GetDB()
 	var sessions []*entity.ChatSession
 	var total int64
@@ -72,28 +72,24 @@ func (c *ChatRepo) ListSessions(userID int, characterID int, page int, pageSize 
 }
 
 // UpdateSession 更新聊天会话
-func (c *ChatRepo) UpdateSession(session *entity.ChatSession) *connect.Error {
+func (c *ChatRepo) UpdateSession(sessionID, userID, version int, sessionName string) (int, *connect.Error) {
 	db := config.GetDB()
 
 	// 使用乐观锁更新
-	result := db.Model(session).
-		Where("id = ? AND user_id = ? AND version = ?", session.ID, session.UserID, session.Version).
-		Updates(map[string]interface{}{
-			"name":    session.Name,
-			"version": session.Version + 1,
-		})
+	result := db.Model(&entity.ChatSession{}).
+		Where("id = ? AND user_id = ? AND version = ?", sessionID, userID, version).
+		Update("name", sessionName).
+		Update("version", version+1)
 
 	if result.Error != nil {
-		return errs.NewStandardf(connect.CodeInternal, "更新聊天会话失败: %v", result.Error)
+		return 0, errs.NewStandardf(connect.CodeInternal, "更新聊天会话失败: %v", result.Error)
 	}
 
 	if result.RowsAffected == 0 {
-		return errs.NewStandard(connect.CodeAborted, "更新聊天会话失败：记录不存在或版本号不匹配")
+		return 0, errs.NewStandard(connect.CodeAborted, "更新聊天会话失败：记录不存在或版本号不匹配")
 	}
 
-	// 更新内存中的版本号
-	session.Version++
-	return nil
+	return version + 1, nil
 }
 
 // DeleteSession 删除聊天会话

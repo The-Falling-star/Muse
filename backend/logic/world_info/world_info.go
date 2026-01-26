@@ -11,6 +11,7 @@ import (
 	"github.com/ling/muse/entity"
 	"github.com/ling/muse/entity/sillytavern"
 	pb "github.com/ling/muse/gen/muse"
+	"github.com/ling/muse/repo/cache"
 	"github.com/ling/muse/repo/database"
 )
 
@@ -129,6 +130,9 @@ func (w *worldInfoImpl) UpdateWorldInfo(ctx context.Context, req *pb.UpdateWorld
 		return nil, err
 	}
 
+	// 使相关缓存失效
+	cache.InvalidateCacheByWorldInfo(int64(id))
+
 	// 重新获取更新后的世界书（包含关联数据）
 	updatedWorldInfo, err := w.worldInfoRepo.GetByID(id, defaultUserID)
 	if err != nil {
@@ -145,6 +149,9 @@ func (w *worldInfoImpl) DeleteWorldInfo(ctx context.Context, req *pb.DeleteWorld
 	if id <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidWorldInfoID)
 	}
+
+	// 使相关缓存失效（在删除之前）
+	cache.InvalidateCacheByWorldInfo(int64(id))
 
 	// 删除世界书（会级联删除关联的条目）
 	if err := w.worldInfoRepo.Delete(id, defaultUserID); err != nil {
@@ -271,6 +278,9 @@ func (w *worldInfoImpl) UpdateWorldInfoEntry(ctx context.Context, req *pb.Update
 	if err := w.worldInfoRepo.UpdateEntry(entry); err != nil {
 		return nil, err
 	}
+
+	// 使相关缓存失效（条目修改会影响使用该世界书的缓存）
+	cache.InvalidateCacheByWorldInfo(int64(entry.WorldInfoID))
 
 	// 重新获取更新后的条目
 	updatedEntry, err := w.worldInfoRepo.GetEntryByID(id)

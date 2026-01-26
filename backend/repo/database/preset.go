@@ -225,3 +225,21 @@ func (p *PresetRepo) UpdatePromptItemsOrder(presetID int, itemOrders map[int]int
 	}
 	return nil
 }
+
+// GetVersion 获取预设的版本号
+// 用于缓存版本校验，只查询版本字段以减少数据传输
+func (p *PresetRepo) GetVersion(id int, userID int) (int, *connect.Error) {
+	db := config.GetDB()
+	var version int
+	result := db.Model(&entity.Preset{}).
+		Where("id = ? AND user_id = ?", id, userID).
+		Select("version").
+		Scan(&version)
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return 0, errs.NewStandard(connect.CodeNotFound, "预设不存在")
+		}
+		return 0, errs.NewStandardf(connect.CodeInternal, "获取预设版本失败: %v", result.Error)
+	}
+	return version, nil
+}

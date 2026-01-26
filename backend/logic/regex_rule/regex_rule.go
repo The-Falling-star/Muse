@@ -12,6 +12,7 @@ import (
 	"github.com/ling/muse/entity"
 	"github.com/ling/muse/entity/sillytavern"
 	pb "github.com/ling/muse/gen/muse"
+	"github.com/ling/muse/repo/cache"
 	"github.com/ling/muse/repo/database"
 )
 
@@ -157,6 +158,9 @@ func (r *regexRuleImpl) UpdateRegexRule(ctx context.Context, req *pb.UpdateRegex
 		return nil, err
 	}
 
+	// 使相关缓存失效
+	cache.InvalidateCacheByRegexRule(int64(id))
+
 	// 重新获取更新后的规则
 	updatedRule, err := r.regexRuleRepo.GetByID(id)
 	if err != nil {
@@ -173,6 +177,9 @@ func (r *regexRuleImpl) DeleteRegexRule(ctx context.Context, req *pb.DeleteRegex
 	if id <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidRegexRuleID)
 	}
+
+	// 使相关缓存失效（在删除之前）
+	cache.InvalidateCacheByRegexRule(int64(id))
 
 	// 删除规则
 	if err := r.regexRuleRepo.Delete(id); err != nil {

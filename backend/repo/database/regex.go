@@ -143,3 +143,43 @@ func (r *RegexRuleRepo) GetMaxSortOrder(presetID int) (int, *connect.Error) {
 	}
 	return maxOrder, nil
 }
+
+// ListEnabledRules 获取启用的正则规则列表（包括全局正则、预设正则和角色正则）
+// presetID: 预设ID，characterID: 角色ID
+func (r *RegexRuleRepo) ListEnabledRules(presetID int, characterID int) ([]*entity.RegexRule, *connect.Error) {
+	db := config.GetDB()
+	var rules []*entity.RegexRule
+	// 获取全局正则（preset_id=0）、预设正则和角色正则
+	result := db.Where("is_enabled = ? AND (preset_id = ? OR preset_id = ? OR character_id = ?)",
+		true, 0, presetID, characterID).
+		Order("sort_order ASC").
+		Find(&rules)
+	if result.Error != nil {
+		return nil, errs.NewStandardf(connect.CodeInternal, "获取正则规则列表失败: %v", result.Error)
+	}
+	return rules, nil
+}
+
+// GetEnabledRuleVersions 批量获取启用的正则规则的版本号
+// 用于缓存版本校验，只查询版本字段以减少数据传输
+func (r *RegexRuleRepo) GetEnabledRuleVersions(presetID int, characterID int) (map[int64]int, *connect.Error) {
+	db := config.GetDB()
+	type versionResult struct {
+		ID      int64
+		Version int
+	}
+	var results []versionResult
+	err := db.Model(&entity.RegexRule{}).
+		Where("is_enabled = ? AND (preset_id = ? OR preset_id = ? OR character_id = ?)",
+			true, 0, presetID, characterID).
+		Select("id", "version").
+		Scan(&results).Error
+	if err != nil {
+		return nil, errs.NewStandardf(connect.CodeInternal, "获取正则规则版本失败: %v", err)
+	}
+	versions := make(map[int64]int)
+	for _, r := range results {
+		versions[r.ID] = r.Version
+	}
+	return versions, nil
+}

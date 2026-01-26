@@ -17,6 +17,7 @@ import (
 	"github.com/ling/muse/entity"
 	"github.com/ling/muse/entity/sillytavern"
 	pb "github.com/ling/muse/gen/muse"
+	"github.com/ling/muse/repo/cache"
 	"github.com/ling/muse/repo/database"
 )
 
@@ -175,6 +176,9 @@ func (c *characterImpl) UpdateCharacter(ctx context.Context, req *pb.UpdateChara
 		return nil, err
 	}
 
+	// 使相关缓存失效
+	cache.InvalidateCacheByCharacter(int64(id))
+
 	// 重新获取更新后的角色（包含关联数据）
 	updatedCharacter, err := c.charaRepo.GetByID(id, defaultUserID)
 	if err != nil {
@@ -191,6 +195,9 @@ func (c *characterImpl) DeleteCharacter(ctx context.Context, req *pb.DeleteChara
 	if id <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidCharacterID)
 	}
+
+	// 使相关缓存失效（在删除之前）
+	cache.InvalidateCacheByCharacter(int64(id))
 
 	// 删除角色
 	if err := c.charaRepo.Delete(id, defaultUserID); err != nil {

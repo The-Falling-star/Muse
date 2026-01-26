@@ -11,6 +11,7 @@ import (
 	"github.com/ling/muse/entity"
 	"github.com/ling/muse/entity/sillytavern"
 	pb "github.com/ling/muse/gen/muse"
+	"github.com/ling/muse/repo/cache"
 	"github.com/ling/muse/repo/database"
 )
 
@@ -143,6 +144,9 @@ func (p *presetImpl) UpdatePreset(ctx context.Context, req *pb.UpdatePresetReque
 		return nil, err
 	}
 
+	// 使相关缓存失效
+	cache.InvalidateCacheByPreset(int64(id))
+
 	// 重新获取更新后的预设（包含关联数据）
 	updatedPreset, err := p.presetRepo.GetByID(id, defaultUserID)
 	if err != nil {
@@ -159,6 +163,9 @@ func (p *presetImpl) DeletePreset(ctx context.Context, req *pb.DeletePresetReque
 	if id <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidPresetID)
 	}
+
+	// 使相关缓存失效（在删除之前）
+	cache.InvalidateCacheByPreset(int64(id))
 
 	// 删除预设（会级联删除关联的提示项）
 	if err := p.presetRepo.Delete(id, defaultUserID); err != nil {
@@ -271,6 +278,9 @@ func (p *presetImpl) UpdatePromptItem(ctx context.Context, req *pb.UpdatePromptI
 	if err := p.presetRepo.UpdatePromptItem(item); err != nil {
 		return nil, err
 	}
+
+	// 使相关缓存失效（提示项修改会影响使用该预设的缓存）
+	cache.InvalidateCacheByPreset(int64(item.PresetID))
 
 	// 重新获取更新后的提示项
 	updatedItem, err := p.presetRepo.GetPromptItemByID(id)

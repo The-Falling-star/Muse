@@ -204,3 +204,71 @@ func (c *ChatRepo) UpdateMessage(message *entity.Message) *connect.Error {
 	}
 	return nil
 }
+
+// GetSessionWithMessages 获取会话及其所有消息和角色卡
+func (c *ChatRepo) GetSessionWithMessages(id int, userID int) (*entity.ChatSession, *connect.Error) {
+	db := config.GetDB()
+	var session entity.ChatSession
+	result := db.Where("id = ? AND user_id = ?", id, userID).
+		Preload("Character").
+		Preload("Messages", func(db *gorm.DB) *gorm.DB {
+			return db.Order("sort_order ASC")
+		}).
+		Preload("Messages.Swipes", func(db *gorm.DB) *gorm.DB {
+			return db.Order("sort_order ASC")
+		}).
+		First(&session)
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, errs.NewStandardf(connect.CodeInternal, "获取聊天会话失败: %v", result.Error)
+	}
+	return &session, nil
+}
+
+// CreateMessage 创建消息
+func (c *ChatRepo) CreateMessage(message *entity.Message) *connect.Error {
+	db := config.GetDB()
+	result := db.Create(message)
+	if result.Error != nil {
+		return errs.NewStandardf(connect.CodeInternal, "创建消息失败: %v", result.Error)
+	}
+	return nil
+}
+
+// CreateMessageSwipe 创建消息swipe
+func (c *ChatRepo) CreateMessageSwipe(swipe *entity.MessageSwipe) *connect.Error {
+	db := config.GetDB()
+	result := db.Create(swipe)
+	if result.Error != nil {
+		return errs.NewStandardf(connect.CodeInternal, "创建消息swipe失败: %v", result.Error)
+	}
+	return nil
+}
+
+// GetMaxMessageSortOrder 获取会话中消息的最大排序号
+func (c *ChatRepo) GetMaxMessageSortOrder(sessionID int) (int, *connect.Error) {
+	db := config.GetDB()
+	var maxOrder int
+	result := db.Model(&entity.Message{}).
+		Where("session_id = ?", sessionID).
+		Select("COALESCE(MAX(sort_order), -1)").
+		Scan(&maxOrder)
+	if result.Error != nil {
+		return 0, errs.NewStandardf(connect.CodeInternal, "获取最大排序号失败: %v", result.Error)
+	}
+	return maxOrder, nil
+}
+
+// UpdateMessageSwipe 更新消息swipe内容
+func (c *ChatRepo) UpdateMessageSwipe(swipeID int, content string) *connect.Error {
+	db := config.GetDB()
+	result := db.Model(&entity.MessageSwipe{}).
+		Where("id = ?", swipeID).
+		Update("content", content)
+	if result.Error != nil {
+		return errs.NewStandardf(connect.CodeInternal, "更新消息swipe失败: %v", result.Error)
+	}
+	return nil
+}

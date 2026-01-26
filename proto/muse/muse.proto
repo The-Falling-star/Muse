@@ -9,267 +9,262 @@ option go_package = "github.com/ling/muse/gen/muse;muse";
 // 枚举定义
 // ================================
 
-// PromptItemRole 提示项角色
+// Role 消息角色类型
 enum Role {
-  RoleUnspecified = 0;
-  System = 1;
-  User = 2;
-  Assistant = 3;
+  RoleUnspecified = 0; // 未指定角色
+  System = 1;          // 系统消息，用于设定AI行为和上下文
+  User = 2;            // 用户消息，用户输入的内容
+  Assistant = 3;       // 助手消息，AI生成的回复
 }
 
-// InjectionPosition 注入位置
+// InjectionPosition 提示项注入位置类型
 enum InjectionPosition {
-  InjectionPositionUnspecified = 0;
-  Relative = 1;
-  Absolute = 2;
+  InjectionPositionUnspecified = 0; // 未指定位置
+  Relative = 1;                     // 相对位置，根据角色类型决定插入位置
+  Absolute = 2;                     // 绝对位置，按深度值插入到消息列表中
 }
 
 // EntryPosition 世界书条目插入位置
 enum EntryPosition {
-  EntryPositionUnspecified = 0;
-  BeforeChar = 1;
-  AfterChar = 2;
-  BeforeExample = 3;
-  AfterExample = 4;
-  AtDepth = 5;
+  EntryPositionUnspecified = 0; // 未指定位置
+  BeforeChar = 1;               // 角色描述之前
+  AfterChar = 2;                // 角色描述之后
+  BeforeExample = 3;            // 示例对话之前
+  AfterExample = 4;             // 示例对话之后
+  AtDepth = 5;                  // 按深度插入到消息列表中
 }
 
-// APIProvider API提供商
+// APIProvider API服务提供商类型
 enum APIProvider {
-  APIProviderUnspecified = 0;
-  OpenAI = 1;
-  Claude = 2;
-  Gemini = 3;
+  APIProviderUnspecified = 0; // 未指定提供商
+  OpenAI = 1;                 // OpenAI（ChatGPT）
+  Claude = 2;                 // Anthropic Claude
+  Gemini = 3;                 // Google Gemini
 }
 
-// Theme 主题
+// Theme 界面主题类型
 enum Theme {
-  Auto = 0;
-  Light = 1;
-  Dark = 2;
+  Auto = 0;  // 自动，跟随系统设置
+  Light = 1; // 浅色主题
+  Dark = 2;  // 深色主题
 }
 
 // ================================
 // 用户相关消息
 // ================================
 
-// User 用户信息
+// SysUser 系统用户信息
 message SysUser {
-  int32 id = 1;
-  string username = 2;
-  int32 active_persona_id = 4;
-  int32 active_preset_id = 5;
-  int64 created_at = 6;
-  int64 updated_at = 7;
+  int32 id = 1;                 // 用户唯一标识ID
+  string username = 2;          // 用户名，用于登录
+  int32 active_persona_id = 4;  // 当前激活的用户人设ID
+  int32 active_preset_id = 5;   // 当前激活的预设ID
+  int64 created_at = 6;         // 创建时间（Unix时间戳）
+  int64 updated_at = 7;         // 最后更新时间（Unix时间戳）
 }
 
-// Persona 用户人设
+// Persona 用户人设，定义用户在对话中的身份
 message Persona {
-  int32 id = 1;
-  int32 user_id = 2;
-  string name = 3;
-  string avatar = 4;
-  string description = 5;
-  int64 created_at = 6;
-  int64 updated_at = 7;
+  int32 id = 1;           // 人设唯一标识ID
+  int32 user_id = 2;      // 所属用户ID
+  string name = 3;        // 人设名称
+  string avatar = 4;      // 人设头像（Base64编码或URL）
+  string description = 5; // 人设描述，定义用户的角色设定
+  int64 created_at = 6;   // 创建时间（Unix时间戳）
+  int64 updated_at = 7;   // 最后更新时间（Unix时间戳）
 }
 
-// UserSetting 用户设置
+// UserSetting 用户个性化设置
 message UserSetting {
-  int32 id = 1;
-  int32 user_id = 2;
-  Theme theme = 3;
-  string language = 4;
-  bool send_on_enter = 5;
-  bool show_timestamps = 6;
-  int64 created_at = 7;
-  int64 updated_at = 8;
+  int32 id = 1;              // 设置记录ID
+  int32 user_id = 2;         // 所属用户ID
+  Theme theme = 3;           // 界面主题
+  string language = 4;       // 语言设置（如 zh-CN、en-US）
+  bool send_on_enter = 5;    // 是否按回车键发送消息
+  bool show_timestamps = 6;  // 是否显示消息时间戳
+  int64 created_at = 7;      // 创建时间（Unix时间戳）
+  int64 updated_at = 8;      // 最后更新时间（Unix时间戳）
 }
 
 // ================================
 // 角色卡相关消息
 // ================================
 
-// Character 角色卡
+// Character 角色卡，定义AI扮演的角色
 message Character {
-  int32 id = 1;
-  int32 user_id = 2;
-  string name = 3;
-  string avatar = 4;
-  string description = 5;
-  string first_message = 8;
-  string example_dialogue = 9;
-  string creator_notes = 10;
-  int32 world_info_id = 12;
-  int64 version = 13; // 乐观锁版本号
-  int64 created_at = 14;
-  int64 updated_at = 15;
-  // 关联的世界书（可选加载）
-  WorldInfo world_info = 16;
+  int32 id = 1;                  // 角色卡唯一标识ID
+  int32 user_id = 2;             // 所属用户ID
+  string name = 3;               // 角色名称
+  string avatar = 4;             // 角色头像（Base64编码或URL）
+  string description = 5;        // 角色描述，包含性格、背景等设定
+  string first_message = 8;      // 角色开场白，对话开始时AI的第一条消息
+  string example_dialogue = 9;   // 示例对话，展示角色的对话风格
+  string creator_notes = 10;     // 创作者备注，角色卡的使用说明
+  int32 world_info_id = 12;      // 关联的世界书ID，提供角色相关的背景知识
+  int64 version = 13;            // 乐观锁版本号，用于并发控制
+  int64 created_at = 14;         // 创建时间（Unix时间戳）
+  int64 updated_at = 15;         // 最后更新时间（Unix时间戳）
+  WorldInfo world_info = 16;     // 关联的世界书详情（可选加载）
 }
 
 // ================================
 // 聊天相关消息
 // ================================
 
-// ChatSession 聊天会话
+// ChatSession 聊天会话，记录与某个角色的对话
 message ChatSession {
-  int32 id = 1;
-  int32 user_id = 2;
-  int32 character_id = 3;
-  string name = 4;
-  int64 version = 5;
-  int64 created_at = 6;
-  int64 updated_at = 7;
-  // 关联数据（可选加载）
-  Character character = 8;
-  repeated Message messages = 9;
+  int32 id = 1;                    // 会话唯一标识ID
+  int32 user_id = 2;               // 所属用户ID
+  int32 character_id = 3;          // 关联的角色卡ID
+  string name = 4;                 // 会话名称（可选）
+  int64 version = 5;               // 乐观锁版本号，用于并发控制
+  int64 created_at = 6;            // 创建时间（Unix时间戳）
+  int64 updated_at = 7;            // 最后更新时间（Unix时间戳）
+  Character character = 8;         // 关联的角色卡详情（可选加载）
+  repeated Message messages = 9;   // 会话中的消息列表（可选加载）
 }
 
-// Message 消息
+// Message 聊天消息
 message Message {
-  int32 id = 1;
-  int32 session_id = 2;
-  Role role = 3;
-  int32 active_swipe_index = 4;
-  int32 sort_order = 5;
-  int64 created_at = 6;
-  int64 updated_at = 7;
-  // 消息内容列表
-  repeated MessageSwipe swipes = 8;
+  int32 id = 1;                        // 消息唯一标识ID
+  int32 session_id = 2;                // 所属会话ID
+  Role role = 3;                       // 消息角色（用户/助手/系统）
+  int32 active_swipe_index = 4;        // 当前激活的swipe索引
+  int32 sort_order = 5;                // 消息排序序号，用于确定显示顺序
+  int64 created_at = 6;                // 创建时间（Unix时间戳）
+  int64 updated_at = 7;                // 最后更新时间（Unix时间戳）
+  repeated MessageSwipe swipes = 8;    // 消息内容列表（支持多个候选回复）
 }
 
-// MessageSwipe 消息内容（单个swipe）
+// MessageSwipe 消息内容变体，支持同一消息的多个候选回复
 message MessageSwipe {
-  int32 id = 1;
-  int32 message_id = 2;
-  string content = 3;
-  int32 sort_order = 4;
-  int64 created_at = 5;
+  int32 id = 1;          // Swipe唯一标识ID
+  int32 message_id = 2;  // 所属消息ID
+  string content = 3;    // 消息文本内容
+  int32 sort_order = 4;  // 排序序号
+  int64 created_at = 5;  // 创建时间（Unix时间戳）
 }
 
 // ================================
 // 预设相关消息
 // ================================
 
-// Preset 预设
+// Preset 预设配置，定义AI生成参数和提示词模板
 message Preset {
-  int32 id = 1;
-  int32 user_id = 2;
-  string name = 3;
-  float temperature = 4;
-  float top_p = 5;
-  int32 top_k = 6;
-  int32 max_tokens = 7;
-  float frequency_penalty = 8;
-  float presence_penalty = 9;
-  int64 version = 10;
-  int64 created_at = 11;
-  int64 updated_at = 12;
-  int32 candidate_count = 15; // 候选回复数量
-  // 关联数据（可选加载）
-  repeated PromptItem prompt_items = 13;
-  repeated RegexRule regex_rules = 14;
+  int32 id = 1;                              // 预设唯一标识ID
+  int32 user_id = 2;                         // 所属用户ID
+  string name = 3;                           // 预设名称
+  float temperature = 4;                     // 温度参数，控制输出随机性（0.0-2.0）
+  float top_p = 5;                           // Top-P采样参数，核采样概率阈值（0.0-1.0）
+  int32 top_k = 6;                           // Top-K采样参数，限制候选词数量
+  int32 max_tokens = 7;                      // 最大生成令牌数，限制回复长度
+  float frequency_penalty = 8;               // 频率惩罚，降低重复词出现概率（-2.0-2.0）
+  float presence_penalty = 9;                // 存在惩罚，鼓励谈论新话题（-2.0-2.0）
+  int64 version = 10;                        // 乐观锁版本号
+  int64 created_at = 11;                     // 创建时间（Unix时间戳）
+  int64 updated_at = 12;                     // 最后更新时间（Unix时间戳）
+  int32 candidate_count = 15;                // 候选回复数量，一次生成多少个备选回复
+  repeated PromptItem prompt_items = 13;     // 提示项列表（可选加载）
+  repeated RegexRule regex_rules = 14;       // 正则规则列表（可选加载）
 }
 
-// PromptItem 提示项
+// PromptItem 提示项，组成发送给AI的提示词
 message PromptItem {
-  int32 id = 1;
-  int32 preset_id = 2;
-  string identifier = 3;
-  string name = 4;
-  string content = 5;
-  Role role = 6;
-  bool is_enabled = 7;
-  InjectionPosition injection_position = 8;
-  int32 injection_depth = 9;
-  bool forbid_overrides = 10;
-  int32 sort_order = 11;
-  int64 created_at = 12;
-  int64 updated_at = 13;
+  int32 id = 1;                              // 提示项唯一标识ID
+  int32 preset_id = 2;                       // 所属预设ID
+  string identifier = 3;                     // 唯一标识符，用于程序识别
+  string name = 4;                           // 显示名称
+  string content = 5;                        // 提示词内容
+  Role role = 6;                             // 消息角色类型
+  bool is_enabled = 7;                       // 是否启用
+  InjectionPosition injection_position = 8; // 注入位置类型
+  int32 injection_depth = 9;                 // 注入深度，绝对位置时的插入深度
+  bool forbid_overrides = 10;                // 禁止覆盖，是否允许被其他设置覆盖
+  int32 sort_order = 11;                     // 排序序号
+  int64 created_at = 12;                     // 创建时间（Unix时间戳）
+  int64 updated_at = 13;                     // 最后更新时间（Unix时间戳）
 }
 
-// RegexAffectFlags 正则规则作用范围
+// RegexAffectFlags 正则规则作用范围标志
 message RegexAffectFlags {
-  bool user_input = 1; // 用户输入
-  bool ai_output = 2; // ai输出
-  bool slash_command = 3; // 斜杠命令
-  bool world_info = 4; // 世界书
-  bool prompt = 5; // 作用于提示词
+  bool user_input = 1;    // 是否作用于用户输入
+  bool ai_output = 2;     // 是否作用于AI输出
+  bool slash_command = 3; // 是否作用于斜杠命令
+  bool world_info = 4;    // 是否作用于世界书内容
+  bool prompt = 5;        // 是否作用于提示词
 }
 
-// RegexRule 正则规则
+// RegexRule 正则替换规则，用于文本预处理和后处理
 message RegexRule {
-  int32 id = 1;
-  int32 preset_id = 2;        // 关联的预设ID（0 表示全局正则）
-  int32 character_id = 15;    // 关联的角色ID（0 表示非角色范围正则）
-  string name = 3;
-  string find_pattern = 4;
-  string replace_pattern = 5;
-  bool is_enabled = 6;
-  bool run_on_edit = 7;
-  bool substitute_regex = 8;
-  int32 min_depth = 9;
-  int32 max_depth = 10;
-  RegexAffectFlags affect_flags = 11; // 作用范围
-  int32 sort_order = 12;
-  int64 created_at = 13;
-  int64 updated_at = 14;
+  int32 id = 1;                      // 规则唯一标识ID
+  int32 preset_id = 2;               // 关联的预设ID（0表示全局规则）
+  int32 character_id = 15;           // 关联的角色ID（0表示非角色范围规则）
+  string name = 3;                   // 规则名称
+  string find_pattern = 4;           // 查找模式（正则表达式）
+  string replace_pattern = 5;        // 替换模式
+  bool is_enabled = 6;               // 是否启用
+  bool run_on_edit = 7;              // 编辑消息时是否运行
+  bool substitute_regex = 8;         // 是否使用正则替换（否则为字面量替换）
+  int32 min_depth = 9;               // 最小作用深度
+  int32 max_depth = 10;              // 最大作用深度
+  RegexAffectFlags affect_flags = 11; // 作用范围标志
+  int32 sort_order = 12;             // 排序序号，决定规则执行顺序
+  int64 created_at = 13;             // 创建时间（Unix时间戳）
+  int64 updated_at = 14;             // 最后更新时间（Unix时间戳）
 }
 
 // ================================
 // 世界书相关消息
 // ================================
 
-// WorldInfo 世界书
+// WorldInfo 世界书，存储角色相关的背景知识
 message WorldInfo {
-  int32 id = 1;
-  int32 user_id = 2;
-  string name = 3;
-  string description = 4;
-  bool is_global = 5;
-  int64 created_at = 6;
-  int64 updated_at = 7;
-  // 关联数据（可选加载）
-  repeated WorldInfoEntry entries = 8;
+  int32 id = 1;                          // 世界书唯一标识ID
+  int32 user_id = 2;                     // 所属用户ID
+  string name = 3;                       // 世界书名称
+  string description = 4;                // 世界书描述
+  bool is_global = 5;                    // 是否为全局世界书，全局世界书对所有角色生效
+  int64 created_at = 6;                  // 创建时间（Unix时间戳）
+  int64 updated_at = 7;                  // 最后更新时间（Unix时间戳）
+  repeated WorldInfoEntry entries = 8;   // 世界书条目列表（可选加载）
 }
 
-// WorldInfoEntry 世界书条目
+// WorldInfoEntry 世界书条目，单条背景知识
 message WorldInfoEntry {
-  int32 id = 1;
-  int32 world_info_id = 2;
-  string uid = 3;
-  string keys_list = 4;
-  string secondary_keys = 5;
-  string content = 6;
-  string comment = 7;
-  bool is_enabled = 8;
-  bool constant = 9;
-  bool selective = 10;
-  int32 insertion_order = 11;
-  EntryPosition position = 12;
-  int32 depth = 13;
-  int32 sort_order = 14;
-  int64 created_at = 15;
-  int64 updated_at = 16;
+  int32 id = 1;               // 条目唯一标识ID
+  int32 world_info_id = 2;    // 所属世界书ID
+  string uid = 3;             // 条目唯一标识符（用于导入导出）
+  string keys_list = 4;       // 主关键词列表，逗号分隔，匹配时触发条目
+  string secondary_keys = 5;  // 次要关键词列表，与主关键词配合使用
+  string content = 6;         // 条目内容，注入到提示词中的文本
+  string comment = 7;         // 条目备注，仅用于管理不会注入
+  bool is_enabled = 8;        // 是否启用
+  bool constant = 9;          // 是否常驻，常驻条目始终注入不需要关键词匹配
+  bool selective = 10;        // 选择性匹配，需同时匹配主关键词和次要关键词
+  int32 insertion_order = 11; // 插入优先级，数值越小优先级越高
+  EntryPosition position = 12; // 插入位置类型
+  int32 depth = 13;           // 插入深度，AtDepth位置时的深度值
+  int32 sort_order = 14;      // 排序序号
+  int64 created_at = 15;      // 创建时间（Unix时间戳）
+  int64 updated_at = 16;      // 最后更新时间（Unix时间戳）
 }
 
 // ================================
 // API配置相关
 // ================================
 
-// APIConfig API配置
+// APIConfig API连接配置
 message APIConfig {
-  int32 id = 1;
-  int32 user_id = 2;
-  string name = 3;
-  APIProvider provider = 4;
-  string api_key = 5;  // 创建/更新时使用，查询时不返回
-  string base_url = 6;
-  string model = 7;
-  bool is_active = 8;
-  int64 created_at = 9;
-  int64 updated_at = 10;
+  int32 id = 1;            // 配置唯一标识ID
+  int32 user_id = 2;       // 所属用户ID
+  string name = 3;         // 配置名称
+  APIProvider provider = 4; // API服务提供商
+  string api_key = 5;      // API密钥（创建/更新时使用，查询时不返回）
+  string base_url = 6;     // API基础URL（用于代理或自定义端点）
+  string model = 7;        // 使用的模型名称
+  bool is_active = 8;      // 是否为当前激活的配置
+  int64 created_at = 9;    // 创建时间（Unix时间戳）
+  int64 updated_at = 10;   // 最后更新时间（Unix时间戳）
 }
 
 // ================================
@@ -1302,5 +1297,3 @@ service WorldInfoService {
   // 批量更新世界书条目排序
   rpc UpdateWorldInfoEntriesOrder(UpdateWorldInfoEntriesOrderRequest) returns (UpdateWorldInfoEntriesOrderResponse);
 }
-
-

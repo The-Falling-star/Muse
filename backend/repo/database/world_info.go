@@ -231,3 +231,84 @@ func (w *WorldInfoRepo) UpdateEntriesOrder(worldInfoID int, entryOrders map[int]
 	}
 	return nil
 }
+
+// ListGlobalWorldInfosWithEntries 获取用户所有全局世界书及其启用的条目
+func (w *WorldInfoRepo) ListGlobalWorldInfosWithEntries(userID int) ([]*entity.WorldInfo, *connect.Error) {
+	db := config.GetDB()
+	var worldInfos []*entity.WorldInfo
+	result := db.Where("user_id = ? AND is_global = ?", userID, true).
+		Preload("Entries", func(db *gorm.DB) *gorm.DB {
+			return db.Where("is_enabled = ?", true).Order("sort_order ASC")
+		}).
+		Find(&worldInfos)
+	if result.Error != nil {
+		return nil, errs.NewStandardf(connect.CodeInternal, "获取全局世界书列表失败: %v", result.Error)
+	}
+	return worldInfos, nil
+}
+
+// GetByIDWithEntries 根据ID获取世界书及其所有启用的条目
+func (w *WorldInfoRepo) GetByIDWithEntries(id int, userID int) (*entity.WorldInfo, *connect.Error) {
+	db := config.GetDB()
+	var worldInfo entity.WorldInfo
+	result := db.Where("id = ? AND user_id = ?", id, userID).
+		Preload("Entries", func(db *gorm.DB) *gorm.DB {
+			return db.Where("is_enabled = ?", true).Order("sort_order ASC")
+		}).
+		First(&worldInfo)
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, errs.NewStandardf(connect.CodeInternal, "获取世界书失败: %v", result.Error)
+	}
+	return &worldInfo, nil
+}
+
+// GetVersions 批量获取世界书的版本号
+// 用于缓存版本校验，只查询版本字段以减少数据传输
+func (w *WorldInfoRepo) GetVersions(ids []int, userID int) (map[int64]int, *connect.Error) {
+	if len(ids) == 0 {
+		return make(map[int64]int), nil
+	}
+	db := config.GetDB()
+	type versionResult struct {
+		ID      int64
+		Version int
+	}
+	var results []versionResult
+	err := db.Model(&entity.WorldInfo{}).
+		Where("id IN ? AND user_id = ?", ids, userID).
+		Select("id", "version").
+		Scan(&results).Error
+	if err != nil {
+		return nil, errs.NewStandardf(connect.CodeInternal, "获取世界书版本失败: %v", err)
+	}
+	versions := make(map[int64]int)
+	for _, r := range results {
+		versions[r.ID] = r.Version
+	}
+	return versions, nil
+}
+
+// GetGlobalWorldInfoVersions 获取用户所有全局世界书的版本号
+func (w *WorldInfoRepo) GetGlobalWorldInfoVersions(userID int) (map[int64]int, *connect.Error) {
+	db := config.GetDB()
+	type versionResult struct {
+		ID      int64
+		Version int
+	}
+	var results []versionResult
+	err := db.Model(&entity.WorldInfo{}).
+		Where("user_id = ? AND is_global = ?", userID, true).
+		Select("id", "version").
+		Scan(&results).Error
+	if err != nil {
+		return nil, errs.NewStandardf(connect.CodeInternal, "获取全局世界书版本失败: %v", err)
+	}
+	versions := make(map[int64]int)
+	for _, r := range results {
+		versions[r.ID] = r.Version
+	}
+	return versions, nil
+}

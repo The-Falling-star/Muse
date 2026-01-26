@@ -276,3 +276,17 @@ func (u *UserRepo) ActivateAPIConfig(id int, userID int) *connect.Error {
 	}
 	return nil
 }
+
+// GetActiveAPIConfig 获取用户当前活跃的API配置
+func (u *UserRepo) GetActiveAPIConfig(userID int) (*entity.APIConfig, *connect.Error) {
+	db := config.GetDB()
+	var apiConfig entity.APIConfig
+	result := db.Where("user_id = ? AND is_active = ?", userID, true).First(&apiConfig)
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, errs.NewStandardf(connect.CodeInternal, "获取活跃API配置失败: %v", result.Error)
+	}
+	return &apiConfig, nil
+}

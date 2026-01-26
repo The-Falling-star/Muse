@@ -109,3 +109,21 @@ func (c *CharacterRepo) Delete(id int, userID int) *connect.Error {
 	}
 	return nil
 }
+
+// GetVersion 获取角色的版本号
+// 用于缓存版本校验，只查询版本字段以减少数据传输
+func (c *CharacterRepo) GetVersion(id int, userID int) (int, *connect.Error) {
+	db := config.GetDB()
+	var version int
+	result := db.Model(&entity.Character{}).
+		Where("id = ? AND user_id = ?", id, userID).
+		Select("lock_version").
+		Scan(&version)
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return 0, errs.NewStandard(connect.CodeNotFound, "角色不存在")
+		}
+		return 0, errs.NewStandardf(connect.CodeInternal, "数据库查询失败: %v", result.Error)
+	}
+	return version, nil
+}

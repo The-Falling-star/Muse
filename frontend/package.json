@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@connectrpc/connect": "^2.1.1",
+    "@connectrpc/connect-web": "^2.1.1",
     "@types/dompurify": "^3.0.5",
     "@vicons/ionicons5": "^0.13.0",
     "@vicons/tabler": "^0.13.0",

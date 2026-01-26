@@ -1,4 +1,5 @@
 version: v2
+clean: true
 managed:
   enabled: true
   override:
@@ -18,10 +19,7 @@ plugins:
   # TypeScript protobuf 消息 + connect-rpc 服务生成 (使用 bufbuild/es 同时生成)
   - remote: buf.build/bufbuild/es
     out: frontend/src/gen
+    include_imports: true
     opt:
       - target=ts
-  - remote: buf.build/connectrpc/es
-    out: frontend/src/gen
-    opt:
-      - target=ts
-      - import_extension=none
+      - import_extension=js

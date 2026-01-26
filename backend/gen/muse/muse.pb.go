@@ -21,14 +21,14 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// PromptItemRole 提示项角色
+// Role 消息角色类型
 type Role int32
 
 const (
-	Role_RoleUnspecified Role = 0
-	Role_System          Role = 1
-	Role_User            Role = 2
-	Role_Assistant       Role = 3
+	Role_RoleUnspecified Role = 0 // 未指定角色
+	Role_System          Role = 1 // 系统消息，用于设定AI行为和上下文
+	Role_User            Role = 2 // 用户消息，用户输入的内容
+	Role_Assistant       Role = 3 // 助手消息，AI生成的回复
 )
 
 // Enum value maps for Role.
@@ -74,13 +74,13 @@ func (Role) EnumDescriptor() ([]byte, []int) {
 	return file_muse_muse_proto_rawDescGZIP(), []int{0}
 }
 
-// InjectionPosition 注入位置
+// InjectionPosition 提示项注入位置类型
 type InjectionPosition int32
 
 const (
-	InjectionPosition_InjectionPositionUnspecified InjectionPosition = 0
-	InjectionPosition_Relative                     InjectionPosition = 1
-	InjectionPosition_Absolute                     InjectionPosition = 2
+	InjectionPosition_InjectionPositionUnspecified InjectionPosition = 0 // 未指定位置
+	InjectionPosition_Relative                     InjectionPosition = 1 // 相对位置，根据角色类型决定插入位置
+	InjectionPosition_Absolute                     InjectionPosition = 2 // 绝对位置，按深度值插入到消息列表中
 )
 
 // Enum value maps for InjectionPosition.
@@ -128,12 +128,12 @@ func (InjectionPosition) EnumDescriptor() ([]byte, []int) {
 type EntryPosition int32
 
 const (
-	EntryPosition_EntryPositionUnspecified EntryPosition = 0
-	EntryPosition_BeforeChar               EntryPosition = 1
-	EntryPosition_AfterChar                EntryPosition = 2
-	EntryPosition_BeforeExample            EntryPosition = 3
-	EntryPosition_AfterExample             EntryPosition = 4
-	EntryPosition_AtDepth                  EntryPosition = 5
+	EntryPosition_EntryPositionUnspecified EntryPosition = 0 // 未指定位置
+	EntryPosition_BeforeChar               EntryPosition = 1 // 角色描述之前
+	EntryPosition_AfterChar                EntryPosition = 2 // 角色描述之后
+	EntryPosition_BeforeExample            EntryPosition = 3 // 示例对话之前
+	EntryPosition_AfterExample             EntryPosition = 4 // 示例对话之后
+	EntryPosition_AtDepth                  EntryPosition = 5 // 按深度插入到消息列表中
 )
 
 // Enum value maps for EntryPosition.
@@ -183,14 +183,14 @@ func (EntryPosition) EnumDescriptor() ([]byte, []int) {
 	return file_muse_muse_proto_rawDescGZIP(), []int{2}
 }
 
-// APIProvider API提供商
+// APIProvider API服务提供商类型
 type APIProvider int32
 
 const (
-	APIProvider_APIProviderUnspecified APIProvider = 0
-	APIProvider_OpenAI                 APIProvider = 1
-	APIProvider_Claude                 APIProvider = 2
-	APIProvider_Gemini                 APIProvider = 3
+	APIProvider_APIProviderUnspecified APIProvider = 0 // 未指定提供商
+	APIProvider_OpenAI                 APIProvider = 1 // OpenAI（ChatGPT）
+	APIProvider_Claude                 APIProvider = 2 // Anthropic Claude
+	APIProvider_Gemini                 APIProvider = 3 // Google Gemini
 )
 
 // Enum value maps for APIProvider.
@@ -236,13 +236,13 @@ func (APIProvider) EnumDescriptor() ([]byte, []int) {
 	return file_muse_muse_proto_rawDescGZIP(), []int{3}
 }
 
-// Theme 主题
+// Theme 界面主题类型
 type Theme int32
 
 const (
-	Theme_Auto  Theme = 0
-	Theme_Light Theme = 1
-	Theme_Dark  Theme = 2
+	Theme_Auto  Theme = 0 // 自动，跟随系统设置
+	Theme_Light Theme = 1 // 浅色主题
+	Theme_Dark  Theme = 2 // 深色主题
 )
 
 // Enum value maps for Theme.
@@ -286,15 +286,15 @@ func (Theme) EnumDescriptor() ([]byte, []int) {
 	return file_muse_muse_proto_rawDescGZIP(), []int{4}
 }
 
-// User 用户信息
+// SysUser 系统用户信息
 type SysUser struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
-	Id              int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Username        string                 `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
-	ActivePersonaId int32                  `protobuf:"varint,4,opt,name=active_persona_id,json=activePersonaId,proto3" json:"active_persona_id,omitempty"`
-	ActivePresetId  int32                  `protobuf:"varint,5,opt,name=active_preset_id,json=activePresetId,proto3" json:"active_preset_id,omitempty"`
-	CreatedAt       int64                  `protobuf:"varint,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt       int64                  `protobuf:"varint,7,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	Id              int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`                                                    // 用户唯一标识ID
+	Username        string                 `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`                                         // 用户名，用于登录
+	ActivePersonaId int32                  `protobuf:"varint,4,opt,name=active_persona_id,json=activePersonaId,proto3" json:"active_persona_id,omitempty"` // 当前激活的用户人设ID
+	ActivePresetId  int32                  `protobuf:"varint,5,opt,name=active_preset_id,json=activePresetId,proto3" json:"active_preset_id,omitempty"`    // 当前激活的预设ID
+	CreatedAt       int64                  `protobuf:"varint,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`                     // 创建时间（Unix时间戳）
+	UpdatedAt       int64                  `protobuf:"varint,7,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`                     // 最后更新时间（Unix时间戳）
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -371,16 +371,16 @@ func (x *SysUser) GetUpdatedAt() int64 {
 	return 0
 }
 
-// Persona 用户人设
+// Persona 用户人设，定义用户在对话中的身份
 type Persona struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	UserId        int32                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	Avatar        string                 `protobuf:"bytes,4,opt,name=avatar,proto3" json:"avatar,omitempty"`
-	Description   string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
-	CreatedAt     int64                  `protobuf:"varint,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt     int64                  `protobuf:"varint,7,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`                                // 人设唯一标识ID
+	UserId        int32                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`          // 所属用户ID
+	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`                             // 人设名称
+	Avatar        string                 `protobuf:"bytes,4,opt,name=avatar,proto3" json:"avatar,omitempty"`                         // 人设头像（Base64编码或URL）
+	Description   string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`               // 人设描述，定义用户的角色设定
+	CreatedAt     int64                  `protobuf:"varint,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"` // 创建时间（Unix时间戳）
+	UpdatedAt     int64                  `protobuf:"varint,7,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"` // 最后更新时间（Unix时间戳）
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -464,17 +464,17 @@ func (x *Persona) GetUpdatedAt() int64 {
 	return 0
 }
 
-// UserSetting 用户设置
+// UserSetting 用户个性化设置
 type UserSetting struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	Id             int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	UserId         int32                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Theme          Theme                  `protobuf:"varint,3,opt,name=theme,proto3,enum=muse.Theme" json:"theme,omitempty"`
-	Language       string                 `protobuf:"bytes,4,opt,name=language,proto3" json:"language,omitempty"`
-	SendOnEnter    bool                   `protobuf:"varint,5,opt,name=send_on_enter,json=sendOnEnter,proto3" json:"send_on_enter,omitempty"`
-	ShowTimestamps bool                   `protobuf:"varint,6,opt,name=show_timestamps,json=showTimestamps,proto3" json:"show_timestamps,omitempty"`
-	CreatedAt      int64                  `protobuf:"varint,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt      int64                  `protobuf:"varint,8,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	Id             int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`                                               // 设置记录ID
+	UserId         int32                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`                         // 所属用户ID
+	Theme          Theme                  `protobuf:"varint,3,opt,name=theme,proto3,enum=muse.Theme" json:"theme,omitempty"`                         // 界面主题
+	Language       string                 `protobuf:"bytes,4,opt,name=language,proto3" json:"language,omitempty"`                                    // 语言设置（如 zh-CN、en-US）
+	SendOnEnter    bool                   `protobuf:"varint,5,opt,name=send_on_enter,json=sendOnEnter,proto3" json:"send_on_enter,omitempty"`        // 是否按回车键发送消息
+	ShowTimestamps bool                   `protobuf:"varint,6,opt,name=show_timestamps,json=showTimestamps,proto3" json:"show_timestamps,omitempty"` // 是否显示消息时间戳
+	CreatedAt      int64                  `protobuf:"varint,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`                // 创建时间（Unix时间戳）
+	UpdatedAt      int64                  `protobuf:"varint,8,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`                // 最后更新时间（Unix时间戳）
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -565,25 +565,24 @@ func (x *UserSetting) GetUpdatedAt() int64 {
 	return 0
 }
 
-// Character 角色卡
+// Character 角色卡，定义AI扮演的角色
 type Character struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
-	Id              int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	UserId          int32                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Name            string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	Avatar          string                 `protobuf:"bytes,4,opt,name=avatar,proto3" json:"avatar,omitempty"`
-	Description     string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
-	FirstMessage    string                 `protobuf:"bytes,8,opt,name=first_message,json=firstMessage,proto3" json:"first_message,omitempty"`
-	ExampleDialogue string                 `protobuf:"bytes,9,opt,name=example_dialogue,json=exampleDialogue,proto3" json:"example_dialogue,omitempty"`
-	CreatorNotes    string                 `protobuf:"bytes,10,opt,name=creator_notes,json=creatorNotes,proto3" json:"creator_notes,omitempty"`
-	WorldInfoId     int32                  `protobuf:"varint,12,opt,name=world_info_id,json=worldInfoId,proto3" json:"world_info_id,omitempty"`
-	Version         int64                  `protobuf:"varint,13,opt,name=version,proto3" json:"version,omitempty"` // 乐观锁版本号
-	CreatedAt       int64                  `protobuf:"varint,14,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt       int64                  `protobuf:"varint,15,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	// 关联的世界书（可选加载）
-	WorldInfo     *WorldInfo `protobuf:"bytes,16,opt,name=world_info,json=worldInfo,proto3" json:"world_info,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Id              int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`                                                 // 角色卡唯一标识ID
+	UserId          int32                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`                           // 所属用户ID
+	Name            string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`                                              // 角色名称
+	Avatar          string                 `protobuf:"bytes,4,opt,name=avatar,proto3" json:"avatar,omitempty"`                                          // 角色头像（Base64编码或URL）
+	Description     string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`                                // 角色描述，包含性格、背景等设定
+	FirstMessage    string                 `protobuf:"bytes,8,opt,name=first_message,json=firstMessage,proto3" json:"first_message,omitempty"`          // 角色开场白，对话开始时AI的第一条消息
+	ExampleDialogue string                 `protobuf:"bytes,9,opt,name=example_dialogue,json=exampleDialogue,proto3" json:"example_dialogue,omitempty"` // 示例对话，展示角色的对话风格
+	CreatorNotes    string                 `protobuf:"bytes,10,opt,name=creator_notes,json=creatorNotes,proto3" json:"creator_notes,omitempty"`         // 创作者备注，角色卡的使用说明
+	WorldInfoId     int32                  `protobuf:"varint,12,opt,name=world_info_id,json=worldInfoId,proto3" json:"world_info_id,omitempty"`         // 关联的世界书ID，提供角色相关的背景知识
+	Version         int64                  `protobuf:"varint,13,opt,name=version,proto3" json:"version,omitempty"`                                      // 乐观锁版本号，用于并发控制
+	CreatedAt       int64                  `protobuf:"varint,14,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`                 // 创建时间（Unix时间戳）
+	UpdatedAt       int64                  `protobuf:"varint,15,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`                 // 最后更新时间（Unix时间戳）
+	WorldInfo       *WorldInfo             `protobuf:"bytes,16,opt,name=world_info,json=worldInfo,proto3" json:"world_info,omitempty"`                  // 关联的世界书详情（可选加载）
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *Character) Reset() {
@@ -707,19 +706,18 @@ func (x *Character) GetWorldInfo() *WorldInfo {
 	return nil
 }
 
-// ChatSession 聊天会话
+// ChatSession 聊天会话，记录与某个角色的对话
 type ChatSession struct {
-	state       protoimpl.MessageState `protogen:"open.v1"`
-	Id          int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	UserId      int32                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	CharacterId int32                  `protobuf:"varint,3,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"`
-	Name        string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
-	Version     int64                  `protobuf:"varint,5,opt,name=version,proto3" json:"version,omitempty"`
-	CreatedAt   int64                  `protobuf:"varint,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt   int64                  `protobuf:"varint,7,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	// 关联数据（可选加载）
-	Character     *Character `protobuf:"bytes,8,opt,name=character,proto3" json:"character,omitempty"`
-	Messages      []*Message `protobuf:"bytes,9,rep,name=messages,proto3" json:"messages,omitempty"`
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`                                      // 会话唯一标识ID
+	UserId        int32                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`                // 所属用户ID
+	CharacterId   int32                  `protobuf:"varint,3,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"` // 关联的角色卡ID
+	Name          string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`                                   // 会话名称（可选）
+	Version       int64                  `protobuf:"varint,5,opt,name=version,proto3" json:"version,omitempty"`                            // 乐观锁版本号，用于并发控制
+	CreatedAt     int64                  `protobuf:"varint,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`       // 创建时间（Unix时间戳）
+	UpdatedAt     int64                  `protobuf:"varint,7,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`       // 最后更新时间（Unix时间戳）
+	Character     *Character             `protobuf:"bytes,8,opt,name=character,proto3" json:"character,omitempty"`                         // 关联的角色卡详情（可选加载）
+	Messages      []*Message             `protobuf:"bytes,9,rep,name=messages,proto3" json:"messages,omitempty"`                           // 会话中的消息列表（可选加载）
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -817,20 +815,19 @@ func (x *ChatSession) GetMessages() []*Message {
 	return nil
 }
 
-// Message 消息
+// Message 聊天消息
 type Message struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
-	Id               int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	SessionId        int32                  `protobuf:"varint,2,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
-	Role             Role                   `protobuf:"varint,3,opt,name=role,proto3,enum=muse.Role" json:"role,omitempty"`
-	ActiveSwipeIndex int32                  `protobuf:"varint,4,opt,name=active_swipe_index,json=activeSwipeIndex,proto3" json:"active_swipe_index,omitempty"`
-	SortOrder        int32                  `protobuf:"varint,5,opt,name=sort_order,json=sortOrder,proto3" json:"sort_order,omitempty"`
-	CreatedAt        int64                  `protobuf:"varint,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt        int64                  `protobuf:"varint,7,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	// 消息内容列表
-	Swipes        []*MessageSwipe `protobuf:"bytes,8,rep,name=swipes,proto3" json:"swipes,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Id               int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`                                                       // 消息唯一标识ID
+	SessionId        int32                  `protobuf:"varint,2,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`                        // 所属会话ID
+	Role             Role                   `protobuf:"varint,3,opt,name=role,proto3,enum=muse.Role" json:"role,omitempty"`                                    // 消息角色（用户/助手/系统）
+	ActiveSwipeIndex int32                  `protobuf:"varint,4,opt,name=active_swipe_index,json=activeSwipeIndex,proto3" json:"active_swipe_index,omitempty"` // 当前激活的swipe索引
+	SortOrder        int32                  `protobuf:"varint,5,opt,name=sort_order,json=sortOrder,proto3" json:"sort_order,omitempty"`                        // 消息排序序号，用于确定显示顺序
+	CreatedAt        int64                  `protobuf:"varint,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`                        // 创建时间（Unix时间戳）
+	UpdatedAt        int64                  `protobuf:"varint,7,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`                        // 最后更新时间（Unix时间戳）
+	Swipes           []*MessageSwipe        `protobuf:"bytes,8,rep,name=swipes,proto3" json:"swipes,omitempty"`                                                // 消息内容列表（支持多个候选回复）
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *Message) Reset() {
@@ -919,14 +916,14 @@ func (x *Message) GetSwipes() []*MessageSwipe {
 	return nil
 }
 
-// MessageSwipe 消息内容（单个swipe）
+// MessageSwipe 消息内容变体，支持同一消息的多个候选回复
 type MessageSwipe struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	MessageId     int32                  `protobuf:"varint,2,opt,name=message_id,json=messageId,proto3" json:"message_id,omitempty"`
-	Content       string                 `protobuf:"bytes,3,opt,name=content,proto3" json:"content,omitempty"`
-	SortOrder     int32                  `protobuf:"varint,4,opt,name=sort_order,json=sortOrder,proto3" json:"sort_order,omitempty"`
-	CreatedAt     int64                  `protobuf:"varint,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`                                // Swipe唯一标识ID
+	MessageId     int32                  `protobuf:"varint,2,opt,name=message_id,json=messageId,proto3" json:"message_id,omitempty"` // 所属消息ID
+	Content       string                 `protobuf:"bytes,3,opt,name=content,proto3" json:"content,omitempty"`                       // 消息文本内容
+	SortOrder     int32                  `protobuf:"varint,4,opt,name=sort_order,json=sortOrder,proto3" json:"sort_order,omitempty"` // 排序序号
+	CreatedAt     int64                  `protobuf:"varint,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"` // 创建时间（Unix时间戳）
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -996,27 +993,26 @@ func (x *MessageSwipe) GetCreatedAt() int64 {
 	return 0
 }
 
-// Preset 预设
+// Preset 预设配置，定义AI生成参数和提示词模板
 type Preset struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
-	Id               int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	UserId           int32                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Name             string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	Temperature      float32                `protobuf:"fixed32,4,opt,name=temperature,proto3" json:"temperature,omitempty"`
-	TopP             float32                `protobuf:"fixed32,5,opt,name=top_p,json=topP,proto3" json:"top_p,omitempty"`
-	TopK             int32                  `protobuf:"varint,6,opt,name=top_k,json=topK,proto3" json:"top_k,omitempty"`
-	MaxTokens        int32                  `protobuf:"varint,7,opt,name=max_tokens,json=maxTokens,proto3" json:"max_tokens,omitempty"`
-	FrequencyPenalty float32                `protobuf:"fixed32,8,opt,name=frequency_penalty,json=frequencyPenalty,proto3" json:"frequency_penalty,omitempty"`
-	PresencePenalty  float32                `protobuf:"fixed32,9,opt,name=presence_penalty,json=presencePenalty,proto3" json:"presence_penalty,omitempty"`
-	Version          int64                  `protobuf:"varint,10,opt,name=version,proto3" json:"version,omitempty"`
-	CreatedAt        int64                  `protobuf:"varint,11,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt        int64                  `protobuf:"varint,12,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	CandidateCount   int32                  `protobuf:"varint,15,opt,name=candidate_count,json=candidateCount,proto3" json:"candidate_count,omitempty"` // 候选回复数量
-	// 关联数据（可选加载）
-	PromptItems   []*PromptItem `protobuf:"bytes,13,rep,name=prompt_items,json=promptItems,proto3" json:"prompt_items,omitempty"`
-	RegexRules    []*RegexRule  `protobuf:"bytes,14,rep,name=regex_rules,json=regexRules,proto3" json:"regex_rules,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Id               int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`                                                      // 预设唯一标识ID
+	UserId           int32                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`                                // 所属用户ID
+	Name             string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`                                                   // 预设名称
+	Temperature      float32                `protobuf:"fixed32,4,opt,name=temperature,proto3" json:"temperature,omitempty"`                                   // 温度参数，控制输出随机性（0.0-2.0）
+	TopP             float32                `protobuf:"fixed32,5,opt,name=top_p,json=topP,proto3" json:"top_p,omitempty"`                                     // Top-P采样参数，核采样概率阈值（0.0-1.0）
+	TopK             int32                  `protobuf:"varint,6,opt,name=top_k,json=topK,proto3" json:"top_k,omitempty"`                                      // Top-K采样参数，限制候选词数量
+	MaxTokens        int32                  `protobuf:"varint,7,opt,name=max_tokens,json=maxTokens,proto3" json:"max_tokens,omitempty"`                       // 最大生成令牌数，限制回复长度
+	FrequencyPenalty float32                `protobuf:"fixed32,8,opt,name=frequency_penalty,json=frequencyPenalty,proto3" json:"frequency_penalty,omitempty"` // 频率惩罚，降低重复词出现概率（-2.0-2.0）
+	PresencePenalty  float32                `protobuf:"fixed32,9,opt,name=presence_penalty,json=presencePenalty,proto3" json:"presence_penalty,omitempty"`    // 存在惩罚，鼓励谈论新话题（-2.0-2.0）
+	Version          int64                  `protobuf:"varint,10,opt,name=version,proto3" json:"version,omitempty"`                                           // 乐观锁版本号
+	CreatedAt        int64                  `protobuf:"varint,11,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`                      // 创建时间（Unix时间戳）
+	UpdatedAt        int64                  `protobuf:"varint,12,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`                      // 最后更新时间（Unix时间戳）
+	CandidateCount   int32                  `protobuf:"varint,15,opt,name=candidate_count,json=candidateCount,proto3" json:"candidate_count,omitempty"`       // 候选回复数量，一次生成多少个备选回复
+	PromptItems      []*PromptItem          `protobuf:"bytes,13,rep,name=prompt_items,json=promptItems,proto3" json:"prompt_items,omitempty"`                 // 提示项列表（可选加载）
+	RegexRules       []*RegexRule           `protobuf:"bytes,14,rep,name=regex_rules,json=regexRules,proto3" json:"regex_rules,omitempty"`                    // 正则规则列表（可选加载）
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *Preset) Reset() {
@@ -1154,22 +1150,22 @@ func (x *Preset) GetRegexRules() []*RegexRule {
 	return nil
 }
 
-// PromptItem 提示项
+// PromptItem 提示项，组成发送给AI的提示词
 type PromptItem struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
-	Id                int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	PresetId          int32                  `protobuf:"varint,2,opt,name=preset_id,json=presetId,proto3" json:"preset_id,omitempty"`
-	Identifier        string                 `protobuf:"bytes,3,opt,name=identifier,proto3" json:"identifier,omitempty"`
-	Name              string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
-	Content           string                 `protobuf:"bytes,5,opt,name=content,proto3" json:"content,omitempty"`
-	Role              Role                   `protobuf:"varint,6,opt,name=role,proto3,enum=muse.Role" json:"role,omitempty"`
-	IsEnabled         bool                   `protobuf:"varint,7,opt,name=is_enabled,json=isEnabled,proto3" json:"is_enabled,omitempty"`
-	InjectionPosition InjectionPosition      `protobuf:"varint,8,opt,name=injection_position,json=injectionPosition,proto3,enum=muse.InjectionPosition" json:"injection_position,omitempty"`
-	InjectionDepth    int32                  `protobuf:"varint,9,opt,name=injection_depth,json=injectionDepth,proto3" json:"injection_depth,omitempty"`
-	ForbidOverrides   bool                   `protobuf:"varint,10,opt,name=forbid_overrides,json=forbidOverrides,proto3" json:"forbid_overrides,omitempty"`
-	SortOrder         int32                  `protobuf:"varint,11,opt,name=sort_order,json=sortOrder,proto3" json:"sort_order,omitempty"`
-	CreatedAt         int64                  `protobuf:"varint,12,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt         int64                  `protobuf:"varint,13,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	Id                int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`                                                                                    // 提示项唯一标识ID
+	PresetId          int32                  `protobuf:"varint,2,opt,name=preset_id,json=presetId,proto3" json:"preset_id,omitempty"`                                                        // 所属预设ID
+	Identifier        string                 `protobuf:"bytes,3,opt,name=identifier,proto3" json:"identifier,omitempty"`                                                                     // 唯一标识符，用于程序识别
+	Name              string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`                                                                                 // 显示名称
+	Content           string                 `protobuf:"bytes,5,opt,name=content,proto3" json:"content,omitempty"`                                                                           // 提示词内容
+	Role              Role                   `protobuf:"varint,6,opt,name=role,proto3,enum=muse.Role" json:"role,omitempty"`                                                                 // 消息角色类型
+	IsEnabled         bool                   `protobuf:"varint,7,opt,name=is_enabled,json=isEnabled,proto3" json:"is_enabled,omitempty"`                                                     // 是否启用
+	InjectionPosition InjectionPosition      `protobuf:"varint,8,opt,name=injection_position,json=injectionPosition,proto3,enum=muse.InjectionPosition" json:"injection_position,omitempty"` // 注入位置类型
+	InjectionDepth    int32                  `protobuf:"varint,9,opt,name=injection_depth,json=injectionDepth,proto3" json:"injection_depth,omitempty"`                                      // 注入深度，绝对位置时的插入深度
+	ForbidOverrides   bool                   `protobuf:"varint,10,opt,name=forbid_overrides,json=forbidOverrides,proto3" json:"forbid_overrides,omitempty"`                                  // 禁止覆盖，是否允许被其他设置覆盖
+	SortOrder         int32                  `protobuf:"varint,11,opt,name=sort_order,json=sortOrder,proto3" json:"sort_order,omitempty"`                                                    // 排序序号
+	CreatedAt         int64                  `protobuf:"varint,12,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`                                                    // 创建时间（Unix时间戳）
+	UpdatedAt         int64                  `protobuf:"varint,13,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`                                                    // 最后更新时间（Unix时间戳）
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -1295,14 +1291,14 @@ func (x *PromptItem) GetUpdatedAt() int64 {
 	return 0
 }
 
-// RegexAffectFlags 正则规则作用范围
+// RegexAffectFlags 正则规则作用范围标志
 type RegexAffectFlags struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserInput     bool                   `protobuf:"varint,1,opt,name=user_input,json=userInput,proto3" json:"user_input,omitempty"`          // 用户输入
-	AiOutput      bool                   `protobuf:"varint,2,opt,name=ai_output,json=aiOutput,proto3" json:"ai_output,omitempty"`             // ai输出
-	SlashCommand  bool                   `protobuf:"varint,3,opt,name=slash_command,json=slashCommand,proto3" json:"slash_command,omitempty"` // 斜杠命令
-	WorldInfo     bool                   `protobuf:"varint,4,opt,name=world_info,json=worldInfo,proto3" json:"world_info,omitempty"`          // 世界书
-	Prompt        bool                   `protobuf:"varint,5,opt,name=prompt,proto3" json:"prompt,omitempty"`                                 // 作用于提示词
+	UserInput     bool                   `protobuf:"varint,1,opt,name=user_input,json=userInput,proto3" json:"user_input,omitempty"`          // 是否作用于用户输入
+	AiOutput      bool                   `protobuf:"varint,2,opt,name=ai_output,json=aiOutput,proto3" json:"ai_output,omitempty"`             // 是否作用于AI输出
+	SlashCommand  bool                   `protobuf:"varint,3,opt,name=slash_command,json=slashCommand,proto3" json:"slash_command,omitempty"` // 是否作用于斜杠命令
+	WorldInfo     bool                   `protobuf:"varint,4,opt,name=world_info,json=worldInfo,proto3" json:"world_info,omitempty"`          // 是否作用于世界书内容
+	Prompt        bool                   `protobuf:"varint,5,opt,name=prompt,proto3" json:"prompt,omitempty"`                                 // 是否作用于提示词
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1372,24 +1368,24 @@ func (x *RegexAffectFlags) GetPrompt() bool {
 	return false
 }
 
-// RegexRule 正则规则
+// RegexRule 正则替换规则，用于文本预处理和后处理
 type RegexRule struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
-	Id              int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	PresetId        int32                  `protobuf:"varint,2,opt,name=preset_id,json=presetId,proto3" json:"preset_id,omitempty"`           // 关联的预设ID（0 表示全局正则）
-	CharacterId     int32                  `protobuf:"varint,15,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"` // 关联的角色ID（0 表示非角色范围正则）
-	Name            string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	FindPattern     string                 `protobuf:"bytes,4,opt,name=find_pattern,json=findPattern,proto3" json:"find_pattern,omitempty"`
-	ReplacePattern  string                 `protobuf:"bytes,5,opt,name=replace_pattern,json=replacePattern,proto3" json:"replace_pattern,omitempty"`
-	IsEnabled       bool                   `protobuf:"varint,6,opt,name=is_enabled,json=isEnabled,proto3" json:"is_enabled,omitempty"`
-	RunOnEdit       bool                   `protobuf:"varint,7,opt,name=run_on_edit,json=runOnEdit,proto3" json:"run_on_edit,omitempty"`
-	SubstituteRegex bool                   `protobuf:"varint,8,opt,name=substitute_regex,json=substituteRegex,proto3" json:"substitute_regex,omitempty"`
-	MinDepth        int32                  `protobuf:"varint,9,opt,name=min_depth,json=minDepth,proto3" json:"min_depth,omitempty"`
-	MaxDepth        int32                  `protobuf:"varint,10,opt,name=max_depth,json=maxDepth,proto3" json:"max_depth,omitempty"`
-	AffectFlags     *RegexAffectFlags      `protobuf:"bytes,11,opt,name=affect_flags,json=affectFlags,proto3" json:"affect_flags,omitempty"` // 作用范围
-	SortOrder       int32                  `protobuf:"varint,12,opt,name=sort_order,json=sortOrder,proto3" json:"sort_order,omitempty"`
-	CreatedAt       int64                  `protobuf:"varint,13,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt       int64                  `protobuf:"varint,14,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	Id              int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`                                                  // 规则唯一标识ID
+	PresetId        int32                  `protobuf:"varint,2,opt,name=preset_id,json=presetId,proto3" json:"preset_id,omitempty"`                      // 关联的预设ID（0表示全局规则）
+	CharacterId     int32                  `protobuf:"varint,15,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"`            // 关联的角色ID（0表示非角色范围规则）
+	Name            string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`                                               // 规则名称
+	FindPattern     string                 `protobuf:"bytes,4,opt,name=find_pattern,json=findPattern,proto3" json:"find_pattern,omitempty"`              // 查找模式（正则表达式）
+	ReplacePattern  string                 `protobuf:"bytes,5,opt,name=replace_pattern,json=replacePattern,proto3" json:"replace_pattern,omitempty"`     // 替换模式
+	IsEnabled       bool                   `protobuf:"varint,6,opt,name=is_enabled,json=isEnabled,proto3" json:"is_enabled,omitempty"`                   // 是否启用
+	RunOnEdit       bool                   `protobuf:"varint,7,opt,name=run_on_edit,json=runOnEdit,proto3" json:"run_on_edit,omitempty"`                 // 编辑消息时是否运行
+	SubstituteRegex bool                   `protobuf:"varint,8,opt,name=substitute_regex,json=substituteRegex,proto3" json:"substitute_regex,omitempty"` // 是否使用正则替换（否则为字面量替换）
+	MinDepth        int32                  `protobuf:"varint,9,opt,name=min_depth,json=minDepth,proto3" json:"min_depth,omitempty"`                      // 最小作用深度
+	MaxDepth        int32                  `protobuf:"varint,10,opt,name=max_depth,json=maxDepth,proto3" json:"max_depth,omitempty"`                     // 最大作用深度
+	AffectFlags     *RegexAffectFlags      `protobuf:"bytes,11,opt,name=affect_flags,json=affectFlags,proto3" json:"affect_flags,omitempty"`             // 作用范围标志
+	SortOrder       int32                  `protobuf:"varint,12,opt,name=sort_order,json=sortOrder,proto3" json:"sort_order,omitempty"`                  // 排序序号，决定规则执行顺序
+	CreatedAt       int64                  `protobuf:"varint,13,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`                  // 创建时间（Unix时间戳）
+	UpdatedAt       int64                  `protobuf:"varint,14,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`                  // 最后更新时间（Unix时间戳）
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -1529,18 +1525,17 @@ func (x *RegexRule) GetUpdatedAt() int64 {
 	return 0
 }
 
-// WorldInfo 世界书
+// WorldInfo 世界书，存储角色相关的背景知识
 type WorldInfo struct {
-	state       protoimpl.MessageState `protogen:"open.v1"`
-	Id          int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	UserId      int32                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Name        string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	Description string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
-	IsGlobal    bool                   `protobuf:"varint,5,opt,name=is_global,json=isGlobal,proto3" json:"is_global,omitempty"`
-	CreatedAt   int64                  `protobuf:"varint,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt   int64                  `protobuf:"varint,7,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	// 关联数据（可选加载）
-	Entries       []*WorldInfoEntry `protobuf:"bytes,8,rep,name=entries,proto3" json:"entries,omitempty"`
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`                                // 世界书唯一标识ID
+	UserId        int32                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`          // 所属用户ID
+	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`                             // 世界书名称
+	Description   string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`               // 世界书描述
+	IsGlobal      bool                   `protobuf:"varint,5,opt,name=is_global,json=isGlobal,proto3" json:"is_global,omitempty"`    // 是否为全局世界书，全局世界书对所有角色生效
+	CreatedAt     int64                  `protobuf:"varint,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"` // 创建时间（Unix时间戳）
+	UpdatedAt     int64                  `protobuf:"varint,7,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"` // 最后更新时间（Unix时间戳）
+	Entries       []*WorldInfoEntry      `protobuf:"bytes,8,rep,name=entries,proto3" json:"entries,omitempty"`                       // 世界书条目列表（可选加载）
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1631,25 +1626,25 @@ func (x *WorldInfo) GetEntries() []*WorldInfoEntry {
 	return nil
 }
 
-// WorldInfoEntry 世界书条目
+// WorldInfoEntry 世界书条目，单条背景知识
 type WorldInfoEntry struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	Id             int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	WorldInfoId    int32                  `protobuf:"varint,2,opt,name=world_info_id,json=worldInfoId,proto3" json:"world_info_id,omitempty"`
-	Uid            string                 `protobuf:"bytes,3,opt,name=uid,proto3" json:"uid,omitempty"`
-	KeysList       string                 `protobuf:"bytes,4,opt,name=keys_list,json=keysList,proto3" json:"keys_list,omitempty"`
-	SecondaryKeys  string                 `protobuf:"bytes,5,opt,name=secondary_keys,json=secondaryKeys,proto3" json:"secondary_keys,omitempty"`
-	Content        string                 `protobuf:"bytes,6,opt,name=content,proto3" json:"content,omitempty"`
-	Comment        string                 `protobuf:"bytes,7,opt,name=comment,proto3" json:"comment,omitempty"`
-	IsEnabled      bool                   `protobuf:"varint,8,opt,name=is_enabled,json=isEnabled,proto3" json:"is_enabled,omitempty"`
-	Constant       bool                   `protobuf:"varint,9,opt,name=constant,proto3" json:"constant,omitempty"`
-	Selective      bool                   `protobuf:"varint,10,opt,name=selective,proto3" json:"selective,omitempty"`
-	InsertionOrder int32                  `protobuf:"varint,11,opt,name=insertion_order,json=insertionOrder,proto3" json:"insertion_order,omitempty"`
-	Position       EntryPosition          `protobuf:"varint,12,opt,name=position,proto3,enum=muse.EntryPosition" json:"position,omitempty"`
-	Depth          int32                  `protobuf:"varint,13,opt,name=depth,proto3" json:"depth,omitempty"`
-	SortOrder      int32                  `protobuf:"varint,14,opt,name=sort_order,json=sortOrder,proto3" json:"sort_order,omitempty"`
-	CreatedAt      int64                  `protobuf:"varint,15,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt      int64                  `protobuf:"varint,16,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	Id             int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`                                                // 条目唯一标识ID
+	WorldInfoId    int32                  `protobuf:"varint,2,opt,name=world_info_id,json=worldInfoId,proto3" json:"world_info_id,omitempty"`         // 所属世界书ID
+	Uid            string                 `protobuf:"bytes,3,opt,name=uid,proto3" json:"uid,omitempty"`                                               // 条目唯一标识符（用于导入导出）
+	KeysList       string                 `protobuf:"bytes,4,opt,name=keys_list,json=keysList,proto3" json:"keys_list,omitempty"`                     // 主关键词列表，逗号分隔，匹配时触发条目
+	SecondaryKeys  string                 `protobuf:"bytes,5,opt,name=secondary_keys,json=secondaryKeys,proto3" json:"secondary_keys,omitempty"`      // 次要关键词列表，与主关键词配合使用
+	Content        string                 `protobuf:"bytes,6,opt,name=content,proto3" json:"content,omitempty"`                                       // 条目内容，注入到提示词中的文本
+	Comment        string                 `protobuf:"bytes,7,opt,name=comment,proto3" json:"comment,omitempty"`                                       // 条目备注，仅用于管理不会注入
+	IsEnabled      bool                   `protobuf:"varint,8,opt,name=is_enabled,json=isEnabled,proto3" json:"is_enabled,omitempty"`                 // 是否启用
+	Constant       bool                   `protobuf:"varint,9,opt,name=constant,proto3" json:"constant,omitempty"`                                    // 是否常驻，常驻条目始终注入不需要关键词匹配
+	Selective      bool                   `protobuf:"varint,10,opt,name=selective,proto3" json:"selective,omitempty"`                                 // 选择性匹配，需同时匹配主关键词和次要关键词
+	InsertionOrder int32                  `protobuf:"varint,11,opt,name=insertion_order,json=insertionOrder,proto3" json:"insertion_order,omitempty"` // 插入优先级，数值越小优先级越高
+	Position       EntryPosition          `protobuf:"varint,12,opt,name=position,proto3,enum=muse.EntryPosition" json:"position,omitempty"`           // 插入位置类型
+	Depth          int32                  `protobuf:"varint,13,opt,name=depth,proto3" json:"depth,omitempty"`                                         // 插入深度，AtDepth位置时的深度值
+	SortOrder      int32                  `protobuf:"varint,14,opt,name=sort_order,json=sortOrder,proto3" json:"sort_order,omitempty"`                // 排序序号
+	CreatedAt      int64                  `protobuf:"varint,15,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`                // 创建时间（Unix时间戳）
+	UpdatedAt      int64                  `protobuf:"varint,16,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`                // 最后更新时间（Unix时间戳）
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -1796,19 +1791,19 @@ func (x *WorldInfoEntry) GetUpdatedAt() int64 {
 	return 0
 }
 
-// APIConfig API配置
+// APIConfig API连接配置
 type APIConfig struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	UserId        int32                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	Provider      APIProvider            `protobuf:"varint,4,opt,name=provider,proto3,enum=muse.APIProvider" json:"provider,omitempty"`
-	ApiKey        string                 `protobuf:"bytes,5,opt,name=api_key,json=apiKey,proto3" json:"api_key,omitempty"` // 创建/更新时使用，查询时不返回
-	BaseUrl       string                 `protobuf:"bytes,6,opt,name=base_url,json=baseUrl,proto3" json:"base_url,omitempty"`
-	Model         string                 `protobuf:"bytes,7,opt,name=model,proto3" json:"model,omitempty"`
-	IsActive      bool                   `protobuf:"varint,8,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
-	CreatedAt     int64                  `protobuf:"varint,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt     int64                  `protobuf:"varint,10,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`                                   // 配置唯一标识ID
+	UserId        int32                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`             // 所属用户ID
+	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`                                // 配置名称
+	Provider      APIProvider            `protobuf:"varint,4,opt,name=provider,proto3,enum=muse.APIProvider" json:"provider,omitempty"` // API服务提供商
+	ApiKey        string                 `protobuf:"bytes,5,opt,name=api_key,json=apiKey,proto3" json:"api_key,omitempty"`              // API密钥（创建/更新时使用，查询时不返回）
+	BaseUrl       string                 `protobuf:"bytes,6,opt,name=base_url,json=baseUrl,proto3" json:"base_url,omitempty"`           // API基础URL（用于代理或自定义端点）
+	Model         string                 `protobuf:"bytes,7,opt,name=model,proto3" json:"model,omitempty"`                              // 使用的模型名称
+	IsActive      bool                   `protobuf:"varint,8,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`       // 是否为当前激活的配置
+	CreatedAt     int64                  `protobuf:"varint,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`    // 创建时间（Unix时间戳）
+	UpdatedAt     int64                  `protobuf:"varint,10,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`   // 最后更新时间（Unix时间戳）
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }

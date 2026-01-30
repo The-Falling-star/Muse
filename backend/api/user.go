@@ -25,9 +25,9 @@ func (u *UserServer) Register(ctx context.Context, req *connect.Request[pb.Regis
 	*connect.Response[pb.RegisterResponse], error) {
 	resp, err := u.user.Register(ctx, req.Msg)
 	if err != nil {
-		return nil, err
+		return doResponseExp(ctx, "Register", req.Msg, resp, err)
 	}
-	return connect.NewResponse(resp), nil
+	return doResponse(ctx, "Register", req.Msg, resp)
 }
 
 // Login 处理用户登录请求
@@ -35,9 +35,9 @@ func (u *UserServer) Login(ctx context.Context, req *connect.Request[pb.LoginReq
 	*connect.Response[pb.LoginResponse], error) {
 	resp, err := u.user.Login(ctx, req.Msg)
 	if err != nil {
-		return nil, err
+		return doResponseExp(ctx, "Login", req.Msg, resp, err)
 	}
-	return connect.NewResponse(resp), nil
+	return doResponse(ctx, "Login", req.Msg, resp)
 }
 
 // GetCurrentUser 获取当前登录用户信息
@@ -45,9 +45,9 @@ func (u *UserServer) GetCurrentUser(ctx context.Context, req *connect.Request[pb
 	*connect.Response[pb.GetCurrentUserResponse], error) {
 	resp, err := u.user.GetCurrentUser(ctx, req.Msg)
 	if err != nil {
-		return nil, err
+		return doResponseExp(ctx, "GetCurrentUser", req.Msg, resp, err)
 	}
-	return connect.NewResponse(resp), nil
+	return doResponse(ctx, "GetCurrentUser", req.Msg, resp)
 }
 
 // ChangePassword 处理用户修改密码请求
@@ -55,9 +55,9 @@ func (u *UserServer) ChangePassword(ctx context.Context, req *connect.Request[pb
 	*connect.Response[pb.ChangePasswordResponse], error) {
 	resp, err := u.user.ChangePassword(ctx, req.Msg)
 	if err != nil {
-		return nil, err
+		return doResponseExp(ctx, "ChangePassword", req.Msg, resp, err)
 	}
-	return connect.NewResponse(resp), nil
+	return doResponse(ctx, "ChangePassword", req.Msg, resp)
 }
 
 // ListPersonas 获取人设列表
@@ -65,9 +65,9 @@ func (u *UserServer) ListPersonas(ctx context.Context, req *connect.Request[pb.L
 	*connect.Response[pb.ListPersonasResponse], error) {
 	resp, err := u.user.ListPersonas(ctx, req.Msg)
 	if err != nil {
-		return nil, err
+		return doResponseExp(ctx, "ListPersonas", req.Msg, resp, err)
 	}
-	return connect.NewResponse(resp), nil
+	return doResponse(ctx, "ListPersonas", req.Msg, resp)
 }
 
 // GetPersona 获取指定人设详情
@@ -75,9 +75,9 @@ func (u *UserServer) GetPersona(ctx context.Context, req *connect.Request[pb.Get
 	*connect.Response[pb.GetPersonaResponse], error) {
 	resp, err := u.user.GetPersona(ctx, req.Msg)
 	if err != nil {
-		return nil, err
+		return doResponseExp(ctx, "GetPersona", req.Msg, resp, err)
 	}
-	return connect.NewResponse(resp), nil
+	return doResponse(ctx, "GetPersona", req.Msg, resp)
 }
 
 // CreatePersona 创建新人设
@@ -85,9 +85,9 @@ func (u *UserServer) CreatePersona(ctx context.Context, req *connect.Request[pb.
 	*connect.Response[pb.CreatePersonaResponse], error) {
 	resp, err := u.user.CreatePersona(ctx, req.Msg)
 	if err != nil {
-		return nil, err
+		return doResponseExp(ctx, "CreatePersona", req.Msg, resp, err)
 	}
-	return connect.NewResponse(resp), nil
+	return doResponse(ctx, "CreatePersona", req.Msg, resp)
 }
 
 // UpdatePersona 更新指定人设
@@ -95,9 +95,9 @@ func (u *UserServer) UpdatePersona(ctx context.Context, req *connect.Request[pb.
 	*connect.Response[pb.UpdatePersonaResponse], error) {
 	resp, err := u.user.UpdatePersona(ctx, req.Msg)
 	if err != nil {
-		return nil, err
+		return doResponseExp(ctx, "UpdatePersona", req.Msg, resp, err)
 	}
-	return connect.NewResponse(resp), nil
+	return doResponse(ctx, "UpdatePersona", req.Msg, resp)
 }
 
 // DeletePersona 删除指定人设
@@ -105,9 +105,9 @@ func (u *UserServer) DeletePersona(ctx context.Context, req *connect.Request[pb.
 	*connect.Response[pb.DeletePersonaResponse], error) {
 	resp, err := u.user.DeletePersona(ctx, req.Msg)
 	if err != nil {
-		return nil, err
+		return doResponseExp(ctx, "DeletePersona", req.Msg, resp, err)
 	}
-	return connect.NewResponse(resp), nil
+	return doResponse(ctx, "DeletePersona", req.Msg, resp)
 }
 
 // SetActivePersona 设置当前激活的人设
@@ -115,9 +115,9 @@ func (u *UserServer) SetActivePersona(ctx context.Context, req *connect.Request[
 	*connect.Response[pb.SetActivePersonaResponse], error) {
 	resp, err := u.user.SetActivePersona(ctx, req.Msg)
 	if err != nil {
-		return nil, err
+		return doResponseExp(ctx, "SetActivePersona", req.Msg, resp, err)
 	}
-	return connect.NewResponse(resp), nil
+	return doResponse(ctx, "SetActivePersona", req.Msg, resp)
 }
 
 // GetUserSetting 获取用户设置
@@ -125,9 +125,9 @@ func (u *UserServer) GetUserSetting(ctx context.Context, req *connect.Request[pb
 	*connect.Response[pb.GetUserSettingResponse], error) {
 	resp, err := u.user.GetUserSetting(ctx, req.Msg)
 	if err != nil {
-		return nil, err
+		return doResponseExp(ctx, "GetUserSetting", req.Msg, resp, err)
 	}
-	return connect.NewResponse(resp), nil
+	return doResponse(ctx, "GetUserSetting", req.Msg, resp)
 }
 
 // UpdateUserSetting 更新用户设置
@@ -135,9 +135,9 @@ func (u *UserServer) UpdateUserSetting(ctx context.Context, req *connect.Request
 	*connect.Response[pb.UpdateUserSettingResponse], error) {
 	resp, err := u.user.UpdateUserSetting(ctx, req.Msg)
 	if err != nil {
-		return nil, err
+		return doResponseExp(ctx, "UpdateUserSetting", req.Msg, resp, err)
 	}
-	return connect.NewResponse(resp), nil
+	return doResponse(ctx, "UpdateUserSetting", req.Msg, resp)
 }
 
 // ListAPIConfigs 获取API配置列表
@@ -145,9 +145,9 @@ func (u *UserServer) ListAPIConfigs(ctx context.Context, req *connect.Request[pb
 	*connect.Response[pb.ListAPIConfigsResponse], error) {
 	resp, err := u.user.ListAPIConfigs(ctx, req.Msg)
 	if err != nil {
-		return nil, err
+		return doResponseExp(ctx, "ListAPIConfigs", req.Msg, resp, err)
 	}
-	return connect.NewResponse(resp), nil
+	return doResponse(ctx, "ListAPIConfigs", req.Msg, resp)
 }
 
 // GetAPIConfig 获取指定的API配置
@@ -155,9 +155,9 @@ func (u *UserServer) GetAPIConfig(ctx context.Context, req *connect.Request[pb.G
 	*connect.Response[pb.GetAPIConfigResponse], error) {
 	resp, err := u.user.GetAPIConfig(ctx, req.Msg)
 	if err != nil {
-		return nil, err
+		return doResponseExp(ctx, "GetAPIConfig", req.Msg, resp, err)
 	}
-	return connect.NewResponse(resp), nil
+	return doResponse(ctx, "GetAPIConfig", req.Msg, resp)
 }
 
 // CreateAPIConfig 创建新的API配置
@@ -165,9 +165,9 @@ func (u *UserServer) CreateAPIConfig(ctx context.Context, req *connect.Request[p
 	*connect.Response[pb.CreateAPIConfigResponse], error) {
 	resp, err := u.user.CreateAPIConfig(ctx, req.Msg)
 	if err != nil {
-		return nil, err
+		return doResponseExp(ctx, "CreateAPIConfig", req.Msg, resp, err)
 	}
-	return connect.NewResponse(resp), nil
+	return doResponse(ctx, "CreateAPIConfig", req.Msg, resp)
 }
 
 // UpdateAPIConfig 更新指定的API配置
@@ -175,9 +175,9 @@ func (u *UserServer) UpdateAPIConfig(ctx context.Context, req *connect.Request[p
 	*connect.Response[pb.UpdateAPIConfigResponse], error) {
 	resp, err := u.user.UpdateAPIConfig(ctx, req.Msg)
 	if err != nil {
-		return nil, err
+		return doResponseExp(ctx, "UpdateAPIConfig", req.Msg, resp, err)
 	}
-	return connect.NewResponse(resp), nil
+	return doResponse(ctx, "UpdateAPIConfig", req.Msg, resp)
 }
 
 // DeleteAPIConfig 删除指定的API配置
@@ -185,9 +185,9 @@ func (u *UserServer) DeleteAPIConfig(ctx context.Context, req *connect.Request[p
 	*connect.Response[pb.DeleteAPIConfigResponse], error) {
 	resp, err := u.user.DeleteAPIConfig(ctx, req.Msg)
 	if err != nil {
-		return nil, err
+		return doResponseExp(ctx, "DeleteAPIConfig", req.Msg, resp, err)
 	}
-	return connect.NewResponse(resp), nil
+	return doResponse(ctx, "DeleteAPIConfig", req.Msg, resp)
 }
 
 // SetActiveAPIConfig 设置当前激活的API配置
@@ -195,9 +195,9 @@ func (u *UserServer) SetActiveAPIConfig(ctx context.Context, req *connect.Reques
 	*connect.Response[pb.SetActiveAPIConfigResponse], error) {
 	resp, err := u.user.SetActiveAPIConfig(ctx, req.Msg)
 	if err != nil {
-		return nil, err
+		return doResponseExp(ctx, "SetActiveAPIConfig", req.Msg, resp, err)
 	}
-	return connect.NewResponse(resp), nil
+	return doResponse(ctx, "SetActiveAPIConfig", req.Msg, resp)
 }
 
 // TestAPIConfig 测试API配置的连通性
@@ -205,9 +205,9 @@ func (u *UserServer) TestAPIConfig(ctx context.Context, req *connect.Request[pb.
 	*connect.Response[pb.TestAPIConfigResponse], error) {
 	resp, err := u.user.TestAPIConfig(ctx, req.Msg)
 	if err != nil {
-		return nil, err
+		return doResponseExp(ctx, "TestAPIConfig", req.Msg, resp, err)
 	}
-	return connect.NewResponse(resp), nil
+	return doResponse(ctx, "TestAPIConfig", req.Msg, resp)
 }
 
 // GetPublicConfig 获取公共配置（无需认证）
@@ -215,7 +215,7 @@ func (u *UserServer) GetPublicConfig(ctx context.Context, req *connect.Request[p
 	*connect.Response[pb.GetPublicConfigResponse], error) {
 	resp, err := u.user.GetPublicConfig(ctx, req.Msg)
 	if err != nil {
-		return nil, err
+		return doResponseExp(ctx, "GetPublicConfig", req.Msg, resp, err)
 	}
-	return connect.NewResponse(resp), nil
+	return doResponse(ctx, "GetPublicConfig", req.Msg, resp)
 }

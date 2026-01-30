@@ -25,9 +25,9 @@ func (c *ChatServer) ListChatSessions(ctx context.Context, req *connect.Request[
 	*connect.Response[pb.ListChatSessionsResponse], error) {
 	resp, err := c.chat.ListChatSessions(ctx, req.Msg)
 	if err != nil {
-		return nil, err
+		return doResponseExp(ctx, "ListChatSessions", req.Msg, resp, err)
 	}
-	return connect.NewResponse(resp), nil
+	return doResponse(ctx, "ListChatSessions", req.Msg, resp)
 }
 
 // GetChatSession 获取指定聊天会话详情
@@ -35,9 +35,9 @@ func (c *ChatServer) GetChatSession(ctx context.Context, req *connect.Request[pb
 	*connect.Response[pb.GetChatSessionResponse], error) {
 	resp, err := c.chat.GetChatSession(ctx, req.Msg)
 	if err != nil {
-		return nil, err
+		return doResponseExp(ctx, "GetChatSession", req.Msg, resp, err)
 	}
-	return connect.NewResponse(resp), nil
+	return doResponse(ctx, "GetChatSession", req.Msg, resp)
 }
 
 // CreateChatSession 创建新的聊天会话
@@ -45,9 +45,9 @@ func (c *ChatServer) CreateChatSession(ctx context.Context, req *connect.Request
 	*connect.Response[pb.CreateChatSessionResponse], error) {
 	resp, err := c.chat.CreateChatSession(ctx, req.Msg)
 	if err != nil {
-		return nil, err
+		return doResponseExp(ctx, "CreateChatSession", req.Msg, resp, err)
 	}
-	return connect.NewResponse(resp), nil
+	return doResponse(ctx, "CreateChatSession", req.Msg, resp)
 }
 
 // UpdateChatSession 更新指定聊天会话
@@ -55,9 +55,9 @@ func (c *ChatServer) UpdateChatSession(ctx context.Context, req *connect.Request
 	*connect.Response[pb.UpdateChatSessionResponse], error) {
 	resp, err := c.chat.UpdateChatSession(ctx, req.Msg)
 	if err != nil {
-		return nil, err
+		return doResponseExp(ctx, "UpdateChatSession", req.Msg, resp, err)
 	}
-	return connect.NewResponse(resp), nil
+	return doResponse(ctx, "UpdateChatSession", req.Msg, resp)
 }
 
 // DeleteChatSession 删除指定聊天会话
@@ -65,9 +65,9 @@ func (c *ChatServer) DeleteChatSession(ctx context.Context, req *connect.Request
 	*connect.Response[pb.DeleteChatSessionResponse], error) {
 	resp, err := c.chat.DeleteChatSession(ctx, req.Msg)
 	if err != nil {
-		return nil, err
+		return doResponseExp(ctx, "DeleteChatSession", req.Msg, resp, err)
 	}
-	return connect.NewResponse(resp), nil
+	return doResponse(ctx, "DeleteChatSession", req.Msg, resp)
 }
 
 // SendMessage 发送消息（流式响应）
@@ -87,9 +87,9 @@ func (c *ChatServer) EditMessage(ctx context.Context, req *connect.Request[pb.Ed
 	*connect.Response[pb.EditMessageResponse], error) {
 	resp, err := c.chat.EditMessage(ctx, req.Msg)
 	if err != nil {
-		return nil, err
+		return doResponseExp(ctx, "EditMessage", req.Msg, resp, err)
 	}
-	return connect.NewResponse(resp), nil
+	return doResponse(ctx, "EditMessage", req.Msg, resp)
 }
 
 // DeleteMessage 删除消息
@@ -97,9 +97,9 @@ func (c *ChatServer) DeleteMessage(ctx context.Context, req *connect.Request[pb.
 	*connect.Response[pb.DeleteMessageResponse], error) {
 	resp, err := c.chat.DeleteMessage(ctx, req.Msg)
 	if err != nil {
-		return nil, err
+		return doResponseExp(ctx, "DeleteMessage", req.Msg, resp, err)
 	}
-	return connect.NewResponse(resp), nil
+	return doResponse(ctx, "DeleteMessage", req.Msg, resp)
 }
 
 // SwitchSwipe 切换消息滑动选项
@@ -107,7 +107,7 @@ func (c *ChatServer) SwitchSwipe(ctx context.Context, req *connect.Request[pb.Sw
 	*connect.Response[pb.SwitchSwipeResponse], error) {
 	resp, err := c.chat.SwitchSwipe(ctx, req.Msg)
 	if err != nil {
-		return nil, err
+		return doResponseExp(ctx, "SwitchSwipe", req.Msg, resp, err)
 	}
-	return connect.NewResponse(resp), nil
+	return doResponse(ctx, "SwitchSwipe", req.Msg, resp)
 }

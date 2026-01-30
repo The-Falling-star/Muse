@@ -43,6 +43,9 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
+	// UserServiceGetPublicConfigProcedure is the fully-qualified name of the UserService's
+	// GetPublicConfig RPC.
+	UserServiceGetPublicConfigProcedure = "/muse.UserService/GetPublicConfig"
 	// UserServiceRegisterProcedure is the fully-qualified name of the UserService's Register RPC.
 	UserServiceRegisterProcedure = "/muse.UserService/Register"
 	// UserServiceLoginProcedure is the fully-qualified name of the UserService's Login RPC.
@@ -247,6 +250,8 @@ const (
 
 // UserServiceClient is a client for the muse.UserService service.
 type UserServiceClient interface {
+	// 获取公共配置（无需认证）
+	GetPublicConfig(context.Context, *connect.Request[muse.GetPublicConfigRequest]) (*connect.Response[muse.GetPublicConfigResponse], error)
 	// 用户注册
 	Register(context.Context, *connect.Request[muse.RegisterRequest]) (*connect.Response[muse.RegisterResponse], error)
 	// 用户登录
@@ -298,6 +303,12 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 	baseURL = strings.TrimRight(baseURL, "/")
 	userServiceMethods := muse.File_muse_muse_proto.Services().ByName("UserService").Methods()
 	return &userServiceClient{
+		getPublicConfig: connect.NewClient[muse.GetPublicConfigRequest, muse.GetPublicConfigResponse](
+			httpClient,
+			baseURL+UserServiceGetPublicConfigProcedure,
+			connect.WithSchema(userServiceMethods.ByName("GetPublicConfig")),
+			connect.WithClientOptions(opts...),
+		),
 		register: connect.NewClient[muse.RegisterRequest, muse.RegisterResponse](
 			httpClient,
 			baseURL+UserServiceRegisterProcedure,
@@ -417,6 +428,7 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 
 // userServiceClient implements UserServiceClient.
 type userServiceClient struct {
+	getPublicConfig    *connect.Client[muse.GetPublicConfigRequest, muse.GetPublicConfigResponse]
 	register           *connect.Client[muse.RegisterRequest, muse.RegisterResponse]
 	login              *connect.Client[muse.LoginRequest, muse.LoginResponse]
 	getCurrentUser     *connect.Client[muse.GetCurrentUserRequest, muse.GetCurrentUserResponse]
@@ -436,6 +448,11 @@ type userServiceClient struct {
 	deleteAPIConfig    *connect.Client[muse.DeleteAPIConfigRequest, muse.DeleteAPIConfigResponse]
 	setActiveAPIConfig *connect.Client[muse.SetActiveAPIConfigRequest, muse.SetActiveAPIConfigResponse]
 	testAPIConfig      *connect.Client[muse.TestAPIConfigRequest, muse.TestAPIConfigResponse]
+}
+
+// GetPublicConfig calls muse.UserService.GetPublicConfig.
+func (c *userServiceClient) GetPublicConfig(ctx context.Context, req *connect.Request[muse.GetPublicConfigRequest]) (*connect.Response[muse.GetPublicConfigResponse], error) {
+	return c.getPublicConfig.CallUnary(ctx, req)
 }
 
 // Register calls muse.UserService.Register.
@@ -535,6 +552,8 @@ func (c *userServiceClient) TestAPIConfig(ctx context.Context, req *connect.Requ
 
 // UserServiceHandler is an implementation of the muse.UserService service.
 type UserServiceHandler interface {
+	// 获取公共配置（无需认证）
+	GetPublicConfig(context.Context, *connect.Request[muse.GetPublicConfigRequest]) (*connect.Response[muse.GetPublicConfigResponse], error)
 	// 用户注册
 	Register(context.Context, *connect.Request[muse.RegisterRequest]) (*connect.Response[muse.RegisterResponse], error)
 	// 用户登录
@@ -582,6 +601,12 @@ type UserServiceHandler interface {
 // and JSON codecs. They also support gzip compression.
 func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
 	userServiceMethods := muse.File_muse_muse_proto.Services().ByName("UserService").Methods()
+	userServiceGetPublicConfigHandler := connect.NewUnaryHandler(
+		UserServiceGetPublicConfigProcedure,
+		svc.GetPublicConfig,
+		connect.WithSchema(userServiceMethods.ByName("GetPublicConfig")),
+		connect.WithHandlerOptions(opts...),
+	)
 	userServiceRegisterHandler := connect.NewUnaryHandler(
 		UserServiceRegisterProcedure,
 		svc.Register,
@@ -698,6 +723,8 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 	)
 	return "/muse.UserService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
+		case UserServiceGetPublicConfigProcedure:
+			userServiceGetPublicConfigHandler.ServeHTTP(w, r)
 		case UserServiceRegisterProcedure:
 			userServiceRegisterHandler.ServeHTTP(w, r)
 		case UserServiceLoginProcedure:
@@ -744,6 +771,10 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 
 // UnimplementedUserServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedUserServiceHandler struct{}
+
+func (UnimplementedUserServiceHandler) GetPublicConfig(context.Context, *connect.Request[muse.GetPublicConfigRequest]) (*connect.Response[muse.GetPublicConfigResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.GetPublicConfig is not implemented"))
+}
 
 func (UnimplementedUserServiceHandler) Register(context.Context, *connect.Request[muse.RegisterRequest]) (*connect.Response[muse.RegisterResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.Register is not implemented"))

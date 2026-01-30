@@ -479,8 +479,22 @@ message TestAPIConfigResponse {
   optional string model_info = 3;  // 返回的模型信息
 }
 
+// ================================
+// 公共配置（无需认证）
+// ================================
+
+// 获取公共配置请求
+message GetPublicConfigRequest {}
+
+// 获取公共配置响应
+message GetPublicConfigResponse {
+  bool skip_auth = 1;  // 是否跳过认证
+}
+
 // 用户服务（包含认证、人设、用户设置和API配置的管理）
 service UserService {
+  // 获取公共配置（无需认证）
+  rpc GetPublicConfig(GetPublicConfigRequest) returns (GetPublicConfigResponse);
   // 用户注册
   rpc Register(RegisterRequest) returns (RegisterResponse);
   // 用户登录

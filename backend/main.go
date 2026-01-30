@@ -42,8 +42,9 @@ func main() {
 
 	// 创建认证中间件（跳过注册、登录和健康检查接口）
 	authInterceptor := middleware.AuthInterceptor([]string{
-		museconnect.UserServiceRegisterProcedure, // 注册接口
-		museconnect.UserServiceLoginProcedure,    // 登录接口
+		museconnect.UserServiceGetPublicConfigProcedure, // 获取公共配置接口（无需认证）
+		museconnect.UserServiceRegisterProcedure,        // 注册接口
+		museconnect.UserServiceLoginProcedure,           // 登录接口
 	})
 
 	// 创建HTTP服务器

@@ -209,3 +209,13 @@ func (u *UserServer) TestAPIConfig(ctx context.Context, req *connect.Request[pb.
 	}
 	return connect.NewResponse(resp), nil
 }
+
+// GetPublicConfig 获取公共配置（无需认证）
+func (u *UserServer) GetPublicConfig(ctx context.Context, req *connect.Request[pb.GetPublicConfigRequest]) (
+	*connect.Response[pb.GetPublicConfigResponse], error) {
+	resp, err := u.user.GetPublicConfig(ctx, req.Msg)
+	if err != nil {
+		return nil, err
+	}
+	return connect.NewResponse(resp), nil
+}

@@ -68,6 +68,18 @@ export const useUserStore = defineStore('user', () => {
     currentUser.value = user;
   };
 
+  // 登录
+  const login = async (username: string, password: string) => {
+    const res = await userClient.login({ username, password });
+    if (res.token) {
+      setToken(res.token);
+    }
+    if (res.user) {
+      currentUser.value = res.user;
+    }
+    return res;
+  };
+
   // 登出
   const logout = () => {
     setToken(null);
@@ -196,6 +208,7 @@ export const useUserStore = defineStore('user', () => {
     // 认证方法
     setToken,
     setCurrentUser,
+    login,
     logout,
 
     // 人设方法

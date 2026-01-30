@@ -5737,8 +5737,11 @@ func (x *SwitchSwipeResponse) GetMessage() *Message {
 }
 
 // 获取预设列表请求
+// 注意：此接口不加载关联的PromptItems和RegexRules数据，仅返回预设基本信息
 type ListPresetsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Page          int32                  `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`                         // 页码，从1开始，默认为1
+	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"` // 每页数量，默认为20，最大100
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -5773,10 +5776,28 @@ func (*ListPresetsRequest) Descriptor() ([]byte, []int) {
 	return file_muse_muse_proto_rawDescGZIP(), []int{90}
 }
 
+func (x *ListPresetsRequest) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *ListPresetsRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
 // 获取预设列表响应
+// 注意：返回的预设不包含关联的PromptItems和RegexRules数据
 type ListPresetsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Presets       []*Preset              `protobuf:"bytes,1,rep,name=presets,proto3" json:"presets,omitempty"`
+	Presets       []*Preset              `protobuf:"bytes,1,rep,name=presets,proto3" json:"presets,omitempty"`                    // 预设列表
+	Total         int64                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`                       // 总数
+	Page          int32                  `protobuf:"varint,3,opt,name=page,proto3" json:"page,omitempty"`                         // 当前页码
+	PageSize      int32                  `protobuf:"varint,4,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"` // 每页数量
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -5816,6 +5837,27 @@ func (x *ListPresetsResponse) GetPresets() []*Preset {
 		return x.Presets
 	}
 	return nil
+}
+
+func (x *ListPresetsResponse) GetTotal() int64 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *ListPresetsResponse) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *ListPresetsResponse) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
 }
 
 // 获取单个预设请求
@@ -9955,10 +9997,15 @@ const file_muse_muse_proto_rawDesc = "" +
 	"\vswipe_index\x18\x02 \x01(\x05R\n" +
 	"swipeIndex\">\n" +
 	"\x13SwitchSwipeResponse\x12'\n" +
-	"\amessage\x18\x01 \x01(\v2\r.muse.MessageR\amessage\"\x14\n" +
-	"\x12ListPresetsRequest\"=\n" +
+	"\amessage\x18\x01 \x01(\v2\r.muse.MessageR\amessage\"E\n" +
+	"\x12ListPresetsRequest\x12\x12\n" +
+	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\"\x84\x01\n" +
 	"\x13ListPresetsResponse\x12&\n" +
-	"\apresets\x18\x01 \x03(\v2\f.muse.PresetR\apresets\"\"\n" +
+	"\apresets\x18\x01 \x03(\v2\f.muse.PresetR\apresets\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x03R\x05total\x12\x12\n" +
+	"\x04page\x18\x03 \x01(\x05R\x04page\x12\x1b\n" +
+	"\tpage_size\x18\x04 \x01(\x05R\bpageSize\"\"\n" +
 	"\x10GetPresetRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\"9\n" +
 	"\x11GetPresetResponse\x12$\n" +

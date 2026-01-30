@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { presetClient } from '@/api/client';
 import type { Preset, PromptItem, Role, InjectionPosition } from '@/gen/muse/muse_pb';
+import { DEFAULT_PAGE_NUM, DEFAULT_PAGE_SIZE, FETCH_ALL_PAGE_SIZE } from '@/utils/constants';
 
 export const usePresetStore = defineStore('preset', () => {
   // =====================
@@ -18,6 +19,12 @@ export const usePresetStore = defineStore('preset', () => {
   const loading = ref(false);
   // 搜索关键词
   const searchQuery = ref('');
+  // 分页状态
+  const pagination = ref({
+    page: DEFAULT_PAGE_NUM,
+    pageSize: DEFAULT_PAGE_SIZE,
+    total: 0
+  });
 
   // =====================
   // 计算属性
@@ -40,9 +47,37 @@ export const usePresetStore = defineStore('preset', () => {
   // =====================
 
   // 获取预设列表
-  const fetchPresets = async () => {
-    const response = await presetClient.listPresets({});
+  const fetchPresets = async (page?: number, pageSize?: number) => {
+    const requestPage = page ?? pagination.value.page;
+    const requestPageSize = pageSize ?? pagination.value.pageSize;
+    
+    const response = await presetClient.listPresets({
+      page: requestPage,
+      pageSize: requestPageSize
+    });
+    
     presets.value = response.presets;
+    pagination.value = {
+      page: response.page,
+      pageSize: response.pageSize,
+      total: Number(response.total)
+    };
+    
+    return response.presets;
+  };
+
+  // 获取所有预设（不分页，用于需要全部数据的场景）
+  const fetchAllPresets = async () => {
+    const response = await presetClient.listPresets({
+      page: DEFAULT_PAGE_NUM,
+      pageSize: FETCH_ALL_PAGE_SIZE
+    });
+    presets.value = response.presets;
+    pagination.value = {
+      page: DEFAULT_PAGE_NUM,
+      pageSize: response.presets.length,
+      total: Number(response.total)
+    };
     return response.presets;
   };
 
@@ -253,6 +288,11 @@ export const usePresetStore = defineStore('preset', () => {
     selectedPreset.value = null;
     promptItems.value = [];
     searchQuery.value = '';
+    pagination.value = {
+      page: DEFAULT_PAGE_NUM,
+      pageSize: DEFAULT_PAGE_SIZE,
+      total: 0
+    };
   };
 
   return {
@@ -264,9 +304,11 @@ export const usePresetStore = defineStore('preset', () => {
     loading,
     searchQuery,
     filteredPresets,
+    pagination,
 
     // 预设方法
     fetchPresets,
+    fetchAllPresets,
     fetchPreset,
     createPreset,
     updatePreset,

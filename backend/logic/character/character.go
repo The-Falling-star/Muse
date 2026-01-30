@@ -12,6 +12,7 @@ import (
 
 	"connectrpc.com/connect"
 	png "github.com/dsoprea/go-png-image-structure/v2"
+	"github.com/ling/muse/common/constrant"
 	"github.com/ling/muse/common/convert"
 	"github.com/ling/muse/common/errs"
 	"github.com/ling/muse/entity"
@@ -37,20 +38,8 @@ func newCharacter() *characterImpl {
 }
 
 func (c *characterImpl) ListCharacters(ctx context.Context, req *pb.ListCharactersRequest) (*pb.ListCharactersResponse, error) {
-	// 获取分页参数
-	page := int(req.GetPage())
-	pageSize := int(req.GetPageSize())
-
-	// 设置默认值
-	if page <= 0 {
-		page = 1
-	}
-	if pageSize <= 0 {
-		pageSize = 20
-	}
-	if pageSize > 100 {
-		pageSize = 100
-	}
+	// 获取并规范化分页参数
+	page, pageSize := constrant.NormalizePagination(int(req.GetPage()), int(req.GetPageSize()))
 
 	// 从数据库获取角色列表
 	characters, total, err := c.charaRepo.List(defaultUserID, page, pageSize)

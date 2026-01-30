@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"connectrpc.com/connect"
+	"github.com/ling/muse/common/constrant"
 	"github.com/ling/muse/common/convert"
 	"github.com/ling/muse/common/errs"
 	"github.com/ling/muse/entity"
@@ -31,8 +32,11 @@ func newPreset() *presetImpl {
 }
 
 func (p *presetImpl) ListPresets(ctx context.Context, req *pb.ListPresetsRequest) (*pb.ListPresetsResponse, error) {
-	// 从数据库获取预设列表（不分页）
-	presets, _, err := p.presetRepo.List(defaultUserID, 1, 1000)
+	// 获取并规范化分页参数
+	page, pageSize := constrant.NormalizePagination(int(req.GetPage()), int(req.GetPageSize()))
+
+	// 从数据库获取预设列表（不加载关联的PromptItems和RegexRules）
+	presets, total, err := p.presetRepo.List(defaultUserID, page, pageSize)
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +48,10 @@ func (p *presetImpl) ListPresets(ctx context.Context, req *pb.ListPresetsRequest
 	}
 
 	return &pb.ListPresetsResponse{
-		Presets: pbPresets,
+		Presets:  pbPresets,
+		Total:    total,
+		Page:     int32(page),
+		PageSize: int32(pageSize),
 	}, nil
 }
 

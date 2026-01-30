@@ -809,11 +809,19 @@ service ChatService {
 // ================================
 
 // 获取预设列表请求
-message ListPresetsRequest {}
+// 注意：此接口不加载关联的PromptItems和RegexRules数据，仅返回预设基本信息
+message ListPresetsRequest {
+  int32 page = 1; // 页码，从1开始，默认为1
+  int32 page_size = 2; // 每页数量，默认为20，最大100
+}
 
 // 获取预设列表响应
+// 注意：返回的预设不包含关联的PromptItems和RegexRules数据
 message ListPresetsResponse {
-  repeated Preset presets = 1;
+  repeated Preset presets = 1; // 预设列表
+  int64 total = 2; // 总数
+  int32 page = 3; // 当前页码
+  int32 page_size = 4; // 每页数量
 }
 
 // 获取单个预设请求

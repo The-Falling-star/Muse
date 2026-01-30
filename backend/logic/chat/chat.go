@@ -43,21 +43,9 @@ func newChat() *chatImpl {
 }
 
 func (c *chatImpl) ListChatSessions(ctx context.Context, req *pb.ListChatSessionsRequest) (*pb.ListChatSessionsResponse, error) {
-	// 获取分页参数
-	page := int(req.GetPage())
-	pageSize := int(req.GetPageSize())
+	// 获取并规范化分页参数
+	page, pageSize := constrant.NormalizePagination(int(req.GetPage()), int(req.GetPageSize()))
 	characterID := int(req.GetCharacterId())
-
-	// 设置默认值
-	if page <= 0 {
-		page = constrant.DefaultPageNum
-	}
-	if pageSize <= 0 {
-		pageSize = constrant.DefaultPageSize
-	}
-	if pageSize > constrant.MaxPageSize {
-		pageSize = constrant.MaxPageSize
-	}
 
 	// 从数据库获取会话列表
 	userId := jwt.GetUserId(ctx)

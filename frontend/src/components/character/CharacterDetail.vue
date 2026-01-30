@@ -15,18 +15,6 @@
       </div>
 
       <h2 class="character-name">{{ character.name }}</h2>
-
-      <div v-if="character.tags?.length" class="character-tags">
-        <n-tag
-          v-for="tag in character.tags"
-          :key="tag"
-          size="small"
-          type="primary"
-          :bordered="false"
-        >
-          {{ tag }}
-        </n-tag>
-      </div>
     </div>
 
     <!-- 操作按钮 -->
@@ -49,17 +37,9 @@
     <n-divider />
 
     <n-scrollbar class="detail-content">
-      <n-collapse :default-expanded-names="['description', 'personality']">
+      <n-collapse :default-expanded-names="['description', 'firstMessage']">
         <n-collapse-item title="描述" name="description">
           <p class="info-text">{{ character.description || '暂无描述' }}</p>
-        </n-collapse-item>
-
-        <n-collapse-item title="性格" name="personality">
-          <p class="info-text">{{ character.personality || '暂无性格描述' }}</p>
-        </n-collapse-item>
-
-        <n-collapse-item title="场景设定" name="scenario">
-          <p class="info-text">{{ character.scenario || '暂无场景设定' }}</p>
         </n-collapse-item>
 
         <n-collapse-item title="开场白" name="firstMessage">
@@ -93,7 +73,6 @@ import {
   NAvatar,
   NButton,
   NIcon,
-  NTag,
   NDivider,
   NScrollbar,
   NCollapse,
@@ -101,7 +80,7 @@ import {
 } from 'naive-ui';
 import { ChatbubbleOutline, CreateOutline } from '@vicons/ionicons5';
 
-import type { Character } from '../../types';
+import type { Character } from '@/gen/muse/muse_pb';
 
 const props = defineProps<{
   character: Character;
@@ -112,8 +91,8 @@ defineEmits<{
   chat: [];
 }>();
 
-const formatDate = (dateStr: string) => {
-  return new Date(dateStr).toLocaleDateString('zh-CN');
+const formatDate = (timestamp: bigint) => {
+  return new Date(Number(timestamp)).toLocaleDateString('zh-CN');
 };
 </script>
 

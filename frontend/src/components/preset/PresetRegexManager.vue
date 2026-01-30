@@ -151,7 +151,18 @@ import {
 } from 'naive-ui';
 import type { FormInst, FormRules } from 'naive-ui';
 import { AddOutline, CreateOutline, TrashOutline } from '@vicons/ionicons5';
-import type { RegexRule } from '../../types';
+
+// 正则规则类型（组件本地使用）
+interface RegexRule {
+  id: number;
+  name: string;
+  pattern: string;
+  replacement: string;
+  flags: string;
+  scope: 'input' | 'output' | 'both';
+  order: number;
+  enabled: boolean;
+}
 
 type RegexScope = 'input' | 'output' | 'both';
 
@@ -312,7 +323,7 @@ const handleSave = async () => {
   const newRules = [...rules.value];
   const existingRule = editingIndex.value >= 0 ? rules.value[editingIndex.value] : null;
   const newRule: RegexRule = {
-    id: existingRule?.id || Date.now().toString(),
+    id: existingRule?.id || Date.now(),
     name: formData.name,
     pattern: formData.pattern,
     replacement: formData.replacement,

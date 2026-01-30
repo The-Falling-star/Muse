@@ -57,7 +57,7 @@ import {
   ChatbubbleOutline
 } from '@vicons/ionicons5';
 
-import type { Character } from '../../types';
+import type { Character } from '@/gen/muse/muse_pb';
 
 const props = defineProps<{
   character: Character;

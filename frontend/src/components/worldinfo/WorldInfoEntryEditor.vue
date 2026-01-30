@@ -109,7 +109,20 @@ import {
 } from 'naive-ui';
 import type { FormInst, FormRules } from 'naive-ui';
 
-import type { WorldInfoEntry } from '../../types';
+// 世界书条目类型（组件本地使用）
+interface WorldInfoEntry {
+  id: number;
+  worldId: number;
+  keys: string[];
+  secondaryKeys?: string[];
+  content: string;
+  comment?: string;
+  enabled: boolean;
+  order: number;
+  probability: number;
+  depth: number;
+  selectiveLogic: 'and' | 'or' | 'not';
+}
 
 interface EntryFormData {
   keys: string[];
@@ -195,8 +208,8 @@ const handleSubmit = async () => {
     await formRef.value?.validate();
 
     const entry: WorldInfoEntry = {
-      id: props.entry?.id || '',
-      worldId: props.entry?.worldId || '',
+      id: props.entry?.id || 0,
+      worldId: props.entry?.worldId || 0,
       keys: formData.keys,
       secondaryKeys: formData.secondaryKeys.length > 0 ? formData.secondaryKeys : undefined,
       content: formData.content,

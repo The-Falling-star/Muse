@@ -2,66 +2,138 @@
   <div class="settings-view">
     <n-scrollbar class="settings-container">
       <div class="settings-content">
-        <!-- API设置 -->
+        <!-- API配置管理 -->
         <section class="settings-section">
           <div class="section-header">
             <div class="section-icon">
               <n-icon size="24"><CloudOutline /></n-icon>
             </div>
             <div class="section-title">
-              <h2>API 设置</h2>
-              <p>配置AI服务连接</p>
+              <h2>API 配置</h2>
+              <p>管理AI服务连接配置</p>
             </div>
+            <n-button type="primary" size="small" @click="showApiConfigModal = true">
+              <template #icon>
+                <n-icon><AddOutline /></n-icon>
+              </template>
+              添加配置
+            </n-button>
           </div>
 
           <n-card class="settings-card">
-            <n-form label-placement="left" label-width="120">
-              <n-form-item label="服务类型">
-                <n-select
-                  v-model:value="apiSettings.type"
-                  :options="apiTypeOptions"
-                  placeholder="选择API类型"
-                />
-              </n-form-item>
+            <n-spin :show="loading">
+              <n-empty v-if="apiConfigs.length === 0" description="暂无API配置">
+                <template #extra>
+                  <n-button size="small" @click="showApiConfigModal = true">添加配置</n-button>
+                </template>
+              </n-empty>
 
-              <n-form-item label="API地址">
-                <n-input
-                  v-model:value="apiSettings.baseUrl"
-                  placeholder="https://api.openai.com/v1"
-                />
-              </n-form-item>
-
-              <n-form-item label="API密钥">
-                <n-input
-                  v-model:value="apiSettings.apiKey"
-                  type="password"
-                  show-password-on="click"
-                  placeholder="sk-..."
-                />
-              </n-form-item>
-
-              <n-form-item label="模型">
-                <n-select
-                  v-model:value="apiSettings.model"
-                  :options="modelOptions"
-                  filterable
-                  tag
-                  placeholder="选择或输入模型名称"
-                />
-              </n-form-item>
-
-              <n-form-item>
-                <n-space>
-                  <n-button type="primary" @click="testConnection">
-                    <template #icon>
-                      <n-icon><FlashOutline /></n-icon>
+              <n-list v-else>
+                <n-list-item v-for="config in apiConfigs" :key="config.id">
+                  <template #prefix>
+                    <n-radio
+                      :checked="config.isActive"
+                      @click="handleSetActiveApiConfig(config.id)"
+                    />
+                  </template>
+                  <n-thing :title="config.name" :description="getProviderLabel(config.provider)">
+                    <template #header-extra>
+                      <n-tag v-if="config.isActive" type="success" size="small">当前使用</n-tag>
                     </template>
-                    测试连接
-                  </n-button>
-                  <n-button @click="saveApiSettings">保存设置</n-button>
-                </n-space>
-              </n-form-item>
-            </n-form>
+                    <template #description>
+                      <n-space :size="4">
+                        <n-tag size="small">{{ config.model || '默认模型' }}</n-tag>
+                        <n-text depth="3">{{ config.baseUrl || '默认地址' }}</n-text>
+                      </n-space>
+                    </template>
+                  </n-thing>
+                  <template #suffix>
+                    <n-space>
+                      <n-button size="small" quaternary @click="handleTestApiConfig(config.id)">
+                        <template #icon>
+                          <n-icon><FlashOutline /></n-icon>
+                        </template>
+                        测试
+                      </n-button>
+                      <n-button size="small" quaternary @click="handleEditApiConfig(config)">
+                        <template #icon>
+                          <n-icon><CreateOutline /></n-icon>
+                        </template>
+                      </n-button>
+                      <n-button size="small" quaternary type="error" @click="handleDeleteApiConfig(config)">
+                        <template #icon>
+                          <n-icon><TrashOutline /></n-icon>
+                        </template>
+                      </n-button>
+                    </n-space>
+                  </template>
+                </n-list-item>
+              </n-list>
+            </n-spin>
+          </n-card>
+        </section>
+
+        <!-- 人设管理 -->
+        <section class="settings-section">
+          <div class="section-header">
+            <div class="section-icon">
+              <n-icon size="24"><PersonOutline /></n-icon>
+            </div>
+            <div class="section-title">
+              <h2>人设管理</h2>
+              <p>管理您的角色扮演人设</p>
+            </div>
+            <n-button type="primary" size="small" @click="showPersonaModal = true">
+              <template #icon>
+                <n-icon><AddOutline /></n-icon>
+              </template>
+              添加人设
+            </n-button>
+          </div>
+
+          <n-card class="settings-card">
+            <n-spin :show="loading">
+              <n-empty v-if="personas.length === 0" description="暂无人设">
+                <template #extra>
+                  <n-button size="small" @click="showPersonaModal = true">添加人设</n-button>
+                </template>
+              </n-empty>
+
+              <n-list v-else>
+                <n-list-item v-for="persona in personas" :key="persona.id">
+                  <template #prefix>
+                    <n-radio
+                      :checked="persona.id === userStore.currentUser?.activePersonaId"
+                      @click="handleSetActivePersona(persona.id)"
+                    />
+                  </template>
+                  <n-thing :title="persona.name" :description="persona.description || '暂无描述'">
+                    <template #avatar>
+                      <n-avatar :src="persona.avatar" round>
+                        {{ persona.name.charAt(0) }}
+                      </n-avatar>
+                    </template>
+                    <template #header-extra>
+                      <n-tag v-if="persona.id === userStore.currentUser?.activePersonaId" type="success" size="small">当前使用</n-tag>
+                    </template>
+                  </n-thing>
+                  <template #suffix>
+                    <n-space>
+                      <n-button size="small" quaternary @click="handleEditPersona(persona)">
+                        <template #icon>
+                          <n-icon><CreateOutline /></n-icon>
+                        </template>
+                      </n-button>
+                      <n-button size="small" quaternary type="error" @click="handleDeletePersona(persona)">
+                        <template #icon>
+                          <n-icon><TrashOutline /></n-icon>
+                        </template>
+                      </n-button>
+                    </n-space>
+                  </template>
+                </n-list-item>
+              </n-list>
+            </n-spin>
           </n-card>
         </section>
 
@@ -80,17 +152,17 @@
           <n-card class="settings-card">
             <n-form label-placement="left" label-width="120">
               <n-form-item label="主题">
-                <n-radio-group v-model:value="appearance.theme">
+                <n-radio-group v-model:value="appearanceSettings.theme" @update:value="handleUpdateUserSetting">
                   <n-space>
-                    <n-radio-button value="dark">
+                    <n-radio-button value="DARK">
                       <n-icon><MoonOutline /></n-icon>
                       暗黑
                     </n-radio-button>
-                    <n-radio-button value="light">
+                    <n-radio-button value="LIGHT">
                       <n-icon><SunnyOutline /></n-icon>
                       明亮
                     </n-radio-button>
-                    <n-radio-button value="auto">
+                    <n-radio-button value="SYSTEM">
                       <n-icon><DesktopOutline /></n-icon>
                       跟随系统
                     </n-radio-button>
@@ -98,22 +170,71 @@
                 </n-radio-group>
               </n-form-item>
 
-              <n-form-item label="字体大小">
-                <n-slider
-                  v-model:value="appearance.fontSize"
-                  :min="12"
-                  :max="20"
-                  :step="1"
-                  :marks="{ 12: '小', 14: '默认', 16: '中', 18: '大', 20: '特大' }"
+              <n-form-item label="语言">
+                <n-select
+                  v-model:value="appearanceSettings.language"
+                  :options="languageOptions"
+                  @update:value="handleUpdateUserSetting"
                 />
               </n-form-item>
 
-              <n-form-item label="消息气泡">
-                <n-switch v-model:value="appearance.showBubbles" />
+              <n-form-item label="Enter发送">
+                <n-switch v-model:value="appearanceSettings.sendOnEnter" @update:value="handleUpdateUserSetting" />
+                <n-text depth="3" style="margin-left: 12px;">按Enter键直接发送消息</n-text>
               </n-form-item>
 
               <n-form-item label="显示时间戳">
-                <n-switch v-model:value="appearance.showTimestamp" />
+                <n-switch v-model:value="appearanceSettings.showTimestamps" @update:value="handleUpdateUserSetting" />
+              </n-form-item>
+            </n-form>
+          </n-card>
+        </section>
+
+        <!-- 账户安全 -->
+        <section class="settings-section">
+          <div class="section-header">
+            <div class="section-icon">
+              <n-icon size="24"><ShieldOutline /></n-icon>
+            </div>
+            <div class="section-title">
+              <h2>账户安全</h2>
+              <p>管理账户密码</p>
+            </div>
+          </div>
+
+          <n-card class="settings-card">
+            <n-form label-placement="left" label-width="120">
+              <n-form-item label="当前密码">
+                <n-input
+                  v-model:value="passwordForm.oldPassword"
+                  type="password"
+                  show-password-on="click"
+                  placeholder="输入当前密码"
+                />
+              </n-form-item>
+
+              <n-form-item label="新密码">
+                <n-input
+                  v-model:value="passwordForm.newPassword"
+                  type="password"
+                  show-password-on="click"
+                  placeholder="输入新密码"
+                />
+              </n-form-item>
+
+              <n-form-item label="确认密码">
+                <n-input
+                  v-model:value="passwordForm.confirmPassword"
+                  type="password"
+                  show-password-on="click"
+                  placeholder="再次输入新密码"
+                />
+              </n-form-item>
+
+              <n-form-item>
+                <n-button type="primary" :loading="loading" @click="handleChangePassword">
+                  修改密码
+                </n-button>
               </n-form-item>
             </n-form>
           </n-card>
@@ -127,7 +248,7 @@
             </div>
             <div class="section-title">
               <h2>快捷键</h2>
-              <p>自定义键盘快捷方式</p>
+              <p>键盘快捷方式</p>
             </div>
           </div>
 
@@ -146,66 +267,6 @@
                 <n-tag>Ctrl + B</n-tag>
               </n-form-item>
             </n-form>
-          </n-card>
-        </section>
-
-        <!-- 数据管理 -->
-        <section class="settings-section">
-          <div class="section-header">
-            <div class="section-icon">
-              <n-icon size="24"><ServerOutline /></n-icon>
-            </div>
-            <div class="section-title">
-              <h2>数据管理</h2>
-              <p>备份与恢复数据</p>
-            </div>
-          </div>
-
-          <n-card class="settings-card">
-            <n-space vertical :size="16">
-              <div class="data-action">
-                <div class="data-action-info">
-                  <h4>导出数据</h4>
-                  <p>导出所有角色、会话和设置</p>
-                </div>
-                <n-button>
-                  <template #icon>
-                    <n-icon><DownloadOutline /></n-icon>
-                  </template>
-                  导出
-                </n-button>
-              </div>
-
-              <n-divider />
-
-              <div class="data-action">
-                <div class="data-action-info">
-                  <h4>导入数据</h4>
-                  <p>从备份文件恢复数据</p>
-                </div>
-                <n-button>
-                  <template #icon>
-                    <n-icon><CloudUploadOutline /></n-icon>
-                  </template>
-                  导入
-                </n-button>
-              </div>
-
-              <n-divider />
-
-              <div class="data-action danger">
-                <div class="data-action-info">
-                  <h4>清除数据</h4>
-                  <p>删除所有本地数据，此操作不可撤销</p>
-                </div>
-                <n-button type="error">
-                  <template #icon>
-                    <n-icon><TrashOutline /></n-icon>
-                  </template>
-                  清除
-                </n-button>
-              </div>
-            </n-space>
           </n-card>
         </section>
 
@@ -234,7 +295,7 @@
             <p class="about-desc">
               Muse 是一个现代化的AI角色扮演平台，提供流畅的聊天体验和强大的角色管理功能。
             </p>
-            <n-space>
+            <n-space justify="center">
               <n-button text type="primary">查看更新日志</n-button>
               <n-button text type="primary">GitHub</n-button>
               <n-button text type="primary">反馈问题</n-button>
@@ -243,11 +304,103 @@
         </section>
       </div>
     </n-scrollbar>
+
+    <!-- API配置编辑模态框 -->
+    <n-modal
+      v-model:show="showApiConfigModal"
+      preset="card"
+      :title="editingApiConfig ? '编辑API配置' : '添加API配置'"
+      :style="{ width: '500px', maxWidth: '90vw' }"
+      :mask-closable="false"
+    >
+      <n-form ref="apiConfigFormRef" :model="apiConfigForm" :rules="apiConfigRules" label-placement="left" label-width="100">
+        <n-form-item label="配置名称" path="name">
+          <n-input v-model:value="apiConfigForm.name" placeholder="输入配置名称" />
+        </n-form-item>
+
+        <n-form-item label="服务类型" path="provider">
+          <n-select
+            v-model:value="apiConfigForm.provider"
+            :options="providerOptions"
+            placeholder="选择API类型"
+          />
+        </n-form-item>
+
+        <n-form-item label="API地址" path="baseUrl">
+          <n-input v-model:value="apiConfigForm.baseUrl" placeholder="https://api.openai.com/v1" />
+        </n-form-item>
+
+        <n-form-item label="API密钥" path="apiKey">
+          <n-input
+            v-model:value="apiConfigForm.apiKey"
+            type="password"
+            show-password-on="click"
+            :placeholder="editingApiConfig ? '留空则不修改' : 'sk-...'"
+          />
+        </n-form-item>
+
+        <n-form-item label="模型" path="model">
+          <n-select
+            v-model:value="apiConfigForm.model"
+            :options="modelOptions"
+            filterable
+            tag
+            placeholder="选择或输入模型名称"
+          />
+        </n-form-item>
+      </n-form>
+
+      <template #footer>
+        <n-space justify="end">
+          <n-button @click="showApiConfigModal = false">取消</n-button>
+          <n-button type="primary" :loading="loading" @click="handleSaveApiConfig">
+            {{ editingApiConfig ? '保存' : '添加' }}
+          </n-button>
+        </n-space>
+      </template>
+    </n-modal>
+
+    <!-- 人设编辑模态框 -->
+    <n-modal
+      v-model:show="showPersonaModal"
+      preset="card"
+      :title="editingPersona ? '编辑人设' : '添加人设'"
+      :style="{ width: '500px', maxWidth: '90vw' }"
+      :mask-closable="false"
+    >
+      <n-form ref="personaFormRef" :model="personaForm" :rules="personaRules" label-placement="left" label-width="80">
+        <n-form-item label="名称" path="name">
+          <n-input v-model:value="personaForm.name" placeholder="输入人设名称" />
+        </n-form-item>
+
+        <n-form-item label="头像" path="avatar">
+          <n-input v-model:value="personaForm.avatar" placeholder="输入头像URL（可选）" />
+        </n-form-item>
+
+        <n-form-item label="描述" path="description">
+          <n-input
+            v-model:value="personaForm.description"
+            type="textarea"
+            :rows="4"
+            placeholder="输入人设描述，将在聊天中作为您的角色设定"
+          />
+        </n-form-item>
+      </n-form>
+
+      <template #footer>
+        <n-space justify="end">
+          <n-button @click="showPersonaModal = false">取消</n-button>
+          <n-button type="primary" :loading="loading" @click="handleSavePersona">
+            {{ editingPersona ? '保存' : '添加' }}
+          </n-button>
+        </n-space>
+      </template>
+    </n-modal>
   </div>
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import {
   NScrollbar,
   NCard,
@@ -255,17 +408,26 @@ import {
   NFormItem,
   NInput,
   NSelect,
-  NSlider,
   NSwitch,
   NRadioGroup,
   NRadioButton,
   NButton,
   NSpace,
   NIcon,
-  NDivider,
   NTag,
-  useMessage
+  NList,
+  NListItem,
+  NThing,
+  NRadio,
+  NAvatar,
+  NModal,
+  NEmpty,
+  NSpin,
+  NText,
+  useMessage,
+  useDialog
 } from 'naive-ui';
+import type { FormInst, FormRules } from 'naive-ui';
 import {
   CloudOutline,
   FlashOutline,
@@ -274,59 +436,418 @@ import {
   SunnyOutline,
   DesktopOutline,
   KeypadOutline,
-  ServerOutline,
-  DownloadOutline,
-  CloudUploadOutline,
+  InformationCircleOutline,
+  AddOutline,
+  CreateOutline,
   TrashOutline,
-  InformationCircleOutline
+  PersonOutline,
+  ShieldOutline
 } from '@vicons/ionicons5';
 
-const message = useMessage();
+import { userClient } from '@/api/client';
+import { useUserStore } from '@/stores/user';
+import type { APIConfig, Persona } from '@/gen/muse/muse_pb';
+import { APIProvider, Theme } from '@/gen/muse/muse_pb';
 
-// API设置
-const apiSettings = reactive({
-  type: 'openai',
+const message = useMessage();
+const dialog = useDialog();
+const userStore = useUserStore();
+
+// 状态
+const loading = ref(false);
+const apiConfigs = ref<APIConfig[]>([]);
+const personas = ref<Persona[]>([]);
+
+// API配置相关
+const showApiConfigModal = ref(false);
+const editingApiConfig = ref<APIConfig | null>(null);
+const apiConfigFormRef = ref<FormInst | null>(null);
+const apiConfigForm = reactive({
+  name: '',
+  provider: APIProvider.OpenAI,
   baseUrl: '',
   apiKey: '',
-  model: 'gpt-4'
+  model: ''
 });
 
-// API类型选项
-const apiTypeOptions = [
-  { label: 'OpenAI', value: 'openai' },
-  { label: 'Claude', value: 'claude' },
-  { label: 'Google Gemini', value: 'gemini' },
-  { label: '自定义', value: 'custom' }
+const apiConfigRules: FormRules = {
+  name: { required: true, message: '请输入配置名称', trigger: 'blur' },
+  provider: { required: true, message: '请选择服务类型', trigger: 'change' }
+};
+
+// 人设相关
+const showPersonaModal = ref(false);
+const editingPersona = ref<Persona | null>(null);
+const personaFormRef = ref<FormInst | null>(null);
+const personaForm = reactive({
+  name: '',
+  avatar: '',
+  description: ''
+});
+
+const personaRules: FormRules = {
+  name: { required: true, message: '请输入人设名称', trigger: 'blur' }
+};
+
+// 外观设置
+const appearanceSettings = reactive({
+  theme: 'DARK',
+  language: 'zh-CN',
+  sendOnEnter: true,
+  showTimestamps: true
+});
+
+// 密码修改
+const passwordForm = reactive({
+  oldPassword: '',
+  newPassword: '',
+  confirmPassword: ''
+});
+
+// 服务类型选项
+const providerOptions = [
+  { label: 'OpenAI', value: APIProvider.OpenAI },
+  { label: 'Claude', value: APIProvider.Claude },
+  { label: 'Google Gemini', value: APIProvider.Gemini }
+];
+
+// 语言选项
+const languageOptions = [
+  { label: '简体中文', value: 'zh-CN' },
+  { label: 'English', value: 'en-US' }
 ];
 
 // 模型选项
 const modelOptions = [
-  { label: 'GPT-4', value: 'gpt-4' },
+  { label: 'GPT-4o', value: 'gpt-4o' },
   { label: 'GPT-4 Turbo', value: 'gpt-4-turbo' },
   { label: 'GPT-3.5 Turbo', value: 'gpt-3.5-turbo' },
-  { label: 'Claude 3 Opus', value: 'claude-3-opus' },
-  { label: 'Claude 3 Sonnet', value: 'claude-3-sonnet' },
-  { label: 'Gemini Pro', value: 'gemini-pro' }
+  { label: 'Claude 3.5 Sonnet', value: 'claude-3-5-sonnet-20241022' },
+  { label: 'Claude 3 Opus', value: 'claude-3-opus-20240229' },
+  { label: 'Gemini 1.5 Pro', value: 'gemini-1.5-pro' },
+  { label: 'Gemini 1.5 Flash', value: 'gemini-1.5-flash' }
 ];
 
-// 外观设置
-const appearance = reactive({
-  theme: 'dark',
-  fontSize: 14,
-  showBubbles: true,
-  showTimestamp: true
-});
-
-// 方法
-const testConnection = () => {
-  message.info('正在测试连接...');
-  setTimeout(() => {
-    message.success('连接成功！');
-  }, 1500);
+// 获取服务类型标签
+const getProviderLabel = (provider: APIProvider): string => {
+  const option = providerOptions.find(o => o.value === provider);
+  return option?.label || '未知';
 };
 
-const saveApiSettings = () => {
-  message.success('设置已保存');
+// 加载数据
+const loadData = async () => {
+  loading.value = true;
+  try {
+    const [configsRes, personasRes, settingRes] = await Promise.all([
+      userClient.listAPIConfigs({}),
+      userClient.listPersonas({}),
+      userClient.getUserSetting({})
+    ]);
+
+    apiConfigs.value = configsRes.configs;
+    personas.value = personasRes.personas;
+
+    // 更新Store
+    userStore.setApiConfigs(configsRes.configs);
+    userStore.setPersonas(personasRes.personas);
+
+    // 更新外观设置
+    if (settingRes.setting) {
+      userStore.setUserSetting(settingRes.setting);
+      appearanceSettings.theme = settingRes.setting.theme === Theme.Dark ? 'DARK' : settingRes.setting.theme === Theme.Light ? 'LIGHT' : 'SYSTEM';
+      appearanceSettings.language = settingRes.setting.language || 'zh-CN';
+      appearanceSettings.sendOnEnter = settingRes.setting.sendOnEnter;
+      appearanceSettings.showTimestamps = settingRes.setting.showTimestamps;
+    }
+  } catch (e) {
+    console.error('加载设置失败:', e);
+    message.error('加载设置失败');
+  } finally {
+    loading.value = false;
+  }
+};
+
+onMounted(() => {
+  loadData();
+});
+
+// ==================== API配置相关方法 ====================
+
+const handleEditApiConfig = (config: APIConfig) => {
+  editingApiConfig.value = config;
+  apiConfigForm.name = config.name;
+  apiConfigForm.provider = config.provider;
+  apiConfigForm.baseUrl = config.baseUrl || '';
+  apiConfigForm.apiKey = '';
+  apiConfigForm.model = config.model || '';
+  showApiConfigModal.value = true;
+};
+
+const handleSaveApiConfig = async () => {
+  await apiConfigFormRef.value?.validate();
+
+  loading.value = true;
+  try {
+    if (editingApiConfig.value) {
+      // 更新
+      const res = await userClient.updateAPIConfig({
+        id: editingApiConfig.value.id,
+        name: apiConfigForm.name,
+        provider: apiConfigForm.provider,
+        baseUrl: apiConfigForm.baseUrl || undefined,
+        apiKey: apiConfigForm.apiKey || undefined,
+        model: apiConfigForm.model || undefined
+      });
+      if (res.config) {
+        const index = apiConfigs.value.findIndex(c => c.id === editingApiConfig.value!.id);
+        if (index >= 0) {
+          apiConfigs.value[index] = res.config;
+        }
+        userStore.updateApiConfigInList(res.config);
+        message.success('API配置已更新');
+      }
+    } else {
+      // 创建
+      const res = await userClient.createAPIConfig({
+        name: apiConfigForm.name,
+        provider: apiConfigForm.provider,
+        apiKey: apiConfigForm.apiKey,
+        baseUrl: apiConfigForm.baseUrl || undefined,
+        model: apiConfigForm.model || undefined
+      });
+      if (res.config) {
+        apiConfigs.value.push(res.config);
+        userStore.addApiConfig(res.config);
+        message.success('API配置已创建');
+      }
+    }
+    showApiConfigModal.value = false;
+    resetApiConfigForm();
+  } catch (e) {
+    console.error('保存API配置失败:', e);
+    message.error('保存失败');
+  } finally {
+    loading.value = false;
+  }
+};
+
+const handleDeleteApiConfig = (config: APIConfig) => {
+  dialog.warning({
+    title: '确认删除',
+    content: `确定要删除API配置"${config.name}"吗？`,
+    positiveText: '删除',
+    negativeText: '取消',
+    onPositiveClick: async () => {
+      loading.value = true;
+      try {
+        await userClient.deleteAPIConfig({ id: config.id });
+        apiConfigs.value = apiConfigs.value.filter(c => c.id !== config.id);
+        userStore.removeApiConfig(config.id);
+        message.success('API配置已删除');
+      } catch (e) {
+        console.error('删除API配置失败:', e);
+        message.error('删除失败');
+      } finally {
+        loading.value = false;
+      }
+    }
+  });
+};
+
+const handleSetActiveApiConfig = async (configId: number) => {
+  loading.value = true;
+  try {
+    await userClient.setActiveAPIConfig({ configId: configId });
+    // 更新本地状态
+    apiConfigs.value.forEach(c => {
+      c.isActive = c.id === configId;
+    });
+    userStore.setActiveApiConfigId(configId);
+    message.success('已切换API配置');
+  } catch (e) {
+    console.error('设置活跃API配置失败:', e);
+    message.error('切换失败');
+  } finally {
+    loading.value = false;
+  }
+};
+
+const handleTestApiConfig = async (configId: number) => {
+  loading.value = true;
+  try {
+    const res = await userClient.testAPIConfig({ id: configId });
+    if (res.success) {
+      message.success('连接成功！');
+    } else {
+      message.error(`连接失败: ${res.errorMessage}`);
+    }
+  } catch (e) {
+    console.error('测试API配置失败:', e);
+    message.error('测试失败');
+  } finally {
+    loading.value = false;
+  }
+};
+
+const resetApiConfigForm = () => {
+  editingApiConfig.value = null;
+  apiConfigForm.name = '';
+  apiConfigForm.provider = APIProvider.OpenAI;
+  apiConfigForm.baseUrl = '';
+  apiConfigForm.apiKey = '';
+  apiConfigForm.model = '';
+};
+
+// ==================== 人设相关方法 ====================
+
+const handleEditPersona = (persona: Persona) => {
+  editingPersona.value = persona;
+  personaForm.name = persona.name;
+  personaForm.avatar = persona.avatar || '';
+  personaForm.description = persona.description || '';
+  showPersonaModal.value = true;
+};
+
+const handleSavePersona = async () => {
+  await personaFormRef.value?.validate();
+
+  loading.value = true;
+  try {
+    if (editingPersona.value) {
+      // 更新
+      const res = await userClient.updatePersona({
+        id: editingPersona.value.id,
+        name: personaForm.name,
+        avatar: personaForm.avatar || undefined,
+        description: personaForm.description || undefined
+      });
+      if (res.persona) {
+        const index = personas.value.findIndex(p => p.id === editingPersona.value!.id);
+        if (index >= 0) {
+          personas.value[index] = res.persona;
+        }
+        userStore.updatePersonaInList(res.persona);
+        message.success('人设已更新');
+      }
+    } else {
+      // 创建
+      const res = await userClient.createPersona({
+        name: personaForm.name,
+        avatar: personaForm.avatar || undefined,
+        description: personaForm.description || undefined
+      });
+      if (res.persona) {
+        personas.value.push(res.persona);
+        userStore.addPersona(res.persona);
+        message.success('人设已创建');
+      }
+    }
+    showPersonaModal.value = false;
+    resetPersonaForm();
+  } catch (e) {
+    console.error('保存人设失败:', e);
+    message.error('保存失败');
+  } finally {
+    loading.value = false;
+  }
+};
+
+const handleDeletePersona = (persona: Persona) => {
+  dialog.warning({
+    title: '确认删除',
+    content: `确定要删除人设"${persona.name}"吗？`,
+    positiveText: '删除',
+    negativeText: '取消',
+    onPositiveClick: async () => {
+      loading.value = true;
+      try {
+        await userClient.deletePersona({ id: persona.id });
+        personas.value = personas.value.filter(p => p.id !== persona.id);
+        userStore.removePersona(persona.id);
+        message.success('人设已删除');
+      } catch (e) {
+        console.error('删除人设失败:', e);
+        message.error('删除失败');
+      } finally {
+        loading.value = false;
+      }
+    }
+  });
+};
+
+const handleSetActivePersona = async (personaId: number) => {
+  loading.value = true;
+  try {
+    await userClient.setActivePersona({ personaId: personaId });
+    userStore.setActivePersonaId(personaId);
+    message.success('已切换人设');
+  } catch (e) {
+    console.error('设置活跃人设失败:', e);
+    message.error('切换失败');
+  } finally {
+    loading.value = false;
+  }
+};
+
+const resetPersonaForm = () => {
+  editingPersona.value = null;
+  personaForm.name = '';
+  personaForm.avatar = '';
+  personaForm.description = '';
+};
+
+// ==================== 用户设置相关方法 ====================
+
+const handleUpdateUserSetting = async () => {
+  try {
+    const themeValue = appearanceSettings.theme === 'DARK' ? Theme.Dark : appearanceSettings.theme === 'LIGHT' ? Theme.Light : Theme.Auto;
+    const res = await userClient.updateUserSetting({
+      theme: themeValue,
+      language: appearanceSettings.language,
+      sendOnEnter: appearanceSettings.sendOnEnter,
+      showTimestamps: appearanceSettings.showTimestamps
+    });
+    if (res.setting) {
+      userStore.setUserSetting(res.setting);
+    }
+  } catch (e) {
+    console.error('更新用户设置失败:', e);
+    message.error('保存设置失败');
+  }
+};
+
+// ==================== 密码修改 ====================
+
+const handleChangePassword = async () => {
+  if (!passwordForm.oldPassword || !passwordForm.newPassword) {
+    message.warning('请填写完整密码信息');
+    return;
+  }
+  if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+    message.warning('两次输入的新密码不一致');
+    return;
+  }
+  if (passwordForm.newPassword.length < 6) {
+    message.warning('新密码长度至少6位');
+    return;
+  }
+
+  loading.value = true;
+  try {
+    await userClient.changePassword({
+      oldPassword: passwordForm.oldPassword,
+      newPassword: passwordForm.newPassword
+    });
+    message.success('密码修改成功');
+    passwordForm.oldPassword = '';
+    passwordForm.newPassword = '';
+    passwordForm.confirmPassword = '';
+  } catch (e) {
+    console.error('修改密码失败:', e);
+    message.error('修改密码失败，请检查原密码是否正确');
+  } finally {
+    loading.value = false;
+  }
 };
 </script>
 
@@ -368,6 +889,10 @@ const saveApiSettings = () => {
   color: #000;
 }
 
+.section-title {
+  flex: 1;
+}
+
 .section-title h2 {
   font-size: 18px;
   font-weight: 600;
@@ -383,30 +908,6 @@ const saveApiSettings = () => {
 
 .settings-card {
   border-radius: 12px;
-}
-
-/* 数据操作 */
-.data-action {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.data-action-info h4 {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text-primary);
-  margin: 0 0 4px;
-}
-
-.data-action-info p {
-  font-size: 13px;
-  color: var(--text-tertiary);
-  margin: 0;
-}
-
-.data-action.danger .data-action-info h4 {
-  color: var(--color-error);
 }
 
 /* 关于卡片 */

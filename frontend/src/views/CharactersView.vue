@@ -63,7 +63,7 @@
             :character="character"
             @click="selectCharacter(character)"
             @edit="editCharacter(character)"
-            @delete="deleteCharacter(character)"
+            @delete="handleDeleteCharacter(character)"
             @chat="startChat(character)"
           />
         </TransitionGroup>
@@ -79,6 +79,24 @@
           :single-line="false"
           striped
         />
+      </div>
+
+      <!-- 分页器 -->
+      <div v-if="filteredCharacters.length > 0" class="pagination-container">
+        <n-pagination
+          v-model:page="page"
+          v-model:page-size="pageSize"
+          :item-count="total"
+          :page-sizes="[10, 20, 30, 50]"
+          show-size-picker
+          show-quick-jumper
+          @update:page="handlePageChange"
+          @update:page-size="handlePageSizeChange"
+        >
+          <template #prefix="{ itemCount }">
+            共 {{ itemCount }} 个角色
+          </template>
+        </n-pagination>
       </div>
 
       <!-- 空状态 -->
@@ -106,8 +124,8 @@
         <CharacterDetail
           v-if="selectedCharacter"
           :character="selectedCharacter"
-          @edit="editCharacter(selectedCharacter)"
-          @chat="startChat(selectedCharacter)"
+          @edit="handleEditSelected"
+          @chat="handleChatSelected"
         />
       </n-drawer-content>
     </n-drawer>
@@ -174,7 +192,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, h } from 'vue';
+import { ref, computed, h, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import {
   NInput,
   NButton,
@@ -191,6 +210,7 @@ import {
   NEmpty,
   NSpace,
   NAvatar,
+  NPagination,
   useMessage,
   useDialog
 } from 'naive-ui';
@@ -209,10 +229,14 @@ import {
 import CharacterCard from '../components/character/CharacterCard.vue';
 import CharacterDetail from '../components/character/CharacterDetail.vue';
 import CharacterEditor from '../components/character/CharacterEditor.vue';
-import type { Character } from '../types';
+import { useCharacterStore } from '@/stores/character';
+import { characterClient, chatClient } from '@/api/client';
+import type { Character } from '@/gen/muse/muse_pb';
 
 const message = useMessage();
 const dialog = useDialog();
+const router = useRouter();
+const characterStore = useCharacterStore();
 
 // 状态
 const searchQuery = ref('');
@@ -223,39 +247,46 @@ const showImportModal = ref(false);
 const selectedCharacter = ref<Character | null>(null);
 const editingCharacter = ref<Character | null>(null);
 const importUrl = ref('');
+const loading = ref(false);
 
-// 模拟数据
-const characters = ref<Character[]>([
-  {
-    id: '1',
-    name: 'AI助手',
-    description: '一个友好、智能的AI助手，可以帮助你完成各种任务。',
-    personality: '友好、耐心、专业',
-    avatar: ''
-  },
-  {
-    id: '2',
-    name: '小说作家',
-    description: '擅长创意写作的AI角色，可以帮助创作各种类型的故事。',
-    personality: '富有想象力、细腻、善于叙事',
-    avatar: ''
-  },
-  {
-    id: '3',
-    name: '代码专家',
-    description: '精通多种编程语言的技术顾问，擅长解决编程问题。',
-    personality: '严谨、逻辑性强、善于解释',
-    avatar: ''
+// 分页状态
+const page = ref(1);
+const pageSize = ref(20);
+const total = computed(() => characterStore.total);
+
+// 加载角色列表 - 直接调用client
+const loadCharacters = async () => {
+  loading.value = true;
+  try {
+    const response = await characterClient.listCharacters({
+      page: page.value,
+      pageSize: pageSize.value
+    });
+    // 更新Store缓存
+    characterStore.setCharacters(response.characters, response.total);
+  } finally {
+    loading.value = false;
   }
-]);
+};
+
+onMounted(() => {
+  loadCharacters();
+});
 
 // 过滤后的角色列表
 const filteredCharacters = computed(() => {
-  return characters.value.filter(c => {
-    return !searchQuery.value ||
-      c.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      c.description?.toLowerCase().includes(searchQuery.value.toLowerCase());
-  });
+  const chars = characterStore.characters;
+  if (!chars || chars.length === 0) {
+    return [];
+  }
+  if (!searchQuery.value) {
+    return chars;
+  }
+  const query = searchQuery.value.toLowerCase();
+  return chars.filter(c =>
+    c.name.toLowerCase().includes(query) ||
+    c.description?.toLowerCase().includes(query)
+  );
 });
 
 // 表格列配置
@@ -305,7 +336,7 @@ const tableColumns: DataTableColumns<Character> = [
           size: 'small',
           quaternary: true,
           circle: true,
-          onClick: () => deleteCharacter(row)
+          onClick: () => handleDeleteCharacter(row)
         }, { icon: () => h(NIcon, null, { default: () => h(TrashOutline) }) })
       ]);
     }
@@ -324,54 +355,138 @@ const editCharacter = (character: Character | null) => {
   showDetailDrawer.value = false;
 };
 
-const deleteCharacter = (character: Character) => {
+// 删除角色 - 直接调用client
+const handleDeleteCharacter = (character: Character) => {
   dialog.warning({
     title: '确认删除',
     content: `确定要删除角色"${character.name}"吗？此操作不可撤销。`,
     positiveText: '删除',
     negativeText: '取消',
-    onPositiveClick: () => {
-      characters.value = characters.value.filter(c => c.id !== character.id);
+    onPositiveClick: async () => {
+      await characterClient.deleteCharacter({ id: character.id });
+      characterStore.removeCharacter(character.id);
       message.success('角色已删除');
     }
   });
 };
 
-const startChat = (character: Character) => {
-  message.info(`开始与 ${character.name} 对话`);
-  // TODO: 导航到聊天页面
-};
-
-const handleSaveCharacter = (character: Character) => {
-  if (editingCharacter.value) {
-    // 编辑模式
-    const index = characters.value.findIndex(c => c.id === editingCharacter.value!.id);
-    if (index >= 0) {
-      characters.value[index] = character;
-    }
-    message.success('角色已更新');
-  } else {
-    // 创建模式
-    characters.value.push({
-      ...character,
-      id: Date.now().toString()
-    });
-    message.success('角色已创建');
+// 开始聊天 - 直接调用client
+const startChat = async (character: Character) => {
+  const response = await chatClient.createChatSession({ characterId: character.id });
+  if (response.session) {
+    router.push(`/chat/${response.session.id}`);
   }
-  showCreateModal.value = false;
-  editingCharacter.value = null;
 };
 
-const handleImportFiles = (options: { fileList: UploadFileInfo[] }) => {
-  message.info(`已选择 ${options.fileList.length} 个文件`);
-  // TODO: 实际导入逻辑
+// 处理从详情页触发的编辑和聊天
+const handleEditSelected = () => {
+  if (selectedCharacter.value) {
+    editCharacter(selectedCharacter.value);
+  }
+};
+
+const handleChatSelected = () => {
+  if (selectedCharacter.value) {
+    startChat(selectedCharacter.value);
+  }
+};
+
+// 保存角色 - 直接调用client
+const handleSaveCharacter = async (characterData: Partial<Character>) => {
+  loading.value = true;
+  try {
+    if (editingCharacter.value) {
+      // 编辑模式
+      const response = await characterClient.updateCharacter({
+        id: editingCharacter.value.id,
+        name: characterData.name || '',
+        avatar: characterData.avatar,
+        description: characterData.description,
+        firstMessage: characterData.firstMessage,
+        exampleDialogue: characterData.exampleDialogue,
+        creatorNotes: characterData.creatorNotes,
+        version: editingCharacter.value.version
+      });
+      if (response.character) {
+        characterStore.updateCharacterInList(response.character);
+      }
+      message.success('角色已更新');
+    } else {
+      // 创建模式
+      const response = await characterClient.createCharacter({
+        name: characterData.name || '',
+        avatar: characterData.avatar,
+        description: characterData.description,
+        firstMessage: characterData.firstMessage,
+        exampleDialogue: characterData.exampleDialogue,
+        creatorNotes: characterData.creatorNotes
+      });
+      if (response.character) {
+        characterStore.addCharacter(response.character);
+      }
+      message.success('角色已创建');
+    }
+    showCreateModal.value = false;
+    editingCharacter.value = null;
+  } finally {
+    loading.value = false;
+  }
+};
+
+// 导入文件 - 直接调用client
+const handleImportFiles = async (options: { file: UploadFileInfo; fileList: UploadFileInfo[]; event?: Event }) => {
+  const files = options.fileList;
+  if (files.length === 0) return;
+
+  let successCount = 0;
+  let failCount = 0;
+
+  for (const fileInfo of files) {
+    const file = fileInfo.file;
+    if (!file) continue;
+
+    try {
+      const arrayBuffer = await file.arrayBuffer();
+      const fileContent = new Uint8Array(arrayBuffer);
+      const response = await characterClient.importCharacter({
+        fileContent: fileContent,
+        fileName: file.name
+      });
+      if (response.character) {
+        characterStore.addCharacter(response.character);
+        successCount++;
+      }
+    } catch (e) {
+      console.error('导入失败:', file.name, e);
+      failCount++;
+    }
+  }
+
+  if (successCount > 0) {
+    message.success(`成功导入 ${successCount} 个角色`);
+  }
+  if (failCount > 0) {
+    message.warning(`${failCount} 个角色导入失败`);
+  }
+
+  showImportModal.value = false;
 };
 
 const handleImportFromUrl = () => {
-  message.info(`正在从 ${importUrl.value} 导入...`);
-  // TODO: 实际导入逻辑
+  message.info('暂不支持从链接导入');
   importUrl.value = '';
-  showImportModal.value = false;
+};
+
+// 分页变化处理
+const handlePageChange = (newPage: number) => {
+  page.value = newPage;
+  loadCharacters();
+};
+
+const handlePageSizeChange = (newPageSize: number) => {
+  pageSize.value = newPageSize;
+  page.value = 1;
+  loadCharacters();
 };
 </script>
 
@@ -446,6 +561,14 @@ const handleImportFromUrl = () => {
   overflow: hidden;
 }
 
+/* 分页器容器 */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+  margin-top: 16px;
+}
+
 /* 空状态 */
 .empty-state {
   padding: 60px 20px;
@@ -484,21 +607,5 @@ const handleImportFromUrl = () => {
 
 .import-btn {
   margin-top: 8px;
-}
-
-/* 卡片列表动画 */
-.card-list-enter-active,
-.card-list-leave-active {
-  transition: all 0.3s ease;
-}
-
-.card-list-enter-from {
-  opacity: 0;
-  transform: scale(0.9);
-}
-
-.card-list-leave-to {
-  opacity: 0;
-  transform: scale(0.9);
 }
 </style>

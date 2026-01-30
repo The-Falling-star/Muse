@@ -117,8 +117,29 @@ import {
   SparklesOutline,
   InformationCircleOutline
 } from '@vicons/ionicons5';
-import type { PromptItem } from '../../types';
-import { SYSTEM_MARKERS } from '../../types';
+
+// 提示项类型（组件本地使用）
+interface PromptItem {
+  id: number;
+  identifier: string;
+  name: string;
+  role: 'system' | 'user' | 'assistant';
+  content: string;
+  enabled: boolean;
+  marker?: boolean;
+  injection?: {
+    position: 'before' | 'after';
+    depth: number;
+  };
+}
+
+// 系统标记常量
+const SYSTEM_MARKERS = {
+  CHAT_HISTORY: 'chat_history',
+  WORLD_INFO: 'world_info',
+  PERSONA: 'persona',
+  CHARACTER: 'character'
+} as const;
 
 interface FormData {
   name: string;
@@ -212,7 +233,7 @@ const handleSubmit = async () => {
     await formRef.value?.validate();
 
     const item: PromptItem = {
-      id: props.item?.id || Date.now().toString(),
+      id: props.item?.id || Date.now(),
       identifier: formData.identifier,
       name: formData.name,
       role: formData.role,

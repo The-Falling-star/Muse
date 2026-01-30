@@ -172,7 +172,7 @@ import {
 
 // Persona 类型定义
 interface Persona {
-  id: string;
+  id: number;
   name: string;
   avatar: string;
 }
@@ -208,17 +208,17 @@ const fileInputRef = ref<HTMLInputElement | null>(null);
 const attachments = ref<AttachmentFile[]>([]);
 
 // 默认 Persona
-const defaultPersona: Persona = { id: '1', name: '默认用户', avatar: '' };
+const defaultPersona: Persona = { id: 1, name: '默认用户', avatar: '' };
 
 // 模拟 Persona 数据（后续对接后端）
 const personas = ref<Persona[]>([
   defaultPersona,
-  { id: '2', name: '勇者', avatar: '' },
-  { id: '3', name: '魔法师', avatar: '' },
-  { id: '4', name: '小明', avatar: '' }
+  { id: 2, name: '勇者', avatar: '' },
+  { id: 3, name: '魔法师', avatar: '' },
+  { id: 4, name: '小明', avatar: '' }
 ]);
 
-const currentPersonaId = ref('1');
+const currentPersonaId = ref(1);
 
 const currentPersona = computed<Persona>(() => {
   return personas.value.find(p => p.id === currentPersonaId.value) ?? defaultPersona;

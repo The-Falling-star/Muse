@@ -51,24 +51,6 @@
               placeholder="角色的简短描述"
             />
           </n-form-item>
-
-          <n-form-item label="性格" path="personality">
-            <n-input
-              v-model:value="formData.personality"
-              type="textarea"
-              :autosize="{ minRows: 3, maxRows: 6 }"
-              placeholder="描述角色的性格特点"
-            />
-          </n-form-item>
-
-          <n-form-item label="场景设定" path="scenario">
-            <n-input
-              v-model:value="formData.scenario"
-              type="textarea"
-              :autosize="{ minRows: 3, maxRows: 6 }"
-              placeholder="角色所处的背景场景"
-            />
-          </n-form-item>
         </n-tab-pane>
 
         <n-tab-pane name="dialogue" tab="对话设定">
@@ -98,15 +80,6 @@
               type="textarea"
               :autosize="{ minRows: 3, maxRows: 6 }"
               placeholder="给其他用户的备注信息"
-            />
-          </n-form-item>
-
-          <n-form-item label="系统提示词" path="systemPrompt">
-            <n-input
-              v-model:value="formData.systemPrompt"
-              type="textarea"
-              :autosize="{ minRows: 4, maxRows: 8 }"
-              placeholder="自定义系统提示词（可选）"
             />
           </n-form-item>
         </n-tab-pane>
@@ -142,18 +115,15 @@ import {
 import type { FormInst, FormRules, UploadFileInfo } from 'naive-ui';
 import { CameraOutline } from '@vicons/ionicons5';
 
-import type { Character } from '../../types';
+import type { Character } from '@/gen/muse/muse_pb';
 
 interface CharacterFormData {
   name: string;
   avatar: string;
   description: string;
-  personality: string;
-  scenario: string;
   firstMessage: string;
   exampleDialogue: string;
   creatorNotes: string;
-  systemPrompt: string;
 }
 
 const props = defineProps<{
@@ -161,7 +131,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  save: [character: Character];
+  save: [character: Partial<Character>];
   cancel: [];
 }>();
 
@@ -173,12 +143,9 @@ const formData = reactive<CharacterFormData>({
   name: '',
   avatar: '',
   description: '',
-  personality: '',
-  scenario: '',
   firstMessage: '',
   exampleDialogue: '',
-  creatorNotes: '',
-  systemPrompt: ''
+  creatorNotes: ''
 });
 
 // 表单验证规则
@@ -196,12 +163,9 @@ watch(() => props.character, (char) => {
       name: char.name || '',
       avatar: char.avatar || '',
       description: char.description || '',
-      personality: char.personality || '',
-      scenario: char.scenario || '',
       firstMessage: char.firstMessage || '',
       exampleDialogue: char.exampleDialogue || '',
-      creatorNotes: char.creatorNotes || '',
-      systemPrompt: ''
+      creatorNotes: char.creatorNotes || ''
     });
   } else {
     // 重置表单
@@ -209,12 +173,9 @@ watch(() => props.character, (char) => {
       name: '',
       avatar: '',
       description: '',
-      personality: '',
-      scenario: '',
       firstMessage: '',
       exampleDialogue: '',
-      creatorNotes: '',
-      systemPrompt: ''
+      creatorNotes: ''
     });
   }
 }, { immediate: true });
@@ -236,13 +197,11 @@ const handleSubmit = async () => {
   try {
     await formRef.value?.validate();
 
-    const character: Character = {
-      id: props.character?.id || '',
+    const character: Partial<Character> = {
+      id: props.character?.id || 0,
       name: formData.name,
       avatar: formData.avatar,
       description: formData.description,
-      personality: formData.personality,
-      scenario: formData.scenario,
       firstMessage: formData.firstMessage,
       exampleDialogue: formData.exampleDialogue,
       creatorNotes: formData.creatorNotes

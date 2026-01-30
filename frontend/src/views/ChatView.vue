@@ -22,18 +22,17 @@
           <n-avatar
             :size="40"
             round
-            :src="session.avatar"
+            :src="session.character?.avatar"
             class="session-avatar"
           >
-            {{ session.characterName.charAt(0) }}
+            {{ getSessionDisplayName(session).charAt(0) }}
           </n-avatar>
           <div class="session-info">
-            <div class="session-name">{{ session.characterName }}</div>
-            <div class="session-preview">{{ session.lastMessage }}</div>
+            <div class="session-name">{{ getSessionDisplayName(session) }}</div>
+            <div class="session-preview">{{ getSessionPreview(session) }}</div>
           </div>
           <div class="session-meta">
-            <span class="session-time">{{ session.time }}</span>
-            <n-badge v-if="session.unread" :value="session.unread" :max="99" />
+            <span class="session-time">{{ formatSessionTime(session.updatedAt) }}</span>
           </div>
         </div>
 
@@ -177,7 +176,7 @@
           :disabled="isTyping"
           @send="handleSendMessage"
           @stop="handleStopGeneration"
-          @persona-change="handlePersonaChange"
+          @persona-change="(p: any) => handlePersonaChange(p)"
         />
       </div>
     </div>
@@ -194,11 +193,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import {
   NScrollbar,
   NAvatar,
-  NBadge,
   NButton,
   NIcon,
   NTooltip,
@@ -206,7 +205,8 @@ import {
   NEmpty,
   NVirtualList,
   NUpload,
-  useMessage
+  useMessage,
+  useDialog
 } from 'naive-ui';
 import type { UploadFileInfo } from 'naive-ui';
 import type { VirtualListInst } from 'naive-ui';
@@ -221,143 +221,169 @@ import {
 
 import MessageItem from '../components/chat/MessageItem.vue';
 import MessageInput from '../components/chat/MessageInput.vue';
-import type { Message, Character } from '../types';
+import { useChatStore } from '@/stores/chat';
+import { useUserStore } from '@/stores/user';
+import { chatClient } from '@/api/client';
+import type { ChatSession, Message as PbMessage, Character, Persona } from '@/gen/muse/muse_pb';
 
-// Persona 类型定义
-interface Persona {
+// 本地Message类型适配
+interface LocalMessage {
   id: string;
-  name: string;
-  avatar: string;
+  role: 'user' | 'assistant' | 'system';
+  swipes: Array<{
+    id: string;
+    content: string;
+    timestamp: number;
+  }>;
+  currentSwipeIndex: number;
 }
+
+const route = useRoute();
+const router = useRouter();
+const message = useMessage();
+const dialog = useDialog();
+const chatStore = useChatStore();
+const userStore = useUserStore();
 
 // 响应式状态
 const showSessionsPanel = ref(false);
-const activeSessionId = ref<string | null>('1');
 const inputMessage = ref('');
-const isTyping = ref(false);
 const virtualListRef = ref<VirtualListInst | null>(null);
 const uploadRef = ref<InstanceType<typeof NUpload> | null>(null);
-const message = useMessage();
+const loading = ref(false);
 
-// 当前人设
-const currentPersona = ref<Persona>({ id: '1', name: '默认用户', avatar: '' });
-
-// 模拟会话数据
-const sessions = ref([
-  {
-    id: '1',
-    characterName: 'AI助手',
-    avatar: '',
-    lastMessage: '你好！有什么我可以帮助你的吗？',
-    time: '刚刚',
-    unread: 0
-  },
-  {
-    id: '2',
-    characterName: '小说角色',
-    avatar: '',
-    lastMessage: '这是一段很长的消息预览文本...',
-    time: '5分钟前',
-    unread: 2
-  }
-]);
+// 从Store获取数据
+const sessions = computed(() => chatStore.sessions);
+const activeSessionId = computed(() => chatStore.activeSessionId);
+const isTyping = computed(() => chatStore.isStreaming);
 
 // 当前角色
 const currentCharacter = computed<Character | null>(() => {
-  if (!activeSessionId.value) return null;
-  const session = sessions.value.find(s => s.id === activeSessionId.value);
-  if (!session) return null;
-  return {
-    id: session.id,
-    name: session.characterName,
-    avatar: session.avatar
-  };
+  return chatStore.activeCharacter ?? null;
 });
 
-// 模拟消息数据（使用新的 swipes 结构）
-const messages = ref<Message[]>([
-  {
-    id: '1',
-    role: 'assistant',
-    swipes: [
-      {
-        id: '1-1',
-        content: '你好！我是Muse AI助手。我可以帮助你进行创意写作、角色扮演或者回答问题。有什么我可以帮你的吗？',
-        timestamp: Date.now() - 60000
-      }
-    ],
-    currentSwipeIndex: 0
-  },
-  {
-    id: '2',
-    role: 'user',
-    swipes: [
-      {
-        id: '2-1',
-        content: '你好，我想了解一下你有哪些功能？',
-        timestamp: Date.now() - 30000
-      }
-    ],
-    currentSwipeIndex: 0
-  },
-  {
-    id: '3',
-    role: 'assistant',
-    swipes: [
-      {
-        id: '3-1',
-        content: `当然！以下是我的主要功能：
+// 当前人设
+const currentPersona = computed<Persona | null>(() => {
+  return userStore.activePersona ?? null;
+});
 
-1. **创意写作** - 帮助你创作故事、诗歌、剧本等
-2. **角色扮演** - 可以扮演各种角色与你互动
-3. **问题解答** - 回答各类问题
-4. **文本编辑** - 帮助修改和润色文本
+// 将PbMessage转换为本地格式
+const convertToLocalMessage = (msg: PbMessage): LocalMessage => {
+  const roleMap: Record<number, 'user' | 'assistant' | 'system'> = {
+    1: 'system',
+    2: 'user',
+    3: 'assistant'
+  };
+  return {
+    id: msg.id.toString(),
+    role: roleMap[msg.role] || 'assistant',
+    swipes: msg.swipes.map(s => ({
+      id: s.id.toString(),
+      content: s.content,
+      timestamp: Number(s.createdAt)
+    })),
+    currentSwipeIndex: msg.activeSwipeIndex
+  };
+};
 
-你对哪个功能最感兴趣呢？`,
-        timestamp: Date.now() - 20000
-      },
-      {
-        id: '3-2',
-        content: `我有很多功能可以帮助你：
+// 会话辅助函数
+const getSessionDisplayName = (session: ChatSession): string => {
+  return session.name || session.character?.name || '未命名会话';
+};
 
-• **故事创作** - 我可以和你一起创作有趣的故事
-• **角色扮演** - 扮演各种角色与你对话
-• **写作润色** - 帮你修改和优化文本
-• **知识问答** - 回答你的各种问题
-
-想先试试哪个？`,
-        timestamp: Date.now() - 10000
-      },
-      {
-        id: '3-3',
-        content: `很高兴你问这个！我的主要能力包括：
-
-1. 📝 **创意写作** - 故事、诗歌、剧本
-2. 🎭 **角色扮演** - 沉浸式互动体验
-3. 💬 **智能对话** - 问答、讨论、建议
-4. ✨ **文本优化** - 润色、改写、翻译
-
-你最感兴趣的是哪个方向？`,
-        timestamp: Date.now()
-      }
-    ],
-    currentSwipeIndex: 2
+const getSessionPreview = (session: ChatSession): string => {
+  if (session.messages && session.messages.length > 0) {
+    const lastMsg = session.messages[session.messages.length - 1];
+    if (lastMsg && lastMsg.swipes && lastMsg.swipes.length > 0) {
+      const swipe = lastMsg.swipes[lastMsg.activeSwipeIndex];
+      const content = swipe?.content || '';
+      return content.length > 50 ? content.slice(0, 50) + '...' : content;
+    }
   }
-]);
+  return '暂无消息';
+};
+
+const formatSessionTime = (timestamp: bigint): string => {
+  const date = new Date(Number(timestamp));
+  const now = new Date();
+  const diff = now.getTime() - date.getTime();
+
+  if (diff < 60000) return '刚刚';
+  if (diff < 3600000) return `${Math.floor(diff / 60000)}分钟前`;
+  if (diff < 86400000) return `${Math.floor(diff / 3600000)}小时前`;
+  if (diff < 604800000) return `${Math.floor(diff / 86400000)}天前`;
+
+  return date.toLocaleDateString();
+};
+
+// 消息列表（转换为本地格式）
+const messages = computed<LocalMessage[]>(() => {
+  return chatStore.messages.map(convertToLocalMessage);
+});
 
 // 计算属性：消息列表（包含输入指示器）
 const messagesWithTyping = computed(() => {
   const items = [...messages.value];
-  // 如果正在输入，添加一个特殊的输入指示器项
   if (isTyping.value) {
     items.push({
       id: 'typing-indicator',
       role: 'assistant',
       swipes: [],
       currentSwipeIndex: 0
-    } as Message);
+    });
   }
   return items;
+});
+
+// 加载会话列表
+const loadSessions = async (characterId?: number) => {
+  loading.value = true;
+  try {
+    const response = await chatClient.listChatSessions({
+      characterId: characterId,
+      page: 1,
+      pageSize: 50
+    });
+    chatStore.setSessions(response.sessions);
+  } finally {
+    loading.value = false;
+  }
+};
+
+// 加载会话详情（包含消息）
+const loadSession = async (sessionId: number) => {
+  loading.value = true;
+  try {
+    const response = await chatClient.getChatSession({
+      id: sessionId,
+      includeMessages: true
+    });
+    if (response.session) {
+      chatStore.setActiveSession(response.session);
+    }
+  } finally {
+    loading.value = false;
+  }
+};
+
+// 初始化
+onMounted(async () => {
+  await loadSessions();
+
+  // 如果URL中有sessionId参数，加载该会话
+  const sessionId = route.params.sessionId;
+  if (sessionId) {
+    await loadSession(Number(sessionId));
+  }
+});
+
+// 监听路由参数变化
+watch(() => route.params.sessionId, async (newId) => {
+  if (newId) {
+    await loadSession(Number(newId));
+  } else {
+    chatStore.setActiveSession(null);
+  }
 });
 
 // 滚动到底部
@@ -406,221 +432,317 @@ const handleImportFile = (options: { file: UploadFileInfo }) => {
   if (!file.file) return false;
 
   const reader = new FileReader();
-  reader.onload = (e) => {
+reader.onload = (e) => {
     try {
       const content = e.target?.result as string;
-      const importedData = JSON.parse(content);
-
-      // 验证导入的数据格式
-      if (importedData.messages && Array.isArray(importedData.messages)) {
-        // 合并或替换消息
-        messages.value = importedData.messages;
-        message.success('聊天记录导入成功');
-        setTimeout(scrollToBottom, 50);
-      } else if (Array.isArray(importedData)) {
-        // 直接是消息数组
-        messages.value = importedData;
-        message.success('聊天记录导入成功');
-        setTimeout(scrollToBottom, 50);
-      } else {
-        message.error('无效的聊天记录格式');
-      }
+      JSON.parse(content); // 验证JSON格式
+      // TODO: 调用后端导入接口
+      message.info('导入功能暂未实现');
     } catch (err) {
       message.error('解析文件失败，请确保是有效的JSON文件');
     }
   };
   reader.readAsText(file.file);
-  return false; // 阻止默认上传行为
+  return false;
 };
 
 // 导出聊天记录
-const handleExportChat = () => {
-  const exportData = {
-    sessionId: activeSessionId.value,
-    character: currentCharacter.value,
-    messages: messages.value,
-    exportTime: new Date().toISOString()
-  };
+const handleExportChat = async () => {
+  if (!chatStore.activeSessionId) {
+    message.warning('请先选择一个会话');
+    return;
+  }
 
-  const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `chat-${currentCharacter.value?.name || 'export'}-${Date.now()}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
-  message.success('聊天记录已导出');
+  // TODO: 后端实现导出接口后启用
+  message.info('导出功能暂未实现');
 };
 
 // 清空会话
 const handleClearChat = () => {
-  messages.value = [];
-  message.success('会话已清空');
+  dialog.warning({
+    title: '确认清空',
+    content: '确定要清空当前会话的所有消息吗？此操作不可撤销。',
+    positiveText: '清空',
+    negativeText: '取消',
+    onPositiveClick: async () => {
+      if (!chatStore.activeSessionId) return;
+      // TODO: 后端实现清空接口后启用
+      message.info('清空功能暂未实现');
+    }
+  });
 };
 
 // 删除会话
 const handleDeleteChat = () => {
-  console.log('Delete chat');
+  if (!chatStore.activeSession) {
+    message.warning('请先选择一个会话');
+    return;
+  }
+
+  dialog.warning({
+    title: '确认删除',
+    content: '确定要删除当前会话吗？此操作不可撤销。',
+    positiveText: '删除',
+    negativeText: '取消',
+    onPositiveClick: async () => {
+      if (!chatStore.activeSessionId) return;
+      try {
+        await chatClient.deleteChatSession({ id: chatStore.activeSessionId });
+        chatStore.removeSession(chatStore.activeSessionId);
+        router.push('/chat');
+        message.success('会话已删除');
+      } catch (e) {
+        message.error('删除失败');
+      }
+    }
+  });
 };
 
-// 方法
+// 创建新会话
 const createNewSession = () => {
-  console.log('Create new session');
+  // 跳转到角色选择页面或显示角色选择弹窗
+  router.push('/characters');
 };
 
-const selectSession = (id: string) => {
-  activeSessionId.value = id;
+// 选择会话
+const selectSession = async (id: number) => {
+  router.push(`/chat/${id}`);
   showSessionsPanel.value = false;
 };
 
-const handleSendMessage = (content: string) => {
-  if (!content.trim()) return;
+// 发送消息
+const handleSendMessage = async (content: string) => {
+  if (!content.trim() || !chatStore.activeSessionId) return;
 
-  const now = Date.now();
-
-  // 添加用户消息（使用 swipes 结构）
-  messages.value.push({
-    id: now.toString(),
-    role: 'user',
-    swipes: [
-      {
-        id: `${now}-1`,
-        content,
-        timestamp: now
-      }
-    ],
-    currentSwipeIndex: 0
-  });
-
+  // 创建临时用户消息
+  const tempUserMsg = chatStore.createTempUserMessage(content);
+  chatStore.addMessage(tempUserMsg);
   inputMessage.value = '';
-  isTyping.value = true;
+
+  // 创建临时AI消息占位
+  const tempAiMsg = chatStore.createTempAiMessage();
+  chatStore.addMessage(tempAiMsg);
 
   // 滚动到底部
   setTimeout(scrollToBottom, 50);
 
-  // 模拟AI回复
-  setTimeout(() => {
-    const aiNow = Date.now();
-    messages.value.push({
-      id: aiNow.toString(),
-      role: 'assistant',
-      swipes: [
-        {
-          id: `${aiNow}-1`,
-          content: '这是一条模拟的AI回复消息。在实际应用中，这里会调用API获取真实的AI响应。',
-          timestamp: aiNow
+  // 开始流式生成
+  chatStore.startStreaming();
+  const signal = chatStore.createAbortController();
+
+  try {
+    const stream = chatClient.sendMessage(
+      { sessionId: chatStore.activeSessionId, content: content },
+      { signal: signal }
+    );
+
+    // 存储每个候选回复的内容
+    const swipeContents: Map<number, string> = new Map();
+
+    for await (const response of stream) {
+      const index = response.index;
+
+      // 累加内容
+      const currentContent = swipeContents.get(index) || '';
+      const newContent = currentContent + response.content;
+      swipeContents.set(index, newContent);
+
+      // 更新临时AI消息的swipes
+      const aiMsgIndex = chatStore.messages.findIndex(m => m.id === tempAiMsg.id);
+      if (aiMsgIndex >= 0) {
+        const aiMsg = chatStore.messages[aiMsgIndex];
+        if (aiMsg) {
+          const swipe = aiMsg.swipes.find(s => s.sortOrder === index);
+          if (swipe) {
+            swipe.content = newContent;
+          } else {
+            aiMsg.swipes.push({
+              id: tempAiMsg.id + index,
+              messageId: tempAiMsg.id,
+              content: newContent,
+              sortOrder: index,
+              createdAt: BigInt(Date.now()),
+              $typeName: 'muse.MessageSwipe'
+            } as any);
+          }
         }
-      ],
-      currentSwipeIndex: 0
-    });
-    isTyping.value = false;
-    // 滚动到底部
+      }
+    }
+
+    // 流式完成后，重新加载会话获取真实的消息ID
+    await loadSession(chatStore.activeSessionId);
+
+  } catch (error) {
+    if ((error as Error).name === 'AbortError') {
+      message.info('消息生成已取消');
+    } else {
+      message.error('发送消息失败');
+      console.error('发送消息失败:', error);
+    }
+  } finally {
+    chatStore.stopStreaming();
     setTimeout(scrollToBottom, 50);
-  }, 2000);
+  }
 };
 
+// 停止生成
 const handleStopGeneration = () => {
-  isTyping.value = false;
+  chatStore.abortGeneration();
 };
 
 // 编辑消息内容
-const handleEditMessage = (messageId: string, swipeId: string, content: string) => {
-  const message = messages.value.find(m => m.id === messageId);
-  if (!message) return;
+const handleEditMessage = async (messageId: number, swipeId: number, content: string) => {
+  try {
+    await chatClient.editMessage({
+      messageId: messageId,
+      swipeId: swipeId,
+      content: content
+    });
 
-  const swipe = message.swipes.find(s => s.id === swipeId);
-  if (swipe) {
-    swipe.content = content;
-    swipe.timestamp = Date.now(); // 更新时间戳
+    // 更新本地状态
+    const msg = chatStore.messages.find(m => m.id === messageId);
+    if (msg) {
+      const swipe = msg.swipes.find(s => s.id === swipeId);
+      if (swipe) {
+        swipe.content = content;
+      }
+    }
+    message.success('消息已更新');
+  } catch (e) {
+    message.error('编辑失败');
   }
 };
 
 // 删除整个楼层
-const handleDeleteMessage = (id: string) => {
-  messages.value = messages.value.filter(m => m.id !== id);
+const handleDeleteMessage = async (id: number) => {
+  dialog.warning({
+    title: '确认删除',
+    content: '确定要删除这条消息吗？',
+    positiveText: '删除',
+    negativeText: '取消',
+    onPositiveClick: async () => {
+      try {
+        await chatClient.deleteMessage({ messageId: id });
+        chatStore.removeMessage(id);
+        message.success('消息已删除');
+      } catch (e) {
+        message.error('删除失败');
+      }
+    }
+  });
 };
 
 // 删除单条消息（swipe）
-const handleDeleteSwipe = (messageId: string, swipeId: string) => {
-  const message = messages.value.find(m => m.id === messageId);
-  if (!message || message.swipes.length <= 1) return;
-
-  const swipeIndex = message.swipes.findIndex(s => s.id === swipeId);
-  if (swipeIndex === -1) return;
-
-  // 删除这条 swipe
-  message.swipes.splice(swipeIndex, 1);
-
-  // 调整当前索引
-  if (message.currentSwipeIndex >= message.swipes.length) {
-    message.currentSwipeIndex = message.swipes.length - 1;
-  } else if (message.currentSwipeIndex > swipeIndex) {
-    message.currentSwipeIndex--;
+const handleDeleteSwipe = async (messageId: number, swipeId: number) => {
+  const msg = chatStore.messages.find(m => m.id === messageId);
+  if (!msg || msg.swipes.length <= 1) {
+    message.warning('无法删除最后一条回复');
+    return;
   }
+
+  // TODO: 后端实现删除swipe接口后启用
+  // 本地删除
+  const swipeIndex = msg.swipes.findIndex(s => s.id === swipeId);
+  if (swipeIndex >= 0) {
+    msg.swipes.splice(swipeIndex, 1);
+    if (msg.activeSwipeIndex >= msg.swipes.length) {
+      msg.activeSwipeIndex = msg.swipes.length - 1;
+    }
+  }
+  message.success('回复已删除');
 };
 
 // 重新生成消息（添加新的 swipe）
-const handleRegenerateMessage = (id: string) => {
-  const message = messages.value.find(m => m.id === id);
-  if (!message || message.role !== 'assistant') return;
+const handleRegenerateMessage = async (id: number) => {
+  const msg = chatStore.messages.find(m => m.id === id);
+  if (!msg || msg.role !== 3) return; // 只能重新生成助手消息
 
-  isTyping.value = true;
+  chatStore.startStreaming();
+  const signal = chatStore.createAbortController();
 
-  // 模拟生成新的回复
-  setTimeout(() => {
-    const now = Date.now();
-    message.swipes.push({
-      id: `${id}-${now}`,
-      content: `这是重新生成的回复 #${message.swipes.length + 1}。每次点击重新生成都会添加一条新消息到这个楼层。`,
-      timestamp: now
-    });
-    // 自动切换到新生成的消息
-    message.currentSwipeIndex = message.swipes.length - 1;
-    isTyping.value = false;
-  }, 1500);
-};
+  try {
+    const stream = chatClient.regenerateMessage(
+      { messageId: id },
+      { signal: signal }
+    );
 
-// 切换 swipe
-const handleSwipeChange = (messageId: string, index: number) => {
-  const message = messages.value.find(m => m.id === messageId);
-  if (message) {
-    message.currentSwipeIndex = index;
+    let newSwipeContent = '';
+
+    for await (const response of stream) {
+      if (response.newSwipe) {
+        // 添加新的swipe
+        msg.swipes.push(response.newSwipe);
+        msg.activeSwipeIndex = msg.swipes.length - 1;
+      }
+      if (response.contentDelta) {
+        newSwipeContent += response.contentDelta;
+        // 更新最后一个swipe的内容
+        const lastSwipe = msg.swipes[msg.swipes.length - 1];
+        if (lastSwipe) {
+          lastSwipe.content = newSwipeContent;
+        }
+      }
+    }
+
+    message.success('重新生成完成');
+  } catch (error) {
+    if ((error as Error).name === 'AbortError') {
+      message.info('重新生成已取消');
+    } else {
+      message.error('重新生成失败');
+    }
+  } finally {
+    chatStore.stopStreaming();
   }
 };
 
-// 创建分支（暂不实现业务逻辑，只打印日志）
-const handleBranch = (messageId: string) => {
-  console.log('Create branch from message:', messageId);
-  // TODO: 实现分支逻辑
-  // 1. 复制当前会话到新会话
-  // 2. 新会话删除该消息之后的所有楼层
-  // 3. 原会话保持不变
+// 切换 swipe
+const handleSwipeChange = async (messageId: number, index: number) => {
+  try {
+    await chatClient.switchSwipe({
+      messageId: messageId,
+      swipeIndex: index
+    });
+    chatStore.localSwitchSwipe(messageId, index);
+  } catch (e) {
+    // 即使API失败，也更新本地状态
+    chatStore.localSwitchSwipe(messageId, index);
+  }
+};
+
+// 创建分支
+const handleBranch = async (_messageId: number) => {
+  // TODO: 后端实现分支接口后启用
+  message.info('分支功能暂未实现');
 };
 
 // 复制当前消息为新版本（用户消息专用）
-const handleDuplicateSwipe = (messageId: string) => {
-  const message = messages.value.find(m => m.id === messageId);
-  if (!message) return;
+const handleDuplicateSwipe = async (messageId: number) => {
+  const msg = chatStore.messages.find(m => m.id === messageId);
+  if (!msg) return;
 
-  // 获取当前显示的 swipe 内容
-  const currentSwipe = message.swipes[message.currentSwipeIndex];
+  const currentSwipe = msg.swipes[msg.activeSwipeIndex];
   if (!currentSwipe) return;
 
-  const now = Date.now();
-  // 复制当前消息内容为新版本
-  message.swipes.push({
-    id: `${messageId}-${now}`,
-    content: currentSwipe.content,
-    timestamp: now
-  });
-
-  // 自动切换到新版本
-  message.currentSwipeIndex = message.swipes.length - 1;
+  // TODO: 后端实现复制swipe接口后启用
+  // 本地复制
+  const newSwipe = {
+    ...currentSwipe,
+    id: Date.now(),
+    createdAt: BigInt(Date.now())
+  };
+  msg.swipes.push(newSwipe as any);
+  msg.activeSwipeIndex = msg.swipes.length - 1;
+  message.success('已创建副本');
 };
 
 // 处理人设切换
-const handlePersonaChange = (persona: Persona) => {
-  currentPersona.value = persona;
+const handlePersonaChange = async (persona: { id: number; name: string; avatar: string }) => {
+  try {
+    await userStore.setActivePersonaId(persona.id);
+  } catch (e) {
+    message.error('切换人设失败');
+  }
 };
 </script>
 

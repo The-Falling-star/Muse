@@ -24,29 +24,31 @@
       </n-input>
 
       <n-scrollbar class="preset-list-container">
-        <div class="preset-list">
-          <div
-            v-for="preset in filteredPresets"
-            :key="preset.id"
-            class="preset-item"
-            :class="{ 'active': selectedPreset?.id === preset.id }"
-            @click="selectPreset(preset)"
-          >
-            <div class="preset-item-info">
-              <span class="preset-item-name">{{ preset.name }}</span>
-              <span class="preset-item-count">{{ preset.prompts.length }} 项</span>
+        <n-spin :show="loading">
+          <div class="preset-list">
+            <div
+              v-for="preset in filteredPresets"
+              :key="preset.id"
+              class="preset-item"
+              :class="{ 'active': selectedPreset?.id === preset.id }"
+              @click="selectPreset(preset)"
+            >
+              <div class="preset-item-info">
+                <span class="preset-item-name">{{ preset.name }}</span>
+                <span class="preset-item-count">{{ preset.promptItems?.length || 0 }} 项</span>
+              </div>
+              <n-dropdown :options="presetMenuOptions" trigger="click" @select="(key: string) => handlePresetMenu(key, preset)">
+                <n-button quaternary circle size="tiny" @click.stop>
+                  <template #icon>
+                    <n-icon><EllipsisVerticalOutline /></n-icon>
+                  </template>
+                </n-button>
+              </n-dropdown>
             </div>
-            <n-dropdown :options="presetMenuOptions" trigger="click" @select="(key: string) => handlePresetMenu(key, preset)">
-              <n-button quaternary circle size="tiny" @click.stop>
-                <template #icon>
-                  <n-icon><EllipsisVerticalOutline /></n-icon>
-                </template>
-              </n-button>
-            </n-dropdown>
           </div>
-        </div>
 
-        <n-empty v-if="filteredPresets.length === 0" description="暂无预设" size="small" />
+          <n-empty v-if="filteredPresets.length === 0 && !loading" description="暂无预设" size="small" />
+        </n-spin>
       </n-scrollbar>
     </div>
 
@@ -57,14 +59,14 @@
         <div class="panel-header">
           <div class="header-title">
             <n-input
-              v-model:value="selectedPreset.name"
+              v-model:value="editForm.name"
               :bordered="false"
               placeholder="预设名称"
               class="preset-name-input"
             />
           </div>
           <div class="header-actions">
-            <n-button type="primary" size="small" @click="savePreset">
+            <n-button type="primary" size="small" :loading="saving" @click="savePreset">
               <template #icon>
                 <n-icon><SaveOutline /></n-icon>
               </template>
@@ -88,7 +90,7 @@
                   <span class="param-label">Temperature</span>
                   <div class="param-control">
                     <n-slider
-                      v-model:value="selectedPreset.temperature"
+                      v-model:value="editForm.temperature"
                       :min="0"
                       :max="2"
                       :step="0.05"
@@ -96,7 +98,7 @@
                       class="param-slider"
                     />
                     <n-input-number
-                      v-model:value="selectedPreset.temperature"
+                      v-model:value="editForm.temperature"
                       :min="0"
                       :max="2"
                       :step="0.05"
@@ -112,7 +114,7 @@
                   <span class="param-label">Top P</span>
                   <div class="param-control">
                     <n-slider
-                      v-model:value="selectedPreset.topP"
+                      v-model:value="editForm.topP"
                       :min="0"
                       :max="1"
                       :step="0.05"
@@ -120,7 +122,7 @@
                       class="param-slider"
                     />
                     <n-input-number
-                      v-model:value="selectedPreset.topP"
+                      v-model:value="editForm.topP"
                       :min="0"
                       :max="1"
                       :step="0.05"
@@ -136,7 +138,7 @@
                   <span class="param-label">Top K</span>
                   <div class="param-control">
                     <n-slider
-                      v-model:value="selectedPreset.topK"
+                      v-model:value="editForm.topK"
                       :min="0"
                       :max="500"
                       :step="1"
@@ -144,7 +146,7 @@
                       class="param-slider"
                     />
                     <n-input-number
-                      v-model:value="selectedPreset.topK"
+                      v-model:value="editForm.topK"
                       :min="0"
                       :max="500"
                       :step="1"
@@ -160,7 +162,7 @@
                   <span class="param-label">最大 Tokens</span>
                   <div class="param-control">
                     <n-slider
-                      v-model:value="selectedPreset.maxTokens"
+                      v-model:value="editForm.maxTokens"
                       :min="1"
                       :max="9999999"
                       :step="10000"
@@ -168,7 +170,7 @@
                       class="param-slider"
                     />
                     <n-input-number
-                      v-model:value="selectedPreset.maxTokens"
+                      v-model:value="editForm.maxTokens"
                       :min="1"
                       :max="9999999"
                       :step="100"
@@ -184,7 +186,7 @@
                   <span class="param-label">频率惩罚</span>
                   <div class="param-control">
                     <n-slider
-                      v-model:value="selectedPreset.frequencyPenalty"
+                      v-model:value="editForm.frequencyPenalty"
                       :min="0"
                       :max="2"
                       :step="0.05"
@@ -192,7 +194,7 @@
                       class="param-slider"
                     />
                     <n-input-number
-                      v-model:value="selectedPreset.frequencyPenalty"
+                      v-model:value="editForm.frequencyPenalty"
                       :min="0"
                       :max="2"
                       :step="0.05"
@@ -208,7 +210,7 @@
                   <span class="param-label">存在惩罚</span>
                   <div class="param-control">
                     <n-slider
-                      v-model:value="selectedPreset.presencePenalty"
+                      v-model:value="editForm.presencePenalty"
                       :min="0"
                       :max="2"
                       :step="0.05"
@@ -216,7 +218,7 @@
                       class="param-slider"
                     />
                     <n-input-number
-                      v-model:value="selectedPreset.presencePenalty"
+                      v-model:value="editForm.presencePenalty"
                       :min="0"
                       :max="2"
                       :step="0.05"
@@ -238,7 +240,10 @@
               <span class="section-title">预设正则</span>
             </div>
             <div class="section-content">
-              <PresetRegexManager v-model:regexRules="regexRules" />
+              <PresetRegexManager
+                v-model:regexRules="regexRules"
+                :preset-id="selectedPreset.id"
+              />
             </div>
           </section>
 
@@ -257,19 +262,19 @@
             <div class="section-content">
               <!-- 提示项列表 - 可拖拽排序 -->
               <draggable
-                v-model="orderedPromptItems"
-                item-key="identifier"
+                v-model="promptItems"
+                item-key="id"
                 handle=".drag-handle"
                 animation="200"
                 ghost-class="prompt-ghost"
                 class="prompt-list"
+                @end="handlePromptOrderChange"
               >
                 <template #item="{ element: item, index }">
                   <div
                     class="prompt-item"
                     :class="{
-                      'disabled': !getPromptEnabled(item.identifier),
-                      'marker': item.marker,
+                      'disabled': !item.isEnabled,
                       'editing': editingPromptId === item.id
                     }"
                   >
@@ -280,37 +285,29 @@
 
                     <!-- 启用开关 -->
                     <n-switch
-                      :value="getPromptEnabled(item.identifier)"
+                      :value="item.isEnabled"
                       size="small"
-                      @update:value="(val: boolean) => togglePromptEnabled(item.identifier, val)"
+                      @update:value="(val: boolean) => togglePromptEnabled(item, val)"
                     />
 
                     <!-- 序号 -->
                     <span class="prompt-index">{{ index + 1 }}</span>
 
                     <!-- 提示项信息 -->
-                    <div class="prompt-info" @click="!item.marker && toggleExpand(item.id)">
+                    <div class="prompt-info" @click="toggleExpand(item.id)">
                       <div class="prompt-header-row">
                         <span class="prompt-name">{{ item.name }}</span>
-                        <!-- 系统标记项只显示"系统占位"标签，不显示角色标签 -->
-                        <n-tag v-if="item.marker" type="warning" size="small" :bordered="false">
-                          系统占位
-                        </n-tag>
-                        <!-- 用户自定义提示项显示角色标签 -->
-                        <n-tag v-else :type="getRoleColor(item.role)" size="small" :bordered="false">
+                        <n-tag :type="getRoleColor(item.role)" size="small" :bordered="false">
                           {{ getRoleName(item.role) }}
                         </n-tag>
                       </div>
-                      <p v-if="!item.marker && item.content" class="prompt-preview">
+                      <p v-if="item.content" class="prompt-preview">
                         {{ truncateContent(item.content) }}
-                      </p>
-                      <p v-if="item.marker" class="prompt-marker-hint">
-                        {{ getMarkerHint(item.identifier) }}
                       </p>
                     </div>
 
-                    <!-- 操作按钮 - 系统标记项不显示编辑和删除按钮 -->
-                    <div v-if="!item.marker" class="prompt-actions">
+                    <!-- 操作按钮 -->
+                    <div class="prompt-actions">
                       <n-button quaternary circle size="tiny" @click="editPromptItem(item)">
                         <template #icon>
                           <n-icon><CreateOutline /></n-icon>
@@ -330,12 +327,13 @@
 
                     <!-- 展开的编辑区域 -->
                     <Transition name="expand">
-                      <div v-if="expandedPromptId === item.id && !item.marker" class="prompt-expanded">
+                      <div v-if="expandedPromptId === item.id" class="prompt-expanded">
                         <n-input
                           v-model:value="item.content"
                           type="textarea"
                           :autosize="{ minRows: 3, maxRows: 10 }"
                           placeholder="输入提示内容，支持 {{char}} {{user}} 等变量"
+                          @blur="handlePromptContentChange(item)"
                         />
                       </div>
                     </Transition>
@@ -383,7 +381,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import {
   NInput,
   NInputNumber,
@@ -398,6 +396,7 @@ import {
   NModal,
   NCollapse,
   NCollapseItem,
+  NSpin,
   useMessage,
   useDialog
 } from 'naive-ui';
@@ -417,20 +416,63 @@ import draggable from 'vuedraggable';
 
 import PromptItemEditor from '../components/preset/PromptItemEditor.vue';
 import PresetRegexManager from '../components/preset/PresetRegexManager.vue';
-import type { Preset, PromptItem, RegexRule } from '../types';
-import { DEFAULT_PROMPT_ITEMS, DEFAULT_PROMPT_ORDER } from '../types';
+import { presetClient, regexRuleClient } from '@/api/client';
+import type { Preset, PromptItem } from '@/gen/muse/muse_pb';
+import { Role, InjectionPosition } from '@/gen/muse/muse_pb';
+
+// 组件本地使用的正则规则接口
+interface LocalRegexRule {
+  id: number;
+  name: string;
+  pattern: string;
+  replacement: string;
+  flags: string;
+  scope: 'input' | 'output' | 'both';
+  order: number;
+  enabled: boolean;
+}
+
+// 组件本地使用的提示项接口
+interface LocalPromptItem {
+  id: number;
+  identifier: string;
+  name: string;
+  role: 'system' | 'user' | 'assistant';
+  content: string;
+  enabled: boolean;
+  marker?: boolean;
+  injection?: {
+    position: 'before' | 'after';
+    depth: number;
+  };
+}
 
 const message = useMessage();
 const dialog = useDialog();
 
 // 状态
 const searchQuery = ref('');
+const loading = ref(false);
+const saving = ref(false);
+const presets = ref<Preset[]>([]);
 const selectedPreset = ref<Preset | null>(null);
+const promptItems = ref<PromptItem[]>([]);
+const regexRules = ref<LocalRegexRule[]>([]);
 const showPromptModal = ref(false);
-const editingPromptItem = ref<PromptItem | null>(null);
-const editingPromptId = ref<string | null>(null);
-const expandedPromptId = ref<string | null>(null);
-const regexRules = ref<RegexRule[]>([]);
+const editingPromptItem = ref<LocalPromptItem | null>(null);
+const editingPromptId = ref<number | null>(null);
+const expandedPromptId = ref<number | null>(null);
+
+// 编辑表单
+const editForm = ref({
+  name: '',
+  temperature: 1,
+  topP: 1,
+  topK: 0,
+  maxTokens: 300,
+  frequencyPenalty: 0,
+  presencePenalty: 0
+});
 
 // 预设菜单选项
 const presetMenuOptions = [
@@ -440,251 +482,421 @@ const presetMenuOptions = [
   { label: '删除', key: 'delete' }
 ];
 
-// 模拟预设数据
-const presets = ref<Preset[]>([
-  {
-    id: '1',
-    name: 'Default',
-    description: '默认预设',
-    prompts: JSON.parse(JSON.stringify(DEFAULT_PROMPT_ITEMS)),
-    promptOrder: JSON.parse(JSON.stringify(DEFAULT_PROMPT_ORDER)),
-    temperature: 1,
-    topP: 1,
-    topK: 0,
-    maxTokens: 300,
-    frequencyPenalty: 0,
-    presencePenalty: 0
-  },
-  {
-    id: '2',
-    name: '角色扮演增强',
-    description: '适合角色扮演场景',
-    prompts: [
-      ...JSON.parse(JSON.stringify(DEFAULT_PROMPT_ITEMS)),
-      {
-        id: 'rp_enhance',
-        identifier: 'rp_enhance',
-        name: 'RP增强提示',
-        role: 'system' as const,
-        content: '请深入扮演{{char}}，保持角色一致性，使用生动的描写...',
-        enabled: true,
-        marker: false
-      }
-    ],
-    promptOrder: [
-      ...JSON.parse(JSON.stringify(DEFAULT_PROMPT_ORDER)),
-      { identifier: 'rp_enhance', enabled: true }
-    ],
-    temperature: 1.2,
-    topP: 0.95,
-    topK: 0,
-    maxTokens: 500,
-    frequencyPenalty: 0,
-    presencePenalty: 0
-  }
-]);
-
 // 计算属性：过滤后的预设列表
 const filteredPresets = computed(() => {
   if (!searchQuery.value) return presets.value;
   const query = searchQuery.value.toLowerCase();
   return presets.value.filter(p =>
-    p.name.toLowerCase().includes(query) ||
-    p.description?.toLowerCase().includes(query)
+    p.name.toLowerCase().includes(query)
   );
 });
 
-// 计算属性：按排序顺序排列的提示项
-const orderedPromptItems = computed({
-  get() {
-    if (!selectedPreset.value) return [];
-    const orderMap = new Map(
-      selectedPreset.value.promptOrder.map((entry, index) => [entry.identifier, index])
-    );
-    return [...selectedPreset.value.prompts].sort((a, b) => {
-      const indexA = orderMap.get(a.identifier) ?? 999;
-      const indexB = orderMap.get(b.identifier) ?? 999;
-      return indexA - indexB;
-    });
-  },
-  set(newOrder: PromptItem[]) {
-    if (!selectedPreset.value) return;
-    // 更新排序
-    selectedPreset.value.promptOrder = newOrder.map(item => ({
-      identifier: item.identifier,
-      enabled: getPromptEnabled(item.identifier)
+// 加载预设列表
+const loadPresets = async () => {
+  loading.value = true;
+  try {
+    const response = await presetClient.listPresets({});
+    presets.value = response.presets;
+    // 如果有预设且没有选中的，选择第一个
+    if (presets.value.length > 0 && !selectedPreset.value) {
+      const firstPreset = presets.value[0];
+      if (firstPreset) {
+        await selectPreset(firstPreset);
+      }
+    }
+  } finally {
+    loading.value = false;
+  }
+};
+
+// 加载预设详情（包括提示项）
+const loadPresetDetail = async (presetId: number) => {
+  try {
+    const response = await presetClient.getPreset({ id: presetId });
+    if (response.preset) {
+      // 更新提示项列表
+      promptItems.value = response.preset.promptItems || [];
+    }
+  } catch (e) {
+    console.error('加载预设详情失败:', e);
+  }
+};
+
+// 加载预设正则规则
+const loadPresetRegexRules = async (presetId: number) => {
+  try {
+    const response = await regexRuleClient.listRegexRules({ presetId: presetId });
+    // 转换为组件本地类型
+    regexRules.value = response.rules.map(r => ({
+      id: r.id,
+      name: r.name,
+      pattern: r.findPattern,
+      replacement: r.replacePattern,
+      flags: 'gi',
+      scope: 'both' as const,
+      order: r.sortOrder,
+      enabled: r.isEnabled
     }));
-  }
-});
-
-// 方法：获取提示项是否启用
-const getPromptEnabled = (identifier: string): boolean => {
-  if (!selectedPreset.value) return false;
-  const entry = selectedPreset.value.promptOrder.find(e => e.identifier === identifier);
-  return entry?.enabled ?? true;
-};
-
-// 方法：切换提示项启用状态
-const togglePromptEnabled = (identifier: string, enabled: boolean) => {
-  if (!selectedPreset.value) return;
-  const entry = selectedPreset.value.promptOrder.find(e => e.identifier === identifier);
-  if (entry) {
-    entry.enabled = enabled;
+  } catch (e) {
+    console.error('加载正则规则失败:', e);
   }
 };
 
-// 方法：选择预设
-const selectPreset = (preset: Preset) => {
+// 选择预设
+const selectPreset = async (preset: Preset) => {
   selectedPreset.value = preset;
   expandedPromptId.value = null;
-  // 同步正则规则
-  regexRules.value = preset.regexRules ? [...preset.regexRules] : [];
-};
 
-// 方法：创建预设
-const createPreset = () => {
-  const newPreset: Preset = {
-    id: Date.now().toString(),
-    name: '新预设',
-    description: '',
-    prompts: JSON.parse(JSON.stringify(DEFAULT_PROMPT_ITEMS)),
-    promptOrder: JSON.parse(JSON.stringify(DEFAULT_PROMPT_ORDER)),
-    temperature: 1,
-    topP: 1,
-    topK: 0,
-    maxTokens: 300,
-    frequencyPenalty: 0,
-    presencePenalty: 0
+  // 同步编辑表单
+  editForm.value = {
+    name: preset.name,
+    temperature: preset.temperature,
+    topP: preset.topP,
+    topK: preset.topK,
+    maxTokens: preset.maxTokens,
+    frequencyPenalty: preset.frequencyPenalty,
+    presencePenalty: preset.presencePenalty
   };
-  presets.value.push(newPreset);
-  selectedPreset.value = newPreset;
-  regexRules.value = [];
-  message.success('预设已创建');
+
+  // 加载详情和正则规则
+  await Promise.all([
+    loadPresetDetail(preset.id),
+    loadPresetRegexRules(preset.id)
+  ]);
 };
 
-// 方法：处理预设菜单
-const handlePresetMenu = (key: string, preset: Preset) => {
+// 创建预设
+const createPreset = async () => {
+  try {
+    const response = await presetClient.createPreset({
+      name: '新预设',
+      temperature: 1,
+      topP: 1,
+      topK: 0,
+      maxTokens: 300,
+      frequencyPenalty: 0,
+      presencePenalty: 0
+    });
+    if (response.preset) {
+      presets.value.push(response.preset);
+      await selectPreset(response.preset);
+      message.success('预设已创建');
+    }
+  } catch (e) {
+    console.error('创建预设失败:', e);
+    message.error('创建预设失败');
+  }
+};
+
+// 处理预设菜单
+const handlePresetMenu = async (key: string, preset: Preset) => {
   switch (key) {
     case 'copy':
-      const copied: Preset = {
-        ...JSON.parse(JSON.stringify(preset)),
-        id: Date.now().toString(),
-        name: `${preset.name} (副本)`
-      };
-      presets.value.push(copied);
-      message.success('预设已复制');
+      try {
+        // 获取原预设的详情
+        const detailRes = await presetClient.getPreset({ id: preset.id });
+        const originalPreset = detailRes.preset;
+        if (!originalPreset) return;
+
+        // 创建副本
+        const response = await presetClient.createPreset({
+          name: `${preset.name} (副本)`,
+          temperature: originalPreset.temperature,
+          topP: originalPreset.topP,
+          topK: originalPreset.topK,
+          maxTokens: originalPreset.maxTokens,
+          frequencyPenalty: originalPreset.frequencyPenalty,
+          presencePenalty: originalPreset.presencePenalty,
+          promptItems: originalPreset.promptItems?.map(item => ({
+            identifier: item.identifier,
+            name: item.name,
+            content: item.content,
+            role: item.role,
+            isEnabled: item.isEnabled,
+            injectionPosition: item.injectionPosition,
+            injectionDepth: item.injectionDepth,
+            forbidOverrides: item.forbidOverrides,
+            sortOrder: item.sortOrder
+          }))
+        });
+        if (response.preset) {
+          presets.value.push(response.preset);
+          message.success('预设已复制');
+        }
+      } catch (e) {
+        console.error('复制预设失败:', e);
+        message.error('复制预设失败');
+      }
       break;
+
     case 'export':
-      // TODO: 导出功能
-      message.info('导出功能开发中');
+      try {
+        const response = await presetClient.exportPreset({ id: preset.id });
+        // 下载文件
+        const blob = new Blob([new Uint8Array(response.fileContent).buffer], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = response.fileName || `${preset.name}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        message.success('预设已导出');
+      } catch (e) {
+        console.error('导出预设失败:', e);
+        message.error('导出预设失败');
+      }
       break;
+
     case 'delete':
       dialog.warning({
         title: '确认删除',
         content: `确定要删除预设"${preset.name}"吗？`,
         positiveText: '删除',
         negativeText: '取消',
-        onPositiveClick: () => {
-          presets.value = presets.value.filter(p => p.id !== preset.id);
-          if (selectedPreset.value?.id === preset.id) {
-            selectedPreset.value = presets.value[0] ?? null;
+        onPositiveClick: async () => {
+          try {
+            await presetClient.deletePreset({ id: preset.id });
+            presets.value = presets.value.filter(p => p.id !== preset.id);
+            if (selectedPreset.value?.id === preset.id) {
+              selectedPreset.value = presets.value[0] ?? null;
+              if (selectedPreset.value) {
+                await selectPreset(selectedPreset.value);
+              } else {
+                promptItems.value = [];
+                regexRules.value = [];
+              }
+            }
+            message.success('预设已删除');
+          } catch (e) {
+            console.error('删除预设失败:', e);
+            message.error('删除预设失败');
           }
-          message.success('预设已删除');
         }
       });
       break;
   }
 };
 
-// 方法：保存预设
-const savePreset = () => {
-  if (selectedPreset.value) {
-    // 同步正则规则到预设
-    selectedPreset.value.regexRules = [...regexRules.value];
+// 保存预设
+const savePreset = async () => {
+  if (!selectedPreset.value) return;
+
+  saving.value = true;
+  try {
+    const response = await presetClient.updatePreset({
+      id: selectedPreset.value.id,
+      name: editForm.value.name,
+      temperature: editForm.value.temperature,
+      topP: editForm.value.topP,
+      topK: editForm.value.topK,
+      maxTokens: editForm.value.maxTokens,
+      frequencyPenalty: editForm.value.frequencyPenalty,
+      presencePenalty: editForm.value.presencePenalty,
+      version: selectedPreset.value.version
+    });
+    if (response.preset) {
+      // 更新列表中的预设
+      const index = presets.value.findIndex(p => p.id === selectedPreset.value!.id);
+      if (index >= 0) {
+        presets.value[index] = response.preset;
+      }
+      selectedPreset.value = response.preset;
+      message.success('预设已保存');
+    }
+  } catch (e) {
+    console.error('保存预设失败:', e);
+    message.error('保存预设失败');
+  } finally {
+    saving.value = false;
   }
-  // TODO: 调用API保存
-  message.success('预设已保存');
 };
 
-// 方法：添加提示项
+// 添加提示项
 const addPromptItem = () => {
   editingPromptItem.value = null;
   showPromptModal.value = true;
 };
 
-// 方法：编辑提示项
+// 编辑提示项
 const editPromptItem = (item: PromptItem) => {
-  editingPromptItem.value = item;
+  // 转换为组件本地类型
+  const roleMap: Record<number, 'system' | 'user' | 'assistant'> = {
+    [Role.System]: 'system',
+    [Role.User]: 'user',
+    [Role.Assistant]: 'assistant'
+  };
+  editingPromptItem.value = {
+    id: item.id,
+    identifier: item.identifier,
+    name: item.name,
+    role: roleMap[item.role] || 'system',
+    content: item.content,
+    enabled: item.isEnabled
+  };
   showPromptModal.value = true;
 };
 
-// 方法：保存提示项
-const handleSavePromptItem = (item: PromptItem) => {
+// 保存提示项
+const handleSavePromptItem = async (itemData: Partial<LocalPromptItem>) => {
+  // 角色映射
+  const roleMap: Record<string, Role> = {
+    'system': Role.System,
+    'user': Role.User,
+    'assistant': Role.Assistant
+  };
+  const role = itemData.role ? roleMap[itemData.role] : Role.System;
   if (!selectedPreset.value) return;
 
-  if (editingPromptItem.value) {
-    // 更新现有项
-    const index = selectedPreset.value.prompts.findIndex(
-      p => p.id === editingPromptItem.value!.id
-    );
-    if (index >= 0) {
-      selectedPreset.value.prompts[index] = item;
+  try {
+    if (editingPromptItem.value) {
+      // 更新现有项
+      const response = await presetClient.updatePromptItem({
+        id: editingPromptItem.value.id,
+        identifier: itemData.identifier || '',
+        name: itemData.name || '',
+        content: itemData.content,
+        role: role,
+        isEnabled: itemData.enabled ?? true,
+        injectionPosition: InjectionPosition.Relative,
+        injectionDepth: 0,
+        forbidOverrides: false,
+        sortOrder: 0
+      });
+      if (response.item) {
+        const index = promptItems.value.findIndex(p => p.id === editingPromptItem.value!.id);
+        if (index >= 0) {
+          promptItems.value[index] = response.item;
+        }
+        message.success('提示项已更新');
+      }
+    } else {
+      // 添加新项
+      const response = await presetClient.addPromptItem({
+        presetId: selectedPreset.value.id,
+        identifier: itemData.identifier || `prompt_${Date.now()}`,
+        name: itemData.name || '',
+        content: itemData.content,
+        role: role,
+        isEnabled: itemData.enabled ?? true,
+        injectionPosition: InjectionPosition.Relative,
+        injectionDepth: 0,
+        forbidOverrides: false,
+        sortOrder: promptItems.value.length
+      });
+      if (response.item) {
+        promptItems.value.push(response.item);
+        message.success('提示项已添加');
+      }
     }
-    message.success('提示项已更新');
-  } else {
-    // 添加新项
-    selectedPreset.value.prompts.push(item);
-    selectedPreset.value.promptOrder.push({
-      identifier: item.identifier,
-      enabled: true
-    });
-    message.success('提示项已添加');
+    showPromptModal.value = false;
+    editingPromptItem.value = null;
+  } catch (e) {
+    console.error('保存提示项失败:', e);
+    message.error('保存提示项失败');
   }
-  showPromptModal.value = false;
-  editingPromptItem.value = null;
 };
 
-// 方法：删除提示项
+// 删除提示项
 const deletePromptItem = (item: PromptItem) => {
-  if (!selectedPreset.value || item.marker) return;
-
   dialog.warning({
     title: '确认删除',
     content: `确定要删除提示项"${item.name}"吗？`,
     positiveText: '删除',
     negativeText: '取消',
-    onPositiveClick: () => {
-      selectedPreset.value!.prompts = selectedPreset.value!.prompts.filter(
-        p => p.id !== item.id
-      );
-      selectedPreset.value!.promptOrder = selectedPreset.value!.promptOrder.filter(
-        e => e.identifier !== item.identifier
-      );
-      message.success('提示项已删除');
+    onPositiveClick: async () => {
+      try {
+        await presetClient.deletePromptItem({ id: item.id });
+        promptItems.value = promptItems.value.filter(p => p.id !== item.id);
+        message.success('提示项已删除');
+      } catch (e) {
+        console.error('删除提示项失败:', e);
+        message.error('删除提示项失败');
+      }
     }
   });
 };
 
-// 方法：切换展开/收起
-const toggleExpand = (itemId: string) => {
+// 切换提示项启用状态
+const togglePromptEnabled = async (item: PromptItem, enabled: boolean) => {
+  try {
+    const response = await presetClient.updatePromptItem({
+      id: item.id,
+      identifier: item.identifier,
+      name: item.name,
+      content: item.content,
+      role: item.role,
+      isEnabled: enabled,
+      injectionPosition: item.injectionPosition,
+      injectionDepth: item.injectionDepth,
+      forbidOverrides: item.forbidOverrides,
+      sortOrder: item.sortOrder
+    });
+    if (response.item) {
+      const index = promptItems.value.findIndex(p => p.id === item.id);
+      if (index >= 0) {
+        promptItems.value[index] = response.item;
+      }
+    }
+  } catch (e) {
+    console.error('更新提示项失败:', e);
+  }
+};
+
+// 处理提示项排序变化
+const handlePromptOrderChange = async () => {
+  if (!selectedPreset.value) return;
+
+  try {
+    const itemIds = promptItems.value.map(item => item.id);
+    await presetClient.updatePromptItemsOrder({
+      presetId: selectedPreset.value.id,
+      itemIds: itemIds
+    });
+  } catch (e) {
+    console.error('更新排序失败:', e);
+  }
+};
+
+// 处理提示项内容变化
+const handlePromptContentChange = async (item: PromptItem) => {
+  try {
+    await presetClient.updatePromptItem({
+      id: item.id,
+      identifier: item.identifier,
+      name: item.name,
+      content: item.content,
+      role: item.role,
+      isEnabled: item.isEnabled,
+      injectionPosition: item.injectionPosition,
+      injectionDepth: item.injectionDepth,
+      forbidOverrides: item.forbidOverrides,
+      sortOrder: item.sortOrder
+    });
+  } catch (e) {
+    console.error('更新提示项内容失败:', e);
+  }
+};
+
+// 切换展开/收起
+const toggleExpand = (itemId: number) => {
   expandedPromptId.value = expandedPromptId.value === itemId ? null : itemId;
 };
 
 // 辅助方法
-const getRoleName = (role: string) => {
-  const names: Record<string, string> = {
-    system: '系统',
-    user: '用户',
-    assistant: '助手'
+const getRoleName = (role: Role) => {
+  const names: Record<number, string> = {
+    [Role.System]: '系统',
+    [Role.User]: '用户',
+    [Role.Assistant]: '助手'
   };
-  return names[role] || role;
+  return names[role] || '未知';
 };
 
-const getRoleColor = (role: string): 'default' | 'primary' | 'info' | 'success' | 'warning' | 'error' => {
-  const colors: Record<string, 'default' | 'primary' | 'info' | 'success' | 'warning' | 'error'> = {
-    system: 'primary',
-    user: 'success',
-    assistant: 'info'
+const getRoleColor = (role: Role): 'default' | 'primary' | 'info' | 'success' | 'warning' | 'error' => {
+  const colors: Record<number, 'default' | 'primary' | 'info' | 'success' | 'warning' | 'error'> = {
+    [Role.System]: 'primary',
+    [Role.User]: 'success',
+    [Role.Assistant]: 'info'
   };
   return colors[role] || 'default';
 };
@@ -692,20 +904,6 @@ const getRoleColor = (role: string): 'default' | 'primary' | 'info' | 'success' 
 const truncateContent = (content: string, maxLength = 100) => {
   if (content.length <= maxLength) return content;
   return content.slice(0, maxLength) + '...';
-};
-
-// 系统标记项的说明文字
-const getMarkerHint = (identifier: string): string => {
-  const hints: Record<string, string> = {
-    chatHistory: '此处将自动插入聊天历史记录',
-    worldInfoBefore: '此处将自动插入世界书内容（前置）',
-    worldInfoAfter: '此处将自动插入世界书内容（后置）',
-    charDescription: '此处将自动插入角色描述',
-    charPersonality: '此处将自动插入角色性格',
-    scenario: '此处将自动插入场景设定',
-    dialogueExamples: '此处将自动插入对话示例'
-  };
-  return hints[identifier] || '系统自动填充内容';
 };
 
 // 变量列表（用于显示）
@@ -718,15 +916,10 @@ const variablesList = [
   '{{persona}}'
 ];
 
-// 初始化选择第一个预设
-watch(presets, (val) => {
-  if (val.length > 0 && !selectedPreset.value) {
-    selectedPreset.value = val[0] ?? null;
-    if (selectedPreset.value) {
-      regexRules.value = selectedPreset.value.regexRules ? [...selectedPreset.value.regexRules] : [];
-    }
-  }
-}, { immediate: true });
+// 初始化
+onMounted(() => {
+  loadPresets();
+});
 </script>
 
 <style scoped>

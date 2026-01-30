@@ -248,11 +248,27 @@ import go from 'highlight.js/lib/languages/go';
 import sql from 'highlight.js/lib/languages/sql';
 import DOMPurify from 'dompurify';
 
-import type { Message, Character } from '../../types';
+import type { Character } from '@/gen/muse/muse_pb';
+
+// 消息 Swipe 类型
+interface MessageSwipe {
+  id: number;
+  content: string;
+  timestamp: number;
+}
+
+// 消息类型（组件本地使用）
+interface Message {
+  id: number;
+  role: 'user' | 'assistant' | 'system';
+  swipes: MessageSwipe[];
+  currentSwipeIndex: number;
+  isStreaming?: boolean;
+}
 
 // Persona 类型定义
 interface Persona {
-  id: string;
+  id: number;
   name: string;
   avatar: string;
 }
@@ -299,13 +315,13 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  edit: [id: string, swipeId: string, content: string];  // 编辑消息内容
-  delete: [id: string];                    // 删除整个楼层
-  deleteSwipe: [id: string, swipeId: string];  // 删除单条消息
-  regenerate: [id: string];                // 重新生成（会添加新的swipe）
-  swipeChange: [id: string, index: number]; // 切换swipe
-  branch: [id: string];                    // 创建分支
-  duplicateSwipe: [id: string];            // 复制当前消息为新版本
+  edit: [id: number, swipeId: number, content: string];  // 编辑消息内容
+  delete: [id: number];                    // 删除整个楼层
+  deleteSwipe: [id: number, swipeId: number];  // 删除单条消息
+  regenerate: [id: number];                // 重新生成（会添加新的swipe）
+  swipeChange: [id: number, index: number]; // 切换swipe
+  branch: [id: number];                    // 创建分支
+  duplicateSwipe: [id: number];            // 复制当前消息为新版本
 }>();
 
 const messageApi = useMessage();

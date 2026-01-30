@@ -338,32 +338,26 @@ const messagesWithTyping = computed(() => {
 // 加载会话列表
 const loadSessions = async (characterId?: number) => {
   loading.value = true;
-  try {
-    const response = await chatClient.listChatSessions({
-      characterId: characterId,
-      page: 1,
-      pageSize: 50
-    });
-    chatStore.setSessions(response.sessions);
-  } finally {
-    loading.value = false;
-  }
+  const response = await chatClient.listChatSessions({
+    characterId: characterId,
+    page: 1,
+    pageSize: 50
+  });
+  chatStore.setSessions(response.sessions);
+  loading.value = false;
 };
 
 // 加载会话详情（包含消息）
 const loadSession = async (sessionId: number) => {
   loading.value = true;
-  try {
-    const response = await chatClient.getChatSession({
-      id: sessionId,
-      includeMessages: true
-    });
-    if (response.session) {
-      chatStore.setActiveSession(response.session);
-    }
-  } finally {
-    loading.value = false;
+  const response = await chatClient.getChatSession({
+    id: sessionId,
+    includeMessages: true
+  });
+  if (response.session) {
+    chatStore.setActiveSession(response.session);
   }
+  loading.value = false;
 };
 
 // 初始化

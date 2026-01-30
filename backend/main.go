@@ -31,11 +31,11 @@ func main() {
 	}
 
 	// 初始化数据库连接
-	if err := config.InitDatabase(&cfg.Database); err != nil {
+	if err = config.InitDatabase(&cfg.Database); err != nil {
 		log.Fatalf("初始化数据库失败: %v", err)
 	}
 	defer func() {
-		if err := config.CloseDatabase(); err != nil {
+		if err = config.CloseDatabase(); err != nil {
 			log.Errorf("关闭数据库连接失败: %v", err)
 		}
 	}()
@@ -47,7 +47,7 @@ func main() {
 		museconnect.UserServiceLoginProcedure,           // 登录接口
 	})
 
-	// 创建HTTP服务器
+	// 创建 HTTP 服务器
 	mux := http.NewServeMux()
 	mux.Handle(museconnect.NewUserServiceHandler(
 		api.NewUserServer(),
@@ -80,9 +80,12 @@ func main() {
 		_, _ = w.Write([]byte("ok"))
 	})
 
+	// 应用 CORS 中间件
+	handler := middleware.CORS(mux)
+
 	server := &http.Server{
 		Addr:         cfg.Server.Address(),
-		Handler:      mux,
+		Handler:      handler,
 		ReadTimeout:  30 * time.Second,
 		WriteTimeout: 30 * time.Second,
 		IdleTimeout:  120 * time.Second,
@@ -91,7 +94,7 @@ func main() {
 	// 在goroutine中启动服务器
 	go func() {
 		log.Infof("服务器启动成功，监听地址: %s", cfg.Server.Address())
-		if err := server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+		if err = server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			log.Fatalf("服务器启动失败: %v", err)
 		}
 	}()
@@ -107,7 +110,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	if err := server.Shutdown(ctx); err != nil {
+	if err = server.Shutdown(ctx); err != nil {
 		log.Errorf("服务器关闭异常: %v", err)
 	}
 

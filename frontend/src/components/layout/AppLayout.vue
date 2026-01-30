@@ -117,7 +117,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, h } from 'vue';
+import { computed, h, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { darkTheme } from 'naive-ui';
 import {
@@ -141,9 +141,10 @@ import {
 } from '@vicons/ionicons5';
 
 import AppSidebar from './AppSidebar.vue';
-import { useThemeStore } from '../../stores/theme';
-import { useAppStore } from '../../stores/app';
-import { darkThemeOverrides, lightThemeOverrides } from '../../styles/theme';
+import { useThemeStore } from '@/stores/theme.ts';
+import { useAppStore } from '@/stores/app.ts';
+import { darkThemeOverrides, lightThemeOverrides } from '@/styles/theme.ts';
+import { initGlobalMessage } from '@/composables/useGlobalMessage.ts';
 
 const route = useRoute();
 const themeStore = useThemeStore();
@@ -189,6 +190,13 @@ const userMenuOptions = [
 const handleUserMenu = (key: string) => {
   console.log('User menu:', key);
 };
+
+// 初始化全局消息（必须在 NMessageProvider 内部调用 useMessage）
+onMounted(() => {
+  console.log('[AppLayout] Initializing global message...');
+  initGlobalMessage();
+  console.log('[AppLayout] Global message initialized!');
+});
 </script>
 
 <style scoped>
@@ -342,39 +350,4 @@ const handleUserMenu = (key: string) => {
   }
 }
 
-/* 过渡动画 */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.slide-sidebar-enter-active,
-.slide-sidebar-leave-active {
-  transition: transform 0.3s ease;
-}
-
-.slide-sidebar-enter-from,
-.slide-sidebar-leave-to {
-  transform: translateX(-100%);
-}
-
-.page-fade-enter-active,
-.page-fade-leave-active {
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-.page-fade-enter-from {
-  opacity: 0;
-  transform: translateY(10px);
-}
-
-.page-fade-leave-to {
-  opacity: 0;
-  transform: translateY(-10px);
-}
 </style>

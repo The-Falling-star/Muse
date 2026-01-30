@@ -559,9 +559,6 @@ const loadData = async () => {
       appearanceSettings.sendOnEnter = settingRes.setting.sendOnEnter;
       appearanceSettings.showTimestamps = settingRes.setting.showTimestamps;
     }
-  } catch (e) {
-    console.error('加载设置失败:', e);
-    message.error('加载设置失败');
   } finally {
     loading.value = false;
   }
@@ -623,9 +620,6 @@ const handleSaveApiConfig = async () => {
     }
     showApiConfigModal.value = false;
     resetApiConfigForm();
-  } catch (e) {
-    console.error('保存API配置失败:', e);
-    message.error('保存失败');
   } finally {
     loading.value = false;
   }
@@ -644,9 +638,6 @@ const handleDeleteApiConfig = (config: APIConfig) => {
         apiConfigs.value = apiConfigs.value.filter(c => c.id !== config.id);
         userStore.removeApiConfig(config.id);
         message.success('API配置已删除');
-      } catch (e) {
-        console.error('删除API配置失败:', e);
-        message.error('删除失败');
       } finally {
         loading.value = false;
       }
@@ -664,9 +655,6 @@ const handleSetActiveApiConfig = async (configId: number) => {
     });
     userStore.setActiveApiConfigId(configId);
     message.success('已切换API配置');
-  } catch (e) {
-    console.error('设置活跃API配置失败:', e);
-    message.error('切换失败');
   } finally {
     loading.value = false;
   }
@@ -681,9 +669,6 @@ const handleTestApiConfig = async (configId: number) => {
     } else {
       message.error(`连接失败: ${res.errorMessage}`);
     }
-  } catch (e) {
-    console.error('测试API配置失败:', e);
-    message.error('测试失败');
   } finally {
     loading.value = false;
   }
@@ -744,9 +729,6 @@ const handleSavePersona = async () => {
     }
     showPersonaModal.value = false;
     resetPersonaForm();
-  } catch (e) {
-    console.error('保存人设失败:', e);
-    message.error('保存失败');
   } finally {
     loading.value = false;
   }
@@ -765,9 +747,6 @@ const handleDeletePersona = (persona: Persona) => {
         personas.value = personas.value.filter(p => p.id !== persona.id);
         userStore.removePersona(persona.id);
         message.success('人设已删除');
-      } catch (e) {
-        console.error('删除人设失败:', e);
-        message.error('删除失败');
       } finally {
         loading.value = false;
       }
@@ -799,20 +778,15 @@ const resetPersonaForm = () => {
 // ==================== 用户设置相关方法 ====================
 
 const handleUpdateUserSetting = async () => {
-  try {
-    const themeValue = appearanceSettings.theme === 'DARK' ? Theme.Dark : appearanceSettings.theme === 'LIGHT' ? Theme.Light : Theme.Auto;
-    const res = await userClient.updateUserSetting({
-      theme: themeValue,
-      language: appearanceSettings.language,
-      sendOnEnter: appearanceSettings.sendOnEnter,
-      showTimestamps: appearanceSettings.showTimestamps
-    });
-    if (res.setting) {
-      userStore.setUserSetting(res.setting);
-    }
-  } catch (e) {
-    console.error('更新用户设置失败:', e);
-    message.error('保存设置失败');
+  const themeValue = appearanceSettings.theme === 'DARK' ? Theme.Dark : appearanceSettings.theme === 'LIGHT' ? Theme.Light : Theme.Auto;
+  const res = await userClient.updateUserSetting({
+    theme: themeValue,
+    language: appearanceSettings.language,
+    sendOnEnter: appearanceSettings.sendOnEnter,
+    showTimestamps: appearanceSettings.showTimestamps
+  });
+  if (res.setting) {
+    userStore.setUserSetting(res.setting);
   }
 };
 

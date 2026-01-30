@@ -193,9 +193,6 @@ const loadRules = async () => {
       presetId: currentPresetId.value
     });
     rules.value = response.rules;
-  } catch (e) {
-    console.error('加载正则规则失败:', e);
-    message.error('加载正则规则失败');
   } finally {
     loading.value = false;
   }
@@ -225,43 +222,33 @@ const deleteRegex = (rule: RegexRule) => {
     positiveText: '删除',
     negativeText: '取消',
     onPositiveClick: async () => {
-      try {
-        await regexRuleClient.deleteRegexRule({ id: rule.id });
-        rules.value = rules.value.filter(r => r.id !== rule.id);
-        message.success('规则已删除');
-      } catch (e) {
-        console.error('删除规则失败:', e);
-        message.error('删除规则失败');
-      }
+      await regexRuleClient.deleteRegexRule({ id: rule.id });
+      rules.value = rules.value.filter(r => r.id !== rule.id);
+      message.success('规则已删除');
     }
   });
 };
 
 // 切换启用状态
 const handleToggleEnabled = async (rule: RegexRule, enabled: boolean) => {
-  try {
-    const response = await regexRuleClient.updateRegexRule({
-      id: rule.id,
-      name: rule.name,
-      findPattern: rule.findPattern,
-      replacePattern: rule.replacePattern,
-      isEnabled: enabled,
-      runOnEdit: rule.runOnEdit,
-      substituteRegex: rule.substituteRegex,
-      minDepth: rule.minDepth,
-      maxDepth: rule.maxDepth,
-      affectFlags: rule.affectFlags,
-      sortOrder: rule.sortOrder
-    });
-    if (response.rule) {
-      const index = rules.value.findIndex(r => r.id === rule.id);
-      if (index >= 0) {
-        rules.value[index] = response.rule;
-      }
+  const response = await regexRuleClient.updateRegexRule({
+    id: rule.id,
+    name: rule.name,
+    findPattern: rule.findPattern,
+    replacePattern: rule.replacePattern,
+    isEnabled: enabled,
+    runOnEdit: rule.runOnEdit,
+    substituteRegex: rule.substituteRegex,
+    minDepth: rule.minDepth,
+    maxDepth: rule.maxDepth,
+    affectFlags: rule.affectFlags,
+    sortOrder: rule.sortOrder
+  });
+  if (response.rule) {
+    const index = rules.value.findIndex(r => r.id === rule.id);
+    if (index >= 0) {
+      rules.value[index] = response.rule;
     }
-  } catch (e) {
-    console.error('更新规则状态失败:', e);
-    message.error('更新规则状态失败');
   }
 };
 
@@ -323,9 +310,8 @@ const handleSaveRegex = async (ruleData: {
     }
     showEditModal.value = false;
     editingRegex.value = null;
-  } catch (e) {
-    console.error('保存规则失败:', e);
-    message.error('保存规则失败');
+  } finally {
+    // loading状态在modal关闭后自动处理
   }
 };
 
@@ -348,9 +334,8 @@ const handleImportFile = async (options: { file: UploadFileInfo; fileList: Uploa
     message.success('导入成功');
     showImportModal.value = false;
     await loadRules();
-  } catch (e) {
-    console.error('导入失败:', e);
-    message.error('导入失败');
+  } finally {
+    // Modal关闭后自动处理
   }
 };
 
@@ -371,9 +356,8 @@ const handleExport = async () => {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
     message.success('导出成功');
-  } catch (e) {
-    console.error('导出失败:', e);
-    message.error('导出失败');
+  } finally {
+    // 下载完成后自动处理
   }
 };
 </script>

@@ -226,9 +226,9 @@ import {
   TrashOutline
 } from '@vicons/ionicons5';
 
-import CharacterCard from '../components/character/CharacterCard.vue';
-import CharacterDetail from '../components/character/CharacterDetail.vue';
-import CharacterEditor from '../components/character/CharacterEditor.vue';
+import CharacterCard from '@/components/character/CharacterCard.vue';
+import CharacterDetail from '@/components/character/CharacterDetail.vue';
+import CharacterEditor from '@/components/character/CharacterEditor.vue';
 import { useCharacterStore } from '@/stores/character';
 import { characterClient, chatClient } from '@/api/client';
 import type { Character } from '@/gen/muse/muse_pb';
@@ -257,16 +257,13 @@ const total = computed(() => characterStore.total);
 // 加载角色列表 - 直接调用client
 const loadCharacters = async () => {
   loading.value = true;
-  try {
-    const response = await characterClient.listCharacters({
-      page: page.value,
-      pageSize: pageSize.value
-    });
-    // 更新Store缓存
-    characterStore.setCharacters(response.characters, response.total);
-  } finally {
-    loading.value = false;
-  }
+  const response = await characterClient.listCharacters({
+    page: page.value,
+    pageSize: pageSize.value
+  });
+  // 更新Store缓存
+  characterStore.setCharacters(response.characters, response.total);
+  loading.value = false;
 };
 
 onMounted(() => {
@@ -394,43 +391,40 @@ const handleChatSelected = () => {
 // 保存角色 - 直接调用client
 const handleSaveCharacter = async (characterData: Partial<Character>) => {
   loading.value = true;
-  try {
-    if (editingCharacter.value) {
-      // 编辑模式
-      const response = await characterClient.updateCharacter({
-        id: editingCharacter.value.id,
-        name: characterData.name || '',
-        avatar: characterData.avatar,
-        description: characterData.description,
-        firstMessage: characterData.firstMessage,
-        exampleDialogue: characterData.exampleDialogue,
-        creatorNotes: characterData.creatorNotes,
-        version: editingCharacter.value.version
-      });
-      if (response.character) {
-        characterStore.updateCharacterInList(response.character);
-      }
-      message.success('角色已更新');
-    } else {
-      // 创建模式
-      const response = await characterClient.createCharacter({
-        name: characterData.name || '',
-        avatar: characterData.avatar,
-        description: characterData.description,
-        firstMessage: characterData.firstMessage,
-        exampleDialogue: characterData.exampleDialogue,
-        creatorNotes: characterData.creatorNotes
-      });
-      if (response.character) {
-        characterStore.addCharacter(response.character);
-      }
-      message.success('角色已创建');
+  if (editingCharacter.value) {
+    // 编辑模式
+    const response = await characterClient.updateCharacter({
+      id: editingCharacter.value.id,
+      name: characterData.name || '',
+      avatar: characterData.avatar,
+      description: characterData.description,
+      firstMessage: characterData.firstMessage,
+      exampleDialogue: characterData.exampleDialogue,
+      creatorNotes: characterData.creatorNotes,
+      version: editingCharacter.value.version
+    });
+    if (response.character) {
+      characterStore.updateCharacterInList(response.character);
     }
-    showCreateModal.value = false;
-    editingCharacter.value = null;
-  } finally {
-    loading.value = false;
+    message.success('角色已更新');
+  } else {
+    // 创建模式
+    const response = await characterClient.createCharacter({
+      name: characterData.name || '',
+      avatar: characterData.avatar,
+      description: characterData.description,
+      firstMessage: characterData.firstMessage,
+      exampleDialogue: characterData.exampleDialogue,
+      creatorNotes: characterData.creatorNotes
+    });
+    if (response.character) {
+      characterStore.addCharacter(response.character);
+    }
+    message.success('角色已创建');
   }
+  showCreateModal.value = false;
+  editingCharacter.value = null;
+  loading.value = false;
 };
 
 // 导入文件 - 直接调用client
@@ -445,19 +439,16 @@ const handleImportFiles = async (options: { file: UploadFileInfo; fileList: Uplo
     const file = fileInfo.file;
     if (!file) continue;
 
-    try {
-      const arrayBuffer = await file.arrayBuffer();
-      const fileContent = new Uint8Array(arrayBuffer);
-      const response = await characterClient.importCharacter({
-        fileContent: fileContent,
-        fileName: file.name
-      });
-      if (response.character) {
-        characterStore.addCharacter(response.character);
-        successCount++;
-      }
-    } catch (e) {
-      console.error('导入失败:', file.name, e);
+    const arrayBuffer = await file.arrayBuffer();
+    const fileContent = new Uint8Array(arrayBuffer);
+    const response = await characterClient.importCharacter({
+      fileContent: fileContent,
+      fileName: file.name
+    });
+    if (response.character) {
+      characterStore.addCharacter(response.character);
+      successCount++;
+    } else {
       failCount++;
     }
   }

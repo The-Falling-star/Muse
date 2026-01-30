@@ -459,21 +459,16 @@ const handleDeleteWorld = () => {
 // 导出世界书
 const handleExportWorld = async () => {
   if (!selectedWorld.value) return;
-  try {
-    const response = await worldInfoClient.exportWorldInfo({ id: selectedWorld.value.id });
-    // 下载文件
-    const blob = new Blob([new Uint8Array(response.fileContent).buffer as ArrayBuffer], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = response.fileName || `${selectedWorld.value.name}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-    message.success('导出成功');
-  } catch (e) {
-    console.error('导出失败:', e);
-    message.error('导出失败');
-  }
+  const response = await worldInfoClient.exportWorldInfo({ id: selectedWorld.value.id });
+  // 下载文件
+  const blob = new Blob([new Uint8Array(response.fileContent).buffer as ArrayBuffer], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = response.fileName || `${selectedWorld.value.name}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  message.success('导出成功');
 };
 
 // 导入世界书
@@ -481,22 +476,17 @@ const handleImportFile = async (options: { file: UploadFileInfo; fileList: Uploa
   const file = options.file.file;
   if (!file) return;
 
-  try {
-    const arrayBuffer = await file.arrayBuffer();
-    const fileContent = new Uint8Array(arrayBuffer);
-    const response = await worldInfoClient.importWorldInfo({
-      fileContent: fileContent,
-      fileName: file.name
-    });
-    if (response.worldInfo) {
-      worlds.value.push(response.worldInfo);
-    }
-    message.success('导入成功');
-    showImportModal.value = false;
-  } catch (e) {
-    console.error('导入失败:', e);
-    message.error('导入失败');
+  const arrayBuffer = await file.arrayBuffer();
+  const fileContent = new Uint8Array(arrayBuffer);
+  const response = await worldInfoClient.importWorldInfo({
+    fileContent: fileContent,
+    fileName: file.name
+  });
+  if (response.worldInfo) {
+    worlds.value.push(response.worldInfo);
   }
+  message.success('导入成功');
+  showImportModal.value = false;
 };
 
 // 添加条目
@@ -587,31 +577,26 @@ const handleDeleteEntry = (entry: WorldInfoEntry) => {
 
 // 切换条目启用状态
 const handleToggleEntry = async (entry: WorldInfoEntry, enabled: boolean) => {
-  try {
-    const response = await worldInfoClient.updateWorldInfoEntry({
-      id: entry.id,
-      uid: entry.uid,
-      keysList: entry.keysList,
-      secondaryKeys: entry.secondaryKeys,
-      content: entry.content,
-      comment: entry.comment,
-      isEnabled: enabled,
-      constant: entry.constant,
-      selective: entry.selective,
-      insertionOrder: entry.insertionOrder,
-      position: entry.position,
-      depth: entry.depth,
-      sortOrder: entry.sortOrder
-    });
-    if (response.entry) {
-      const index = entries.value.findIndex(e => e.id === entry.id);
-      if (index >= 0) {
-        entries.value[index] = response.entry;
-      }
+  const response = await worldInfoClient.updateWorldInfoEntry({
+    id: entry.id,
+    uid: entry.uid,
+    keysList: entry.keysList,
+    secondaryKeys: entry.secondaryKeys,
+    content: entry.content,
+    comment: entry.comment,
+    isEnabled: enabled,
+    constant: entry.constant,
+    selective: entry.selective,
+    insertionOrder: entry.insertionOrder,
+    position: entry.position,
+    depth: entry.depth,
+    sortOrder: entry.sortOrder
+  });
+  if (response.entry) {
+    const index = entries.value.findIndex(e => e.id === entry.id);
+    if (index >= 0) {
+      entries.value[index] = response.entry;
     }
-  } catch (e) {
-    console.error('更新失败:', e);
-    message.error('更新失败');
   }
 };
 

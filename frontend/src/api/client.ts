@@ -8,6 +8,7 @@ import {
   RegexRuleService,
   WorldInfoService
 } from '@/gen/muse/muse_pb';
+import { globalMessage } from '@/composables/useGlobalMessage';
 
 // 认证拦截器 - 自动添加token到请求头
 const authInterceptor: Interceptor = (next) => async (req) => {
@@ -23,13 +24,31 @@ const errorHandlerInterceptor: Interceptor = (next) => async (req) => {
   try {
     return await next(req);
   } catch (error) {
+    console.log('[Error Interceptor] Caught error:', error);
+    console.log('[Error Interceptor] Error type:', error?.constructor?.name);
+    console.log('[Error Interceptor] Is ConnectError?', error instanceof ConnectError);
+
     if (error instanceof ConnectError) {
       const errorMessage = error.message;
+      const errorCode = error.code;
 
-      console.error('[API Error]', errorMessage);
+      console.error('[API Error]', {
+        message: errorMessage,
+        code: errorCode,
+        codeName: Code[errorCode],
+        rawCode: error.code
+      });
+
+      // 显示错误消息（除了未认证错误，因为会自动跳转）
+      if (errorCode !== Code.Unauthenticated) {
+        console.log('[Error Interceptor] Showing error message:', errorMessage);
+        globalMessage.error(errorMessage);
+      } else {
+        console.log('[Error Interceptor] Skipping error message (Unauthenticated)');
+      }
 
       // 特殊处理：未认证时跳转登录页
-      if (error.code === Code.Unauthenticated) {
+      if (errorCode === Code.Unauthenticated) {
         // 清除本地token
         localStorage.removeItem('token');
         // 跳转到登录页（避免在登录页循环跳转）
@@ -38,7 +57,9 @@ const errorHandlerInterceptor: Interceptor = (next) => async (req) => {
         }
       }
     } else {
-      console.error('网络错误，请检查网络连接', error);
+      const errorMsg = '网络错误，请检查网络连接';
+      console.error(errorMsg, error);
+      globalMessage.error(errorMsg);
     }
 
     // 重新抛出错误，让调用方可以选择性处理
@@ -48,7 +69,7 @@ const errorHandlerInterceptor: Interceptor = (next) => async (req) => {
 
 // 创建 HTTP 传输层（使用 Connect 协议，基于 HTTP + JSON）
 const transport = createConnectTransport({
-  baseUrl: 'http://localhost:8080',
+  baseUrl: import.meta.env.VITE_API_BASE_URL,
   interceptors: [authInterceptor, errorHandlerInterceptor],
 });
 

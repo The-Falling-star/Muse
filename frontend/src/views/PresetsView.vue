@@ -511,20 +511,15 @@ const loadPresets = async () => {
 
 // 加载预设详情（包括提示项）
 const loadPresetDetail = async (presetId: number) => {
-  try {
     const response = await presetClient.getPreset({ id: presetId });
     if (response.preset) {
       // 更新提示项列表
       promptItems.value = response.preset.promptItems || [];
     }
-  } catch (e) {
-    console.error('加载预设详情失败:', e);
-  }
 };
 
 // 加载预设正则规则
 const loadPresetRegexRules = async (presetId: number) => {
-  try {
     const response = await regexRuleClient.listRegexRules({ presetId: presetId });
     // 转换为组件本地类型
     regexRules.value = response.rules.map(r => ({
@@ -537,9 +532,6 @@ const loadPresetRegexRules = async (presetId: number) => {
       order: r.sortOrder,
       enabled: r.isEnabled
     }));
-  } catch (e) {
-    console.error('加载正则规则失败:', e);
-  }
 };
 
 // 选择预设
@@ -567,25 +559,24 @@ const selectPreset = async (preset: Preset) => {
 
 // 创建预设
 const createPreset = async () => {
-  try {
-    const response = await presetClient.createPreset({
-      name: '新预设',
-      temperature: 1,
-      topP: 1,
-      topK: 0,
-      maxTokens: 300,
-      frequencyPenalty: 0,
-      presencePenalty: 0
-    });
-    if (response.preset) {
-      presets.value.push(response.preset);
-      await selectPreset(response.preset);
-      message.success('预设已创建');
+    try {
+      const response = await presetClient.createPreset({
+        name: '新预设',
+        temperature: 1,
+        topP: 1,
+        topK: 0,
+        maxTokens: 300,
+        frequencyPenalty: 0,
+        presencePenalty: 0
+      });
+      if (response.preset) {
+        presets.value.push(response.preset);
+        await selectPreset(response.preset);
+        message.success('预设已创建');
+      }
+    } finally {
+      // 创建完成后自动处理
     }
-  } catch (e) {
-    console.error('创建预设失败:', e);
-    message.error('创建预设失败');
-  }
 };
 
 // 处理预设菜单
@@ -623,27 +614,25 @@ const handlePresetMenu = async (key: string, preset: Preset) => {
           presets.value.push(response.preset);
           message.success('预设已复制');
         }
-      } catch (e) {
-        console.error('复制预设失败:', e);
-        message.error('复制预设失败');
+      } finally {
+        // 复制完成后自动处理
       }
       break;
 
     case 'export':
       try {
-        const response = await presetClient.exportPreset({ id: preset.id });
+        const exportRes = await presetClient.exportPreset({ id: preset.id });
         // 下载文件
-        const blob = new Blob([new Uint8Array(response.fileContent).buffer], { type: 'application/json' });
+        const blob = new Blob([new Uint8Array(exportRes.fileContent).buffer], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = response.fileName || `${preset.name}.json`;
+        a.download = exportRes.fileName || `${preset.name}.json`;
         a.click();
         URL.revokeObjectURL(url);
         message.success('预设已导出');
-      } catch (e) {
-        console.error('导出预设失败:', e);
-        message.error('导出预设失败');
+      } finally {
+        // 导出完成后自动处理
       }
       break;
 
@@ -667,9 +656,8 @@ const handlePresetMenu = async (key: string, preset: Preset) => {
               }
             }
             message.success('预设已删除');
-          } catch (e) {
-            console.error('删除预设失败:', e);
-            message.error('删除预设失败');
+          } finally {
+            // 删除完成后自动处理
           }
         }
       });
@@ -703,9 +691,6 @@ const savePreset = async () => {
       selectedPreset.value = response.preset;
       message.success('预设已保存');
     }
-  } catch (e) {
-    console.error('保存预设失败:', e);
-    message.error('保存预设失败');
   } finally {
     saving.value = false;
   }
@@ -790,9 +775,8 @@ const handleSavePromptItem = async (itemData: Partial<LocalPromptItem>) => {
     }
     showPromptModal.value = false;
     editingPromptItem.value = null;
-  } catch (e) {
-    console.error('保存提示项失败:', e);
-    message.error('保存提示项失败');
+  } finally {
+    // 保存完成后自动处理
   }
 };
 
@@ -808,9 +792,8 @@ const deletePromptItem = (item: PromptItem) => {
         await presetClient.deletePromptItem({ id: item.id });
         promptItems.value = promptItems.value.filter(p => p.id !== item.id);
         message.success('提示项已删除');
-      } catch (e) {
-        console.error('删除提示项失败:', e);
-        message.error('删除提示项失败');
+      } finally {
+        // 删除完成后自动处理
       }
     }
   });
@@ -837,23 +820,22 @@ const togglePromptEnabled = async (item: PromptItem, enabled: boolean) => {
         promptItems.value[index] = response.item;
       }
     }
-  } catch (e) {
-    console.error('更新提示项失败:', e);
+  } finally {
+    // 切换完成后自动处理
   }
 };
 
 // 处理提示项排序变化
 const handlePromptOrderChange = async () => {
   if (!selectedPreset.value) return;
-
   try {
     const itemIds = promptItems.value.map(item => item.id);
     await presetClient.updatePromptItemsOrder({
       presetId: selectedPreset.value.id,
       itemIds: itemIds
     });
-  } catch (e) {
-    console.error('更新排序失败:', e);
+  } finally {
+    // 排序完成后自动处理
   }
 };
 
@@ -872,8 +854,8 @@ const handlePromptContentChange = async (item: PromptItem) => {
       forbidOverrides: item.forbidOverrides,
       sortOrder: item.sortOrder
     });
-  } catch (e) {
-    console.error('更新提示项内容失败:', e);
+  } finally {
+    // 内容更新完成后自动处理
   }
 };
 

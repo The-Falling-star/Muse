@@ -13,7 +13,6 @@ import (
 	"github.com/ling/muse/entity"
 	pb "github.com/ling/muse/gen/muse"
 	"github.com/ling/muse/repo/database"
-	"golang.org/x/crypto/bcrypt"
 )
 
 type userImpl struct {
@@ -55,7 +54,7 @@ func (u *userImpl) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.R
 	}
 
 	// 密码加密
-	hashedPassword, err := hashPassword(req.GetPassword())
+	hashedPassword, err := crypto.Md5HashStr(req.GetPassword())
 	if err != nil {
 		return nil, errs.NewStandardf(connect.CodeInternal, "密码加密失败: %v", err)
 	}
@@ -103,7 +102,7 @@ func (u *userImpl) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginRe
 	}
 
 	// 验证密码
-	if err := verifyPassword(user.PasswordHash, req.GetPassword()); err != nil {
+	if err := crypto.VerifyMd5Hash(user.PasswordHash, req.GetPassword()); err != nil {
 		return nil, errs.NewStandard(connect.CodeUnauthenticated, errs.InvalidPassword)
 	}
 
@@ -158,12 +157,12 @@ func (u *userImpl) ChangePassword(ctx context.Context, req *pb.ChangePasswordReq
 	}
 
 	// 验证旧密码
-	if err := verifyPassword(user.PasswordHash, req.GetOldPassword()); err != nil {
+	if err := crypto.VerifyMd5Hash(user.PasswordHash, req.GetOldPassword()); err != nil {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidOldPassword)
 	}
 
 	// 加密新密码
-	hashedPassword, hashErr := hashPassword(req.GetNewPassword())
+	hashedPassword, hashErr := crypto.Md5HashStr(req.GetNewPassword())
 	if hashErr != nil {
 		return nil, errs.NewStandardf(connect.CodeInternal, "密码加密失败: %v", hashErr)
 	}
@@ -621,18 +620,4 @@ func (u *userImpl) TestAPIConfig(ctx context.Context, req *pb.TestAPIConfigReque
 		Success:   true,
 		ModelInfo: &apiConfig.Model,
 	}, nil
-}
-
-// hashPassword 对密码进行哈希
-func hashPassword(password string) (string, error) {
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	if err != nil {
-		return "", err
-	}
-	return string(hashedPassword), nil
-}
-
-// verifyPassword 验证密码
-func verifyPassword(hashedPassword, password string) error {
-	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 }

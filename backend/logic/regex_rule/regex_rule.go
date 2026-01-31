@@ -27,13 +27,8 @@ func newRegexRule() *regexRuleImpl {
 }
 
 func (r *regexRuleImpl) ListRegexRules(ctx context.Context, req *pb.ListRegexRulesRequest) (*pb.ListRegexRulesResponse, error) {
-	presetID := int(req.GetPresetId())
-	if presetID <= 0 {
-		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidPresetID)
-	}
-
-	// 从数据库获取正则规则列表
-	rules, err := r.regexRuleRepo.List(presetID)
+	// 获取全局正则规则列表（preset_id = 0）
+	rules, err := r.regexRuleRepo.List(0)
 	if err != nil {
 		return nil, err
 	}
@@ -45,6 +40,29 @@ func (r *regexRuleImpl) ListRegexRules(ctx context.Context, req *pb.ListRegexRul
 	}
 
 	return &pb.ListRegexRulesResponse{
+		Rules: pbRules,
+	}, nil
+}
+
+func (r *regexRuleImpl) ListPresetRegexRules(ctx context.Context, req *pb.ListPresetRegexRulesRequest) (*pb.ListPresetRegexRulesResponse, error) {
+	presetID := int(req.GetPresetId())
+	if presetID <= 0 {
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidPresetID)
+	}
+
+	// 从数据库获取预设的正则规则列表
+	rules, err := r.regexRuleRepo.List(presetID)
+	if err != nil {
+		return nil, err
+	}
+
+	// 转换为pb格式
+	pbRules := make([]*pb.RegexRule, 0, len(rules))
+	for _, rule := range rules {
+		pbRules = append(pbRules, convert.RegexRuleEntityToPb(rule))
+	}
+
+	return &pb.ListPresetRegexRulesResponse{
 		Rules: pbRules,
 	}, nil
 }

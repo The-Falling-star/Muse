@@ -8,8 +8,10 @@ import (
 
 // RegexRule 定义了正则规则服务的接口
 type RegexRule interface {
-	// ListRegexRules 获取正则规则列表
+	// ListRegexRules 获取全局正则规则列表
 	ListRegexRules(ctx context.Context, req *pb.ListRegexRulesRequest) (*pb.ListRegexRulesResponse, error)
+	// ListPresetRegexRules 获取预设的正则规则列表
+	ListPresetRegexRules(ctx context.Context, req *pb.ListPresetRegexRulesRequest) (*pb.ListPresetRegexRulesResponse, error)
 	// AddRegexRule 添加新的正则规则
 	AddRegexRule(ctx context.Context, req *pb.AddRegexRuleRequest) (*pb.AddRegexRuleResponse, error)
 	// UpdateRegexRule 更新指定正则规则

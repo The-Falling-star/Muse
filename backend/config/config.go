@@ -46,6 +46,7 @@ type AuthConfig struct {
 	SkipAuth      bool   `mapstructure:"skip_auth"`
 	AdminUsername string `mapstructure:"admin_username"`
 	AdminUserId   int    `mapstructure:"admin_user_id"`
+	AdminPassword string `mapstructure:"admin_password"`
 }
 
 // APIEncryptConfig API密钥加密配置

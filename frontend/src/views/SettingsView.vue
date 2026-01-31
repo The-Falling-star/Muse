@@ -43,7 +43,7 @@
                     <template #description>
                       <n-space :size="4">
                         <n-tag size="small">{{ config.model || '默认模型' }}</n-tag>
-                        <n-text depth="3">{{ config.baseUrl || '默认地址' }}</n-text>
+                        <span style="opacity: 0.7">{{ config.baseUrl || '默认地址' }}</span>
                       </n-space>
                     </template>
                   </n-thing>
@@ -152,7 +152,7 @@
           <n-card class="settings-card">
             <n-form label-placement="left" label-width="120">
               <n-form-item label="主题">
-                <n-radio-group v-model:value="appearanceSettings.theme" @update:value="handleUpdateUserSetting">
+                <n-radio-group v-model:value="appearanceSettings.theme" @update:value="handleUpdateTheme">
                   <n-space>
                     <n-radio-button value="DARK">
                       <n-icon><MoonOutline /></n-icon>
@@ -168,19 +168,6 @@
                     </n-radio-button>
                   </n-space>
                 </n-radio-group>
-              </n-form-item>
-
-              <n-form-item label="语言">
-                <n-select
-                  v-model:value="appearanceSettings.language"
-                  :options="languageOptions"
-                  @update:value="handleUpdateUserSetting"
-                />
-              </n-form-item>
-
-              <n-form-item label="Enter发送">
-                <n-switch v-model:value="appearanceSettings.sendOnEnter" @update:value="handleUpdateUserSetting" />
-                <n-text depth="3" style="margin-left: 12px;">按Enter键直接发送消息</n-text>
               </n-form-item>
 
               <n-form-item label="显示时间戳">
@@ -235,36 +222,6 @@
                 <n-button type="primary" :loading="loading" @click="handleChangePassword">
                   修改密码
                 </n-button>
-              </n-form-item>
-            </n-form>
-          </n-card>
-        </section>
-
-        <!-- 快捷键 -->
-        <section class="settings-section">
-          <div class="section-header">
-            <div class="section-icon">
-              <n-icon size="24"><KeypadOutline /></n-icon>
-            </div>
-            <div class="section-title">
-              <h2>快捷键</h2>
-              <p>键盘快捷方式</p>
-            </div>
-          </div>
-
-          <n-card class="settings-card">
-            <n-form label-placement="left" label-width="140">
-              <n-form-item label="发送消息">
-                <n-tag>Enter</n-tag>
-              </n-form-item>
-              <n-form-item label="换行">
-                <n-tag>Shift + Enter</n-tag>
-              </n-form-item>
-              <n-form-item label="新建会话">
-                <n-tag>Ctrl + N</n-tag>
-              </n-form-item>
-              <n-form-item label="切换侧边栏">
-                <n-tag>Ctrl + B</n-tag>
               </n-form-item>
             </n-form>
           </n-card>
@@ -423,7 +380,6 @@ import {
   NModal,
   NEmpty,
   NSpin,
-  NText,
   useMessage,
   useDialog
 } from 'naive-ui';
@@ -435,7 +391,6 @@ import {
   MoonOutline,
   SunnyOutline,
   DesktopOutline,
-  KeypadOutline,
   InformationCircleOutline,
   AddOutline,
   CreateOutline,
@@ -446,12 +401,14 @@ import {
 
 import { userClient } from '@/api/client';
 import { useUserStore } from '@/stores/user';
+import { useThemeStore } from '@/stores/theme';
 import type { APIConfig, Persona } from '@/gen/muse/muse_pb';
 import { APIProvider, Theme } from '@/gen/muse/muse_pb';
 
 const message = useMessage();
 const dialog = useDialog();
 const userStore = useUserStore();
+const themeStore = useThemeStore();
 
 // 状态
 const loading = ref(false);
@@ -492,8 +449,6 @@ const personaRules: FormRules = {
 // 外观设置
 const appearanceSettings = reactive({
   theme: 'DARK',
-  language: 'zh-CN',
-  sendOnEnter: true,
   showTimestamps: true
 });
 
@@ -509,12 +464,6 @@ const providerOptions = [
   { label: 'OpenAI', value: APIProvider.OpenAI },
   { label: 'Claude', value: APIProvider.Claude },
   { label: 'Google Gemini', value: APIProvider.Gemini }
-];
-
-// 语言选项
-const languageOptions = [
-  { label: '简体中文', value: 'zh-CN' },
-  { label: 'English', value: 'en-US' }
 ];
 
 // 模型选项
@@ -555,9 +504,10 @@ const loadData = async () => {
     if (settingRes.setting) {
       userStore.setUserSetting(settingRes.setting);
       appearanceSettings.theme = settingRes.setting.theme === Theme.Dark ? 'DARK' : settingRes.setting.theme === Theme.Light ? 'LIGHT' : 'SYSTEM';
-      appearanceSettings.language = settingRes.setting.language || 'zh-CN';
-      appearanceSettings.sendOnEnter = settingRes.setting.sendOnEnter;
       appearanceSettings.showTimestamps = settingRes.setting.showTimestamps;
+
+      // 初始化主题
+      handleUpdateTheme();
     }
   } finally {
     loading.value = false;
@@ -777,12 +727,35 @@ const resetPersonaForm = () => {
 
 // ==================== 用户设置相关方法 ====================
 
+// 更新主题
+const handleUpdateTheme = async () => {
+  let themeMode: 'dark' | 'light';
+  const themeValue = appearanceSettings.theme;
+
+  if (themeValue === 'SYSTEM') {
+    themeMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  } else {
+    themeMode = themeValue === 'LIGHT' ? 'light' : 'dark';
+  }
+
+  themeStore.setTheme(themeMode);
+
+  // 保存到后端
+  const protobufTheme = themeValue === 'DARK' ? Theme.Dark : themeValue === 'LIGHT' ? Theme.Light : Theme.Auto;
+  const res = await userClient.updateUserSetting({
+    theme: protobufTheme,
+    showTimestamps: appearanceSettings.showTimestamps
+  });
+  if (res.setting) {
+    userStore.setUserSetting(res.setting);
+  }
+};
+
+// 更新其他用户设置
 const handleUpdateUserSetting = async () => {
   const themeValue = appearanceSettings.theme === 'DARK' ? Theme.Dark : appearanceSettings.theme === 'LIGHT' ? Theme.Light : Theme.Auto;
   const res = await userClient.updateUserSetting({
     theme: themeValue,
-    language: appearanceSettings.language,
-    sendOnEnter: appearanceSettings.sendOnEnter,
     showTimestamps: appearanceSettings.showTimestamps
   });
   if (res.setting) {

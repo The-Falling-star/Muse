@@ -1,11 +1,13 @@
 package config
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
 	"time"
 
+	"github.com/ling/muse/common/crypto"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -22,7 +24,7 @@ func InitDatabase(cfg *DatabaseConfig) error {
 	var err error
 
 	gormConfig := &gorm.Config{
-		Logger:                                   logger.Default.LogMode(logger.Info),
+		Logger:                                   logger.Default.LogMode(logger.Warn),
 		DisableForeignKeyConstraintWhenMigrating: true, // 禁用外键约束
 	}
 
@@ -31,8 +33,23 @@ func InitDatabase(cfg *DatabaseConfig) error {
 	} else {
 		db, err = initMySQL(cfg, gormConfig)
 	}
+	if err != nil {
+		return err
+	}
+	var admin entity.User
+	result := db.Where("id = ?", Get().Auth.AdminUserId).First(&admin)
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		// 记录不存在，创建管理员
+		admin.ID = Get().Auth.AdminUserId
+		admin.Username = Get().Auth.AdminUsername
+		hashPassword, _ := crypto.Md5HashStr(Get().Auth.AdminPassword)
+		admin.PasswordHash = hashPassword
+		if err = db.Create(&admin).Error; err != nil {
+			return fmt.Errorf("创建管理员失败: %w", err)
+		}
+	}
 
-	return err
+	return nil
 }
 
 // initSQLite 初始化SQLite数据库
@@ -49,7 +66,7 @@ func initSQLite(cfg *DatabaseConfig, gormConfig *gorm.Config) (*gorm.DB, error) 
 	}
 
 	// SQLite 模式自动建表
-	if err := autoMigrate(database); err != nil {
+	if err = autoMigrate(database); err != nil {
 		return nil, fmt.Errorf("自动建表失败: %w", err)
 	}
 
@@ -72,6 +89,11 @@ func initMySQL(cfg *DatabaseConfig, gormConfig *gorm.Config) (*gorm.DB, error) {
 	sqlDB.SetMaxIdleConns(cfg.MaxIdleConns)
 	sqlDB.SetMaxOpenConns(cfg.MaxOpenConns)
 	sqlDB.SetConnMaxLifetime(time.Hour)
+
+	// MySQL 模式也自动建表
+	if err = autoMigrate(database); err != nil {
+		return nil, fmt.Errorf("自动建表失败: %w", err)
+	}
 
 	return database, nil
 }

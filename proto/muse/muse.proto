@@ -1035,13 +1035,21 @@ service PresetService {
 // 正则规则服务
 // ================================
 
+// 获取全局正则规则列表请求（preset_id = 0）
+message ListRegexRulesRequest {}
+
+// 获取全局正则规则列表响应
+message ListRegexRulesResponse {
+  repeated RegexRule rules = 1;
+}
+
 // 获取预设的正则规则列表请求
-message ListRegexRulesRequest {
+message ListPresetRegexRulesRequest {
   int32 preset_id = 1;
 }
 
 // 获取预设的正则规则列表响应
-message ListRegexRulesResponse {
+message ListPresetRegexRulesResponse {
   repeated RegexRule rules = 1;
 }
 
@@ -1125,8 +1133,10 @@ message ExportRegexRulesResponse {
 
 // 正则规则服务
 service RegexRuleService {
-  // 获取预设的正则规则列表
+  // 获取全局正则规则列表
   rpc ListRegexRules(ListRegexRulesRequest) returns (ListRegexRulesResponse);
+  // 获取预设的正则规则列表
+  rpc ListPresetRegexRules(ListPresetRegexRulesRequest) returns (ListPresetRegexRulesResponse);
   // 添加正则规则
   rpc AddRegexRule(AddRegexRuleRequest) returns (AddRegexRuleResponse);
   // 更新正则规则

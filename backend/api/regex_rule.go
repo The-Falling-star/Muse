@@ -20,7 +20,7 @@ func NewRegexRuleServer() *RegexRuleServer {
 	}
 }
 
-// ListRegexRules 获取正则规则列表
+// ListRegexRules 获取全局正则规则列表
 func (r *RegexRuleServer) ListRegexRules(ctx context.Context, req *connect.Request[pb.ListRegexRulesRequest]) (
 	*connect.Response[pb.ListRegexRulesResponse], error) {
 	resp, err := r.regexRule.ListRegexRules(ctx, req.Msg)
@@ -28,6 +28,17 @@ func (r *RegexRuleServer) ListRegexRules(ctx context.Context, req *connect.Reque
 		return doResponseExp(ctx, "ListRegexRules", req.Msg, resp, err)
 	}
 	return doResponse(ctx, "ListRegexRules", req.Msg, resp)
+}
+
+// ListPresetRegexRules 获取预设的正则规则列表
+func (r *RegexRuleServer) ListPresetRegexRules(
+	ctx context.Context, req *connect.Request[pb.ListPresetRegexRulesRequest]) (
+	*connect.Response[pb.ListPresetRegexRulesResponse], error) {
+	resp, err := r.regexRule.ListPresetRegexRules(ctx, req.Msg)
+	if err != nil {
+		return doResponseExp(ctx, "ListPresetRegexRules", req.Msg, resp, err)
+	}
+	return doResponse(ctx, "ListPresetRegexRules", req.Msg, resp)
 }
 
 // AddRegexRule 添加新的正则规则

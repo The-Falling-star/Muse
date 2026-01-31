@@ -15,17 +15,16 @@
         v-for="(rule, index) in rules"
         :key="rule.id"
         class="regex-item"
-        :class="{ 'disabled': !rule.enabled }"
+        :class="{ 'disabled': !rule.isEnabled }"
       >
         <div class="regex-item-left">
-          <n-switch v-model:value="rule.enabled" size="small" />
+          <n-switch v-model:value="rule.isEnabled" size="small" />
           <span class="regex-index">{{ index + 1 }}</span>
           <div class="regex-info">
             <div class="regex-name">{{ rule.name }}</div>
             <div class="regex-pattern">
-              <code>{{ rule.pattern }}</code>
-              <n-tag size="tiny" :bordered="false">{{ rule.flags }}</n-tag>
-              <n-tag :type="getScopeColor(rule.scope)" size="tiny">{{ getScopeName(rule.scope) }}</n-tag>
+              <code>{{ rule.findPattern }}</code>
+              <n-tag size="tiny">{{ getAffectFlagsDisplay(rule.affectFlags) }}</n-tag>
             </div>
           </div>
         </div>
@@ -59,40 +58,36 @@
           <n-input v-model:value="formData.name" placeholder="输入规则名称" />
         </n-form-item>
 
-        <n-form-item label="匹配模式" path="pattern">
-          <n-input v-model:value="formData.pattern" placeholder="输入正则表达式" font-family="monospace" />
+        <n-form-item label="匹配模式" path="findPattern">
+          <n-input v-model:value="formData.findPattern" placeholder="输入正则表达式" font-family="monospace" />
         </n-form-item>
 
         <n-form-item label="替换内容">
-          <n-input v-model:value="formData.replacement" placeholder="替换文本（留空表示删除匹配内容）" />
+          <n-input v-model:value="formData.replacePattern" placeholder="替换文本（留空表示删除匹配内容）" />
         </n-form-item>
 
         <n-grid :cols="2" :x-gap="16">
           <n-gi>
-            <n-form-item label="标志位">
-              <n-checkbox-group v-model:value="flagsArray">
-                <n-space>
-                  <n-checkbox value="g" label="全局(g)" />
-                  <n-checkbox value="i" label="忽略大小写(i)" />
-                  <n-checkbox value="m" label="多行(m)" />
-                  <n-checkbox value="s" label="dotAll(s)" />
+            <n-form-item label="作用范围">
+              <n-checkbox-group v-model:value="affectFlagsArray">
+                <n-space vertical>
+                  <n-checkbox value="userInput" label="用户输入" />
+                  <n-checkbox value="aiOutput" label="AI输出" />
+                  <n-checkbox value="slashCommand" label="斜杠命令" />
+                  <n-checkbox value="worldInfo" label="世界书" />
+                  <n-checkbox value="prompt" label="提示词" />
                 </n-space>
               </n-checkbox-group>
             </n-form-item>
           </n-gi>
           <n-gi>
-            <n-form-item label="作用范围">
-              <n-select v-model:value="formData.scope" :options="scopeOptions" />
-            </n-form-item>
-          </n-gi>
-          <n-gi>
             <n-form-item label="优先级">
-              <n-input-number v-model:value="formData.order" :min="0" :max="1000" class="full-width" />
+              <n-input-number v-model:value="formData.sortOrder" :min="0" :max="1000" class="full-width" />
             </n-form-item>
           </n-gi>
           <n-gi>
             <n-form-item label="启用">
-              <n-switch v-model:value="formData.enabled" />
+              <n-switch v-model:value="formData.isEnabled" />
             </n-form-item>
           </n-gi>
         </n-grid>
@@ -139,7 +134,6 @@ import {
   NFormItem,
   NInput,
   NInputNumber,
-  NSelect,
   NCheckboxGroup,
   NCheckbox,
   NSpace,
@@ -151,30 +145,7 @@ import {
 } from 'naive-ui';
 import type { FormInst, FormRules } from 'naive-ui';
 import { AddOutline, CreateOutline, TrashOutline } from '@vicons/ionicons5';
-
-// 正则规则类型（组件本地使用）
-interface RegexRule {
-  id: number;
-  name: string;
-  pattern: string;
-  replacement: string;
-  flags: string;
-  scope: 'input' | 'output' | 'both';
-  order: number;
-  enabled: boolean;
-}
-
-type RegexScope = 'input' | 'output' | 'both';
-
-interface RegexFormData {
-  name: string;
-  pattern: string;
-  replacement: string;
-  flags: string;
-  scope: RegexScope;
-  order: number;
-  enabled: boolean;
-}
+import type { RegexRule } from '@/gen/muse/muse_pb';
 
 const props = defineProps<{
   regexRules: RegexRule[];
@@ -199,28 +170,56 @@ const editingIndex = ref(-1);
 const formRef = ref<FormInst | null>(null);
 const testInput = ref('');
 
-const formData = reactive<RegexFormData>({
+// 创建默认的 RegexRule 对象
+const createDefaultRegexRule = (): RegexRule => ({
+  $typeName: 'muse.RegexRule',
+  id: 0,
+  presetId: 0,
+  characterId: 0,
   name: '',
-  pattern: '',
-  replacement: '',
-  flags: 'g',
-  scope: 'output',
-  order: 100,
-  enabled: true
+  findPattern: '',
+  replacePattern: '',
+  isEnabled: true,
+  runOnEdit: false,
+  substituteRegex: true,
+  minDepth: 0,
+  maxDepth: 0,
+  affectFlags: {
+    userInput: true,
+    aiOutput: true,
+    slashCommand: false,
+    worldInfo: false,
+    prompt: false,
+    $typeName: 'muse.RegexAffectFlags'
+  },
+  sortOrder: 100,
+  createdAt: 0n,
+  updatedAt: 0n
 });
 
-const flagsArray = computed({
-  get: () => formData.flags.split(''),
+const formData = reactive<RegexRule>(createDefaultRegexRule());
+
+const affectFlagsArray = computed({
+  get: () => {
+    const flags: string[] = [];
+    if (formData.affectFlags?.userInput) flags.push('userInput');
+    if (formData.affectFlags?.aiOutput) flags.push('aiOutput');
+    if (formData.affectFlags?.slashCommand) flags.push('slashCommand');
+    if (formData.affectFlags?.worldInfo) flags.push('worldInfo');
+    if (formData.affectFlags?.prompt) flags.push('prompt');
+    return flags;
+  },
   set: (val: string[]) => {
-    formData.flags = val.join('');
+    formData.affectFlags = {
+      userInput: val.includes('userInput'),
+      aiOutput: val.includes('aiOutput'),
+      slashCommand: val.includes('slashCommand'),
+      worldInfo: val.includes('worldInfo'),
+      prompt: val.includes('prompt'),
+      $typeName: 'muse.RegexAffectFlags'
+    };
   }
 });
-
-const scopeOptions = [
-  { label: '输入', value: 'input' },
-  { label: '输出', value: 'output' },
-  { label: '双向', value: 'both' }
-];
 
 const formRules: FormRules = {
   name: { required: true, message: '请输入规则名称', trigger: 'blur' },
@@ -229,40 +228,32 @@ const formRules: FormRules = {
 
 // 测试结果
 const testResult = computed(() => {
-  if (!testInput.value || !formData.pattern) return '';
+  if (!testInput.value || !formData.findPattern) return '';
   try {
-    const regex = new RegExp(formData.pattern, formData.flags);
-    return testInput.value.replace(regex, formData.replacement);
+    const regex = new RegExp(formData.findPattern, 'g');
+    return testInput.value.replace(regex, formData.replacePattern);
   } catch {
     return '正则表达式无效';
   }
 });
 
 // 方法
-const getScopeName = (scope: string) => {
-  const names: Record<string, string> = { input: '输入', output: '输出', both: '双向' };
-  return names[scope] || scope;
-};
-
-const getScopeColor = (scope: string): 'default' | 'primary' | 'info' | 'success' | 'warning' | 'error' => {
-  const colors: Record<string, 'default' | 'primary' | 'info' | 'success' | 'warning' | 'error'> = {
-    input: 'info',
-    output: 'success',
-    both: 'warning'
+const getAffectFlagsDisplay = (flags: { userInput?: boolean; aiOutput?: boolean; slashCommand?: boolean; worldInfo?: boolean; prompt?: boolean; $typeName?: string } | undefined) => {
+  const names: { [key: string]: string } = {
+    userInput: '输入',
+    aiOutput: '输出',
+    slashCommand: '命令',
+    worldInfo: '世界书',
+    prompt: '提示词'
   };
-  return colors[scope] || 'default';
+  const activeFlags = Object.entries(flags || {})
+    .filter(([key, enabled]) => key !== '$typeName' && enabled)
+    .map(([key, _]) => names[key] || key);
+  return activeFlags.join(', ') || '-';
 };
 
 const resetForm = () => {
-  Object.assign(formData, {
-    name: '',
-    pattern: '',
-    replacement: '',
-    flags: 'g',
-    scope: 'output',
-    order: 100,
-    enabled: true
-  });
+  Object.assign(formData, createDefaultRegexRule());
   testInput.value = '';
 };
 
@@ -276,15 +267,7 @@ const editRegex = (index: number) => {
   editingIndex.value = index;
   const rule = rules.value[index];
   if (!rule) return;
-  Object.assign(formData, {
-    name: rule.name,
-    pattern: rule.pattern,
-    replacement: rule.replacement,
-    flags: rule.flags,
-    scope: rule.scope,
-    order: rule.order,
-    enabled: rule.enabled
-  });
+  Object.assign(formData, rule);
   showEditModal.value = true;
 };
 
@@ -314,7 +297,7 @@ const handleSave = async () => {
 
   // 验证正则表达式
   try {
-    new RegExp(formData.pattern, formData.flags);
+    new RegExp(formData.findPattern, 'g');
   } catch {
     message.error('正则表达式语法错误');
     return;
@@ -323,14 +306,8 @@ const handleSave = async () => {
   const newRules = [...rules.value];
   const existingRule = editingIndex.value >= 0 ? rules.value[editingIndex.value] : null;
   const newRule: RegexRule = {
-    id: existingRule?.id || Date.now(),
-    name: formData.name,
-    pattern: formData.pattern,
-    replacement: formData.replacement,
-    flags: formData.flags,
-    scope: formData.scope,
-    order: formData.order,
-    enabled: formData.enabled
+    ...existingRule,
+    ...formData
   };
 
   if (editingIndex.value >= 0) {

@@ -275,7 +275,8 @@
                     class="prompt-item"
                     :class="{
                       'disabled': !item.isEnabled,
-                      'editing': editingPromptId === item.id
+                      'editing': editingPromptId === item.id,
+                      'forbid-overrides': item.forbidOverrides
                     }"
                   >
                     <!-- 拖拽手柄 -->
@@ -294,21 +295,35 @@
                     <span class="prompt-index">{{ index + 1 }}</span>
 
                     <!-- 提示项信息 -->
-                    <div class="prompt-info" @click="toggleExpand(item.id)">
+                    <div class="prompt-info" @click="item.forbidOverrides ? null : toggleExpand(item.id)">
                       <div class="prompt-header-row">
                         <span class="prompt-name">{{ item.name }}</span>
-                        <n-tag :type="getRoleColor(item.role)" size="small" :bordered="false">
-                          {{ getRoleName(item.role) }}
-                        </n-tag>
+                        <!-- 标签数组：同时显示标记和角色 -->
+                        <div class="prompt-tags">
+                          <n-tag v-if="item.forbidOverrides" type="warning" size="small" :bordered="false">
+                            标记
+                          </n-tag>
+                          <n-tag :type="getRoleColor(item.role)" size="small" :bordered="false">
+                            {{ getRoleName(item.role) }}
+                          </n-tag>
+                        </div>
                       </div>
                       <p v-if="item.content" class="prompt-preview">
                         {{ truncateContent(item.content) }}
+                      </p>
+                      <p v-if="item.forbidOverrides" class="prompt-marker-hint">
+                        系统自动填充，名称和内容不可编辑
                       </p>
                     </div>
 
                     <!-- 操作按钮 -->
                     <div class="prompt-actions">
-                      <n-button quaternary circle size="tiny" @click="editPromptItem(item)">
+                      <n-button
+                        quaternary
+                        circle
+                        size="tiny"
+                        @click="editPromptItem(item)"
+                      >
                         <template #icon>
                           <n-icon><CreateOutline /></n-icon>
                         </template>
@@ -325,9 +340,9 @@
                       </n-button>
                     </div>
 
-                    <!-- 展开的编辑区域 -->
+                    <!-- 展开的编辑区域（仅非标记项可展开） -->
                     <Transition name="expand">
-                      <div v-if="expandedPromptId === item.id" class="prompt-expanded">
+                      <div v-if="expandedPromptId === item.id && !item.forbidOverrides" class="prompt-expanded">
                         <n-input
                           v-model:value="item.content"
                           type="textarea"
@@ -417,20 +432,8 @@ import draggable from 'vuedraggable';
 import PromptItemEditor from '../components/preset/PromptItemEditor.vue';
 import PresetRegexManager from '../components/preset/PresetRegexManager.vue';
 import { presetClient, regexRuleClient } from '@/api/client';
-import type { Preset, PromptItem } from '@/gen/muse/muse_pb';
+import type {Preset, PromptItem, RegexRule} from '@/gen/muse/muse_pb';
 import { Role, InjectionPosition } from '@/gen/muse/muse_pb';
-
-// 组件本地使用的正则规则接口
-interface LocalRegexRule {
-  id: number;
-  name: string;
-  pattern: string;
-  replacement: string;
-  flags: string;
-  scope: 'input' | 'output' | 'both';
-  order: number;
-  enabled: boolean;
-}
 
 // 组件本地使用的提示项接口
 interface LocalPromptItem {
@@ -441,6 +444,7 @@ interface LocalPromptItem {
   content: string;
   enabled: boolean;
   marker?: boolean;
+  forbidOverrides?: boolean; // 标记项：名称和内容不可编辑
   injection?: {
     position: 'before' | 'after';
     depth: number;
@@ -457,7 +461,7 @@ const saving = ref(false);
 const presets = ref<Preset[]>([]);
 const selectedPreset = ref<Preset | null>(null);
 const promptItems = ref<PromptItem[]>([]);
-const regexRules = ref<LocalRegexRule[]>([]);
+const regexRules = ref<RegexRule[]>([]);
 const showPromptModal = ref(false);
 const editingPromptItem = ref<LocalPromptItem | null>(null);
 const editingPromptId = ref<number | null>(null);
@@ -520,17 +524,18 @@ const loadPresetDetail = async (presetId: number) => {
 
 // 加载预设正则规则
 const loadPresetRegexRules = async (presetId: number) => {
-    const response = await regexRuleClient.listRegexRules({ presetId: presetId });
-    // 转换为组件本地类型
+    const response = await regexRuleClient.listPresetRegexRules({ presetId: presetId });
+    // 直接使用 pb 类型
     regexRules.value = response.rules.map(r => ({
-      id: r.id,
-      name: r.name,
-      pattern: r.findPattern,
-      replacement: r.replacePattern,
-      flags: 'gi',
-      scope: 'both' as const,
-      order: r.sortOrder,
-      enabled: r.isEnabled
+      ...r,
+      affectFlags: r.affectFlags || {
+        userInput: false,
+        aiOutput: false,
+        slashCommand: false,
+        worldInfo: false,
+        prompt: false,
+        $typeName: 'muse.RegexAffectFlags'
+      }
     }));
 };
 
@@ -567,7 +572,9 @@ const createPreset = async () => {
         topK: 0,
         maxTokens: 300,
         frequencyPenalty: 0,
-        presencePenalty: 0
+        presencePenalty: 0,
+        // 创建预设时自动添加默认提示项
+        promptItems: defaultPromptItems
       });
       if (response.preset) {
         presets.value.push(response.preset);
@@ -716,7 +723,8 @@ const editPromptItem = (item: PromptItem) => {
     name: item.name,
     role: roleMap[item.role] || 'system',
     content: item.content,
-    enabled: item.isEnabled
+    enabled: item.isEnabled,
+    forbidOverrides: item.forbidOverrides // 传递禁止覆盖标记
   };
   showPromptModal.value = true;
 };
@@ -734,7 +742,8 @@ const handleSavePromptItem = async (itemData: Partial<LocalPromptItem>) => {
 
   try {
     if (editingPromptItem.value) {
-      // 更新现有项
+      // 更新现有项 - 保留原有的 forbidOverrides 状态
+      const originalItem = promptItems.value.find(p => p.id === editingPromptItem.value!.id);
       const response = await presetClient.updatePromptItem({
         id: editingPromptItem.value.id,
         identifier: itemData.identifier || '',
@@ -744,8 +753,8 @@ const handleSavePromptItem = async (itemData: Partial<LocalPromptItem>) => {
         isEnabled: itemData.enabled ?? true,
         injectionPosition: InjectionPosition.Relative,
         injectionDepth: 0,
-        forbidOverrides: false,
-        sortOrder: 0
+        forbidOverrides: itemData.forbidOverrides ?? originalItem?.forbidOverrides ?? false,
+        sortOrder: originalItem?.sortOrder ?? 0
       });
       if (response.item) {
         const index = promptItems.value.findIndex(p => p.id === editingPromptItem.value!.id);
@@ -898,6 +907,132 @@ const variablesList = [
   '{{persona}}'
 ];
 
+// 默认提示项模板 - 参照 SillyTavern 的 chatCompletionDefaultPrompts
+// marker: true 表示系统标记项，仅作为占位符使用，由系统自动填充内容
+const defaultPromptItems = [
+  {
+    identifier: 'main',
+    name: '主提示词',
+    content: '在 {{char}} 和 {{user}} 的虚构聊天中，撰写 {{char}} 的下一条回复。',
+    role: Role.System,
+    isEnabled: true,
+    injectionPosition: InjectionPosition.Relative,
+    injectionDepth: 0,
+    forbidOverrides: false,
+    sortOrder: 0
+  },
+  {
+    identifier: 'worldInfoBefore',
+    name: '世界信息（前）',
+    content: '',
+    role: Role.System,
+    isEnabled: true,
+    injectionPosition: InjectionPosition.Relative,
+    injectionDepth: 0,
+    forbidOverrides: true, // 系统标记项禁止覆盖
+    sortOrder: 1
+  },
+  {
+    identifier: 'personaDescription',
+    name: '人设描述',
+    content: '',
+    role: Role.System,
+    isEnabled: true,
+    injectionPosition: InjectionPosition.Relative,
+    injectionDepth: 0,
+    forbidOverrides: true,
+    sortOrder: 2
+  },
+  {
+    identifier: 'charDescription',
+    name: '角色描述',
+    content: '',
+    role: Role.System,
+    isEnabled: true,
+    injectionPosition: InjectionPosition.Relative,
+    injectionDepth: 0,
+    forbidOverrides: true,
+    sortOrder: 3
+  },
+  {
+    identifier: 'charPersonality',
+    name: '角色性格',
+    content: '',
+    role: Role.System,
+    isEnabled: true,
+    injectionPosition: InjectionPosition.Relative,
+    injectionDepth: 0,
+    forbidOverrides: true,
+    sortOrder: 4
+  },
+  {
+    identifier: 'scenario',
+    name: '场景',
+    content: '',
+    role: Role.System,
+    isEnabled: true,
+    injectionPosition: InjectionPosition.Relative,
+    injectionDepth: 0,
+    forbidOverrides: true,
+    sortOrder: 5
+  },
+  {
+    identifier: 'nsfw',
+    name: '辅助提示词',
+    content: '',
+    role: Role.System,
+    isEnabled: true,
+    injectionPosition: InjectionPosition.Relative,
+    injectionDepth: 0,
+    forbidOverrides: false,
+    sortOrder: 6
+  },
+  {
+    identifier: 'worldInfoAfter',
+    name: '世界信息（后）',
+    content: '',
+    role: Role.System,
+    isEnabled: true,
+    injectionPosition: InjectionPosition.Relative,
+    injectionDepth: 0,
+    forbidOverrides: true,
+    sortOrder: 7
+  },
+  {
+    identifier: 'dialogueExamples',
+    name: '对话示例',
+    content: '',
+    role: Role.System,
+    isEnabled: true,
+    injectionPosition: InjectionPosition.Relative,
+    injectionDepth: 0,
+    forbidOverrides: true,
+    sortOrder: 8
+  },
+  {
+    identifier: 'chatHistory',
+    name: '聊天记录',
+    content: '',
+    role: Role.System,
+    isEnabled: true,
+    injectionPosition: InjectionPosition.Relative,
+    injectionDepth: 0,
+    forbidOverrides: true,
+    sortOrder: 9
+  },
+  {
+    identifier: 'jailbreak',
+    name: '越狱提示词',
+    content: '',
+    role: Role.System,
+    isEnabled: true,
+    injectionPosition: InjectionPosition.Relative,
+    injectionDepth: 0,
+    forbidOverrides: false,
+    sortOrder: 10
+  }
+];
+
 // 初始化
 onMounted(() => {
   loadPresets();
@@ -966,8 +1101,8 @@ onMounted(() => {
 }
 
 .preset-item.active {
-  background: var(--primary-color);
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  background: var(--color-primary);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
 }
 
 .preset-item.active .preset-item-name,
@@ -1150,6 +1285,15 @@ onMounted(() => {
   cursor: default;
 }
 
+.prompt-item.forbid-overrides {
+  background: var(--bg-tertiary);
+  border-style: dashed;
+}
+
+.prompt-item.forbid-overrides .prompt-info {
+  cursor: default;
+}
+
 .prompt-marker-hint {
   margin: 4px 0 0;
   font-size: 12px;
@@ -1158,13 +1302,13 @@ onMounted(() => {
 }
 
 .prompt-item.editing {
-  border-color: var(--primary-color);
+  border-color: var(--color-primary);
   box-shadow: var(--glow-soft);
 }
 
 .prompt-ghost {
   opacity: 0.5;
-  background: var(--primary-color);
+  background: var(--color-primary);
 }
 
 .drag-handle {
@@ -1207,6 +1351,11 @@ onMounted(() => {
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
+}
+
+.prompt-tags {
+  display: flex;
+  gap: 4px;
 }
 
 .prompt-name {
@@ -1268,7 +1417,7 @@ onMounted(() => {
   padding: 4px 10px;
   font-size: 12px;
   font-family: 'Fira Code', monospace;
-  color: var(--primary-color);
+  color: var(--color-primary);
   background: var(--bg-tertiary);
   border-radius: 4px;
 }

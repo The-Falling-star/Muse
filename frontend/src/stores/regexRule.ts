@@ -43,7 +43,7 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
   // 获取正则规则列表
   const fetchRules = async (presetId: number = 0) => {
     currentPresetId.value = presetId;
-    const response = await regexRuleClient.listRegexRules({ presetId });
+    const response = await regexRuleClient.listRegexRules({});
     rules.value = response.rules;
     return response.rules;
   };

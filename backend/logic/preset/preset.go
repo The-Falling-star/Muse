@@ -100,6 +100,24 @@ func (p *presetImpl) CreatePreset(ctx context.Context, req *pb.CreatePresetReque
 		return nil, err
 	}
 
+	// 创建关联的提示项
+	for _, itemReq := range req.GetPromptItems() {
+		item := &entity.PromptItem{
+			PresetID:          preset.ID,
+			Identifier:        strings.TrimSpace(itemReq.GetIdentifier()),
+			Name:              strings.TrimSpace(itemReq.GetName()),
+			Content:           itemReq.GetContent(),
+			Role:              itemReq.GetRole(),
+			IsEnabled:         itemReq.GetIsEnabled(),
+			InjectionPosition: itemReq.GetInjectionPosition(),
+			InjectionDepth:    int(itemReq.GetInjectionDepth()),
+			ForbidOverrides:   itemReq.GetForbidOverrides(),
+			SortOrder:         int(itemReq.GetSortOrder()),
+		}
+		// 创建提示项，忽略单个失败继续创建其他项
+		_ = p.presetRepo.CreatePromptItem(item)
+	}
+
 	// 重新获取完整数据（包含关联）
 	fullPreset, err := p.presetRepo.GetByID(preset.ID, defaultUserID)
 	if err != nil {

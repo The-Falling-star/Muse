@@ -189,9 +189,7 @@ const filteredRules = computed(() => {
 const loadRules = async () => {
   loading.value = true;
   try {
-    const response = await regexRuleClient.listRegexRules({
-      presetId: currentPresetId.value
-    });
+    const response = await regexRuleClient.listRegexRules({});
     rules.value = response.rules;
   } finally {
     loading.value = false;

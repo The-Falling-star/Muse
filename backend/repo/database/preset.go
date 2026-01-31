@@ -24,11 +24,14 @@ func (p *PresetRepo) Create(preset *entity.Preset) *connect.Error {
 	return nil
 }
 
-// GetByID 根据ID获取预设
+// GetByID 根据ID获取预设（包含关联的PromptItems）
 func (p *PresetRepo) GetByID(id int, userID int) (*entity.Preset, *connect.Error) {
 	db := config.GetDB()
 	var preset entity.Preset
 	result := db.Where("id = ? AND user_id = ?", id, userID).
+		Preload("PromptItems", func(db *gorm.DB) *gorm.DB {
+			return db.Order("sort_order ASC")
+		}).
 		First(&preset)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {

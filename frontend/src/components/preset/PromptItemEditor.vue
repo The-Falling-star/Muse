@@ -4,7 +4,11 @@
       <n-grid :cols="2" :x-gap="16">
         <n-gi>
           <n-form-item label="名称" path="name">
-            <n-input v-model:value="formData.name" placeholder="提示项名称" />
+            <n-input
+              v-model:value="formData.name"
+              placeholder="提示项名称"
+              :disabled="isForbidOverrides"
+            />
           </n-form-item>
         </n-gi>
         <n-gi>
@@ -41,7 +45,11 @@
           type="textarea"
           :autosize="{ minRows: 4, maxRows: 12 }"
           placeholder="输入提示内容&#10;&#10;支持变量：&#10;{{char}} - 角色名&#10;{{user}} - 用户名&#10;{{scenario}} - 场景&#10;{{personality}} - 性格&#10;{{description}} - 描述"
+          :disabled="isForbidOverrides"
         />
+        <p v-if="isForbidOverrides" class="forbid-hint">
+          此为系统标记项，名称和内容由系统自动填充，不可编辑
+        </p>
       </n-form-item>
 
       <n-grid :cols="2" :x-gap="16">
@@ -127,6 +135,7 @@ interface PromptItem {
   content: string;
   enabled: boolean;
   marker?: boolean;
+  forbidOverrides?: boolean; // 标记项：名称和内容不可编辑
   injection?: {
     position: 'before' | 'after';
     depth: number;
@@ -190,6 +199,11 @@ const isSystemMarker = computed(() => {
   return Object.values(SYSTEM_MARKERS).includes(props.item.identifier as any);
 });
 
+// 检查是否禁止覆盖（名称和内容不可编辑）
+const isForbidOverrides = computed(() => {
+  return props.item?.forbidOverrides === true;
+});
+
 // 监听 props 变化，初始化表单
 watch(() => props.item, (item) => {
   if (item) {
@@ -240,6 +254,7 @@ const handleSubmit = async () => {
       content: formData.content,
       enabled: props.item?.enabled ?? true,
       marker: formData.marker,
+      forbidOverrides: props.item?.forbidOverrides ?? false, // 保留标记状态
       ...(formData.injectionPosition ? {
         injection: {
           position: formData.injectionPosition,
@@ -284,5 +299,12 @@ const handleSubmit = async () => {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+}
+
+.forbid-hint {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--text-tertiary);
+  font-style: italic;
 }
 </style>

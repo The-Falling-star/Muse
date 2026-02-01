@@ -29,6 +29,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("加载配置失败: %v", err)
 	}
+	setLogLevel(cfg.LogLevel)
 
 	// 初始化数据库连接
 	if err = config.InitDatabase(&cfg.Database); err != nil {
@@ -115,4 +116,23 @@ func main() {
 	}
 
 	log.Info("服务器已关闭")
+}
+
+func setLogLevel(level string) {
+	switch level {
+	case "debug":
+		log.SetLevel(log.DebugLevel)
+	case "info":
+		log.SetLevel(log.InfoLevel)
+	case "warn":
+		log.SetLevel(log.WarnLevel)
+	case "error":
+		log.SetLevel(log.ErrorLevel)
+	case "fatal":
+		log.SetLevel(log.FatalLevel)
+	case "panic":
+		log.SetLevel(log.PanicLevel)
+	default:
+		log.SetLevel(log.InfoLevel)
+	}
 }

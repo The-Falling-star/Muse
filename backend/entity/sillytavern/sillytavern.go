@@ -3,6 +3,30 @@ package sillytavern
 // CharacterCard 角色卡数据结构（兼容V2/V3格式）
 // 字段说明参考 SillyTavern Character Card V2/V3 规范
 type CharacterCard struct {
+	// V3 规范字段
+	Spec        string        `json:"spec"`         // 规范名称（如 "chara_card_v3"）
+	SpecVersion string        `json:"spec_version"` // 规范版本（如 "3.0"）
+	Data        CharacterData `json:"data"`         // 扩展数据
+
+	// 基本信息（兼容 V2，部分字段同时存在于顶层）
+	Name        string   `json:"name"`        // 角色名称
+	Description string   `json:"description"` // 角色描述/背景故事
+	Personality string   `json:"personality"` // 性格特征
+	Scenario    string   `json:"scenario"`    // 场景设定
+	FirstMes    string   `json:"first_mes"`   // 第一条消息/开场白
+	MesExample  string   `json:"mes_example"` // 示例对话
+	Tags        []string `json:"tags"`        // 标签
+
+	// 额外的顶层字段
+	Fav            bool   `json:"fav"`            // 是否收藏
+	Talkativeness  string `json:"talkativeness"`  // 话多程度
+	CreateDate     string `json:"create_date"`    // 创建日期
+	CreatorComment string `json:"creatorcomment"` // 创作者评论
+	Avatar         string `json:"avatar"`         // 头像
+}
+
+// CharacterData 扩展数据信息
+type CharacterData struct {
 	// 基本信息
 	Name        string `json:"name"`        // 角色名称
 	Description string `json:"description"` // 角色描述/背景故事
@@ -11,30 +35,27 @@ type CharacterCard struct {
 	FirstMes    string `json:"first_mes"`   // 第一条消息/开场白
 	MesExample  string `json:"mes_example"` // 示例对话
 
-	// 扩展信息
-	CreatorNotes       string         `json:"creator_notes"`             // 创作者备注
-	SystemPrompt       string         `json:"system_prompt"`             // 系统提示词
-	PostHistoryInstr   string         `json:"post_history_instructions"` // 历史记录后指令
-	AlternateGreetings []string       `json:"alternate_greetings"`       // 备选开场白
-	Tags               []string       `json:"tags"`                      // 标签
-	Creator            string         `json:"creator"`                   // 创作者
-	CharacterVersion   string         `json:"character_version"`         // 角色版本
-	CharacterBook      *CharacterBook `json:"character_book,omitempty"`  // 关联的世界书（角色卡内嵌格式）
+	CreatorNotes       string        `json:"creator_notes"`             // 创作者备注
+	SystemPrompt       string        `json:"system_prompt"`             // 系统提示词,v2
+	PostHistoryInstr   string        `json:"post_history_instructions"` // 历史记录后指令,v2
+	AlternateGreetings []string      `json:"alternate_greetings"`       // 备选开场白
+	GroupOnlyGreetings []string      `json:"group_only_greetings"`      // 仅群聊使用开场白
+	Tags               []string      `json:"tags"`                      // 标签
+	Creator            string        `json:"creator"`                   // 创作者
+	CharacterVersion   string        `json:"character_version"`         // 角色版本
+	CharacterBook      CharacterBook `json:"character_book,omitempty"`  // 关联的世界书（角色卡内嵌格式）
 
-	// V3扩展字段
-	Assets []Asset `json:"assets,omitempty"` // 资源文件列表
-
-	// 深度提示（可在对话特定深度插入）
-	DepthPrompt *DepthPrompt `json:"depth_prompt,omitempty"`
-
-	// 扩展字段（包含角色内嵌的正则脚本等）
-	Extensions *CharacterExtensions `json:"extensions,omitempty"`
+	// 扩展字段（包含角色内嵌的正则脚本, 世界书等）
+	Extensions DataExtensions `json:"extensions,omitempty"`
 }
 
-// CharacterExtensions 角色卡扩展字段
-// 用于存储角色卡内嵌的扩展数据，如正则脚本
-type CharacterExtensions struct {
-	RegexScripts []RegexScript `json:"regex_scripts,omitempty"` // 角色内嵌的正则脚本（Scoped Scripts）
+// DataExtensions data字段中的扩展数据
+type DataExtensions struct {
+	Fav           bool          `json:"fav"`                     // 是否收藏
+	Talkativeness string        `json:"talkativeness"`           // 话多程度
+	World         string        `json:"world"`                   // 世界名称
+	DepthPrompt   DepthPrompt   `json:"depth_prompt"`            // 深度提示
+	RegexScripts  []RegexScript `json:"regex_scripts,omitempty"` // 角色内嵌的正则脚本（Scoped Scripts）
 }
 
 // WorldBook 世界书/知识库结构（SillyTavern 独立导出格式）
@@ -98,31 +119,60 @@ type BookEntry struct {
 // CharacterBook 角色卡内嵌的世界书结构（数组格式）
 // 符合 Character Card V2/V3 规范
 type CharacterBook struct {
-	Name              string               `json:"name,omitempty"`         // 世界书名称
-	Description       string               `json:"description,omitempty"`  // 描述
-	ScanDepth         int                  `json:"scan_depth,omitempty"`   // 扫描深度
-	TokenBudget       int                  `json:"token_budget,omitempty"` // Token预算
-	RecursiveScanning bool                 `json:"recursive_scanning"`     // 递归扫描
-	Entries           []CharacterBookEntry `json:"entries"`                // 条目列表（数组格式）
+	Name    string               `json:"name,omitempty"` // 世界书名称
+	Entries []CharacterBookEntry `json:"entries"`        // 条目列表（数组格式）
 }
 
 // CharacterBookEntry 角色卡内嵌世界书的条目（数组格式）
 // 符合 Character Card V2/V3 规范中的 CharacterBookEntry 定义
 type CharacterBookEntry struct {
-	ID             int      `json:"id,omitempty"`             // 条目ID
-	Keys           []string `json:"keys"`                     // 触发关键词
-	SecondaryKeys  []string `json:"secondary_keys,omitempty"` // 次级关键词
-	Content        string   `json:"content"`                  // 条目内容
-	Comment        string   `json:"comment,omitempty"`        // 备注
-	Enabled        bool     `json:"enabled"`                  // 是否启用
-	InsertionOrder int      `json:"insertion_order"`          // 插入顺序
-	CaseSensitive  bool     `json:"case_sensitive,omitempty"` // 大小写敏感
-	Name           string   `json:"name,omitempty"`           // 条目名称
-	Priority       int      `json:"priority,omitempty"`       // 优先级
-	Selective      bool     `json:"selective,omitempty"`      // 选择性触发
-	Constant       bool     `json:"constant,omitempty"`       // 常驻条目
-	Position       string   `json:"position,omitempty"`       // 插入位置（before_char, after_char）
-	Depth          int      `json:"depth,omitempty"`          // 深度
+	ID             int                          `json:"id,omitempty"`             // 条目ID
+	Keys           []string                     `json:"keys"`                     // 触发关键词
+	SecondaryKeys  []string                     `json:"secondary_keys,omitempty"` // 次级关键词
+	Content        string                       `json:"content"`                  // 条目内容
+	Comment        string                       `json:"comment,omitempty"`        // 备注
+	Enabled        bool                         `json:"enabled"`                  // 是否启用
+	InsertionOrder int                          `json:"insertion_order"`          // 插入顺序
+	Selective      bool                         `json:"selective,omitempty"`      // 选择性触发
+	Constant       bool                         `json:"constant,omitempty"`       // 常驻条目
+	Position       string                       `json:"position,omitempty"`       // 插入位置
+	UseRegex       bool                         `json:"use_regex,omitempty"`      // 使用正则表达式
+	Extensions     CharacterBookEntryExtensions `json:"extensions,omitempty"`     // 条目扩展字段
+}
+
+// CharacterBookEntryExtensions 世界书条目扩展字段
+type CharacterBookEntryExtensions struct {
+	Position                  string   `json:"position"`                     // 插入位置（before_char, after_char, before_desc, after_desc, at_depth）
+	ExcludeRecursion          bool     `json:"exclude_recursion"`            // 排除递归
+	DisplayIndex              int      `json:"display_index"`                // 显示索引
+	Probability               int      `json:"probability"`                  // 触发概率
+	UseProbability            bool     `json:"use_probability"`              // 使用概率
+	Depth                     int      `json:"depth"`                        // 深度
+	SelectiveLogic            int      `json:"selective_logic"`              // 选择性逻辑（0=AND_ANY, 1=NOT_ALL, 2=NOT_ANY, 3=AND_ALL）
+	Group                     string   `json:"group"`                        // 分组
+	GroupOverride             bool     `json:"group_override"`               // 分组覆盖
+	GroupWeight               int      `json:"group_weight"`                 // 分组权重
+	PreventRecursion          bool     `json:"prevent_recursion"`            // 阻止递归
+	DelayUntilRecursion       int      `json:"delay_until_recursion"`        // 延迟到递归
+	ScanDepth                 *int     `json:"scan_depth"`                   // 扫描深度（可为null）
+	MatchWholeWords           *bool    `json:"match_whole_words"`            // 匹配整词（可为null）
+	UseGroupScoring           bool     `json:"use_group_scoring"`            // 使用分组评分
+	CaseSensitive             *bool    `json:"case_sensitive"`               // 大小写敏感（可为null）
+	MatchPersonaDescription   bool     `json:"match_persona_description"`    // 匹配角色描述
+	MatchCharacterDescription bool     `json:"match_character_description"`  // 匹配角色描述
+	MatchCharacterPersonality bool     `json:"match_character_personality"`  // 匹配角色性格
+	MatchCharacterDepthPrompt bool     `json:"match_character_depth_prompt"` // 匹配深度提示
+	MatchScenario             bool     `json:"match_scenario"`               // 匹配场景
+	MatchCreatorNotes         bool     `json:"match_creator_notes"`          // 匹配创作者备注
+	Triggers                  []string `json:"triggers"`                     // 触发器
+	IgnoreBudget              bool     `json:"ignore_budget"`                // 忽略预算
+	AutomationID              string   `json:"automation_id"`                // 自动化ID
+	Role                      int      `json:"role"`                         // 角色
+	Vectorized                bool     `json:"vectorized"`                   // 向量化
+	Sticky                    int      `json:"sticky"`                       // 粘性
+	Cooldown                  int      `json:"cooldown"`                     // 冷却时间
+	Delay                     int      `json:"delay"`                        // 延迟
+	OutletName                string   `json:"outlet_name"`                  // 出口名称
 }
 
 // Asset 资源文件（V3格式）
@@ -235,7 +285,7 @@ type OpenAIPreset struct {
 	ShowExternalModels   bool   `json:"show_external_models"`   // 显示外部模型
 
 	// ============ 扩展字段 ============
-	Extensions *PresetExtensions `json:"extensions,omitempty"` // 扩展字段，包含预设内嵌的正则脚本等
+	Extensions PresetExtensions `json:"extensions,omitempty"` // 扩展字段，包含预设内嵌的正则脚本等
 }
 
 // PresetExtensions 预设扩展字段

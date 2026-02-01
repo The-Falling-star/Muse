@@ -97,7 +97,7 @@ message Character {
   string name = 3;               // 角色名称
   string avatar = 4;             // 角色头像（Base64编码或URL）
   string description = 5;        // 角色描述，包含性格、背景等设定
-  string first_message = 8;      // 角色开场白，对话开始时AI的第一条消息
+  repeated string first_message = 8;      // 角色开场白，对话开始时AI的第一条消息
   string example_dialogue = 9;   // 示例对话，展示角色的对话风格
   string creator_notes = 10;     // 创作者备注，角色卡的使用说明
   int32 world_info_id = 12;      // 关联的世界书ID，提供角色相关的背景知识
@@ -105,6 +105,7 @@ message Character {
   int64 created_at = 14;         // 创建时间（Unix时间戳）
   int64 updated_at = 15;         // 最后更新时间（Unix时间戳）
   WorldInfo world_info = 16;     // 关联的世界书详情（可选加载）
+  repeated RegexRule regex_rules = 17;     // 正则规则列表（可选加载）
 }
 
 // ================================
@@ -571,7 +572,7 @@ message CreateCharacterRequest {
   optional string description = 3;
   optional string personality = 4;
   optional string scenario = 5;
-  optional string first_message = 6;
+  repeated string first_message = 6;
   optional string example_dialogue = 7;
   optional string creator_notes = 8;
   optional string system_prompt = 9;
@@ -591,7 +592,7 @@ message UpdateCharacterRequest {
   optional string description = 4;
   optional string personality = 5;
   optional string scenario = 6;
-  optional string first_message = 7;
+  repeated string first_message = 7;
   optional string example_dialogue = 8;
   optional string creator_notes = 9;
   optional string system_prompt = 10;

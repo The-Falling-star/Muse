@@ -76,7 +76,7 @@ func (c *CharacterServer) ImportCharacter(ctx context.Context, req *connect.Requ
 	*connect.Response[pb.ImportCharacterResponse], error) {
 	resp, err := c.character.ImportCharacter(ctx, req.Msg)
 	if err != nil {
-		return doResponseExp(ctx, "ImportCharacter", req.Msg, resp, err)
+		return doResponseExp(ctx, "ImportCharacter", req.Msg.FileName, resp, err)
 	}
 	return doResponse(ctx, "ImportCharacter", req.Msg, resp)
 }

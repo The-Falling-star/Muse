@@ -412,8 +412,8 @@ func (p *presetImpl) ImportPreset(ctx context.Context, req *pb.ImportPresetReque
 		}
 	}
 
-	// 导入预设内嵌的正则脚本
-	if stPreset.Extensions != nil && len(stPreset.Extensions.RegexScripts) > 0 {
+	// TODO 导入预设内嵌的正则脚本
+	/*if stPreset.Extensions != nil && len(stPreset.Extensions.RegexScripts) > 0 {
 		regexRules := make([]*entity.RegexRule, 0, len(stPreset.Extensions.RegexScripts))
 		for i, stScript := range stPreset.Extensions.RegexScripts {
 			// 使用 convert 包转换正则脚本，关联到新创建的预设（characterID=0 表示非角色范围正则）
@@ -426,7 +426,7 @@ func (p *presetImpl) ImportPreset(ctx context.Context, req *pb.ImportPresetReque
 			// 即使正则规则创建失败，也不影响预设的导入
 			// 可以记录日志但不返回错误
 		}
-	}
+	}*/
 
 	// 重新获取完整预设数据（包含关联的提示项）
 	fullPreset, err := p.presetRepo.GetByID(preset.ID, defaultUserID)

@@ -270,7 +270,9 @@ func (r *regexRuleImpl) ImportRegexRules(ctx context.Context, req *pb.ImportRege
 			continue // 跳过没有名称的脚本
 		}
 
-		rule := convert.STRegexToEntity(&stScript, presetID, 0, maxOrder+i+1)
+		rule := convert.STRegexToEntity(&stScript)
+		rule.PresetID = presetID
+		rule.SortOrder = maxOrder + i + 1
 		rules = append(rules, rule)
 	}
 
@@ -302,7 +304,7 @@ func (r *regexRuleImpl) ExportRegexRules(ctx context.Context, req *pb.ExportRege
 	// 转换为 SillyTavern 格式
 	stScripts := make([]sillytavern.RegexScript, 0, len(rules))
 	for _, rule := range rules {
-		stScripts = append(stScripts, convert.EntityToSTRegex(rule))
+		stScripts = append(stScripts, *convert.EntityToSTRegex(rule))
 	}
 
 	// 序列化为 JSON

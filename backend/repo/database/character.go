@@ -29,6 +29,8 @@ func (c *CharacterRepo) GetByID(id int, userID int) (*entity.Character, *connect
 	db := config.GetDB()
 	var character entity.Character
 	result := db.Where("id = ? AND user_id = ?", id, userID).
+		Preload("WorldInfo").
+		Preload("RegexRules").
 		First(&character)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {

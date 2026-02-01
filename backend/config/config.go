@@ -13,6 +13,7 @@ type Config struct {
 	Database   DatabaseConfig   `mapstructure:"database"`
 	Auth       AuthConfig       `mapstructure:"auth"`
 	APIEncrypt APIEncryptConfig `mapstructure:"api_encrypt"`
+	LogLevel   string           `mapstructure:"log_level"`
 }
 
 // ServerConfig 服务器配置

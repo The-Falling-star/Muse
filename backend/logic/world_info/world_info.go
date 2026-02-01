@@ -348,14 +348,16 @@ func (w *worldInfoImpl) ImportWorldInfo(ctx context.Context, req *pb.ImportWorld
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidWorldInfoFile)
 	}
 
-	// 从文件名获取世界书名称（去掉 .json 后缀）
-	worldInfoName := strings.TrimSuffix(req.GetFileName(), ".json")
-	if worldInfoName == "" {
-		worldInfoName = "Imported World Info"
-	}
-
 	// 转换为 Muse 实体
-	worldInfo := convert.STWorldInfoToEntity(&stWorldBook, defaultUserID, worldInfoName)
+	worldInfo := convert.STWorldInfoToEntity(&stWorldBook)
+	worldInfo.UserID = defaultUserID
+	// 从文件名获取世界书名称（去掉 .json 后缀）
+	if worldInfo.Name == "" {
+		worldInfo.Name = strings.TrimSuffix(req.GetFileName(), ".json")
+	}
+	if worldInfo.Name == "" {
+		worldInfo.Name = "Imported World Info"
+	}
 
 	// 保存世界书到数据库
 	if err := w.worldInfoRepo.Create(worldInfo); err != nil {
@@ -367,7 +369,9 @@ func (w *worldInfoImpl) ImportWorldInfo(ctx context.Context, req *pb.ImportWorld
 		entries := make([]*entity.WorldInfoEntry, 0, len(stWorldBook.Entries))
 		sortOrder := 0
 		for _, stEntry := range stWorldBook.Entries {
-			entry := convert.STBookEntryToEntity(worldInfo.ID, &stEntry, sortOrder)
+			entry := convert.STBookEntryToEntity(&stEntry)
+			entry.WorldInfoID = worldInfo.ID
+			entry.SortOrder = sortOrder
 			entries = append(entries, entry)
 			sortOrder++
 		}

@@ -573,7 +573,7 @@ type Character struct {
 	Name            string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`                                              // 角色名称
 	Avatar          string                 `protobuf:"bytes,4,opt,name=avatar,proto3" json:"avatar,omitempty"`                                          // 角色头像（Base64编码或URL）
 	Description     string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`                                // 角色描述，包含性格、背景等设定
-	FirstMessage    string                 `protobuf:"bytes,8,opt,name=first_message,json=firstMessage,proto3" json:"first_message,omitempty"`          // 角色开场白，对话开始时AI的第一条消息
+	FirstMessage    []string               `protobuf:"bytes,8,rep,name=first_message,json=firstMessage,proto3" json:"first_message,omitempty"`          // 角色开场白，对话开始时AI的第一条消息
 	ExampleDialogue string                 `protobuf:"bytes,9,opt,name=example_dialogue,json=exampleDialogue,proto3" json:"example_dialogue,omitempty"` // 示例对话，展示角色的对话风格
 	CreatorNotes    string                 `protobuf:"bytes,10,opt,name=creator_notes,json=creatorNotes,proto3" json:"creator_notes,omitempty"`         // 创作者备注，角色卡的使用说明
 	WorldInfoId     int32                  `protobuf:"varint,12,opt,name=world_info_id,json=worldInfoId,proto3" json:"world_info_id,omitempty"`         // 关联的世界书ID，提供角色相关的背景知识
@@ -581,6 +581,7 @@ type Character struct {
 	CreatedAt       int64                  `protobuf:"varint,14,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`                 // 创建时间（Unix时间戳）
 	UpdatedAt       int64                  `protobuf:"varint,15,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`                 // 最后更新时间（Unix时间戳）
 	WorldInfo       *WorldInfo             `protobuf:"bytes,16,opt,name=world_info,json=worldInfo,proto3" json:"world_info,omitempty"`                  // 关联的世界书详情（可选加载）
+	RegexRules      []*RegexRule           `protobuf:"bytes,17,rep,name=regex_rules,json=regexRules,proto3" json:"regex_rules,omitempty"`               // 正则规则列表（可选加载）
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -650,11 +651,11 @@ func (x *Character) GetDescription() string {
 	return ""
 }
 
-func (x *Character) GetFirstMessage() string {
+func (x *Character) GetFirstMessage() []string {
 	if x != nil {
 		return x.FirstMessage
 	}
-	return ""
+	return nil
 }
 
 func (x *Character) GetExampleDialogue() string {
@@ -702,6 +703,13 @@ func (x *Character) GetUpdatedAt() int64 {
 func (x *Character) GetWorldInfo() *WorldInfo {
 	if x != nil {
 		return x.WorldInfo
+	}
+	return nil
+}
+
+func (x *Character) GetRegexRules() []*RegexRule {
+	if x != nil {
+		return x.RegexRules
 	}
 	return nil
 }
@@ -4024,7 +4032,7 @@ type CreateCharacterRequest struct {
 	Description     *string                `protobuf:"bytes,3,opt,name=description,proto3,oneof" json:"description,omitempty"`
 	Personality     *string                `protobuf:"bytes,4,opt,name=personality,proto3,oneof" json:"personality,omitempty"`
 	Scenario        *string                `protobuf:"bytes,5,opt,name=scenario,proto3,oneof" json:"scenario,omitempty"`
-	FirstMessage    *string                `protobuf:"bytes,6,opt,name=first_message,json=firstMessage,proto3,oneof" json:"first_message,omitempty"`
+	FirstMessage    []string               `protobuf:"bytes,6,rep,name=first_message,json=firstMessage,proto3" json:"first_message,omitempty"`
 	ExampleDialogue *string                `protobuf:"bytes,7,opt,name=example_dialogue,json=exampleDialogue,proto3,oneof" json:"example_dialogue,omitempty"`
 	CreatorNotes    *string                `protobuf:"bytes,8,opt,name=creator_notes,json=creatorNotes,proto3,oneof" json:"creator_notes,omitempty"`
 	SystemPrompt    *string                `protobuf:"bytes,9,opt,name=system_prompt,json=systemPrompt,proto3,oneof" json:"system_prompt,omitempty"`
@@ -4098,11 +4106,11 @@ func (x *CreateCharacterRequest) GetScenario() string {
 	return ""
 }
 
-func (x *CreateCharacterRequest) GetFirstMessage() string {
-	if x != nil && x.FirstMessage != nil {
-		return *x.FirstMessage
+func (x *CreateCharacterRequest) GetFirstMessage() []string {
+	if x != nil {
+		return x.FirstMessage
 	}
-	return ""
+	return nil
 }
 
 func (x *CreateCharacterRequest) GetExampleDialogue() string {
@@ -4187,7 +4195,7 @@ type UpdateCharacterRequest struct {
 	Description     *string                `protobuf:"bytes,4,opt,name=description,proto3,oneof" json:"description,omitempty"`
 	Personality     *string                `protobuf:"bytes,5,opt,name=personality,proto3,oneof" json:"personality,omitempty"`
 	Scenario        *string                `protobuf:"bytes,6,opt,name=scenario,proto3,oneof" json:"scenario,omitempty"`
-	FirstMessage    *string                `protobuf:"bytes,7,opt,name=first_message,json=firstMessage,proto3,oneof" json:"first_message,omitempty"`
+	FirstMessage    []string               `protobuf:"bytes,7,rep,name=first_message,json=firstMessage,proto3" json:"first_message,omitempty"`
 	ExampleDialogue *string                `protobuf:"bytes,8,opt,name=example_dialogue,json=exampleDialogue,proto3,oneof" json:"example_dialogue,omitempty"`
 	CreatorNotes    *string                `protobuf:"bytes,9,opt,name=creator_notes,json=creatorNotes,proto3,oneof" json:"creator_notes,omitempty"`
 	SystemPrompt    *string                `protobuf:"bytes,10,opt,name=system_prompt,json=systemPrompt,proto3,oneof" json:"system_prompt,omitempty"`
@@ -4269,11 +4277,11 @@ func (x *UpdateCharacterRequest) GetScenario() string {
 	return ""
 }
 
-func (x *UpdateCharacterRequest) GetFirstMessage() string {
-	if x != nil && x.FirstMessage != nil {
-		return *x.FirstMessage
+func (x *UpdateCharacterRequest) GetFirstMessage() []string {
+	if x != nil {
+		return x.FirstMessage
 	}
-	return ""
+	return nil
 }
 
 func (x *UpdateCharacterRequest) GetExampleDialogue() string {
@@ -9649,14 +9657,14 @@ const file_muse_muse_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\a \x01(\x03R\tcreatedAt\x12\x1d\n" +
 	"\n" +
-	"updated_at\x18\b \x01(\x03R\tupdatedAt\"\xa3\x03\n" +
+	"updated_at\x18\b \x01(\x03R\tupdatedAt\"\xd5\x03\n" +
 	"\tCharacter\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\x05R\x06userId\x12\x12\n" +
 	"\x04name\x18\x03 \x01(\tR\x04name\x12\x16\n" +
 	"\x06avatar\x18\x04 \x01(\tR\x06avatar\x12 \n" +
 	"\vdescription\x18\x05 \x01(\tR\vdescription\x12#\n" +
-	"\rfirst_message\x18\b \x01(\tR\ffirstMessage\x12)\n" +
+	"\rfirst_message\x18\b \x03(\tR\ffirstMessage\x12)\n" +
 	"\x10example_dialogue\x18\t \x01(\tR\x0fexampleDialogue\x12#\n" +
 	"\rcreator_notes\x18\n" +
 	" \x01(\tR\fcreatorNotes\x12\"\n" +
@@ -9667,7 +9675,9 @@ const file_muse_muse_proto_rawDesc = "" +
 	"\n" +
 	"updated_at\x18\x0f \x01(\x03R\tupdatedAt\x12.\n" +
 	"\n" +
-	"world_info\x18\x10 \x01(\v2\x0f.muse.WorldInfoR\tworldInfo\"\x9f\x02\n" +
+	"world_info\x18\x10 \x01(\v2\x0f.muse.WorldInfoR\tworldInfo\x120\n" +
+	"\vregex_rules\x18\x11 \x03(\v2\x0f.muse.RegexRuleR\n" +
+	"regexRules\"\x9f\x02\n" +
 	"\vChatSession\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\x05R\x06userId\x12!\n" +
@@ -9945,49 +9955,47 @@ const file_muse_muse_proto_rawDesc = "" +
 	"\x13GetCharacterRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\"E\n" +
 	"\x14GetCharacterResponse\x12-\n" +
-	"\tcharacter\x18\x01 \x01(\v2\x0f.muse.CharacterR\tcharacter\"\xa4\x04\n" +
+	"\tcharacter\x18\x01 \x01(\v2\x0f.muse.CharacterR\tcharacter\"\x8d\x04\n" +
 	"\x16CreateCharacterRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1b\n" +
 	"\x06avatar\x18\x02 \x01(\tH\x00R\x06avatar\x88\x01\x01\x12%\n" +
 	"\vdescription\x18\x03 \x01(\tH\x01R\vdescription\x88\x01\x01\x12%\n" +
 	"\vpersonality\x18\x04 \x01(\tH\x02R\vpersonality\x88\x01\x01\x12\x1f\n" +
-	"\bscenario\x18\x05 \x01(\tH\x03R\bscenario\x88\x01\x01\x12(\n" +
-	"\rfirst_message\x18\x06 \x01(\tH\x04R\ffirstMessage\x88\x01\x01\x12.\n" +
-	"\x10example_dialogue\x18\a \x01(\tH\x05R\x0fexampleDialogue\x88\x01\x01\x12(\n" +
-	"\rcreator_notes\x18\b \x01(\tH\x06R\fcreatorNotes\x88\x01\x01\x12(\n" +
-	"\rsystem_prompt\x18\t \x01(\tH\aR\fsystemPrompt\x88\x01\x01\x12'\n" +
+	"\bscenario\x18\x05 \x01(\tH\x03R\bscenario\x88\x01\x01\x12#\n" +
+	"\rfirst_message\x18\x06 \x03(\tR\ffirstMessage\x12.\n" +
+	"\x10example_dialogue\x18\a \x01(\tH\x04R\x0fexampleDialogue\x88\x01\x01\x12(\n" +
+	"\rcreator_notes\x18\b \x01(\tH\x05R\fcreatorNotes\x88\x01\x01\x12(\n" +
+	"\rsystem_prompt\x18\t \x01(\tH\x06R\fsystemPrompt\x88\x01\x01\x12'\n" +
 	"\rworld_info_id\x18\n" +
-	" \x01(\x05H\bR\vworldInfoId\x88\x01\x01B\t\n" +
+	" \x01(\x05H\aR\vworldInfoId\x88\x01\x01B\t\n" +
 	"\a_avatarB\x0e\n" +
 	"\f_descriptionB\x0e\n" +
 	"\f_personalityB\v\n" +
-	"\t_scenarioB\x10\n" +
-	"\x0e_first_messageB\x13\n" +
+	"\t_scenarioB\x13\n" +
 	"\x11_example_dialogueB\x10\n" +
 	"\x0e_creator_notesB\x10\n" +
 	"\x0e_system_promptB\x10\n" +
 	"\x0e_world_info_id\"H\n" +
 	"\x17CreateCharacterResponse\x12-\n" +
-	"\tcharacter\x18\x01 \x01(\v2\x0f.muse.CharacterR\tcharacter\"\xce\x04\n" +
+	"\tcharacter\x18\x01 \x01(\v2\x0f.muse.CharacterR\tcharacter\"\xb7\x04\n" +
 	"\x16UpdateCharacterRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1b\n" +
 	"\x06avatar\x18\x03 \x01(\tH\x00R\x06avatar\x88\x01\x01\x12%\n" +
 	"\vdescription\x18\x04 \x01(\tH\x01R\vdescription\x88\x01\x01\x12%\n" +
 	"\vpersonality\x18\x05 \x01(\tH\x02R\vpersonality\x88\x01\x01\x12\x1f\n" +
-	"\bscenario\x18\x06 \x01(\tH\x03R\bscenario\x88\x01\x01\x12(\n" +
-	"\rfirst_message\x18\a \x01(\tH\x04R\ffirstMessage\x88\x01\x01\x12.\n" +
-	"\x10example_dialogue\x18\b \x01(\tH\x05R\x0fexampleDialogue\x88\x01\x01\x12(\n" +
-	"\rcreator_notes\x18\t \x01(\tH\x06R\fcreatorNotes\x88\x01\x01\x12(\n" +
+	"\bscenario\x18\x06 \x01(\tH\x03R\bscenario\x88\x01\x01\x12#\n" +
+	"\rfirst_message\x18\a \x03(\tR\ffirstMessage\x12.\n" +
+	"\x10example_dialogue\x18\b \x01(\tH\x04R\x0fexampleDialogue\x88\x01\x01\x12(\n" +
+	"\rcreator_notes\x18\t \x01(\tH\x05R\fcreatorNotes\x88\x01\x01\x12(\n" +
 	"\rsystem_prompt\x18\n" +
-	" \x01(\tH\aR\fsystemPrompt\x88\x01\x01\x12'\n" +
-	"\rworld_info_id\x18\v \x01(\x05H\bR\vworldInfoId\x88\x01\x01\x12\x18\n" +
+	" \x01(\tH\x06R\fsystemPrompt\x88\x01\x01\x12'\n" +
+	"\rworld_info_id\x18\v \x01(\x05H\aR\vworldInfoId\x88\x01\x01\x12\x18\n" +
 	"\aversion\x18\f \x01(\x03R\aversionB\t\n" +
 	"\a_avatarB\x0e\n" +
 	"\f_descriptionB\x0e\n" +
 	"\f_personalityB\v\n" +
-	"\t_scenarioB\x10\n" +
-	"\x0e_first_messageB\x13\n" +
+	"\t_scenarioB\x13\n" +
 	"\x11_example_dialogueB\x10\n" +
 	"\x0e_creator_notesB\x10\n" +
 	"\x0e_system_promptB\x10\n" +
@@ -10683,227 +10691,228 @@ var file_muse_muse_proto_goTypes = []any{
 var file_muse_muse_proto_depIdxs = []int32{
 	4,   // 0: muse.UserSetting.theme:type_name -> muse.Theme
 	16,  // 1: muse.Character.world_info:type_name -> muse.WorldInfo
-	8,   // 2: muse.ChatSession.character:type_name -> muse.Character
-	10,  // 3: muse.ChatSession.messages:type_name -> muse.Message
-	0,   // 4: muse.Message.role:type_name -> muse.Role
-	11,  // 5: muse.Message.swipes:type_name -> muse.MessageSwipe
-	13,  // 6: muse.Preset.prompt_items:type_name -> muse.PromptItem
-	15,  // 7: muse.Preset.regex_rules:type_name -> muse.RegexRule
-	0,   // 8: muse.PromptItem.role:type_name -> muse.Role
-	1,   // 9: muse.PromptItem.injection_position:type_name -> muse.InjectionPosition
-	14,  // 10: muse.RegexRule.affect_flags:type_name -> muse.RegexAffectFlags
-	17,  // 11: muse.WorldInfo.entries:type_name -> muse.WorldInfoEntry
-	2,   // 12: muse.WorldInfoEntry.position:type_name -> muse.EntryPosition
-	3,   // 13: muse.APIConfig.provider:type_name -> muse.APIProvider
-	5,   // 14: muse.RegisterResponse.user:type_name -> muse.SysUser
-	5,   // 15: muse.LoginResponse.user:type_name -> muse.SysUser
-	5,   // 16: muse.GetCurrentUserResponse.user:type_name -> muse.SysUser
-	6,   // 17: muse.ListPersonasResponse.personas:type_name -> muse.Persona
-	6,   // 18: muse.GetPersonaResponse.persona:type_name -> muse.Persona
-	6,   // 19: muse.CreatePersonaResponse.persona:type_name -> muse.Persona
-	6,   // 20: muse.UpdatePersonaResponse.persona:type_name -> muse.Persona
-	7,   // 21: muse.GetUserSettingResponse.setting:type_name -> muse.UserSetting
-	4,   // 22: muse.UpdateUserSettingRequest.theme:type_name -> muse.Theme
-	7,   // 23: muse.UpdateUserSettingResponse.setting:type_name -> muse.UserSetting
-	18,  // 24: muse.ListAPIConfigsResponse.configs:type_name -> muse.APIConfig
-	18,  // 25: muse.GetAPIConfigResponse.config:type_name -> muse.APIConfig
-	3,   // 26: muse.CreateAPIConfigRequest.provider:type_name -> muse.APIProvider
-	18,  // 27: muse.CreateAPIConfigResponse.config:type_name -> muse.APIConfig
-	3,   // 28: muse.UpdateAPIConfigRequest.provider:type_name -> muse.APIProvider
-	18,  // 29: muse.UpdateAPIConfigResponse.config:type_name -> muse.APIConfig
-	8,   // 30: muse.ListCharactersResponse.characters:type_name -> muse.Character
-	8,   // 31: muse.GetCharacterResponse.character:type_name -> muse.Character
-	8,   // 32: muse.CreateCharacterResponse.character:type_name -> muse.Character
-	8,   // 33: muse.UpdateCharacterResponse.character:type_name -> muse.Character
-	8,   // 34: muse.ImportCharacterResponse.character:type_name -> muse.Character
-	16,  // 35: muse.RestoreCharacterWorldInfoResponse.world_info:type_name -> muse.WorldInfo
-	9,   // 36: muse.ListChatSessionsResponse.sessions:type_name -> muse.ChatSession
-	9,   // 37: muse.GetChatSessionResponse.session:type_name -> muse.ChatSession
-	9,   // 38: muse.CreateChatSessionResponse.session:type_name -> muse.ChatSession
-	9,   // 39: muse.UpdateChatSessionResponse.session:type_name -> muse.ChatSession
-	11,  // 40: muse.RegenerateMessageResponse.new_swipe:type_name -> muse.MessageSwipe
-	11,  // 41: muse.EditMessageResponse.swipe:type_name -> muse.MessageSwipe
-	10,  // 42: muse.SwitchSwipeResponse.message:type_name -> muse.Message
-	12,  // 43: muse.ListPresetsResponse.presets:type_name -> muse.Preset
-	12,  // 44: muse.GetPresetResponse.preset:type_name -> muse.Preset
-	100, // 45: muse.CreatePresetRequest.prompt_items:type_name -> muse.CreatePromptItemRequest
-	101, // 46: muse.CreatePresetRequest.regex_rules:type_name -> muse.CreateRegexRuleRequest
-	0,   // 47: muse.CreatePromptItemRequest.role:type_name -> muse.Role
-	1,   // 48: muse.CreatePromptItemRequest.injection_position:type_name -> muse.InjectionPosition
-	14,  // 49: muse.CreateRegexRuleRequest.affect_flags:type_name -> muse.RegexAffectFlags
-	12,  // 50: muse.CreatePresetResponse.preset:type_name -> muse.Preset
-	12,  // 51: muse.UpdatePresetResponse.preset:type_name -> muse.Preset
-	12,  // 52: muse.ImportPresetResponse.preset:type_name -> muse.Preset
-	13,  // 53: muse.ListPromptItemsResponse.items:type_name -> muse.PromptItem
-	0,   // 54: muse.AddPromptItemRequest.role:type_name -> muse.Role
-	1,   // 55: muse.AddPromptItemRequest.injection_position:type_name -> muse.InjectionPosition
-	13,  // 56: muse.AddPromptItemResponse.item:type_name -> muse.PromptItem
-	0,   // 57: muse.UpdatePromptItemRequest.role:type_name -> muse.Role
-	1,   // 58: muse.UpdatePromptItemRequest.injection_position:type_name -> muse.InjectionPosition
-	13,  // 59: muse.UpdatePromptItemResponse.item:type_name -> muse.PromptItem
-	15,  // 60: muse.ListRegexRulesResponse.rules:type_name -> muse.RegexRule
-	15,  // 61: muse.ListPresetRegexRulesResponse.rules:type_name -> muse.RegexRule
-	14,  // 62: muse.AddRegexRuleRequest.affect_flags:type_name -> muse.RegexAffectFlags
-	15,  // 63: muse.AddRegexRuleResponse.rule:type_name -> muse.RegexRule
-	14,  // 64: muse.UpdateRegexRuleRequest.affect_flags:type_name -> muse.RegexAffectFlags
-	15,  // 65: muse.UpdateRegexRuleResponse.rule:type_name -> muse.RegexRule
-	16,  // 66: muse.ListWorldInfosResponse.world_infos:type_name -> muse.WorldInfo
-	16,  // 67: muse.GetWorldInfoResponse.world_info:type_name -> muse.WorldInfo
-	16,  // 68: muse.CreateWorldInfoResponse.world_info:type_name -> muse.WorldInfo
-	16,  // 69: muse.UpdateWorldInfoResponse.world_info:type_name -> muse.WorldInfo
-	16,  // 70: muse.ImportWorldInfoResponse.world_info:type_name -> muse.WorldInfo
-	17,  // 71: muse.ListWorldInfoEntriesResponse.entries:type_name -> muse.WorldInfoEntry
-	2,   // 72: muse.AddWorldInfoEntryRequest.position:type_name -> muse.EntryPosition
-	17,  // 73: muse.AddWorldInfoEntryResponse.entry:type_name -> muse.WorldInfoEntry
-	2,   // 74: muse.UpdateWorldInfoEntryRequest.position:type_name -> muse.EntryPosition
-	17,  // 75: muse.UpdateWorldInfoEntryResponse.entry:type_name -> muse.WorldInfoEntry
-	57,  // 76: muse.UserService.GetPublicConfig:input_type -> muse.GetPublicConfigRequest
-	19,  // 77: muse.UserService.Register:input_type -> muse.RegisterRequest
-	21,  // 78: muse.UserService.Login:input_type -> muse.LoginRequest
-	23,  // 79: muse.UserService.GetCurrentUser:input_type -> muse.GetCurrentUserRequest
-	25,  // 80: muse.UserService.ChangePassword:input_type -> muse.ChangePasswordRequest
-	27,  // 81: muse.UserService.ListPersonas:input_type -> muse.ListPersonasRequest
-	29,  // 82: muse.UserService.GetPersona:input_type -> muse.GetPersonaRequest
-	31,  // 83: muse.UserService.CreatePersona:input_type -> muse.CreatePersonaRequest
-	33,  // 84: muse.UserService.UpdatePersona:input_type -> muse.UpdatePersonaRequest
-	35,  // 85: muse.UserService.DeletePersona:input_type -> muse.DeletePersonaRequest
-	37,  // 86: muse.UserService.SetActivePersona:input_type -> muse.SetActivePersonaRequest
-	39,  // 87: muse.UserService.GetUserSetting:input_type -> muse.GetUserSettingRequest
-	41,  // 88: muse.UserService.UpdateUserSetting:input_type -> muse.UpdateUserSettingRequest
-	43,  // 89: muse.UserService.ListAPIConfigs:input_type -> muse.ListAPIConfigsRequest
-	45,  // 90: muse.UserService.GetAPIConfig:input_type -> muse.GetAPIConfigRequest
-	47,  // 91: muse.UserService.CreateAPIConfig:input_type -> muse.CreateAPIConfigRequest
-	49,  // 92: muse.UserService.UpdateAPIConfig:input_type -> muse.UpdateAPIConfigRequest
-	51,  // 93: muse.UserService.DeleteAPIConfig:input_type -> muse.DeleteAPIConfigRequest
-	53,  // 94: muse.UserService.SetActiveAPIConfig:input_type -> muse.SetActiveAPIConfigRequest
-	55,  // 95: muse.UserService.TestAPIConfig:input_type -> muse.TestAPIConfigRequest
-	59,  // 96: muse.CharacterService.ListCharacters:input_type -> muse.ListCharactersRequest
-	61,  // 97: muse.CharacterService.GetCharacter:input_type -> muse.GetCharacterRequest
-	63,  // 98: muse.CharacterService.CreateCharacter:input_type -> muse.CreateCharacterRequest
-	65,  // 99: muse.CharacterService.UpdateCharacter:input_type -> muse.UpdateCharacterRequest
-	67,  // 100: muse.CharacterService.DeleteCharacter:input_type -> muse.DeleteCharacterRequest
-	69,  // 101: muse.CharacterService.ImportCharacter:input_type -> muse.ImportCharacterRequest
-	71,  // 102: muse.CharacterService.ExportCharacter:input_type -> muse.ExportCharacterRequest
-	73,  // 103: muse.CharacterService.RestoreCharacterWorldInfo:input_type -> muse.RestoreCharacterWorldInfoRequest
-	75,  // 104: muse.ChatService.ListChatSessions:input_type -> muse.ListChatSessionsRequest
-	77,  // 105: muse.ChatService.GetChatSession:input_type -> muse.GetChatSessionRequest
-	79,  // 106: muse.ChatService.CreateChatSession:input_type -> muse.CreateChatSessionRequest
-	81,  // 107: muse.ChatService.UpdateChatSession:input_type -> muse.UpdateChatSessionRequest
-	83,  // 108: muse.ChatService.DeleteChatSession:input_type -> muse.DeleteChatSessionRequest
-	85,  // 109: muse.ChatService.SendMessage:input_type -> muse.SendMessageRequest
-	87,  // 110: muse.ChatService.RegenerateMessage:input_type -> muse.RegenerateMessageRequest
-	89,  // 111: muse.ChatService.EditMessage:input_type -> muse.EditMessageRequest
-	91,  // 112: muse.ChatService.DeleteMessage:input_type -> muse.DeleteMessageRequest
-	93,  // 113: muse.ChatService.SwitchSwipe:input_type -> muse.SwitchSwipeRequest
-	95,  // 114: muse.PresetService.ListPresets:input_type -> muse.ListPresetsRequest
-	97,  // 115: muse.PresetService.GetPreset:input_type -> muse.GetPresetRequest
-	99,  // 116: muse.PresetService.CreatePreset:input_type -> muse.CreatePresetRequest
-	103, // 117: muse.PresetService.UpdatePreset:input_type -> muse.UpdatePresetRequest
-	105, // 118: muse.PresetService.DeletePreset:input_type -> muse.DeletePresetRequest
-	107, // 119: muse.PresetService.SetActivePreset:input_type -> muse.SetActivePresetRequest
-	109, // 120: muse.PresetService.ImportPreset:input_type -> muse.ImportPresetRequest
-	111, // 121: muse.PresetService.ExportPreset:input_type -> muse.ExportPresetRequest
-	113, // 122: muse.PresetService.ListPromptItems:input_type -> muse.ListPromptItemsRequest
-	115, // 123: muse.PresetService.AddPromptItem:input_type -> muse.AddPromptItemRequest
-	117, // 124: muse.PresetService.UpdatePromptItem:input_type -> muse.UpdatePromptItemRequest
-	119, // 125: muse.PresetService.DeletePromptItem:input_type -> muse.DeletePromptItemRequest
-	121, // 126: muse.PresetService.UpdatePromptItemsOrder:input_type -> muse.UpdatePromptItemsOrderRequest
-	123, // 127: muse.RegexRuleService.ListRegexRules:input_type -> muse.ListRegexRulesRequest
-	125, // 128: muse.RegexRuleService.ListPresetRegexRules:input_type -> muse.ListPresetRegexRulesRequest
-	127, // 129: muse.RegexRuleService.AddRegexRule:input_type -> muse.AddRegexRuleRequest
-	129, // 130: muse.RegexRuleService.UpdateRegexRule:input_type -> muse.UpdateRegexRuleRequest
-	131, // 131: muse.RegexRuleService.DeleteRegexRule:input_type -> muse.DeleteRegexRuleRequest
-	133, // 132: muse.RegexRuleService.UpdateRegexRulesOrder:input_type -> muse.UpdateRegexRulesOrderRequest
-	135, // 133: muse.RegexRuleService.ImportRegexRules:input_type -> muse.ImportRegexRulesRequest
-	137, // 134: muse.RegexRuleService.ExportRegexRules:input_type -> muse.ExportRegexRulesRequest
-	139, // 135: muse.WorldInfoService.ListWorldInfos:input_type -> muse.ListWorldInfosRequest
-	141, // 136: muse.WorldInfoService.GetWorldInfo:input_type -> muse.GetWorldInfoRequest
-	143, // 137: muse.WorldInfoService.CreateWorldInfo:input_type -> muse.CreateWorldInfoRequest
-	145, // 138: muse.WorldInfoService.UpdateWorldInfo:input_type -> muse.UpdateWorldInfoRequest
-	147, // 139: muse.WorldInfoService.DeleteWorldInfo:input_type -> muse.DeleteWorldInfoRequest
-	149, // 140: muse.WorldInfoService.ImportWorldInfo:input_type -> muse.ImportWorldInfoRequest
-	151, // 141: muse.WorldInfoService.ExportWorldInfo:input_type -> muse.ExportWorldInfoRequest
-	153, // 142: muse.WorldInfoService.ListWorldInfoEntries:input_type -> muse.ListWorldInfoEntriesRequest
-	155, // 143: muse.WorldInfoService.AddWorldInfoEntry:input_type -> muse.AddWorldInfoEntryRequest
-	157, // 144: muse.WorldInfoService.UpdateWorldInfoEntry:input_type -> muse.UpdateWorldInfoEntryRequest
-	159, // 145: muse.WorldInfoService.DeleteWorldInfoEntry:input_type -> muse.DeleteWorldInfoEntryRequest
-	161, // 146: muse.WorldInfoService.UpdateWorldInfoEntriesOrder:input_type -> muse.UpdateWorldInfoEntriesOrderRequest
-	58,  // 147: muse.UserService.GetPublicConfig:output_type -> muse.GetPublicConfigResponse
-	20,  // 148: muse.UserService.Register:output_type -> muse.RegisterResponse
-	22,  // 149: muse.UserService.Login:output_type -> muse.LoginResponse
-	24,  // 150: muse.UserService.GetCurrentUser:output_type -> muse.GetCurrentUserResponse
-	26,  // 151: muse.UserService.ChangePassword:output_type -> muse.ChangePasswordResponse
-	28,  // 152: muse.UserService.ListPersonas:output_type -> muse.ListPersonasResponse
-	30,  // 153: muse.UserService.GetPersona:output_type -> muse.GetPersonaResponse
-	32,  // 154: muse.UserService.CreatePersona:output_type -> muse.CreatePersonaResponse
-	34,  // 155: muse.UserService.UpdatePersona:output_type -> muse.UpdatePersonaResponse
-	36,  // 156: muse.UserService.DeletePersona:output_type -> muse.DeletePersonaResponse
-	38,  // 157: muse.UserService.SetActivePersona:output_type -> muse.SetActivePersonaResponse
-	40,  // 158: muse.UserService.GetUserSetting:output_type -> muse.GetUserSettingResponse
-	42,  // 159: muse.UserService.UpdateUserSetting:output_type -> muse.UpdateUserSettingResponse
-	44,  // 160: muse.UserService.ListAPIConfigs:output_type -> muse.ListAPIConfigsResponse
-	46,  // 161: muse.UserService.GetAPIConfig:output_type -> muse.GetAPIConfigResponse
-	48,  // 162: muse.UserService.CreateAPIConfig:output_type -> muse.CreateAPIConfigResponse
-	50,  // 163: muse.UserService.UpdateAPIConfig:output_type -> muse.UpdateAPIConfigResponse
-	52,  // 164: muse.UserService.DeleteAPIConfig:output_type -> muse.DeleteAPIConfigResponse
-	54,  // 165: muse.UserService.SetActiveAPIConfig:output_type -> muse.SetActiveAPIConfigResponse
-	56,  // 166: muse.UserService.TestAPIConfig:output_type -> muse.TestAPIConfigResponse
-	60,  // 167: muse.CharacterService.ListCharacters:output_type -> muse.ListCharactersResponse
-	62,  // 168: muse.CharacterService.GetCharacter:output_type -> muse.GetCharacterResponse
-	64,  // 169: muse.CharacterService.CreateCharacter:output_type -> muse.CreateCharacterResponse
-	66,  // 170: muse.CharacterService.UpdateCharacter:output_type -> muse.UpdateCharacterResponse
-	68,  // 171: muse.CharacterService.DeleteCharacter:output_type -> muse.DeleteCharacterResponse
-	70,  // 172: muse.CharacterService.ImportCharacter:output_type -> muse.ImportCharacterResponse
-	72,  // 173: muse.CharacterService.ExportCharacter:output_type -> muse.ExportCharacterResponse
-	74,  // 174: muse.CharacterService.RestoreCharacterWorldInfo:output_type -> muse.RestoreCharacterWorldInfoResponse
-	76,  // 175: muse.ChatService.ListChatSessions:output_type -> muse.ListChatSessionsResponse
-	78,  // 176: muse.ChatService.GetChatSession:output_type -> muse.GetChatSessionResponse
-	80,  // 177: muse.ChatService.CreateChatSession:output_type -> muse.CreateChatSessionResponse
-	82,  // 178: muse.ChatService.UpdateChatSession:output_type -> muse.UpdateChatSessionResponse
-	84,  // 179: muse.ChatService.DeleteChatSession:output_type -> muse.DeleteChatSessionResponse
-	86,  // 180: muse.ChatService.SendMessage:output_type -> muse.SendMessageResponse
-	88,  // 181: muse.ChatService.RegenerateMessage:output_type -> muse.RegenerateMessageResponse
-	90,  // 182: muse.ChatService.EditMessage:output_type -> muse.EditMessageResponse
-	92,  // 183: muse.ChatService.DeleteMessage:output_type -> muse.DeleteMessageResponse
-	94,  // 184: muse.ChatService.SwitchSwipe:output_type -> muse.SwitchSwipeResponse
-	96,  // 185: muse.PresetService.ListPresets:output_type -> muse.ListPresetsResponse
-	98,  // 186: muse.PresetService.GetPreset:output_type -> muse.GetPresetResponse
-	102, // 187: muse.PresetService.CreatePreset:output_type -> muse.CreatePresetResponse
-	104, // 188: muse.PresetService.UpdatePreset:output_type -> muse.UpdatePresetResponse
-	106, // 189: muse.PresetService.DeletePreset:output_type -> muse.DeletePresetResponse
-	108, // 190: muse.PresetService.SetActivePreset:output_type -> muse.SetActivePresetResponse
-	110, // 191: muse.PresetService.ImportPreset:output_type -> muse.ImportPresetResponse
-	112, // 192: muse.PresetService.ExportPreset:output_type -> muse.ExportPresetResponse
-	114, // 193: muse.PresetService.ListPromptItems:output_type -> muse.ListPromptItemsResponse
-	116, // 194: muse.PresetService.AddPromptItem:output_type -> muse.AddPromptItemResponse
-	118, // 195: muse.PresetService.UpdatePromptItem:output_type -> muse.UpdatePromptItemResponse
-	120, // 196: muse.PresetService.DeletePromptItem:output_type -> muse.DeletePromptItemResponse
-	122, // 197: muse.PresetService.UpdatePromptItemsOrder:output_type -> muse.UpdatePromptItemsOrderResponse
-	124, // 198: muse.RegexRuleService.ListRegexRules:output_type -> muse.ListRegexRulesResponse
-	126, // 199: muse.RegexRuleService.ListPresetRegexRules:output_type -> muse.ListPresetRegexRulesResponse
-	128, // 200: muse.RegexRuleService.AddRegexRule:output_type -> muse.AddRegexRuleResponse
-	130, // 201: muse.RegexRuleService.UpdateRegexRule:output_type -> muse.UpdateRegexRuleResponse
-	132, // 202: muse.RegexRuleService.DeleteRegexRule:output_type -> muse.DeleteRegexRuleResponse
-	134, // 203: muse.RegexRuleService.UpdateRegexRulesOrder:output_type -> muse.UpdateRegexRulesOrderResponse
-	136, // 204: muse.RegexRuleService.ImportRegexRules:output_type -> muse.ImportRegexRulesResponse
-	138, // 205: muse.RegexRuleService.ExportRegexRules:output_type -> muse.ExportRegexRulesResponse
-	140, // 206: muse.WorldInfoService.ListWorldInfos:output_type -> muse.ListWorldInfosResponse
-	142, // 207: muse.WorldInfoService.GetWorldInfo:output_type -> muse.GetWorldInfoResponse
-	144, // 208: muse.WorldInfoService.CreateWorldInfo:output_type -> muse.CreateWorldInfoResponse
-	146, // 209: muse.WorldInfoService.UpdateWorldInfo:output_type -> muse.UpdateWorldInfoResponse
-	148, // 210: muse.WorldInfoService.DeleteWorldInfo:output_type -> muse.DeleteWorldInfoResponse
-	150, // 211: muse.WorldInfoService.ImportWorldInfo:output_type -> muse.ImportWorldInfoResponse
-	152, // 212: muse.WorldInfoService.ExportWorldInfo:output_type -> muse.ExportWorldInfoResponse
-	154, // 213: muse.WorldInfoService.ListWorldInfoEntries:output_type -> muse.ListWorldInfoEntriesResponse
-	156, // 214: muse.WorldInfoService.AddWorldInfoEntry:output_type -> muse.AddWorldInfoEntryResponse
-	158, // 215: muse.WorldInfoService.UpdateWorldInfoEntry:output_type -> muse.UpdateWorldInfoEntryResponse
-	160, // 216: muse.WorldInfoService.DeleteWorldInfoEntry:output_type -> muse.DeleteWorldInfoEntryResponse
-	162, // 217: muse.WorldInfoService.UpdateWorldInfoEntriesOrder:output_type -> muse.UpdateWorldInfoEntriesOrderResponse
-	147, // [147:218] is the sub-list for method output_type
-	76,  // [76:147] is the sub-list for method input_type
-	76,  // [76:76] is the sub-list for extension type_name
-	76,  // [76:76] is the sub-list for extension extendee
-	0,   // [0:76] is the sub-list for field type_name
+	15,  // 2: muse.Character.regex_rules:type_name -> muse.RegexRule
+	8,   // 3: muse.ChatSession.character:type_name -> muse.Character
+	10,  // 4: muse.ChatSession.messages:type_name -> muse.Message
+	0,   // 5: muse.Message.role:type_name -> muse.Role
+	11,  // 6: muse.Message.swipes:type_name -> muse.MessageSwipe
+	13,  // 7: muse.Preset.prompt_items:type_name -> muse.PromptItem
+	15,  // 8: muse.Preset.regex_rules:type_name -> muse.RegexRule
+	0,   // 9: muse.PromptItem.role:type_name -> muse.Role
+	1,   // 10: muse.PromptItem.injection_position:type_name -> muse.InjectionPosition
+	14,  // 11: muse.RegexRule.affect_flags:type_name -> muse.RegexAffectFlags
+	17,  // 12: muse.WorldInfo.entries:type_name -> muse.WorldInfoEntry
+	2,   // 13: muse.WorldInfoEntry.position:type_name -> muse.EntryPosition
+	3,   // 14: muse.APIConfig.provider:type_name -> muse.APIProvider
+	5,   // 15: muse.RegisterResponse.user:type_name -> muse.SysUser
+	5,   // 16: muse.LoginResponse.user:type_name -> muse.SysUser
+	5,   // 17: muse.GetCurrentUserResponse.user:type_name -> muse.SysUser
+	6,   // 18: muse.ListPersonasResponse.personas:type_name -> muse.Persona
+	6,   // 19: muse.GetPersonaResponse.persona:type_name -> muse.Persona
+	6,   // 20: muse.CreatePersonaResponse.persona:type_name -> muse.Persona
+	6,   // 21: muse.UpdatePersonaResponse.persona:type_name -> muse.Persona
+	7,   // 22: muse.GetUserSettingResponse.setting:type_name -> muse.UserSetting
+	4,   // 23: muse.UpdateUserSettingRequest.theme:type_name -> muse.Theme
+	7,   // 24: muse.UpdateUserSettingResponse.setting:type_name -> muse.UserSetting
+	18,  // 25: muse.ListAPIConfigsResponse.configs:type_name -> muse.APIConfig
+	18,  // 26: muse.GetAPIConfigResponse.config:type_name -> muse.APIConfig
+	3,   // 27: muse.CreateAPIConfigRequest.provider:type_name -> muse.APIProvider
+	18,  // 28: muse.CreateAPIConfigResponse.config:type_name -> muse.APIConfig
+	3,   // 29: muse.UpdateAPIConfigRequest.provider:type_name -> muse.APIProvider
+	18,  // 30: muse.UpdateAPIConfigResponse.config:type_name -> muse.APIConfig
+	8,   // 31: muse.ListCharactersResponse.characters:type_name -> muse.Character
+	8,   // 32: muse.GetCharacterResponse.character:type_name -> muse.Character
+	8,   // 33: muse.CreateCharacterResponse.character:type_name -> muse.Character
+	8,   // 34: muse.UpdateCharacterResponse.character:type_name -> muse.Character
+	8,   // 35: muse.ImportCharacterResponse.character:type_name -> muse.Character
+	16,  // 36: muse.RestoreCharacterWorldInfoResponse.world_info:type_name -> muse.WorldInfo
+	9,   // 37: muse.ListChatSessionsResponse.sessions:type_name -> muse.ChatSession
+	9,   // 38: muse.GetChatSessionResponse.session:type_name -> muse.ChatSession
+	9,   // 39: muse.CreateChatSessionResponse.session:type_name -> muse.ChatSession
+	9,   // 40: muse.UpdateChatSessionResponse.session:type_name -> muse.ChatSession
+	11,  // 41: muse.RegenerateMessageResponse.new_swipe:type_name -> muse.MessageSwipe
+	11,  // 42: muse.EditMessageResponse.swipe:type_name -> muse.MessageSwipe
+	10,  // 43: muse.SwitchSwipeResponse.message:type_name -> muse.Message
+	12,  // 44: muse.ListPresetsResponse.presets:type_name -> muse.Preset
+	12,  // 45: muse.GetPresetResponse.preset:type_name -> muse.Preset
+	100, // 46: muse.CreatePresetRequest.prompt_items:type_name -> muse.CreatePromptItemRequest
+	101, // 47: muse.CreatePresetRequest.regex_rules:type_name -> muse.CreateRegexRuleRequest
+	0,   // 48: muse.CreatePromptItemRequest.role:type_name -> muse.Role
+	1,   // 49: muse.CreatePromptItemRequest.injection_position:type_name -> muse.InjectionPosition
+	14,  // 50: muse.CreateRegexRuleRequest.affect_flags:type_name -> muse.RegexAffectFlags
+	12,  // 51: muse.CreatePresetResponse.preset:type_name -> muse.Preset
+	12,  // 52: muse.UpdatePresetResponse.preset:type_name -> muse.Preset
+	12,  // 53: muse.ImportPresetResponse.preset:type_name -> muse.Preset
+	13,  // 54: muse.ListPromptItemsResponse.items:type_name -> muse.PromptItem
+	0,   // 55: muse.AddPromptItemRequest.role:type_name -> muse.Role
+	1,   // 56: muse.AddPromptItemRequest.injection_position:type_name -> muse.InjectionPosition
+	13,  // 57: muse.AddPromptItemResponse.item:type_name -> muse.PromptItem
+	0,   // 58: muse.UpdatePromptItemRequest.role:type_name -> muse.Role
+	1,   // 59: muse.UpdatePromptItemRequest.injection_position:type_name -> muse.InjectionPosition
+	13,  // 60: muse.UpdatePromptItemResponse.item:type_name -> muse.PromptItem
+	15,  // 61: muse.ListRegexRulesResponse.rules:type_name -> muse.RegexRule
+	15,  // 62: muse.ListPresetRegexRulesResponse.rules:type_name -> muse.RegexRule
+	14,  // 63: muse.AddRegexRuleRequest.affect_flags:type_name -> muse.RegexAffectFlags
+	15,  // 64: muse.AddRegexRuleResponse.rule:type_name -> muse.RegexRule
+	14,  // 65: muse.UpdateRegexRuleRequest.affect_flags:type_name -> muse.RegexAffectFlags
+	15,  // 66: muse.UpdateRegexRuleResponse.rule:type_name -> muse.RegexRule
+	16,  // 67: muse.ListWorldInfosResponse.world_infos:type_name -> muse.WorldInfo
+	16,  // 68: muse.GetWorldInfoResponse.world_info:type_name -> muse.WorldInfo
+	16,  // 69: muse.CreateWorldInfoResponse.world_info:type_name -> muse.WorldInfo
+	16,  // 70: muse.UpdateWorldInfoResponse.world_info:type_name -> muse.WorldInfo
+	16,  // 71: muse.ImportWorldInfoResponse.world_info:type_name -> muse.WorldInfo
+	17,  // 72: muse.ListWorldInfoEntriesResponse.entries:type_name -> muse.WorldInfoEntry
+	2,   // 73: muse.AddWorldInfoEntryRequest.position:type_name -> muse.EntryPosition
+	17,  // 74: muse.AddWorldInfoEntryResponse.entry:type_name -> muse.WorldInfoEntry
+	2,   // 75: muse.UpdateWorldInfoEntryRequest.position:type_name -> muse.EntryPosition
+	17,  // 76: muse.UpdateWorldInfoEntryResponse.entry:type_name -> muse.WorldInfoEntry
+	57,  // 77: muse.UserService.GetPublicConfig:input_type -> muse.GetPublicConfigRequest
+	19,  // 78: muse.UserService.Register:input_type -> muse.RegisterRequest
+	21,  // 79: muse.UserService.Login:input_type -> muse.LoginRequest
+	23,  // 80: muse.UserService.GetCurrentUser:input_type -> muse.GetCurrentUserRequest
+	25,  // 81: muse.UserService.ChangePassword:input_type -> muse.ChangePasswordRequest
+	27,  // 82: muse.UserService.ListPersonas:input_type -> muse.ListPersonasRequest
+	29,  // 83: muse.UserService.GetPersona:input_type -> muse.GetPersonaRequest
+	31,  // 84: muse.UserService.CreatePersona:input_type -> muse.CreatePersonaRequest
+	33,  // 85: muse.UserService.UpdatePersona:input_type -> muse.UpdatePersonaRequest
+	35,  // 86: muse.UserService.DeletePersona:input_type -> muse.DeletePersonaRequest
+	37,  // 87: muse.UserService.SetActivePersona:input_type -> muse.SetActivePersonaRequest
+	39,  // 88: muse.UserService.GetUserSetting:input_type -> muse.GetUserSettingRequest
+	41,  // 89: muse.UserService.UpdateUserSetting:input_type -> muse.UpdateUserSettingRequest
+	43,  // 90: muse.UserService.ListAPIConfigs:input_type -> muse.ListAPIConfigsRequest
+	45,  // 91: muse.UserService.GetAPIConfig:input_type -> muse.GetAPIConfigRequest
+	47,  // 92: muse.UserService.CreateAPIConfig:input_type -> muse.CreateAPIConfigRequest
+	49,  // 93: muse.UserService.UpdateAPIConfig:input_type -> muse.UpdateAPIConfigRequest
+	51,  // 94: muse.UserService.DeleteAPIConfig:input_type -> muse.DeleteAPIConfigRequest
+	53,  // 95: muse.UserService.SetActiveAPIConfig:input_type -> muse.SetActiveAPIConfigRequest
+	55,  // 96: muse.UserService.TestAPIConfig:input_type -> muse.TestAPIConfigRequest
+	59,  // 97: muse.CharacterService.ListCharacters:input_type -> muse.ListCharactersRequest
+	61,  // 98: muse.CharacterService.GetCharacter:input_type -> muse.GetCharacterRequest
+	63,  // 99: muse.CharacterService.CreateCharacter:input_type -> muse.CreateCharacterRequest
+	65,  // 100: muse.CharacterService.UpdateCharacter:input_type -> muse.UpdateCharacterRequest
+	67,  // 101: muse.CharacterService.DeleteCharacter:input_type -> muse.DeleteCharacterRequest
+	69,  // 102: muse.CharacterService.ImportCharacter:input_type -> muse.ImportCharacterRequest
+	71,  // 103: muse.CharacterService.ExportCharacter:input_type -> muse.ExportCharacterRequest
+	73,  // 104: muse.CharacterService.RestoreCharacterWorldInfo:input_type -> muse.RestoreCharacterWorldInfoRequest
+	75,  // 105: muse.ChatService.ListChatSessions:input_type -> muse.ListChatSessionsRequest
+	77,  // 106: muse.ChatService.GetChatSession:input_type -> muse.GetChatSessionRequest
+	79,  // 107: muse.ChatService.CreateChatSession:input_type -> muse.CreateChatSessionRequest
+	81,  // 108: muse.ChatService.UpdateChatSession:input_type -> muse.UpdateChatSessionRequest
+	83,  // 109: muse.ChatService.DeleteChatSession:input_type -> muse.DeleteChatSessionRequest
+	85,  // 110: muse.ChatService.SendMessage:input_type -> muse.SendMessageRequest
+	87,  // 111: muse.ChatService.RegenerateMessage:input_type -> muse.RegenerateMessageRequest
+	89,  // 112: muse.ChatService.EditMessage:input_type -> muse.EditMessageRequest
+	91,  // 113: muse.ChatService.DeleteMessage:input_type -> muse.DeleteMessageRequest
+	93,  // 114: muse.ChatService.SwitchSwipe:input_type -> muse.SwitchSwipeRequest
+	95,  // 115: muse.PresetService.ListPresets:input_type -> muse.ListPresetsRequest
+	97,  // 116: muse.PresetService.GetPreset:input_type -> muse.GetPresetRequest
+	99,  // 117: muse.PresetService.CreatePreset:input_type -> muse.CreatePresetRequest
+	103, // 118: muse.PresetService.UpdatePreset:input_type -> muse.UpdatePresetRequest
+	105, // 119: muse.PresetService.DeletePreset:input_type -> muse.DeletePresetRequest
+	107, // 120: muse.PresetService.SetActivePreset:input_type -> muse.SetActivePresetRequest
+	109, // 121: muse.PresetService.ImportPreset:input_type -> muse.ImportPresetRequest
+	111, // 122: muse.PresetService.ExportPreset:input_type -> muse.ExportPresetRequest
+	113, // 123: muse.PresetService.ListPromptItems:input_type -> muse.ListPromptItemsRequest
+	115, // 124: muse.PresetService.AddPromptItem:input_type -> muse.AddPromptItemRequest
+	117, // 125: muse.PresetService.UpdatePromptItem:input_type -> muse.UpdatePromptItemRequest
+	119, // 126: muse.PresetService.DeletePromptItem:input_type -> muse.DeletePromptItemRequest
+	121, // 127: muse.PresetService.UpdatePromptItemsOrder:input_type -> muse.UpdatePromptItemsOrderRequest
+	123, // 128: muse.RegexRuleService.ListRegexRules:input_type -> muse.ListRegexRulesRequest
+	125, // 129: muse.RegexRuleService.ListPresetRegexRules:input_type -> muse.ListPresetRegexRulesRequest
+	127, // 130: muse.RegexRuleService.AddRegexRule:input_type -> muse.AddRegexRuleRequest
+	129, // 131: muse.RegexRuleService.UpdateRegexRule:input_type -> muse.UpdateRegexRuleRequest
+	131, // 132: muse.RegexRuleService.DeleteRegexRule:input_type -> muse.DeleteRegexRuleRequest
+	133, // 133: muse.RegexRuleService.UpdateRegexRulesOrder:input_type -> muse.UpdateRegexRulesOrderRequest
+	135, // 134: muse.RegexRuleService.ImportRegexRules:input_type -> muse.ImportRegexRulesRequest
+	137, // 135: muse.RegexRuleService.ExportRegexRules:input_type -> muse.ExportRegexRulesRequest
+	139, // 136: muse.WorldInfoService.ListWorldInfos:input_type -> muse.ListWorldInfosRequest
+	141, // 137: muse.WorldInfoService.GetWorldInfo:input_type -> muse.GetWorldInfoRequest
+	143, // 138: muse.WorldInfoService.CreateWorldInfo:input_type -> muse.CreateWorldInfoRequest
+	145, // 139: muse.WorldInfoService.UpdateWorldInfo:input_type -> muse.UpdateWorldInfoRequest
+	147, // 140: muse.WorldInfoService.DeleteWorldInfo:input_type -> muse.DeleteWorldInfoRequest
+	149, // 141: muse.WorldInfoService.ImportWorldInfo:input_type -> muse.ImportWorldInfoRequest
+	151, // 142: muse.WorldInfoService.ExportWorldInfo:input_type -> muse.ExportWorldInfoRequest
+	153, // 143: muse.WorldInfoService.ListWorldInfoEntries:input_type -> muse.ListWorldInfoEntriesRequest
+	155, // 144: muse.WorldInfoService.AddWorldInfoEntry:input_type -> muse.AddWorldInfoEntryRequest
+	157, // 145: muse.WorldInfoService.UpdateWorldInfoEntry:input_type -> muse.UpdateWorldInfoEntryRequest
+	159, // 146: muse.WorldInfoService.DeleteWorldInfoEntry:input_type -> muse.DeleteWorldInfoEntryRequest
+	161, // 147: muse.WorldInfoService.UpdateWorldInfoEntriesOrder:input_type -> muse.UpdateWorldInfoEntriesOrderRequest
+	58,  // 148: muse.UserService.GetPublicConfig:output_type -> muse.GetPublicConfigResponse
+	20,  // 149: muse.UserService.Register:output_type -> muse.RegisterResponse
+	22,  // 150: muse.UserService.Login:output_type -> muse.LoginResponse
+	24,  // 151: muse.UserService.GetCurrentUser:output_type -> muse.GetCurrentUserResponse
+	26,  // 152: muse.UserService.ChangePassword:output_type -> muse.ChangePasswordResponse
+	28,  // 153: muse.UserService.ListPersonas:output_type -> muse.ListPersonasResponse
+	30,  // 154: muse.UserService.GetPersona:output_type -> muse.GetPersonaResponse
+	32,  // 155: muse.UserService.CreatePersona:output_type -> muse.CreatePersonaResponse
+	34,  // 156: muse.UserService.UpdatePersona:output_type -> muse.UpdatePersonaResponse
+	36,  // 157: muse.UserService.DeletePersona:output_type -> muse.DeletePersonaResponse
+	38,  // 158: muse.UserService.SetActivePersona:output_type -> muse.SetActivePersonaResponse
+	40,  // 159: muse.UserService.GetUserSetting:output_type -> muse.GetUserSettingResponse
+	42,  // 160: muse.UserService.UpdateUserSetting:output_type -> muse.UpdateUserSettingResponse
+	44,  // 161: muse.UserService.ListAPIConfigs:output_type -> muse.ListAPIConfigsResponse
+	46,  // 162: muse.UserService.GetAPIConfig:output_type -> muse.GetAPIConfigResponse
+	48,  // 163: muse.UserService.CreateAPIConfig:output_type -> muse.CreateAPIConfigResponse
+	50,  // 164: muse.UserService.UpdateAPIConfig:output_type -> muse.UpdateAPIConfigResponse
+	52,  // 165: muse.UserService.DeleteAPIConfig:output_type -> muse.DeleteAPIConfigResponse
+	54,  // 166: muse.UserService.SetActiveAPIConfig:output_type -> muse.SetActiveAPIConfigResponse
+	56,  // 167: muse.UserService.TestAPIConfig:output_type -> muse.TestAPIConfigResponse
+	60,  // 168: muse.CharacterService.ListCharacters:output_type -> muse.ListCharactersResponse
+	62,  // 169: muse.CharacterService.GetCharacter:output_type -> muse.GetCharacterResponse
+	64,  // 170: muse.CharacterService.CreateCharacter:output_type -> muse.CreateCharacterResponse
+	66,  // 171: muse.CharacterService.UpdateCharacter:output_type -> muse.UpdateCharacterResponse
+	68,  // 172: muse.CharacterService.DeleteCharacter:output_type -> muse.DeleteCharacterResponse
+	70,  // 173: muse.CharacterService.ImportCharacter:output_type -> muse.ImportCharacterResponse
+	72,  // 174: muse.CharacterService.ExportCharacter:output_type -> muse.ExportCharacterResponse
+	74,  // 175: muse.CharacterService.RestoreCharacterWorldInfo:output_type -> muse.RestoreCharacterWorldInfoResponse
+	76,  // 176: muse.ChatService.ListChatSessions:output_type -> muse.ListChatSessionsResponse
+	78,  // 177: muse.ChatService.GetChatSession:output_type -> muse.GetChatSessionResponse
+	80,  // 178: muse.ChatService.CreateChatSession:output_type -> muse.CreateChatSessionResponse
+	82,  // 179: muse.ChatService.UpdateChatSession:output_type -> muse.UpdateChatSessionResponse
+	84,  // 180: muse.ChatService.DeleteChatSession:output_type -> muse.DeleteChatSessionResponse
+	86,  // 181: muse.ChatService.SendMessage:output_type -> muse.SendMessageResponse
+	88,  // 182: muse.ChatService.RegenerateMessage:output_type -> muse.RegenerateMessageResponse
+	90,  // 183: muse.ChatService.EditMessage:output_type -> muse.EditMessageResponse
+	92,  // 184: muse.ChatService.DeleteMessage:output_type -> muse.DeleteMessageResponse
+	94,  // 185: muse.ChatService.SwitchSwipe:output_type -> muse.SwitchSwipeResponse
+	96,  // 186: muse.PresetService.ListPresets:output_type -> muse.ListPresetsResponse
+	98,  // 187: muse.PresetService.GetPreset:output_type -> muse.GetPresetResponse
+	102, // 188: muse.PresetService.CreatePreset:output_type -> muse.CreatePresetResponse
+	104, // 189: muse.PresetService.UpdatePreset:output_type -> muse.UpdatePresetResponse
+	106, // 190: muse.PresetService.DeletePreset:output_type -> muse.DeletePresetResponse
+	108, // 191: muse.PresetService.SetActivePreset:output_type -> muse.SetActivePresetResponse
+	110, // 192: muse.PresetService.ImportPreset:output_type -> muse.ImportPresetResponse
+	112, // 193: muse.PresetService.ExportPreset:output_type -> muse.ExportPresetResponse
+	114, // 194: muse.PresetService.ListPromptItems:output_type -> muse.ListPromptItemsResponse
+	116, // 195: muse.PresetService.AddPromptItem:output_type -> muse.AddPromptItemResponse
+	118, // 196: muse.PresetService.UpdatePromptItem:output_type -> muse.UpdatePromptItemResponse
+	120, // 197: muse.PresetService.DeletePromptItem:output_type -> muse.DeletePromptItemResponse
+	122, // 198: muse.PresetService.UpdatePromptItemsOrder:output_type -> muse.UpdatePromptItemsOrderResponse
+	124, // 199: muse.RegexRuleService.ListRegexRules:output_type -> muse.ListRegexRulesResponse
+	126, // 200: muse.RegexRuleService.ListPresetRegexRules:output_type -> muse.ListPresetRegexRulesResponse
+	128, // 201: muse.RegexRuleService.AddRegexRule:output_type -> muse.AddRegexRuleResponse
+	130, // 202: muse.RegexRuleService.UpdateRegexRule:output_type -> muse.UpdateRegexRuleResponse
+	132, // 203: muse.RegexRuleService.DeleteRegexRule:output_type -> muse.DeleteRegexRuleResponse
+	134, // 204: muse.RegexRuleService.UpdateRegexRulesOrder:output_type -> muse.UpdateRegexRulesOrderResponse
+	136, // 205: muse.RegexRuleService.ImportRegexRules:output_type -> muse.ImportRegexRulesResponse
+	138, // 206: muse.RegexRuleService.ExportRegexRules:output_type -> muse.ExportRegexRulesResponse
+	140, // 207: muse.WorldInfoService.ListWorldInfos:output_type -> muse.ListWorldInfosResponse
+	142, // 208: muse.WorldInfoService.GetWorldInfo:output_type -> muse.GetWorldInfoResponse
+	144, // 209: muse.WorldInfoService.CreateWorldInfo:output_type -> muse.CreateWorldInfoResponse
+	146, // 210: muse.WorldInfoService.UpdateWorldInfo:output_type -> muse.UpdateWorldInfoResponse
+	148, // 211: muse.WorldInfoService.DeleteWorldInfo:output_type -> muse.DeleteWorldInfoResponse
+	150, // 212: muse.WorldInfoService.ImportWorldInfo:output_type -> muse.ImportWorldInfoResponse
+	152, // 213: muse.WorldInfoService.ExportWorldInfo:output_type -> muse.ExportWorldInfoResponse
+	154, // 214: muse.WorldInfoService.ListWorldInfoEntries:output_type -> muse.ListWorldInfoEntriesResponse
+	156, // 215: muse.WorldInfoService.AddWorldInfoEntry:output_type -> muse.AddWorldInfoEntryResponse
+	158, // 216: muse.WorldInfoService.UpdateWorldInfoEntry:output_type -> muse.UpdateWorldInfoEntryResponse
+	160, // 217: muse.WorldInfoService.DeleteWorldInfoEntry:output_type -> muse.DeleteWorldInfoEntryResponse
+	162, // 218: muse.WorldInfoService.UpdateWorldInfoEntriesOrder:output_type -> muse.UpdateWorldInfoEntriesOrderResponse
+	148, // [148:219] is the sub-list for method output_type
+	77,  // [77:148] is the sub-list for method input_type
+	77,  // [77:77] is the sub-list for extension type_name
+	77,  // [77:77] is the sub-list for extension extendee
+	0,   // [0:77] is the sub-list for field type_name
 }
 
 func init() { file_muse_muse_proto_init() }

@@ -401,13 +401,8 @@ func APIConfigEntityToPbWithKey(apiConfig *entity.APIConfig) *pb.APIConfig {
 // ============ SillyTavern 正则规则转换 ============
 
 // STRegexToEntity 将 SillyTavern 正则脚本转换为 Muse 实体
-// presetID: 0 表示全局正则，非 0 表示预设正则（Preset Scripts）
-// characterID: 0 表示非角色范围正则，非 0 表示角色正则（Scoped Scripts）
-// sortOrder: 排序顺序
-func STRegexToEntity(stScript *sillytavern.RegexScript, presetID int, characterID int, sortOrder int) *entity.RegexRule {
+func STRegexToEntity(stScript *sillytavern.RegexScript) *entity.RegexRule {
 	rule := &entity.RegexRule{
-		PresetID:        presetID,
-		CharacterID:     characterID,
 		Name:            stScript.ScriptName,
 		FindPattern:     stScript.FindRegex,
 		ReplacePattern:  stScript.ReplaceString,
@@ -416,7 +411,6 @@ func STRegexToEntity(stScript *sillytavern.RegexScript, presetID int, characterI
 		SubstituteRegex: stScript.SubstituteRegex > 0,
 		MinDepth:        stScript.MinDepth,
 		MaxDepth:        stScript.MaxDepth,
-		SortOrder:       sortOrder,
 	}
 
 	// 解析 placement 数组，映射到 affect flags
@@ -440,8 +434,8 @@ func STRegexToEntity(stScript *sillytavern.RegexScript, presetID int, characterI
 }
 
 // EntityToSTRegex 将 Muse 实体转换为 SillyTavern 正则脚本格式
-func EntityToSTRegex(rule *entity.RegexRule) sillytavern.RegexScript {
-	stScript := sillytavern.RegexScript{
+func EntityToSTRegex(rule *entity.RegexRule) *sillytavern.RegexScript {
+	stScript := &sillytavern.RegexScript{
 		ID:            fmt.Sprintf("%d", rule.ID), // 使用 ID 作为标识符
 		ScriptName:    rule.Name,
 		FindRegex:     rule.FindPattern,
@@ -486,38 +480,26 @@ func EntityToSTRegex(rule *entity.RegexRule) sillytavern.RegexScript {
 // STWorldInfoToEntity 将 SillyTavern 世界书转换为 Muse 世界书实体
 // userID: 用户ID
 // worldInfoName: 世界书名称
-func STWorldInfoToEntity(stWorldBook *sillytavern.WorldBook, userID int, worldInfoName string) *entity.WorldInfo {
+func STWorldInfoToEntity(stWorldBook *sillytavern.WorldBook) *entity.WorldInfo {
 	worldInfo := &entity.WorldInfo{
-		UserID:      userID,
-		Name:        worldInfoName,
+		Name:        stWorldBook.Name,
 		Description: stWorldBook.Description,
 		IsGlobal:    false, // 默认非全局
+		Entries:     make([]entity.WorldInfoEntry, len(stWorldBook.Entries)),
 	}
-
-	// 如果 WorldBook 有名称，使用它
-	if stWorldBook.Name != "" {
-		worldInfo.Name = stWorldBook.Name
-	}
-
+	// TODO 转换Entries
 	return worldInfo
 }
 
 // STBookEntryToEntity 将 SillyTavern 世界书条目转换为 Muse 条目实体
-// worldInfoID: 关联的世界书ID
-// stEntry: SillyTavern 条目
-// sortOrder: 排序顺序
-func STBookEntryToEntity(worldInfoID int, stEntry *sillytavern.BookEntry, sortOrder int) *entity.WorldInfoEntry {
+func STBookEntryToEntity(stEntry *sillytavern.BookEntry) *entity.WorldInfoEntry {
 	// 将关键词数组转换为逗号分隔的字符串
 	keysList := strings.Join(stEntry.Key, ",")
 	secondaryKeys := strings.Join(stEntry.KeySecondary, ",")
 
 	// 转换位置
-	// SillyTavern: 0=before_char, 1=after_char, 2=before_desc, 3=after_desc, 4=at_depth
-	// Muse pb.EntryPosition: 0=BeforeCharacter, 1=AfterCharacter, 2=BeforeAuthorNote, 3=AfterAuthorNote, 4=AtDepth
-	position := pb.EntryPosition(stEntry.Position)
-
+	position := pb.EntryPosition(stEntry.Position + 1)
 	return &entity.WorldInfoEntry{
-		WorldInfoID:    worldInfoID,
 		UID:            fmt.Sprintf("%d", stEntry.UID),
 		KeysList:       keysList,
 		SecondaryKeys:  secondaryKeys,
@@ -529,7 +511,6 @@ func STBookEntryToEntity(worldInfoID int, stEntry *sillytavern.BookEntry, sortOr
 		InsertionOrder: stEntry.Order,
 		Position:       position,
 		Depth:          stEntry.Depth,
-		SortOrder:      sortOrder,
 	}
 }
 
@@ -578,9 +559,18 @@ func EntityToSTBookEntry(entry *entity.WorldInfoEntry, index int) sillytavern.Bo
 	// 尝试解析 UID 为整数，如果失败则使用索引
 	uid := index
 	if entry.UID != "" {
-		if parsedUID, err := fmt.Sscanf(entry.UID, "%d", &uid); err != nil || parsedUID != 1 {
+		if _, err := fmt.Sscanf(entry.UID, "%d", &uid); err != nil {
 			uid = index
 		}
+	}
+
+	// 转换位置
+	// Muse pb.EntryPosition: 0=EntryPositionUnspecified, 1=BeforeChar, 2=AfterChar, 3=BeforeExample, 4=AfterExample, 5=AtDepth
+	// SillyTavern BookEntry: 0=before_char, 1=after_char, 2=before_desc, 3=after_desc, 4=at_depth
+	// 需要减1来匹配SillyTavern的枚举值
+	position := int(entry.Position) - 1
+	if position < 0 {
+		position = 0
 	}
 
 	return sillytavern.BookEntry{
@@ -593,11 +583,241 @@ func EntityToSTBookEntry(entry *entity.WorldInfoEntry, index int) sillytavern.Bo
 		Constant:       entry.Constant,
 		Selective:      entry.Selective,
 		Order:          entry.InsertionOrder,
-		Position:       int(entry.Position),
+		Position:       position,
 		Depth:          entry.Depth,
 		DisplayIndex:   entry.SortOrder,
 		Probability:    100,  // 默认值
 		UseProbability: true, // 默认值
 		GroupWeight:    100,  // 默认值
 	}
+}
+
+// STCharacterBookToEntity 将 SillyTavern 角色卡世界书转换为 Muse 世界书实体
+func STCharacterBookToEntity(stCharacterBook *sillytavern.CharacterBook) *entity.WorldInfo {
+	worldInfo := &entity.WorldInfo{
+		Name:        stCharacterBook.Name,
+		Description: "",
+		IsGlobal:    false, // 角色卡世界书默认非全局
+		Entries:     make([]entity.WorldInfoEntry, len(stCharacterBook.Entries)),
+	}
+	for i, stEntry := range stCharacterBook.Entries {
+		worldInfo.Entries[i] = *STCharacterBookEntryToEntity(&stEntry)
+		worldInfo.Entries[i].SortOrder = i
+	}
+	return worldInfo
+}
+
+// BookPositionToPb 将 SillyTavern 位置字符串转换为 pb.EntryPosition
+// SillyTavern: "before_char", "after_char", "before_desc", "after_desc", "at_depth"
+func BookPositionToPb(position string) pb.EntryPosition {
+	switch position {
+	case "before_char":
+		return pb.EntryPosition_BeforeChar
+	case "after_char":
+		return pb.EntryPosition_AfterChar
+	case "before_desc":
+		return pb.EntryPosition_BeforeExample
+	case "after_desc":
+		return pb.EntryPosition_AfterExample
+	case "at_depth":
+		return pb.EntryPosition_AtDepth
+	default:
+		return pb.EntryPosition_BeforeChar // 默认值
+	}
+}
+
+// PbBookPositionToString 将 pb.EntryPosition 转换为 SillyTavern 位置字符串
+func PbBookPositionToString(position pb.EntryPosition) string {
+	switch position {
+	case pb.EntryPosition_BeforeChar:
+		return "before_char"
+	case pb.EntryPosition_AfterChar:
+		return "after_char"
+	case pb.EntryPosition_BeforeExample:
+		return "before_desc"
+	case pb.EntryPosition_AfterExample:
+		return "after_desc"
+	case pb.EntryPosition_AtDepth:
+		return "at_depth"
+	default:
+		return "before_char"
+	}
+}
+
+// STCharacterBookEntryToEntity 将 SillyTavern 角色卡世界书条目转换为 Muse 条目实体
+func STCharacterBookEntryToEntity(stEntry *sillytavern.CharacterBookEntry) *entity.WorldInfoEntry {
+	// 将关键词数组转换为逗号分隔的字符串
+	keysList := strings.Join(stEntry.Keys, ",")
+	secondaryKeys := strings.Join(stEntry.SecondaryKeys, ",")
+
+	entry := &entity.WorldInfoEntry{
+		UID:            fmt.Sprintf("%d", stEntry.ID),
+		KeysList:       keysList,
+		SecondaryKeys:  secondaryKeys,
+		Content:        stEntry.Content,
+		Comment:        stEntry.Comment,
+		IsEnabled:      stEntry.Enabled,
+		Constant:       stEntry.Constant,
+		Selective:      stEntry.Selective,
+		InsertionOrder: stEntry.InsertionOrder,
+		Position:       BookPositionToPb(stEntry.Position),
+		Depth:          stEntry.Extensions.Depth,
+	}
+	return entry
+}
+
+// EntityToSTCharacterBook 将 Muse 世界书实体转换为 SillyTavern 角色卡世界书格式
+func EntityToSTCharacterBook(worldInfo *entity.WorldInfo) *sillytavern.CharacterBook {
+	stCharacterBook := &sillytavern.CharacterBook{
+		Name:    worldInfo.Name,
+		Entries: make([]sillytavern.CharacterBookEntry, 0),
+	}
+
+	// 转换每个条目
+	for _, entry := range worldInfo.Entries {
+		stEntry := EntityToSTCharacterBookEntry(&entry)
+		stCharacterBook.Entries = append(stCharacterBook.Entries, stEntry)
+	}
+
+	return stCharacterBook
+}
+
+// EntityToSTCharacterBookEntry 将 Muse 条目实体转换为 SillyTavern 角色卡世界书条目格式
+func EntityToSTCharacterBookEntry(entry *entity.WorldInfoEntry) sillytavern.CharacterBookEntry {
+	// 将逗号分隔的字符串转换为数组
+	var keys []string
+	if entry.KeysList != "" {
+		keys = strings.Split(entry.KeysList, ",")
+		// 去除空白
+		for i := range keys {
+			keys[i] = strings.TrimSpace(keys[i])
+		}
+	}
+
+	var secondaryKeys []string
+	if entry.SecondaryKeys != "" {
+		secondaryKeys = strings.Split(entry.SecondaryKeys, ",")
+		for i := range secondaryKeys {
+			secondaryKeys[i] = strings.TrimSpace(secondaryKeys[i])
+		}
+	}
+
+	// 解析 UID 为整数 ID
+	id := 0
+	if entry.UID != "" {
+		_, _ = fmt.Sscanf(entry.UID, "%d", &id)
+	}
+
+	return sillytavern.CharacterBookEntry{
+		ID:             id,
+		Keys:           keys,
+		SecondaryKeys:  secondaryKeys,
+		Content:        entry.Content,
+		Comment:        entry.Comment,
+		Enabled:        entry.IsEnabled,
+		InsertionOrder: entry.InsertionOrder,
+		Selective:      entry.Selective,
+		Constant:       entry.Constant,
+		Position:       PbBookPositionToString(entry.Position),
+		UseRegex:       false, // 默认值
+	}
+}
+
+// ============ SillyTavern 角色卡转换 ============
+
+// STCharacterCardToEntity 将 SillyTavern 角色卡转换为 Muse 角色卡实体
+// userID: 用户ID
+func STCharacterCardToEntity(stCard *sillytavern.CharacterCard, userID int) *entity.Character {
+	character := &entity.Character{}
+	character.UserID = userID
+	character.CreatorNotes = stCard.Data.CreatorNotes
+
+	// 优先使用 data 中的字段，如果为空则使用顶层字段
+	name := stCard.Data.Name
+	if name == "" {
+		name = stCard.Name
+	}
+	character.Name = name
+
+	description := stCard.Data.Description
+	if description == "" {
+		description = stCard.Description
+	}
+	character.Description = description
+
+	exampleDialogue := stCard.Data.MesExample
+	if exampleDialogue == "" {
+		exampleDialogue = stCard.MesExample
+	}
+	character.ExampleDialogue = exampleDialogue
+
+	avatar := stCard.Avatar
+	if avatar == "" {
+		avatar = stCard.Data.Name // 如果头像为空，使用角色名作为默认值
+	}
+	character.Avatar = avatar
+
+	firstMessage := stCard.Data.FirstMes
+	if firstMessage == "" {
+		firstMessage = stCard.FirstMes
+	}
+	firstMessages := make([]string, 0, len(stCard.Data.AlternateGreetings)+1)
+	if firstMessage != "" {
+		firstMessages = append(firstMessages, stCard.Data.FirstMes)
+	}
+	firstMessages = append(firstMessages, stCard.Data.AlternateGreetings...)
+	character.FirstMessage = firstMessages
+
+	worldBook := STCharacterBookToEntity(&stCard.Data.CharacterBook)
+	character.WorldInfo = *worldBook
+
+	regexs := make([]entity.RegexRule, len(stCard.Data.Extensions.RegexScripts))
+	for i, regex := range stCard.Data.Extensions.RegexScripts {
+		entityRegex := STRegexToEntity(&regex)
+		entityRegex.CharacterID = character.ID
+		entityRegex.PresetID = 0
+		entityRegex.SortOrder = i
+		regexs[i] = *entityRegex
+	}
+	character.RegexRules = regexs
+
+	return character
+}
+
+// EntityToSTCharacterCard 将 Muse 角色卡实体转换为 SillyTavern 角色卡格式
+func EntityToSTCharacterCard(character *entity.Character) *sillytavern.CharacterCard {
+	stCard := &sillytavern.CharacterCard{
+		Spec:        "chara_card_v3",
+		SpecVersion: "3.0",
+		Name:        character.Name,
+		Description: character.Description,
+		Avatar:      character.Avatar,
+		Data: sillytavern.CharacterData{
+			Name:         character.Name,
+			Description:  character.Description,
+			MesExample:   character.ExampleDialogue,
+			CreatorNotes: character.CreatorNotes,
+		},
+	}
+
+	if len(character.FirstMessage) > 0 {
+		stCard.Data.FirstMes = character.FirstMessage[0]
+		stCard.Data.AlternateGreetings = character.FirstMessage[1:]
+	}
+
+	// 如果有关联的世界书，转换它
+	if character.WorldInfo.ID > 0 {
+		stCharacterBook := EntityToSTCharacterBook(&character.WorldInfo)
+		stCard.Data.CharacterBook = *stCharacterBook
+	}
+
+	// 关联正则
+	if len(character.RegexRules) > 0 {
+		stCard.Data.Extensions.RegexScripts = make([]sillytavern.RegexScript, len(character.RegexRules))
+		for i, regex := range character.RegexRules {
+			stCard.Data.Extensions.RegexScripts[i] = *EntityToSTRegex(&regex)
+		}
+	}
+
+	return stCard
 }

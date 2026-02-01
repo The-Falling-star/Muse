@@ -703,8 +703,8 @@ func (c *chatImpl) buildMessages(
 	}
 
 	// 添加角色开场白
-	if session.Character != nil && session.Character.FirstMessage != "" && len(session.Messages) == 0 {
-		firstMsg := c.applyRegexRules(session.Character.FirstMessage, regexRules, RegexTextTypePrompt)
+	if session.Character != nil && len(session.Character.FirstMessage) != 0 && len(session.Messages) == 0 {
+		firstMsg := c.applyRegexRules(session.Character.FirstMessage[0], regexRules, RegexTextTypePrompt)
 		messages = append(messages, model.Message{
 			Role:    pb.Role_Assistant,
 			Content: firstMsg,

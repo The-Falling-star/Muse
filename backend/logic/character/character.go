@@ -15,11 +15,13 @@ import (
 	"github.com/ling/muse/common/constrant"
 	"github.com/ling/muse/common/convert"
 	"github.com/ling/muse/common/errs"
+	"github.com/ling/muse/common/jwt"
 	"github.com/ling/muse/entity"
 	"github.com/ling/muse/entity/sillytavern"
 	pb "github.com/ling/muse/gen/muse"
 	"github.com/ling/muse/repo/cache"
 	"github.com/ling/muse/repo/database"
+	log "github.com/sirupsen/logrus"
 )
 
 // 默认用户ID，待认证功能完成后替换
@@ -66,7 +68,8 @@ func (c *characterImpl) GetCharacter(ctx context.Context, req *pb.GetCharacterRe
 	}
 
 	// 从数据库获取角色
-	character, err := c.charaRepo.GetByID(id, defaultUserID)
+	userId := jwt.GetUserId(ctx)
+	character, err := c.charaRepo.GetByID(id, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -126,7 +129,8 @@ func (c *characterImpl) UpdateCharacter(ctx context.Context, req *pb.UpdateChara
 	}
 
 	// 获取当前角色
-	character, err := c.charaRepo.GetByID(id, defaultUserID)
+	userId := jwt.GetUserId(ctx)
+	character, err := c.charaRepo.GetByID(id, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -148,7 +152,7 @@ func (c *characterImpl) UpdateCharacter(ctx context.Context, req *pb.UpdateChara
 		character.Description = *req.Description
 	}
 	if req.FirstMessage != nil {
-		character.FirstMessage = *req.FirstMessage
+		character.FirstMessage = req.FirstMessage
 	}
 	if req.ExampleDialogue != nil {
 		character.ExampleDialogue = *req.ExampleDialogue
@@ -169,7 +173,7 @@ func (c *characterImpl) UpdateCharacter(ctx context.Context, req *pb.UpdateChara
 	cache.InvalidateCacheByCharacter(int64(id))
 
 	// 重新获取更新后的角色（包含关联数据）
-	updatedCharacter, err := c.charaRepo.GetByID(id, defaultUserID)
+	updatedCharacter, err := c.charaRepo.GetByID(id, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -222,58 +226,29 @@ func (c *characterImpl) ImportCharacter(ctx context.Context, req *pb.ImportChara
 		return nil, errs.NewStandardf(connect.CodeInvalidArgument, "不支持的文件格式: %s", ext)
 	}
 
-	worldBook := getWorldBookFromCard(card)
+	if card == nil {
+		return nil, errs.NewStandardf(connect.CodeInvalidArgument, "图片不包含任何相关数据: %v", err)
+	}
+
+	userId := jwt.GetUserId(ctx)
+	character := convert.STCharacterCardToEntity(card, userId)
 	var buf bytes.Buffer
 	zip := gzip.NewWriter(&buf)
 	defer zip.Close()
-	worldBookJson, _ := json.Marshal(worldBook)
+	worldBookJson, _ := json.Marshal(character.WorldInfo)
 	if _, err = zip.Write(worldBookJson); err != nil {
 		return nil, errs.NewStandardf(connect.CodeInternal, "压缩世界书失败： %v", err)
 	}
-	character := &entity.Character{
-		UserID:          defaultUserID,
-		Name:            card.Name,
-		Description:     card.Description,
-		FirstMessage:    card.FirstMes,
-		ExampleDialogue: card.MesExample,
-		CreatorNotes:    card.CreatorNotes,
-		WorldInfoBackup: buf.Bytes(),
-	}
 
-	// 如果有图片数据（从V3 assets中提取），设置头像
-	if len(card.Assets) > 0 {
-		for _, asset := range card.Assets {
-			if asset.Type == "icon" && asset.URI != "" {
-				// 如果是data URI，直接使用；否则可能需要下载
-				character.Avatar = asset.URI
-				break
-			}
-		}
-	}
+	character.WorldInfoBackup = buf.Bytes()
 
 	// 如果PNG本身作为头像，将其转为base64 data URI
 	if character.Avatar == "" && ext == ".png" {
 		character.Avatar = "data:image/png;base64," + base64.StdEncoding.EncodeToString(fileContent)
 	}
 
-	if err := c.charaRepo.Create(character); err != nil {
+	if err = c.charaRepo.Create(character); err != nil {
 		return nil, err
-	}
-
-	// 导入角色卡内嵌的正则脚本（Scoped Scripts）
-	if card.Extensions != nil && len(card.Extensions.RegexScripts) > 0 {
-		regexRules := make([]*entity.RegexRule, 0, len(card.Extensions.RegexScripts))
-		for i, stScript := range card.Extensions.RegexScripts {
-			// 使用 convert 包转换正则脚本，关联到新创建的角色（presetID=0 表示非预设正则）
-			rule := convert.STRegexToEntity(&stScript, 0, character.ID, i)
-			regexRules = append(regexRules, rule)
-		}
-
-		// 批量创建正则规则
-		if err = c.regexRuleRepo.BatchCreate(regexRules); err != nil {
-			// 即使正则规则创建失败，也不影响角色卡的导入
-			// 可以记录日志但不返回错误
-		}
 	}
 
 	return &pb.ImportCharacterResponse{
@@ -281,35 +256,9 @@ func (c *characterImpl) ImportCharacter(ctx context.Context, req *pb.ImportChara
 	}, nil
 }
 
-func getWorldBookFromCard(card *sillytavern.CharacterCard) entity.WorldInfo {
-	// 将角色卡数据转换为entity.Character
-	worldBook := entity.WorldInfo{
-		Name:        card.CharacterBook.Name,
-		Description: card.CharacterBook.Description,
-		IsGlobal:    false,
-		Entries:     nil,
-	}
-
-	for i, entry := range card.CharacterBook.Entries {
-		worldBook.Entries = append(worldBook.Entries, entity.WorldInfoEntry{
-			KeysList:       strings.Join(entry.Keys, ","),
-			SecondaryKeys:  strings.Join(entry.SecondaryKeys, ","),
-			Content:        entry.Content,
-			Comment:        entry.Comment,
-			IsEnabled:      entry.Enabled,
-			Constant:       entry.Constant,
-			Selective:      entry.Selective,
-			InsertionOrder: entry.InsertionOrder,
-			// Position:       entry.Position, TODO: 需要将字符串位置转换为枚举
-			Depth:     entry.Depth,
-			SortOrder: i,
-		})
-	}
-	return worldBook
-}
-
 func (c *characterImpl) ExportCharacter(ctx context.Context, req *pb.ExportCharacterRequest) (*pb.ExportCharacterResponse, error) {
-	character, err := c.charaRepo.GetByID(int(req.GetId()), defaultUserID)
+	userId := jwt.GetUserId(ctx)
+	character, err := c.charaRepo.GetByID(int(req.GetId()), userId)
 	if err != nil {
 		return nil, err
 	}
@@ -318,13 +267,7 @@ func (c *characterImpl) ExportCharacter(ctx context.Context, req *pb.ExportChara
 	}
 
 	// 将角色数据转换为CharacterCard
-	card := &sillytavern.CharacterCard{
-		Name:         character.Name,
-		Description:  character.Description,
-		FirstMes:     character.FirstMessage,
-		MesExample:   character.ExampleDialogue,
-		CreatorNotes: character.CreatorNotes,
-	}
+	card := convert.EntityToSTCharacterCard(character)
 
 	// 获取原始头像PNG数据
 	// 如果头像是data URI格式，需要解码
@@ -379,11 +322,13 @@ func readFromPNG(data []byte) (*sillytavern.CharacterCard, error) {
 	// 在tEXt块中查找角色卡数据
 	var charaData, ccv3Data string
 	for _, chunk := range chunks {
+		log.Debugf("chunk块的类型: %s", chunk.Type)
 		if chunk.Type != "tEXt" {
 			continue
 		}
 
 		keyword, text := parseTextChunk(chunk.Data)
+		log.Debugf("chunk的关键字: %s", keyword)
 		switch strings.ToLower(keyword) {
 		case "ccv3":
 			ccv3Data = text
@@ -406,6 +351,8 @@ func readFromPNG(data []byte) (*sillytavern.CharacterCard, error) {
 	if err != nil {
 		return nil, fmt.Errorf("invalid base64 data: %v", err)
 	}
+
+	log.Debugf("解码图片数据: %s", string(decoded))
 
 	// JSON解析
 	var card sillytavern.CharacterCard

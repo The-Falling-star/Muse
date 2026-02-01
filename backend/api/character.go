@@ -78,7 +78,7 @@ func (c *CharacterServer) ImportCharacter(ctx context.Context, req *connect.Requ
 	if err != nil {
 		return doResponseExp(ctx, "ImportCharacter", req.Msg.FileName, resp, err)
 	}
-	return doResponse(ctx, "ImportCharacter", req.Msg, resp)
+	return doResponse(ctx, "ImportCharacter", req.Msg.FileName, resp)
 }
 
 // ExportCharacter 导出角色
@@ -112,5 +112,6 @@ func doResponse[T any](_ context.Context, interfaceName string, req any, rsp *T)
 func doResponseExp[T any](_ context.Context, interfaceName string, req any, rsp *T, err error) (
 	*connect.Response[T], error) {
 	log.Errorf("接口: %s, 请求体为: %v, 响应体为: %v, 错误为: %v", interfaceName, req, rsp, err)
-	return connect.NewResponse(rsp), err
+	// 当发生错误时，不要创建包含 nil 指针的 Response，直接返回 nil
+	return nil, err
 }

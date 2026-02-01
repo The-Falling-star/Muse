@@ -14,7 +14,7 @@ import (
 type UserRepo struct{}
 
 // Create 创建用户
-func (u *UserRepo) Create(user *entity.User) *connect.Error {
+func (u *UserRepo) Create(user *entity.User) error {
 	db := config.GetDB()
 	result := db.Create(user)
 	if result.Error != nil {
@@ -24,7 +24,7 @@ func (u *UserRepo) Create(user *entity.User) *connect.Error {
 }
 
 // GetByID 根据ID获取用户
-func (u *UserRepo) GetByID(id int) (*entity.User, *connect.Error) {
+func (u *UserRepo) GetByID(id int) (*entity.User, error) {
 	db := config.GetDB()
 	var user entity.User
 	result := db.Where("id = ?", id).First(&user)
@@ -38,7 +38,7 @@ func (u *UserRepo) GetByID(id int) (*entity.User, *connect.Error) {
 }
 
 // GetByUsername 根据用户名获取用户
-func (u *UserRepo) GetByUsername(username string) (*entity.User, *connect.Error) {
+func (u *UserRepo) GetByUsername(username string) (*entity.User, error) {
 	db := config.GetDB()
 	var user entity.User
 	result := db.Where("username = ?", username).First(&user)
@@ -52,7 +52,7 @@ func (u *UserRepo) GetByUsername(username string) (*entity.User, *connect.Error)
 }
 
 // Update 更新用户
-func (u *UserRepo) Update(user *entity.User) *connect.Error {
+func (u *UserRepo) Update(user *entity.User) error {
 	db := config.GetDB()
 	result := db.Save(user)
 	if result.Error != nil {
@@ -62,7 +62,7 @@ func (u *UserRepo) Update(user *entity.User) *connect.Error {
 }
 
 // UpdateActivePersonaID 更新用户的活跃人设ID
-func (u *UserRepo) UpdateActivePersonaID(userID int, personaID int) *connect.Error {
+func (u *UserRepo) UpdateActivePersonaID(userID int, personaID int) error {
 	db := config.GetDB()
 	result := db.Model(&entity.User{}).
 		Where("id = ?", userID).
@@ -74,7 +74,7 @@ func (u *UserRepo) UpdateActivePersonaID(userID int, personaID int) *connect.Err
 }
 
 // UpdateActivePresetID 更新用户的活跃预设ID
-func (u *UserRepo) UpdateActivePresetID(userID int, presetID int) *connect.Error {
+func (u *UserRepo) UpdateActivePresetID(userID int, presetID int) error {
 	db := config.GetDB()
 	result := db.Model(&entity.User{}).
 		Where("id = ?", userID).
@@ -88,7 +88,7 @@ func (u *UserRepo) UpdateActivePresetID(userID int, presetID int) *connect.Error
 // ==================== Persona 相关方法 ====================
 
 // CreatePersona 创建人设
-func (u *UserRepo) CreatePersona(persona *entity.Persona) *connect.Error {
+func (u *UserRepo) CreatePersona(persona *entity.Persona) error {
 	db := config.GetDB()
 	result := db.Create(persona)
 	if result.Error != nil {
@@ -98,7 +98,7 @@ func (u *UserRepo) CreatePersona(persona *entity.Persona) *connect.Error {
 }
 
 // GetPersonaByID 根据ID获取人设
-func (u *UserRepo) GetPersonaByID(id int, userID int) (*entity.Persona, *connect.Error) {
+func (u *UserRepo) GetPersonaByID(id int, userID int) (*entity.Persona, error) {
 	db := config.GetDB()
 	var persona entity.Persona
 	result := db.Where("id = ? AND user_id = ?", id, userID).First(&persona)
@@ -112,7 +112,7 @@ func (u *UserRepo) GetPersonaByID(id int, userID int) (*entity.Persona, *connect
 }
 
 // ListPersonas 获取用户的人设列表
-func (u *UserRepo) ListPersonas(userID int) ([]*entity.Persona, *connect.Error) {
+func (u *UserRepo) ListPersonas(userID int) ([]*entity.Persona, error) {
 	db := config.GetDB()
 	var personas []*entity.Persona
 	result := db.Where("user_id = ?", userID).
@@ -125,7 +125,7 @@ func (u *UserRepo) ListPersonas(userID int) ([]*entity.Persona, *connect.Error) 
 }
 
 // UpdatePersona 更新人设
-func (u *UserRepo) UpdatePersona(persona *entity.Persona) *connect.Error {
+func (u *UserRepo) UpdatePersona(persona *entity.Persona) error {
 	db := config.GetDB()
 	result := db.Save(persona)
 	if result.Error != nil {
@@ -135,7 +135,7 @@ func (u *UserRepo) UpdatePersona(persona *entity.Persona) *connect.Error {
 }
 
 // DeletePersona 删除人设
-func (u *UserRepo) DeletePersona(id int, userID int) *connect.Error {
+func (u *UserRepo) DeletePersona(id int, userID int) error {
 	db := config.GetDB()
 	result := db.Where("id = ? AND user_id = ?", id, userID).Delete(&entity.Persona{})
 	if result.Error != nil {
@@ -150,7 +150,7 @@ func (u *UserRepo) DeletePersona(id int, userID int) *connect.Error {
 // ==================== UserSetting 相关方法 ====================
 
 // CreateUserSetting 创建用户设置
-func (u *UserRepo) CreateUserSetting(setting *entity.UserSetting) *connect.Error {
+func (u *UserRepo) CreateUserSetting(setting *entity.UserSetting) error {
 	db := config.GetDB()
 	result := db.Create(setting)
 	if result.Error != nil {
@@ -160,7 +160,7 @@ func (u *UserRepo) CreateUserSetting(setting *entity.UserSetting) *connect.Error
 }
 
 // GetUserSettingByUserID 根据用户ID获取用户设置
-func (u *UserRepo) GetUserSettingByUserID(userID int) (*entity.UserSetting, *connect.Error) {
+func (u *UserRepo) GetUserSettingByUserID(userID int) (*entity.UserSetting, error) {
 	db := config.GetDB()
 	var setting entity.UserSetting
 	result := db.Where("user_id = ?", userID).First(&setting)
@@ -174,7 +174,7 @@ func (u *UserRepo) GetUserSettingByUserID(userID int) (*entity.UserSetting, *con
 }
 
 // UpdateUserSetting 更新用户设置
-func (u *UserRepo) UpdateUserSetting(setting *entity.UserSetting) *connect.Error {
+func (u *UserRepo) UpdateUserSetting(setting *entity.UserSetting) error {
 	db := config.GetDB()
 	result := db.Save(setting)
 	if result.Error != nil {
@@ -186,7 +186,7 @@ func (u *UserRepo) UpdateUserSetting(setting *entity.UserSetting) *connect.Error
 // ==================== APIConfig 相关方法 ====================
 
 // CreateAPIConfig 创建API配置
-func (u *UserRepo) CreateAPIConfig(apiConfig *entity.APIConfig) *connect.Error {
+func (u *UserRepo) CreateAPIConfig(apiConfig *entity.APIConfig) error {
 	db := config.GetDB()
 	result := db.Create(apiConfig)
 	if result.Error != nil {
@@ -196,7 +196,7 @@ func (u *UserRepo) CreateAPIConfig(apiConfig *entity.APIConfig) *connect.Error {
 }
 
 // GetAPIConfigByID 根据ID获取API配置
-func (u *UserRepo) GetAPIConfigByID(id int, userID int) (*entity.APIConfig, *connect.Error) {
+func (u *UserRepo) GetAPIConfigByID(id int, userID int) (*entity.APIConfig, error) {
 	db := config.GetDB()
 	var apiConfig entity.APIConfig
 	result := db.Where("id = ? AND user_id = ?", id, userID).First(&apiConfig)
@@ -210,7 +210,7 @@ func (u *UserRepo) GetAPIConfigByID(id int, userID int) (*entity.APIConfig, *con
 }
 
 // ListAPIConfigs 获取用户的API配置列表
-func (u *UserRepo) ListAPIConfigs(userID int) ([]*entity.APIConfig, *connect.Error) {
+func (u *UserRepo) ListAPIConfigs(userID int) ([]*entity.APIConfig, error) {
 	db := config.GetDB()
 	var configs []*entity.APIConfig
 	result := db.Where("user_id = ?", userID).
@@ -223,7 +223,7 @@ func (u *UserRepo) ListAPIConfigs(userID int) ([]*entity.APIConfig, *connect.Err
 }
 
 // UpdateAPIConfig 更新API配置
-func (u *UserRepo) UpdateAPIConfig(apiConfig *entity.APIConfig) *connect.Error {
+func (u *UserRepo) UpdateAPIConfig(apiConfig *entity.APIConfig) error {
 	db := config.GetDB()
 	result := db.Save(apiConfig)
 	if result.Error != nil {
@@ -233,7 +233,7 @@ func (u *UserRepo) UpdateAPIConfig(apiConfig *entity.APIConfig) *connect.Error {
 }
 
 // DeleteAPIConfig 删除API配置
-func (u *UserRepo) DeleteAPIConfig(id int, userID int) *connect.Error {
+func (u *UserRepo) DeleteAPIConfig(id int, userID int) error {
 	db := config.GetDB()
 	result := db.Where("id = ? AND user_id = ?", id, userID).Delete(&entity.APIConfig{})
 	if result.Error != nil {
@@ -246,7 +246,7 @@ func (u *UserRepo) DeleteAPIConfig(id int, userID int) *connect.Error {
 }
 
 // DeactivateAllAPIConfigs 停用用户的所有API配置
-func (u *UserRepo) DeactivateAllAPIConfigs(userID int) *connect.Error {
+func (u *UserRepo) DeactivateAllAPIConfigs(userID int) error {
 	db := config.GetDB()
 	result := db.Model(&entity.APIConfig{}).
 		Where("user_id = ? AND is_active = ?", userID, true).
@@ -258,7 +258,7 @@ func (u *UserRepo) DeactivateAllAPIConfigs(userID int) *connect.Error {
 }
 
 // ActivateAPIConfig 激活API配置
-func (u *UserRepo) ActivateAPIConfig(id int, userID int) *connect.Error {
+func (u *UserRepo) ActivateAPIConfig(id int, userID int) error {
 	db := config.GetDB()
 	// 先停用所有配置
 	if err := u.DeactivateAllAPIConfigs(userID); err != nil {
@@ -278,7 +278,7 @@ func (u *UserRepo) ActivateAPIConfig(id int, userID int) *connect.Error {
 }
 
 // GetActiveAPIConfig 获取用户当前活跃的API配置
-func (u *UserRepo) GetActiveAPIConfig(userID int) (*entity.APIConfig, *connect.Error) {
+func (u *UserRepo) GetActiveAPIConfig(userID int) (*entity.APIConfig, error) {
 	db := config.GetDB()
 	var apiConfig entity.APIConfig
 	result := db.Where("user_id = ? AND is_active = ?", userID, true).First(&apiConfig)

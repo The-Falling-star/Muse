@@ -232,12 +232,18 @@ func (c *characterImpl) ImportCharacter(ctx context.Context, req *pb.ImportChara
 
 	userId := jwt.GetUserId(ctx)
 	character := convert.STCharacterCardToEntity(card, userId)
+
+	// 压缩世界书数据
 	var buf bytes.Buffer
 	zip := gzip.NewWriter(&buf)
-	defer zip.Close()
 	worldBookJson, _ := json.Marshal(character.WorldInfo)
 	if _, err = zip.Write(worldBookJson); err != nil {
+		zip.Close()
 		return nil, errs.NewStandardf(connect.CodeInternal, "压缩世界书失败： %v", err)
+	}
+	// 必须在读取 buf.Bytes() 之前关闭 gzip.Writer，否则数据不完整
+	if err = zip.Close(); err != nil {
+		return nil, errs.NewStandardf(connect.CodeInternal, "关闭压缩写入器失败： %v", err)
 	}
 
 	character.WorldInfoBackup = buf.Bytes()
@@ -247,13 +253,23 @@ func (c *characterImpl) ImportCharacter(ctx context.Context, req *pb.ImportChara
 		character.Avatar = "data:image/png;base64," + base64.StdEncoding.EncodeToString(fileContent)
 	}
 
+	log.Infof("角色创建中，名称: %s", character.Name)
 	if err = c.charaRepo.Create(character); err != nil {
 		return nil, err
 	}
 
-	return &pb.ImportCharacterResponse{
-		Character: convert.CharaEntityToPb(character),
-	}, nil
+	log.Infof("角色创建成功，ID: %d, 名称: %s", character.ID, character.Name)
+
+	// 构建响应前先打印调试信息
+	pbChar := convert.CharaEntityToPb(character)
+	log.Infof("转换后的pb角色: ID=%d, Name=%s", pbChar.GetId(), pbChar.GetName())
+
+	resp := &pb.ImportCharacterResponse{
+		Character: pbChar,
+	}
+	log.Infof("响应构建完成，准备返回")
+
+	return resp, nil
 }
 
 func (c *characterImpl) ExportCharacter(ctx context.Context, req *pb.ExportCharacterRequest) (*pb.ExportCharacterResponse, error) {
@@ -352,11 +368,11 @@ func readFromPNG(data []byte) (*sillytavern.CharacterCard, error) {
 		return nil, fmt.Errorf("invalid base64 data: %v", err)
 	}
 
-	log.Debugf("解码图片数据: %s", string(decoded))
+	//log.Debugf("解码图片数据: %s", string(decoded))
 
 	// JSON解析
 	var card sillytavern.CharacterCard
-	if err := json.Unmarshal(decoded, &card); err != nil {
+	if err = json.Unmarshal(decoded, &card); err != nil {
 		return nil, fmt.Errorf("invalid JSON data: %v", err)
 	}
 

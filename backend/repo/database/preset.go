@@ -15,7 +15,7 @@ type PresetRepo struct {
 }
 
 // Create 创建预设
-func (p *PresetRepo) Create(preset *entity.Preset) *connect.Error {
+func (p *PresetRepo) Create(preset *entity.Preset) error {
 	db := config.GetDB()
 	result := db.Create(preset)
 	if result.Error != nil {
@@ -25,7 +25,7 @@ func (p *PresetRepo) Create(preset *entity.Preset) *connect.Error {
 }
 
 // GetByID 根据ID获取预设（包含关联的PromptItems）
-func (p *PresetRepo) GetByID(id int, userID int) (*entity.Preset, *connect.Error) {
+func (p *PresetRepo) GetByID(id int, userID int) (*entity.Preset, error) {
 	db := config.GetDB()
 	var preset entity.Preset
 	result := db.Where("id = ? AND user_id = ?", id, userID).
@@ -43,7 +43,7 @@ func (p *PresetRepo) GetByID(id int, userID int) (*entity.Preset, *connect.Error
 }
 
 // List 获取预设列表
-func (p *PresetRepo) List(userID int, page int, pageSize int) ([]*entity.Preset, int64, *connect.Error) {
+func (p *PresetRepo) List(userID int, page int, pageSize int) ([]*entity.Preset, int64, error) {
 	db := config.GetDB()
 	var presets []*entity.Preset
 	var total int64
@@ -68,7 +68,7 @@ func (p *PresetRepo) List(userID int, page int, pageSize int) ([]*entity.Preset,
 }
 
 // Update 更新预设
-func (p *PresetRepo) Update(preset *entity.Preset) *connect.Error {
+func (p *PresetRepo) Update(preset *entity.Preset) error {
 	db := config.GetDB()
 
 	// 使用乐观锁更新
@@ -99,7 +99,7 @@ func (p *PresetRepo) Update(preset *entity.Preset) *connect.Error {
 }
 
 // Delete 删除预设
-func (p *PresetRepo) Delete(id int, userID int) *connect.Error {
+func (p *PresetRepo) Delete(id int, userID int) error {
 	db := config.GetDB()
 
 	// 开启事务
@@ -134,7 +134,7 @@ func (p *PresetRepo) Delete(id int, userID int) *connect.Error {
 }
 
 // CreatePromptItem 创建提示项
-func (p *PresetRepo) CreatePromptItem(item *entity.PromptItem) *connect.Error {
+func (p *PresetRepo) CreatePromptItem(item *entity.PromptItem) error {
 	db := config.GetDB()
 	result := db.Create(item)
 	if result.Error != nil {
@@ -144,7 +144,7 @@ func (p *PresetRepo) CreatePromptItem(item *entity.PromptItem) *connect.Error {
 }
 
 // GetPromptItemByID 根据ID获取提示项
-func (p *PresetRepo) GetPromptItemByID(id int) (*entity.PromptItem, *connect.Error) {
+func (p *PresetRepo) GetPromptItemByID(id int) (*entity.PromptItem, error) {
 	db := config.GetDB()
 	var item entity.PromptItem
 	result := db.Where("id = ?", id).First(&item)
@@ -158,7 +158,7 @@ func (p *PresetRepo) GetPromptItemByID(id int) (*entity.PromptItem, *connect.Err
 }
 
 // ListPromptItems 获取预设的提示项列表
-func (p *PresetRepo) ListPromptItems(presetID int) ([]*entity.PromptItem, *connect.Error) {
+func (p *PresetRepo) ListPromptItems(presetID int) ([]*entity.PromptItem, error) {
 	db := config.GetDB()
 	var items []*entity.PromptItem
 	result := db.Where("preset_id = ?", presetID).
@@ -171,7 +171,7 @@ func (p *PresetRepo) ListPromptItems(presetID int) ([]*entity.PromptItem, *conne
 }
 
 // UpdatePromptItem 更新提示项
-func (p *PresetRepo) UpdatePromptItem(item *entity.PromptItem) *connect.Error {
+func (p *PresetRepo) UpdatePromptItem(item *entity.PromptItem) error {
 	db := config.GetDB()
 	result := db.Model(item).
 		Where("id = ?", item.ID).
@@ -192,7 +192,7 @@ func (p *PresetRepo) UpdatePromptItem(item *entity.PromptItem) *connect.Error {
 }
 
 // DeletePromptItem 删除提示项
-func (p *PresetRepo) DeletePromptItem(id int) *connect.Error {
+func (p *PresetRepo) DeletePromptItem(id int) error {
 	db := config.GetDB()
 	result := db.Where("id = ?", id).Delete(&entity.PromptItem{})
 	if result.Error != nil {
@@ -205,7 +205,7 @@ func (p *PresetRepo) DeletePromptItem(id int) *connect.Error {
 }
 
 // UpdatePromptItemsOrder 更新提示项排序
-func (p *PresetRepo) UpdatePromptItemsOrder(presetID int, itemOrders map[int]int) *connect.Error {
+func (p *PresetRepo) UpdatePromptItemsOrder(presetID int, itemOrders map[int]int) error {
 	db := config.GetDB()
 	tx := db.Begin()
 	defer func() {
@@ -231,7 +231,7 @@ func (p *PresetRepo) UpdatePromptItemsOrder(presetID int, itemOrders map[int]int
 
 // GetVersion 获取预设的版本号
 // 用于缓存版本校验，只查询版本字段以减少数据传输
-func (p *PresetRepo) GetVersion(id int, userID int) (int, *connect.Error) {
+func (p *PresetRepo) GetVersion(id int, userID int) (int, error) {
 	db := config.GetDB()
 	var version int
 	result := db.Model(&entity.Preset{}).

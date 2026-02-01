@@ -15,9 +15,11 @@ type CharacterRepo struct {
 }
 
 // Create 创建角色
-func (c *CharacterRepo) Create(character *entity.Character) *connect.Error {
+func (c *CharacterRepo) Create(character *entity.Character) error {
 	db := config.GetDB()
-	result := db.Create(character)
+	// 使用 Omit 忽略关联字段，避免 GORM 级联创建
+	// WorldInfo 和 RegexRules 应该独立管理，不应该在创建角色时级联创建
+	result := db.Omit("WorldInfo", "RegexRules").Create(character)
 	if result.Error != nil {
 		return errs.NewStandardf(connect.CodeInternal, "数据库创建失败: %v", result.Error)
 	}
@@ -25,7 +27,7 @@ func (c *CharacterRepo) Create(character *entity.Character) *connect.Error {
 }
 
 // GetByID 根据ID获取角色
-func (c *CharacterRepo) GetByID(id int, userID int) (*entity.Character, *connect.Error) {
+func (c *CharacterRepo) GetByID(id int, userID int) (*entity.Character, error) {
 	db := config.GetDB()
 	var character entity.Character
 	result := db.Where("id = ? AND user_id = ?", id, userID).
@@ -42,7 +44,7 @@ func (c *CharacterRepo) GetByID(id int, userID int) (*entity.Character, *connect
 }
 
 // List 获取角色列表
-func (c *CharacterRepo) List(userID int, page int, pageSize int) ([]*entity.Character, int64, *connect.Error) {
+func (c *CharacterRepo) List(userID int, page int, pageSize int) ([]*entity.Character, int64, error) {
 	db := config.GetDB()
 	var characters []*entity.Character
 	var total int64
@@ -69,7 +71,7 @@ func (c *CharacterRepo) List(userID int, page int, pageSize int) ([]*entity.Char
 }
 
 // Update 更新角色
-func (c *CharacterRepo) Update(character *entity.Character) *connect.Error {
+func (c *CharacterRepo) Update(character *entity.Character) error {
 	db := config.GetDB()
 
 	// 使用乐观锁更新
@@ -100,7 +102,7 @@ func (c *CharacterRepo) Update(character *entity.Character) *connect.Error {
 }
 
 // Delete 删除角色
-func (c *CharacterRepo) Delete(id int, userID int) *connect.Error {
+func (c *CharacterRepo) Delete(id int, userID int) error {
 	db := config.GetDB()
 	result := db.Where("id = ? AND user_id = ?", id, userID).Delete(&entity.Character{})
 	if result.Error != nil {
@@ -114,7 +116,7 @@ func (c *CharacterRepo) Delete(id int, userID int) *connect.Error {
 
 // GetVersion 获取角色的版本号
 // 用于缓存版本校验，只查询版本字段以减少数据传输
-func (c *CharacterRepo) GetVersion(id int, userID int) (int, *connect.Error) {
+func (c *CharacterRepo) GetVersion(id int, userID int) (int, error) {
 	db := config.GetDB()
 	var version int
 	result := db.Model(&entity.Character{}).

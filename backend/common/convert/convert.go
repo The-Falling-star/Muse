@@ -609,38 +609,38 @@ func STCharacterBookToEntity(stCharacterBook *sillytavern.CharacterBook) *entity
 
 // BookPositionToPb 将 SillyTavern 位置字符串转换为 pb.EntryPosition
 // SillyTavern: "before_char", "after_char", "before_desc", "after_desc", "at_depth"
-func BookPositionToPb(position string) pb.EntryPosition {
+func BookPositionToPb(position int) pb.EntryPosition {
 	switch position {
-	case "before_char":
+	case 0, 2:
 		return pb.EntryPosition_BeforeChar
-	case "after_char":
+	case 1, 3:
 		return pb.EntryPosition_AfterChar
-	case "before_desc":
-		return pb.EntryPosition_BeforeExample
-	case "after_desc":
-		return pb.EntryPosition_AfterExample
-	case "at_depth":
+	case 4:
 		return pb.EntryPosition_AtDepth
+	case 5:
+		return pb.EntryPosition_BeforeExample
+	case 6:
+		return pb.EntryPosition_AfterExample
 	default:
 		return pb.EntryPosition_BeforeChar // 默认值
 	}
 }
 
 // PbBookPositionToString 将 pb.EntryPosition 转换为 SillyTavern 位置字符串
-func PbBookPositionToString(position pb.EntryPosition) string {
+func PbBookPositionToString(position pb.EntryPosition) int {
 	switch position {
 	case pb.EntryPosition_BeforeChar:
-		return "before_char"
+		return 0
 	case pb.EntryPosition_AfterChar:
-		return "after_char"
+		return 1
 	case pb.EntryPosition_BeforeExample:
-		return "before_desc"
+		return 5
 	case pb.EntryPosition_AfterExample:
-		return "after_desc"
+		return 6
 	case pb.EntryPosition_AtDepth:
-		return "at_depth"
+		return 4
 	default:
-		return "before_char"
+		return 0
 	}
 }
 
@@ -660,7 +660,7 @@ func STCharacterBookEntryToEntity(stEntry *sillytavern.CharacterBookEntry) *enti
 		Constant:       stEntry.Constant,
 		Selective:      stEntry.Selective,
 		InsertionOrder: stEntry.InsertionOrder,
-		Position:       BookPositionToPb(stEntry.Position),
+		Position:       BookPositionToPb(stEntry.Extensions.Position),
 		Depth:          stEntry.Extensions.Depth,
 	}
 	return entry
@@ -718,8 +718,12 @@ func EntityToSTCharacterBookEntry(entry *entity.WorldInfoEntry) sillytavern.Char
 		InsertionOrder: entry.InsertionOrder,
 		Selective:      entry.Selective,
 		Constant:       entry.Constant,
-		Position:       PbBookPositionToString(entry.Position),
 		UseRegex:       false, // 默认值
+		Extensions: sillytavern.CharacterBookEntryExtensions{
+			Depth:    entry.Depth,
+			Position: PbBookPositionToString(entry.Position),
+			// TODO 支持更多选项
+		},
 	}
 }
 

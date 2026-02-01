@@ -135,14 +135,15 @@ type CharacterBookEntry struct {
 	InsertionOrder int                          `json:"insertion_order"`          // 插入顺序
 	Selective      bool                         `json:"selective,omitempty"`      // 选择性触发
 	Constant       bool                         `json:"constant,omitempty"`       // 常驻条目
-	Position       string                       `json:"position,omitempty"`       // 插入位置
+	Position       string                       `json:"position,omitempty"`       // 插入位置,v2,只支持 "before_char", "after_char"
 	UseRegex       bool                         `json:"use_regex,omitempty"`      // 使用正则表达式
 	Extensions     CharacterBookEntryExtensions `json:"extensions,omitempty"`     // 条目扩展字段
 }
 
 // CharacterBookEntryExtensions 世界书条目扩展字段
 type CharacterBookEntryExtensions struct {
-	Position                  string   `json:"position"`                     // 插入位置（before_char, after_char, before_desc, after_desc, at_depth）
+	// 插入位置（0=before, 1=after, 2=ANTop, 3=ANBottom, 4=atDepth, 5=EMTop, 6=EMBottom, 7=outlet）
+	Position                  int      `json:"position"`
 	ExcludeRecursion          bool     `json:"exclude_recursion"`            // 排除递归
 	DisplayIndex              int      `json:"display_index"`                // 显示索引
 	Probability               int      `json:"probability"`                  // 触发概率
@@ -153,7 +154,7 @@ type CharacterBookEntryExtensions struct {
 	GroupOverride             bool     `json:"group_override"`               // 分组覆盖
 	GroupWeight               int      `json:"group_weight"`                 // 分组权重
 	PreventRecursion          bool     `json:"prevent_recursion"`            // 阻止递归
-	DelayUntilRecursion       int      `json:"delay_until_recursion"`        // 延迟到递归
+	DelayUntilRecursion       bool     `json:"delay_until_recursion"`        // 延迟到递归
 	ScanDepth                 *int     `json:"scan_depth"`                   // 扫描深度（可为null）
 	MatchWholeWords           *bool    `json:"match_whole_words"`            // 匹配整词（可为null）
 	UseGroupScoring           bool     `json:"use_group_scoring"`            // 使用分组评分
@@ -167,7 +168,7 @@ type CharacterBookEntryExtensions struct {
 	Triggers                  []string `json:"triggers"`                     // 触发器
 	IgnoreBudget              bool     `json:"ignore_budget"`                // 忽略预算
 	AutomationID              string   `json:"automation_id"`                // 自动化ID
-	Role                      int      `json:"role"`                         // 角色
+	Role                      int      `json:"role"`                         // 角色, 当 position=atDepth 时使用
 	Vectorized                bool     `json:"vectorized"`                   // 向量化
 	Sticky                    int      `json:"sticky"`                       // 粘性
 	Cooldown                  int      `json:"cooldown"`                     // 冷却时间

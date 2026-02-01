@@ -1029,31 +1029,4 @@ const handlePersonaChange = async (persona: { id: number; name: string; avatar: 
   background: var(--bg-overlay);
   z-index: 99;
 }
-
-/* 消息列表动画 */
-.message-list-enter-active,
-.message-list-leave-active {
-  transition: all 0.3s ease;
-}
-
-.message-list-enter-from {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-.message-list-leave-to {
-  opacity: 0;
-  transform: translateX(-20px);
-}
-
-/* 过渡动画 */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
 </style>

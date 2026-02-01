@@ -426,7 +426,7 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 }
 
 // getVersionInfo 获取缓存相关实体的版本信息
-func (c *chatImpl) getVersionInfo(userID int, sessionCache *cache.SessionCache) (*cache.VersionInfo, *connect.Error) {
+func (c *chatImpl) getVersionInfo(userID int, sessionCache *cache.SessionCache) (*cache.VersionInfo, error) {
 	versions := &cache.VersionInfo{
 		WorldInfoVersions: make(map[int64]int),
 		RegexRuleVersions: make(map[int64]int),

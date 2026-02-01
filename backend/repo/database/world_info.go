@@ -15,7 +15,7 @@ type WorldInfoRepo struct {
 }
 
 // Create 创建世界书
-func (w *WorldInfoRepo) Create(worldInfo *entity.WorldInfo) *connect.Error {
+func (w *WorldInfoRepo) Create(worldInfo *entity.WorldInfo) error {
 	db := config.GetDB()
 	result := db.Create(worldInfo)
 	if result.Error != nil {
@@ -25,7 +25,7 @@ func (w *WorldInfoRepo) Create(worldInfo *entity.WorldInfo) *connect.Error {
 }
 
 // GetByID 根据ID获取世界书
-func (w *WorldInfoRepo) GetByID(id int, userID int) (*entity.WorldInfo, *connect.Error) {
+func (w *WorldInfoRepo) GetByID(id int, userID int) (*entity.WorldInfo, error) {
 	db := config.GetDB()
 	var worldInfo entity.WorldInfo
 	result := db.Where("id = ? AND user_id = ?", id, userID).
@@ -40,7 +40,7 @@ func (w *WorldInfoRepo) GetByID(id int, userID int) (*entity.WorldInfo, *connect
 }
 
 // List 获取世界书列表
-func (w *WorldInfoRepo) List(userID int, page int, pageSize int) ([]*entity.WorldInfo, int64, *connect.Error) {
+func (w *WorldInfoRepo) List(userID int, page int, pageSize int) ([]*entity.WorldInfo, int64, error) {
 	db := config.GetDB()
 	var worldInfos []*entity.WorldInfo
 	var total int64
@@ -67,7 +67,7 @@ func (w *WorldInfoRepo) List(userID int, page int, pageSize int) ([]*entity.Worl
 }
 
 // Update 更新世界书
-func (w *WorldInfoRepo) Update(worldInfo *entity.WorldInfo) *connect.Error {
+func (w *WorldInfoRepo) Update(worldInfo *entity.WorldInfo) error {
 	db := config.GetDB()
 	result := db.Model(worldInfo).
 		Where("id = ? AND user_id = ?", worldInfo.ID, worldInfo.UserID).
@@ -85,7 +85,7 @@ func (w *WorldInfoRepo) Update(worldInfo *entity.WorldInfo) *connect.Error {
 }
 
 // Delete 删除世界书
-func (w *WorldInfoRepo) Delete(id int, userID int) *connect.Error {
+func (w *WorldInfoRepo) Delete(id int, userID int) error {
 	db := config.GetDB()
 
 	// 开启事务
@@ -120,7 +120,7 @@ func (w *WorldInfoRepo) Delete(id int, userID int) *connect.Error {
 }
 
 // CreateEntry 创建世界书条目
-func (w *WorldInfoRepo) CreateEntry(entry *entity.WorldInfoEntry) *connect.Error {
+func (w *WorldInfoRepo) CreateEntry(entry *entity.WorldInfoEntry) error {
 	db := config.GetDB()
 	result := db.Create(entry)
 	if result.Error != nil {
@@ -130,7 +130,7 @@ func (w *WorldInfoRepo) CreateEntry(entry *entity.WorldInfoEntry) *connect.Error
 }
 
 // BatchCreateEntries 批量创建世界书条目
-func (w *WorldInfoRepo) BatchCreateEntries(entries []*entity.WorldInfoEntry) *connect.Error {
+func (w *WorldInfoRepo) BatchCreateEntries(entries []*entity.WorldInfoEntry) error {
 	if len(entries) == 0 {
 		return nil
 	}
@@ -143,7 +143,7 @@ func (w *WorldInfoRepo) BatchCreateEntries(entries []*entity.WorldInfoEntry) *co
 }
 
 // GetEntryByID 根据ID获取世界书条目
-func (w *WorldInfoRepo) GetEntryByID(id int) (*entity.WorldInfoEntry, *connect.Error) {
+func (w *WorldInfoRepo) GetEntryByID(id int) (*entity.WorldInfoEntry, error) {
 	db := config.GetDB()
 	var entry entity.WorldInfoEntry
 	result := db.Where("id = ?", id).First(&entry)
@@ -157,7 +157,7 @@ func (w *WorldInfoRepo) GetEntryByID(id int) (*entity.WorldInfoEntry, *connect.E
 }
 
 // ListEntries 获取世界书的条目列表
-func (w *WorldInfoRepo) ListEntries(worldInfoID int) ([]*entity.WorldInfoEntry, *connect.Error) {
+func (w *WorldInfoRepo) ListEntries(worldInfoID int) ([]*entity.WorldInfoEntry, error) {
 	db := config.GetDB()
 	var entries []*entity.WorldInfoEntry
 	result := db.Where("world_info_id = ?", worldInfoID).
@@ -170,7 +170,7 @@ func (w *WorldInfoRepo) ListEntries(worldInfoID int) ([]*entity.WorldInfoEntry, 
 }
 
 // UpdateEntry 更新世界书条目
-func (w *WorldInfoRepo) UpdateEntry(entry *entity.WorldInfoEntry) *connect.Error {
+func (w *WorldInfoRepo) UpdateEntry(entry *entity.WorldInfoEntry) error {
 	db := config.GetDB()
 	result := db.Model(entry).
 		Where("id = ?", entry.ID).
@@ -195,7 +195,7 @@ func (w *WorldInfoRepo) UpdateEntry(entry *entity.WorldInfoEntry) *connect.Error
 }
 
 // DeleteEntry 删除世界书条目
-func (w *WorldInfoRepo) DeleteEntry(id int) *connect.Error {
+func (w *WorldInfoRepo) DeleteEntry(id int) error {
 	db := config.GetDB()
 	result := db.Where("id = ?", id).Delete(&entity.WorldInfoEntry{})
 	if result.Error != nil {
@@ -208,7 +208,7 @@ func (w *WorldInfoRepo) DeleteEntry(id int) *connect.Error {
 }
 
 // UpdateEntriesOrder 更新世界书条目排序
-func (w *WorldInfoRepo) UpdateEntriesOrder(worldInfoID int, entryOrders map[int]int) *connect.Error {
+func (w *WorldInfoRepo) UpdateEntriesOrder(worldInfoID int, entryOrders map[int]int) error {
 	db := config.GetDB()
 	tx := db.Begin()
 	defer func() {
@@ -233,7 +233,7 @@ func (w *WorldInfoRepo) UpdateEntriesOrder(worldInfoID int, entryOrders map[int]
 }
 
 // ListGlobalWorldInfosWithEntries 获取用户所有全局世界书及其启用的条目
-func (w *WorldInfoRepo) ListGlobalWorldInfosWithEntries(userID int) ([]*entity.WorldInfo, *connect.Error) {
+func (w *WorldInfoRepo) ListGlobalWorldInfosWithEntries(userID int) ([]*entity.WorldInfo, error) {
 	db := config.GetDB()
 	var worldInfos []*entity.WorldInfo
 	result := db.Where("user_id = ? AND is_global = ?", userID, true).
@@ -248,7 +248,7 @@ func (w *WorldInfoRepo) ListGlobalWorldInfosWithEntries(userID int) ([]*entity.W
 }
 
 // GetByIDWithEntries 根据ID获取世界书及其所有启用的条目
-func (w *WorldInfoRepo) GetByIDWithEntries(id int, userID int) (*entity.WorldInfo, *connect.Error) {
+func (w *WorldInfoRepo) GetByIDWithEntries(id int, userID int) (*entity.WorldInfo, error) {
 	db := config.GetDB()
 	var worldInfo entity.WorldInfo
 	result := db.Where("id = ? AND user_id = ?", id, userID).
@@ -267,7 +267,7 @@ func (w *WorldInfoRepo) GetByIDWithEntries(id int, userID int) (*entity.WorldInf
 
 // GetVersions 批量获取世界书的版本号
 // 用于缓存版本校验，只查询版本字段以减少数据传输
-func (w *WorldInfoRepo) GetVersions(ids []int, userID int) (map[int64]int, *connect.Error) {
+func (w *WorldInfoRepo) GetVersions(ids []int, userID int) (map[int64]int, error) {
 	if len(ids) == 0 {
 		return make(map[int64]int), nil
 	}
@@ -292,7 +292,7 @@ func (w *WorldInfoRepo) GetVersions(ids []int, userID int) (map[int64]int, *conn
 }
 
 // GetGlobalWorldInfoVersions 获取用户所有全局世界书的版本号
-func (w *WorldInfoRepo) GetGlobalWorldInfoVersions(userID int) (map[int64]int, *connect.Error) {
+func (w *WorldInfoRepo) GetGlobalWorldInfoVersions(userID int) (map[int64]int, error) {
 	db := config.GetDB()
 	type versionResult struct {
 		ID      int64

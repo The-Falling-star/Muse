@@ -15,7 +15,7 @@ type ChatRepo struct {
 }
 
 // CreateSession 创建聊天会话
-func (c *ChatRepo) CreateSession(session *entity.ChatSession) *connect.Error {
+func (c *ChatRepo) CreateSession(session *entity.ChatSession) error {
 	db := config.GetDB()
 	result := db.Create(session)
 	if result.Error != nil {
@@ -25,7 +25,7 @@ func (c *ChatRepo) CreateSession(session *entity.ChatSession) *connect.Error {
 }
 
 // GetSessionByID 根据ID获取聊天会话
-func (c *ChatRepo) GetSessionByID(id int, userID int) (*entity.ChatSession, *connect.Error) {
+func (c *ChatRepo) GetSessionByID(id int, userID int) (*entity.ChatSession, error) {
 	db := config.GetDB()
 	var session entity.ChatSession
 	result := db.Where("id = ? AND user_id = ?", id, userID).
@@ -40,7 +40,7 @@ func (c *ChatRepo) GetSessionByID(id int, userID int) (*entity.ChatSession, *con
 }
 
 // ListSessions 获取会话列表
-func (c *ChatRepo) ListSessions(userID, characterID, page, pageSize int) ([]*entity.ChatSession, int64, *connect.Error) {
+func (c *ChatRepo) ListSessions(userID, characterID, page, pageSize int) ([]*entity.ChatSession, int64, error) {
 	db := config.GetDB()
 	var sessions []*entity.ChatSession
 	var total int64
@@ -72,7 +72,7 @@ func (c *ChatRepo) ListSessions(userID, characterID, page, pageSize int) ([]*ent
 }
 
 // UpdateSession 更新聊天会话
-func (c *ChatRepo) UpdateSession(sessionID, userID, version int, sessionName string) (int, *connect.Error) {
+func (c *ChatRepo) UpdateSession(sessionID, userID, version int, sessionName string) (int, error) {
 	db := config.GetDB()
 
 	// 使用乐观锁更新
@@ -93,7 +93,7 @@ func (c *ChatRepo) UpdateSession(sessionID, userID, version int, sessionName str
 }
 
 // DeleteSession 删除聊天会话
-func (c *ChatRepo) DeleteSession(id int, userID int) *connect.Error {
+func (c *ChatRepo) DeleteSession(id int, userID int) error {
 	db := config.GetDB()
 
 	// 开启事务
@@ -148,7 +148,7 @@ func (c *ChatRepo) DeleteSession(id int, userID int) *connect.Error {
 }
 
 // GetMessageByID 根据ID获取消息
-func (c *ChatRepo) GetMessageByID(id int) (*entity.Message, *connect.Error) {
+func (c *ChatRepo) GetMessageByID(id int) (*entity.Message, error) {
 	db := config.GetDB()
 	var message entity.Message
 	result := db.Where("id = ?", id).
@@ -164,7 +164,7 @@ func (c *ChatRepo) GetMessageByID(id int) (*entity.Message, *connect.Error) {
 }
 
 // DeleteMessage 删除消息
-func (c *ChatRepo) DeleteMessage(id int) *connect.Error {
+func (c *ChatRepo) DeleteMessage(id int) error {
 	db := config.GetDB()
 
 	// 开启事务
@@ -194,7 +194,7 @@ func (c *ChatRepo) DeleteMessage(id int) *connect.Error {
 }
 
 // UpdateMessage 更新消息的activeSwipeIndex
-func (c *ChatRepo) UpdateMessage(message *entity.Message) *connect.Error {
+func (c *ChatRepo) UpdateMessage(message *entity.Message) error {
 	db := config.GetDB()
 	result := db.Model(message).
 		Where("id = ?", message.ID).
@@ -206,7 +206,7 @@ func (c *ChatRepo) UpdateMessage(message *entity.Message) *connect.Error {
 }
 
 // GetSessionWithMessages 获取会话及其所有消息和角色卡
-func (c *ChatRepo) GetSessionWithMessages(id int, userID int) (*entity.ChatSession, *connect.Error) {
+func (c *ChatRepo) GetSessionWithMessages(id int, userID int) (*entity.ChatSession, error) {
 	db := config.GetDB()
 	var session entity.ChatSession
 	result := db.Where("id = ? AND user_id = ?", id, userID).
@@ -228,7 +228,7 @@ func (c *ChatRepo) GetSessionWithMessages(id int, userID int) (*entity.ChatSessi
 }
 
 // CreateMessage 创建消息
-func (c *ChatRepo) CreateMessage(message *entity.Message) *connect.Error {
+func (c *ChatRepo) CreateMessage(message *entity.Message) error {
 	db := config.GetDB()
 	result := db.Create(message)
 	if result.Error != nil {
@@ -238,7 +238,7 @@ func (c *ChatRepo) CreateMessage(message *entity.Message) *connect.Error {
 }
 
 // CreateMessageSwipe 创建消息swipe
-func (c *ChatRepo) CreateMessageSwipe(swipe *entity.MessageSwipe) *connect.Error {
+func (c *ChatRepo) CreateMessageSwipe(swipe *entity.MessageSwipe) error {
 	db := config.GetDB()
 	result := db.Create(swipe)
 	if result.Error != nil {
@@ -248,7 +248,7 @@ func (c *ChatRepo) CreateMessageSwipe(swipe *entity.MessageSwipe) *connect.Error
 }
 
 // GetMaxMessageSortOrder 获取会话中消息的最大排序号
-func (c *ChatRepo) GetMaxMessageSortOrder(sessionID int) (int, *connect.Error) {
+func (c *ChatRepo) GetMaxMessageSortOrder(sessionID int) (int, error) {
 	db := config.GetDB()
 	var maxOrder int
 	result := db.Model(&entity.Message{}).
@@ -262,7 +262,7 @@ func (c *ChatRepo) GetMaxMessageSortOrder(sessionID int) (int, *connect.Error) {
 }
 
 // UpdateMessageSwipe 更新消息swipe内容
-func (c *ChatRepo) UpdateMessageSwipe(swipeID int, content string) *connect.Error {
+func (c *ChatRepo) UpdateMessageSwipe(swipeID int, content string) error {
 	db := config.GetDB()
 	result := db.Model(&entity.MessageSwipe{}).
 		Where("id = ?", swipeID).

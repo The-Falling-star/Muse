@@ -74,21 +74,21 @@ const (
 )
 
 // New 创建错误
-func New(code int32, msg string) *connect.Error {
+func New(code int32, msg string) error {
 	return connect.NewError(connect.Code(code), fmt.Errorf(msg))
 }
 
 // Newf 格式化创建错误
-func Newf(code int32, format string, args ...any) *connect.Error {
+func Newf(code int32, format string, args ...any) error {
 	return connect.NewError(connect.Code(code), fmt.Errorf(format, args...))
 }
 
 // NewStandard 创建标准错误
-func NewStandard(code connect.Code, msg string) *connect.Error {
+func NewStandard(code connect.Code, msg string) error {
 	return connect.NewError(code, fmt.Errorf(msg))
 }
 
 // NewStandardf 格式化创建标准错误
-func NewStandardf(code connect.Code, format string, args ...any) *connect.Error {
+func NewStandardf(code connect.Code, format string, args ...any) error {
 	return connect.NewError(code, fmt.Errorf(format, args...))
 }

@@ -3,7 +3,6 @@ package model
 import (
 	"context"
 
-	"connectrpc.com/connect"
 	"github.com/ling/muse/entity"
 	pb "github.com/ling/muse/gen/muse"
 )
@@ -17,7 +16,7 @@ type StreamStruct struct {
 	Content string
 	Index   int // 多个候选回复时，用于标记是第几个候选回复
 	Done    bool
-	Error   *connect.Error
+	Error   error
 }
 
 type Message struct {

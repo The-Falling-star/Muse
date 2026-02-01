@@ -15,7 +15,7 @@ type RegexRuleRepo struct {
 }
 
 // Create 创建正则规则
-func (r *RegexRuleRepo) Create(rule *entity.RegexRule) *connect.Error {
+func (r *RegexRuleRepo) Create(rule *entity.RegexRule) error {
 	db := config.GetDB()
 	result := db.Create(rule)
 	if result.Error != nil {
@@ -25,7 +25,7 @@ func (r *RegexRuleRepo) Create(rule *entity.RegexRule) *connect.Error {
 }
 
 // GetByID 根据ID获取正则规则
-func (r *RegexRuleRepo) GetByID(id int) (*entity.RegexRule, *connect.Error) {
+func (r *RegexRuleRepo) GetByID(id int) (*entity.RegexRule, error) {
 	db := config.GetDB()
 	var rule entity.RegexRule
 	result := db.Where("id = ?", id).First(&rule)
@@ -39,7 +39,7 @@ func (r *RegexRuleRepo) GetByID(id int) (*entity.RegexRule, *connect.Error) {
 }
 
 // List 获取预设的正则规则列表
-func (r *RegexRuleRepo) List(presetID int) ([]*entity.RegexRule, *connect.Error) {
+func (r *RegexRuleRepo) List(presetID int) ([]*entity.RegexRule, error) {
 	db := config.GetDB()
 	var rules []*entity.RegexRule
 	result := db.Where("preset_id = ?", presetID).
@@ -52,7 +52,7 @@ func (r *RegexRuleRepo) List(presetID int) ([]*entity.RegexRule, *connect.Error)
 }
 
 // Update 更新正则规则
-func (r *RegexRuleRepo) Update(rule *entity.RegexRule) *connect.Error {
+func (r *RegexRuleRepo) Update(rule *entity.RegexRule) error {
 	db := config.GetDB()
 	result := db.Model(rule).
 		Where("id = ?", rule.ID).
@@ -79,7 +79,7 @@ func (r *RegexRuleRepo) Update(rule *entity.RegexRule) *connect.Error {
 }
 
 // Delete 删除正则规则
-func (r *RegexRuleRepo) Delete(id int) *connect.Error {
+func (r *RegexRuleRepo) Delete(id int) error {
 	db := config.GetDB()
 	result := db.Where("id = ?", id).Delete(&entity.RegexRule{})
 	if result.Error != nil {
@@ -92,7 +92,7 @@ func (r *RegexRuleRepo) Delete(id int) *connect.Error {
 }
 
 // UpdateRulesOrder 更新正则规则排序
-func (r *RegexRuleRepo) UpdateRulesOrder(presetID int, ruleOrders map[int]int) *connect.Error {
+func (r *RegexRuleRepo) UpdateRulesOrder(presetID int, ruleOrders map[int]int) error {
 	db := config.GetDB()
 	tx := db.Begin()
 	defer func() {
@@ -117,7 +117,7 @@ func (r *RegexRuleRepo) UpdateRulesOrder(presetID int, ruleOrders map[int]int) *
 }
 
 // BatchCreate 批量创建正则规则
-func (r *RegexRuleRepo) BatchCreate(rules []*entity.RegexRule) *connect.Error {
+func (r *RegexRuleRepo) BatchCreate(rules []*entity.RegexRule) error {
 	if len(rules) == 0 {
 		return nil
 	}
@@ -131,7 +131,7 @@ func (r *RegexRuleRepo) BatchCreate(rules []*entity.RegexRule) *connect.Error {
 
 // GetMaxSortOrder 获取预设下正则规则的最大排序号
 // presetID 为 0 时表示全局正则
-func (r *RegexRuleRepo) GetMaxSortOrder(presetID int) (int, *connect.Error) {
+func (r *RegexRuleRepo) GetMaxSortOrder(presetID int) (int, error) {
 	db := config.GetDB()
 	var maxOrder int
 	result := db.Model(&entity.RegexRule{}).
@@ -146,7 +146,7 @@ func (r *RegexRuleRepo) GetMaxSortOrder(presetID int) (int, *connect.Error) {
 
 // ListEnabledRules 获取启用的正则规则列表（包括全局正则、预设正则和角色正则）
 // presetID: 预设ID，characterID: 角色ID
-func (r *RegexRuleRepo) ListEnabledRules(presetID int, characterID int) ([]*entity.RegexRule, *connect.Error) {
+func (r *RegexRuleRepo) ListEnabledRules(presetID int, characterID int) ([]*entity.RegexRule, error) {
 	db := config.GetDB()
 	var rules []*entity.RegexRule
 	// 获取全局正则（preset_id=0）、预设正则和角色正则
@@ -162,7 +162,7 @@ func (r *RegexRuleRepo) ListEnabledRules(presetID int, characterID int) ([]*enti
 
 // GetEnabledRuleVersions 批量获取启用的正则规则的版本号
 // 用于缓存版本校验，只查询版本字段以减少数据传输
-func (r *RegexRuleRepo) GetEnabledRuleVersions(presetID int, characterID int) (map[int64]int, *connect.Error) {
+func (r *RegexRuleRepo) GetEnabledRuleVersions(presetID int, characterID int) (map[int64]int, error) {
 	db := config.GetDB()
 	type versionResult struct {
 		ID      int64

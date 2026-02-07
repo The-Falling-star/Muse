@@ -44,6 +44,13 @@ func (r *RegexRuleServer) ListPresetRegexRules(
 // AddRegexRule 添加新的正则规则
 func (r *RegexRuleServer) AddRegexRule(ctx context.Context, req *connect.Request[pb.AddRegexRuleRequest]) (
 	*connect.Response[pb.AddRegexRuleResponse], error) {
+	// 开启事务
+	var err error
+	ctx, err = beginTransaction(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
 	resp, err := r.regexRule.AddRegexRule(ctx, req.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "AddRegexRule", req.Msg, resp, err)
@@ -54,6 +61,13 @@ func (r *RegexRuleServer) AddRegexRule(ctx context.Context, req *connect.Request
 // UpdateRegexRule 更新指定正则规则
 func (r *RegexRuleServer) UpdateRegexRule(ctx context.Context, req *connect.Request[pb.UpdateRegexRuleRequest]) (
 	*connect.Response[pb.UpdateRegexRuleResponse], error) {
+	// 开启事务
+	var err error
+	ctx, err = beginTransaction(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
 	resp, err := r.regexRule.UpdateRegexRule(ctx, req.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "UpdateRegexRule", req.Msg, resp, err)
@@ -64,6 +78,13 @@ func (r *RegexRuleServer) UpdateRegexRule(ctx context.Context, req *connect.Requ
 // DeleteRegexRule 删除指定正则规则
 func (r *RegexRuleServer) DeleteRegexRule(ctx context.Context, req *connect.Request[pb.DeleteRegexRuleRequest]) (
 	*connect.Response[pb.DeleteRegexRuleResponse], error) {
+	// 开启事务
+	var err error
+	ctx, err = beginTransaction(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
 	resp, err := r.regexRule.DeleteRegexRule(ctx, req.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "DeleteRegexRule", req.Msg, resp, err)
@@ -75,6 +96,13 @@ func (r *RegexRuleServer) DeleteRegexRule(ctx context.Context, req *connect.Requ
 func (r *RegexRuleServer) UpdateRegexRulesOrder(ctx context.Context,
 	req *connect.Request[pb.UpdateRegexRulesOrderRequest]) (
 	*connect.Response[pb.UpdateRegexRulesOrderResponse], error) {
+	// 开启事务
+	var err error
+	ctx, err = beginTransaction(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
 	resp, err := r.regexRule.UpdateRegexRulesOrder(ctx, req.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "UpdateRegexRulesOrder", req.Msg, resp, err)
@@ -86,6 +114,13 @@ func (r *RegexRuleServer) UpdateRegexRulesOrder(ctx context.Context,
 func (r *RegexRuleServer) ImportRegexRules(ctx context.Context,
 	c *connect.Request[pb.ImportRegexRulesRequest]) (
 	*connect.Response[pb.ImportRegexRulesResponse], error) {
+	// 开启事务
+	var err error
+	ctx, err = beginTransaction(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
 	resp, err := r.regexRule.ImportRegexRules(ctx, c.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "ImportRegexRules", c.Msg, resp, err)

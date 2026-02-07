@@ -9,15 +9,13 @@ import (
 	"github.com/ling/muse/common/constrant"
 	"github.com/ling/muse/common/convert"
 	"github.com/ling/muse/common/errs"
+	"github.com/ling/muse/common/jwt"
 	"github.com/ling/muse/entity"
 	"github.com/ling/muse/entity/sillytavern"
 	pb "github.com/ling/muse/gen/muse"
 	"github.com/ling/muse/repo/cache"
 	"github.com/ling/muse/repo/database"
 )
-
-// 默认用户ID，待认证功能完成后替换
-const defaultUserID = 1
 
 type presetImpl struct {
 	presetRepo    *database.PresetRepo
@@ -36,7 +34,8 @@ func (p *presetImpl) ListPresets(ctx context.Context, req *pb.ListPresetsRequest
 	page, pageSize := constrant.NormalizePagination(int(req.GetPage()), int(req.GetPageSize()))
 
 	// 从数据库获取预设列表（不加载关联的PromptItems和RegexRules）
-	presets, total, err := p.presetRepo.List(defaultUserID, page, pageSize)
+	userId := jwt.GetUserId(ctx)
+	presets, total, err := p.presetRepo.List(ctx, userId, page, pageSize)
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +61,8 @@ func (p *presetImpl) GetPreset(ctx context.Context, req *pb.GetPresetRequest) (*
 	}
 
 	// 从数据库获取预设
-	preset, err := p.presetRepo.GetByID(id, defaultUserID)
+	userId := jwt.GetUserId(ctx)
+	preset, err := p.presetRepo.GetByID(ctx, id, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -83,8 +83,9 @@ func (p *presetImpl) CreatePreset(ctx context.Context, req *pb.CreatePresetReque
 	}
 
 	// 构建预设实体
+	userId := jwt.GetUserId(ctx)
 	preset := &entity.Preset{
-		UserID:           defaultUserID,
+		UserID:           userId,
 		Name:             name,
 		Temperature:      req.GetTemperature(),
 		TopP:             req.GetTopP(),
@@ -96,7 +97,7 @@ func (p *presetImpl) CreatePreset(ctx context.Context, req *pb.CreatePresetReque
 	}
 
 	// 保存到数据库
-	if err := p.presetRepo.Create(preset); err != nil {
+	if err := p.presetRepo.Create(ctx, preset); err != nil {
 		return nil, err
 	}
 
@@ -115,11 +116,11 @@ func (p *presetImpl) CreatePreset(ctx context.Context, req *pb.CreatePresetReque
 			SortOrder:         int(itemReq.GetSortOrder()),
 		}
 		// 创建提示项，忽略单个失败继续创建其他项
-		_ = p.presetRepo.CreatePromptItem(item)
+		_ = p.presetRepo.CreatePromptItem(ctx, item)
 	}
 
 	// 重新获取完整数据（包含关联）
-	fullPreset, err := p.presetRepo.GetByID(preset.ID, defaultUserID)
+	fullPreset, err := p.presetRepo.GetByID(ctx, preset.ID, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -142,7 +143,8 @@ func (p *presetImpl) UpdatePreset(ctx context.Context, req *pb.UpdatePresetReque
 	}
 
 	// 获取当前预设
-	preset, err := p.presetRepo.GetByID(id, defaultUserID)
+	userId := jwt.GetUserId(ctx)
+	preset, err := p.presetRepo.GetByID(ctx, id, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -165,7 +167,7 @@ func (p *presetImpl) UpdatePreset(ctx context.Context, req *pb.UpdatePresetReque
 	preset.PresencePenalty = req.PresencePenalty
 
 	// 更新数据库
-	if err := p.presetRepo.Update(preset); err != nil {
+	if err = p.presetRepo.Update(ctx, preset); err != nil {
 		return nil, err
 	}
 
@@ -173,7 +175,7 @@ func (p *presetImpl) UpdatePreset(ctx context.Context, req *pb.UpdatePresetReque
 	cache.InvalidateCacheByPreset(int64(id))
 
 	// 重新获取更新后的预设（包含关联数据）
-	updatedPreset, err := p.presetRepo.GetByID(id, defaultUserID)
+	updatedPreset, err := p.presetRepo.GetByID(ctx, id, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -193,7 +195,8 @@ func (p *presetImpl) DeletePreset(ctx context.Context, req *pb.DeletePresetReque
 	cache.InvalidateCacheByPreset(int64(id))
 
 	// 删除预设（会级联删除关联的提示项）
-	if err := p.presetRepo.Delete(id, defaultUserID); err != nil {
+	userId := jwt.GetUserId(ctx)
+	if err := p.presetRepo.Delete(ctx, id, userId); err != nil {
 		return nil, err
 	}
 
@@ -207,7 +210,7 @@ func (p *presetImpl) ListPromptItems(ctx context.Context, req *pb.ListPromptItem
 	}
 
 	// 从数据库获取提示项列表
-	items, err := p.presetRepo.ListPromptItems(presetID)
+	items, err := p.presetRepo.ListPromptItems(ctx, presetID)
 	if err != nil {
 		return nil, err
 	}
@@ -250,12 +253,12 @@ func (p *presetImpl) AddPromptItem(ctx context.Context, req *pb.AddPromptItemReq
 	}
 
 	// 保存到数据库
-	if err := p.presetRepo.CreatePromptItem(item); err != nil {
+	if err := p.presetRepo.CreatePromptItem(ctx, item); err != nil {
 		return nil, err
 	}
 
 	// 重新获取完整数据
-	fullItem, err := p.presetRepo.GetPromptItemByID(item.ID)
+	fullItem, err := p.presetRepo.GetPromptItemByID(ctx, item.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -278,7 +281,7 @@ func (p *presetImpl) UpdatePromptItem(ctx context.Context, req *pb.UpdatePromptI
 	}
 
 	// 获取当前提示项
-	item, err := p.presetRepo.GetPromptItemByID(id)
+	item, err := p.presetRepo.GetPromptItemByID(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -300,7 +303,7 @@ func (p *presetImpl) UpdatePromptItem(ctx context.Context, req *pb.UpdatePromptI
 	item.SortOrder = int(req.SortOrder)
 
 	// 更新数据库
-	if err := p.presetRepo.UpdatePromptItem(item); err != nil {
+	if err := p.presetRepo.UpdatePromptItem(ctx, item); err != nil {
 		return nil, err
 	}
 
@@ -308,7 +311,7 @@ func (p *presetImpl) UpdatePromptItem(ctx context.Context, req *pb.UpdatePromptI
 	cache.InvalidateCacheByPreset(int64(item.PresetID))
 
 	// 重新获取更新后的提示项
-	updatedItem, err := p.presetRepo.GetPromptItemByID(id)
+	updatedItem, err := p.presetRepo.GetPromptItemByID(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -325,7 +328,7 @@ func (p *presetImpl) DeletePromptItem(ctx context.Context, req *pb.DeletePromptI
 	}
 
 	// 删除提示项
-	if err := p.presetRepo.DeletePromptItem(id); err != nil {
+	if err := p.presetRepo.DeletePromptItem(ctx, id); err != nil {
 		return nil, err
 	}
 
@@ -349,7 +352,7 @@ func (p *presetImpl) UpdatePromptItemsOrder(ctx context.Context, req *pb.UpdateP
 	}
 
 	// 更新排序
-	if err := p.presetRepo.UpdatePromptItemsOrder(presetID, itemOrders); err != nil {
+	if err := p.presetRepo.UpdatePromptItemsOrder(ctx, presetID, itemOrders); err != nil {
 		return nil, err
 	}
 
@@ -384,10 +387,11 @@ func (p *presetImpl) ImportPreset(ctx context.Context, req *pb.ImportPresetReque
 	}
 
 	// 使用 convert 包转换为 Muse 预设实体
-	preset := convert.STPresetToEntity(stPreset, defaultUserID, presetName)
+	userId := jwt.GetUserId(ctx)
+	preset := convert.STPresetToEntity(stPreset, userId, presetName)
 
 	// 保存预设到数据库
-	if err := p.presetRepo.Create(preset); err != nil {
+	if err := p.presetRepo.Create(ctx, preset); err != nil {
 		return nil, err
 	}
 
@@ -405,7 +409,7 @@ func (p *presetImpl) ImportPreset(ctx context.Context, req *pb.ImportPresetReque
 			// 使用 convert 包转换提示项
 			item := convert.STPromptToEntity(preset.ID, &stPrompt, i, promptOrderMap)
 
-			if err := p.presetRepo.CreatePromptItem(item); err != nil {
+			if err := p.presetRepo.CreatePromptItem(ctx, item); err != nil {
 				// 即使提示项创建失败，也不影响预设的创建
 				continue
 			}
@@ -413,23 +417,23 @@ func (p *presetImpl) ImportPreset(ctx context.Context, req *pb.ImportPresetReque
 	}
 
 	// TODO 导入预设内嵌的正则脚本
-	/*if stPreset.Extensions != nil && len(stPreset.Extensions.RegexScripts) > 0 {
+	if len(stPreset.Extensions.RegexScripts) > 0 {
 		regexRules := make([]*entity.RegexRule, 0, len(stPreset.Extensions.RegexScripts))
-		for i, stScript := range stPreset.Extensions.RegexScripts {
+		for _, stScript := range stPreset.Extensions.RegexScripts {
 			// 使用 convert 包转换正则脚本，关联到新创建的预设（characterID=0 表示非角色范围正则）
-			rule := convert.STRegexToEntity(&stScript, preset.ID, 0, i)
+			rule := convert.STRegexToEntity(&stScript)
 			regexRules = append(regexRules, rule)
 		}
 
 		// 批量创建正则规则
-		if err := p.regexRuleRepo.BatchCreate(regexRules); err != nil {
+		if err := p.regexRuleRepo.BatchCreate(ctx, regexRules); err != nil {
 			// 即使正则规则创建失败，也不影响预设的导入
 			// 可以记录日志但不返回错误
 		}
-	}*/
+	}
 
 	// 重新获取完整预设数据（包含关联的提示项）
-	fullPreset, err := p.presetRepo.GetByID(preset.ID, defaultUserID)
+	fullPreset, err := p.presetRepo.GetByID(ctx, preset.ID, userId)
 	if err != nil {
 		return nil, err
 	}

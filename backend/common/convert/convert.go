@@ -755,11 +755,7 @@ func STCharacterCardToEntity(stCard *sillytavern.CharacterCard, userID int) *ent
 	}
 	character.ExampleDialogue = exampleDialogue
 
-	avatar := stCard.Avatar
-	if avatar == "" {
-		avatar = stCard.Data.Name // 如果头像为空，使用角色名作为默认值
-	}
-	character.Avatar = avatar
+	character.Avatar = stCard.Avatar
 
 	firstMessage := stCard.Data.FirstMes
 	if firstMessage == "" {

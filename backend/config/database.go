@@ -129,7 +129,7 @@ func CloseDatabase() error {
 	return sqlDB.Close()
 }
 
-// GetDB 获取数据库连接实例
+// GetDB 获取数据库实例
 func GetDB() *gorm.DB {
 	return db
 }

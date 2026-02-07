@@ -24,9 +24,6 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// 默认用户ID，待认证功能完成后替换
-const defaultUserID = 1
-
 type characterImpl struct {
 	charaRepo     *database.CharacterRepo
 	regexRuleRepo *database.RegexRuleRepo
@@ -44,7 +41,8 @@ func (c *characterImpl) ListCharacters(ctx context.Context, req *pb.ListCharacte
 	page, pageSize := constrant.NormalizePagination(int(req.GetPage()), int(req.GetPageSize()))
 
 	// 从数据库获取角色列表
-	characters, total, err := c.charaRepo.List(defaultUserID, page, pageSize)
+	userId := jwt.GetUserId(ctx)
+	characters, total, err := c.charaRepo.List(ctx, userId, page, pageSize)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +67,7 @@ func (c *characterImpl) GetCharacter(ctx context.Context, req *pb.GetCharacterRe
 
 	// 从数据库获取角色
 	userId := jwt.GetUserId(ctx)
-	character, err := c.charaRepo.GetByID(id, userId)
+	character, err := c.charaRepo.GetByID(ctx, id, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -90,8 +88,9 @@ func (c *characterImpl) CreateCharacter(ctx context.Context, req *pb.CreateChara
 	}
 
 	// 构建角色实体
+	userId := jwt.GetUserId(ctx)
 	character := &entity.Character{
-		UserID:          defaultUserID,
+		UserID:          userId,
 		Name:            name,
 		Avatar:          req.GetAvatar(),
 		Description:     req.GetDescription(),
@@ -107,7 +106,7 @@ func (c *characterImpl) CreateCharacter(ctx context.Context, req *pb.CreateChara
 	}
 
 	// 保存到数据库
-	if err := c.charaRepo.Create(character); err != nil {
+	if err := c.charaRepo.Create(ctx, character); err != nil {
 		return nil, err
 	}
 
@@ -130,7 +129,7 @@ func (c *characterImpl) UpdateCharacter(ctx context.Context, req *pb.UpdateChara
 
 	// 获取当前角色
 	userId := jwt.GetUserId(ctx)
-	character, err := c.charaRepo.GetByID(id, userId)
+	character, err := c.charaRepo.GetByID(ctx, id, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -165,7 +164,7 @@ func (c *characterImpl) UpdateCharacter(ctx context.Context, req *pb.UpdateChara
 	}
 
 	// 更新数据库
-	if err := c.charaRepo.Update(character); err != nil {
+	if err := c.charaRepo.Update(ctx, character); err != nil {
 		return nil, err
 	}
 
@@ -173,7 +172,7 @@ func (c *characterImpl) UpdateCharacter(ctx context.Context, req *pb.UpdateChara
 	cache.InvalidateCacheByCharacter(int64(id))
 
 	// 重新获取更新后的角色（包含关联数据）
-	updatedCharacter, err := c.charaRepo.GetByID(id, userId)
+	updatedCharacter, err := c.charaRepo.GetByID(ctx, id, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -193,7 +192,8 @@ func (c *characterImpl) DeleteCharacter(ctx context.Context, req *pb.DeleteChara
 	cache.InvalidateCacheByCharacter(int64(id))
 
 	// 删除角色
-	if err := c.charaRepo.Delete(id, defaultUserID); err != nil {
+	userId := jwt.GetUserId(ctx)
+	if err := c.charaRepo.Delete(ctx, id, userId); err != nil {
 		return nil, err
 	}
 
@@ -236,16 +236,11 @@ func (c *characterImpl) ImportCharacter(ctx context.Context, req *pb.ImportChara
 	// 压缩世界书数据
 	var buf bytes.Buffer
 	zip := gzip.NewWriter(&buf)
+	defer zip.Close()
 	worldBookJson, _ := json.Marshal(character.WorldInfo)
 	if _, err = zip.Write(worldBookJson); err != nil {
-		zip.Close()
 		return nil, errs.NewStandardf(connect.CodeInternal, "压缩世界书失败： %v", err)
 	}
-	// 必须在读取 buf.Bytes() 之前关闭 gzip.Writer，否则数据不完整
-	if err = zip.Close(); err != nil {
-		return nil, errs.NewStandardf(connect.CodeInternal, "关闭压缩写入器失败： %v", err)
-	}
-
 	character.WorldInfoBackup = buf.Bytes()
 
 	// 如果PNG本身作为头像，将其转为base64 data URI
@@ -254,7 +249,7 @@ func (c *characterImpl) ImportCharacter(ctx context.Context, req *pb.ImportChara
 	}
 
 	log.Infof("角色创建中，名称: %s", character.Name)
-	if err = c.charaRepo.Create(character); err != nil {
+	if err = c.charaRepo.Create(ctx, character); err != nil {
 		return nil, err
 	}
 
@@ -274,7 +269,7 @@ func (c *characterImpl) ImportCharacter(ctx context.Context, req *pb.ImportChara
 
 func (c *characterImpl) ExportCharacter(ctx context.Context, req *pb.ExportCharacterRequest) (*pb.ExportCharacterResponse, error) {
 	userId := jwt.GetUserId(ctx)
-	character, err := c.charaRepo.GetByID(int(req.GetId()), userId)
+	character, err := c.charaRepo.GetByID(ctx, int(req.GetId()), userId)
 	if err != nil {
 		return nil, err
 	}

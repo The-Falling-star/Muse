@@ -48,7 +48,7 @@ func (u *userImpl) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.R
 	}
 
 	// 检查用户是否已存在
-	existingUser, _ := u.userRepo.GetByUsername(username)
+	existingUser, _ := u.userRepo.GetByUsername(ctx, username)
 	if existingUser != nil {
 		return nil, errs.NewStandard(connect.CodeAlreadyExists, errs.UserAlreadyExists)
 	}
@@ -65,7 +65,7 @@ func (u *userImpl) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.R
 		PasswordHash: hashedPassword,
 	}
 
-	if err := u.userRepo.Create(user); err != nil {
+	if err := u.userRepo.Create(ctx, user); err != nil {
 		return nil, err
 	}
 
@@ -93,7 +93,7 @@ func (u *userImpl) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginRe
 	}
 
 	// 查找用户
-	user, err := u.userRepo.GetByUsername(username)
+	user, err := u.userRepo.GetByUsername(ctx, username)
 	if err != nil {
 		return nil, err
 	}
@@ -122,7 +122,7 @@ func (u *userImpl) GetCurrentUser(ctx context.Context, req *pb.GetCurrentUserReq
 	userID := jwt.GetUserId(ctx)
 
 	// 查找用户
-	user, err := u.userRepo.GetByID(userID)
+	user, err := u.userRepo.GetByID(ctx, userID)
 	if err != nil {
 		return nil, err
 	}
@@ -148,7 +148,7 @@ func (u *userImpl) ChangePassword(ctx context.Context, req *pb.ChangePasswordReq
 	}
 
 	// 查找用户
-	user, err := u.userRepo.GetByID(userID)
+	user, err := u.userRepo.GetByID(ctx, userID)
 	if err != nil {
 		return nil, err
 	}
@@ -169,7 +169,7 @@ func (u *userImpl) ChangePassword(ctx context.Context, req *pb.ChangePasswordReq
 
 	// 更新密码
 	user.PasswordHash = hashedPassword
-	if err := u.userRepo.Update(user); err != nil {
+	if err := u.userRepo.Update(ctx, user); err != nil {
 		return nil, err
 	}
 
@@ -181,7 +181,7 @@ func (u *userImpl) ListPersonas(ctx context.Context, req *pb.ListPersonasRequest
 	userID := jwt.GetUserId(ctx)
 
 	// 获取人设列表
-	personas, err := u.userRepo.ListPersonas(userID)
+	personas, err := u.userRepo.ListPersonas(ctx, userID)
 	if err != nil {
 		return nil, err
 	}
@@ -208,7 +208,7 @@ func (u *userImpl) GetPersona(ctx context.Context, req *pb.GetPersonaRequest) (*
 	}
 
 	// 获取人设
-	persona, err := u.userRepo.GetPersonaByID(id, userID)
+	persona, err := u.userRepo.GetPersonaByID(ctx, id, userID)
 	if err != nil {
 		return nil, err
 	}
@@ -239,7 +239,7 @@ func (u *userImpl) CreatePersona(ctx context.Context, req *pb.CreatePersonaReque
 		Description: req.GetDescription(),
 	}
 
-	if err := u.userRepo.CreatePersona(persona); err != nil {
+	if err := u.userRepo.CreatePersona(ctx, persona); err != nil {
 		return nil, err
 	}
 
@@ -263,7 +263,7 @@ func (u *userImpl) UpdatePersona(ctx context.Context, req *pb.UpdatePersonaReque
 	}
 
 	// 获取人设
-	persona, err := u.userRepo.GetPersonaByID(id, userID)
+	persona, err := u.userRepo.GetPersonaByID(ctx, id, userID)
 	if err != nil {
 		return nil, err
 	}
@@ -280,7 +280,7 @@ func (u *userImpl) UpdatePersona(ctx context.Context, req *pb.UpdatePersonaReque
 		persona.Description = *req.Description
 	}
 
-	if err = u.userRepo.UpdatePersona(persona); err != nil {
+	if err = u.userRepo.UpdatePersona(ctx, persona); err != nil {
 		return nil, err
 	}
 
@@ -300,7 +300,7 @@ func (u *userImpl) DeletePersona(ctx context.Context, req *pb.DeletePersonaReque
 	}
 
 	// 删除人设
-	if err := u.userRepo.DeletePersona(id, userID); err != nil {
+	if err := u.userRepo.DeletePersona(ctx, id, userID); err != nil {
 		return nil, err
 	}
 
@@ -318,13 +318,13 @@ func (u *userImpl) SetActivePersona(ctx context.Context, req *pb.SetActivePerson
 	}
 
 	// 验证人设是否存在
-	_, err := u.userRepo.GetPersonaByID(personaID, userID)
+	_, err := u.userRepo.GetPersonaByID(ctx, personaID, userID)
 	if err != nil {
 		return nil, err
 	}
 
 	// 更新用户的活跃人设ID
-	if err := u.userRepo.UpdateActivePersonaID(userID, personaID); err != nil {
+	if err := u.userRepo.UpdateActivePersonaID(ctx, userID, personaID); err != nil {
 		return nil, err
 	}
 
@@ -336,7 +336,7 @@ func (u *userImpl) GetUserSetting(ctx context.Context, req *pb.GetUserSettingReq
 	userID := jwt.GetUserId(ctx)
 
 	// 获取用户设置
-	setting, err := u.userRepo.GetUserSettingByUserID(userID)
+	setting, err := u.userRepo.GetUserSettingByUserID(ctx, userID)
 	if err != nil {
 		return nil, err
 	}
@@ -350,7 +350,7 @@ func (u *userImpl) GetUserSetting(ctx context.Context, req *pb.GetUserSettingReq
 			SendOnEnter:    true,
 			ShowTimestamps: true,
 		}
-		if err = u.userRepo.CreateUserSetting(setting); err != nil {
+		if err = u.userRepo.CreateUserSetting(ctx, setting); err != nil {
 			return nil, err
 		}
 	}
@@ -365,7 +365,7 @@ func (u *userImpl) UpdateUserSetting(ctx context.Context, req *pb.UpdateUserSett
 	userID := jwt.GetUserId(ctx)
 
 	// 获取用户设置
-	setting, err := u.userRepo.GetUserSettingByUserID(userID)
+	setting, err := u.userRepo.GetUserSettingByUserID(ctx, userID)
 	if err != nil {
 		return nil, err
 	}
@@ -384,11 +384,11 @@ func (u *userImpl) UpdateUserSetting(ctx context.Context, req *pb.UpdateUserSett
 	setting.ShowTimestamps = req.GetShowTimestamps()
 
 	if setting.ID == 0 {
-		if err = u.userRepo.CreateUserSetting(setting); err != nil {
+		if err = u.userRepo.CreateUserSetting(ctx, setting); err != nil {
 			return nil, err
 		}
 	} else {
-		if err = u.userRepo.UpdateUserSetting(setting); err != nil {
+		if err = u.userRepo.UpdateUserSetting(ctx, setting); err != nil {
 			return nil, err
 		}
 	}
@@ -403,7 +403,7 @@ func (u *userImpl) ListAPIConfigs(ctx context.Context, req *pb.ListAPIConfigsReq
 	userID := jwt.GetUserId(ctx)
 
 	// 获取API配置列表
-	configs, err := u.userRepo.ListAPIConfigs(userID)
+	configs, err := u.userRepo.ListAPIConfigs(ctx, userID)
 	if err != nil {
 		return nil, err
 	}
@@ -434,7 +434,7 @@ func (u *userImpl) GetAPIConfig(ctx context.Context, req *pb.GetAPIConfigRequest
 	}
 
 	// 获取API配置
-	apiConfig, err := u.userRepo.GetAPIConfigByID(id, userID)
+	apiConfig, err := u.userRepo.GetAPIConfigByID(ctx, id, userID)
 	if err != nil {
 		return nil, err
 	}
@@ -491,7 +491,7 @@ func (u *userImpl) CreateAPIConfig(ctx context.Context, req *pb.CreateAPIConfigR
 		IsActive: false, // 默认不激活
 	}
 
-	if err = u.userRepo.CreateAPIConfig(apiConfig); err != nil {
+	if err = u.userRepo.CreateAPIConfig(ctx, apiConfig); err != nil {
 		return nil, err
 	}
 
@@ -515,7 +515,7 @@ func (u *userImpl) UpdateAPIConfig(ctx context.Context, req *pb.UpdateAPIConfigR
 	}
 
 	// 获取API配置
-	apiConfig, err := u.userRepo.GetAPIConfigByID(id, userID)
+	apiConfig, err := u.userRepo.GetAPIConfigByID(ctx, id, userID)
 	if err != nil {
 		return nil, err
 	}
@@ -547,7 +547,7 @@ func (u *userImpl) UpdateAPIConfig(ctx context.Context, req *pb.UpdateAPIConfigR
 		apiConfig.Model = *req.Model
 	}
 
-	if err = u.userRepo.UpdateAPIConfig(apiConfig); err != nil {
+	if err = u.userRepo.UpdateAPIConfig(ctx, apiConfig); err != nil {
 		return nil, err
 	}
 
@@ -567,7 +567,7 @@ func (u *userImpl) DeleteAPIConfig(ctx context.Context, req *pb.DeleteAPIConfigR
 	}
 
 	// 删除API配置
-	if err := u.userRepo.DeleteAPIConfig(id, userID); err != nil {
+	if err := u.userRepo.DeleteAPIConfig(ctx, id, userID); err != nil {
 		return nil, err
 	}
 
@@ -585,7 +585,7 @@ func (u *userImpl) SetActiveAPIConfig(ctx context.Context, req *pb.SetActiveAPIC
 	}
 
 	// 激活API配置
-	if err := u.userRepo.ActivateAPIConfig(configID, userID); err != nil {
+	if err := u.userRepo.ActivateAPIConfig(ctx, configID, userID); err != nil {
 		return nil, err
 	}
 
@@ -603,7 +603,7 @@ func (u *userImpl) TestAPIConfig(ctx context.Context, req *pb.TestAPIConfigReque
 	}
 
 	// 获取API配置
-	apiConfig, err := u.userRepo.GetAPIConfigByID(id, userID)
+	apiConfig, err := u.userRepo.GetAPIConfigByID(ctx, id, userID)
 	if err != nil {
 		return nil, err
 	}

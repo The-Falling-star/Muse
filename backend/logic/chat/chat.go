@@ -49,7 +49,7 @@ func (c *chatImpl) ListChatSessions(ctx context.Context, req *pb.ListChatSession
 
 	// 从数据库获取会话列表
 	userId := jwt.GetUserId(ctx)
-	sessions, total, err := c.chatRepo.ListSessions(userId, characterID, page, pageSize)
+	sessions, total, err := c.chatRepo.ListSessions(ctx, userId, characterID, page, pageSize)
 	if err != nil {
 		return nil, err
 	}
@@ -74,7 +74,7 @@ func (c *chatImpl) GetChatSession(ctx context.Context, req *pb.GetChatSessionReq
 	}
 	userId := jwt.GetUserId(ctx)
 	// 从数据库获取会话
-	session, err := c.chatRepo.GetSessionByID(id, userId)
+	session, err := c.chatRepo.GetSessionByID(ctx, id, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -110,12 +110,12 @@ func (c *chatImpl) CreateChatSession(ctx context.Context, req *pb.CreateChatSess
 	}
 
 	// 保存到数据库
-	if err := c.chatRepo.CreateSession(session); err != nil {
+	if err := c.chatRepo.CreateSession(ctx, session); err != nil {
 		return nil, err
 	}
 
 	// 重新获取完整数据（包含关联）
-	fullSession, err := c.chatRepo.GetSessionByID(session.ID, userId)
+	fullSession, err := c.chatRepo.GetSessionByID(ctx, session.ID, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -138,12 +138,12 @@ func (c *chatImpl) UpdateChatSession(ctx context.Context, req *pb.UpdateChatSess
 	}
 	userId := jwt.GetUserId(ctx)
 	// 更新数据库
-	_, err := c.chatRepo.UpdateSession(int(req.GetId()), userId, int(req.GetVersion()), req.GetName())
+	_, err := c.chatRepo.UpdateSession(ctx, int(req.GetId()), userId, int(req.GetVersion()), req.GetName())
 	if err != nil {
 		return nil, err
 	}
 	// 重新获取更新后的会话（包含关联数据）
-	updatedSession, err := c.chatRepo.GetSessionByID(id, userId)
+	updatedSession, err := c.chatRepo.GetSessionByID(ctx, id, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -161,7 +161,7 @@ func (c *chatImpl) DeleteChatSession(ctx context.Context, req *pb.DeleteChatSess
 	userId := jwt.GetUserId(ctx)
 
 	// 删除会话（会级联删除关联的消息和swipes）
-	if err := c.chatRepo.DeleteSession(id, userId); err != nil {
+	if err := c.chatRepo.DeleteSession(ctx, id, userId); err != nil {
 		return nil, err
 	}
 
@@ -182,7 +182,7 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 	userID := jwt.GetUserId(ctx)
 
 	// 获取用户信息以获取活跃预设ID
-	user, err := c.userRepo.GetByID(userID)
+	user, err := c.userRepo.GetByID(ctx, userID)
 	if err != nil {
 		return err
 	}
@@ -191,7 +191,7 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 	}
 
 	// 获取活跃的 API 配置
-	apiConfig, err := c.userRepo.GetActiveAPIConfig(userID)
+	apiConfig, err := c.userRepo.GetActiveAPIConfig(ctx, userID)
 	if err != nil {
 		return err
 	}
@@ -204,7 +204,7 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 
 	// 如果缓存命中，校验版本是否有效
 	if cacheHit {
-		versions, verifyErr := c.getVersionInfo(userID, sessionCache)
+		versions, verifyErr := c.getVersionInfo(ctx, userID, sessionCache)
 		if verifyErr != nil {
 			return verifyErr
 		}
@@ -253,7 +253,7 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 		}
 	} else {
 		// 缓存未命中，从数据库加载数据
-		session, err = c.chatRepo.GetSessionWithMessages(sessionID, userID)
+		session, err = c.chatRepo.GetSessionWithMessages(ctx, sessionID, userID)
 		if err != nil {
 			return err
 		}
@@ -263,7 +263,7 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 
 		// 获取预设（包含提示项）
 		if user.ActivePresetID > 0 {
-			preset, err = c.presetRepo.GetByID(user.ActivePresetID, userID)
+			preset, err = c.presetRepo.GetByID(ctx, user.ActivePresetID, userID)
 			if err != nil {
 				return err
 			}
@@ -279,27 +279,27 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 		}
 
 		// 加载预设的提示项
-		promptItems, err = c.presetRepo.ListPromptItems(preset.ID)
+		promptItems, err = c.presetRepo.ListPromptItems(ctx, preset.ID)
 		if err != nil {
 			return err
 		}
 
 		// 加载全局世界书
-		globalWorldInfos, err = c.worldInfoRepo.ListGlobalWorldInfosWithEntries(userID)
+		globalWorldInfos, err = c.worldInfoRepo.ListGlobalWorldInfosWithEntries(ctx, userID)
 		if err != nil {
 			return err
 		}
 
 		// 加载角色卡关联的世界书
 		if session.Character != nil && session.Character.WorldInfoID > 0 {
-			charWorldInfo, err = c.worldInfoRepo.GetByIDWithEntries(session.Character.WorldInfoID, userID)
+			charWorldInfo, err = c.worldInfoRepo.GetByIDWithEntries(ctx, session.Character.WorldInfoID, userID)
 			if err != nil {
 				return err
 			}
 		}
 
 		// 加载正则规则
-		regexRules, err = c.regexRepo.ListEnabledRules(preset.ID, session.CharacterID)
+		regexRules, err = c.regexRepo.ListEnabledRules(ctx, preset.ID, session.CharacterID)
 		if err != nil {
 			return err
 		}
@@ -316,7 +316,7 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 	messages := c.buildMessages(session, content, promptItems, globalWorldInfos, charWorldInfo, regexRules)
 
 	// 保存用户消息到数据库
-	maxOrder, err := c.chatRepo.GetMaxMessageSortOrder(sessionID)
+	maxOrder, err := c.chatRepo.GetMaxMessageSortOrder(ctx, sessionID)
 	if err != nil {
 		return err
 	}
@@ -326,7 +326,7 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 		ActiveSwipeIndex: 0,
 		SortOrder:        maxOrder + 1,
 	}
-	if err = c.chatRepo.CreateMessage(userMessage); err != nil {
+	if err = c.chatRepo.CreateMessage(ctx, userMessage); err != nil {
 		return err
 	}
 	userSwipe := &entity.MessageSwipe{
@@ -334,7 +334,7 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 		Content:   content,
 		SortOrder: 0,
 	}
-	if err = c.chatRepo.CreateMessageSwipe(userSwipe); err != nil {
+	if err = c.chatRepo.CreateMessageSwipe(ctx, userSwipe); err != nil {
 		return err
 	}
 
@@ -349,7 +349,7 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 		ActiveSwipeIndex: 0,
 		SortOrder:        maxOrder + 2,
 	}
-	if err = c.chatRepo.CreateMessage(aiMessage); err != nil {
+	if err = c.chatRepo.CreateMessage(ctx, aiMessage); err != nil {
 		return err
 	}
 
@@ -361,7 +361,7 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 			Content:   "",
 			SortOrder: i,
 		}
-		if err = c.chatRepo.CreateMessageSwipe(aiSwipe); err != nil {
+		if err = c.chatRepo.CreateMessageSwipe(ctx, aiSwipe); err != nil {
 			return err
 		}
 		aiSwipes[i] = aiSwipe
@@ -409,7 +409,7 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 	for i, content := range contents {
 		if i < len(aiSwipes) {
 			aiSwipes[i].Content = content
-			if err = c.chatRepo.UpdateMessageSwipe(aiSwipes[i].ID, content); err != nil {
+			if err = c.chatRepo.UpdateMessageSwipe(ctx, aiSwipes[i].ID, content); err != nil {
 				return err
 			}
 		}
@@ -426,7 +426,7 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 }
 
 // getVersionInfo 获取缓存相关实体的版本信息
-func (c *chatImpl) getVersionInfo(userID int, sessionCache *cache.SessionCache) (*cache.VersionInfo, error) {
+func (c *chatImpl) getVersionInfo(ctx context.Context, userID int, sessionCache *cache.SessionCache) (*cache.VersionInfo, error) {
 	versions := &cache.VersionInfo{
 		WorldInfoVersions: make(map[int64]int),
 		RegexRuleVersions: make(map[int64]int),
@@ -434,7 +434,7 @@ func (c *chatImpl) getVersionInfo(userID int, sessionCache *cache.SessionCache) 
 
 	// 获取角色卡版本
 	if sessionCache.CharacterID > 0 {
-		charVersion, err := c.charRepo.GetVersion(int(sessionCache.CharacterID), userID)
+		charVersion, err := c.charRepo.GetVersion(ctx, int(sessionCache.CharacterID), userID)
 		if err != nil {
 			return nil, err
 		}
@@ -443,7 +443,7 @@ func (c *chatImpl) getVersionInfo(userID int, sessionCache *cache.SessionCache) 
 
 	// 获取预设版本
 	if sessionCache.Preset != nil && sessionCache.Preset.ID > 0 {
-		presetVersion, err := c.presetRepo.GetVersion(sessionCache.Preset.ID, userID)
+		presetVersion, err := c.presetRepo.GetVersion(ctx, sessionCache.Preset.ID, userID)
 		if err != nil {
 			return nil, err
 		}
@@ -456,7 +456,7 @@ func (c *chatImpl) getVersionInfo(userID int, sessionCache *cache.SessionCache) 
 		for id := range sessionCache.WorldInfoVersions {
 			worldInfoIDs = append(worldInfoIDs, int(id))
 		}
-		worldInfoVersions, err := c.worldInfoRepo.GetVersions(worldInfoIDs, userID)
+		worldInfoVersions, err := c.worldInfoRepo.GetVersions(ctx, worldInfoIDs, userID)
 		if err != nil {
 			return nil, err
 		}
@@ -468,7 +468,7 @@ func (c *chatImpl) getVersionInfo(userID int, sessionCache *cache.SessionCache) 
 	if sessionCache.Preset != nil {
 		presetID = sessionCache.Preset.ID
 	}
-	regexVersions, err := c.regexRepo.GetEnabledRuleVersions(presetID, int(sessionCache.CharacterID))
+	regexVersions, err := c.regexRepo.GetEnabledRuleVersions(ctx, presetID, int(sessionCache.CharacterID))
 	if err != nil {
 		return nil, err
 	}

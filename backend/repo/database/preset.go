@@ -1,11 +1,11 @@
 package database
 
 import (
+	"context"
 	"errors"
 
 	"connectrpc.com/connect"
 	"github.com/ling/muse/common/errs"
-	"github.com/ling/muse/config"
 	"github.com/ling/muse/entity"
 	"gorm.io/gorm"
 )
@@ -15,8 +15,8 @@ type PresetRepo struct {
 }
 
 // Create 创建预设
-func (p *PresetRepo) Create(preset *entity.Preset) error {
-	db := config.GetDB()
+func (p *PresetRepo) Create(ctx context.Context, preset *entity.Preset) error {
+	db := GetDB(ctx)
 	result := db.Create(preset)
 	if result.Error != nil {
 		return errs.NewStandardf(connect.CodeInternal, "创建预设失败: %v", result.Error)
@@ -25,8 +25,8 @@ func (p *PresetRepo) Create(preset *entity.Preset) error {
 }
 
 // GetByID 根据ID获取预设（包含关联的PromptItems）
-func (p *PresetRepo) GetByID(id int, userID int) (*entity.Preset, error) {
-	db := config.GetDB()
+func (p *PresetRepo) GetByID(ctx context.Context, id int, userID int) (*entity.Preset, error) {
+	db := GetDB(ctx)
 	var preset entity.Preset
 	result := db.Where("id = ? AND user_id = ?", id, userID).
 		Preload("PromptItems", func(db *gorm.DB) *gorm.DB {
@@ -43,8 +43,8 @@ func (p *PresetRepo) GetByID(id int, userID int) (*entity.Preset, error) {
 }
 
 // List 获取预设列表
-func (p *PresetRepo) List(userID int, page int, pageSize int) ([]*entity.Preset, int64, error) {
-	db := config.GetDB()
+func (p *PresetRepo) List(ctx context.Context, userID int, page int, pageSize int) ([]*entity.Preset, int64, error) {
+	db := GetDB(ctx)
 	var presets []*entity.Preset
 	var total int64
 
@@ -68,8 +68,8 @@ func (p *PresetRepo) List(userID int, page int, pageSize int) ([]*entity.Preset,
 }
 
 // Update 更新预设
-func (p *PresetRepo) Update(preset *entity.Preset) error {
-	db := config.GetDB()
+func (p *PresetRepo) Update(ctx context.Context, preset *entity.Preset) error {
+	db := GetDB(ctx)
 
 	// 使用乐观锁更新
 	result := db.Model(preset).
@@ -99,8 +99,8 @@ func (p *PresetRepo) Update(preset *entity.Preset) error {
 }
 
 // Delete 删除预设
-func (p *PresetRepo) Delete(id int, userID int) error {
-	db := config.GetDB()
+func (p *PresetRepo) Delete(ctx context.Context, id int, userID int) error {
+	db := GetDB(ctx)
 
 	// 开启事务
 	tx := db.Begin()
@@ -134,8 +134,8 @@ func (p *PresetRepo) Delete(id int, userID int) error {
 }
 
 // CreatePromptItem 创建提示项
-func (p *PresetRepo) CreatePromptItem(item *entity.PromptItem) error {
-	db := config.GetDB()
+func (p *PresetRepo) CreatePromptItem(ctx context.Context, item *entity.PromptItem) error {
+	db := GetDB(ctx)
 	result := db.Create(item)
 	if result.Error != nil {
 		return errs.NewStandardf(connect.CodeInternal, "创建提示项失败: %v", result.Error)
@@ -144,8 +144,8 @@ func (p *PresetRepo) CreatePromptItem(item *entity.PromptItem) error {
 }
 
 // GetPromptItemByID 根据ID获取提示项
-func (p *PresetRepo) GetPromptItemByID(id int) (*entity.PromptItem, error) {
-	db := config.GetDB()
+func (p *PresetRepo) GetPromptItemByID(ctx context.Context, id int) (*entity.PromptItem, error) {
+	db := GetDB(ctx)
 	var item entity.PromptItem
 	result := db.Where("id = ?", id).First(&item)
 	if result.Error != nil {
@@ -158,8 +158,8 @@ func (p *PresetRepo) GetPromptItemByID(id int) (*entity.PromptItem, error) {
 }
 
 // ListPromptItems 获取预设的提示项列表
-func (p *PresetRepo) ListPromptItems(presetID int) ([]*entity.PromptItem, error) {
-	db := config.GetDB()
+func (p *PresetRepo) ListPromptItems(ctx context.Context, presetID int) ([]*entity.PromptItem, error) {
+	db := GetDB(ctx)
 	var items []*entity.PromptItem
 	result := db.Where("preset_id = ?", presetID).
 		Order("sort_order ASC").
@@ -171,8 +171,8 @@ func (p *PresetRepo) ListPromptItems(presetID int) ([]*entity.PromptItem, error)
 }
 
 // UpdatePromptItem 更新提示项
-func (p *PresetRepo) UpdatePromptItem(item *entity.PromptItem) error {
-	db := config.GetDB()
+func (p *PresetRepo) UpdatePromptItem(ctx context.Context, item *entity.PromptItem) error {
+	db := GetDB(ctx)
 	result := db.Model(item).
 		Where("id = ?", item.ID).
 		Updates(map[string]interface{}{
@@ -192,8 +192,8 @@ func (p *PresetRepo) UpdatePromptItem(item *entity.PromptItem) error {
 }
 
 // DeletePromptItem 删除提示项
-func (p *PresetRepo) DeletePromptItem(id int) error {
-	db := config.GetDB()
+func (p *PresetRepo) DeletePromptItem(ctx context.Context, id int) error {
+	db := GetDB(ctx)
 	result := db.Where("id = ?", id).Delete(&entity.PromptItem{})
 	if result.Error != nil {
 		return errs.NewStandardf(connect.CodeInternal, "删除提示项失败: %v", result.Error)
@@ -205,8 +205,8 @@ func (p *PresetRepo) DeletePromptItem(id int) error {
 }
 
 // UpdatePromptItemsOrder 更新提示项排序
-func (p *PresetRepo) UpdatePromptItemsOrder(presetID int, itemOrders map[int]int) error {
-	db := config.GetDB()
+func (p *PresetRepo) UpdatePromptItemsOrder(ctx context.Context, presetID int, itemOrders map[int]int) error {
+	db := GetDB(ctx)
 	tx := db.Begin()
 	defer func() {
 		if r := recover(); r != nil {
@@ -231,8 +231,8 @@ func (p *PresetRepo) UpdatePromptItemsOrder(presetID int, itemOrders map[int]int
 
 // GetVersion 获取预设的版本号
 // 用于缓存版本校验，只查询版本字段以减少数据传输
-func (p *PresetRepo) GetVersion(id int, userID int) (int, error) {
-	db := config.GetDB()
+func (p *PresetRepo) GetVersion(ctx context.Context, id int, userID int) (int, error) {
+	db := GetDB(ctx)
 	var version int
 	result := db.Model(&entity.Preset{}).
 		Where("id = ? AND user_id = ?", id, userID).

@@ -43,6 +43,13 @@ func (c *ChatServer) GetChatSession(ctx context.Context, req *connect.Request[pb
 // CreateChatSession 创建新的聊天会话
 func (c *ChatServer) CreateChatSession(ctx context.Context, req *connect.Request[pb.CreateChatSessionRequest]) (
 	*connect.Response[pb.CreateChatSessionResponse], error) {
+	// 开启事务
+	var err error
+	ctx, err = beginTransaction(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
 	resp, err := c.chat.CreateChatSession(ctx, req.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "CreateChatSession", req.Msg, resp, err)
@@ -53,6 +60,13 @@ func (c *ChatServer) CreateChatSession(ctx context.Context, req *connect.Request
 // UpdateChatSession 更新指定聊天会话
 func (c *ChatServer) UpdateChatSession(ctx context.Context, req *connect.Request[pb.UpdateChatSessionRequest]) (
 	*connect.Response[pb.UpdateChatSessionResponse], error) {
+	// 开启事务
+	var err error
+	ctx, err = beginTransaction(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
 	resp, err := c.chat.UpdateChatSession(ctx, req.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "UpdateChatSession", req.Msg, resp, err)
@@ -63,6 +77,13 @@ func (c *ChatServer) UpdateChatSession(ctx context.Context, req *connect.Request
 // DeleteChatSession 删除指定聊天会话
 func (c *ChatServer) DeleteChatSession(ctx context.Context, req *connect.Request[pb.DeleteChatSessionRequest]) (
 	*connect.Response[pb.DeleteChatSessionResponse], error) {
+	// 开启事务
+	var err error
+	ctx, err = beginTransaction(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
 	resp, err := c.chat.DeleteChatSession(ctx, req.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "DeleteChatSession", req.Msg, resp, err)
@@ -85,6 +106,13 @@ func (c *ChatServer) RegenerateMessage(ctx context.Context, req *connect.Request
 // EditMessage 编辑消息
 func (c *ChatServer) EditMessage(ctx context.Context, req *connect.Request[pb.EditMessageRequest]) (
 	*connect.Response[pb.EditMessageResponse], error) {
+	// 开启事务
+	var err error
+	ctx, err = beginTransaction(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
 	resp, err := c.chat.EditMessage(ctx, req.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "EditMessage", req.Msg, resp, err)
@@ -95,6 +123,13 @@ func (c *ChatServer) EditMessage(ctx context.Context, req *connect.Request[pb.Ed
 // DeleteMessage 删除消息
 func (c *ChatServer) DeleteMessage(ctx context.Context, req *connect.Request[pb.DeleteMessageRequest]) (
 	*connect.Response[pb.DeleteMessageResponse], error) {
+	// 开启事务
+	var err error
+	ctx, err = beginTransaction(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
 	resp, err := c.chat.DeleteMessage(ctx, req.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "DeleteMessage", req.Msg, resp, err)
@@ -105,6 +140,13 @@ func (c *ChatServer) DeleteMessage(ctx context.Context, req *connect.Request[pb.
 // SwitchSwipe 切换消息滑动选项
 func (c *ChatServer) SwitchSwipe(ctx context.Context, req *connect.Request[pb.SwitchSwipeRequest]) (
 	*connect.Response[pb.SwitchSwipeResponse], error) {
+	// 开启事务
+	var err error
+	ctx, err = beginTransaction(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
 	resp, err := c.chat.SwitchSwipe(ctx, req.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "SwitchSwipe", req.Msg, resp, err)

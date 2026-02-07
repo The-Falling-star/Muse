@@ -28,7 +28,7 @@ func newRegexRule() *regexRuleImpl {
 
 func (r *regexRuleImpl) ListRegexRules(ctx context.Context, req *pb.ListRegexRulesRequest) (*pb.ListRegexRulesResponse, error) {
 	// 获取全局正则规则列表（preset_id = 0）
-	rules, err := r.regexRuleRepo.List(0)
+	rules, err := r.regexRuleRepo.List(ctx, 0)
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func (r *regexRuleImpl) ListPresetRegexRules(ctx context.Context, req *pb.ListPr
 	}
 
 	// 从数据库获取预设的正则规则列表
-	rules, err := r.regexRuleRepo.List(presetID)
+	rules, err := r.regexRuleRepo.List(ctx, presetID)
 	if err != nil {
 		return nil, err
 	}
@@ -109,12 +109,12 @@ func (r *regexRuleImpl) AddRegexRule(ctx context.Context, req *pb.AddRegexRuleRe
 	}
 
 	// 保存到数据库
-	if err := r.regexRuleRepo.Create(rule); err != nil {
+	if err := r.regexRuleRepo.Create(ctx, rule); err != nil {
 		return nil, err
 	}
 
 	// 重新获取完整数据
-	fullRule, err := r.regexRuleRepo.GetByID(rule.ID)
+	fullRule, err := r.regexRuleRepo.GetByID(ctx, rule.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -147,7 +147,7 @@ func (r *regexRuleImpl) UpdateRegexRule(ctx context.Context, req *pb.UpdateRegex
 	}
 
 	// 获取当前规则
-	rule, err := r.regexRuleRepo.GetByID(id)
+	rule, err := r.regexRuleRepo.GetByID(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -172,7 +172,7 @@ func (r *regexRuleImpl) UpdateRegexRule(ctx context.Context, req *pb.UpdateRegex
 	rule.SortOrder = int(req.SortOrder)
 
 	// 更新数据库
-	if err := r.regexRuleRepo.Update(rule); err != nil {
+	if err := r.regexRuleRepo.Update(ctx, rule); err != nil {
 		return nil, err
 	}
 
@@ -180,7 +180,7 @@ func (r *regexRuleImpl) UpdateRegexRule(ctx context.Context, req *pb.UpdateRegex
 	cache.InvalidateCacheByRegexRule(int64(id))
 
 	// 重新获取更新后的规则
-	updatedRule, err := r.regexRuleRepo.GetByID(id)
+	updatedRule, err := r.regexRuleRepo.GetByID(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -200,7 +200,7 @@ func (r *regexRuleImpl) DeleteRegexRule(ctx context.Context, req *pb.DeleteRegex
 	cache.InvalidateCacheByRegexRule(int64(id))
 
 	// 删除规则
-	if err := r.regexRuleRepo.Delete(id); err != nil {
+	if err := r.regexRuleRepo.Delete(ctx, id); err != nil {
 		return nil, err
 	}
 
@@ -224,7 +224,7 @@ func (r *regexRuleImpl) UpdateRegexRulesOrder(ctx context.Context, req *pb.Updat
 	}
 
 	// 更新排序
-	if err := r.regexRuleRepo.UpdateRulesOrder(presetID, ruleOrders); err != nil {
+	if err := r.regexRuleRepo.UpdateRulesOrder(ctx, presetID, ruleOrders); err != nil {
 		return nil, err
 	}
 
@@ -258,7 +258,7 @@ func (r *regexRuleImpl) ImportRegexRules(ctx context.Context, req *pb.ImportRege
 	const presetID = 0
 
 	// 获取当前最大排序号
-	maxOrder, err := r.regexRuleRepo.GetMaxSortOrder(presetID)
+	maxOrder, err := r.regexRuleRepo.GetMaxSortOrder(ctx, presetID)
 	if err != nil {
 		return nil, err
 	}
@@ -281,7 +281,7 @@ func (r *regexRuleImpl) ImportRegexRules(ctx context.Context, req *pb.ImportRege
 	}
 
 	// 批量创建
-	if err = r.regexRuleRepo.BatchCreate(rules); err != nil {
+	if err = r.regexRuleRepo.BatchCreate(ctx, rules); err != nil {
 		return nil, err
 	}
 
@@ -292,7 +292,7 @@ func (r *regexRuleImpl) ExportRegexRules(ctx context.Context, req *pb.ExportRege
 	presetID := int(req.GetPresetId()) // 0 表示全局正则
 
 	// 获取正则规则列表
-	rules, err := r.regexRuleRepo.List(presetID)
+	rules, err := r.regexRuleRepo.List(ctx, presetID)
 	if err != nil {
 		return nil, err
 	}

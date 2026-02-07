@@ -43,6 +43,13 @@ func (w *WorldInfoServer) GetWorldInfo(ctx context.Context, req *connect.Request
 // CreateWorldInfo 创建新的世界书
 func (w *WorldInfoServer) CreateWorldInfo(ctx context.Context, req *connect.Request[pb.CreateWorldInfoRequest]) (
 	*connect.Response[pb.CreateWorldInfoResponse], error) {
+	// 开启事务
+	var err error
+	ctx, err = beginTransaction(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
 	resp, err := w.worldInfo.CreateWorldInfo(ctx, req.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "CreateWorldInfo", req.Msg, resp, err)
@@ -53,6 +60,13 @@ func (w *WorldInfoServer) CreateWorldInfo(ctx context.Context, req *connect.Requ
 // UpdateWorldInfo 更新指定世界书
 func (w *WorldInfoServer) UpdateWorldInfo(ctx context.Context, req *connect.Request[pb.UpdateWorldInfoRequest]) (
 	*connect.Response[pb.UpdateWorldInfoResponse], error) {
+	// 开启事务
+	var err error
+	ctx, err = beginTransaction(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
 	resp, err := w.worldInfo.UpdateWorldInfo(ctx, req.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "UpdateWorldInfo", req.Msg, resp, err)
@@ -63,6 +77,13 @@ func (w *WorldInfoServer) UpdateWorldInfo(ctx context.Context, req *connect.Requ
 // DeleteWorldInfo 删除指定世界书
 func (w *WorldInfoServer) DeleteWorldInfo(ctx context.Context, req *connect.Request[pb.DeleteWorldInfoRequest]) (
 	*connect.Response[pb.DeleteWorldInfoResponse], error) {
+	// 开启事务
+	var err error
+	ctx, err = beginTransaction(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
 	resp, err := w.worldInfo.DeleteWorldInfo(ctx, req.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "DeleteWorldInfo", req.Msg, resp, err)
@@ -73,6 +94,13 @@ func (w *WorldInfoServer) DeleteWorldInfo(ctx context.Context, req *connect.Requ
 // ImportWorldInfo 导入世界书
 func (w *WorldInfoServer) ImportWorldInfo(ctx context.Context, req *connect.Request[pb.ImportWorldInfoRequest]) (
 	*connect.Response[pb.ImportWorldInfoResponse], error) {
+	// 开启事务
+	var err error
+	ctx, err = beginTransaction(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
 	resp, err := w.worldInfo.ImportWorldInfo(ctx, req.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "ImportWorldInfo", req.Msg, resp, err)
@@ -105,6 +133,13 @@ func (w *WorldInfoServer) ListWorldInfoEntries(ctx context.Context,
 func (w *WorldInfoServer) AddWorldInfoEntry(ctx context.Context,
 	req *connect.Request[pb.AddWorldInfoEntryRequest]) (
 	*connect.Response[pb.AddWorldInfoEntryResponse], error) {
+	// 开启事务
+	var err error
+	ctx, err = beginTransaction(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
 	resp, err := w.worldInfo.AddWorldInfoEntry(ctx, req.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "AddWorldInfoEntry", req.Msg, resp, err)
@@ -116,6 +151,13 @@ func (w *WorldInfoServer) AddWorldInfoEntry(ctx context.Context,
 func (w *WorldInfoServer) UpdateWorldInfoEntry(ctx context.Context,
 	req *connect.Request[pb.UpdateWorldInfoEntryRequest]) (
 	*connect.Response[pb.UpdateWorldInfoEntryResponse], error) {
+	// 开启事务
+	var err error
+	ctx, err = beginTransaction(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
 	resp, err := w.worldInfo.UpdateWorldInfoEntry(ctx, req.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "UpdateWorldInfoEntry", req.Msg, resp, err)
@@ -127,6 +169,13 @@ func (w *WorldInfoServer) UpdateWorldInfoEntry(ctx context.Context,
 func (w *WorldInfoServer) DeleteWorldInfoEntry(ctx context.Context,
 	req *connect.Request[pb.DeleteWorldInfoEntryRequest]) (
 	*connect.Response[pb.DeleteWorldInfoEntryResponse], error) {
+	// 开启事务
+	var err error
+	ctx, err = beginTransaction(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
 	resp, err := w.worldInfo.DeleteWorldInfoEntry(ctx, req.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "DeleteWorldInfoEntry", req.Msg, resp, err)
@@ -138,6 +187,13 @@ func (w *WorldInfoServer) DeleteWorldInfoEntry(ctx context.Context,
 func (w *WorldInfoServer) UpdateWorldInfoEntriesOrder(ctx context.Context,
 	req *connect.Request[pb.UpdateWorldInfoEntriesOrderRequest]) (
 	*connect.Response[pb.UpdateWorldInfoEntriesOrderResponse], error) {
+	// 开启事务
+	var err error
+	ctx, err = beginTransaction(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
 	resp, err := w.worldInfo.UpdateWorldInfoEntriesOrder(ctx, req.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "UpdateWorldInfoEntriesOrder", req.Msg, resp, err)

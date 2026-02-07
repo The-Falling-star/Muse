@@ -8,15 +8,13 @@ import (
 	"connectrpc.com/connect"
 	"github.com/ling/muse/common/convert"
 	"github.com/ling/muse/common/errs"
+	"github.com/ling/muse/common/jwt"
 	"github.com/ling/muse/entity"
 	"github.com/ling/muse/entity/sillytavern"
 	pb "github.com/ling/muse/gen/muse"
 	"github.com/ling/muse/repo/cache"
 	"github.com/ling/muse/repo/database"
 )
-
-// 默认用户ID，待认证功能完成后替换
-const defaultUserID = 1
 
 type worldInfoImpl struct {
 	worldInfoRepo *database.WorldInfoRepo
@@ -30,7 +28,8 @@ func newWorldInfo() *worldInfoImpl {
 
 func (w *worldInfoImpl) ListWorldInfos(ctx context.Context, req *pb.ListWorldInfosRequest) (*pb.ListWorldInfosResponse, error) {
 	// 从数据库获取世界书列表（不分页）
-	worldInfos, _, err := w.worldInfoRepo.List(defaultUserID, 1, 1000)
+	userId := jwt.GetUserId(ctx)
+	worldInfos, _, err := w.worldInfoRepo.List(ctx, userId, 1, 1000)
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +52,8 @@ func (w *worldInfoImpl) GetWorldInfo(ctx context.Context, req *pb.GetWorldInfoRe
 	}
 
 	// 从数据库获取世界书
-	worldInfo, err := w.worldInfoRepo.GetByID(id, defaultUserID)
+	userId := jwt.GetUserId(ctx)
+	worldInfo, err := w.worldInfoRepo.GetByID(ctx, id, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -74,20 +74,21 @@ func (w *worldInfoImpl) CreateWorldInfo(ctx context.Context, req *pb.CreateWorld
 	}
 
 	// 构建世界书实体
+	userId := jwt.GetUserId(ctx)
 	worldInfo := &entity.WorldInfo{
-		UserID:      defaultUserID,
+		UserID:      userId,
 		Name:        name,
 		Description: req.GetDescription(),
 		IsGlobal:    req.GetIsGlobal(),
 	}
 
 	// 保存到数据库
-	if err := w.worldInfoRepo.Create(worldInfo); err != nil {
+	if err := w.worldInfoRepo.Create(ctx, worldInfo); err != nil {
 		return nil, err
 	}
 
 	// 重新获取完整数据（包含关联）
-	fullWorldInfo, err := w.worldInfoRepo.GetByID(worldInfo.ID, defaultUserID)
+	fullWorldInfo, err := w.worldInfoRepo.GetByID(ctx, worldInfo.ID, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -110,7 +111,8 @@ func (w *worldInfoImpl) UpdateWorldInfo(ctx context.Context, req *pb.UpdateWorld
 	}
 
 	// 获取当前世界书
-	worldInfo, err := w.worldInfoRepo.GetByID(id, defaultUserID)
+	userId := jwt.GetUserId(ctx)
+	worldInfo, err := w.worldInfoRepo.GetByID(ctx, id, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -126,7 +128,7 @@ func (w *worldInfoImpl) UpdateWorldInfo(ctx context.Context, req *pb.UpdateWorld
 	worldInfo.IsGlobal = req.IsGlobal
 
 	// 更新数据库
-	if err := w.worldInfoRepo.Update(worldInfo); err != nil {
+	if err := w.worldInfoRepo.Update(ctx, worldInfo); err != nil {
 		return nil, err
 	}
 
@@ -134,7 +136,7 @@ func (w *worldInfoImpl) UpdateWorldInfo(ctx context.Context, req *pb.UpdateWorld
 	cache.InvalidateCacheByWorldInfo(int64(id))
 
 	// 重新获取更新后的世界书（包含关联数据）
-	updatedWorldInfo, err := w.worldInfoRepo.GetByID(id, defaultUserID)
+	updatedWorldInfo, err := w.worldInfoRepo.GetByID(ctx, id, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -154,7 +156,8 @@ func (w *worldInfoImpl) DeleteWorldInfo(ctx context.Context, req *pb.DeleteWorld
 	cache.InvalidateCacheByWorldInfo(int64(id))
 
 	// 删除世界书（会级联删除关联的条目）
-	if err := w.worldInfoRepo.Delete(id, defaultUserID); err != nil {
+	userId := jwt.GetUserId(ctx)
+	if err := w.worldInfoRepo.Delete(ctx, id, userId); err != nil {
 		return nil, err
 	}
 
@@ -168,7 +171,7 @@ func (w *worldInfoImpl) ListWorldInfoEntries(ctx context.Context, req *pb.ListWo
 	}
 
 	// 从数据库获取条目列表
-	entries, err := w.worldInfoRepo.ListEntries(worldInfoID)
+	entries, err := w.worldInfoRepo.ListEntries(ctx, worldInfoID)
 	if err != nil {
 		return nil, err
 	}
@@ -219,12 +222,12 @@ func (w *worldInfoImpl) AddWorldInfoEntry(ctx context.Context, req *pb.AddWorldI
 	}
 
 	// 保存到数据库
-	if err := w.worldInfoRepo.CreateEntry(entry); err != nil {
+	if err := w.worldInfoRepo.CreateEntry(ctx, entry); err != nil {
 		return nil, err
 	}
 
 	// 重新获取完整数据
-	fullEntry, err := w.worldInfoRepo.GetEntryByID(entry.ID)
+	fullEntry, err := w.worldInfoRepo.GetEntryByID(ctx, entry.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -252,7 +255,7 @@ func (w *worldInfoImpl) UpdateWorldInfoEntry(ctx context.Context, req *pb.Update
 	}
 
 	// 获取当前条目
-	entry, err := w.worldInfoRepo.GetEntryByID(id)
+	entry, err := w.worldInfoRepo.GetEntryByID(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -275,7 +278,7 @@ func (w *worldInfoImpl) UpdateWorldInfoEntry(ctx context.Context, req *pb.Update
 	entry.SortOrder = int(req.GetSortOrder())
 
 	// 更新数据库
-	if err := w.worldInfoRepo.UpdateEntry(entry); err != nil {
+	if err := w.worldInfoRepo.UpdateEntry(ctx, entry); err != nil {
 		return nil, err
 	}
 
@@ -283,7 +286,7 @@ func (w *worldInfoImpl) UpdateWorldInfoEntry(ctx context.Context, req *pb.Update
 	cache.InvalidateCacheByWorldInfo(int64(entry.WorldInfoID))
 
 	// 重新获取更新后的条目
-	updatedEntry, err := w.worldInfoRepo.GetEntryByID(id)
+	updatedEntry, err := w.worldInfoRepo.GetEntryByID(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -300,7 +303,7 @@ func (w *worldInfoImpl) DeleteWorldInfoEntry(ctx context.Context, req *pb.Delete
 	}
 
 	// 删除条目
-	if err := w.worldInfoRepo.DeleteEntry(id); err != nil {
+	if err := w.worldInfoRepo.DeleteEntry(ctx, id); err != nil {
 		return nil, err
 	}
 
@@ -324,7 +327,7 @@ func (w *worldInfoImpl) UpdateWorldInfoEntriesOrder(ctx context.Context, req *pb
 	}
 
 	// 更新排序
-	if err := w.worldInfoRepo.UpdateEntriesOrder(worldInfoID, entryOrders); err != nil {
+	if err := w.worldInfoRepo.UpdateEntriesOrder(ctx, worldInfoID, entryOrders); err != nil {
 		return nil, err
 	}
 
@@ -350,7 +353,8 @@ func (w *worldInfoImpl) ImportWorldInfo(ctx context.Context, req *pb.ImportWorld
 
 	// 转换为 Muse 实体
 	worldInfo := convert.STWorldInfoToEntity(&stWorldBook)
-	worldInfo.UserID = defaultUserID
+	userId := jwt.GetUserId(ctx)
+	worldInfo.UserID = userId
 	// 从文件名获取世界书名称（去掉 .json 后缀）
 	if worldInfo.Name == "" {
 		worldInfo.Name = strings.TrimSuffix(req.GetFileName(), ".json")
@@ -360,7 +364,7 @@ func (w *worldInfoImpl) ImportWorldInfo(ctx context.Context, req *pb.ImportWorld
 	}
 
 	// 保存世界书到数据库
-	if err := w.worldInfoRepo.Create(worldInfo); err != nil {
+	if err := w.worldInfoRepo.Create(ctx, worldInfo); err != nil {
 		return nil, err
 	}
 
@@ -377,14 +381,14 @@ func (w *worldInfoImpl) ImportWorldInfo(ctx context.Context, req *pb.ImportWorld
 		}
 
 		// 批量创建条目
-		if err := w.worldInfoRepo.BatchCreateEntries(entries); err != nil {
+		if err := w.worldInfoRepo.BatchCreateEntries(ctx, entries); err != nil {
 			// 条目创建失败，但世界书已创建，记录日志但不返回错误
 			// 可以考虑在未来添加事务支持
 		}
 	}
 
 	// 重新获取完整的世界书（包含条目）
-	fullWorldInfo, err := w.worldInfoRepo.GetByID(worldInfo.ID, defaultUserID)
+	fullWorldInfo, err := w.worldInfoRepo.GetByID(ctx, worldInfo.ID, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -401,7 +405,8 @@ func (w *worldInfoImpl) ExportWorldInfo(ctx context.Context, req *pb.ExportWorld
 	}
 
 	// 从数据库获取世界书（包含所有条目）
-	worldInfo, err := w.worldInfoRepo.GetByID(id, defaultUserID)
+	userId := jwt.GetUserId(ctx)
+	worldInfo, err := w.worldInfoRepo.GetByID(ctx, id, userId)
 	if err != nil {
 		return nil, err
 	}

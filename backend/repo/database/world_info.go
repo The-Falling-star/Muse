@@ -88,33 +88,18 @@ func (w *WorldInfoRepo) Update(ctx context.Context, worldInfo *entity.WorldInfo)
 func (w *WorldInfoRepo) Delete(ctx context.Context, id, userID int) error {
 	db := GetDB(ctx)
 
-	// 开启事务
-	tx := db.Begin()
-	defer func() {
-		if r := recover(); r != nil {
-			tx.Rollback()
-		}
-	}()
-
 	// 删除关联的条目
-	if err := tx.Where("world_info_id = ?", id).Delete(&entity.WorldInfoEntry{}).Error; err != nil {
-		tx.Rollback()
+	if err := db.Where("world_info_id = ?", id).Delete(&entity.WorldInfoEntry{}).Error; err != nil {
 		return errs.NewStandardf(connect.CodeInternal, "删除世界书失败：删除关联条目时出错: %v", err)
 	}
 
 	// 删除世界书
-	result := tx.Where("id = ? AND user_id = ?", id, userID).Delete(&entity.WorldInfo{})
+	result := db.Where("id = ? AND user_id = ?", id, userID).Delete(&entity.WorldInfo{})
 	if result.Error != nil {
-		tx.Rollback()
 		return errs.NewStandardf(connect.CodeInternal, "删除世界书失败: %v", result.Error)
 	}
 	if result.RowsAffected == 0 {
-		tx.Rollback()
 		return errs.NewStandard(connect.CodeNotFound, "删除世界书失败：记录不存在")
-	}
-
-	if err := tx.Commit().Error; err != nil {
-		return errs.NewStandardf(connect.CodeInternal, "删除世界书失败：提交事务时出错: %v", err)
 	}
 	return nil
 }
@@ -210,24 +195,14 @@ func (w *WorldInfoRepo) DeleteEntry(ctx context.Context, id int) error {
 // UpdateEntriesOrder 更新世界书条目排序
 func (w *WorldInfoRepo) UpdateEntriesOrder(ctx context.Context, worldInfoID int, entryOrders map[int]int) error {
 	db := GetDB(ctx)
-	tx := db.Begin()
-	defer func() {
-		if r := recover(); r != nil {
-			tx.Rollback()
-		}
-	}()
 
 	for entryID, sortOrder := range entryOrders {
-		if err := tx.Model(&entity.WorldInfoEntry{}).
+		if err := db.Model(&entity.WorldInfoEntry{}).
 			Where("id = ? AND world_info_id = ?", entryID, worldInfoID).
 			Update("sort_order", sortOrder).Error; err != nil {
-			tx.Rollback()
+			db.Rollback()
 			return errs.NewStandardf(connect.CodeInternal, "更新世界书条目排序失败: %v", err)
 		}
-	}
-
-	if err := tx.Commit().Error; err != nil {
-		return errs.NewStandardf(connect.CodeInternal, "更新世界书条目排序失败：提交事务时出错: %v", err)
 	}
 	return nil
 }

@@ -94,24 +94,14 @@ func (r *RegexRuleRepo) Delete(ctx context.Context, id int) error {
 // UpdateRulesOrder 更新正则规则排序
 func (r *RegexRuleRepo) UpdateRulesOrder(ctx context.Context, presetID int, ruleOrders map[int]int) error {
 	db := GetDB(ctx)
-	tx := db.Begin()
-	defer func() {
-		if r := recover(); r != nil {
-			tx.Rollback()
-		}
-	}()
 
 	for ruleID, sortOrder := range ruleOrders {
-		if err := tx.Model(&entity.RegexRule{}).
+		if err := db.Model(&entity.RegexRule{}).
 			Where("id = ? AND preset_id = ?", ruleID, presetID).
 			Update("sort_order", sortOrder).Error; err != nil {
-			tx.Rollback()
+			db.Rollback()
 			return errs.NewStandardf(connect.CodeInternal, "更新正则规则排序失败: %v", err)
 		}
-	}
-
-	if err := tx.Commit().Error; err != nil {
-		return errs.NewStandardf(connect.CodeInternal, "更新正则规则排序失败：提交事务时出错: %v", err)
 	}
 	return nil
 }

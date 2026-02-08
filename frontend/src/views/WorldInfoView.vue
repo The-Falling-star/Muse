@@ -1,9 +1,23 @@
 <template>
   <div class="worldinfo-view">
-    <!-- 左侧：世界书列表 -->
-    <div class="worldinfo-sidebar">
+    <!-- 左侧：世界书列表（移动端可折叠） -->
+    <div class="worldinfo-sidebar" :class="{ 'show-mobile': showSidebar }">
       <div class="sidebar-header">
-        <h3>世界书</h3>
+        <div class="sidebar-header-content">
+          <h3>世界书</h3>
+          <n-button 
+            v-if="isMobile" 
+            quaternary 
+            circle 
+            size="small" 
+            class="close-sidebar-btn"
+            @click="showSidebar = false"
+          >
+            <template #icon>
+              <n-icon><CloseOutline /></n-icon>
+            </template>
+          </n-button>
+        </div>
         <n-button quaternary circle size="small" @click="showWorldModal = true; editingWorld = null">
           <template #icon>
             <n-icon><AddOutline /></n-icon>
@@ -68,6 +82,19 @@
 
     <!-- 右侧：条目列表 -->
     <div class="worldinfo-main">
+      <!-- 移动端：列表切换按钮 -->
+      <div v-if="isMobile" class="mobile-list-toggle">
+        <n-button 
+          quaternary 
+          @click="showSidebar = true"
+          class="list-toggle-btn"
+        >
+          <template #icon>
+            <n-icon><ListOutline /></n-icon>
+          </template>
+          世界书列表
+        </n-button>
+      </div>
       <template v-if="selectedWorld">
         <!-- 世界书头部 -->
         <div class="main-header">
@@ -281,11 +308,24 @@
         </n-upload-dragger>
       </n-upload>
     </n-modal>
+
+    <!-- 测试按钮（仅在开发环境显示） -->
+    <div v-if="__DEV__" class="test-buttons">
+      <n-button @click="showSidebar = true" type="primary" size="small">
+        打开侧边栏
+      </n-button>
+      <n-button @click="showSidebar = false" type="error" size="small">
+        关闭侧边栏
+      </n-button>
+      <n-button @click="isMobile = !isMobile" type="warning" size="small">
+        切换移动端模式: {{ isMobile ? 'ON' : 'OFF' }}
+      </n-button>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import {
   NInput,
   NSelect,
@@ -314,7 +354,9 @@ import {
   CloudUploadOutline,
   CloudDownloadOutline,
   CreateOutline,
-  TrashOutline
+  TrashOutline,
+  CloseOutline,
+  ListOutline
 } from '@vicons/ionicons5';
 
 import WorldInfoEntryEditor from '../components/worldinfo/WorldInfoEntryEditor.vue';
@@ -324,6 +366,38 @@ import { EntryPosition } from '@/gen/muse/muse_pb';
 
 const message = useMessage();
 const dialog = useDialog();
+
+// 设备检测
+const isMobile = ref(false);
+const showSidebar = ref(false);
+
+// 检测是否为移动端
+const detectMobile = () => {
+  isMobile.value = window.innerWidth <= 768;
+};
+
+// 监听窗口大小变化
+const handleResize = () => {
+  detectMobile();
+  // 在桌面端自动隐藏侧边栏
+  if (!isMobile.value) {
+    showSidebar.value = false;
+  }
+};
+
+// 在组件挂载时检测
+onMounted(() => {
+  detectMobile();
+  window.addEventListener('resize', handleResize);
+});
+
+// 组件卸载时清理事件监听器
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize);
+});
+
+// 提供全局属性访问
+const $isMobile = isMobile;
 
 // 状态
 const loading = ref(false);
@@ -468,6 +542,12 @@ const loadEntries = async (worldInfoId: number) => {
 // 选择世界书
 const selectWorld = async (id: number) => {
   selectedWorldId.value = id;
+  
+  // 移动端选择后自动关闭侧边栏
+  if (isMobile.value) {
+    showSidebar.value = false;
+  }
+  
   await loadEntries(id);
 };
 
@@ -718,6 +798,7 @@ watch(showWorldModal, (val) => {
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid var(--border-color);
+  position: relative;
 }
 
 /* 侧边栏 */
@@ -728,24 +809,58 @@ watch(showWorldModal, (val) => {
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+  transition: all var(--transition-normal);
+}
+
+/* 移动端侧边栏 */
+@media (max-width: 768px) {
+  .worldinfo-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 300px;
+    z-index: 100;
+    transform: translateX(-100%);
+    box-shadow: var(--shadow-xl);
+  }
+  
+  .worldinfo-sidebar.show-mobile {
+    transform: translateX(0);
+  }
+  
+  .worldinfo-view {
+    gap: 0;
+  }
 }
 
 .sidebar-header {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 12px;
   padding: 16px;
   border-bottom: 1px solid var(--border-color);
 }
 
-.sidebar-header h3 {
+.sidebar-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidebar-header-content h3 {
   font-size: 16px;
   font-weight: 600;
   margin: 0;
+  color: var(--text-primary);
+}
+
+.close-sidebar-btn {
+  margin-left: auto;
 }
 
 .search-input {
-  margin: 12px 16px;
+  margin: 0 16px 12px 16px;
   width: calc(100% - 32px);
   box-sizing: border-box;
 }
@@ -819,6 +934,19 @@ watch(showWorldModal, (val) => {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  position: relative;
+}
+
+/* 移动端列表切换按钮 */
+.mobile-list-toggle {
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+}
+
+.list-toggle-btn {
+  width: 100%;
+  justify-content: flex-start;
 }
 
 .main-header {
@@ -866,7 +994,7 @@ watch(showWorldModal, (val) => {
 /* 条目列表 */
 .entries-list {
   flex: 1;
-  padding: 16px 20px;
+  padding: 28px 20px 16px 20px; /* 增加顶部padding从16px到28px */
 }
 
 .entry-item {
@@ -876,6 +1004,8 @@ watch(showWorldModal, (val) => {
   padding: 16px;
   margin-bottom: 12px;
   transition: all var(--transition-fast);
+  /* 右侧间距调整：修改 margin-right 的值来控制条目右侧空白大小 */
+  margin-right: 12px;
 }
 
 .entry-item:hover {
@@ -996,8 +1126,146 @@ watch(showWorldModal, (val) => {
 @media (max-width: 768px) {
   .worldinfo-sidebar {
     width: 100%;
-    position: absolute;
-    z-index: 10;
+  }
+  
+  .worldinfo-view {
+    flex-direction: column;
+    height: calc(100vh - 64px - 48px);
+  }
+  
+  .worldinfo-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  
+  .main-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    padding: 16px;
+  }
+  
+  .header-actions {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+  
+  .entries-toolbar {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 16px;
+  }
+  
+  .entry-search {
+    max-width: none;
+  }
+  
+  .entry-sort {
+    width: 100%;
+  }
+  
+  .entry-header {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .entry-keys {
+    order: 3;
+    width: 100%;
+    margin-top: 8px;
+  }
+  
+  .entry-content p {
+    font-size: 13px;
+  }
+  
+  .entry-meta {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .entries-list {
+    padding: 16px;
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .entry-item {
+    margin-right: 0;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .worldinfo-view {
+    border-radius: 0;
+    border: none;
+    margin: 0 -16px;
+  }
+  
+  .main-header,
+  .entries-toolbar,
+  .entries-list {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  
+  .entry-item {
+    padding: 12px;
+    margin-bottom: 8px;
+  }
+  
+  .entry-header {
+    gap: 6px;
+  }
+  
+  .entry-content p {
+    font-size: 12px;
+  }
+  
+  .header-actions {
+    gap: 6px;
+  }
+  
+  .header-actions .n-button {
+    font-size: 12px;
+    padding: 0 12px;
+  }
+  
+  .mobile-list-toggle {
+    padding: 12px 16px;
+  }
+}
+
+/* 测试按钮 */
+.test-buttons {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 1000;
+  background: var(--bg-secondary);
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-lg);
+}
+
+@media (max-width: 768px) {
+  .test-buttons {
+    bottom: 10px;
+    right: 10px;
+    padding: 8px;
+  }
+  
+  .test-buttons .n-button {
+    font-size: 12px;
+    padding: 8px 12px;
   }
 }
 </style>

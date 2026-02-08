@@ -259,6 +259,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  min-width: 0;
   transition: margin-left var(--transition-normal);
 }
 
@@ -286,6 +287,7 @@ onMounted(() => {
   border-bottom: 1px solid var(--border-color);
   z-index: 50;
   backdrop-filter: blur(10px);
+  min-width: 0;
 }
 
 .header-left {

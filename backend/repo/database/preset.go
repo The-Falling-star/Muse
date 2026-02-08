@@ -101,34 +101,21 @@ func (p *PresetRepo) Update(ctx context.Context, preset *entity.Preset) error {
 // Delete 删除预设
 func (p *PresetRepo) Delete(ctx context.Context, id int, userID int) error {
 	db := GetDB(ctx)
-
-	// 开启事务
-	tx := db.Begin()
-	defer func() {
-		if r := recover(); r != nil {
-			tx.Rollback()
-		}
-	}()
-
 	// 删除关联的提示项
-	if err := tx.Where("preset_id = ?", id).Delete(&entity.PromptItem{}).Error; err != nil {
-		tx.Rollback()
+	if err := db.Where("preset_id = ?", id).Delete(&entity.PromptItem{}).Error; err != nil {
+		db.Rollback()
 		return errs.NewStandardf(connect.CodeInternal, "删除预设失败：删除关联的提示项时出错: %v", err)
 	}
 
 	// 删除预设
-	result := tx.Where("id = ? AND user_id = ?", id, userID).Delete(&entity.Preset{})
+	result := db.Where("id = ? AND user_id = ?", id, userID).Delete(&entity.Preset{})
 	if result.Error != nil {
-		tx.Rollback()
+		db.Rollback()
 		return errs.NewStandardf(connect.CodeInternal, "删除预设失败: %v", result.Error)
 	}
 	if result.RowsAffected == 0 {
-		tx.Rollback()
+		db.Rollback()
 		return errs.NewStandard(connect.CodeNotFound, "删除预设失败：记录不存在")
-	}
-
-	if err := tx.Commit().Error; err != nil {
-		return errs.NewStandardf(connect.CodeInternal, "删除预设失败：提交事务时出错: %v", err)
 	}
 	return nil
 }
@@ -207,24 +194,13 @@ func (p *PresetRepo) DeletePromptItem(ctx context.Context, id int) error {
 // UpdatePromptItemsOrder 更新提示项排序
 func (p *PresetRepo) UpdatePromptItemsOrder(ctx context.Context, presetID int, itemOrders map[int]int) error {
 	db := GetDB(ctx)
-	tx := db.Begin()
-	defer func() {
-		if r := recover(); r != nil {
-			tx.Rollback()
-		}
-	}()
-
 	for itemID, sortOrder := range itemOrders {
-		if err := tx.Model(&entity.PromptItem{}).
+		if err := db.Model(&entity.PromptItem{}).
 			Where("id = ? AND preset_id = ?", itemID, presetID).
 			Update("sort_order", sortOrder).Error; err != nil {
-			tx.Rollback()
+			db.Rollback()
 			return errs.NewStandardf(connect.CodeInternal, "更新提示项排序失败: %v", err)
 		}
-	}
-
-	if err := tx.Commit().Error; err != nil {
-		return errs.NewStandardf(connect.CodeInternal, "更新提示项排序失败：提交事务时出错: %v", err)
 	}
 	return nil
 }

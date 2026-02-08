@@ -1,9 +1,23 @@
 <template>
   <div class="presets-view">
-    <!-- 左侧：预设列表 -->
-    <div class="presets-sidebar">
+    <!-- 左侧：预设列表（移动端可折叠） -->
+    <div class="presets-sidebar" :class="{ 'show-mobile': showSidebar }">
       <div class="sidebar-header">
-        <h3>预设列表</h3>
+        <div class="sidebar-header-content">
+          <h3>预设列表</h3>
+          <n-button 
+            v-if="isMobile" 
+            quaternary 
+            circle 
+            size="small" 
+            class="close-sidebar-btn"
+            @click="showSidebar = false"
+          >
+            <template #icon>
+              <n-icon><CloseOutline /></n-icon>
+            </template>
+          </n-button>
+        </div>
         <n-button type="primary" size="small" @click="createPreset">
           <template #icon>
             <n-icon><AddOutline /></n-icon>
@@ -54,6 +68,19 @@
 
     <!-- 右侧：预设编辑面板 -->
     <div class="presets-panel">
+      <!-- 移动端：列表切换按钮 -->
+      <div v-if="isMobile" class="mobile-list-toggle">
+        <n-button 
+          quaternary 
+          @click="showSidebar = true"
+          class="list-toggle-btn"
+        >
+          <template #icon>
+            <n-icon><ListOutline /></n-icon>
+          </template>
+          预设列表
+        </n-button>
+      </div>
       <template v-if="selectedPreset">
         <!-- 预设头部信息 -->
         <div class="panel-header">
@@ -396,7 +423,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import {
   NInput,
   NInputNumber,
@@ -425,7 +452,9 @@ import {
   TrashOutline,
   OptionsOutline,
   CodeSlashOutline,
-  ChatboxOutline
+  ChatboxOutline,
+  CloseOutline,
+  ListOutline
 } from '@vicons/ionicons5';
 import draggable from 'vuedraggable';
 
@@ -435,6 +464,34 @@ import { presetClient, regexRuleClient } from '@/api/client';
 import type {Preset, PromptItem, RegexRule} from '@/gen/muse/muse_pb';
 import { Role, InjectionPosition } from '@/gen/muse/muse_pb';
 
+// 设备检测
+const isMobile = ref(false);
+const showSidebar = ref(false);
+
+// 检测是否为移动端
+const detectMobile = () => {
+  isMobile.value = window.innerWidth <= 768;
+};
+
+// 监听窗口大小变化
+const handleResize = () => {
+  detectMobile();
+  // 在桌面端自动隐藏侧边栏
+  if (!isMobile.value) {
+    showSidebar.value = false;
+  }
+};
+
+// 在组件挂载时检测
+onMounted(() => {
+  detectMobile();
+  window.addEventListener('resize', handleResize);
+});
+
+// 组件卸载时清理事件监听器
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize);
+});
 // 组件本地使用的提示项接口
 interface LocalPromptItem {
   id: number;
@@ -543,6 +600,11 @@ const loadPresetRegexRules = async (presetId: number) => {
 const selectPreset = async (preset: Preset) => {
   selectedPreset.value = preset;
   expandedPromptId.value = null;
+  
+  // 移动端选择后自动关闭侧边栏
+  if (isMobile.value) {
+    showSidebar.value = false;
+  }
 
   // 同步编辑表单
   editForm.value = {
@@ -1044,6 +1106,7 @@ onMounted(() => {
   display: flex;
   height: calc(100vh - 64px - 48px);
   gap: 16px;
+  position: relative;
 }
 
 /* 左侧预设列表 */
@@ -1054,25 +1117,58 @@ onMounted(() => {
   flex-direction: column;
   background: var(--bg-secondary);
   border-right: 1px solid var(--border-color);
+  transition: all var(--transition-normal);
+}
+
+/* 移动端侧边栏 */
+@media (max-width: 768px) {
+  .presets-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 300px;
+    z-index: 100;
+    transform: translateX(-100%);
+    box-shadow: var(--shadow-xl);
+  }
+  
+  .presets-sidebar.show-mobile {
+    transform: translateX(0);
+  }
+  
+  .presets-view {
+    gap: 0;
+  }
 }
 
 .sidebar-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 12px;
   padding: 16px;
   border-bottom: 1px solid var(--border-color);
 }
 
-.sidebar-header h3 {
+.sidebar-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidebar-header-content h3 {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
   color: var(--text-primary);
 }
 
+.close-sidebar-btn {
+  margin-left: auto;
+}
+
 .search-input {
-  margin: 12px 16px;
+  margin: 0 16px;
   width: calc(100% - 32px);
   box-sizing: border-box;
 }
@@ -1133,6 +1229,19 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: relative;
+}
+
+/* 移动端列表切换按钮 */
+.mobile-list-toggle {
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+}
+
+.list-toggle-btn {
+  width: 100%;
+  justify-content: flex-start;
 }
 
 .panel-header {
@@ -1169,7 +1278,7 @@ onMounted(() => {
 /* 主内容区 */
 .panel-content {
   flex: 1;
-  padding: 16px 20px;
+  padding: 16px 20px 16px 20px;
 }
 
 /* 设置分区 */
@@ -1179,6 +1288,8 @@ onMounted(() => {
   border: 1px solid var(--border-color);
   border-radius: 12px;
   overflow: hidden;
+  /* 右侧间距调整：修改 margin-right 的值来控制设置区块右侧空白大小 */
+  margin-right: 12px;
 }
 
 .section-header {
@@ -1434,24 +1545,18 @@ onMounted(() => {
 @media (max-width: 768px) {
   .presets-view {
     flex-direction: column;
+    height: calc(100vh - 64px - 48px);
   }
 
-  .presets-sidebar {
-    width: 100%;
-    min-width: unset;
-    max-height: 300px;
-    border-right: none;
-    border-bottom: 1px solid var(--border-color);
+  .presets-panel {
+    flex: 1;
   }
-
-  .preset-list-container {
-    max-height: 220px;
-  }
-
+  
   .panel-header {
     flex-direction: column;
     gap: 12px;
     align-items: stretch;
+    padding: 12px 16px;
   }
 
   .header-title {
@@ -1460,6 +1565,159 @@ onMounted(() => {
 
   .header-actions {
     justify-content: flex-end;
+  }
+
+  .preset-name-input {
+    max-width: none;
+    font-size: 16px;
+  }
+
+  .preset-name-input :deep(input) {
+    font-size: 16px;
+  }
+
+  .param-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .param-control {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .param-input {
+    width: 100%;
+  }
+
+  .prompt-item {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .prompt-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .prompt-tags {
+    flex-wrap: wrap;
+  }
+
+  .prompt-preview {
+    font-size: 12px;
+  }
+
+  .prompt-actions {
+    margin-left: auto;
+  }
+
+  .section-content {
+    padding: 12px;
+  }
+
+  .settings-section {
+    margin-bottom: 16px;
+    margin-right: 0;
+  }
+  
+  .panel-content {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .presets-view {
+    margin: 0 -16px;
+    border-radius: 0;
+    border: none;
+  }
+
+  .sidebar-header,
+  .panel-header,
+  .panel-content {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .preset-item {
+    padding: 8px 10px;
+  }
+
+  .prompt-item {
+    padding: 8px 10px;
+    gap: 6px;
+  }
+
+  .drag-handle {
+    padding: 2px;
+  }
+
+  .prompt-index {
+    width: 20px;
+    height: 20px;
+    font-size: 11px;
+  }
+
+  .prompt-name {
+    font-size: 13px;
+  }
+
+  .prompt-preview {
+    font-size: 11px;
+    margin-top: 4px;
+  }
+
+  .param-label {
+    font-size: 12px;
+  }
+
+  .section-title {
+    font-size: 13px;
+  }
+
+  .variables-grid {
+    gap: 6px;
+  }
+
+  .variable-tag {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+  
+  .mobile-list-toggle {
+    padding: 12px 16px;
+  }
+}
+
+/* 测试按钮 */
+.test-buttons {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 1000;
+  background: var(--bg-secondary);
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-lg);
+}
+
+@media (max-width: 768px) {
+  .test-buttons {
+    bottom: 10px;
+    right: 10px;
+    padding: 8px;
+  }
+  
+  .test-buttons .n-button {
+    font-size: 12px;
+    padding: 8px 12px;
   }
 }
 </style>

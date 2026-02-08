@@ -81,6 +81,9 @@ func main() {
 		_, _ = w.Write([]byte("ok"))
 	})
 
+	// 条件性启用静态文件服务
+	middleware.ServeStaticFiles(mux, cfg.StaticFile.Enabled, cfg.StaticFile.FrontendDir)
+
 	// 应用 CORS 中间件
 	handler := middleware.CORS(mux)
 

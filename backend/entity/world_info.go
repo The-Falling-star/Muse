@@ -37,7 +37,7 @@ type WorldInfoEntry struct {
 	// 用户可编辑字段
 	KeysList       string           `gorm:"column:keys_list;type:text;not null" json:"keysList"`                      // 主关键词列表，逗号分隔，匹配任一关键词即可触发
 	SecondaryKeys  string           `gorm:"column:secondary_keys;type:text" json:"secondaryKeys"`                     // 次要关键词列表，逗号分隔，选择性匹配时需同时匹配主次关键词
-	Content        string           `gorm:"column:content;type:text;not null" json:"content"`                         // 条目内容，触发时插入到提示词中
+	Content        string           `gorm:"column:content;type:mediumtext;not null" json:"content"`                   // 条目内容，触发时插入到提示词中
 	Comment        string           `gorm:"column:comment;type:text" json:"comment"`                                  // 条目备注，仅供用户参考，不会插入到提示词
 	IsEnabled      bool             `gorm:"column:is_enabled;not null;default:true" json:"isEnabled"`                 // 是否启用该条目
 	Constant       bool             `gorm:"column:constant;not null;default:false" json:"constant"`                   // 是否常驻，常驻条目始终插入，无需关键词触发

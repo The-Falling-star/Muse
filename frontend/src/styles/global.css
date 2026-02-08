@@ -58,9 +58,12 @@
   --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
 
   /* 动画 */
-  --transition-fast: 0.15s ease;
-  --transition-normal: 0.25s ease;
-  --transition-slow: 0.4s ease;
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* 移动端优化 */
+  --transition-mobile: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
   /* 网格线 */
   --grid-color: rgba(0, 240, 255, 0.03);
@@ -137,6 +140,9 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  /* 移动端触摸优化 */
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 body {
@@ -759,4 +765,185 @@ button {
 .full-screen {
   width: 100%;
   height: 100vh;
+}
+
+/* ==================== 页面过渡动画 ==================== */
+
+/* 页面淡入淡出 */
+.page-fade-enter-active,
+.page-fade-leave-active {
+  transition: opacity var(--transition-normal), transform var(--transition-normal);
+}
+
+.page-fade-enter-from {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.page-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+/* 移动端页面滑动 */
+@media (max-width: 768px) {
+  .page-fade-enter-active,
+  .page-fade-leave-active {
+    transition: opacity var(--transition-mobile), transform var(--transition-mobile);
+  }
+  
+  .page-fade-enter-from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  
+  .page-fade-leave-to {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+}
+
+/* 侧边栏滑动 */
+.slide-sidebar-enter-active,
+.slide-sidebar-leave-active {
+  transition: transform var(--transition-normal), opacity var(--transition-normal);
+}
+
+.slide-sidebar-enter-from,
+.slide-sidebar-leave-to {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+/* 遮罩层淡入淡出 */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity var(--transition-fast);
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* 列表项动画 */
+.list-enter-active,
+.list-leave-active {
+  transition: all var(--transition-normal);
+}
+
+.list-enter-from {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.list-move {
+  transition: transform var(--transition-normal);
+}
+
+/* 模态框缩放动画 */
+.modal-scale-enter-active,
+.modal-scale-leave-active {
+  transition: opacity var(--transition-normal), transform var(--transition-normal);
+}
+
+.modal-scale-enter-from,
+.modal-scale-leave-to {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+/* ==================== 移动端优化 ==================== */
+
+/* 移动端触摸反馈 */
+@media (max-width: 768px) {
+  button,
+  .clickable,
+  [role="button"] {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    cursor: pointer;
+    transition: transform var(--transition-fast), opacity var(--transition-fast);
+  }
+  
+  button:active,
+  .clickable:active,
+  [role="button"]:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
+  
+  /* 卡片点击效果 */
+  .sci-fi-card {
+    transition: all var(--transition-mobile);
+  }
+  
+  .sci-fi-card:active {
+    transform: scale(0.99);
+  }
+}
+
+/* 平滑滚动 */
+* {
+  scroll-behavior: smooth;
+}
+
+/* GPU加速 */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* 移动端性能优化 */
+@media (max-width: 768px) {
+  .sci-fi-grid-bg::before,
+  .sci-fi-grid-bg::after,
+  .sci-fi-particles {
+    /* 在移动端减少动画以提高性能 */
+    animation-duration: 12s;
+    /* 减少动画复杂度 */
+    will-change: auto;
+  }
+  
+  .sci-fi-particle {
+    /* 减少粒子数量 */
+    display: none;
+  }
+  
+  .sci-fi-particle:nth-child(-n+10) {
+    /* 只显示前10个粒子 */
+    display: block;
+  }
+  
+  /* 简化动画 */
+  .sci-fi-grid-bg::before {
+    background-size: 100px 100px; /* 更大的网格，更少的绘制 */
+  }
+}
+
+/* 额外的移动端性能优化 */
+@media (max-width: 768px) {
+  /* 减少不必要的重绘 */
+  .sci-fi-corner,
+  .sci-fi-grid-dots {
+    will-change: auto;
+  }
+  
+  /* 禁用某些复杂动画 */
+  .glow-breathe,
+  .pulse {
+    animation: none;
+  }
+  
+  /* 优化滚动性能 */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
 }

@@ -37,7 +37,7 @@
             <div class="world-info">
               <div class="world-name">{{ world.name }}</div>
               <div class="world-count">
-                {{ world.isGlobal ? '全局' : '角色' }} · {{ world.entries?.length || 0 }} 条目
+                {{ world.isGlobal ? '全局' : '角色' }}
               </div>
             </div>
           </div>
@@ -45,6 +45,16 @@
           <n-empty v-if="filteredWorlds.length === 0 && !loading" description="暂无世界书" />
         </n-spin>
       </n-scrollbar>
+
+      <!-- 分页控件 -->
+      <div class="pagination-container" v-if="Number(totalWorlds) > pageSize">
+        <n-pagination
+          v-model:page="currentPage"
+          :page-size="pageSize"
+          :item-count="Number(totalWorlds)"
+          @update:page="(page) => loadWorlds(page, pageSize)"
+        />
+      </div>
 
       <div class="sidebar-footer">
         <n-button block @click="showImportModal = true">
@@ -158,7 +168,24 @@
                 </div>
 
                 <div class="entry-content">
-                  <p>{{ entry.content }}</p>
+                  <p 
+                    :class="{ 
+                      'truncated': shouldTruncateContent(entry.content) && !isEntryExpanded(entry.id),
+                      'expandable': shouldTruncateContent(entry.content)
+                    }"
+                    @click="shouldTruncateContent(entry.content) && toggleEntryExpand(entry.id)"
+                  >
+                    {{ isEntryExpanded(entry.id) || !shouldTruncateContent(entry.content) 
+                      ? entry.content 
+                      : getTruncatedContent(entry.content) }}
+                  </p>
+                  <div 
+                    v-if="shouldTruncateContent(entry.content)" 
+                    class="expand-toggle"
+                    @click="toggleEntryExpand(entry.id)"
+                  >
+                    {{ isEntryExpanded(entry.id) ? '收起' : '展开全部' }}
+                  </div>
                 </div>
 
                 <div class="entry-meta">
@@ -275,6 +302,7 @@ import {
   NSpin,
   NUpload,
   NUploadDragger,
+  NPagination,
   useMessage,
   useDialog
 } from 'naive-ui';
@@ -310,6 +338,14 @@ const showEntryModal = ref(false);
 const showImportModal = ref(false);
 const editingWorld = ref<WorldInfo | null>(null);
 const editingEntry = ref<WorldInfoEntry | null>(null);
+
+// 展开状态管理
+const expandedEntries = ref<Set<number>>(new Set());
+
+// 分页状态
+const currentPage = ref(1);
+const pageSize = ref(20);
+const totalWorlds = ref(0n); // 使用 bigint 类型
 
 // 世界书列表
 const worlds = ref<WorldInfo[]>([]);
@@ -371,12 +407,48 @@ const parseKeys = (keysList: string): string[] => {
   return keysList.split(',').map(k => k.trim()).filter(k => k.length > 0);
 };
 
+// 控制条目展开/收起
+const toggleEntryExpand = (entryId: number) => {
+  if (expandedEntries.value.has(entryId)) {
+    expandedEntries.value.delete(entryId);
+  } else {
+    expandedEntries.value.add(entryId);
+  }
+  expandedEntries.value = new Set(expandedEntries.value);
+};
+
+// 检查条目是否展开
+const isEntryExpanded = (entryId: number): boolean => {
+  return expandedEntries.value.has(entryId);
+};
+
+// 检查内容是否需要截断显示
+const shouldTruncateContent = (content: string): boolean => {
+  const lines = content.split('\n');
+  return lines.length > 3;
+};
+
+// 获取截断后的内容
+const getTruncatedContent = (content: string): string => {
+  const lines = content.split('\n');
+  if (lines.length <= 3) {
+    return content;
+  }
+  return lines.slice(0, 3).join('\n') + '\n...';
+};
+
 // 加载世界书列表
-const loadWorlds = async () => {
+const loadWorlds = async (page: number = 1, size: number = 20) => {
   loading.value = true;
   try {
-    const response = await worldInfoClient.listWorldInfos({});
+    const response = await worldInfoClient.listWorldInfos({
+      page: page,
+      pageSize: size
+    });
     worlds.value = response.worldInfos;
+    totalWorlds.value = response.total;
+    currentPage.value = response.page;
+    pageSize.value = response.pageSize;
   } finally {
     loading.value = false;
   }
@@ -625,7 +697,7 @@ const openWorldModal = () => {
 
 // 初始化
 onMounted(() => {
-  loadWorlds();
+  loadWorlds(currentPage.value, pageSize.value);
 });
 
 // 监听showWorldModal变化，初始化表单
@@ -681,6 +753,14 @@ watch(showWorldModal, (val) => {
 .world-list {
   flex: 1;
   padding: 0 8px;
+}
+
+.pagination-container {
+  padding: 12px 16px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: center;
+  background: var(--bg-secondary);
 }
 
 .world-item {
@@ -840,10 +920,38 @@ watch(showWorldModal, (val) => {
   line-height: 1.6;
   color: var(--text-secondary);
   margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  cursor: default;
+}
+
+.entry-content p.expandable {
+  cursor: pointer;
+}
+
+.entry-content p.truncated {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  cursor: pointer;
+}
+
+.expand-toggle {
+  color: var(--color-primary);
+  font-size: 12px;
+  margin-top: 8px;
+  cursor: pointer;
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all var(--transition-fast);
+}
+
+.expand-toggle:hover {
+  background: rgba(0, 240, 255, 0.1);
+  text-decoration: underline;
 }
 
 .entry-meta {

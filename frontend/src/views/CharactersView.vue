@@ -281,8 +281,7 @@ const filteredCharacters = computed(() => {
   }
   const query = searchQuery.value.toLowerCase();
   return chars.filter(c =>
-    c.name.toLowerCase().includes(query) ||
-    c.description?.toLowerCase().includes(query)
+    c.name.toLowerCase().includes(query)
   );
 });
 
@@ -305,11 +304,6 @@ const tableColumns: DataTableColumns<Character> = [
     title: '名称',
     key: 'name',
     sorter: 'default'
-  },
-  {
-    title: '描述',
-    key: 'description',
-    ellipsis: { tooltip: true }
   },
   {
     title: '操作',
@@ -341,13 +335,54 @@ const tableColumns: DataTableColumns<Character> = [
 ];
 
 // 方法
-const selectCharacter = (character: Character) => {
-  selectedCharacter.value = character;
+const selectCharacter = async (character: Character) => {
+  // 先检查缓存
+  const cachedDetail = characterStore.getCharacterDetail(character.id);
+  if (cachedDetail) {
+    selectedCharacter.value = cachedDetail;
+    showDetailDrawer.value = true;
+    return;
+  }
+
+  // 缓存未命中，请求后端
+  loading.value = true;
+  const response = await characterClient.getCharacter({ id: character.id });
+  if (response.character) {
+    selectedCharacter.value = response.character;
+    // 缓存详情
+    characterStore.cacheCharacterDetail(response.character);
+  } else {
+    selectedCharacter.value = character;
+  }
+  loading.value = false;
   showDetailDrawer.value = true;
 };
 
-const editCharacter = (character: Character | null) => {
-  editingCharacter.value = character;
+const editCharacter = async (character: Character | null) => {
+  if (character) {
+    // 先检查缓存
+    const cachedDetail = characterStore.getCharacterDetail(character.id);
+    if (cachedDetail) {
+      editingCharacter.value = cachedDetail;
+      showCreateModal.value = true;
+      showDetailDrawer.value = false;
+      return;
+    }
+
+    // 缓存未命中，请求后端
+    loading.value = true;
+    const response = await characterClient.getCharacter({ id: character.id });
+    if (response.character) {
+      editingCharacter.value = response.character;
+      // 缓存详情
+      characterStore.cacheCharacterDetail(response.character);
+    } else {
+      editingCharacter.value = character;
+    }
+    loading.value = false;
+  } else {
+    editingCharacter.value = null;
+  }
   showCreateModal.value = true;
   showDetailDrawer.value = false;
 };
@@ -535,6 +570,8 @@ const handlePageSizeChange = (newPageSize: number) => {
 /* 角色容器 */
 .characters-container {
   flex: 1;
+  /* 移动端滚动优化 */
+  -webkit-overflow-scrolling: touch;
 }
 
 /* 网格视图 */
@@ -545,11 +582,52 @@ const handlePageSizeChange = (newPageSize: number) => {
   padding-bottom: 20px;
 }
 
+/* 卡片列表过渡 */
+.card-list-enter-active,
+.card-list-leave-active {
+  transition: all var(--transition-normal);
+}
+
+.card-list-enter-from {
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+}
+
+.card-list-leave-to {
+  opacity: 0;
+  transform: translateY(-20px) scale(0.95);
+}
+
+.card-list-move {
+  transition: transform var(--transition-normal);
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+  .characters-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+  }
+  
+  .card-list-enter-from {
+    transform: translateX(30px);
+  }
+  
+  .card-list-leave-to {
+    transform: translateX(-30px);
+  }
+}
+
 /* 列表视图 */
 .characters-list {
   background: var(--bg-card);
   border-radius: 12px;
   overflow: hidden;
+  transition: all var(--transition-fast);
+}
+
+.characters-list:hover {
+  box-shadow: var(--shadow-md);
 }
 
 /* 分页器容器 */

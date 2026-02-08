@@ -9,6 +9,7 @@ import (
 	"connectrpc.com/connect"
 	"github.com/ling/muse/common/convert"
 	"github.com/ling/muse/common/errs"
+	"github.com/ling/muse/common/jwt"
 	"github.com/ling/muse/entity"
 	"github.com/ling/muse/entity/sillytavern"
 	pb "github.com/ling/muse/gen/muse"
@@ -89,9 +90,11 @@ func (r *regexRuleImpl) AddRegexRule(ctx context.Context, req *pb.AddRegexRuleRe
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptyAffectFlags)
 	}
 
+	userId := jwt.GetUserId(ctx)
 	// 构建正则规则实体
 	rule := &entity.RegexRule{
 		PresetID:                presetID,
+		UserID:                  userId,
 		Name:                    name,
 		FindPattern:             findPattern,
 		ReplacePattern:          req.GetReplacePattern(),
@@ -265,12 +268,13 @@ func (r *regexRuleImpl) ImportRegexRules(ctx context.Context, req *pb.ImportRege
 
 	// 转换为 Muse 正则规则实体
 	rules := make([]*entity.RegexRule, 0, len(stScripts))
+	userId := jwt.GetUserId(ctx)
 	for i, stScript := range stScripts {
 		if stScript.ScriptName == "" {
 			continue // 跳过没有名称的脚本
 		}
 
-		rule := convert.STRegexToEntity(&stScript)
+		rule := convert.STRegexToEntity(&stScript, userId)
 		rule.PresetID = presetID
 		rule.SortOrder = maxOrder + i + 1
 		rules = append(rules, rule)

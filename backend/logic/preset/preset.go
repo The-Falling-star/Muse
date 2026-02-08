@@ -421,7 +421,7 @@ func (p *presetImpl) ImportPreset(ctx context.Context, req *pb.ImportPresetReque
 		regexRules := make([]*entity.RegexRule, 0, len(stPreset.Extensions.RegexScripts))
 		for _, stScript := range stPreset.Extensions.RegexScripts {
 			// 使用 convert 包转换正则脚本，关联到新创建的预设（characterID=0 表示非角色范围正则）
-			rule := convert.STRegexToEntity(&stScript)
+			rule := convert.STRegexToEntity(&stScript, userId)
 			regexRules = append(regexRules, rule)
 		}
 

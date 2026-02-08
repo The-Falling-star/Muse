@@ -401,8 +401,9 @@ func APIConfigEntityToPbWithKey(apiConfig *entity.APIConfig) *pb.APIConfig {
 // ============ SillyTavern 正则规则转换 ============
 
 // STRegexToEntity 将 SillyTavern 正则脚本转换为 Muse 实体
-func STRegexToEntity(stScript *sillytavern.RegexScript) *entity.RegexRule {
+func STRegexToEntity(stScript *sillytavern.RegexScript, userID int) *entity.RegexRule {
 	rule := &entity.RegexRule{
+		UserID:          userID,
 		Name:            stScript.ScriptName,
 		FindPattern:     stScript.FindRegex,
 		ReplacePattern:  stScript.ReplaceString,
@@ -769,11 +770,12 @@ func STCharacterCardToEntity(stCard *sillytavern.CharacterCard, userID int) *ent
 	character.FirstMessage = firstMessages
 
 	worldBook := STCharacterBookToEntity(&stCard.Data.CharacterBook)
+	worldBook.UserID = userID
 	character.WorldInfo = *worldBook
 
 	regexs := make([]entity.RegexRule, len(stCard.Data.Extensions.RegexScripts))
 	for i, regex := range stCard.Data.Extensions.RegexScripts {
-		entityRegex := STRegexToEntity(&regex)
+		entityRegex := STRegexToEntity(&regex, userID)
 		entityRegex.CharacterID = character.ID
 		entityRegex.PresetID = 0
 		entityRegex.SortOrder = i

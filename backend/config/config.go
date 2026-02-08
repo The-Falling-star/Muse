@@ -13,6 +13,7 @@ type Config struct {
 	Database   DatabaseConfig   `mapstructure:"database"`
 	Auth       AuthConfig       `mapstructure:"auth"`
 	APIEncrypt APIEncryptConfig `mapstructure:"api_encrypt"`
+	StaticFile StaticFileConfig `mapstructure:"static_file"`
 	LogLevel   string           `mapstructure:"log_level"`
 }
 
@@ -56,13 +57,19 @@ type APIEncryptConfig struct {
 	AllowGetKey   bool   `mapstructure:"allow_get_key"`  // 是否允许前端获取API密钥
 }
 
+// StaticFileConfig 静态文件服务配置
+type StaticFileConfig struct {
+	Enabled     bool   `mapstructure:"enabled"`      // 是否启用静态文件服务
+	FrontendDir string `mapstructure:"frontend_dir"` // 前端构建目录路径
+}
+
 // IsSQLite 判断是否使用SQLite
-func (d DatabaseConfig) IsSQLite() bool {
+func (d *DatabaseConfig) IsSQLite() bool {
 	return d.Driver == "sqlite"
 }
 
 // DSN 返回MySQL数据库连接字符串
-func (d DatabaseConfig) DSN() string {
+func (d *DatabaseConfig) DSN() string {
 	charset := d.Charset
 	if charset == "" {
 		charset = "utf8mb4"
@@ -98,6 +105,8 @@ func Load(configPath string) (*Config, error) {
 	viper.SetDefault("auth.jwt_secret", "your-secret-key-change-in-production") // JWT密钥
 	viper.SetDefault("api_encrypt.enabled", false)                              // 默认不启用API密钥加密
 	viper.SetDefault("api_encrypt.allow_get_key", true)                         // 默认允许获取API密钥
+	viper.SetDefault("static_file.enabled", true)                               // 默认启用静态文件服务
+	viper.SetDefault("static_file.frontend_dir", "./frontend/dist")             // 默认前端目录
 
 	if err := viper.ReadInConfig(); err != nil {
 		return nil, fmt.Errorf("读取配置文件失败: %w", err)

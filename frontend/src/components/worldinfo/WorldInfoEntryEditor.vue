@@ -6,7 +6,7 @@
       :rules="formRules"
       label-placement="top"
     >
-      <n-form-item label="关键词" path="keys">
+      <n-form-item label="关键词">
         <n-dynamic-tags v-model:value="formData.keys" />
         <template #feedback>
           多个关键词用回车分隔，当消息包含关键词时触发此条目
@@ -161,9 +161,6 @@ const formData = reactive<EntryFormData>({
 });
 
 const formRules: FormRules = {
-  keys: [
-    { type: 'array', required: true, message: '请至少添加一个关键词', trigger: 'change' }
-  ],
   content: [
     { required: true, message: '请输入条目内容', trigger: 'blur' }
   ]

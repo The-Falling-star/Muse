@@ -138,9 +138,10 @@
           key-field="id"
           :padding-top="20"
           :padding-bottom="20"
+          :intersection-observer-options="{ rootMargin: '100px 0px 100px 0px' }"
         >
           <template #default="{ item }">
-            <div :key="item.id" class="message-item-wrapper">
+            <div :key="item.id" class="message-item-wrapper gpu-accelerated">
             <!-- 正在输入指示器 -->
             <div v-if="item.id === 'typing-indicator'" class="typing-indicator">
               <div class="typing-dots">
@@ -803,12 +804,14 @@ const handlePersonaChange = async (persona: { id: number; name: string; avatar: 
   gap: 12px;
   padding: 12px 16px;
   cursor: pointer;
-  transition: background var(--transition-fast);
+  transition: all var(--transition-fast);
   border-bottom: 1px solid var(--border-color);
+  transform: translateZ(0);
 }
 
 .session-item:hover {
   background: var(--bg-card-hover);
+  transform: translateX(2px);
 }
 
 .session-item.active {
@@ -862,6 +865,7 @@ const handlePersonaChange = async (persona: { id: number; name: string; avatar: 
   display: flex;
   flex-direction: column;
   min-width: 0;
+  transition: transform var(--transition-normal);
 }
 
 .chat-header {
@@ -871,6 +875,7 @@ const handlePersonaChange = async (persona: { id: number; name: string; avatar: 
   padding: 12px 20px;
   background: var(--bg-secondary);
   border-bottom: 1px solid var(--border-color);
+  transition: background var(--transition-fast);
 }
 
 .mobile-back-btn {
@@ -927,6 +932,8 @@ const handlePersonaChange = async (persona: { id: number; name: string; avatar: 
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  /* 移动端滚动优化 */
+  -webkit-overflow-scrolling: touch;
 }
 
 /* 消息项包装器 */
@@ -934,6 +941,7 @@ const handlePersonaChange = async (persona: { id: number; name: string; avatar: 
   max-width: 900px;
   margin: 0 auto;
   padding: 0 20px;
+  animation: fade-in 0.3s ease-out;
 }
 
 .welcome-message {
@@ -1028,5 +1036,36 @@ const handlePersonaChange = async (persona: { id: number; name: string; avatar: 
   inset: 0;
   background: var(--bg-overlay);
   z-index: 99;
+  backdrop-filter: blur(4px);
+  transition: opacity var(--transition-fast);
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+  .chat-sessions {
+    transition: transform var(--transition-mobile);
+    will-change: transform;
+  }
+  
+  .chat-sessions.show-mobile {
+    transform: translateX(0);
+  }
+  
+  .session-item:active {
+    transform: scale(0.98);
+    background: var(--bg-card-hover);
+  }
+  
+  .chat-header {
+    padding: 12px 16px;
+  }
+  
+  .chat-input-area {
+    padding: 12px 16px;
+  }
+  
+  .message-item-wrapper {
+    padding: 0 12px;
+  }
 }
 </style>

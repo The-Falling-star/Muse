@@ -387,14 +387,31 @@ defineExpose({ focus });
   cursor: pointer;
   flex-shrink: 0;
   transition: transform var(--transition-fast);
+  /* GPU加速 */
+  transform: translateZ(0);
 }
 
 .persona-selector:hover {
   transform: scale(1.05);
 }
 
+.persona-selector:active {
+  transform: scale(0.98);
+}
+
 .persona-selector:hover .persona-avatar {
   box-shadow: 0 0 0 2px var(--color-primary);
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+  .persona-selector:hover {
+    transform: scale(1.03);
+  }
+  
+  .persona-selector:active {
+    transform: scale(0.95);
+  }
 }
 
 .persona-avatar {
@@ -521,11 +538,18 @@ defineExpose({ focus });
   width: 40px;
   height: 40px;
   transition: all var(--transition-fast);
+  /* GPU加速 */
+  transform: translateZ(0);
+  will-change: transform, box-shadow;
 }
 
 .send-button:not(:disabled):hover {
   transform: scale(1.05);
   box-shadow: var(--glow-primary);
+}
+
+.send-button:not(:disabled):active {
+  transform: scale(0.95);
 }
 
 .stop-button {
@@ -565,7 +589,7 @@ defineExpose({ focus });
 /* 动画 */
 .slide-up-enter-active,
 .slide-up-leave-active {
-  transition: all 0.2s ease;
+  transition: all 0.2s var(--transition-fast);
 }
 
 .slide-up-enter-from,
@@ -579,8 +603,32 @@ defineExpose({ focus });
   50% { opacity: 0.7; }
 }
 
-/* 移动端适配 */
+/* 移动端优化 */
 @media (max-width: 768px) {
+  .input-wrapper {
+    padding: 6px 10px;
+    gap: 6px;
+  }
+  
+  .input-actions-left .n-button,
+  .send-button,
+  .stop-button {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .message-textarea :deep(.n-input__textarea-el) {
+    padding: 4px 0 !important;
+  }
+  
+  .send-button:not(:disabled):hover {
+    transform: scale(1.03);
+  }
+  
+  .send-button:not(:disabled):active {
+    transform: scale(0.98);
+  }
+  
   .persona-hint {
     display: none;
   }

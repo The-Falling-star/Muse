@@ -243,11 +243,30 @@ const handleMenuSelect = (key: string) => {
 /* 过渡动画 */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s var(--transition-fast);
 }
 
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+  .sidebar-container {
+    transition: transform var(--transition-mobile);
+  }
+  
+  .sidebar-logo {
+    transition: all var(--transition-mobile);
+  }
+  
+  .collapse-btn {
+    transition: all var(--transition-mobile);
+  }
+  
+  .version-info {
+    transition: all var(--transition-mobile);
+  }
 }
 </style>

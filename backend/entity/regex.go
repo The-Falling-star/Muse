@@ -9,6 +9,7 @@ import (
 // CharacterID 为 0 表示非角色范围正则，否则关联到特定角色（Scoped Scripts）
 type RegexRule struct {
 	ID          int    `gorm:"column:id;primaryKey;autoIncrement" json:"id"`                            // 主键ID
+	UserID      int    `gorm:"column:user_id;not null;default:0;index:idx_user_id" json:"userId"`       // 用户ID
 	PresetID    int    `gorm:"column:preset_id;default:0;index:idx_preset_id" json:"presetId"`          // 关联的预设ID，0表示全局正则
 	CharacterID int    `gorm:"column:character_id;default:0;index:idx_character_id" json:"characterId"` // 关联的角色ID，0表示非角色范围正则
 	Name        string `gorm:"column:name;type:varchar(128);not null" json:"name"`                      // 规则名称

@@ -18,6 +18,8 @@ export const useCharacterStore = defineStore('character', () => {
   const selectedCharacter = ref<Character | null>(null);
   // 总数
   const total = ref(0);
+  // 角色详情缓存（key: characterId, value: 完整的角色信息）
+  const characterDetailsCache = ref<Map<number, Character>>(new Map());
 
   // =====================
   // 计算属性
@@ -51,6 +53,8 @@ export const useCharacterStore = defineStore('character', () => {
     if (selectedCharacter.value?.id === character.id) {
       selectedCharacter.value = character;
     }
+    // 更新详情缓存
+    characterDetailsCache.value.set(character.id, character);
   };
 
   // 从列表中移除角色
@@ -60,6 +64,8 @@ export const useCharacterStore = defineStore('character', () => {
     if (selectedCharacter.value?.id === id) {
       selectedCharacter.value = null;
     }
+    // 清除详情缓存
+    characterDetailsCache.value.delete(id);
   };
 
   // 选中角色
@@ -71,12 +77,28 @@ export const useCharacterStore = defineStore('character', () => {
   const clearCache = () => {
     characters.value = [];
     total.value = 0;
+    characterDetailsCache.value.clear();
   };
 
   // 重置全部状态
   const reset = () => {
     clearCache();
     selectedCharacter.value = null;
+  };
+
+  // 获取角色详情缓存
+  const getCharacterDetail = (id: number): Character | undefined => {
+    return characterDetailsCache.value.get(id);
+  };
+
+  // 缓存角色详情
+  const cacheCharacterDetail = (character: Character) => {
+    characterDetailsCache.value.set(character.id, character);
+  };
+
+  // 检查是否有角色详情缓存
+  const hasCharacterDetail = (id: number): boolean => {
+    return characterDetailsCache.value.has(id);
   };
 
   return {
@@ -93,6 +115,9 @@ export const useCharacterStore = defineStore('character', () => {
     removeCharacter,
     selectCharacter,
     clearCache,
-    reset
+    reset,
+    getCharacterDetail,
+    cacheCharacterDetail,
+    hasCharacterDetail
   };
 });

@@ -40,7 +40,7 @@ func (w *WorldInfoRepo) GetByID(ctx context.Context, id int, userID int) (*entit
 }
 
 // List 获取世界书列表
-func (w *WorldInfoRepo) List(ctx context.Context, userID int, page int, pageSize int) ([]*entity.WorldInfo, int64, error) {
+func (w *WorldInfoRepo) List(ctx context.Context, userID, page, pageSize int) ([]*entity.WorldInfo, int64, error) {
 	db := GetDB(ctx)
 	var worldInfos []*entity.WorldInfo
 	var total int64
@@ -85,7 +85,7 @@ func (w *WorldInfoRepo) Update(ctx context.Context, worldInfo *entity.WorldInfo)
 }
 
 // Delete 删除世界书
-func (w *WorldInfoRepo) Delete(ctx context.Context, id int, userID int) error {
+func (w *WorldInfoRepo) Delete(ctx context.Context, id, userID int) error {
 	db := GetDB(ctx)
 
 	// 开启事务

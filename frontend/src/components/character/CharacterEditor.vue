@@ -54,13 +54,53 @@
         </n-tab-pane>
 
         <n-tab-pane name="dialogue" tab="对话设定">
-          <n-form-item label="开场白" path="firstMessage">
-            <n-input
-              v-model:value="formData.firstMessage"
-              type="textarea"
-              :autosize="{ minRows: 4, maxRows: 8 }"
-              placeholder="角色的第一条消息"
-            />
+          <n-form-item label="开场白">
+            <div class="first-message-carousel">
+              <div class="carousel-header">
+                <span class="message-indicator">
+                  {{ currentMessageIndex + 1 }} / {{ formData.firstMessages.length + (isAddingNew ? 1 : 0) }}
+                </span>
+              </div>
+              <div class="carousel-content">
+                <n-button
+                  text
+                  class="carousel-arrow"
+                  :disabled="!isAddingNew && currentMessageIndex === 0"
+                  @click="prevMessage"
+                >
+                  <n-icon size="24"><ChevronBackOutline /></n-icon>
+                </n-button>
+                <div class="message-input-wrapper">
+                  <n-input
+                    v-model:value="currentMessageContent"
+                    type="textarea"
+                    :autosize="{ minRows: 4, maxRows: 8 }"
+                    :placeholder="isAddingNew ? '输入新的开场白...' : `开场白 ${currentMessageIndex + 1}`"
+                  />
+                  <div v-if="!isAddingNew && formData.firstMessages.length > 1" class="message-actions">
+                    <n-button
+                      text
+                      type="error"
+                      size="small"
+                      @click="deleteCurrentMessage"
+                    >
+                      <template #icon>
+                        <n-icon><TrashOutline /></n-icon>
+                      </template>
+                      删除此开场白
+                    </n-button>
+                  </div>
+                </div>
+                <n-button
+                  text
+                  class="carousel-arrow"
+                  :disabled="!canGoNext"
+                  @click="nextMessage"
+                >
+                  <n-icon size="24"><ChevronForwardOutline /></n-icon>
+                </n-button>
+              </div>
+            </div>
           </n-form-item>
 
           <n-form-item label="示例对话" path="exampleDialogue">
@@ -97,7 +137,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch } from 'vue';
+import { ref, reactive, watch, computed } from 'vue';
 import {
   NForm,
   NFormItem,
@@ -113,7 +153,7 @@ import {
   useMessage
 } from 'naive-ui';
 import type { FormInst, FormRules, UploadFileInfo } from 'naive-ui';
-import { CameraOutline } from '@vicons/ionicons5';
+import { CameraOutline, ChevronBackOutline, ChevronForwardOutline, TrashOutline } from '@vicons/ionicons5';
 
 import type { Character } from '@/gen/muse/muse_pb';
 
@@ -121,7 +161,7 @@ interface CharacterFormData {
   name: string;
   avatar: string;
   description: string;
-  firstMessage: string;
+  firstMessages: string[];
   exampleDialogue: string;
   creatorNotes: string;
 }
@@ -138,12 +178,17 @@ const emit = defineEmits<{
 const message = useMessage();
 const formRef = ref<FormInst | null>(null);
 
+// 开场白轮播相关
+const currentMessageIndex = ref(0);
+const isAddingNew = ref(false);
+const newMessageContent = ref('');
+
 // 表单数据
 const formData = reactive<CharacterFormData>({
   name: '',
   avatar: '',
   description: '',
-  firstMessage: '',
+  firstMessages: [''],
   exampleDialogue: '',
   creatorNotes: ''
 });
@@ -163,7 +208,9 @@ watch(() => props.character, (char) => {
       name: char.name || '',
       avatar: char.avatar || '',
       description: char.description || '',
-      firstMessage: char.firstMessage || '',
+      firstMessages: (char.firstMessage && char.firstMessage.length > 0) 
+        ? [...char.firstMessage] 
+        : [''],
       exampleDialogue: char.exampleDialogue || '',
       creatorNotes: char.creatorNotes || ''
     });
@@ -173,12 +220,102 @@ watch(() => props.character, (char) => {
       name: '',
       avatar: '',
       description: '',
-      firstMessage: '',
+      firstMessages: [''],
       exampleDialogue: '',
       creatorNotes: ''
     });
   }
+  // 重置轮播状态
+  currentMessageIndex.value = 0;
+  isAddingNew.value = false;
+  newMessageContent.value = '';
 }, { immediate: true });
+
+// 当前显示的消息内容（双向绑定）
+const currentMessageContent = computed({
+  get() {
+    if (isAddingNew.value) {
+      return newMessageContent.value;
+    }
+    return formData.firstMessages[currentMessageIndex.value] || '';
+  },
+  set(value: string) {
+    if (isAddingNew.value) {
+      newMessageContent.value = value;
+    } else {
+      formData.firstMessages[currentMessageIndex.value] = value;
+    }
+  }
+});
+
+// 是否可以向右切换
+const canGoNext = computed(() => {
+  // 如果正在新增，不能继续向右
+  if (isAddingNew.value) {
+    return false;
+  }
+  // 如果不是最后一个，可以向右
+  if (currentMessageIndex.value < formData.firstMessages.length - 1) {
+    return true;
+  }
+  // 如果是最后一个，可以向右进入新增模式
+  return true;
+});
+
+// 上一条消息
+const prevMessage = () => {
+  if (isAddingNew.value) {
+    // 从新增模式返回
+    if (newMessageContent.value.trim() === '') {
+      // 如果新增的内容为空，直接返回，不添加
+      isAddingNew.value = false;
+      newMessageContent.value = '';
+    } else {
+      // 如果有内容，保存到数组
+      formData.firstMessages.push(newMessageContent.value);
+      currentMessageIndex.value = formData.firstMessages.length - 1;
+      isAddingNew.value = false;
+      newMessageContent.value = '';
+    }
+  } else if (currentMessageIndex.value > 0) {
+    currentMessageIndex.value--;
+  }
+};
+
+// 下一条消息
+const nextMessage = () => {
+  if (isAddingNew.value) {
+    return;
+  }
+  
+  if (currentMessageIndex.value < formData.firstMessages.length - 1) {
+    // 切换到下一条
+    currentMessageIndex.value++;
+  } else {
+    // 切换到新增模式
+    isAddingNew.value = true;
+    newMessageContent.value = '';
+  }
+};
+
+// 删除当前开场白
+const deleteCurrentMessage = () => {
+  // 至少保留一条开场白
+  if (formData.firstMessages.length <= 1) {
+    message.warning('至少需要保留一条开场白');
+    return;
+  }
+
+  // 删除当前索引的开场白
+  formData.firstMessages.splice(currentMessageIndex.value, 1);
+
+  // 调整当前索引
+  if (currentMessageIndex.value >= formData.firstMessages.length) {
+    currentMessageIndex.value = formData.firstMessages.length - 1;
+  }
+
+  message.success('已删除开场白');
+};
 
 // 处理头像上传
 const handleAvatarChange = (options: { fileList: UploadFileInfo[] }) => {
@@ -197,12 +334,24 @@ const handleSubmit = async () => {
   try {
     await formRef.value?.validate();
 
+    // 如果当前在新增模式，需要检查是否保存
+    if (isAddingNew.value) {
+      if (newMessageContent.value.trim() !== '') {
+        formData.firstMessages.push(newMessageContent.value);
+      }
+      isAddingNew.value = false;
+      newMessageContent.value = '';
+    }
+
+    // 过滤掉空的开场白
+    const filteredFirstMessages = formData.firstMessages.filter(msg => msg.trim() !== '');
+
     const character: Partial<Character> = {
       id: props.character?.id || 0,
       name: formData.name,
       avatar: formData.avatar,
       description: formData.description,
-      firstMessage: formData.firstMessage,
+      firstMessage: filteredFirstMessages.length > 0 ? filteredFirstMessages : [''],
       exampleDialogue: formData.exampleDialogue,
       creatorNotes: formData.creatorNotes
     };
@@ -253,5 +402,44 @@ const handleSubmit = async () => {
   padding-top: 24px;
   margin-top: 16px;
   border-top: 1px solid var(--border-color);
+}
+
+/* 开场白轮播 */
+.first-message-carousel {
+  width: 100%;
+}
+
+.carousel-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+
+.message-indicator {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.carousel-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.message-input-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.message-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.carousel-arrow {
+  flex-shrink: 0;
+  margin-top: 8px;
 }
 </style>

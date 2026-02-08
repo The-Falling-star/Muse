@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"connectrpc.com/connect"
+	"github.com/ling/muse/common/constrant"
 	"github.com/ling/muse/common/convert"
 	"github.com/ling/muse/common/errs"
 	"github.com/ling/muse/common/jwt"
@@ -27,9 +28,12 @@ func newWorldInfo() *worldInfoImpl {
 }
 
 func (w *worldInfoImpl) ListWorldInfos(ctx context.Context, req *pb.ListWorldInfosRequest) (*pb.ListWorldInfosResponse, error) {
-	// 从数据库获取世界书列表（不分页）
+	// 获取分页参数
 	userId := jwt.GetUserId(ctx)
-	worldInfos, _, err := w.worldInfoRepo.List(ctx, userId, 1, 1000)
+	page, pageSize := constrant.NormalizePagination(int(req.GetPage()), int(req.GetPageSize()))
+
+	// 从数据库获取世界书列表（支持分页）
+	worldInfos, total, err := w.worldInfoRepo.List(ctx, userId, page, pageSize)
 	if err != nil {
 		return nil, err
 	}
@@ -42,6 +46,9 @@ func (w *worldInfoImpl) ListWorldInfos(ctx context.Context, req *pb.ListWorldInf
 
 	return &pb.ListWorldInfosResponse{
 		WorldInfos: pbWorldInfos,
+		Total:      total,
+		Page:       int32(page),
+		PageSize:   int32(pageSize),
 	}, nil
 }
 

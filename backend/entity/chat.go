@@ -53,7 +53,7 @@ func (Message) TableName() string {
 type MessageSwipe struct {
 	ID        int       `gorm:"column:id;primaryKey;autoIncrement" json:"id"`                               // Swipe唯一标识
 	MessageID int       `gorm:"column:message_id;not null;index:idx_message_id" json:"messageId"`           // 所属消息ID
-	Content   string    `gorm:"column:content;type:text;not null" json:"content"`                           // 消息文本内容
+	Content   string    `gorm:"column:content;type:mediumtext;not null" json:"content"`                     // 消息文本内容
 	SortOrder int       `gorm:"column:sort_order;not null;default:0;index:idx_sort_order" json:"sortOrder"` // 排序顺序，决定swipe的显示顺序
 	CreatedAt time.Time `gorm:"column:created_at;autoCreateTime" json:"createdAt"`                          // 创建时间
 }

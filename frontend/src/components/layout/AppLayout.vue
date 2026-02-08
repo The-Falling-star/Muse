@@ -39,7 +39,7 @@
               <Transition name="slide-sidebar">
                 <aside
                   v-show="!appStore.isMobile || appStore.sidebarVisible"
-                  class="app-sidebar"
+                  class="app-sidebar gpu-accelerated"
                   :class="{ 'collapsed': appStore.sidebarCollapsed }"
                 >
                   <AppSidebar />
@@ -103,7 +103,7 @@
                 <div class="app-content">
                   <router-view v-slot="{ Component }">
                     <Transition name="page-fade" mode="out-in">
-                      <component :is="Component" />
+                      <component :is="Component" class="gpu-accelerated" />
                     </Transition>
                   </router-view>
                 </div>
@@ -231,6 +231,7 @@ onMounted(() => {
     transform: translateX(-100%);
     width: 280px;
     box-shadow: var(--shadow-xl);
+    transition: transform var(--transition-mobile);
   }
 
   .app-sidebar:not(.collapsed) {
@@ -248,6 +249,7 @@ onMounted(() => {
   background: var(--bg-overlay);
   z-index: 99;
   backdrop-filter: blur(4px);
+  transition: opacity var(--transition-fast);
 }
 
 /* 主内容区 */
@@ -267,6 +269,7 @@ onMounted(() => {
 @media (max-width: 768px) {
   .app-main {
     margin-left: 0;
+    transition: none;
   }
 }
 
@@ -334,6 +337,8 @@ onMounted(() => {
   flex: 1;
   padding: 24px;
   overflow-y: auto;
+  /* 移动端滚动优化 */
+  -webkit-overflow-scrolling: touch;
 }
 
 @media (max-width: 768px) {

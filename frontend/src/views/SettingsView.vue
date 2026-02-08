@@ -801,10 +801,14 @@ const handleChangePassword = async () => {
 <style scoped>
 .settings-view {
   height: calc(100vh - 64px - 48px);
+  /* 移动端滚动优化 */
+  -webkit-overflow-scrolling: touch;
 }
 
 .settings-container {
   height: 100%;
+  /* 移动端滚动优化 */
+  -webkit-overflow-scrolling: touch;
 }
 
 .settings-content {
@@ -816,6 +820,34 @@ const handleChangePassword = async () => {
 /* 设置分区 */
 .settings-section {
   margin-bottom: 32px;
+  opacity: 1;
+  transition: opacity var(--transition-normal), transform var(--transition-normal);
+}
+
+.settings-section:last-of-type {
+  margin-bottom: 0;
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+  .settings-section {
+    margin-bottom: 24px;
+  }
+  
+  .settings-content {
+    padding: 0 12px;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  
+  .section-title {
+    text-align: center;
+  }
 }
 
 .section-header {

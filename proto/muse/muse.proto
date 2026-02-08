@@ -1159,11 +1159,16 @@ service RegexRuleService {
 // 获取世界书列表请求
 message ListWorldInfosRequest {
   optional bool is_global = 1;  // 可选，筛选全局/非全局
+  optional int32 page = 2;      // 页码，从1开始，默认为1
+  optional int32 page_size = 3; // 每页数量，默认为20，最大100
 }
 
 // 获取世界书列表响应
 message ListWorldInfosResponse {
   repeated WorldInfo world_infos = 1;
+  int64 total = 2;  // 总数
+  int32 page = 3;   // 当前页码
+  int32 page_size = 4; // 每页数量
 }
 
 // 获取单个世界书请求

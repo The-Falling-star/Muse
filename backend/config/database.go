@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/ling/muse/common/crypto"
+	log "github.com/sirupsen/logrus"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -39,6 +40,7 @@ func InitDatabase(cfg *DatabaseConfig) error {
 	var admin entity.User
 	result := db.Where("id = ?", Get().Auth.AdminUserId).First(&admin)
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		log.Infof("管理员记录不存在，将创建管理员")
 		// 记录不存在，创建管理员
 		admin.ID = Get().Auth.AdminUserId
 		admin.Username = Get().Auth.AdminUsername

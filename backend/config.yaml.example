@@ -17,6 +17,14 @@ api_encrypt:
   # 如果设置为false，前端将无法获取API密钥
   allow_get_key: true
 
+# 静态文件服务配置
+static_file:
+  # 是否启用静态文件服务（集成部署模式）
+  # 设置为false时为分离部署模式，需要单独部署前端
+  enabled: true
+  # 前端构建产物目录路径
+  frontend_dir: "./frontend/dist"
+
 database:
   # 数据库驱动: sqlite 或 mysql
   # sqlite: 生产环境推荐，无需额外安装数据库，数据存储在本地文件

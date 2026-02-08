@@ -219,7 +219,7 @@ func (c *characterImpl) ImportCharacter(ctx context.Context, req *pb.ImportChara
 	case ".json":
 		// 直接解析JSON格式
 		card = &sillytavern.CharacterCard{}
-		if err := json.Unmarshal(fileContent, card); err != nil {
+		if err = json.Unmarshal(fileContent, card); err != nil {
 			return nil, errs.NewStandardf(connect.CodeInvalidArgument, "无法解析JSON文件: %v", err)
 		}
 	default:
@@ -248,22 +248,17 @@ func (c *characterImpl) ImportCharacter(ctx context.Context, req *pb.ImportChara
 		character.Avatar = "data:image/png;base64," + base64.StdEncoding.EncodeToString(fileContent)
 	}
 
-	log.Infof("角色创建中，名称: %s", character.Name)
 	if err = c.charaRepo.Create(ctx, character); err != nil {
 		return nil, err
 	}
-
 	log.Infof("角色创建成功，ID: %d, 名称: %s", character.ID, character.Name)
+	log.Debugf("角色世界书创建成功: %d", len(character.WorldInfo.Entries))
 
 	// 构建响应前先打印调试信息
 	pbChar := convert.CharaEntityToPb(character)
-	log.Infof("转换后的pb角色: ID=%d, Name=%s", pbChar.GetId(), pbChar.GetName())
-
 	resp := &pb.ImportCharacterResponse{
 		Character: pbChar,
 	}
-	log.Infof("响应构建完成，准备返回")
-
 	return resp, nil
 }
 

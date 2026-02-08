@@ -17,9 +17,7 @@ type CharacterRepo struct {
 // Create 创建角色
 func (c *CharacterRepo) Create(ctx context.Context, character *entity.Character) error {
 	db := GetDB(ctx)
-	// 使用 Omit 忽略关联字段，避免 GORM 级联创建
-	// WorldInfo 和 RegexRules 应该独立管理，不应该在创建角色时级联创建
-	result := db.Omit("WorldInfo", "RegexRules").Create(character)
+	result := db.Create(character)
 	if result.Error != nil {
 		return errs.NewStandardf(connect.CodeInternal, "数据库创建失败: %v", result.Error)
 	}

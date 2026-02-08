@@ -28,20 +28,80 @@
 
 ## 🚀 快速开始
 
-### 前端开发
+### 部署模式选择
 
+本项目支持两种部署模式：
+
+#### 1. 集成部署模式（推荐新手）
+- 前后端打包在一起，一个进程运行
+- 配置简单，部署方便
+- 适合个人使用和小型项目
+
+#### 2. 分离部署模式（推荐生产）
+- 前后端独立部署，可分别扩展
+- 性能更优，架构更清晰
+- 适合生产环境和团队协作
+
+### 集成部署（前后端一体）
+
+1. 构建项目：
+```bash
+# 构建前端
+cd frontend
+npm install
+npm run build
+
+cd ../backend
+# 构建后端
+go build -o muse
+```
+
+2. 配置文件（使用默认配置即可）：
+```yaml
+static_file:
+  enabled: true          # 启用静态文件服务
+  frontend_dir: "./frontend/dist"
+```
+
+3. 启动服务：
+```bash
+./muse
+```
+
+### 分离部署（前后端分离）
+
+1. 后端部署：
+```bash
+cd backend
+# 复制分离部署配置
+cp config.separate.yaml.example config.yaml
+
+go build -o muse
+./muse
+```
+
+2. 前端部署：
+```bash
+cd frontend
+npm install
+npm run build
+# 将 dist 目录部署到 Nginx/Apache 等静态服务器
+```
+
+### 开发模式
+
+#### 前端开发
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
 
-### 后端开发
-
+#### 后端开发
 ```bash
 cd backend
 go mod tidy
-go run cmd/server/main.go
+go run main.go
 ```
 
 ## 📁 项目结构

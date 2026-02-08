@@ -29,10 +29,6 @@
     <!-- 卡片内容 -->
     <div class="card-content">
       <h3 class="character-name">{{ character.name }}</h3>
-
-      <p class="character-description">
-        {{ character.description || '暂无描述' }}
-      </p>
     </div>
 
     <!-- 卡片底部 -->
@@ -100,12 +96,21 @@ const handleAction = (key: string) => {
   overflow: hidden;
   cursor: pointer;
   transition: all var(--transition-normal);
+  transform: translateZ(0);
+  /* GPU加速 */
+  will-change: transform, box-shadow;
 }
 
 .character-card:hover {
   transform: translateY(-4px);
   border-color: var(--border-glow);
   box-shadow: var(--shadow-lg), var(--glow-soft);
+  /* 提升到GPU层 */
+  isolation: isolate;
+}
+
+.character-card:active {
+  transform: translateY(-2px);
 }
 
 .character-card:hover .card-border-glow {
@@ -183,18 +188,7 @@ const handleAction = (key: string) => {
   font-size: 18px;
   font-weight: 600;
   color: var(--text-primary);
-  margin: 0 0 8px;
-}
-
-.character-description {
-  font-size: 13px;
-  color: var(--text-secondary);
-  line-height: 1.5;
   margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 /* 卡片底部 */
@@ -206,5 +200,24 @@ const handleAction = (key: string) => {
 
 .card-footer .n-button {
   width: 100%;
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+  .character-card {
+    transition: all var(--transition-mobile);
+  }
+  
+  .character-card:active {
+    transform: scale(0.98);
+  }
+  
+  .card-header {
+    padding: 20px 12px 12px;
+  }
+  
+  .character-name {
+    font-size: 16px;
+  }
 }
 </style>

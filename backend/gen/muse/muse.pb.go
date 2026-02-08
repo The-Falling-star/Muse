@@ -8315,6 +8315,8 @@ func (x *ExportRegexRulesResponse) GetFileName() string {
 type ListWorldInfosRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	IsGlobal      *bool                  `protobuf:"varint,1,opt,name=is_global,json=isGlobal,proto3,oneof" json:"is_global,omitempty"` // 可选，筛选全局/非全局
+	Page          *int32                 `protobuf:"varint,2,opt,name=page,proto3,oneof" json:"page,omitempty"`                         // 页码，从1开始，默认为1
+	PageSize      *int32                 `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3,oneof" json:"page_size,omitempty"` // 每页数量，默认为20，最大100
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -8356,10 +8358,27 @@ func (x *ListWorldInfosRequest) GetIsGlobal() bool {
 	return false
 }
 
+func (x *ListWorldInfosRequest) GetPage() int32 {
+	if x != nil && x.Page != nil {
+		return *x.Page
+	}
+	return 0
+}
+
+func (x *ListWorldInfosRequest) GetPageSize() int32 {
+	if x != nil && x.PageSize != nil {
+		return *x.PageSize
+	}
+	return 0
+}
+
 // 获取世界书列表响应
 type ListWorldInfosResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	WorldInfos    []*WorldInfo           `protobuf:"bytes,1,rep,name=world_infos,json=worldInfos,proto3" json:"world_infos,omitempty"`
+	Total         int64                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`                       // 总数
+	Page          int32                  `protobuf:"varint,3,opt,name=page,proto3" json:"page,omitempty"`                         // 当前页码
+	PageSize      int32                  `protobuf:"varint,4,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"` // 每页数量
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -8399,6 +8418,27 @@ func (x *ListWorldInfosResponse) GetWorldInfos() []*WorldInfo {
 		return x.WorldInfos
 	}
 	return nil
+}
+
+func (x *ListWorldInfosResponse) GetTotal() int64 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *ListWorldInfosResponse) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *ListWorldInfosResponse) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
 }
 
 // 获取单个世界书请求
@@ -10298,14 +10338,22 @@ const file_muse_muse_proto_rawDesc = "" +
 	"\tpreset_id\x18\x01 \x01(\x05R\bpresetId\"Z\n" +
 	"\x18ExportRegexRulesResponse\x12!\n" +
 	"\ffile_content\x18\x01 \x01(\fR\vfileContent\x12\x1b\n" +
-	"\tfile_name\x18\x02 \x01(\tR\bfileName\"G\n" +
+	"\tfile_name\x18\x02 \x01(\tR\bfileName\"\x99\x01\n" +
 	"\x15ListWorldInfosRequest\x12 \n" +
-	"\tis_global\x18\x01 \x01(\bH\x00R\bisGlobal\x88\x01\x01B\f\n" +
+	"\tis_global\x18\x01 \x01(\bH\x00R\bisGlobal\x88\x01\x01\x12\x17\n" +
+	"\x04page\x18\x02 \x01(\x05H\x01R\x04page\x88\x01\x01\x12 \n" +
+	"\tpage_size\x18\x03 \x01(\x05H\x02R\bpageSize\x88\x01\x01B\f\n" +
 	"\n" +
-	"_is_global\"J\n" +
+	"_is_globalB\a\n" +
+	"\x05_pageB\f\n" +
+	"\n" +
+	"_page_size\"\x91\x01\n" +
 	"\x16ListWorldInfosResponse\x120\n" +
 	"\vworld_infos\x18\x01 \x03(\v2\x0f.muse.WorldInfoR\n" +
-	"worldInfos\"%\n" +
+	"worldInfos\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x03R\x05total\x12\x12\n" +
+	"\x04page\x18\x03 \x01(\x05R\x04page\x12\x1b\n" +
+	"\tpage_size\x18\x04 \x01(\x05R\bpageSize\"%\n" +
 	"\x13GetWorldInfoRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\"F\n" +
 	"\x14GetWorldInfoResponse\x12.\n" +

@@ -370,15 +370,33 @@ defineExpose({ focus });
   align-items: flex-end;
   gap: 8px;
   background: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-light);
   border-radius: 12px;
   padding: 8px 12px;
   transition: all var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 输入框科幻光辉 */
+.input-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-glow);
+  opacity: .5;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.input-wrapper > * {
+  position: relative;
+  z-index: 1;
 }
 
 .input-wrapper:focus-within {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px rgba(0, 240, 255, 0.15);
+  box-shadow: var(--glow-primary-sm);
 }
 
 /* Persona 选择器 */
@@ -408,7 +426,7 @@ defineExpose({ focus });
   .persona-selector:hover {
     transform: scale(1.03);
   }
-  
+
   .persona-selector:active {
     transform: scale(0.95);
   }
@@ -609,26 +627,26 @@ defineExpose({ focus });
     padding: 6px 10px;
     gap: 6px;
   }
-  
+
   .input-actions-left .n-button,
   .send-button,
   .stop-button {
     width: 36px;
     height: 36px;
   }
-  
+
   .message-textarea :deep(.n-input__textarea-el) {
     padding: 4px 0 !important;
   }
-  
+
   .send-button:not(:disabled):hover {
     transform: scale(1.03);
   }
-  
+
   .send-button:not(:disabled):active {
     transform: scale(0.98);
   }
-  
+
   .persona-hint {
     display: none;
   }

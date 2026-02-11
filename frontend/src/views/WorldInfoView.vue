@@ -5,11 +5,11 @@
       <div class="sidebar-header">
         <div class="sidebar-header-content">
           <h3>世界书</h3>
-          <n-button 
-            v-if="isMobile" 
-            quaternary 
-            circle 
-            size="small" 
+          <n-button
+            v-if="isMobile"
+            quaternary
+            circle
+            size="small"
             class="close-sidebar-btn"
             @click="showSidebar = false"
           >
@@ -84,8 +84,8 @@
     <div class="worldinfo-main">
       <!-- 移动端：列表切换按钮 -->
       <div v-if="isMobile" class="mobile-list-toggle">
-        <n-button 
-          quaternary 
+        <n-button
+          quaternary
           @click="showSidebar = true"
           class="list-toggle-btn"
         >
@@ -153,15 +153,25 @@
         <!-- 条目列表 -->
         <n-scrollbar class="entries-list">
           <n-spin :show="entriesLoading">
-            <TransitionGroup name="entry-list">
-              <div
-                v-for="entry in filteredEntries"
-                :key="entry.id"
-                class="entry-item"
-                :class="{ 'disabled': !entry.isEnabled }"
-              >
-                <div class="entry-header">
-                  <n-switch
+            <draggable
+              v-model="sortableEntries"
+              item-key="id"
+              handle=".drag-handle"
+              animation="200"
+              ghost-class="entry-ghost"
+              class="entry-drag-list"
+              @end="handleEntryOrderChange"
+            >
+              <template #item="{ element: entry }">
+                <div
+                  class="entry-item"
+                  :class="{ 'disabled': !entry.isEnabled }"
+                >
+                  <div class="entry-header">
+                    <div class="drag-handle">
+                      <n-icon size="16"><ReorderTwoOutline /></n-icon>
+                    </div>
+                    <n-switch
                     :value="entry.isEnabled"
                     size="small"
                     @update:value="(val: boolean) => handleToggleEntry(entry, val)"
@@ -195,19 +205,19 @@
                 </div>
 
                 <div class="entry-content">
-                  <p 
-                    :class="{ 
+                  <p
+                    :class="{
                       'truncated': shouldTruncateContent(entry.content) && !isEntryExpanded(entry.id),
                       'expandable': shouldTruncateContent(entry.content)
                     }"
                     @click="shouldTruncateContent(entry.content) && toggleEntryExpand(entry.id)"
                   >
-                    {{ isEntryExpanded(entry.id) || !shouldTruncateContent(entry.content) 
-                      ? entry.content 
+                    {{ isEntryExpanded(entry.id) || !shouldTruncateContent(entry.content)
+                      ? entry.content
                       : getTruncatedContent(entry.content) }}
                   </p>
-                  <div 
-                    v-if="shouldTruncateContent(entry.content)" 
+                  <div
+                    v-if="shouldTruncateContent(entry.content)"
                     class="expand-toggle"
                     @click="toggleEntryExpand(entry.id)"
                   >
@@ -221,10 +231,11 @@
                   <span v-if="entry.constant">常驻</span>
                   <span v-if="entry.selective">选择性</span>
                 </div>
-              </div>
-            </TransitionGroup>
+                </div>
+              </template>
+            </draggable>
 
-            <n-empty v-if="filteredEntries.length === 0 && !entriesLoading" description="暂无条目" />
+            <n-empty v-if="sortableEntries.length === 0 && !entriesLoading" description="暂无条目" />
           </n-spin>
         </n-scrollbar>
       </template>
@@ -308,19 +319,6 @@
         </n-upload-dragger>
       </n-upload>
     </n-modal>
-
-    <!-- 测试按钮（仅在开发环境显示） -->
-    <div v-if="__DEV__" class="test-buttons">
-      <n-button @click="showSidebar = true" type="primary" size="small">
-        打开侧边栏
-      </n-button>
-      <n-button @click="showSidebar = false" type="error" size="small">
-        关闭侧边栏
-      </n-button>
-      <n-button @click="isMobile = !isMobile" type="warning" size="small">
-        切换移动端模式: {{ isMobile ? 'ON' : 'OFF' }}
-      </n-button>
-    </div>
   </div>
 </template>
 
@@ -356,8 +354,10 @@ import {
   CreateOutline,
   TrashOutline,
   CloseOutline,
-  ListOutline
+  ListOutline,
+  ReorderTwoOutline
 } from '@vicons/ionicons5';
+import draggable from 'vuedraggable';
 
 import WorldInfoEntryEditor from '../components/worldinfo/WorldInfoEntryEditor.vue';
 import { worldInfoClient } from '@/api/client';
@@ -395,9 +395,6 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize);
 });
-
-// 提供全局属性访问
-const $isMobile = isMobile;
 
 // 状态
 const loading = ref(false);
@@ -476,6 +473,29 @@ const filteredEntries = computed(() => {
   return list;
 });
 
+// 可拖拽排序的条目列表（可写计算属性，供 draggable v-model 使用）
+const sortableEntries = computed({
+  get: () => filteredEntries.value,
+  set: (val) => {
+    // 拖拽结束后更新 entries 的顺序
+    entries.value = val;
+  }
+});
+
+// 处理条目拖拽排序变化
+const handleEntryOrderChange = async () => {
+  if (!selectedWorldId.value) return;
+  try {
+    const entryIds = sortableEntries.value.map(e => e.id);
+    await worldInfoClient.updateWorldInfoEntriesOrder({
+      worldInfoId: selectedWorldId.value,
+      entryIds
+    });
+  } catch {
+    // 排序失败时静默处理
+  }
+};
+
 // 解析关键词列表
 const parseKeys = (keysList: string): string[] => {
   return keysList.split(',').map(k => k.trim()).filter(k => k.length > 0);
@@ -542,12 +562,12 @@ const loadEntries = async (worldInfoId: number) => {
 // 选择世界书
 const selectWorld = async (id: number) => {
   selectedWorldId.value = id;
-  
+
   // 移动端选择后自动关闭侧边栏
   if (isMobile.value) {
     showSidebar.value = false;
   }
-  
+
   await loadEntries(id);
 };
 
@@ -824,11 +844,11 @@ watch(showWorldModal, (val) => {
     transform: translateX(-100%);
     box-shadow: var(--shadow-xl);
   }
-  
+
   .worldinfo-sidebar.show-mobile {
     transform: translateX(0);
   }
-  
+
   .worldinfo-view {
     gap: 0;
   }
@@ -1016,6 +1036,40 @@ watch(showWorldModal, (val) => {
   opacity: 0.5;
 }
 
+/* 拖拽手柄 */
+.drag-handle {
+  cursor: grab;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  border-radius: 4px;
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.drag-handle:hover {
+  color: var(--text-secondary);
+  background: var(--bg-hover);
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+/* 拖拽 ghost 状态 */
+.entry-ghost {
+  opacity: .4;
+  background: var(--color-primary-light, rgba(99, 102, 241, .1));
+  border-color: var(--color-primary);
+}
+
+/* 拖拽列表容器 */
+.entry-drag-list {
+  display: flex;
+  flex-direction: column;
+}
+
 .entry-header {
   display: flex;
   align-items: center;
@@ -1127,72 +1181,72 @@ watch(showWorldModal, (val) => {
   .worldinfo-sidebar {
     width: 100%;
   }
-  
+
   .worldinfo-view {
     flex-direction: column;
     height: calc(100vh - 64px - 48px);
   }
-  
+
   .worldinfo-main {
     flex: 1;
     display: flex;
     flex-direction: column;
     overflow: hidden;
   }
-  
+
   .main-header {
     flex-direction: column;
     align-items: stretch;
     gap: 16px;
     padding: 16px;
   }
-  
+
   .header-actions {
     justify-content: flex-start;
     flex-wrap: wrap;
   }
-  
+
   .entries-toolbar {
     flex-direction: column;
     gap: 12px;
     padding: 12px 16px;
   }
-  
+
   .entry-search {
     max-width: none;
   }
-  
+
   .entry-sort {
     width: 100%;
   }
-  
+
   .entry-header {
     flex-wrap: wrap;
     gap: 8px;
   }
-  
+
   .entry-keys {
     order: 3;
     width: 100%;
     margin-top: 8px;
   }
-  
+
   .entry-content p {
     font-size: 13px;
   }
-  
+
   .entry-meta {
     flex-wrap: wrap;
     gap: 8px;
   }
-  
+
   .entries-list {
     padding: 16px;
     flex: 1;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }
-  
+
   .entry-item {
     margin-right: 0;
     padding: 12px;
@@ -1205,36 +1259,36 @@ watch(showWorldModal, (val) => {
     border: none;
     margin: 0 -16px;
   }
-  
+
   .main-header,
   .entries-toolbar,
   .entries-list {
     padding-left: 16px;
     padding-right: 16px;
   }
-  
+
   .entry-item {
     padding: 12px;
     margin-bottom: 8px;
   }
-  
+
   .entry-header {
     gap: 6px;
   }
-  
+
   .entry-content p {
     font-size: 12px;
   }
-  
+
   .header-actions {
     gap: 6px;
   }
-  
+
   .header-actions .n-button {
     font-size: 12px;
     padding: 0 12px;
   }
-  
+
   .mobile-list-toggle {
     padding: 12px 16px;
   }
@@ -1262,7 +1316,7 @@ watch(showWorldModal, (val) => {
     right: 10px;
     padding: 8px;
   }
-  
+
   .test-buttons .n-button {
     font-size: 12px;
     padding: 8px 12px;

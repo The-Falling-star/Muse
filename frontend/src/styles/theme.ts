@@ -3,76 +3,76 @@ import type { GlobalThemeOverrides } from 'naive-ui';
 // Google AI Studio 风格主题色彩定义
 export const museColors = {
   dark: {
-    // 主色调 - Google 蓝（暗色变体）
-    primary: '#8AB4F8',
-    primaryHover: '#AECBFA',
-    primaryPressed: '#669DF6',
-    primarySuppl: '#5A9CF6',
+    // 主色调 - 明亮电光蓝
+    primary: '#4DA8FF',
+    primaryHover: '#6FBCFF',
+    primaryPressed: '#2B8CED',
+    primarySuppl: '#3D9AFF',
 
     // 语义色
-    success: '#81C995',
-    warning: '#FDD663',
-    error: '#F28B82',
-    info: '#8AB4F8',
+    success: '#5EE8A0',
+    warning: '#FFD166',
+    error: '#FF6B6B',
+    info: '#4DA8FF',
 
-    // 背景色
-    bgPrimary: '#1E1E1E',
-    bgSecondary: '#252525',
-    bgTertiary: '#2A2A2A',
-    bgCard: '#2A2A2A',
-    bgCardHover: '#333333',
-    bgModal: '#2A2A2A',
-    bgOverlay: 'rgba(0, 0, 0, 0.6)',
+    // 背景色 - 深邃太空感
+    bgPrimary: '#0D1117',
+    bgSecondary: '#161B22',
+    bgTertiary: '#1C2333',
+    bgCard: '#1C2333',
+    bgCardHover: '#242D3D',
+    bgModal: '#1C2333',
+    bgOverlay: 'rgba(0, 0, 0, 0.7)',
 
-    // 边框色
-    border: '#3C3C3C',
-    borderLight: '#4A4A4A',
+    // 边框色 - 微光感
+    border: 'rgba(77, 168, 255, 0.12)',
+    borderLight: 'rgba(77, 168, 255, 0.2)',
 
     // 文字色
-    textPrimary: '#E3E3E3',
-    textSecondary: '#9AA0A6',
-    textTertiary: '#6B7280',
-    textDisabled: '#4B5563',
+    textPrimary: '#E6EDF3',
+    textSecondary: '#8B949E',
+    textTertiary: '#6E7681',
+    textDisabled: '#484F58',
 
     // hover/active
-    bgHover: '#333333',
-    bgActive: '#2D3748'
+    bgHover: 'rgba(77, 168, 255, 0.08)',
+    bgActive: 'rgba(77, 168, 255, 0.14)'
   },
   light: {
-    // 主色调 - Google 蓝
-    primary: '#1A73E8',
-    primaryHover: '#1967D2',
-    primaryPressed: '#185ABC',
-    primarySuppl: '#1565C0',
+    // 主色调 - 鲜艳蓝
+    primary: '#2563EB',
+    primaryHover: '#1D4ED8',
+    primaryPressed: '#1E40AF',
+    primarySuppl: '#3B82F6',
 
     // 语义色
-    success: '#1E8E3E',
-    warning: '#F9AB00',
-    error: '#D93025',
-    info: '#1A73E8',
+    success: '#16A34A',
+    warning: '#F59E0B',
+    error: '#DC2626',
+    info: '#2563EB',
 
     // 背景色
     bgPrimary: '#FFFFFF',
-    bgSecondary: '#F8F9FA',
-    bgTertiary: '#F1F3F4',
+    bgSecondary: '#F8FAFC',
+    bgTertiary: '#F1F5F9',
     bgCard: '#FFFFFF',
-    bgCardHover: '#F1F3F4',
+    bgCardHover: '#F1F5F9',
     bgModal: '#FFFFFF',
     bgOverlay: 'rgba(0, 0, 0, 0.4)',
 
     // 边框色
-    border: '#E0E0E0',
-    borderLight: '#DADCE0',
+    border: '#E2E8F0',
+    borderLight: '#CBD5E1',
 
     // 文字色
-    textPrimary: '#1F1F1F',
-    textSecondary: '#5F6368',
-    textTertiary: '#80868B',
-    textDisabled: '#BDC1C6',
+    textPrimary: '#0F172A',
+    textSecondary: '#475569',
+    textTertiary: '#94A3B8',
+    textDisabled: '#CBD5E1',
 
     // hover/active
-    bgHover: '#F1F3F4',
-    bgActive: '#E8F0FE'
+    bgHover: '#F1F5F9',
+    bgActive: '#EFF6FF'
   }
 };
 
@@ -85,20 +85,20 @@ export const darkThemeOverrides: GlobalThemeOverrides = {
     primaryColorSuppl: museColors.dark.primarySuppl,
 
     infoColor: museColors.dark.info,
-    infoColorHover: '#AECBFA',
-    infoColorPressed: '#669DF6',
+    infoColorHover: '#6FBCFF',
+    infoColorPressed: '#2B8CED',
 
     successColor: museColors.dark.success,
-    successColorHover: '#A8D5BA',
-    successColorPressed: '#5BB381',
+    successColorHover: '#7CEEB5',
+    successColorPressed: '#3DD989',
 
     warningColor: museColors.dark.warning,
-    warningColorHover: '#FDE293',
-    warningColorPressed: '#ECC334',
+    warningColorHover: '#FFE08A',
+    warningColorPressed: '#F5C230',
 
     errorColor: museColors.dark.error,
-    errorColorHover: '#F5A8A2',
-    errorColorPressed: '#E06862',
+    errorColorHover: '#FF8A8A',
+    errorColorPressed: '#E04D4D',
 
     textColorBase: museColors.dark.textPrimary,
     textColor1: museColors.dark.textPrimary,
@@ -125,8 +125,8 @@ export const darkThemeOverrides: GlobalThemeOverrides = {
     clearColorHover: museColors.dark.textSecondary,
     clearColorPressed: museColors.dark.textPrimary,
 
-    scrollbarColor: 'rgba(255, 255, 255, 0.12)',
-    scrollbarColorHover: 'rgba(255, 255, 255, 0.24)',
+    scrollbarColor: 'rgba(77, 168, 255, 0.12)',
+    scrollbarColorHover: 'rgba(77, 168, 255, 0.24)',
 
     progressRailColor: museColors.dark.border,
 
@@ -142,12 +142,12 @@ export const darkThemeOverrides: GlobalThemeOverrides = {
     avatarColor: museColors.dark.bgTertiary,
     invertedColor: museColors.dark.bgCard,
 
-    hoverColor: 'rgba(255, 255, 255, 0.06)',
-    pressedColor: 'rgba(255, 255, 255, 0.1)',
+    hoverColor: 'rgba(77, 168, 255, 0.06)',
+    pressedColor: 'rgba(77, 168, 255, 0.12)',
 
-    boxShadow1: '0 1px 3px rgba(0, 0, 0, 0.3)',
-    boxShadow2: '0 4px 12px rgba(0, 0, 0, 0.4)',
-    boxShadow3: '0 8px 24px rgba(0, 0, 0, 0.5)',
+    boxShadow1: '0 1px 3px rgba(0, 0, 0, 0.4)',
+    boxShadow2: '0 4px 12px rgba(0, 0, 0, 0.5)',
+    boxShadow3: '0 8px 24px rgba(0, 0, 0, 0.6)',
 
     borderRadius: '8px',
     borderRadiusSmall: '4px',
@@ -203,7 +203,7 @@ export const darkThemeOverrides: GlobalThemeOverrides = {
     borderHover: `1px solid ${museColors.dark.borderLight}`,
     borderFocus: `1px solid ${museColors.dark.primary}`,
     borderDisabled: `1px solid ${museColors.dark.border}`,
-    boxShadowFocus: `0 0 0 2px rgba(138, 180, 248, 0.25)`,
+    boxShadowFocus: `0 0 0 2px rgba(77, 168, 255, 0.3)`,
     caretColor: museColors.dark.primary,
     borderRadius: '8px',
     heightMedium: '40px'
@@ -218,8 +218,8 @@ export const darkThemeOverrides: GlobalThemeOverrides = {
         borderHover: `1px solid ${museColors.dark.borderLight}`,
         borderActive: `1px solid ${museColors.dark.primary}`,
         borderFocus: `1px solid ${museColors.dark.primary}`,
-        boxShadowFocus: `0 0 0 2px rgba(138, 180, 248, 0.25)`,
-        boxShadowActive: `0 0 0 2px rgba(138, 180, 248, 0.25)`,
+        boxShadowFocus: `0 0 0 2px rgba(77, 168, 255, 0.3)`,
+        boxShadowActive: `0 0 0 2px rgba(77, 168, 255, 0.3)`,
         borderRadius: '8px',
         textColor: museColors.dark.textPrimary,
         placeholderColor: museColors.dark.textTertiary,
@@ -227,8 +227,8 @@ export const darkThemeOverrides: GlobalThemeOverrides = {
       },
       InternalSelectMenu: {
         color: museColors.dark.bgCard,
-        optionColorPending: 'rgba(255, 255, 255, 0.06)',
-        optionColorActive: 'rgba(138, 180, 248, 0.15)',
+    optionColorPending: 'rgba(77, 168, 255, 0.06)',
+        optionColorActive: 'rgba(77, 168, 255, 0.15)',
         optionTextColorActive: museColors.dark.primary,
         optionCheckColor: museColors.dark.primary,
         borderRadius: '8px'
@@ -237,10 +237,10 @@ export const darkThemeOverrides: GlobalThemeOverrides = {
   },
   Menu: {
     color: 'transparent',
-    itemColorHover: 'rgba(255, 255, 255, 0.06)',
-    itemColorActive: 'rgba(138, 180, 248, 0.12)',
-    itemColorActiveHover: 'rgba(138, 180, 248, 0.16)',
-    itemColorActiveCollapsed: 'rgba(138, 180, 248, 0.12)',
+    itemColorHover: 'rgba(77, 168, 255, 0.06)',
+    itemColorActive: 'rgba(77, 168, 255, 0.12)',
+    itemColorActiveHover: 'rgba(77, 168, 255, 0.16)',
+    itemColorActiveCollapsed: 'rgba(77, 168, 255, 0.12)',
     itemTextColor: museColors.dark.textSecondary,
     itemTextColorHover: museColors.dark.textPrimary,
     itemTextColorActive: museColors.dark.primary,
@@ -273,9 +273,9 @@ export const darkThemeOverrides: GlobalThemeOverrides = {
     textColor: museColors.dark.textSecondary,
     border: `1px solid ${museColors.dark.border}`,
     borderRadius: '6px',
-    colorPrimary: 'rgba(138, 180, 248, 0.15)',
+    colorPrimary: 'rgba(77, 168, 255, 0.15)',
     textColorPrimary: museColors.dark.primary,
-    borderPrimary: `1px solid rgba(138, 180, 248, 0.3)`,
+    borderPrimary: `1px solid rgba(77, 168, 255, 0.3)`,
     closeIconColor: museColors.dark.textTertiary,
     closeIconColorHover: museColors.dark.textPrimary
   },
@@ -294,8 +294,8 @@ export const darkThemeOverrides: GlobalThemeOverrides = {
     tabFontWeightActive: '500'
   },
   Scrollbar: {
-    color: 'rgba(255, 255, 255, 0.12)',
-    colorHover: 'rgba(255, 255, 255, 0.24)',
+    color: 'rgba(77, 168, 255, 0.12)',
+    colorHover: 'rgba(77, 168, 255, 0.24)',
     width: '8px',
     borderRadius: '4px'
   },
@@ -309,7 +309,7 @@ export const darkThemeOverrides: GlobalThemeOverrides = {
     railColor: museColors.dark.border,
     railColorActive: museColors.dark.primary,
     buttonColor: '#E3E3E3',
-    boxShadowFocus: `0 0 0 2px rgba(138, 180, 248, 0.25)`
+    boxShadowFocus: `0 0 0 2px rgba(77, 168, 255, 0.3)`
   },
   Slider: {
     fillColor: museColors.dark.primary,
@@ -347,8 +347,8 @@ export const darkThemeOverrides: GlobalThemeOverrides = {
   },
   Dropdown: {
     color: museColors.dark.bgCard,
-    optionColorHover: 'rgba(255, 255, 255, 0.06)',
-    optionColorActive: 'rgba(138, 180, 248, 0.12)',
+    optionColorHover: 'rgba(77, 168, 255, 0.06)',
+    optionColorActive: 'rgba(77, 168, 255, 0.12)',
     optionTextColor: museColors.dark.textSecondary,
     optionTextColorHover: museColors.dark.textPrimary,
     optionTextColorActive: museColors.dark.primary,
@@ -484,7 +484,7 @@ export const lightThemeOverrides: GlobalThemeOverrides = {
     borderHover: `1px solid ${museColors.light.borderLight}`,
     borderFocus: `1px solid ${museColors.light.primary}`,
     borderDisabled: `1px solid ${museColors.light.border}`,
-    boxShadowFocus: `0 0 0 2px rgba(26, 115, 232, 0.2)`,
+    boxShadowFocus: `0 0 0 2px rgba(37, 99, 235, 0.2)`,
     caretColor: museColors.light.primary,
     borderRadius: '8px',
     heightMedium: '40px'
@@ -499,8 +499,8 @@ export const lightThemeOverrides: GlobalThemeOverrides = {
         borderHover: `1px solid ${museColors.light.borderLight}`,
         borderActive: `1px solid ${museColors.light.primary}`,
         borderFocus: `1px solid ${museColors.light.primary}`,
-        boxShadowFocus: `0 0 0 2px rgba(26, 115, 232, 0.2)`,
-        boxShadowActive: `0 0 0 2px rgba(26, 115, 232, 0.2)`,
+        boxShadowFocus: `0 0 0 2px rgba(37, 99, 235, 0.2)`,
+        boxShadowActive: `0 0 0 2px rgba(37, 99, 235, 0.2)`,
         borderRadius: '8px',
         textColor: museColors.light.textPrimary,
         placeholderColor: museColors.light.textTertiary,
@@ -509,7 +509,7 @@ export const lightThemeOverrides: GlobalThemeOverrides = {
       InternalSelectMenu: {
         color: museColors.light.bgCard,
         optionColorPending: 'rgba(0, 0, 0, 0.04)',
-        optionColorActive: 'rgba(26, 115, 232, 0.1)',
+        optionColorActive: 'rgba(37, 99, 235, 0.1)',
         optionTextColorActive: museColors.light.primary,
         optionCheckColor: museColors.light.primary,
         borderRadius: '8px'
@@ -519,9 +519,9 @@ export const lightThemeOverrides: GlobalThemeOverrides = {
   Menu: {
     color: 'transparent',
     itemColorHover: 'rgba(0, 0, 0, 0.04)',
-    itemColorActive: 'rgba(26, 115, 232, 0.08)',
-    itemColorActiveHover: 'rgba(26, 115, 232, 0.12)',
-    itemColorActiveCollapsed: 'rgba(26, 115, 232, 0.08)',
+    itemColorActive: 'rgba(37, 99, 235, 0.08)',
+    itemColorActiveHover: 'rgba(37, 99, 235, 0.12)',
+    itemColorActiveCollapsed: 'rgba(37, 99, 235, 0.08)',
     itemTextColor: museColors.light.textSecondary,
     itemTextColorHover: museColors.light.textPrimary,
     itemTextColorActive: museColors.light.primary,
@@ -554,9 +554,9 @@ export const lightThemeOverrides: GlobalThemeOverrides = {
     textColor: museColors.light.textSecondary,
     border: `1px solid ${museColors.light.border}`,
     borderRadius: '6px',
-    colorPrimary: 'rgba(26, 115, 232, 0.08)',
+    colorPrimary: 'rgba(37, 99, 235, 0.08)',
     textColorPrimary: museColors.light.primary,
-    borderPrimary: `1px solid rgba(26, 115, 232, 0.3)`,
+    borderPrimary: `1px solid rgba(37, 99, 235, 0.3)`,
     closeIconColor: museColors.light.textTertiary,
     closeIconColorHover: museColors.light.textPrimary
   },
@@ -590,7 +590,7 @@ export const lightThemeOverrides: GlobalThemeOverrides = {
     railColor: museColors.light.border,
     railColorActive: museColors.light.primary,
     buttonColor: '#FFFFFF',
-    boxShadowFocus: `0 0 0 2px rgba(26, 115, 232, 0.2)`
+    boxShadowFocus: `0 0 0 2px rgba(37, 99, 235, 0.2)`
   },
   Slider: {
     fillColor: museColors.light.primary,
@@ -629,7 +629,7 @@ export const lightThemeOverrides: GlobalThemeOverrides = {
   Dropdown: {
     color: museColors.light.bgCard,
     optionColorHover: 'rgba(0, 0, 0, 0.04)',
-    optionColorActive: 'rgba(26, 115, 232, 0.08)',
+    optionColorActive: 'rgba(37, 99, 235, 0.08)',
     optionTextColor: museColors.light.textSecondary,
     optionTextColorHover: museColors.light.textPrimary,
     optionTextColorActive: museColors.light.primary,

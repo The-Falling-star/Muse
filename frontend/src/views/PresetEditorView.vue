@@ -1,5 +1,8 @@
 <template>
   <div class="preset-editor-view">
+    <!-- 加载状态 -->
+    <n-spin :show="pageLoading" description="加载中..." style="width: 100%; height: 100%;">
+
     <!-- 编辑器顶部栏 -->
     <div class="editor-top-bar">
       <n-button quaternary @click="backToChat">
@@ -10,8 +13,8 @@
       </n-button>
       <span class="editor-title">编辑预设: {{ presetName }}</span>
       <div class="editor-actions">
-        <n-button size="small" @click="handleSaveAs">另存为</n-button>
-        <n-button type="primary" size="small" @click="handleSave">保存</n-button>
+        <n-button size="small" :disabled="saving" @click="handleSaveAs">另存为</n-button>
+        <n-button type="primary" size="small" :loading="saving" @click="handleSave">保存</n-button>
       </div>
     </div>
 
@@ -34,10 +37,16 @@
           <span class="section-desc">拖拽调整顺序，展开编辑内容</span>
         </div>
 
-        <div class="prompt-list">
+        <draggable
+          v-model="prompts"
+          item-key="id"
+          handle=".drag-handle"
+          animation="200"
+          ghost-class="prompt-ghost"
+          class="prompt-list"
+        >
+          <template #item="{ element: prompt, index }">
           <div
-            v-for="(prompt, index) in prompts"
-            :key="prompt.id"
             class="prompt-card"
             :class="{ expanded: prompt.expanded }"
           >
@@ -48,8 +57,8 @@
                   <ReorderTwoOutline />
                 </n-icon>
                 <n-checkbox
-                  :checked="prompt.enabled"
-                  @update:checked="(val: boolean) => prompt.enabled = val"
+                  :checked="prompt.isEnabled"
+                  @update:checked="(val: boolean) => prompt.isEnabled = val"
                   @click.stop
                 />
                 <span class="prompt-name">{{ prompt.name || '未命名 Prompt' }}</span>
@@ -117,7 +126,8 @@
               </div>
             </div>
           </div>
-        </div>
+          </template>
+        </draggable>
 
         <!-- 添加 Prompt 按钮 -->
         <n-button dashed block @click="addPrompt" class="add-prompt-btn">
@@ -136,17 +146,27 @@
         <div class="regex-list">
           <div
             v-for="(rule, index) in regexRules"
-            :key="rule.id"
+            :key="index"
             class="regex-item"
           >
             <n-checkbox
-              :checked="rule.enabled"
-              @update:checked="(val: boolean) => rule.enabled = val"
+              :checked="rule.isEnabled"
+              @update:checked="(val: boolean) => rule.isEnabled = val"
             />
             <span class="regex-name">{{ rule.name }}</span>
-            <code class="regex-preview">{{ rule.find }}</code>
+            <code class="regex-preview">{{ rule.findPattern }}</code>
             <span class="regex-arrow">→</span>
-            <span class="regex-replace">{{ rule.replace || '(空)' }}</span>
+            <span class="regex-replace">{{ rule.replacePattern || '(空)' }}</span>
+            <n-button
+              quaternary
+              circle
+              size="tiny"
+              @click="editRegex(index)"
+            >
+              <template #icon>
+                <n-icon :size="14"><CreateOutline /></n-icon>
+              </template>
+            </n-button>
             <n-button
               quaternary
               circle
@@ -175,11 +195,61 @@
         </n-button>
       </div>
     </div>
+
+    <!-- 正则规则编辑模态框 -->
+    <n-modal
+      v-model:show="showRegexModal"
+      preset="card"
+      :title="editingRegexIndex >= 0 ? '编辑正则规则' : '添加正则规则'"
+      :style="{ width: '550px', maxWidth: '90vw' }"
+    >
+      <n-form ref="regexFormRef" :model="regexFormData" label-placement="top">
+        <n-form-item label="规则名称" path="name">
+          <n-input v-model:value="regexFormData.name" placeholder="输入规则名称" />
+        </n-form-item>
+
+        <n-form-item label="匹配模式" path="findPattern">
+          <n-input v-model:value="regexFormData.findPattern" placeholder="输入正则表达式" style="font-family: monospace;" />
+        </n-form-item>
+
+        <n-form-item label="替换内容">
+          <n-input v-model:value="regexFormData.replacePattern" placeholder="替换文本（留空表示删除匹配内容）" />
+        </n-form-item>
+
+        <n-grid :cols="2" :x-gap="16">
+          <n-gi>
+            <n-form-item label="作用范围">
+              <n-checkbox-group v-model:value="affectFlagsArray">
+                <n-space vertical>
+                  <n-checkbox value="userInput" label="用户输入" />
+                  <n-checkbox value="aiOutput" label="AI输出" />
+                  <n-checkbox value="slashCommand" label="斜杠命令" />
+                  <n-checkbox value="worldInfo" label="世界书" />
+                  <n-checkbox value="prompt" label="提示词" />
+                </n-space>
+              </n-checkbox-group>
+            </n-form-item>
+          </n-gi>
+          <n-gi>
+            <n-form-item label="优先级">
+              <n-input-number v-model:value="regexFormData.sortOrder" :min="0" :max="1000" style="width: 100%;" />
+            </n-form-item>
+          </n-gi>
+        </n-grid>
+      </n-form>
+
+      <div class="modal-footer">
+        <n-button @click="showRegexModal = false">取消</n-button>
+        <n-button type="primary" @click="handleRegexSave">保存</n-button>
+      </div>
+    </n-modal>
+
+    </n-spin>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { h, ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import {
   NButton,
@@ -188,127 +258,153 @@ import {
   NSelect,
   NCheckbox,
   NTag,
-  NEmpty
+  NEmpty,
+  NModal,
+  NForm,
+  NFormItem,
+  NInputNumber,
+  NCheckboxGroup,
+  NSpace,
+  NGrid,
+  NGi,
+  NSpin,
+  useMessage,
+  useDialog
 } from 'naive-ui';
+import type { FormInst } from 'naive-ui';
 import {
   ArrowBackOutline,
   AddOutline,
   CloseOutline,
+  CreateOutline,
   ReorderTwoOutline,
   ChevronDownOutline,
   ChevronUpOutline
 } from '@vicons/ionicons5';
+import draggable from 'vuedraggable';
+import { usePresetStore } from '@/stores/preset';
+import { Role, InjectionPosition } from '@/gen/muse/muse_pb';
+import type { PromptItem, RegexRule, RegexAffectFlags } from '@/gen/muse/muse_pb';
 
 const route = useRoute();
 const router = useRouter();
+const message = useMessage();
+const dialog = useDialog();
+const presetStore = usePresetStore();
 
-const presetId = computed(() => route.params.id as string);
+const presetId = computed(() => Number(route.params.id));
+const pageLoading = ref(true);
+const saving = ref(false);
 
-// TODO: 后续对接真实的预设 store，根据 presetId 加载数据
-const presetName = ref('Default');
+// 预设基础信息
+const presetName = ref('');
+const presetVersion = ref(0n);
 
 // Prompt 角色选项
 const roleOptions = [
-  { label: '系统 (System)', value: 'system' },
-  { label: '用户 (User)', value: 'user' },
-  { label: '助手 (Assistant)', value: 'assistant' }
+  { label: '系统 (System)', value: Role.System },
+  { label: '用户 (User)', value: Role.User },
+  { label: '助手 (Assistant)', value: Role.Assistant }
 ];
 
-// Prompt 项接口
-interface PromptItem {
-  id: string;
-  name: string;
-  role: string;
-  content: string;
-  enabled: boolean;
+// Prompt 项（带前端展开状态）
+interface PromptItemUI extends PromptItem {
   expanded: boolean;
 }
 
-// 示例数据
-const prompts = ref<PromptItem[]>([
-  {
-    id: '1',
-    name: 'System Prompt',
-    role: 'system',
-    content: 'You are {{char}}, a creative writing assistant...',
-    enabled: true,
-    expanded: true
-  },
-  {
-    id: '2',
-    name: 'Character Description',
-    role: 'system',
-    content: '{{char}}的详细描述和设定...',
-    enabled: true,
-    expanded: false
-  },
-  {
-    id: '3',
-    name: 'Chat History',
-    role: 'system',
-    content: '',
-    enabled: true,
-    expanded: false
-  },
-  {
-    id: '4',
-    name: 'User Prompt',
-    role: 'user',
-    content: '',
-    enabled: true,
-    expanded: false
+const prompts = ref<PromptItemUI[]>([]);
+const regexRules = ref<RegexRule[]>([]);
+
+// =====================
+// 加载数据
+// =====================
+
+const loadPreset = async () => {
+  pageLoading.value = true;
+  try {
+    const preset = await presetStore.fetchPreset(presetId.value);
+    if (!preset) {
+      message.error('预设不存在');
+      router.push('/');
+      return;
+    }
+    presetName.value = preset.name;
+    presetVersion.value = preset.version;
+    prompts.value = (preset.promptItems || []).map(item => ({
+      ...item,
+      expanded: false
+    }));
+    regexRules.value = preset.regexRules || [];
+  } catch {
+    message.error('加载预设失败');
+  } finally {
+    pageLoading.value = false;
   }
-]);
+};
 
-// 正则规则接口
-interface RegexRule {
-  id: string;
-  name: string;
-  find: string;
-  replace: string;
-  enabled: boolean;
-}
+onMounted(() => {
+  loadPreset();
+});
 
-const regexRules = ref<RegexRule[]>([
-  { id: 'r1', name: '删除OOC', find: '\\(OOC:.*?\\)', replace: '', enabled: true },
-  { id: 'r2', name: '格式化思考', find: '<think>.*?</think>', replace: '', enabled: true }
-]);
+// 路由参数变化时重新加载
+watch(presetId, (newId) => {
+  if (newId) {
+    loadPreset();
+  }
+});
+
+// =====================
+// Prompt 操作
+// =====================
 
 // 角色标签类型映射
-const roleTagType = (role: string) => {
-  const map: Record<string, 'info' | 'success' | 'warning'> = {
-    system: 'info',
-    user: 'success',
-    assistant: 'warning'
+const roleTagType = (role: Role) => {
+  const map: Record<number, 'info' | 'success' | 'warning'> = {
+    [Role.System]: 'info',
+    [Role.User]: 'success',
+    [Role.Assistant]: 'warning'
   };
   return map[role] || 'info';
 };
 
 // 角色标签文字
-const roleLabel = (role: string) => {
-  const map: Record<string, string> = {
-    system: '系统',
-    user: '用户',
-    assistant: '助手'
+const roleLabel = (role: Role) => {
+  const map: Record<number, string> = {
+    [Role.System]: '系统',
+    [Role.User]: '用户',
+    [Role.Assistant]: '助手'
   };
-  return map[role] || role;
+  return map[role] || '未知';
 };
 
 // 展开/折叠 Prompt
 const togglePrompt = (index: number) => {
-  prompts.value[index].expanded = !prompts.value[index].expanded;
+  const item = prompts.value[index];
+  if (item) {
+    item.expanded = !item.expanded;
+  }
 };
 
 // 添加 Prompt
 const addPrompt = () => {
+  const maxSortOrder = prompts.value.reduce((max, p) => Math.max(max, p.sortOrder), 0);
   prompts.value.push({
-    id: `new-${Date.now()}`,
+    $typeName: 'muse.PromptItem',
+    id: 0,
+    presetId: presetId.value,
+    identifier: `prompt_${Date.now()}`,
     name: '',
-    role: 'system',
     content: '',
-    enabled: true,
+    role: Role.System,
+    isEnabled: true,
+    injectionPosition: InjectionPosition.Relative,
+    injectionDepth: 0,
+    forbidOverrides: false,
+    sortOrder: maxSortOrder + 1,
+    createdAt: 0n,
+    updatedAt: 0n,
     expanded: true
-  });
+  } as PromptItemUI);
 };
 
 // 删除 Prompt
@@ -316,37 +412,306 @@ const removePrompt = (index: number) => {
   prompts.value.splice(index, 1);
 };
 
-// 添加正则
+// =====================
+// 正则规则操作
+// =====================
+
+const showRegexModal = ref(false);
+const editingRegexIndex = ref(-1);
+const regexFormRef = ref<FormInst | null>(null);
+
+const regexFormData = ref({
+  name: '',
+  findPattern: '',
+  replacePattern: '',
+  isEnabled: true,
+  sortOrder: 100,
+  affectFlags: {
+    userInput: true,
+    aiOutput: true,
+    slashCommand: false,
+    worldInfo: false,
+    prompt: false
+  }
+});
+
+const affectFlagsArray = computed({
+  get: () => {
+    const flags: string[] = [];
+    if (regexFormData.value.affectFlags.userInput) flags.push('userInput');
+    if (regexFormData.value.affectFlags.aiOutput) flags.push('aiOutput');
+    if (regexFormData.value.affectFlags.slashCommand) flags.push('slashCommand');
+    if (regexFormData.value.affectFlags.worldInfo) flags.push('worldInfo');
+    if (regexFormData.value.affectFlags.prompt) flags.push('prompt');
+    return flags;
+  },
+  set: (val: string[]) => {
+    regexFormData.value.affectFlags = {
+      userInput: val.includes('userInput'),
+      aiOutput: val.includes('aiOutput'),
+      slashCommand: val.includes('slashCommand'),
+      worldInfo: val.includes('worldInfo'),
+      prompt: val.includes('prompt')
+    };
+  }
+});
+
+const resetRegexForm = () => {
+  regexFormData.value = {
+    name: '',
+    findPattern: '',
+    replacePattern: '',
+    isEnabled: true,
+    sortOrder: 100,
+    affectFlags: {
+      userInput: true,
+      aiOutput: true,
+      slashCommand: false,
+      worldInfo: false,
+      prompt: false
+    }
+  };
+};
+
 const addRegex = () => {
-  regexRules.value.push({
-    id: `regex-${Date.now()}`,
-    name: '新规则',
-    find: '',
-    replace: '',
-    enabled: true
-  });
+  editingRegexIndex.value = -1;
+  resetRegexForm();
+  showRegexModal.value = true;
+};
+
+const editRegex = (index: number) => {
+  editingRegexIndex.value = index;
+  const rule = regexRules.value[index];
+  if (!rule) return;
+  regexFormData.value = {
+    name: rule.name,
+    findPattern: rule.findPattern,
+    replacePattern: rule.replacePattern,
+    isEnabled: rule.isEnabled,
+    sortOrder: rule.sortOrder,
+    affectFlags: {
+      userInput: rule.affectFlags?.userInput ?? true,
+      aiOutput: rule.affectFlags?.aiOutput ?? true,
+      slashCommand: rule.affectFlags?.slashCommand ?? false,
+      worldInfo: rule.affectFlags?.worldInfo ?? false,
+      prompt: rule.affectFlags?.prompt ?? false
+    }
+  };
+  showRegexModal.value = true;
+};
+
+const handleRegexSave = async () => {
+  try {
+    await regexFormRef.value?.validate();
+  } catch {
+    return;
+  }
+
+  // 验证正则表达式
+  try {
+    new RegExp(regexFormData.value.findPattern, 'g');
+  } catch {
+    message.error('正则表达式语法错误');
+    return;
+  }
+
+  const affectFlags: RegexAffectFlags = {
+    $typeName: 'muse.RegexAffectFlags',
+    ...regexFormData.value.affectFlags
+  };
+
+  if (editingRegexIndex.value >= 0) {
+    // 编辑已有规则
+    const existing = regexRules.value[editingRegexIndex.value];
+    regexRules.value[editingRegexIndex.value] = {
+      ...existing,
+      name: regexFormData.value.name,
+      findPattern: regexFormData.value.findPattern,
+      replacePattern: regexFormData.value.replacePattern,
+      isEnabled: regexFormData.value.isEnabled,
+      sortOrder: regexFormData.value.sortOrder,
+      affectFlags
+    } as RegexRule;
+    message.success('规则已更新');
+  } else {
+    // 新增规则
+    regexRules.value.push({
+      $typeName: 'muse.RegexRule',
+      id: 0,
+      presetId: presetId.value,
+      characterId: 0,
+      name: regexFormData.value.name,
+      findPattern: regexFormData.value.findPattern,
+      replacePattern: regexFormData.value.replacePattern,
+      isEnabled: regexFormData.value.isEnabled,
+      runOnEdit: false,
+      substituteRegex: true,
+      minDepth: 0,
+      maxDepth: 0,
+      affectFlags,
+      sortOrder: regexFormData.value.sortOrder,
+      createdAt: 0n,
+      updatedAt: 0n
+    } as RegexRule);
+    message.success('规则已添加');
+  }
+
+  showRegexModal.value = false;
 };
 
 // 删除正则
 const removeRegex = (index: number) => {
-  regexRules.value.splice(index, 1);
+  const rule = regexRules.value[index];
+  if (!rule) return;
+  dialog.warning({
+    title: '确认删除',
+    content: `确定要删除规则"${rule.name}"吗？`,
+    positiveText: '删除',
+    negativeText: '取消',
+    onPositiveClick: () => {
+      regexRules.value.splice(index, 1);
+      message.success('规则已删除');
+    }
+  });
+};
+
+// =====================
+// 保存操作
+// =====================
+
+const handleSave = async () => {
+  if (!presetName.value.trim()) {
+    message.warning('请输入预设名称');
+    return;
+  }
+
+  saving.value = true;
+  try {
+    // 1. 更新预设基础信息
+    const updatedPreset = await presetStore.updatePreset(presetId.value, {
+      name: presetName.value,
+      temperature: 0,
+      topP: 0,
+      topK: 0,
+      maxTokens: 0,
+      frequencyPenalty: 0,
+      presencePenalty: 0,
+      version: presetVersion.value
+    });
+
+    if (updatedPreset) {
+      presetVersion.value = updatedPreset.version;
+    }
+
+    // 2. 更新prompt项排序
+    const orderedIds = prompts.value.filter(p => p.id > 0).map(p => p.id);
+    if (orderedIds.length > 0) {
+      await presetStore.updatePromptItemsOrder(presetId.value, orderedIds);
+    }
+
+    // 3. 处理prompt项（新增/更新/删除）
+    const existingItems = await presetStore.fetchPromptItems(presetId.value);
+    const existingIds = new Set(existingItems.map(item => item.id));
+    const currentIds = new Set(prompts.value.filter(p => p.id > 0).map(p => p.id));
+
+    // 删除已被移除的项
+    for (const existingId of existingIds) {
+      if (!currentIds.has(existingId)) {
+        await presetStore.deletePromptItem(existingId);
+      }
+    }
+
+    // 新增和更新
+    for (let i = 0; i < prompts.value.length; i++) {
+      const prompt = prompts.value[i];
+      if (!prompt) continue;
+      const promptData = {
+        identifier: prompt.identifier || `prompt_${i}`,
+        name: prompt.name,
+        content: prompt.content,
+        role: prompt.role,
+        isEnabled: prompt.isEnabled,
+        injectionPosition: prompt.injectionPosition,
+        injectionDepth: prompt.injectionDepth,
+        forbidOverrides: prompt.forbidOverrides,
+        sortOrder: i
+      };
+
+      if (prompt.id > 0) {
+        // 更新已有项
+        await presetStore.updatePromptItem(prompt.id, promptData);
+      } else {
+        // 新增项
+        const newItem = await presetStore.addPromptItem(presetId.value, promptData);
+        if (newItem) {
+          prompts.value[i] = { ...prompt, ...newItem, expanded: prompt.expanded ?? false };
+        }
+      }
+    }
+
+    message.success('预设保存成功');
+  } catch {
+    message.error('保存失败，请重试');
+  } finally {
+    saving.value = false;
+  }
+};
+
+// 另存为
+const handleSaveAs = () => {
+  const newName = ref(presetName.value + ' (副本)');
+  dialog.create({
+    title: '另存为新预设',
+    content: () =>
+      h(NInput, {
+        value: newName.value,
+        'onUpdate:value': (v: string) => { newName.value = v; },
+        placeholder: '输入新预设名称'
+      }),
+    positiveText: '确定',
+    negativeText: '取消',
+    onPositiveClick: async () => {
+      if (!newName.value.trim()) {
+        message.warning('请输入预设名称');
+        return false;
+      }
+      try {
+        const newPreset = await presetStore.createPreset({
+          name: newName.value,
+          temperature: 0,
+          topP: 0,
+          topK: 0,
+          maxTokens: 0,
+          frequencyPenalty: 0,
+          presencePenalty: 0,
+          promptItems: prompts.value.map((p, i) => ({
+            identifier: p.identifier || `prompt_${i}`,
+            name: p.name,
+            content: p.content,
+            role: p.role,
+            isEnabled: p.isEnabled,
+            injectionPosition: p.injectionPosition,
+            injectionDepth: p.injectionDepth,
+            forbidOverrides: p.forbidOverrides,
+            sortOrder: i
+          }))
+        });
+
+        if (newPreset) {
+          message.success('预设已另存为: ' + newName.value);
+          router.push(`/preset/${newPreset.id}`);
+        }
+      } catch {
+        message.error('另存为失败');
+        return false;
+      }
+    }
+  });
 };
 
 // 返回对话
 const backToChat = () => {
   router.push('/');
-};
-
-// 保存
-const handleSave = () => {
-  // TODO: 调用API保存预设
-  console.log('保存预设:', presetId.value, presetName.value);
-};
-
-// 另存为
-const handleSaveAs = () => {
-  // TODO: 弹出对话框输入新名称，复制并保存
-  console.log('另存为预设');
 };
 </script>
 
@@ -524,6 +889,12 @@ const handleSaveAs = () => {
   line-height: 1.6;
 }
 
+/* 拖拽幽灵样式 */
+.prompt-ghost {
+  opacity: .5;
+  background: var(--color-primary-light, var(--bg-hover));
+}
+
 /* 添加 Prompt 按钮 */
 .add-prompt-btn {
   margin-bottom: 8px;
@@ -587,6 +958,15 @@ const handleSaveAs = () => {
 
 .add-regex-btn {
   margin-bottom: 16px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
 }
 
 /* 响应式 */

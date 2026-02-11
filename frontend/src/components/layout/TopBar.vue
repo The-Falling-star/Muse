@@ -45,11 +45,9 @@
           </n-icon>
         </template>
         <span class="top-bar__model-name">{{ activeModelName }}</span>
-        <template #icon-placement>
-          <n-icon size="14" class="top-bar__model-arrow">
-            <ChevronDownOutline />
-          </n-icon>
-        </template>
+        <n-icon size="14" class="top-bar__model-arrow">
+          <ChevronDownOutline />
+        </n-icon>
       </n-button>
     </div>
 
@@ -154,7 +152,7 @@ const activeModelName = computed(() => {
   if (!config) {
     return '选择模型';
   }
-  return config.modelName || config.name || '选择模型';
+  return config.model || config.name || '选择模型';
 });
 
 // 点击Logo回到对话
@@ -222,8 +220,9 @@ const handleUserMenu = (key: string) => {
   background: var(--bg-secondary);
   border-bottom: 1px solid var(--border-color);
   z-index: 100;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
   flex-shrink: 0;
+  background-image: var(--gradient-surface);
 }
 
 .top-bar--mobile {
@@ -256,21 +255,26 @@ const handleUserMenu = (key: string) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-primary);
+  background: var(--gradient-primary);
   border-radius: 8px;
   font-size: 18px;
   font-weight: 700;
   color: #fff;
+  box-shadow: var(--glow-primary-sm);
+  transition: box-shadow var(--transition-fast);
 }
 
-[data-theme="light"] .top-bar__logo-icon {
-  color: #fff;
+.top-bar__logo:hover .top-bar__logo-icon {
+  box-shadow: var(--glow-primary);
 }
 
 .top-bar__logo-text {
   font-size: 18px;
   font-weight: 600;
-  color: var(--text-primary);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   letter-spacing: .5px;
 }
 
@@ -306,16 +310,18 @@ const handleUserMenu = (key: string) => {
   gap: 6px;
   padding: 6px 16px;
   border-radius: 20px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-light);
   font-size: 14px;
   color: var(--text-primary);
   max-width: 280px;
   transition: all var(--transition-fast);
+  background: var(--gradient-glow);
 }
 
 .top-bar__model-selector:hover {
   border-color: var(--color-primary);
   background: var(--bg-hover);
+  box-shadow: var(--glow-primary-sm);
 }
 
 .top-bar__model-name {
@@ -349,6 +355,7 @@ const handleUserMenu = (key: string) => {
 
 .top-bar__icon-btn--active {
   color: var(--color-primary);
+  text-shadow: 0 0 10px rgba(77, 168, 255, .4);
 }
 
 /* 移动端适配 */

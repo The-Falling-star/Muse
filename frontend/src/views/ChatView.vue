@@ -130,7 +130,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch, nextTick } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import {
   NAvatar,
   NButton,
@@ -171,7 +171,6 @@ interface LocalMessage {
 }
 
 const route = useRoute();
-const router = useRouter();
 const messageApi = useMessage();
 const dialog = useDialog();
 const chatStore = useChatStore();
@@ -180,7 +179,6 @@ const userStore = useUserStore();
 // 响应式状态
 const inputMessage = ref('');
 const virtualListRef = ref<VirtualListInst | null>(null);
-const uploadRef = ref<InstanceType<typeof NUpload> | null>(null);
 const loading = ref(false);
 const showScrollToBottom = ref(false);
 
@@ -192,8 +190,7 @@ const quickPrompts = [
   { text: '写一段代码片段', icon: CodeSlashOutline }
 ];
 
-// 从Store获取数据
-const activeSessionId = computed(() => chatStore.activeSessionId);
+// 从 Store 获取数据
 const isTyping = computed(() => chatStore.isStreaming);
 
 // 当前模型名称
@@ -220,10 +217,10 @@ const convertToLocalMessage = (msg: any): LocalMessage => {
     3: 'assistant'
   };
   return {
-    id: msg.id.toString(),
+    id: msg.id,
     role: roleMap[msg.role] || 'assistant',
     swipes: msg.swipes.map((s: any) => ({
-      id: s.id.toString(),
+      id: s.id,
       content: s.content,
       timestamp: Number(s.createdAt)
     })),
@@ -572,17 +569,32 @@ const handlePersonaChange = async (persona: { id: number; name: string; avatar: 
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-secondary);
+  background: var(--gradient-glow);
+  border: 1px solid var(--border-light);
   border-radius: 24px;
   margin-bottom: 20px;
+  box-shadow: var(--glow-primary);
+  animation: logo-breathe 4s ease-in-out infinite;
+}
+
+@keyframes logo-breathe {
+  0%, 100% {
+    box-shadow: var(--glow-primary-sm);
+  }
+  50% {
+    box-shadow: var(--glow-primary);
+  }
 }
 
 .welcome-title {
   font-size: 32px;
   font-weight: 600;
-  color: var(--text-primary);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   margin: 0 0 8px;
-  letter-spacing: -0.5px;
+  letter-spacing: -.5px;
 }
 
 .welcome-subtitle {
@@ -604,18 +616,33 @@ const handlePersonaChange = async (persona: { id: number; name: string; avatar: 
   align-items: center;
   gap: 10px;
   padding: 14px 16px;
-  background: var(--bg-secondary);
+  background: var(--gradient-glow);
   border: 1px solid var(--border-color);
   border-radius: 12px;
   cursor: pointer;
-  transition: all 200ms ease;
+  transition: all 250ms ease;
   text-align: left;
+  position: relative;
+  overflow: hidden;
+}
+
+.quick-prompt-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-primary);
+  opacity: 0;
+  transition: opacity 250ms ease;
 }
 
 .quick-prompt-card:hover {
-  background: var(--bg-hover);
   border-color: var(--color-primary);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--glow-primary-sm);
+  transform: translateY(-1px);
+}
+
+.quick-prompt-card:hover::before {
+  opacity: .06;
 }
 
 .prompt-icon {
@@ -690,9 +717,10 @@ const handlePersonaChange = async (persona: { id: number; name: string; avatar: 
 .typing-dots span {
   width: 8px;
   height: 8px;
-  background: var(--text-tertiary);
+  background: var(--color-primary);
   border-radius: 50%;
   animation: typing-bounce 1.4s ease-in-out infinite;
+  box-shadow: 0 0 6px rgba(77, 168, 255, .4);
 }
 
 .typing-dots span:nth-child(2) {
@@ -720,7 +748,8 @@ const handlePersonaChange = async (persona: { id: number; name: string; avatar: 
   bottom: 16px;
   right: 24px;
   z-index: 10;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--glow-primary-sm);
+  border: 1px solid var(--border-light);
 }
 
 /* ==================== 输入区域 ==================== */

@@ -1,5 +1,7 @@
 <template>
   <div class="worldinfo-editor-view">
+    <n-spin :show="pageLoading" description="加载中..." style="width: 100%; height: 100%;">
+
     <!-- 编辑器顶部栏 -->
     <div class="editor-top-bar">
       <n-button quaternary @click="backToChat">
@@ -10,8 +12,8 @@
       </n-button>
       <span class="editor-title">编辑世界书: {{ worldInfoName }}</span>
       <div class="editor-actions">
-        <n-button size="small" @click="handleExport">导出</n-button>
-        <n-button type="primary" size="small" @click="handleSave">保存</n-button>
+        <n-button size="small" :disabled="saving" @click="handleExport">导出</n-button>
+        <n-button type="primary" size="small" :loading="saving" @click="handleSave">保存</n-button>
       </div>
     </div>
 
@@ -22,6 +24,24 @@
         <div class="form-section">
           <label class="form-label">世界书名称</label>
           <n-input v-model:value="worldInfoName" placeholder="输入世界书名称" />
+        </div>
+
+        <!-- 世界书描述 -->
+        <div class="form-section">
+          <label class="form-label">描述 <span class="optional">(可选)</span></label>
+          <n-input
+            v-model:value="worldInfoDescription"
+            type="textarea"
+            placeholder="输入世界书描述..."
+            :autosize="{ minRows: 2, maxRows: 4 }"
+          />
+        </div>
+
+        <!-- 全局开关 -->
+        <div class="form-section form-section-inline">
+          <label class="form-label">全局世界书</label>
+          <n-switch v-model:value="worldInfoIsGlobal" />
+          <span class="form-hint">全局世界书对所有角色生效</span>
         </div>
 
         <!-- 搜索 + 添加词条 -->
@@ -53,44 +73,46 @@
         <div class="entries-list">
           <div
             v-for="(entry, index) in filteredEntries"
-            :key="entry.id"
+            :key="entry.id || index"
             class="entry-card"
-            :class="{ expanded: entry.expanded }"
+            :class="{ expanded: expandedIds.has(entry.id || -index - 1) }"
           >
             <!-- 词条头部 -->
-            <div class="entry-header" @click="toggleEntry(entry.id)">
+            <div class="entry-header" @click="toggleEntry(entry.id || -index - 1)">
               <div class="entry-header-left">
                 <n-icon class="drag-handle" :size="18" @click.stop>
                   <ReorderTwoOutline />
                 </n-icon>
                 <n-checkbox
-                  :checked="entry.enabled"
-                  @update:checked="(val: boolean) => entry.enabled = val"
+                  :checked="entry.isEnabled"
+                  @update:checked="(val: boolean) => entry.isEnabled = val"
                   @click.stop
                 />
-                <span class="entry-name">{{ entry.name || `词条 #${index + 1}` }}</span>
+                <span class="entry-name">{{ entryDisplayName(entry, index) }}</span>
               </div>
               <div class="entry-header-right">
-                <div v-if="!entry.expanded" class="entry-keywords-preview">
+                <div v-if="!expandedIds.has(entry.id || -index - 1)" class="entry-keywords-preview">
                   <n-tag
-                    v-for="kw in entry.keywords.slice(0, 3)"
+                    v-for="kw in parseKeysList(entry.keysList).slice(0, 3)"
                     :key="kw"
                     size="tiny"
                     :bordered="false"
                   >
                     {{ kw }}
                   </n-tag>
-                  <span v-if="entry.keywords.length > 3" class="more-tag">+{{ entry.keywords.length - 3 }}</span>
+                  <span v-if="parseKeysList(entry.keysList).length > 3" class="more-tag">
+                    +{{ parseKeysList(entry.keysList).length - 3 }}
+                  </span>
                 </div>
-                <n-button quaternary circle size="tiny" @click.stop="toggleEntry(entry.id)">
+                <n-button quaternary circle size="tiny" @click.stop="toggleEntry(entry.id || -index - 1)">
                   <template #icon>
                     <n-icon>
-                      <ChevronDownOutline v-if="!entry.expanded" />
+                      <ChevronDownOutline v-if="!expandedIds.has(entry.id || -index - 1)" />
                       <ChevronUpOutline v-else />
                     </n-icon>
                   </template>
                 </n-button>
-                <n-button quaternary circle size="tiny" @click.stop="removeEntry(entry.id)">
+                <n-button quaternary circle size="tiny" @click.stop="removeEntry(index)">
                   <template #icon>
                     <n-icon :size="16"><CloseOutline /></n-icon>
                   </template>
@@ -99,69 +121,81 @@
             </div>
 
             <!-- 词条展开内容 -->
-            <div v-if="entry.expanded" class="entry-body">
-              <!-- 词条名称 -->
+            <div v-if="expandedIds.has(entry.id || -index - 1)" class="entry-body">
+              <!-- 词条备注 -->
               <div class="form-row">
                 <div class="form-field full">
-                  <label class="field-label">词条名称</label>
-                  <n-input v-model:value="entry.name" placeholder="输入词条名称" size="small" />
+                  <label class="field-label">备注名称</label>
+                  <n-input v-model:value="entry.comment" placeholder="输入备注名称（仅管理用，不会注入）" size="small" />
                 </div>
               </div>
 
               <!-- 关键词 -->
               <div class="form-row">
                 <div class="form-field full">
-                  <label class="field-label">关键词</label>
-                  <n-dynamic-tags v-model:value="entry.keywords" />
+                  <label class="field-label">关键词 (逗号分隔)</label>
+                  <n-input
+                    :value="entry.keysList"
+                    @update:value="(val: string) => entry.keysList = val"
+                    placeholder="输入关键词，用逗号分隔"
+                    size="small"
+                  />
                 </div>
               </div>
 
               <!-- 辅助关键词 -->
               <div class="form-row">
                 <div class="form-field full">
-                  <label class="field-label">辅助关键词 <span class="optional">(可选)</span></label>
-                  <n-dynamic-tags v-model:value="entry.secondaryKeywords" />
-                </div>
-              </div>
-
-              <!-- 触发方式 / 插入位置 -->
-              <div class="form-row two-col">
-                <div class="form-field">
-                  <label class="field-label">触发方式</label>
-                  <n-select
-                    v-model:value="entry.triggerMode"
-                    :options="triggerModeOptions"
+                  <label class="field-label">辅助关键词 <span class="optional">(可选，逗号分隔)</span></label>
+                  <n-input
+                    :value="entry.secondaryKeys"
+                    @update:value="(val: string) => entry.secondaryKeys = val"
+                    placeholder="输入辅助关键词，用逗号分隔"
                     size="small"
                   />
                 </div>
+              </div>
+
+              <!-- 插入位置 / 优先级 -->
+              <div class="form-row two-col">
                 <div class="form-field">
                   <label class="field-label">插入位置</label>
                   <n-select
-                    v-model:value="entry.insertPosition"
-                    :options="insertPositionOptions"
+                    v-model:value="entry.position"
+                    :options="positionOptions"
+                    size="small"
+                  />
+                </div>
+                <div class="form-field">
+                  <label class="field-label">插入优先级</label>
+                  <n-input-number
+                    v-model:value="entry.insertionOrder"
+                    :min="0"
+                    :max="9999"
                     size="small"
                   />
                 </div>
               </div>
 
-              <!-- 优先级 / 状态 -->
-              <div class="form-row two-col">
+              <!-- 深度 / 常驻 / 选择性匹配 -->
+              <div class="form-row three-col">
                 <div class="form-field">
-                  <label class="field-label">优先级</label>
+                  <label class="field-label">深度</label>
                   <n-input-number
-                    v-model:value="entry.priority"
+                    v-model:value="entry.depth"
                     :min="0"
-                    :max="1000"
+                    :max="100"
                     size="small"
+                    :disabled="entry.position !== EntryPosition.AtDepth"
                   />
                 </div>
                 <div class="form-field">
-                  <label class="field-label">状态</label>
-                  <n-select
-                    v-model:value="entry.status"
-                    :options="statusOptions"
-                    size="small"
-                  />
+                  <label class="field-label">常驻</label>
+                  <n-switch v-model:value="entry.constant" />
+                </div>
+                <div class="form-field">
+                  <label class="field-label">选择性匹配</label>
+                  <n-switch v-model:value="entry.selective" />
                 </div>
               </div>
 
@@ -211,50 +245,15 @@
           </template>
           添加词条
         </n-button>
-
-        <!-- 全局设置 -->
-        <div class="section-divider">
-          <span>全局设置</span>
-        </div>
-
-        <div class="global-settings">
-          <div class="form-row two-col">
-            <div class="form-field">
-              <label class="field-label">递归扫描</label>
-              <n-switch v-model:value="globalSettings.recursiveScan" />
-            </div>
-            <div class="form-field">
-              <label class="field-label">扫描深度</label>
-              <n-input-number
-                v-model:value="globalSettings.scanDepth"
-                :min="1"
-                :max="10"
-                size="small"
-                :disabled="!globalSettings.recursiveScan"
-              />
-            </div>
-          </div>
-          <div class="form-row two-col">
-            <div class="form-field">
-              <label class="field-label">Token 预算</label>
-              <n-input-number
-                v-model:value="globalSettings.tokenBudget"
-                :min="0"
-                :max="65536"
-                :step="256"
-                size="small"
-              />
-            </div>
-            <div class="form-field" />
-          </div>
-        </div>
       </div>
     </div>
+
+    </n-spin>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, watch, reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import {
   NButton,
@@ -263,10 +262,12 @@ import {
   NInputNumber,
   NSelect,
   NCheckbox,
-  NDynamicTags,
   NTag,
   NSwitch,
-  NEmpty
+  NEmpty,
+  NSpin,
+  useMessage,
+  useDialog
 } from 'naive-ui';
 import {
   ArrowBackOutline,
@@ -277,104 +278,91 @@ import {
   ChevronUpOutline,
   CloseOutline
 } from '@vicons/ionicons5';
+import { worldInfoClient } from '@/api/client';
+import { useWorldInfoStore } from '@/stores/worldInfo';
+import { EntryPosition } from '@/gen/muse/muse_pb';
+import type { WorldInfoEntry } from '@/gen/muse/muse_pb';
 
 const route = useRoute();
 const router = useRouter();
+const message = useMessage();
+const dialog = useDialog();
+const worldInfoStore = useWorldInfoStore();
 
-// 世界书名称
-const worldInfoName = ref(route.params.id as string || '未命名世界书');
+const worldInfoId = computed(() => Number(route.params.id));
+const pageLoading = ref(true);
+const saving = ref(false);
+
+// 世界书基础信息
+const worldInfoName = ref('');
+const worldInfoDescription = ref('');
+const worldInfoIsGlobal = ref(false);
 
 // 搜索关键词
 const searchKeyword = ref('');
 
-// 词条数据结构
-interface WorldInfoEntry {
-  id: string;
-  name: string;
-  keywords: string[];
-  secondaryKeywords: string[];
-  triggerMode: string;
-  insertPosition: string;
-  priority: number;
-  status: string;
-  content: string;
-  enabled: boolean;
-  expanded: boolean;
-}
+// 展开状态管理（使用 Set 追踪展开的条目ID）
+const expandedIds = reactive(new Set<number>());
 
-// 词条列表（TODO: 后续对接真实 store）
-const entries = ref<WorldInfoEntry[]>([
-  {
-    id: '1',
-    name: '角色背景',
-    keywords: ['background', '背景', '人物设定'],
-    secondaryKeywords: [],
-    triggerMode: 'keyword',
-    insertPosition: 'after_char_desc',
-    priority: 100,
-    status: 'enabled',
-    content: '{{char}}的背景故事:\n{{char}}出生于一个小镇...',
-    enabled: true,
-    expanded: true
-  },
-  {
-    id: '2',
-    name: '世界地理',
-    keywords: ['geography', '地理', '地图'],
-    secondaryKeywords: ['位置', '城市'],
-    triggerMode: 'keyword',
-    insertPosition: 'before_system',
-    priority: 80,
-    status: 'enabled',
-    content: '世界地理设定...',
-    enabled: true,
-    expanded: false
-  },
-  {
-    id: '3',
-    name: '魔法体系',
-    keywords: ['magic', '魔法', '技能'],
-    secondaryKeywords: [],
-    triggerMode: 'keyword',
-    insertPosition: 'after_char_desc',
-    priority: 60,
-    status: 'enabled',
-    content: '魔法体系说明...',
-    enabled: true,
-    expanded: false
+// 词条列表
+const entries = ref<WorldInfoEntry[]>([]);
+
+// 插入位置选项
+const positionOptions = [
+  { label: '角色描述之前', value: EntryPosition.BeforeChar },
+  { label: '角色描述之后', value: EntryPosition.AfterChar },
+  { label: '示例对话之前', value: EntryPosition.BeforeExample },
+  { label: '示例对话之后', value: EntryPosition.AfterExample },
+  { label: '按深度插入', value: EntryPosition.AtDepth }
+];
+
+// =====================
+// 加载数据
+// =====================
+
+const loadWorldInfo = async () => {
+  pageLoading.value = true;
+  try {
+    // 获取世界书基本信息
+    const resp = await worldInfoClient.getWorldInfo({ id: worldInfoId.value });
+    const worldInfo = resp.worldInfo;
+    if (!worldInfo) {
+      message.error('世界书不存在');
+      router.push('/');
+      return;
+    }
+    worldInfoName.value = worldInfo.name;
+    worldInfoDescription.value = worldInfo.description ?? '';
+    worldInfoIsGlobal.value = worldInfo.isGlobal;
+
+    // 获取条目列表
+    const entriesResp = await worldInfoClient.listWorldInfoEntries({
+      worldInfoId: worldInfoId.value
+    });
+    entries.value = entriesResp.entries || [];
+  } catch {
+    message.error('加载世界书失败');
+  } finally {
+    pageLoading.value = false;
   }
-]);
+};
 
-// 全局设置
-const globalSettings = ref({
-  recursiveScan: true,
-  scanDepth: 2,
-  tokenBudget: 2048
+onMounted(() => {
+  loadWorldInfo();
 });
 
-// 下拉选项
-const triggerModeOptions = [
-  { label: '关键词匹配', value: 'keyword' },
-  { label: '常驻', value: 'constant' },
-  { label: '角色专属', value: 'character_only' },
-  { label: '禁用', value: 'disabled' }
-];
+// 路由参数变化时重新加载
+watch(worldInfoId, (newId) => {
+  if (newId) {
+    expandedIds.clear();
+    loadWorldInfo();
+  }
+});
 
-const insertPositionOptions = [
-  { label: '系统提示前', value: 'before_system' },
-  { label: '系统提示后', value: 'after_system' },
-  { label: '角色描述前', value: 'before_char_desc' },
-  { label: '角色描述后', value: 'after_char_desc' },
-  { label: '对话历史前', value: 'before_chat' },
-  { label: '对话历史后', value: 'after_chat' }
-];
-
-const statusOptions = [
-  { label: '启用', value: 'enabled' },
-  { label: '禁用', value: 'disabled' }
-];
-
+// =====================
 // 搜索过滤
+// =====================
+
 const filteredEntries = computed(() => {
   if (!searchKeyword.value.trim()) {
     return entries.value;
@@ -382,67 +370,216 @@ const filteredEntries = computed(() => {
   const keyword = searchKeyword.value.toLowerCase();
   return entries.value.filter((entry) => {
     return (
-      entry.name.toLowerCase().includes(keyword) ||
-      entry.keywords.some((kw) => kw.toLowerCase().includes(keyword)) ||
+      (entry.comment || '').toLowerCase().includes(keyword) ||
+      entry.keysList.toLowerCase().includes(keyword) ||
       entry.content.toLowerCase().includes(keyword)
     );
   });
 });
 
-// 简单的 Token 估算（每4个字符约1个 token）
+// =====================
+// 辅助方法
+// =====================
+
+// 解析逗号分隔的关键词列表
+const parseKeysList = (keysList: string): string[] => {
+  if (!keysList) return [];
+  return keysList.split(',').map(k => k.trim()).filter(k => k.length > 0);
+};
+
+// 条目显示名
+const entryDisplayName = (entry: WorldInfoEntry, index: number): string => {
+  if (entry.comment) return entry.comment;
+  const keys = parseKeysList(entry.keysList);
+  if (keys.length > 0 && keys[0]) return keys[0];
+  return `词条 #${index + 1}`;
+};
+
+// 简单的 Token 估算
 const estimateTokens = (text: string): number => {
   if (!text) return 0;
   return Math.ceil(text.length / 4);
 };
 
 // 展开/折叠词条
-const toggleEntry = (entryId: string) => {
-  const entry = entries.value.find((e) => e.id === entryId);
-  if (entry) {
-    entry.expanded = !entry.expanded;
+const toggleEntry = (entryKey: number) => {
+  if (expandedIds.has(entryKey)) {
+    expandedIds.delete(entryKey);
+  } else {
+    expandedIds.add(entryKey);
   }
 };
 
-// 添加词条
-let nextId = 100;
+// =====================
+// 条目操作
+// =====================
+
+// 临时ID计数器（用于新增但尚未保存的条目）
+let tempIdCounter = -1;
+
 const addEntry = () => {
-  const newEntry: WorldInfoEntry = {
-    id: String(nextId++),
-    name: '',
-    keywords: [],
-    secondaryKeywords: [],
-    triggerMode: 'keyword',
-    insertPosition: 'after_char_desc',
-    priority: 50,
-    status: 'enabled',
+  const maxSortOrder = entries.value.reduce((max, e) => Math.max(max, e.sortOrder), 0);
+  const tempId = tempIdCounter--;
+  const newEntry = {
+    $typeName: 'muse.WorldInfoEntry',
+    id: 0,
+    worldInfoId: worldInfoId.value,
+    uid: '',
+    keysList: '',
+    secondaryKeys: '',
     content: '',
-    enabled: true,
-    expanded: true
-  };
+    comment: '',
+    isEnabled: true,
+    constant: false,
+    selective: false,
+    insertionOrder: 100,
+    position: EntryPosition.AfterChar,
+    depth: 4,
+    sortOrder: maxSortOrder + 1,
+    createdAt: 0n,
+    updatedAt: 0n,
+    _tempId: tempId
+  } as WorldInfoEntry & { _tempId?: number };
+
   entries.value.push(newEntry);
+  // 自动展开新条目（使用负数索引作为key）
+  expandedIds.add(0);
 };
 
-// 删除词条
-const removeEntry = (entryId: string) => {
-  const idx = entries.value.findIndex((e) => e.id === entryId);
-  if (idx !== -1) {
-    entries.value.splice(idx, 1);
+// 删除条目
+const removeEntry = (index: number) => {
+  const entry = entries.value[index];
+  if (!entry) return;
+
+  const name = entry.comment || parseKeysList(entry.keysList)[0] || `词条 #${index + 1}`;
+  dialog.warning({
+    title: '确认删除',
+    content: `确定要删除词条"${name}"吗？`,
+    positiveText: '删除',
+    negativeText: '取消',
+    onPositiveClick: () => {
+      // 清理展开状态
+      expandedIds.delete(entry.id || -index - 1);
+      entries.value.splice(index, 1);
+      message.success('词条已删除');
+    }
+  });
+};
+
+// =====================
+// 保存操作
+// =====================
+
+const handleSave = async () => {
+  if (!worldInfoName.value.trim()) {
+    message.warning('请输入世界书名称');
+    return;
+  }
+
+  saving.value = true;
+  try {
+    // 1. 更新世界书基础信息
+    const updateResp = await worldInfoClient.updateWorldInfo({
+      id: worldInfoId.value,
+      name: worldInfoName.value,
+      description: worldInfoDescription.value,
+      isGlobal: worldInfoIsGlobal.value
+    });
+    if (updateResp.worldInfo) {
+      worldInfoStore.updateWorldInfoInList(updateResp.worldInfo);
+    }
+
+    // 2. 获取远端现有条目，比较差异
+    const remoteResp = await worldInfoClient.listWorldInfoEntries({
+      worldInfoId: worldInfoId.value
+    });
+    const remoteEntries = remoteResp.entries || [];
+    const remoteIds = new Set(remoteEntries.map(e => e.id));
+    const localIds = new Set(entries.value.filter(e => e.id > 0).map(e => e.id));
+
+    // 3. 删除远端已有但本地已移除的条目
+    for (const remoteId of remoteIds) {
+      if (!localIds.has(remoteId)) {
+        await worldInfoClient.deleteWorldInfoEntry({ id: remoteId });
+      }
+    }
+
+    // 4. 新增和更新条目
+    for (let i = 0; i < entries.value.length; i++) {
+      const entry = entries.value[i];
+      if (!entry) continue;
+      const entryData = {
+        keysList: entry.keysList,
+        secondaryKeys: entry.secondaryKeys,
+        content: entry.content,
+        comment: entry.comment,
+        isEnabled: entry.isEnabled,
+        constant: entry.constant,
+        selective: entry.selective,
+        insertionOrder: entry.insertionOrder,
+        position: entry.position,
+        depth: entry.depth,
+        sortOrder: i
+      };
+
+      if (entry.id > 0) {
+        // 更新已有条目
+        const resp = await worldInfoClient.updateWorldInfoEntry({
+          id: entry.id,
+          ...entryData
+        });
+        if (resp.entry) {
+          entries.value[i] = resp.entry;
+        }
+      } else {
+        // 新增条目
+        const resp = await worldInfoClient.addWorldInfoEntry({
+          worldInfoId: worldInfoId.value,
+          ...entryData
+        });
+        if (resp.entry) {
+          entries.value[i] = resp.entry;
+        }
+      }
+    }
+
+    message.success('世界书保存成功');
+  } catch {
+    message.error('保存失败，请重试');
+  } finally {
+    saving.value = false;
+  }
+};
+
+// 导出
+const handleExport = async () => {
+  try {
+    const resp = await worldInfoClient.exportWorldInfo({ id: worldInfoId.value });
+    if (!resp.fileContent || resp.fileContent.length === 0) {
+      message.warning('导出内容为空');
+      return;
+    }
+
+    // 创建下载
+    const blob = new Blob([new Uint8Array(resp.fileContent)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = resp.fileName || `${worldInfoName.value}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    message.success('世界书已导出');
+  } catch {
+    message.error('导出失败');
   }
 };
 
 // 返回对话
 const backToChat = () => {
   router.push('/');
-};
-
-// 保存
-const handleSave = () => {
-  // TODO: 调用API保存世界书
-};
-
-// 导出
-const handleExport = () => {
-  // TODO: 导出世界书为JSON
 };
 </script>
 
@@ -498,6 +635,17 @@ const handleExport = () => {
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.form-section-inline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.form-hint {
+  font-size: 12px;
+  color: var(--text-tertiary);
 }
 
 .form-label {
@@ -636,6 +784,12 @@ const handleExport = () => {
   flex: 1;
 }
 
+.form-row.three-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+
 .form-field {
   display: flex;
   flex-direction: column;
@@ -673,17 +827,6 @@ const handleExport = () => {
 /* 底部添加按钮 */
 .add-entry-bottom {
   margin-top: 4px;
-}
-
-/* 全局设置 */
-.global-settings {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding: 16px;
-  background: var(--bg-secondary);
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
 }
 
 /* 空状态 */

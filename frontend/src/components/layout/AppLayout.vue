@@ -17,13 +17,16 @@
               <n-drawer
                 v-if="!appStore.isDesktop"
                 v-model:show="appStore.leftSidebarVisible"
-                :width="280"
+                :width="appStore.isMobile ? '80%' : '60%'"
                 placement="left"
                 :trap-focus="false"
                 :block-scroll="true"
-                :native-scrollbar="false"
+                :native-scrollbar="true"
               >
-                <n-drawer-content :body-content-style="{ padding: 0 }">
+                <n-drawer-content
+                  :body-content-style="{ padding: 0, height: '100%' }"
+                  :content-style="{ height: '100%' }"
+                >
                   <LeftSidebar />
                 </n-drawer-content>
               </n-drawer>
@@ -32,9 +35,9 @@
               <main class="main-content">
                 <TopBar />
                 <div class="main-view">
-                  <router-view v-slot="{ Component }">
+                  <router-view v-slot="{ Component, route: viewRoute }">
                     <transition name="fade" mode="out-in">
-                      <component :is="Component" />
+                      <component :is="Component" :key="viewRoute.fullPath" />
                     </transition>
                   </router-view>
                 </div>
@@ -52,13 +55,16 @@
               <n-drawer
                 v-if="!appStore.isDesktop"
                 v-model:show="appStore.rightPanelVisible"
-                :width="appStore.isMobile ? '85%' : 320"
+                :width="appStore.isMobile ? '80%' : '60%'"
                 placement="right"
                 :trap-focus="false"
                 :block-scroll="true"
-                :native-scrollbar="false"
+                :native-scrollbar="true"
               >
-                <n-drawer-content :body-content-style="{ padding: 0 }">
+                <n-drawer-content
+                  :body-content-style="{ padding: 0, height: '100%' }"
+                  :content-style="{ height: '100%' }"
+                >
                   <RightPanel />
                 </n-drawer-content>
               </n-drawer>
@@ -126,8 +132,8 @@ onMounted(() => {
 
 /* ====== 左侧边栏（PC推挤式） ====== */
 .left-sidebar-wrapper {
-  width: 280px;
-  min-width: 280px;
+  width: 300px;
+  min-width: 300px;
   height: 100vh;
   position: sticky;
   top: 0;
@@ -137,6 +143,7 @@ onMounted(() => {
   overflow: hidden;
   transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1),
               min-width 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 1px 0 12px rgba(77, 168, 255, .03);
 }
 
 /* ====== 中间主区域 ====== */
@@ -156,8 +163,8 @@ onMounted(() => {
 
 /* ====== 右侧面板（PC推挤式） ====== */
 .right-panel-wrapper {
-  width: 320px;
-  min-width: 320px;
+  width: 300px;
+  min-width: 300px;
   height: 100vh;
   position: sticky;
   top: 0;
@@ -167,6 +174,7 @@ onMounted(() => {
   overflow: hidden;
   transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1),
               min-width 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: -1px 0 12px rgba(77, 168, 255, .03);
 }
 
 /* ====== 视图切换过渡动画 ====== */

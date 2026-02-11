@@ -17,71 +17,64 @@
     </div>
 
     <!-- 正则列表 -->
-    <div class="list-container">
-      <div
-        v-for="rule in regexRules"
-        :key="rule.id"
-        class="list-item"
-        :class="{ active: isEditing(rule.id) }"
-        @click="openRegexEditor(rule.id)"
-      >
-        <n-checkbox
-          :checked="rule.enabled"
-          @update:checked="(val: boolean) => toggleEnabled(rule.id, val)"
-          @click.stop
-        />
-        <div class="item-info">
-          <div class="item-name">{{ rule.name }}</div>
-          <div class="item-desc">
-            <code class="regex-preview">{{ rule.findPreview }}</code>
-            <span class="arrow">→</span>
-            <span class="replace-preview">{{ rule.replacePreview || '(空)' }}</span>
-          </div>
-        </div>
-        <n-dropdown
-          trigger="click"
-          :options="itemMenuOptions"
-          @select="(key: string) => handleMenuSelect(key, rule.id)"
-          @click.stop
+    <n-spin :show="loading" description="加载中..." style="min-height: 60px;">
+      <div class="list-container">
+        <div
+          v-for="rule in regexRuleStore.sortedRules"
+          :key="rule.id"
+          class="list-item"
+          :class="{ active: isEditing(rule.id) }"
+          @click="openRegexEditor(rule.id)"
         >
-          <n-button quaternary circle size="tiny" @click.stop>
-            <template #icon>
-              <n-icon :size="16"><EllipsisHorizontal /></n-icon>
-            </template>
-          </n-button>
-        </n-dropdown>
-      </div>
+          <n-checkbox
+            :checked="rule.isEnabled"
+            @update:checked="() => toggleEnabled(rule.id)"
+            @click.stop
+          />
+          <div class="item-info">
+            <div class="item-name">{{ rule.name }}</div>
+            <div class="item-desc">
+              <code class="regex-preview">{{ rule.findPattern }}</code>
+              <span class="arrow">→</span>
+              <span class="replace-preview">{{ rule.replacePattern || '(空)' }}</span>
+            </div>
+          </div>
+          <n-dropdown
+            trigger="click"
+            :options="itemMenuOptions"
+            @select="(key: string) => handleMenuSelect(key, rule.id)"
+            @click.stop
+          >
+            <n-button quaternary circle size="tiny" @click.stop>
+              <template #icon>
+                <n-icon :size="16"><EllipsisHorizontal /></n-icon>
+              </template>
+            </n-button>
+          </n-dropdown>
+        </div>
 
-      <!-- 空状态 -->
-      <n-empty v-if="regexRules.length === 0" description="暂无正则规则" size="small" class="empty-state" />
-    </div>
+        <!-- 空状态 -->
+        <n-empty v-if="regexRuleStore.rules.length === 0 && !loading" description="暂无正则规则" size="small" class="empty-state" />
+      </div>
+    </n-spin>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { NButton, NIcon, NCheckbox, NDropdown, NEmpty } from 'naive-ui';
+import { NButton, NIcon, NCheckbox, NDropdown, NEmpty, NSpin, useDialog, useMessage } from 'naive-ui';
 import { CloudUploadOutline, AddOutline, EllipsisHorizontal } from '@vicons/ionicons5';
+import { useRegexRuleStore } from '@/stores/regexRule';
 
 const router = useRouter();
 const route = useRoute();
+const dialog = useDialog();
+const message = useMessage();
+const regexRuleStore = useRegexRuleStore();
+const loading = ref(false);
 
-// TODO: 后续对接真实的正则 store
-interface RegexRuleItem {
-  id: string;
-  name: string;
-  findPreview: string;
-  replacePreview: string;
-  enabled: boolean;
-}
-
-const regexRules = ref<RegexRuleItem[]>([
-  { id: 'ooc', name: '删除OOC标记', findPreview: '/\\(OOC:.*?\\)/g', replacePreview: '', enabled: true },
-  { id: 'think', name: '格式化思考', findPreview: '/<think>.*?/s', replacePreview: '...', enabled: true },
-  { id: 'old', name: '旧规则', findPreview: '/old/', replacePreview: 'new', enabled: false }
-]);
-
+// 菜单选项
 const itemMenuOptions = [
   { label: '复制', key: 'copy' },
   { label: '导出', key: 'export' },
@@ -89,41 +82,164 @@ const itemMenuOptions = [
   { label: '删除', key: 'delete' }
 ];
 
-const isEditing = (ruleId: string): boolean => {
-  return route.name === 'RegexEditor' && route.params.id === ruleId;
+// 加载正则规则列表
+const loadRules = async () => {
+  loading.value = true;
+  try {
+    await regexRuleStore.fetchRules();
+  } catch (e) {
+    console.error('加载正则规则列表失败:', e);
+  } finally {
+    loading.value = false;
+  }
 };
 
-const openRegexEditor = (ruleId: string) => {
+onMounted(() => {
+  loadRules();
+});
+
+// 判断是否正在编辑
+const isEditing = (ruleId: number): boolean => {
+  return route.name === 'RegexEditor' && Number(route.params.id) === ruleId;
+};
+
+// 打开正则编辑器
+const openRegexEditor = (ruleId: number) => {
   router.push(`/regex/${ruleId}`);
 };
 
-const toggleEnabled = (ruleId: string, enabled: boolean) => {
-  const item = regexRules.value.find((r) => r.id === ruleId);
-  if (item) {
-    item.enabled = enabled;
+// 切换启用/禁用
+const toggleEnabled = async (ruleId: number) => {
+  try {
+    await regexRuleStore.toggleRuleEnabled(ruleId);
+  } catch (e) {
+    console.error('切换规则状态失败:', e);
   }
 };
 
+// 导入正则规则
 const handleImport = () => {
-  // TODO: 导入正则规则
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.onchange = async (event: Event) => {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+    try {
+      const buffer = await file.arrayBuffer();
+      await regexRuleStore.importRules(new Uint8Array(buffer), file.name);
+      message.success('导入成功');
+    } catch (e) {
+      console.error('导入正则规则失败:', e);
+    }
+  };
+  input.click();
 };
 
-const handleCreate = () => {
-  // TODO: 创建新规则并跳转编辑
+// 新建规则
+const handleCreate = async () => {
+  try {
+    const defaultFlags = regexRuleStore.createDefaultAffectFlags();
+    const newRule = await regexRuleStore.addRule({
+      presetId: 0,
+      name: '新规则',
+      findPattern: '',
+      replacePattern: '',
+      isEnabled: true,
+      runOnEdit: false,
+      substituteRegex: false,
+      affectFlags: defaultFlags,
+      sortOrder: regexRuleStore.rules.length
+    });
+    if (newRule) {
+      message.success('规则已创建');
+      router.push(`/regex/${newRule.id}`);
+    }
+  } catch (e) {
+    console.error('创建规则失败:', e);
+  }
 };
 
-const handleMenuSelect = (key: string, ruleId: string) => {
+// 菜单操作
+const handleMenuSelect = (key: string, ruleId: number) => {
   switch (key) {
     case 'copy':
-      // TODO: 复制规则
+      handleCopy(ruleId);
       break;
     case 'export':
-      // TODO: 导出规则
+      handleExport();
       break;
     case 'delete':
-      // TODO: 删除规则（需确认）
+      handleDelete(ruleId);
       break;
   }
+};
+
+// 复制规则
+const handleCopy = async (ruleId: number) => {
+  const rule = regexRuleStore.rules.find(r => r.id === ruleId);
+  if (!rule) return;
+  try {
+    const newRule = await regexRuleStore.addRule({
+      presetId: 0,
+      name: `${rule.name} (副本)`,
+      findPattern: rule.findPattern,
+      replacePattern: rule.replacePattern,
+      isEnabled: rule.isEnabled,
+      runOnEdit: rule.runOnEdit,
+      substituteRegex: rule.substituteRegex,
+      minDepth: rule.minDepth,
+      maxDepth: rule.maxDepth,
+      affectFlags: rule.affectFlags,
+      sortOrder: regexRuleStore.rules.length
+    });
+    if (newRule) {
+      message.success('规则已复制');
+    }
+  } catch (e) {
+    console.error('复制规则失败:', e);
+  }
+};
+
+// 导出规则
+const handleExport = async () => {
+  try {
+    const result = await regexRuleStore.exportRules(0);
+    const blob = new Blob([new Uint8Array(result.fileContent)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = result.fileName || 'regex-rules.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    message.success('导出成功');
+  } catch (e) {
+    console.error('导出正则规则失败:', e);
+  }
+};
+
+// 删除规则
+const handleDelete = (ruleId: number) => {
+  const rule = regexRuleStore.rules.find(r => r.id === ruleId);
+  if (!rule) return;
+  dialog.warning({
+    title: '确认删除',
+    content: `确定要删除正则规则「${rule.name}」吗？此操作不可撤销。`,
+    positiveText: '删除',
+    negativeText: '取消',
+    onPositiveClick: async () => {
+      try {
+        await regexRuleStore.deleteRule(ruleId);
+        message.success('规则已删除');
+        // 如果当前正在编辑该规则，跳转回聊天页
+        if (isEditing(ruleId)) {
+          router.push('/');
+        }
+      } catch (e) {
+        console.error('删除规则失败:', e);
+      }
+    }
+  });
 };
 </script>
 

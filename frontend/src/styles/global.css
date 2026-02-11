@@ -1,103 +1,133 @@
-/* Muse 全局样式 - Google AI Studio 风格 */
+/* Muse 全局样式 - 赛博科幻风格 */
 
 /* 导入字体 */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
 
-/* CSS变量 - 暗黑主题 */
+/* CSS变量 - 暗黑主题（赛博科幻风格） */
 :root,
 [data-theme="dark"] {
-  /* 主色调 - Google 蓝 */
-  --color-primary: #8AB4F8;
-  --color-primary-hover: #AECBFA;
-  --color-primary-pressed: #669DF6;
-  --color-secondary: #C58AF9;
-  --color-accent: #8AB4F8;
+  /* 主色调 - 明亮的电光蓝 */
+  --color-primary: #4DA8FF;
+  --color-primary-hover: #6FBCFF;
+  --color-primary-pressed: #2B8CED;
+  --color-secondary: #B47EFF;
+  --color-accent: #4DA8FF;
 
   /* 语义色 */
-  --color-success: #81C995;
-  --color-warning: #FDD663;
-  --color-error: #F28B82;
-  --color-info: #8AB4F8;
+  --color-success: #5EE8A0;
+  --color-warning: #FFD166;
+  --color-error: #FF6B6B;
+  --color-info: #4DA8FF;
 
-  /* 背景色 */
-  --bg-primary: #1E1E1E;
-  --bg-secondary: #252525;
-  --bg-tertiary: #2A2A2A;
-  --bg-card: #2A2A2A;
-  --bg-card-hover: #333333;
-  --bg-modal: #2A2A2A;
-  --bg-overlay: rgba(0, 0, 0, 0.6);
+  /* 背景色 - 深邃太空感 */
+  --bg-primary: #0D1117;
+  --bg-secondary: #161B22;
+  --bg-tertiary: #1C2333;
+  --bg-card: #1C2333;
+  --bg-card-hover: #242D3D;
+  --bg-modal: #1C2333;
+  --bg-overlay: rgba(0, 0, 0, 0.7);
 
-  /* 边框色 */
-  --border-color: #3C3C3C;
-  --border-light: #4A4A4A;
+  /* 边框色 - 微光感 */
+  --border-color: rgba(77, 168, 255, .12);
+  --border-light: rgba(77, 168, 255, .2);
 
   /* 文字色 */
-  --text-primary: #E3E3E3;
-  --text-secondary: #9AA0A6;
-  --text-tertiary: #6B7280;
-  --text-disabled: #4B5563;
+  --text-primary: #E6EDF3;
+  --text-secondary: #8B949E;
+  --text-tertiary: #6E7681;
+  --text-disabled: #484F58;
 
   /* hover/active 背景 */
-  --bg-hover: #333333;
-  --bg-active: #2D3748;
+  --bg-hover: rgba(77, 168, 255, .08);
+  --bg-active: rgba(77, 168, 255, .14);
+
+  /* 渐变 - 科幻感 */
+  --gradient-primary: linear-gradient(135deg, #4DA8FF, #B47EFF);
+  --gradient-secondary: linear-gradient(135deg, #4DA8FF, #5EE8A0);
+  --gradient-glow: linear-gradient(135deg, rgba(77, 168, 255, .15), rgba(180, 126, 255, .15));
+  --gradient-surface: linear-gradient(180deg, rgba(77, 168, 255, .04) 0%, transparent 100%);
+
+  /* 发光效果 */
+  --glow-primary: 0 0 20px rgba(77, 168, 255, .3);
+  --glow-primary-sm: 0 0 10px rgba(77, 168, 255, .2);
+  --glow-secondary: 0 0 20px rgba(180, 126, 255, .25);
+  --glow-accent: 0 0 15px rgba(94, 232, 160, .2);
 
   /* 阴影 */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
-  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, .4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, .5);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, .6);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, .7);
 
   /* 动画 */
-  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-mobile: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: .15s cubic-bezier(.4, 0, .2, 1);
+  --transition-normal: .3s cubic-bezier(.4, 0, .2, 1);
+  --transition-slow: .5s cubic-bezier(.4, 0, .2, 1);
+  --transition-mobile: .25s cubic-bezier(.4, 0, .2, 1);
+
+  /* 侧边栏 */
+  --sidebar-width: 280px;
 }
 
 /* 明亮主题 */
 [data-theme="light"] {
   /* 主色调 - Google 蓝 */
-  --color-primary: #1A73E8;
-  --color-primary-hover: #1967D2;
-  --color-primary-pressed: #185ABC;
+  --color-primary: #2563EB;
+  --color-primary-hover: #1D4ED8;
+  --color-primary-pressed: #1E40AF;
   --color-secondary: #7C3AED;
-  --color-accent: #1A73E8;
+  --color-accent: #2563EB;
 
   /* 语义色 */
-  --color-success: #1E8E3E;
-  --color-warning: #F9AB00;
-  --color-error: #D93025;
-  --color-info: #1A73E8;
+  --color-success: #16A34A;
+  --color-warning: #F59E0B;
+  --color-error: #DC2626;
+  --color-info: #2563EB;
 
   /* 背景色 */
   --bg-primary: #FFFFFF;
-  --bg-secondary: #F8F9FA;
-  --bg-tertiary: #F1F3F4;
+  --bg-secondary: #F8FAFC;
+  --bg-tertiary: #F1F5F9;
   --bg-card: #FFFFFF;
-  --bg-card-hover: #F1F3F4;
+  --bg-card-hover: #F1F5F9;
   --bg-modal: #FFFFFF;
-  --bg-overlay: rgba(0, 0, 0, 0.4);
+  --bg-overlay: rgba(0, 0, 0, .4);
 
   /* 边框色 */
-  --border-color: #E0E0E0;
-  --border-light: #DADCE0;
+  --border-color: #E2E8F0;
+  --border-light: #CBD5E1;
 
   /* 文字色 */
-  --text-primary: #1F1F1F;
-  --text-secondary: #5F6368;
-  --text-tertiary: #80868B;
-  --text-disabled: #BDC1C6;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-tertiary: #94A3B8;
+  --text-disabled: #CBD5E1;
 
   /* hover/active 背景 */
-  --bg-hover: #F1F3F4;
-  --bg-active: #E8F0FE;
+  --bg-hover: #F1F5F9;
+  --bg-active: #EFF6FF;
+
+  /* 渐变 */
+  --gradient-primary: linear-gradient(135deg, #2563EB, #7C3AED);
+  --gradient-secondary: linear-gradient(135deg, #2563EB, #16A34A);
+  --gradient-glow: linear-gradient(135deg, rgba(37, 99, 235, .06), rgba(124, 58, 237, .06));
+  --gradient-surface: linear-gradient(180deg, rgba(37, 99, 235, .02) 0%, transparent 100%);
+
+  /* 发光效果（明亮主题下更微妙） */
+  --glow-primary: 0 0 20px rgba(37, 99, 235, .15);
+  --glow-primary-sm: 0 0 10px rgba(37, 99, 235, .1);
+  --glow-secondary: 0 0 20px rgba(124, 58, 237, .12);
+  --glow-accent: 0 0 15px rgba(22, 163, 74, .1);
 
   /* 阴影 */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
-  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.15);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, .06);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, .08);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, .1);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, .12);
+
+  /* 侧边栏 */
+  --sidebar-width: 280px;
 }
 
 /* ==================== 全局重置 ==================== */
@@ -136,8 +166,8 @@ body {
 /* ==================== 滚动条 ==================== */
 
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -184,6 +214,113 @@ button {
   font-family: inherit;
   border: none;
   background: none;
+}
+
+/* ==================== 科幻视觉效果 ==================== */
+
+/* 流光边框 */
+.glow-border {
+  position: relative;
+}
+
+.glow-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--gradient-primary);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: xor;
+  -webkit-mask-composite: xor;
+  opacity: .4;
+  pointer-events: none;
+  transition: opacity var(--transition-fast);
+}
+
+.glow-border:hover::before {
+  opacity: .8;
+}
+
+/* 科幻感卡片 */
+.sci-fi-card {
+  background: var(--gradient-glow);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+  transition: all var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.sci-fi-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(77, 168, 255, .04),
+    transparent
+  );
+  transition: left .6s ease;
+  pointer-events: none;
+}
+
+.sci-fi-card:hover {
+  border-color: var(--border-light);
+  box-shadow: var(--glow-primary-sm);
+}
+
+.sci-fi-card:hover::after {
+  left: 100%;
+}
+
+/* 呼吸灯动画 */
+@keyframes glow-pulse {
+  0%, 100% {
+    opacity: .5;
+    box-shadow: 0 0 8px rgba(77, 168, 255, .15);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 20px rgba(77, 168, 255, .35);
+  }
+}
+
+/* 流光扫描动画 */
+@keyframes scan-line {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+/* 流光文字 */
+.gradient-text {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* 网格背景 */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(77, 168, 255, .04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(77, 168, 255, .04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+[data-theme="light"] .grid-bg {
+  background-image:
+    linear-gradient(rgba(37, 99, 235, .02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37, 99, 235, .02) 1px, transparent 1px);
 }
 
 /* ==================== 流式输出效果 ==================== */

@@ -16,8 +16,8 @@
           </template>
           测试
         </n-button>
-        <n-button size="small" @click="handleSaveAs">另存为</n-button>
-        <n-button type="primary" size="small" :loading="saving" @click="handleSave">
+        <n-button size="small" :disabled="saving" @click="handleSaveAs">另存为</n-button>
+        <n-button type="primary" size="small" :loading="saving" :disabled="pageLoading" @click="handleSave">
           <template #icon>
             <n-icon><SaveOutline /></n-icon>
           </template>
@@ -27,6 +27,7 @@
     </div>
 
     <!-- 编辑器内容 -->
+    <n-spin :show="pageLoading" description="加载中..." style="flex: 1; overflow: hidden;">
     <div class="editor-scroll-area">
       <div class="editor-content">
         <!-- 基本信息 -->
@@ -270,11 +271,12 @@
         </section>
       </div>
     </div>
+    </n-spin>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { h, ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import {
   NButton,
@@ -283,31 +285,40 @@ import {
   NInputNumber,
   NSwitch,
   NCheckbox,
-  NSelect
+  NSelect,
+  NSpin,
+  useMessage,
+  useDialog
 } from 'naive-ui';
 import {
   ArrowBackOutline,
   SaveOutline,
   FlaskOutline
 } from '@vicons/ionicons5';
+import { useRegexRuleStore } from '@/stores/regexRule';
+import type { RegexRule } from '@/gen/muse/muse_pb';
 
 const route = useRoute();
 const router = useRouter();
+const message = useMessage();
+const dialog = useDialog();
+const regexRuleStore = useRegexRuleStore();
 
 // ====== 路由参数 ======
-const regexId = computed(() => route.params.id as string);
+const regexId = computed(() => Number(route.params.id));
+const pageLoading = ref(true);
 
 // ====== 基本信息 ======
-const ruleName = ref('删除OOC标记');
+const ruleName = ref('');
 const ruleEnabled = ref(true);
 
 // ====== 匹配规则 ======
-const findPattern = ref('\\(OOC:.*?\\)');
+const findPattern = ref('');
 const replacePattern = ref('');
 
 // ====== 正则标志 ======
 const flagG = ref(true);
-const flagI = ref(true);
+const flagI = ref(false);
 const flagM = ref(false);
 const flagS = ref(false);
 const flagU = ref(false);
@@ -319,6 +330,9 @@ const scopeSystemPrompt = ref(false);
 const runTiming = ref('after');
 const minTarget = ref<number | null>(null);
 const maxTarget = ref<number | null>(null);
+
+// 原始规则数据（用于判断是否有变更）
+let originalRule: RegexRule | null = null;
 
 const runTimingOptions = [
   { label: '每次生成后', value: 'after' },
@@ -430,18 +444,107 @@ const onPatternChange = () => {
 };
 
 const handleSave = async () => {
+  if (!ruleName.value.trim()) {
+    message.warning('请输入规则名称');
+    return;
+  }
+  if (!findPattern.value.trim()) {
+    message.warning('请输入查找模式');
+    return;
+  }
+
+  // 验证正则表达式
+  try {
+    new RegExp(findPattern.value, flagsString.value);
+  } catch {
+    message.error('正则表达式语法错误，请检查查找模式');
+    return;
+  }
+
   saving.value = true;
   try {
-    // TODO: 调用API保存正则规则
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    const affectFlags = {
+      $typeName: 'muse.RegexAffectFlags' as const,
+      aiOutput: scopeAiOutput.value,
+      userInput: scopeUserInput.value,
+      prompt: scopeSystemPrompt.value,
+      slashCommand: false,
+      worldInfo: false
+    };
+
+    await regexRuleStore.updateRule(regexId.value, {
+      name: ruleName.value,
+      findPattern: findPattern.value,
+      replacePattern: replacePattern.value,
+      isEnabled: ruleEnabled.value,
+      runOnEdit: runTiming.value === 'after',
+      substituteRegex: true,
+      minDepth: minTarget.value ?? 0,
+      maxDepth: maxTarget.value ?? 0,
+      affectFlags,
+      sortOrder: originalRule?.sortOrder ?? 0
+    });
+
     isDirty.value = false;
+    message.success('规则保存成功');
+  } catch {
+    message.error('保存失败，请重试');
   } finally {
     saving.value = false;
   }
 };
 
 const handleSaveAs = () => {
-  // TODO: 弹出对话框输入新名称，复制为新规则
+  const newName = ref(ruleName.value + ' (副本)');
+  dialog.create({
+    title: '另存为新规则',
+    content: () =>
+      h(NInput, {
+        value: newName.value,
+        'onUpdate:value': (v: string) => { newName.value = v; },
+        placeholder: '输入新规则名称'
+      }),
+    positiveText: '确定',
+    negativeText: '取消',
+    onPositiveClick: async () => {
+      if (!newName.value.trim()) {
+        message.warning('请输入规则名称');
+        return false;
+      }
+      try {
+        const affectFlags = {
+          $typeName: 'muse.RegexAffectFlags' as const,
+          aiOutput: scopeAiOutput.value,
+          userInput: scopeUserInput.value,
+          prompt: scopeSystemPrompt.value,
+          slashCommand: false,
+          worldInfo: false
+        };
+
+        const newRule = await regexRuleStore.addRule({
+          presetId: originalRule?.presetId ?? 0,
+          name: newName.value,
+          findPattern: findPattern.value,
+          replacePattern: replacePattern.value,
+          isEnabled: ruleEnabled.value,
+          runOnEdit: runTiming.value === 'after',
+          substituteRegex: true,
+          minDepth: minTarget.value ?? 0,
+          maxDepth: maxTarget.value ?? 0,
+          affectFlags,
+          sortOrder: (originalRule?.sortOrder ?? 0) + 1
+        });
+
+        if (newRule) {
+          message.success('规则已另存为: ' + newName.value);
+          router.push(`/regex/${newRule.id}`);
+        }
+      } catch {
+        message.error('另存为失败');
+        return false;
+      }
+    }
+  });
 };
 
 const scrollToTest = () => {
@@ -453,11 +556,53 @@ const clearTestInput = () => {
 };
 
 // ====== 加载数据 ======
+const loadRule = async (id: number) => {
+  if (!id || id <= 0) return;
+  pageLoading.value = true;
+  try {
+    // 先确保已加载规则列表
+    if (regexRuleStore.rules.length === 0) {
+      await regexRuleStore.fetchRules();
+    }
+    const rule = regexRuleStore.rules.find(r => r.id === id);
+    if (!rule) {
+      message.error('规则不存在');
+      router.push('/');
+      return;
+    }
+    originalRule = rule;
+    ruleName.value = rule.name;
+    ruleEnabled.value = rule.isEnabled;
+    findPattern.value = rule.findPattern;
+    replacePattern.value = rule.replacePattern;
+    minTarget.value = rule.minDepth || null;
+    maxTarget.value = rule.maxDepth || null;
+
+    // 恢复作用域标志
+    scopeAiOutput.value = rule.affectFlags?.aiOutput ?? true;
+    scopeUserInput.value = rule.affectFlags?.userInput ?? false;
+    scopeSystemPrompt.value = rule.affectFlags?.prompt ?? false;
+
+    // 恢复运行时机
+    runTiming.value = rule.runOnEdit ? 'after' : 'before';
+
+    isDirty.value = false;
+  } catch {
+    message.error('加载规则失败');
+  } finally {
+    pageLoading.value = false;
+  }
+};
+
+onMounted(() => {
+  loadRule(regexId.value);
+});
+
 watch(regexId, (newId) => {
-  if (!newId) return;
-  // TODO: 根据 regexId 从 store/API 加载正则规则数据
-  // loadRegexRule(newId);
-}, { immediate: true });
+  if (newId && newId > 0) {
+    loadRule(newId);
+  }
+});
 </script>
 
 <style scoped>

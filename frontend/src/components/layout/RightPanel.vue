@@ -87,13 +87,29 @@ const tabs: TabItem[] = [
 
 <style scoped>
 .right-panel {
-  width: 320px;
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   background: var(--bg-secondary);
   border-left: 1px solid var(--border-color);
   overflow: hidden;
+  position: relative;
+}
+
+/* 科幻背景纹理 */
+.right-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-surface);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.right-panel > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* 面板标题栏 */
@@ -146,6 +162,7 @@ const tabs: TabItem[] = [
 
 .tab-item.active {
   color: var(--color-primary);
+  text-shadow: 0 0 12px rgba(77, 168, 255, .3);
 }
 
 .tab-item.active::after {
@@ -157,6 +174,7 @@ const tabs: TabItem[] = [
   height: 2px;
   background: var(--color-primary);
   border-radius: 2px 2px 0 0;
+  box-shadow: 0 0 8px rgba(77, 168, 255, .4);
 }
 
 .tab-label {

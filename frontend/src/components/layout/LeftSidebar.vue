@@ -195,10 +195,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { h, ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import {
-  NButton, NIcon, NInput, NScrollbar, NAvatar, NDropdown
+  NButton, NIcon, NInput, NScrollbar, NAvatar, NDropdown,
+  useMessage, useDialog
 } from 'naive-ui';
 import {
   AddOutline,
@@ -216,12 +217,15 @@ import {
 import { useAppStore } from '@/stores/app';
 import { useChatStore } from '@/stores/chat';
 import { useCharacterStore } from '@/stores/character';
+import { chatClient, characterClient } from '@/api/client';
 import type { ChatSession, Character } from '@/gen/muse/muse_pb';
 
 const router = useRouter();
 const appStore = useAppStore();
 const chatStore = useChatStore();
 const characterStore = useCharacterStore();
+const message = useMessage();
+const dialog = useDialog();
 
 // ====== 搜索状态 ======
 const searchQuery = ref('');
@@ -235,6 +239,30 @@ const menuY = ref(0);
 const contextSession = ref<ChatSession | null>(null);
 const contextCharacter = ref<Character | null>(null);
 
+// ====== 加载数据 ======
+const loadSessions = async () => {
+  try {
+    const response = await chatClient.listChatSessions({});
+    chatStore.setSessions(response.sessions);
+  } catch {
+    // 错误由拦截器统一处理
+  }
+};
+
+const loadCharacters = async () => {
+  if (characterStore.hasCached) return;
+  try {
+    const response = await characterClient.listCharacters({ page: 1, pageSize: 50 });
+    characterStore.setCharacters(response.characters, response.total);
+  } catch {
+    // 错误由拦截器统一处理
+  }
+};
+
+onMounted(() => {
+  loadSessions();
+});
+
 // ====== 会话按时间分组 ======
 interface SessionGroup {
   label: string;
@@ -242,7 +270,6 @@ interface SessionGroup {
 }
 
 const groupSessionsByTime = (sessions: ChatSession[]): SessionGroup[] => {
-  const now = Date.now();
   const todayStart = new Date();
   todayStart.setHours(0, 0, 0, 0);
   const yesterdayStart = new Date(todayStart);
@@ -250,30 +277,29 @@ const groupSessionsByTime = (sessions: ChatSession[]): SessionGroup[] => {
   const weekStart = new Date(todayStart);
   weekStart.setDate(weekStart.getDate() - 7);
 
-  const groups: Record<string, ChatSession[]> = {
-    '今天': [],
-    '昨天': [],
-    '过去 7 天': [],
-    '更早': []
-  };
+  const groups = new Map<string, ChatSession[]>([
+    ['今天', []],
+    ['昨天', []],
+    ['过去 7 天', []],
+    ['更早', []]
+  ]);
 
   for (const session of sessions) {
-    const updatedAt = Number(session.updatedAt);
-    // updatedAt 可能是秒级或毫秒级时间戳
+    const updatedAt = Number(session.updatedAt ?? 0);
     const ts = updatedAt > 1e12 ? updatedAt : updatedAt * 1000;
 
     if (ts >= todayStart.getTime()) {
-      groups['今天'].push(session);
+      groups.get('今天')!.push(session);
     } else if (ts >= yesterdayStart.getTime()) {
-      groups['昨天'].push(session);
+      groups.get('昨天')!.push(session);
     } else if (ts >= weekStart.getTime()) {
-      groups['过去 7 天'].push(session);
+      groups.get('过去 7 天')!.push(session);
     } else {
-      groups['更早'].push(session);
+      groups.get('更早')!.push(session);
     }
   }
 
-  return Object.entries(groups)
+  return Array.from(groups.entries())
     .filter(([, sessions]) => sessions.length > 0)
     .map(([label, sessions]) => ({ label, sessions }));
 };
@@ -304,9 +330,7 @@ const filteredCharacters = computed(() => {
 
 // ====== 会话操作 ======
 const handleNewChat = () => {
-  // 跳转到对话视图，由对话视图处理新建逻辑
   router.push('/');
-  // 移动端自动关闭侧边栏
   if (appStore.isCompactMode) {
     appStore.closeLeftSidebar();
   }
@@ -330,39 +354,130 @@ const handleSessionContextMenu = (e: MouseEvent, session: ChatSession) => {
 
 const sessionMenuOptions = [
   { label: '重命名', key: 'rename' },
-  { label: '删除', key: 'delete' },
-  { label: '导出', key: 'export' }
+  { label: '删除', key: 'delete' }
 ];
 
 const handleSessionMenuSelect = (key: string) => {
   showSessionMenu.value = false;
   if (!contextSession.value) return;
+  const session = contextSession.value;
 
   switch (key) {
-    case 'rename':
-      // TODO: 实现重命名逻辑
+    case 'rename': {
+      const newName = ref(session.name || '');
+      dialog.create({
+        title: '重命名对话',
+        content: () => {
+          return h(NInput, {
+            value: newName.value,
+            'onUpdate:value': (v: string) => { newName.value = v; },
+            placeholder: '输入新的对话名称',
+            autofocus: true
+          });
+        },
+        positiveText: '确定',
+        negativeText: '取消',
+        onPositiveClick: async () => {
+          if (!newName.value.trim()) {
+            message.warning('名称不能为空');
+            return false;
+          }
+          try {
+            const response = await chatClient.updateChatSession({
+              id: session.id,
+              name: newName.value.trim()
+            });
+            if (response.session) {
+              chatStore.updateSessionInList(response.session);
+            }
+            message.success('已重命名');
+          } catch {
+            // 错误由拦截器统一处理
+          }
+        }
+      });
       break;
+    }
     case 'delete':
-      // TODO: 实现删除逻辑
-      break;
-    case 'export':
-      // TODO: 实现导出逻辑
+      dialog.warning({
+        title: '确认删除',
+        content: `确定要删除对话"${session.name || '新对话'}"吗？`,
+        positiveText: '删除',
+        negativeText: '取消',
+        onPositiveClick: async () => {
+          try {
+            await chatClient.deleteChatSession({ id: session.id });
+            chatStore.removeSession(session.id);
+            message.success('对话已删除');
+          } catch {
+            // 错误由拦截器统一处理
+          }
+        }
+      });
       break;
   }
 };
 
 // ====== 角色操作 ======
-const handleSelectCharacter = (char: Character) => {
-  characterStore.selectCharacter(char);
-  // 以该角色创建新会话或显示角色详情
-  // TODO: 实现角色选择后的行为
+const handleSelectCharacter = async (char: Character) => {
+  // 以该角色创建新会话
+  try {
+    const response = await chatClient.createChatSession({ characterId: char.id });
+    if (response.session) {
+      chatStore.addSession(response.session);
+      chatStore.setActiveSession(response.session);
+      // 切换回会话视图并跳转到聊天页
+      appStore.setSidebarView('sessions');
+      router.push('/');
+    }
+  } catch {
+    // 错误由拦截器统一处理
+  }
   if (appStore.isCompactMode) {
     appStore.closeLeftSidebar();
   }
 };
 
 const handleImportCharacter = () => {
-  // TODO: 实现角色导入逻辑（文件选择器）
+  // 创建隐藏的文件选择器
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.png,.json';
+  input.multiple = true;
+  input.onchange = async (e) => {
+    const files = (e.target as HTMLInputElement).files;
+    if (!files || files.length === 0) return;
+
+    let successCount = 0;
+    let failCount = 0;
+
+    for (const file of Array.from(files)) {
+      try {
+        const arrayBuffer = await file.arrayBuffer();
+        const fileContent = new Uint8Array(arrayBuffer);
+        const response = await characterClient.importCharacter({
+          fileContent,
+          fileName: file.name
+        });
+        if (response.character) {
+          characterStore.addCharacter(response.character);
+          successCount++;
+        } else {
+          failCount++;
+        }
+      } catch {
+        failCount++;
+      }
+    }
+
+    if (successCount > 0) {
+      message.success(`成功导入 ${successCount} 个角色`);
+    }
+    if (failCount > 0) {
+      message.warning(`${failCount} 个角色导入失败`);
+    }
+  };
+  input.click();
 };
 
 const handleCharacterContextMenu = (e: MouseEvent, char: Character) => {
@@ -374,27 +489,52 @@ const handleCharacterContextMenu = (e: MouseEvent, char: Character) => {
 };
 
 const characterMenuOptions = [
+  { label: '开始聊天', key: 'chat' },
   { label: '编辑', key: 'edit' },
-  { label: '删除', key: 'delete' },
-  { label: '导出', key: 'export' }
+  { type: 'divider', key: 'd1' },
+  { label: '删除', key: 'delete' }
 ];
 
 const handleCharacterMenuSelect = (key: string) => {
   showCharacterMenu.value = false;
   if (!contextCharacter.value) return;
+  const char = contextCharacter.value;
 
   switch (key) {
+    case 'chat':
+      handleSelectCharacter(char);
+      break;
     case 'edit':
-      // TODO: 实现编辑逻辑
+      // 跳转到角色管理页面并选择该角色
+      router.push('/characters');
       break;
     case 'delete':
-      // TODO: 实现删除逻辑
-      break;
-    case 'export':
-      // TODO: 实现导出逻辑
+      dialog.warning({
+        title: '确认删除',
+        content: `确定要删除角色"${char.name}"吗？此操作不可撤销。`,
+        positiveText: '删除',
+        negativeText: '取消',
+        onPositiveClick: async () => {
+          try {
+            await characterClient.deleteCharacter({ id: char.id });
+            characterStore.removeCharacter(char.id);
+            message.success('角色已删除');
+          } catch {
+            // 错误由拦截器统一处理
+          }
+        }
+      });
       break;
   }
 };
+
+// ====== 切换到角色视图时加载角色数据 ======
+import { watch } from 'vue';
+watch(() => appStore.sidebarView, (view) => {
+  if (view === 'characters') {
+    loadCharacters();
+  }
+});
 </script>
 
 <style scoped>
@@ -402,8 +542,25 @@ const handleCharacterMenuSelect = (key: string) => {
   display: flex;
   flex-direction: column;
   height: 100%;
+  min-height: 0;
   background: var(--bg-secondary);
   overflow: hidden;
+  position: relative;
+}
+
+/* 侧边栏科幻背景纹理 */
+.left-sidebar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-surface);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.left-sidebar > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* ====== 顶部区域 ====== */
@@ -426,16 +583,19 @@ const handleCharacterMenuSelect = (key: string) => {
 
 .new-chat-btn {
   justify-content: flex-start;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-light);
   border-radius: 8px;
   height: 40px;
   font-weight: 500;
   color: var(--text-primary);
-  transition: background-color 150ms ease;
+  transition: all 200ms ease;
+  background: var(--gradient-glow);
 }
 
 .new-chat-btn:hover {
   background: var(--bg-hover);
+  border-color: var(--color-primary);
+  box-shadow: var(--glow-primary-sm);
 }
 
 /* ====== 搜索框 ====== */
@@ -489,6 +649,8 @@ const handleCharacterMenuSelect = (key: string) => {
 
 .session-item.active {
   background: var(--bg-active);
+  border-left: 2px solid var(--color-primary);
+  box-shadow: inset 0 0 20px rgba(77, 168, 255, .04);
 }
 
 .session-avatar {
@@ -597,6 +759,7 @@ const handleCharacterMenuSelect = (key: string) => {
   flex-shrink: 0;
   border-top: 1px solid var(--border-color);
   padding: 8px;
+  background: var(--gradient-glow);
 }
 
 .bottom-entry {
@@ -631,10 +794,26 @@ const handleCharacterMenuSelect = (key: string) => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 40px 16px;
+  gap: 12px;
+  padding: 60px 24px;
   color: var(--text-tertiary);
   font-size: 13px;
+}
+
+.empty-state .n-icon {
+  opacity: .5;
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    opacity: .4;
+    filter: drop-shadow(0 0 4px rgba(77, 168, 255, .1));
+  }
+  50% {
+    opacity: .7;
+    filter: drop-shadow(0 0 8px rgba(77, 168, 255, .3));
+  }
 }
 
 /* ====== 移动端触摸优化 ====== */

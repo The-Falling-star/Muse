@@ -3,7 +3,7 @@
     :show="visible"
     :width="isMobile ? '100%' : 500"
     placement="right"
-    :native-scrollbar="false"
+    :native-scrollbar="true"
     @update:show="$emit('update:visible', $event)"
   >
     <n-drawer-content title="设置" closable>
@@ -128,7 +128,7 @@
             </n-avatar>
             <div class="user-detail">
               <div class="user-name">{{ currentUser.username }}</div>
-              <div class="user-role">{{ currentUser.role || '普通用户' }}</div>
+              <div class="user-role">{{ currentUser.username ? '用户' : '未知' }}</div>
             </div>
           </div>
 
@@ -241,7 +241,7 @@ const handleLogout = () => {
     content: '确定要退出登录吗？',
     positiveText: '退出',
     negativeText: '取消',
-    onPositive: () => {
+    onPositiveClick: () => {
       userStore.logout();
       emit('update:visible', false);
       router.push('/login');

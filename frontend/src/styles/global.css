@@ -1,132 +1,107 @@
-/* Muse 全局样式 - 科幻风格 */
+/* Muse 全局样式 - Google AI Studio 风格 */
 
 /* 导入字体 */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
 
 /* CSS变量 - 暗黑主题 */
 :root,
 [data-theme="dark"] {
-  /* 主色调 */
-  --color-primary: #00f0ff;
-  --color-primary-hover: #33f3ff;
-  --color-primary-pressed: #00c8d4;
-  --color-secondary: #ff00ff;
-  --color-accent: #7c3aed;
+  /* 主色调 - Google 蓝 */
+  --color-primary: #8AB4F8;
+  --color-primary-hover: #AECBFA;
+  --color-primary-pressed: #669DF6;
+  --color-secondary: #C58AF9;
+  --color-accent: #8AB4F8;
 
   /* 语义色 */
-  --color-success: #00ff9f;
-  --color-warning: #ffb800;
-  --color-error: #ff3d71;
-  --color-info: #00b8ff;
+  --color-success: #81C995;
+  --color-warning: #FDD663;
+  --color-error: #F28B82;
+  --color-info: #8AB4F8;
 
   /* 背景色 */
-  --bg-primary: #0a0a0f;
-  --bg-secondary: #12121a;
-  --bg-tertiary: #1a1a26;
-  --bg-card: #16161f;
-  --bg-card-hover: #1e1e2a;
-  --bg-modal: #141420;
-  --bg-overlay: rgba(0, 0, 0, 0.8);
+  --bg-primary: #1E1E1E;
+  --bg-secondary: #252525;
+  --bg-tertiary: #2A2A2A;
+  --bg-card: #2A2A2A;
+  --bg-card-hover: #333333;
+  --bg-modal: #2A2A2A;
+  --bg-overlay: rgba(0, 0, 0, 0.6);
 
   /* 边框色 */
-  --border-color: #2a2a3a;
-  --border-light: #3a3a4a;
-  --border-glow: rgba(0, 240, 255, 0.3);
+  --border-color: #3C3C3C;
+  --border-light: #4A4A4A;
 
   /* 文字色 */
-  --text-primary: #ffffff;
-  --text-secondary: #a0a0b0;
-  --text-tertiary: #6a6a7a;
-  --text-disabled: #4a4a5a;
+  --text-primary: #E3E3E3;
+  --text-secondary: #9AA0A6;
+  --text-tertiary: #6B7280;
+  --text-disabled: #4B5563;
 
-  /* 特效 */
-  --glow-primary: 0 0 20px rgba(0, 240, 255, 0.5);
-  --glow-secondary: 0 0 20px rgba(255, 0, 255, 0.3);
-  --glow-soft: 0 0 10px rgba(0, 240, 255, 0.2);
-
-  /* 渐变 */
-  --gradient-primary: linear-gradient(135deg, #00f0ff 0%, #7c3aed 100%);
-  --gradient-secondary: linear-gradient(135deg, #ff00ff 0%, #7c3aed 100%);
-  --gradient-bg: linear-gradient(180deg, #0a0a0f 0%, #12121a 100%);
-  --gradient-card: linear-gradient(145deg, rgba(26, 26, 38, 0.8) 0%, rgba(18, 18, 26, 0.9) 100%);
-  --gradient-shimmer: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.1), transparent);
+  /* hover/active 背景 */
+  --bg-hover: #333333;
+  --bg-active: #2D3748;
 
   /* 阴影 */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
   --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
 
   /* 动画 */
   --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  
-  /* 移动端优化 */
   --transition-mobile: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-
-  /* 网格线 */
-  --grid-color: rgba(0, 240, 255, 0.03);
 }
 
 /* 明亮主题 */
 [data-theme="light"] {
-  /* 主色调 */
-  --color-primary: #0066ff;
-  --color-primary-hover: #3385ff;
-  --color-primary-pressed: #0052cc;
-  --color-secondary: #9333ea;
-  --color-accent: #6366f1;
+  /* 主色调 - Google 蓝 */
+  --color-primary: #1A73E8;
+  --color-primary-hover: #1967D2;
+  --color-primary-pressed: #185ABC;
+  --color-secondary: #7C3AED;
+  --color-accent: #1A73E8;
 
   /* 语义色 */
-  --color-success: #10b981;
-  --color-warning: #f59e0b;
-  --color-error: #ef4444;
-  --color-info: #3b82f6;
+  --color-success: #1E8E3E;
+  --color-warning: #F9AB00;
+  --color-error: #D93025;
+  --color-info: #1A73E8;
 
   /* 背景色 */
-  --bg-primary: #f8faff;
-  --bg-secondary: #ffffff;
-  --bg-tertiary: #f0f4ff;
-  --bg-card: #ffffff;
-  --bg-card-hover: #f5f8ff;
-  --bg-modal: #ffffff;
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F8F9FA;
+  --bg-tertiary: #F1F3F4;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #F1F3F4;
+  --bg-modal: #FFFFFF;
   --bg-overlay: rgba(0, 0, 0, 0.4);
 
   /* 边框色 */
-  --border-color: #e0e6f0;
-  --border-light: #d0d8e8;
-  --border-glow: rgba(0, 102, 255, 0.2);
+  --border-color: #E0E0E0;
+  --border-light: #DADCE0;
 
   /* 文字色 */
-  --text-primary: #1a1a2e;
-  --text-secondary: #4a5568;
-  --text-tertiary: #718096;
-  --text-disabled: #a0aec0;
+  --text-primary: #1F1F1F;
+  --text-secondary: #5F6368;
+  --text-tertiary: #80868B;
+  --text-disabled: #BDC1C6;
 
-  /* 特效 */
-  --glow-primary: 0 0 20px rgba(0, 102, 255, 0.25);
-  --glow-secondary: 0 0 20px rgba(147, 51, 234, 0.2);
-  --glow-soft: 0 0 10px rgba(0, 102, 255, 0.15);
-
-  /* 渐变 */
-  --gradient-primary: linear-gradient(135deg, #0066ff 0%, #6366f1 100%);
-  --gradient-secondary: linear-gradient(135deg, #9333ea 0%, #6366f1 100%);
-  --gradient-bg: linear-gradient(180deg, #f8faff 0%, #ffffff 100%);
-  --gradient-card: linear-gradient(145deg, #ffffff 0%, #f5f8ff 100%);
-  --gradient-shimmer: linear-gradient(90deg, transparent, rgba(0, 102, 255, 0.08), transparent);
+  /* hover/active 背景 */
+  --bg-hover: #F1F3F4;
+  --bg-active: #E8F0FE;
 
   /* 阴影 */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.1);
-  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.12);
-
-  /* 网格线 */
-  --grid-color: rgba(0, 102, 255, 0.03);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.15);
 }
 
-/* 全局重置 */
+/* ==================== 全局重置 ==================== */
+
 *,
 *::before,
 *::after {
@@ -140,13 +115,12 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  /* 移动端触摸优化 */
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
   background: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.6;
@@ -159,252 +133,8 @@ body {
   position: relative;
 }
 
-/* 科幻背景网格效果 */
-.sci-fi-grid-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
-}
+/* ==================== 滚动条 ==================== */
 
-/* 网格层 */
-.sci-fi-grid-bg::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image:
-    linear-gradient(var(--grid-color) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-  background-size: 50px 50px;
-  opacity: .6;
-  animation: grid-pulse 8s ease-in-out infinite;
-}
-
-/* 渐变光晕层 */
-.sci-fi-grid-bg::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background:
-    radial-gradient(ellipse 80% 50% at 20% 40%, rgba(0, 240, 255, .06) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 40% at 80% 20%, rgba(124, 58, 237, .05) 0%, transparent 50%),
-    radial-gradient(ellipse 50% 60% at 70% 80%, rgba(255, 0, 255, .04) 0%, transparent 50%),
-    radial-gradient(ellipse 40% 30% at 10% 90%, rgba(0, 184, 255, .05) 0%, transparent 50%);
-  animation: nebula-drift 20s ease-in-out infinite alternate;
-}
-
-/* 网格脉冲动画 */
-@keyframes grid-pulse {
-  0%, 100% {
-    opacity: .4;
-  }
-  50% {
-    opacity: .7;
-  }
-}
-
-/* 星云漂移动画 */
-@keyframes nebula-drift {
-  0% {
-    transform: scale(1) translate(0, 0);
-  }
-  100% {
-    transform: scale(1.1) translate(2%, 3%);
-  }
-}
-
-/* 粒子星点容器 */
-.sci-fi-particles {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
-}
-
-/* 单个粒子 */
-.sci-fi-particle {
-  position: absolute;
-  width: 2px;
-  height: 2px;
-  background: var(--color-primary);
-  border-radius: 50%;
-  opacity: 0;
-  animation: particle-float 15s linear infinite;
-  box-shadow: 0 0 6px var(--color-primary);
-}
-
-@keyframes particle-float {
-  0% {
-    opacity: 0;
-    transform: translateY(100vh) scale(0);
-  }
-  10% {
-    opacity: .8;
-  }
-  90% {
-    opacity: .8;
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-10vh) scale(1);
-  }
-}
-
-/* 角落装饰 */
-.sci-fi-corner {
-  position: fixed;
-  width: 80px;
-  height: 80px;
-  pointer-events: none;
-  z-index: 2;
-  opacity: .3;
-}
-
-.sci-fi-corner::before,
-.sci-fi-corner::after {
-  content: '';
-  position: absolute;
-  background: var(--color-primary);
-}
-
-.sci-fi-corner--tl {
-  top: 20px;
-  left: 20px;
-}
-
-.sci-fi-corner--tl::before {
-  top: 0;
-  left: 0;
-  width: 40px;
-  height: 1px;
-  box-shadow: 0 0 10px var(--color-primary);
-}
-
-.sci-fi-corner--tl::after {
-  top: 0;
-  left: 0;
-  width: 1px;
-  height: 40px;
-  box-shadow: 0 0 10px var(--color-primary);
-}
-
-.sci-fi-corner--tr {
-  top: 20px;
-  right: 20px;
-}
-
-.sci-fi-corner--tr::before {
-  top: 0;
-  right: 0;
-  width: 40px;
-  height: 1px;
-  box-shadow: 0 0 10px var(--color-primary);
-}
-
-.sci-fi-corner--tr::after {
-  top: 0;
-  right: 0;
-  width: 1px;
-  height: 40px;
-  box-shadow: 0 0 10px var(--color-primary);
-}
-
-.sci-fi-corner--bl {
-  bottom: 20px;
-  left: 20px;
-}
-
-.sci-fi-corner--bl::before {
-  bottom: 0;
-  left: 0;
-  width: 40px;
-  height: 1px;
-  box-shadow: 0 0 10px var(--color-primary);
-}
-
-.sci-fi-corner--bl::after {
-  bottom: 0;
-  left: 0;
-  width: 1px;
-  height: 40px;
-  box-shadow: 0 0 10px var(--color-primary);
-}
-
-.sci-fi-corner--br {
-  bottom: 20px;
-  right: 20px;
-}
-
-.sci-fi-corner--br::before {
-  bottom: 0;
-  right: 0;
-  width: 40px;
-  height: 1px;
-  box-shadow: 0 0 10px var(--color-primary);
-}
-
-.sci-fi-corner--br::after {
-  bottom: 0;
-  right: 0;
-  width: 1px;
-  height: 40px;
-  box-shadow: 0 0 10px var(--color-primary);
-}
-
-/* 科幻网格高亮点 */
-.sci-fi-grid-dots {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-  background-image: radial-gradient(circle, rgba(0, 240, 255, .15) 1px, transparent 1px);
-  background-size: 50px 50px;
-  animation: dots-fade 4s ease-in-out infinite;
-}
-
-@keyframes dots-fade {
-  0%, 100% {
-    opacity: .3;
-  }
-  50% {
-    opacity: .6;
-  }
-}
-
-/* 亮色主题下减弱科幻效果 */
-[data-theme="light"] .sci-fi-grid-bg::after {
-  background:
-    radial-gradient(ellipse 80% 50% at 20% 40%, rgba(0, 102, 255, .04) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 40% at 80% 20%, rgba(99, 102, 241, .03) 0%, transparent 50%),
-    radial-gradient(ellipse 50% 60% at 70% 80%, rgba(147, 51, 234, .03) 0%, transparent 50%);
-}
-
-[data-theme="light"] .sci-fi-corner {
-  opacity: .15;
-}
-
-[data-theme="light"] .sci-fi-grid-dots {
-  background-image: radial-gradient(circle, rgba(0, 102, 255, .1) 1px, transparent 1px);
-}
-
-/* 滚动条样式 */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -415,22 +145,25 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-primary);
-  opacity: 0.3;
+  background: var(--text-disabled);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  opacity: 0.5;
+  background: var(--text-tertiary);
 }
 
-/* 选中文本样式 */
+/* ==================== 基础元素 ==================== */
+
 ::selection {
   background: var(--color-primary);
+  color: #fff;
+}
+
+[data-theme="dark"] ::selection {
   color: #000;
 }
 
-/* 链接样式 */
 a {
   color: var(--color-primary);
   text-decoration: none;
@@ -441,13 +174,11 @@ a:hover {
   color: var(--color-primary-hover);
 }
 
-/* 聚焦样式 */
 :focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
-/* 按钮基础样式 */
 button {
   cursor: pointer;
   font-family: inherit;
@@ -455,203 +186,8 @@ button {
   background: none;
 }
 
-/* 科幻风格卡片 */
-.sci-fi-card {
-  background: var(--gradient-card);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  backdrop-filter: blur(10px);
-  transition: all var(--transition-normal);
-}
+/* ==================== 流式输出效果 ==================== */
 
-.sci-fi-card:hover {
-  border-color: var(--border-glow);
-  box-shadow: var(--glow-soft);
-}
-
-/* 科幻风格按钮 */
-.sci-fi-btn {
-  position: relative;
-  padding: 10px 24px;
-  background: var(--gradient-primary);
-  color: #000;
-  font-weight: 600;
-  border-radius: 8px;
-  overflow: hidden;
-  transition: all var(--transition-normal);
-}
-
-.sci-fi-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: var(--gradient-shimmer);
-  transition: left 0.5s ease;
-}
-
-.sci-fi-btn:hover::before {
-  left: 100%;
-}
-
-.sci-fi-btn:hover {
-  box-shadow: var(--glow-primary);
-  transform: translateY(-2px);
-}
-
-/* 发光文字效果 */
-.glow-text {
-  text-shadow: var(--glow-soft);
-}
-
-.glow-text-strong {
-  text-shadow: var(--glow-primary);
-}
-
-/* 边框发光效果 */
-.glow-border {
-  border: 1px solid var(--color-primary);
-  box-shadow: var(--glow-soft), inset var(--glow-soft);
-}
-
-/* 输入框科幻风格 */
-.sci-fi-input {
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  color: var(--text-primary);
-  padding: 10px 16px;
-  transition: all var(--transition-fast);
-}
-
-.sci-fi-input:focus {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px rgba(0, 240, 255, 0.2);
-  outline: none;
-}
-
-.sci-fi-input::placeholder {
-  color: var(--text-tertiary);
-}
-
-/* 脉冲动画 */
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
-
-.pulse {
-  animation: pulse 2s ease-in-out infinite;
-}
-
-/* 呼吸发光动画 */
-@keyframes glow-breathe {
-  0%, 100% {
-    box-shadow: var(--glow-soft);
-  }
-  50% {
-    box-shadow: var(--glow-primary);
-  }
-}
-
-.glow-breathe {
-  animation: glow-breathe 3s ease-in-out infinite;
-}
-
-/* 扫描线效果 */
-@keyframes scan-line {
-  0% {
-    transform: translateY(-100%);
-  }
-  100% {
-    transform: translateY(100vh);
-  }
-}
-
-.scan-line::after {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
-  animation: scan-line 8s linear infinite;
-  pointer-events: none;
-  z-index: 9999;
-  opacity: 0.3;
-}
-
-/* 渐入动画 */
-@keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.fade-in {
-  animation: fade-in 0.3s ease-out;
-}
-
-/* 滑入动画 */
-@keyframes slide-in-right {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.slide-in-right {
-  animation: slide-in-right 0.3s ease-out;
-}
-
-@keyframes slide-in-left {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.slide-in-left {
-  animation: slide-in-left 0.3s ease-out;
-}
-
-/* 打字机效果光标 */
-@keyframes cursor-blink {
-  0%, 50% {
-    opacity: 1;
-  }
-  51%, 100% {
-    opacity: 0;
-  }
-}
-
-.typing-cursor::after {
-  content: '|';
-  color: var(--color-primary);
-  animation: cursor-blink 1s step-end infinite;
-}
-
-/* 流式输出效果 */
 .streaming-text {
   position: relative;
 }
@@ -667,24 +203,17 @@ button {
   vertical-align: text-bottom;
 }
 
-/* 响应式工具类 */
-@media (max-width: 768px) {
-  html {
-    font-size: 14px;
+@keyframes cursor-blink {
+  0%, 50% {
+    opacity: 1;
   }
-
-  .hide-mobile {
-    display: none !important;
+  51%, 100% {
+    opacity: 0;
   }
 }
 
-@media (min-width: 769px) {
-  .hide-desktop {
-    display: none !important;
-  }
-}
+/* ==================== 工具类 ==================== */
 
-/* 工具类 */
 .truncate {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -705,125 +234,50 @@ button {
   overflow: hidden;
 }
 
-/* Flex布局工具类 */
-.flex {
-  display: flex;
+/* 响应式工具类 */
+@media (max-width: 767px) {
+  html {
+    font-size: 14px;
+  }
+
+  .hide-mobile {
+    display: none !important;
+  }
 }
 
-.flex-col {
-  flex-direction: column;
-}
-
-.items-center {
-  align-items: center;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
-.justify-between {
-  justify-content: space-between;
-}
-
-.gap-1 {
-  gap: 4px;
-}
-
-.gap-2 {
-  gap: 8px;
-}
-
-.gap-3 {
-  gap: 12px;
-}
-
-.gap-4 {
-  gap: 16px;
-}
-
-/* 间距工具类 */
-.p-1 { padding: 4px; }
-.p-2 { padding: 8px; }
-.p-3 { padding: 12px; }
-.p-4 { padding: 16px; }
-.p-5 { padding: 20px; }
-.p-6 { padding: 24px; }
-
-.m-1 { margin: 4px; }
-.m-2 { margin: 8px; }
-.m-3 { margin: 12px; }
-.m-4 { margin: 16px; }
-
-/* 圆角工具类 */
-.rounded { border-radius: 8px; }
-.rounded-lg { border-radius: 12px; }
-.rounded-xl { border-radius: 16px; }
-.rounded-full { border-radius: 9999px; }
-
-/* 全屏容器 */
-.full-screen {
-  width: 100%;
-  height: 100vh;
+@media (min-width: 768px) {
+  .hide-desktop {
+    display: none !important;
+  }
 }
 
 /* ==================== 页面过渡动画 ==================== */
 
 /* 页面淡入淡出 */
-.page-fade-enter-active,
-.page-fade-leave-active {
-  transition: opacity var(--transition-normal), transform var(--transition-normal);
-}
-
-.page-fade-enter-from {
-  opacity: 0;
-  transform: translateY(8px);
-}
-
-.page-fade-leave-to {
-  opacity: 0;
-  transform: translateY(-8px);
-}
-
-/* 移动端页面滑动 */
-@media (max-width: 768px) {
-  .page-fade-enter-active,
-  .page-fade-leave-active {
-    transition: opacity var(--transition-mobile), transform var(--transition-mobile);
-  }
-  
-  .page-fade-enter-from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-  
-  .page-fade-leave-to {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-}
-
-/* 侧边栏滑动 */
-.slide-sidebar-enter-active,
-.slide-sidebar-leave-active {
-  transition: transform var(--transition-normal), opacity var(--transition-normal);
-}
-
-.slide-sidebar-enter-from,
-.slide-sidebar-leave-to {
-  transform: translateX(-100%);
-  opacity: 0;
-}
-
-/* 遮罩层淡入淡出 */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity var(--transition-fast);
+  transition: opacity 200ms ease-out;
 }
 
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+/* 视图切换动画 */
+.view-fade-enter-active,
+.view-fade-leave-active {
+  transition: opacity 200ms ease-out, transform 200ms ease-out;
+}
+
+.view-fade-enter-from {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.view-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
 }
 
 /* 列表项动画 */
@@ -846,21 +300,8 @@ button {
   transition: transform var(--transition-normal);
 }
 
-/* 模态框缩放动画 */
-.modal-scale-enter-active,
-.modal-scale-leave-active {
-  transition: opacity var(--transition-normal), transform var(--transition-normal);
-}
-
-.modal-scale-enter-from,
-.modal-scale-leave-to {
-  opacity: 0;
-  transform: scale(0.95);
-}
-
 /* ==================== 移动端优化 ==================== */
 
-/* 移动端触摸反馈 */
 @media (max-width: 768px) {
   button,
   .clickable,
@@ -868,23 +309,6 @@ button {
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
     cursor: pointer;
-    transition: transform var(--transition-fast), opacity var(--transition-fast);
-  }
-  
-  button:active,
-  .clickable:active,
-  [role="button"]:active {
-    transform: scale(0.98);
-    opacity: 0.9;
-  }
-  
-  /* 卡片点击效果 */
-  .sci-fi-card {
-    transition: all var(--transition-mobile);
-  }
-  
-  .sci-fi-card:active {
-    transform: scale(0.99);
   }
 }
 
@@ -899,51 +323,4 @@ button {
   will-change: transform, opacity;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-}
-
-/* 移动端性能优化 */
-@media (max-width: 768px) {
-  .sci-fi-grid-bg::before,
-  .sci-fi-grid-bg::after,
-  .sci-fi-particles {
-    /* 在移动端减少动画以提高性能 */
-    animation-duration: 12s;
-    /* 减少动画复杂度 */
-    will-change: auto;
-  }
-  
-  .sci-fi-particle {
-    /* 减少粒子数量 */
-    display: none;
-  }
-  
-  .sci-fi-particle:nth-child(-n+10) {
-    /* 只显示前10个粒子 */
-    display: block;
-  }
-  
-  /* 简化动画 */
-  .sci-fi-grid-bg::before {
-    background-size: 100px 100px; /* 更大的网格，更少的绘制 */
-  }
-}
-
-/* 额外的移动端性能优化 */
-@media (max-width: 768px) {
-  /* 减少不必要的重绘 */
-  .sci-fi-corner,
-  .sci-fi-grid-dots {
-    will-change: auto;
-  }
-  
-  /* 禁用某些复杂动画 */
-  .glow-breathe,
-  .pulse {
-    animation: none;
-  }
-  
-  /* 优化滚动性能 */
-  * {
-    -webkit-overflow-scrolling: touch;
-  }
 }

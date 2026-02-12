@@ -128,7 +128,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch} from 'vue';
+import {computed, nextTick, onBeforeUnmount, onMounted, ref, watch} from 'vue';
 import {useRoute} from 'vue-router';
 import type {UploadFileInfo, VirtualListInst} from 'naive-ui';
 import {NAvatar, NButton, NIcon, NUpload, NVirtualList, useDialog, useMessage} from 'naive-ui';
@@ -160,87 +160,6 @@ interface LocalMessage {
   currentSwipeIndex: number;
 }
 
-// Mock 数据：用于演示浮动操作栏效果
-const mockMessages = reactive<LocalMessage[]>([
-  {
-    id: 1,
-    role: 'user',
-    swipes: [{
-      id: 101,
-      content: '你好！今天天气真好，能不能和我聊聊关于音乐的话题？',
-      timestamp: Date.now() - 3600000
-    }],
-    currentSwipeIndex: 0
-  },
-  {
-    id: 2,
-    role: 'assistant',
-    swipes: [
-      {
-        id: 201,
-        content: '当然可以！音乐是一个非常美妙的话题。你喜欢什么类型的音乐呢？\n\n我可以和你聊聊古典音乐、流行音乐、摇滚乐、爵士乐等各种风格。每种音乐都有它独特的魅力和表达方式。',
-        timestamp: Date.now() - 3500000
-      },
-      {
-        id: 202,
-        content: '好的，音乐是个很棒的话题！从古典到现代，音乐一直在不断演变。\n\n你对哪个时期的音乐更感兴趣？是巴洛克的优雅、浪漫主义的深情，还是现代音乐的多样？',
-        timestamp: Date.now() - 3400000
-      }
-    ],
-    currentSwipeIndex: 0
-  },
-  {
-    id: 3,
-    role: 'user',
-    swipes: [{
-      id: 301,
-      content: '我很喜欢古典音乐，特别是贝多芬的作品。他的《月光奏鸣曲》太美了！',
-      timestamp: Date.now() - 3000000
-    }],
-    currentSwipeIndex: 0
-  },
-  {
-    id: 4,
-    role: 'assistant',
-    swipes: [{
-      id: 401,
-      content: '贝多芬确实是一位音乐天才！《月光奏鸣曲》（Piano Sonata No. 14, "Quasi una fantasia"）是他最著名的作品之一。\n\n这首曲子有三个乐章：\n- 第一乐章如梦幻般的柔板，宁静而深邃\n- 第二乐章轻快的中板\n- 第三乐章激动的急板\n\n第一乐章那种朦胧、优美的旋律，仿佛月光洒在湖面上，让人陶醉其中。你最喜欢哪个乐章呢？',
-      timestamp: Date.now() - 2800000
-    }],
-    currentSwipeIndex: 0
-  },
-  {
-    id: 5,
-    role: 'user',
-    swipes: [
-      {
-        id: 501,
-        content: '我最喜欢第一乐章！那种宁静的感觉让人放松。',
-        timestamp: Date.now() - 2400000
-      },
-      {
-        id: 502,
-        content: '其实第三乐章也很震撼，那种激烈的情感表达太震撼了！',
-        timestamp: Date.now() - 2300000
-      }
-    ],
-    currentSwipeIndex: 0
-  },
-  {
-    id: 6,
-    role: 'assistant',
-    swipes: [{
-      id: 601,
-      content: '确实如此！第一乐章的宁静与第三乐章的激情形成了鲜明的对比，这也是贝多芬作品的魅力所在。\n\n除了《月光奏鸣曲》，贝多芬还有许多伟大的作品，比如：\n- 《命运交响曲》（第五交响曲）\n- 《田园交响曲》（第六交响曲）\n- 《英雄交响曲》（第三交响曲）\n\n你想了解哪一部作品呢？',
-      timestamp: Date.now() - 2000000
-    }],
-    currentSwipeIndex: 0
-  }
-]);
-
-// 开发模式：使用mock数据
-const useMockData = ref(true);
-
 const route = useRoute();
 const messageApi = useMessage();
 const dialog = useDialog();
@@ -266,25 +185,6 @@ const isTyping = computed(() => chatStore.isStreaming);
 
 // 当前角色
 const currentCharacter = computed<Character | null>(() => {
-  // 开发模式使用mock角色
-  if (useMockData.value) {
-    return {
-      id: 1,
-      userId: 1,
-      name: '音乐助手',
-      avatar: '',
-      description: '热爱音乐，擅长古典音乐、流行音乐等各种风格的音乐交流',
-      firstMessage: [],
-      exampleDialogue: '用户：你喜欢什么音乐？\n助手：我喜欢古典音乐，特别是贝多芬的作品。',
-      creatorNotes: '用于演示浮动操作栏效果的mock角色',
-      worldInfoId: 0,
-      version: BigInt(1),
-      createdAt: BigInt(Date.now()),
-      updatedAt: BigInt(Date.now()),
-      regexRules: [],
-      $typeName: 'muse.Character'
-    } as unknown as Character;
-  }
   return chatStore.activeCharacter ?? null;
 });
 
@@ -314,10 +214,6 @@ const convertToLocalMessage = (msg: any): LocalMessage => {
 
 // 消息列表（转换为本地格式）
 const messages = computed<LocalMessage[]>(() => {
-  // 开发模式使用mock数据
-  if (useMockData.value) {
-    return mockMessages;
-  }
   return chatStore.messages.map(convertToLocalMessage);
 });
 
@@ -532,16 +428,6 @@ const handleEditMessage = async (messageId: number, swipeId: number, content: st
 
 // 删除整个楼层
 const handleDeleteMessage = async (id: number) => {
-  // mock模式下直接本地删除
-  if (useMockData.value) {
-    const index = mockMessages.findIndex(m => m.id === id);
-    if (index >= 0) {
-      mockMessages.splice(index, 1);
-      messageApi.success('消息已删除');
-    }
-    return;
-  }
-
   dialog.warning({
     title: '确认删除',
     content: '确定要删除这条消息吗？',
@@ -557,24 +443,6 @@ const handleDeleteMessage = async (id: number) => {
 
 // 删除单条消息（swipe）
 const handleDeleteSwipe = async (messageId: number, swipeId: number) => {
-  // mock模式下操作mockMessages
-  if (useMockData.value) {
-    const msg = mockMessages.find(m => m.id === messageId);
-    if (!msg || msg.swipes.length <= 1) {
-      messageApi.warning('无法删除最后一条回复');
-      return;
-    }
-    const swipeIndex = msg.swipes.findIndex(s => s.id === swipeId);
-    if (swipeIndex >= 0) {
-      msg.swipes.splice(swipeIndex, 1);
-      if (msg.currentSwipeIndex >= msg.swipes.length) {
-        msg.currentSwipeIndex = msg.swipes.length - 1;
-      }
-    }
-    messageApi.success('回复已删除');
-    return;
-  }
-
   const msg = chatStore.messages.find(m => m.id === messageId);
   if (!msg || msg.swipes.length <= 1) {
     messageApi.warning('无法删除最后一条回复');
@@ -635,15 +503,6 @@ const handleRegenerateMessage = async (id: number) => {
 
 // 切换 swipe
 const handleSwipeChange = async (messageId: number, index: number) => {
-  // mock模式下仅本地切换，不调用API
-  if (useMockData.value) {
-    const msg = mockMessages.find(m => m.id === messageId);
-    if (msg) {
-      msg.currentSwipeIndex = index;
-    }
-    return;
-  }
-
   try {
     await chatClient.switchSwipe({
       messageId: messageId,

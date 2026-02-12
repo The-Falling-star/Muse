@@ -331,12 +331,6 @@ watch(() => props.message.currentSwipeIndex, (newIndex, oldIndex) => {
   }
 });
 
-// 删除下拉选项
-const deleteOptions = [
-  { label: '删除这条消息', key: 'swipe' },
-  { label: '删除整个楼层', key: 'floor' }
-];
-
 // 更多选项菜单
 const moreOptions = computed(() => {
   const options: Array<{ label: string; key: string; icon?: () => any }> = [
@@ -514,17 +508,6 @@ const handleDuplicateSwipe = () => {
 // 创建分支
 const handleBranch = () => {
   emit('branch', props.message.id);
-};
-
-// 删除下拉选择处理
-const handleDeleteSelect = (key: string) => {
-  deleteType.value = key as 'swipe' | 'floor';
-  showDeleteModal.value = true;
-};
-
-// 只有一条消息时直接删除楼层
-const handleDeleteFloor = () => {
-  emit('delete', props.message.id);
 };
 
 // 确认删除

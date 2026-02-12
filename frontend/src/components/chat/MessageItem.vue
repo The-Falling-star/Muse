@@ -1,5 +1,11 @@
 <template>
-  <div class="message-item" :class="[`message-${message.role}`, { 'streaming': message.isStreaming, 'editing': isEditing }]">
+  <div
+    class="message-item"
+    :class="[`message-${message.role}`, { 'streaming': message.isStreaming, 'editing': isEditing, 'actions-visible': showActions }]"
+    @mouseenter="onMouseEnter"
+    @mouseleave="onMouseLeave"
+    @click="onMessageClick"
+  >
     <!-- 头像 -->
     <div class="message-avatar">
       <n-avatar
@@ -91,23 +97,12 @@
           </n-button>
         </div>
 
-        <!-- 操作按钮 -->
-        <div class="message-actions" v-if="message.role !== 'system'">
+        <!-- 浮动操作栏 -->
+        <div class="message-actions-float" v-if="message.role !== 'system'">
+          <!-- 编辑按钮 -->
           <n-tooltip trigger="hover">
             <template #trigger>
-              <n-button quaternary circle size="tiny" @click="copyMessage">
-                <template #icon>
-                  <n-icon size="14"><CopyOutline /></n-icon>
-                </template>
-              </n-button>
-            </template>
-            复制
-          </n-tooltip>
-
-          <!-- 编辑按钮（用户和AI消息都可以编辑） -->
-          <n-tooltip trigger="hover">
-            <template #trigger>
-              <n-button quaternary circle size="tiny" @click="startEdit">
+              <n-button quaternary circle size="tiny" @click.stop="startEdit">
                 <template #icon>
                   <n-icon size="14"><PencilOutline /></n-icon>
                 </template>
@@ -116,22 +111,10 @@
             编辑
           </n-tooltip>
 
-          <!-- 用户消息：复制为新版本按钮 -->
-          <n-tooltip v-if="message.role === 'user'" trigger="hover">
+          <!-- 重新生成按钮（星号图标） -->
+          <n-tooltip trigger="hover">
             <template #trigger>
-              <n-button quaternary circle size="tiny" @click="handleDuplicateSwipe">
-                <template #icon>
-                  <n-icon size="14"><DuplicateOutline /></n-icon>
-                </template>
-              </n-button>
-            </template>
-            复制为新版本
-          </n-tooltip>
-
-          <!-- AI消息：重新生成按钮 -->
-          <n-tooltip v-if="message.role === 'assistant'" trigger="hover">
-            <template #trigger>
-              <n-button quaternary circle size="tiny" @click="handleRegenerate">
+              <n-button quaternary circle size="tiny" @click.stop="handleRegenerate">
                 <template #icon>
                   <n-icon size="14"><RefreshOutline /></n-icon>
                 </template>
@@ -140,55 +123,25 @@
             重新生成
           </n-tooltip>
 
-          <!-- 分支按钮 -->
-          <n-tooltip trigger="hover">
-            <template #trigger>
-              <n-button quaternary circle size="tiny" @click="handleBranch">
-                <template #icon>
-                  <n-icon size="14"><GitBranchOutline /></n-icon>
-                </template>
-              </n-button>
-            </template>
-            从此处创建分支
-          </n-tooltip>
-
-          <!-- 删除按钮：多条消息时显示下拉菜单 -->
+          <!-- 更多选项下拉菜单 -->
           <n-dropdown
-            v-if="message.swipes.length > 1"
-            :options="deleteOptions"
+            :options="moreOptions"
             trigger="click"
-            @select="handleDeleteSelect"
+            placement="bottom-end"
+            @select="handleMoreSelect"
+            @update:show="handleDropdownVisibleChange"
           >
             <n-tooltip trigger="hover">
               <template #trigger>
-                <n-button quaternary circle size="tiny">
+                <n-button quaternary circle size="tiny" @click.stop>
                   <template #icon>
-                    <n-icon size="14"><TrashOutline /></n-icon>
+                    <n-icon size="14"><EllipsisHorizontalOutline /></n-icon>
                   </template>
                 </n-button>
               </template>
-              删除
+              更多
             </n-tooltip>
           </n-dropdown>
-          <!-- 只有一条消息时，直接删除整个楼层 -->
-          <n-popconfirm
-            v-else
-            @positive-click="handleDeleteFloor"
-          >
-            <template #trigger>
-              <n-tooltip trigger="hover">
-                <template #trigger>
-                  <n-button quaternary circle size="tiny">
-                    <template #icon>
-                      <n-icon size="14"><TrashOutline /></n-icon>
-                    </template>
-                  </n-button>
-                </template>
-                删除
-              </n-tooltip>
-            </template>
-            确定要删除这个楼层吗？
-          </n-popconfirm>
         </div>
       </template>
     </div>
@@ -208,7 +161,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, h } from 'vue';
 import {
   NAvatar,
   NButton,
@@ -216,7 +169,6 @@ import {
   NTooltip,
   NDropdown,
   NModal,
-  NPopconfirm,
   NInput,
   useMessage
 } from 'naive-ui';
@@ -230,7 +182,8 @@ import {
   ChevronBackOutline,
   ChevronForwardOutline,
   GitBranchOutline,
-  DuplicateOutline
+  DuplicateOutline,
+  EllipsisHorizontalOutline
 } from '@vicons/ionicons5';
 import { marked } from 'marked';
 import { markedHighlight } from 'marked-highlight';
@@ -328,6 +281,35 @@ const messageApi = useMessage();
 const showDeleteModal = ref(false);
 const deleteType = ref<'swipe' | 'floor'>('floor');
 
+// 浮动操作栏显隐状态
+const isHovering = ref(false);
+const isDropdownOpen = ref(false);
+const showActions = computed(() => isHovering.value || isDropdownOpen.value);
+
+const onMouseEnter = () => {
+  isHovering.value = true;
+};
+
+const onMouseLeave = () => {
+  isHovering.value = false;
+};
+
+const onMessageClick = () => {
+  // 点击消息时临时显示操作栏（移动端兼容）
+  if (!isHovering.value) {
+    isHovering.value = true;
+    setTimeout(() => {
+      if (!isDropdownOpen.value) {
+        isHovering.value = false;
+      }
+    }, 3000);
+  }
+};
+
+const handleDropdownVisibleChange = (visible: boolean) => {
+  isDropdownOpen.value = visible;
+};
+
 // 编辑模式状态
 const isEditing = ref(false);
 const editContent = ref('');
@@ -354,6 +336,71 @@ const deleteOptions = [
   { label: '删除这条消息', key: 'swipe' },
   { label: '删除整个楼层', key: 'floor' }
 ];
+
+// 更多选项菜单
+const moreOptions = computed(() => {
+  const options: Array<{ label: string; key: string; icon?: () => any }> = [
+    {
+      label: '复制对话',
+      key: 'copy',
+      icon: () => h(NIcon, { size: 16 }, { default: () => h(CopyOutline) })
+    },
+    {
+      label: '开启分支',
+      key: 'branch',
+      icon: () => h(NIcon, { size: 16 }, { default: () => h(GitBranchOutline) })
+    }
+  ];
+
+  // 用户消息增加复制为新版本
+  if (props.message.role === 'user') {
+    options.push({
+      label: '复制为新版本',
+      key: 'duplicate',
+      icon: () => h(NIcon, { size: 16 }, { default: () => h(DuplicateOutline) })
+    });
+  }
+
+  // 有多条 swipe 时，提供删除单条和删除整个楼层两个选项
+  if (props.message.swipes.length > 1) {
+    options.push({
+      label: '删除这条消息',
+      key: 'deleteSwipe',
+      icon: () => h(NIcon, { size: 16 }, { default: () => h(TrashOutline) })
+    });
+  }
+
+  options.push({
+    label: '删除整个楼层',
+    key: 'deleteFloor',
+    icon: () => h(NIcon, { size: 16 }, { default: () => h(TrashOutline) })
+  });
+
+  return options;
+});
+
+// 更多选项菜单处理
+const handleMoreSelect = (key: string) => {
+  switch (key) {
+    case 'copy':
+      copyMessage();
+      break;
+    case 'branch':
+      handleBranch();
+      break;
+    case 'duplicate':
+      handleDuplicateSwipe();
+      break;
+    case 'deleteSwipe':
+      deleteType.value = 'swipe';
+      showDeleteModal.value = true;
+      break;
+    case 'deleteFloor':
+      deleteType.value = 'floor';
+      showDeleteModal.value = true;
+      break;
+  }
+};
 
 // 获取当前显示的内容
 const currentContent = computed(() => {
@@ -734,24 +781,42 @@ const confirmDelete = () => {
   font-variant-numeric: tabular-nums;
 }
 
-/* 操作按钮 */
-.message-actions {
+/* 浮动操作栏 */
+.message-content {
+  position: relative;
+}
+
+.message-actions-float {
+  position: absolute;
+  top: -4px;
+  right: 0;
   display: flex;
-  gap: 4px;
-  margin-top: 8px;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 4px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
   opacity: 0;
-  transition: opacity var(--transition-fast);
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: all 0.2s ease;
+  z-index: 10;
 }
 
-.message-item:hover .message-actions {
+.message-item.actions-visible .message-actions-float {
   opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
 }
 
-.message-actions .n-button {
+.message-actions-float .n-button {
   color: var(--text-tertiary);
+  transition: color 0.15s ease;
 }
 
-.message-actions .n-button:hover {
+.message-actions-float .n-button:hover {
   color: var(--color-primary);
 }
 

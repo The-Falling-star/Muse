@@ -5,7 +5,7 @@
       <div class="welcome-content">
         <div class="welcome-logo">
           <n-icon size="56" color="var(--color-primary)">
-            <SparklesOutline />
+            <SparklesOutline/>
           </n-icon>
         </div>
         <h1 class="welcome-title">Muse</h1>
@@ -13,13 +13,13 @@
 
         <div class="quick-prompts">
           <div
-            v-for="(prompt, index) in quickPrompts"
-            :key="index"
-            class="quick-prompt-card"
-            @click="handleQuickPrompt(prompt.text)"
+              v-for="(prompt, index) in quickPrompts"
+              :key="index"
+              class="quick-prompt-card"
+              @click="handleQuickPrompt(prompt.text)"
           >
             <n-icon size="20" class="prompt-icon">
-              <component :is="prompt.icon" />
+              <component :is="prompt.icon"/>
             </n-icon>
             <span class="prompt-text">{{ prompt.text }}</span>
           </div>
@@ -39,20 +39,20 @@
 
       <!-- 虚拟滚动消息列表 -->
       <n-virtual-list
-        ref="virtualListRef"
-        class="message-list"
-        :items="messagesWithTyping"
-        :item-size="120"
-        item-resizable
-        key-field="id"
-        :padding-top="20"
-        :padding-bottom="20"
-        :intersection-observer-options="{ rootMargin: '100px 0px 100px 0px' }"
+          ref="virtualListRef"
+          class="message-list"
+          :items="messagesWithTyping"
+          :item-size="120"
+          item-resizable
+          key-field="id"
+          :padding-top="20"
+          :padding-bottom="20"
+          :intersection-observer-options="{ rootMargin: '100px 0px 100px 0px' }"
       >
         <template #default="{ item }">
           <div :key="item.id" class="message-item-wrapper">
             <!-- 正在输入指示器 -->
-            <div v-if="item.id === 'typing-indicator'" class="typing-indicator">
+            <div v-if="item.id === -1" class="typing-indicator">
               <div class="typing-avatar">
                 <n-avatar :size="32" round :src="currentCharacter?.avatar">
                   {{ currentCharacter?.name?.charAt(0) || '?' }}
@@ -68,17 +68,17 @@
             </div>
             <!-- 消息项 -->
             <MessageItem
-              v-else
-              :message="item"
-              :character="currentCharacter"
-              :persona="currentPersona"
-              @edit="handleEditMessage"
-              @delete="handleDeleteMessage"
-              @delete-swipe="handleDeleteSwipe"
-              @regenerate="handleRegenerateMessage"
-              @swipe-change="handleSwipeChange"
-              @branch="handleBranch"
-              @duplicate-swipe="handleDuplicateSwipe"
+                v-else
+                :message="item"
+                :character="currentCharacter"
+                :persona="currentPersona"
+                @edit="handleEditMessage"
+                @delete="handleDeleteMessage"
+                @delete-swipe="handleDeleteSwipe"
+                @regenerate="handleRegenerateMessage"
+                @swipe-change="handleSwipeChange"
+                @branch="handleBranch"
+                @duplicate-swipe="handleDuplicateSwipe"
             />
           </div>
         </template>
@@ -87,88 +87,159 @@
       <!-- 跳到最新按钮 -->
       <Transition name="fade">
         <n-button
-          v-if="showScrollToBottom"
-          class="scroll-to-bottom-btn"
-          circle
-          secondary
-          size="small"
-          @click="scrollToBottom"
+            v-if="showScrollToBottom"
+            class="scroll-to-bottom-btn"
+            circle
+            secondary
+            size="small"
+            @click="scrollToBottom"
         >
           <template #icon>
-            <n-icon><ChevronDownOutline /></n-icon>
+            <n-icon>
+              <ChevronDownOutline/>
+            </n-icon>
           </template>
         </n-button>
       </Transition>
     </div>
 
-    <!-- 输入区域 -->
-    <div class="input-area">
+    <!-- 浮动输入区域 -->
+    <div class="input-area-float">
       <div class="input-container">
         <MessageInput
-          v-model="inputMessage"
-          :disabled="isTyping"
-          @send="handleSendMessage"
-          @stop="handleStopGeneration"
-          @persona-change="(p: any) => handlePersonaChange(p)"
+            v-model="inputMessage"
+            :disabled="isTyping"
+            @send="handleSendMessage"
+            @stop="handleStopGeneration"
+            @persona-change="(p: any) => handlePersonaChange(p)"
         />
-        <div class="input-footer">
-          <span class="model-info">{{ currentModelName }}</span>
-        </div>
       </div>
     </div>
 
     <!-- 隐藏的文件上传组件 -->
     <n-upload
-      ref="uploadRef"
-      :show-file-list="false"
-      accept=".json"
-      :custom-request="handleImportFile"
-      style="display: none;"
+        ref="uploadRef"
+        :show-file-list="false"
+        accept=".json"
+        :custom-request="handleImportFile"
+        style="display: none;"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch, nextTick } from 'vue';
-import { useRoute } from 'vue-router';
+import {computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch} from 'vue';
+import {useRoute} from 'vue-router';
+import type {UploadFileInfo, VirtualListInst} from 'naive-ui';
+import {NAvatar, NButton, NIcon, NUpload, NVirtualList, useDialog, useMessage} from 'naive-ui';
 import {
-  NAvatar,
-  NButton,
-  NIcon,
-  NVirtualList,
-  NUpload,
-  useMessage,
-  useDialog
-} from 'naive-ui';
-import type { UploadFileInfo } from 'naive-ui';
-import type { VirtualListInst } from 'naive-ui';
-import {
-  SparklesOutline,
-  ChevronDownOutline,
-  ChatbubbleEllipsesOutline,
   BookOutline,
+  ChatbubbleEllipsesOutline,
+  ChevronDownOutline,
+  CodeSlashOutline,
   ColorPaletteOutline,
-  CodeSlashOutline
+  SparklesOutline
 } from '@vicons/ionicons5';
 
 import MessageItem from '@/components/chat/MessageItem.vue';
 import MessageInput from '@/components/chat/MessageInput.vue';
-import { useChatStore } from '@/stores/chat';
-import { useUserStore } from '@/stores/user';
-import { chatClient } from '@/api/client';
-import type { Character, Persona } from '@/gen/muse/muse_pb';
+import {useChatStore} from '@/stores/chat';
+import {useUserStore} from '@/stores/user';
+import {chatClient} from '@/api/client';
+import type {Character, Persona} from '@/gen/muse/muse_pb';
 
 // 本地Message类型适配
 interface LocalMessage {
-  id: string;
+  id: number;
   role: 'user' | 'assistant' | 'system';
   swipes: Array<{
-    id: string;
+    id: number;
     content: string;
     timestamp: number;
   }>;
   currentSwipeIndex: number;
 }
+
+// Mock 数据：用于演示浮动操作栏效果
+const mockMessages = reactive<LocalMessage[]>([
+  {
+    id: 1,
+    role: 'user',
+    swipes: [{
+      id: 101,
+      content: '你好！今天天气真好，能不能和我聊聊关于音乐的话题？',
+      timestamp: Date.now() - 3600000
+    }],
+    currentSwipeIndex: 0
+  },
+  {
+    id: 2,
+    role: 'assistant',
+    swipes: [
+      {
+        id: 201,
+        content: '当然可以！音乐是一个非常美妙的话题。你喜欢什么类型的音乐呢？\n\n我可以和你聊聊古典音乐、流行音乐、摇滚乐、爵士乐等各种风格。每种音乐都有它独特的魅力和表达方式。',
+        timestamp: Date.now() - 3500000
+      },
+      {
+        id: 202,
+        content: '好的，音乐是个很棒的话题！从古典到现代，音乐一直在不断演变。\n\n你对哪个时期的音乐更感兴趣？是巴洛克的优雅、浪漫主义的深情，还是现代音乐的多样？',
+        timestamp: Date.now() - 3400000
+      }
+    ],
+    currentSwipeIndex: 0
+  },
+  {
+    id: 3,
+    role: 'user',
+    swipes: [{
+      id: 301,
+      content: '我很喜欢古典音乐，特别是贝多芬的作品。他的《月光奏鸣曲》太美了！',
+      timestamp: Date.now() - 3000000
+    }],
+    currentSwipeIndex: 0
+  },
+  {
+    id: 4,
+    role: 'assistant',
+    swipes: [{
+      id: 401,
+      content: '贝多芬确实是一位音乐天才！《月光奏鸣曲》（Piano Sonata No. 14, "Quasi una fantasia"）是他最著名的作品之一。\n\n这首曲子有三个乐章：\n- 第一乐章如梦幻般的柔板，宁静而深邃\n- 第二乐章轻快的中板\n- 第三乐章激动的急板\n\n第一乐章那种朦胧、优美的旋律，仿佛月光洒在湖面上，让人陶醉其中。你最喜欢哪个乐章呢？',
+      timestamp: Date.now() - 2800000
+    }],
+    currentSwipeIndex: 0
+  },
+  {
+    id: 5,
+    role: 'user',
+    swipes: [
+      {
+        id: 501,
+        content: '我最喜欢第一乐章！那种宁静的感觉让人放松。',
+        timestamp: Date.now() - 2400000
+      },
+      {
+        id: 502,
+        content: '其实第三乐章也很震撼，那种激烈的情感表达太震撼了！',
+        timestamp: Date.now() - 2300000
+      }
+    ],
+    currentSwipeIndex: 0
+  },
+  {
+    id: 6,
+    role: 'assistant',
+    swipes: [{
+      id: 601,
+      content: '确实如此！第一乐章的宁静与第三乐章的激情形成了鲜明的对比，这也是贝多芬作品的魅力所在。\n\n除了《月光奏鸣曲》，贝多芬还有许多伟大的作品，比如：\n- 《命运交响曲》（第五交响曲）\n- 《田园交响曲》（第六交响曲）\n- 《英雄交响曲》（第三交响曲）\n\n你想了解哪一部作品呢？',
+      timestamp: Date.now() - 2000000
+    }],
+    currentSwipeIndex: 0
+  }
+]);
+
+// 开发模式：使用mock数据
+const useMockData = ref(true);
 
 const route = useRoute();
 const messageApi = useMessage();
@@ -184,23 +255,36 @@ const showScrollToBottom = ref(false);
 
 // 快捷提示
 const quickPrompts = [
-  { text: '帮我写一段创意故事', icon: ChatbubbleEllipsesOutline },
-  { text: '解释一个复杂的概念', icon: BookOutline },
-  { text: '帮我头脑风暴创意', icon: ColorPaletteOutline },
-  { text: '写一段代码片段', icon: CodeSlashOutline }
+  {text: '帮我写一段创意故事', icon: ChatbubbleEllipsesOutline},
+  {text: '解释一个复杂的概念', icon: BookOutline},
+  {text: '帮我头脑风暴创意', icon: ColorPaletteOutline},
+  {text: '写一段代码片段', icon: CodeSlashOutline}
 ];
 
 // 从 Store 获取数据
 const isTyping = computed(() => chatStore.isStreaming);
 
-// 当前模型名称
-const currentModelName = computed(() => {
-  // TODO: 从模型配置中获取
-  return 'Muse AI';
-});
-
 // 当前角色
 const currentCharacter = computed<Character | null>(() => {
+  // 开发模式使用mock角色
+  if (useMockData.value) {
+    return {
+      id: 1,
+      userId: 1,
+      name: '音乐助手',
+      avatar: '',
+      description: '热爱音乐，擅长古典音乐、流行音乐等各种风格的音乐交流',
+      firstMessage: [],
+      exampleDialogue: '用户：你喜欢什么音乐？\n助手：我喜欢古典音乐，特别是贝多芬的作品。',
+      creatorNotes: '用于演示浮动操作栏效果的mock角色',
+      worldInfoId: 0,
+      version: BigInt(1),
+      createdAt: BigInt(Date.now()),
+      updatedAt: BigInt(Date.now()),
+      regexRules: [],
+      $typeName: 'muse.Character'
+    } as unknown as Character;
+  }
   return chatStore.activeCharacter ?? null;
 });
 
@@ -230,6 +314,10 @@ const convertToLocalMessage = (msg: any): LocalMessage => {
 
 // 消息列表（转换为本地格式）
 const messages = computed<LocalMessage[]>(() => {
+  // 开发模式使用mock数据
+  if (useMockData.value) {
+    return mockMessages;
+  }
   return chatStore.messages.map(convertToLocalMessage);
 });
 
@@ -238,7 +326,7 @@ const messagesWithTyping = computed(() => {
   const items = [...messages.value];
   if (isTyping.value) {
     items.push({
-      id: 'typing-indicator',
+      id: -1,
       role: 'assistant',
       swipes: [],
       currentSwipeIndex: 0
@@ -263,6 +351,36 @@ const loadSession = async (sessionId: number) => {
   }
 };
 
+// 优化PC端滚轮滚动：阻止Naive UI的n-scrollbar拦截wheel事件，让浏览器原生滚动接管
+let wheelCleanup: (() => void) | null = null;
+
+const setupNativeScroll = () => {
+  const vvl = document.querySelector('.messages-area .v-vl') as HTMLElement | null;
+  if (!vvl) return;
+
+  // 在capture阶段拦截wheel事件，阻止Naive UI的scrollbar处理器接收到事件
+  // 使用stopImmediatePropagation阻止同一元素上的其他监听器
+  const handler = (e: WheelEvent) => {
+    const canScrollUp = vvl.scrollTop > 0;
+    const canScrollDown = vvl.scrollTop < vvl.scrollHeight - vvl.clientHeight - 1;
+    const scrollingDown = e.deltaY > 0;
+    const scrollingUp = e.deltaY < 0;
+
+    if ((scrollingDown && canScrollDown) || (scrollingUp && canScrollUp)) {
+      e.stopImmediatePropagation();
+    }
+  };
+
+  // 在vvl的父元素(n-scrollbar-container)上capture阶段拦截
+  const scrollbarEl = vvl.parentElement;
+  if (scrollbarEl) {
+    scrollbarEl.addEventListener('wheel', handler, { capture: true, passive: true });
+    wheelCleanup = () => {
+      scrollbarEl.removeEventListener('wheel', handler, { capture: true } as EventListenerOptions);
+    };
+  }
+};
+
 // 初始化
 onMounted(async () => {
   // 如果URL中有sessionId参数，加载该会话
@@ -270,6 +388,15 @@ onMounted(async () => {
   if (sessionId) {
     await loadSession(Number(sessionId));
   }
+
+  // 延迟设置原生滚动优化，确保DOM已渲染
+  nextTick(() => {
+    setupNativeScroll();
+  });
+});
+
+onBeforeUnmount(() => {
+  wheelCleanup?.();
 });
 
 // 监听路由参数变化
@@ -284,7 +411,7 @@ watch(() => route.params.sessionId, async (newId) => {
 // 滚动到底部
 const scrollToBottom = () => {
   if (virtualListRef.value) {
-    virtualListRef.value.scrollTo({ position: 'bottom', behavior: 'smooth' });
+    virtualListRef.value.scrollTo({position: 'bottom', behavior: 'smooth'});
   }
   showScrollToBottom.value = false;
 };
@@ -296,18 +423,14 @@ const handleQuickPrompt = (text: string) => {
 
 // 处理文件上传
 const handleImportFile = (options: { file: UploadFileInfo }) => {
-  const { file } = options;
+  const {file} = options;
   if (!file.file) return false;
 
   const reader = new FileReader();
   reader.onload = (e) => {
-    try {
-      const content = e.target?.result as string;
-      JSON.parse(content);
-      messageApi.info('导入功能暂未实现');
-    } catch {
-      messageApi.error('解析文件失败，请确保是有效的JSON文件');
-    }
+    const content = e.target?.result as string;
+    JSON.parse(content);
+    messageApi.info('导入功能暂未实现');
   };
   reader.readAsText(file.file);
   return false;
@@ -336,8 +459,8 @@ const handleSendMessage = async (content: string) => {
 
   try {
     const stream = chatClient.sendMessage(
-      { sessionId: chatStore.activeSessionId, content: content },
-      { signal: signal }
+        {sessionId: chatStore.activeSessionId, content: content},
+        {signal: signal}
     );
 
     const swipeContents: Map<number, string> = new Map();
@@ -391,47 +514,67 @@ const handleStopGeneration = () => {
 
 // 编辑消息内容
 const handleEditMessage = async (messageId: number, swipeId: number, content: string) => {
-  try {
-    await chatClient.editMessage({
-      messageId: messageId,
-      swipeId: swipeId,
-      content: content
-    });
+  await chatClient.editMessage({
+    messageId: messageId,
+    swipeId: swipeId,
+    content: content
+  });
 
-    const msg = chatStore.messages.find(m => m.id === messageId);
-    if (msg) {
-      const swipe = msg.swipes.find(s => s.id === swipeId);
-      if (swipe) {
-        swipe.content = content;
-      }
+  const msg = chatStore.messages.find(m => m.id === messageId);
+  if (msg) {
+    const swipe = msg.swipes.find(s => s.id === swipeId);
+    if (swipe) {
+      swipe.content = content;
     }
-    messageApi.success('消息已更新');
-  } catch {
-    messageApi.error('编辑失败');
   }
+  messageApi.success('消息已更新');
 };
 
 // 删除整个楼层
 const handleDeleteMessage = async (id: number) => {
+  // mock模式下直接本地删除
+  if (useMockData.value) {
+    const index = mockMessages.findIndex(m => m.id === id);
+    if (index >= 0) {
+      mockMessages.splice(index, 1);
+      messageApi.success('消息已删除');
+    }
+    return;
+  }
+
   dialog.warning({
     title: '确认删除',
     content: '确定要删除这条消息吗？',
     positiveText: '删除',
     negativeText: '取消',
     onPositiveClick: async () => {
-      try {
-        await chatClient.deleteMessage({ messageId: id });
-        chatStore.removeMessage(id);
-        messageApi.success('消息已删除');
-      } catch {
-        messageApi.error('删除失败');
-      }
+      await chatClient.deleteMessage({messageId: id});
+      chatStore.removeMessage(id);
+      messageApi.success('消息已删除');
     }
   });
 };
 
 // 删除单条消息（swipe）
 const handleDeleteSwipe = async (messageId: number, swipeId: number) => {
+  // mock模式下操作mockMessages
+  if (useMockData.value) {
+    const msg = mockMessages.find(m => m.id === messageId);
+    if (!msg || msg.swipes.length <= 1) {
+      messageApi.warning('无法删除最后一条回复');
+      return;
+    }
+    const swipeIndex = msg.swipes.findIndex(s => s.id === swipeId);
+    if (swipeIndex >= 0) {
+      msg.swipes.splice(swipeIndex, 1);
+      if (msg.currentSwipeIndex >= msg.swipes.length) {
+        msg.currentSwipeIndex = msg.swipes.length - 1;
+      }
+    }
+    messageApi.success('回复已删除');
+    return;
+  }
+
   const msg = chatStore.messages.find(m => m.id === messageId);
   if (!msg || msg.swipes.length <= 1) {
     messageApi.warning('无法删除最后一条回复');
@@ -458,8 +601,8 @@ const handleRegenerateMessage = async (id: number) => {
 
   try {
     const stream = chatClient.regenerateMessage(
-      { messageId: id },
-      { signal: signal }
+        {messageId: id},
+        {signal: signal}
     );
 
     let newSwipeContent = '';
@@ -492,6 +635,15 @@ const handleRegenerateMessage = async (id: number) => {
 
 // 切换 swipe
 const handleSwipeChange = async (messageId: number, index: number) => {
+  // mock模式下仅本地切换，不调用API
+  if (useMockData.value) {
+    const msg = mockMessages.find(m => m.id === messageId);
+    if (msg) {
+      msg.currentSwipeIndex = index;
+    }
+    return;
+  }
+
   try {
     await chatClient.switchSwipe({
       messageId: messageId,
@@ -528,11 +680,7 @@ const handleDuplicateSwipe = async (messageId: number) => {
 
 // 处理人设切换
 const handlePersonaChange = async (persona: { id: number; name: string; avatar: string }) => {
-  try {
-    await userStore.setActivePersonaId(persona.id);
-  } catch {
-    messageApi.error('切换人设失败');
-  }
+  await userStore.setActivePersonaId(persona.id);
 };
 </script>
 
@@ -541,8 +689,10 @@ const handlePersonaChange = async (persona: { id: number; name: string; avatar: 
   display: flex;
   flex-direction: column;
   height: 100%;
+  min-height: 0;
   background: var(--bg-primary);
   position: relative;
+  overflow: hidden;
 }
 
 /* ==================== 欢迎界面 ==================== */
@@ -552,6 +702,8 @@ const handlePersonaChange = async (persona: { id: number; name: string; avatar: 
   align-items: center;
   justify-content: center;
   padding: 24px;
+  padding-bottom: 100px;
+  overflow-y: auto;
 }
 
 .welcome-content {
@@ -663,6 +815,7 @@ const handlePersonaChange = async (persona: { id: number; name: string; avatar: 
   flex-direction: column;
   overflow: hidden;
   position: relative;
+  min-height: 0;
 }
 
 .character-banner {
@@ -686,7 +839,15 @@ const handlePersonaChange = async (persona: { id: number; name: string; avatar: 
 
 .message-list {
   flex: 1;
-  height: 100%;
+  min-height: 0;
+  padding-bottom: 100px;
+}
+
+/* 优化虚拟列表滚动性能 */
+.message-list :deep(.v-vl) {
+  overscroll-behavior: contain;
+  will-change: scroll-position;
+  -webkit-overflow-scrolling: touch;
 }
 
 .message-item-wrapper {
@@ -745,33 +906,32 @@ const handlePersonaChange = async (persona: { id: number; name: string; avatar: 
 /* 跳到最新按钮 */
 .scroll-to-bottom-btn {
   position: absolute;
-  bottom: 16px;
+  bottom: 110px;
   right: 24px;
   z-index: 10;
   box-shadow: var(--glow-primary-sm);
   border: 1px solid var(--border-light);
 }
 
-/* ==================== 输入区域 ==================== */
-.input-area {
-  padding: 0 24px 20px;
-  background: var(--bg-primary);
+/* ==================== 浮动输入区域 ==================== */
+.input-area-float {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 12px 24px 20px;
+  background: linear-gradient(to bottom, transparent, var(--bg-primary) 28%);
+  pointer-events: none;
+}
+
+.input-area-float .input-container {
+  pointer-events: auto;
 }
 
 .input-container {
   max-width: 768px;
   margin: 0 auto;
-}
-
-.input-footer {
-  display: flex;
-  justify-content: center;
-  padding-top: 6px;
-}
-
-.model-info {
-  font-size: 12px;
-  color: var(--text-tertiary);
 }
 
 /* ==================== 响应式 ==================== */
@@ -800,8 +960,8 @@ const handlePersonaChange = async (persona: { id: number; name: string; avatar: 
     padding: 0 16px;
   }
 
-  .input-area {
-    padding: 0 16px 12px;
+  .input-area-float {
+    padding: 8px 16px 12px;
   }
 
   .character-banner {

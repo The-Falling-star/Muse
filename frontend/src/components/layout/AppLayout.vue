@@ -124,10 +124,12 @@ onMounted(() => {
 /* ====== 三栏布局框架 ====== */
 .app-layout {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  max-height: 100vh;
   width: 100%;
   background: var(--bg-primary);
   position: relative;
+  overflow: hidden;
 }
 
 /* ====== 左侧边栏（PC推挤式） ====== */
@@ -152,13 +154,14 @@ onMounted(() => {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .main-view {
   flex: 1;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
+  min-height: 0;
 }
 
 /* ====== 右侧面板（PC推挤式） ====== */
@@ -201,10 +204,6 @@ onMounted(() => {
 @media (max-width: 767px) {
   .main-content {
     width: 100%;
-  }
-
-  .main-view {
-    overflow-y: auto;
   }
 }
 </style>

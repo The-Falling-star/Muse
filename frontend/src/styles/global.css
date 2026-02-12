@@ -154,12 +154,15 @@ body {
   background: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.6;
-  overflow-x: hidden;
-  min-height: 100vh;
+  overflow: hidden;
+  height: 100vh;
+  max-height: 100vh;
 }
 
 #app {
-  min-height: 100vh;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
   position: relative;
 }
 
@@ -449,8 +452,8 @@ button {
   }
 }
 
-/* 平滑滚动 */
-* {
+/* 平滑滚动 - 仅对html元素设置，避免影响组件库内部滚动 */
+html {
   scroll-behavior: smooth;
 }
 

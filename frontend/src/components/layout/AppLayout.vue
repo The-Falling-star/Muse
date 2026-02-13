@@ -7,10 +7,13 @@
             <div class="app-layout">
               <!-- ===== PC端：推挤式左侧边栏 ===== -->
               <aside
-                v-if="appStore.isDesktop && appStore.leftSidebarVisible"
+                v-if="appStore.isDesktop"
                 class="left-sidebar-wrapper"
+                :class="{ collapsed: !appStore.leftSidebarVisible }"
               >
-                <LeftSidebar />
+                <div class="sidebar-inner">
+                  <LeftSidebar />
+                </div>
               </aside>
 
               <!-- ===== 平板/移动端：Drawer式左侧边栏 ===== -->
@@ -45,10 +48,13 @@
 
               <!-- ===== PC端：推挤式右侧面板 ===== -->
               <aside
-                v-if="appStore.isDesktop && appStore.rightPanelVisible"
+                v-if="appStore.isDesktop"
                 class="right-panel-wrapper"
+                :class="{ collapsed: !appStore.rightPanelVisible }"
               >
-                <RightPanel />
+                <div class="panel-inner">
+                  <RightPanel />
+                </div>
               </aside>
 
               <!-- ===== 平板/移动端：Drawer式右侧面板 ===== -->
@@ -144,8 +150,22 @@ onMounted(() => {
   z-index: 30;
   overflow: hidden;
   transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1),
-              min-width 300ms cubic-bezier(0.4, 0, 0.2, 1);
+              min-width 300ms cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 300ms cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 1px 0 12px rgba(77, 168, 255, .03);
+}
+
+.left-sidebar-wrapper.collapsed {
+  width: 0;
+  min-width: 0;
+  border-right-color: transparent;
+  box-shadow: none;
+}
+
+.sidebar-inner {
+  width: 300px;
+  height: 100%;
 }
 
 /* ====== 中间主区域 ====== */
@@ -176,8 +196,22 @@ onMounted(() => {
   z-index: 30;
   overflow: hidden;
   transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1),
-              min-width 300ms cubic-bezier(0.4, 0, 0.2, 1);
+              min-width 300ms cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 300ms cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: -1px 0 12px rgba(77, 168, 255, .03);
+}
+
+.right-panel-wrapper.collapsed {
+  width: 0;
+  min-width: 0;
+  border-left-color: transparent;
+  box-shadow: none;
+}
+
+.panel-inner {
+  width: 300px;
+  height: 100%;
 }
 
 /* ====== 视图切换过渡动画 ====== */

@@ -11,7 +11,11 @@ import (
 )
 
 // ChatRepo 聊天会话数据库仓库
-type ChatRepo struct {
+type ChatRepo struct{}
+
+// NewChatRepo 创建聊天会话数据仓库实例
+func NewChatRepo() ChatRepository {
+	return &ChatRepo{}
 }
 
 // CreateSession 创建聊天会话

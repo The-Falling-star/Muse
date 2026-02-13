@@ -11,7 +11,11 @@ import (
 )
 
 // RegexRuleRepo 正则规则数据库仓库
-type RegexRuleRepo struct {
+type RegexRuleRepo struct{}
+
+// NewRegexRuleRepo 创建正则规则数据仓库实例
+func NewRegexRuleRepo() RegexRuleRepository {
+	return &RegexRuleRepo{}
 }
 
 // Create 创建正则规则

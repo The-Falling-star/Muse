@@ -10,20 +10,6 @@
         </div>
         <h1 class="welcome-title">Muse</h1>
         <p class="welcome-subtitle">开始你的创意之旅</p>
-
-        <div class="quick-prompts">
-          <div
-              v-for="(prompt, index) in quickPrompts"
-              :key="index"
-              class="quick-prompt-card"
-              @click="handleQuickPrompt(prompt.text)"
-          >
-            <n-icon size="20" class="prompt-icon">
-              <component :is="prompt.icon"/>
-            </n-icon>
-            <span class="prompt-text">{{ prompt.text }}</span>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -108,7 +94,8 @@
       <div class="input-container">
         <MessageInput
             v-model="inputMessage"
-            :disabled="isTyping"
+            :disabled="inputDisabled"
+            :placeholder="inputPlaceholder"
             @send="handleSendMessage"
             @stop="handleStopGeneration"
             @persona-change="(p: any) => handlePersonaChange(p)"
@@ -133,11 +120,7 @@ import {useRoute} from 'vue-router';
 import type {UploadFileInfo, VirtualListInst} from 'naive-ui';
 import {NAvatar, NButton, NIcon, NUpload, NVirtualList, useDialog, useMessage} from 'naive-ui';
 import {
-  BookOutline,
-  ChatbubbleEllipsesOutline,
   ChevronDownOutline,
-  CodeSlashOutline,
-  ColorPaletteOutline,
   SparklesOutline
 } from '@vicons/ionicons5';
 
@@ -172,16 +155,14 @@ const virtualListRef = ref<VirtualListInst | null>(null);
 const loading = ref(false);
 const showScrollToBottom = ref(false);
 
-// 快捷提示
-const quickPrompts = [
-  {text: '帮我写一段创意故事', icon: ChatbubbleEllipsesOutline},
-  {text: '解释一个复杂的概念', icon: BookOutline},
-  {text: '帮我头脑风暴创意', icon: ColorPaletteOutline},
-  {text: '写一段代码片段', icon: CodeSlashOutline}
-];
-
 // 从 Store 获取数据
 const isTyping = computed(() => chatStore.isStreaming);
+const hasActiveSession = computed(() => !!chatStore.activeSessionId);
+const inputDisabled = computed(() => !hasActiveSession.value || isTyping.value);
+const inputPlaceholder = computed(() => {
+  if (!hasActiveSession.value) return '请先选择或创建一个会话';
+  return '输入消息...';
+});
 
 // 当前角色
 const currentCharacter = computed<Character | null>(() => {
@@ -310,11 +291,6 @@ const scrollToBottom = () => {
     virtualListRef.value.scrollTo({position: 'bottom', behavior: 'smooth'});
   }
   showScrollToBottom.value = false;
-};
-
-// 快捷提示点击
-const handleQuickPrompt = (text: string) => {
-  inputMessage.value = text;
 };
 
 // 处理文件上传
@@ -611,60 +587,7 @@ const handlePersonaChange = async (persona: { id: number; name: string; avatar: 
 .welcome-subtitle {
   font-size: 16px;
   color: var(--text-secondary);
-  margin: 0 0 40px;
-}
-
-.quick-prompts {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  width: 100%;
-  max-width: 480px;
-}
-
-.quick-prompt-card {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 14px 16px;
-  background: var(--gradient-glow);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 250ms ease;
-  text-align: left;
-  position: relative;
-  overflow: hidden;
-}
-
-.quick-prompt-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--gradient-primary);
-  opacity: 0;
-  transition: opacity 250ms ease;
-}
-
-.quick-prompt-card:hover {
-  border-color: var(--color-primary);
-  box-shadow: var(--glow-primary-sm);
-  transform: translateY(-1px);
-}
-
-.quick-prompt-card:hover::before {
-  opacity: .06;
-}
-
-.prompt-icon {
-  color: var(--color-primary);
-  flex-shrink: 0;
-}
-
-.prompt-text {
-  font-size: 13px;
-  color: var(--text-primary);
-  line-height: 1.4;
+  margin: 0;
 }
 
 /* ==================== 消息区域 ==================== */
@@ -808,11 +731,6 @@ const handlePersonaChange = async (persona: { id: number; name: string; avatar: 
   .welcome-subtitle {
     font-size: 14px;
     margin-bottom: 28px;
-  }
-
-  .quick-prompts {
-    grid-template-columns: 1fr;
-    max-width: 100%;
   }
 
   .message-item-wrapper {

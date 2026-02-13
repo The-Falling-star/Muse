@@ -283,6 +283,7 @@ import {
 } from '@vicons/ionicons5';
 import draggable from 'vuedraggable';
 import { usePresetStore } from '@/stores/preset';
+import { regexRuleClient } from '@/api/client';
 import { Role, InjectionPosition } from '@/gen/muse/muse_pb';
 import type { PromptItem, RegexRule, RegexAffectFlags } from '@/gen/muse/muse_pb';
 
@@ -314,6 +315,8 @@ interface PromptItemUI extends PromptItem {
 
 const prompts = ref<PromptItemUI[]>([]);
 const regexRules = ref<RegexRule[]>([]);
+// 记录加载时的原始正则规则ID，用于保存时对比差异
+const originalRegexRuleIds = ref<Set<number>>(new Set());
 
 // =====================
 // 加载数据
@@ -334,7 +337,11 @@ const loadPreset = async () => {
       ...item,
       expanded: false
     }));
-    regexRules.value = preset.regexRules || [];
+
+    // 通过后端接口获取预设关联的正则规则
+    const regexResp = await regexRuleClient.listPresetRegexRules({ presetId: presetId.value });
+    regexRules.value = regexResp.rules;
+    originalRegexRuleIds.value = new Set(regexResp.rules.filter(r => r.id > 0).map(r => r.id));
   } catch {
     message.error('加载预设失败');
   } finally {
@@ -649,6 +656,52 @@ const handleSave = async () => {
       }
     }
 
+    // 4. 处理正则规则（新增/更新/删除）
+    const currentRegexIds = new Set(regexRules.value.filter(r => r.id > 0).map(r => r.id));
+
+    // 删除已被移除的正则规则
+    for (const originalId of originalRegexRuleIds.value) {
+      if (!currentRegexIds.has(originalId)) {
+        await regexRuleClient.deleteRegexRule({ id: originalId });
+      }
+    }
+
+    // 新增和更新正则规则
+    for (let i = 0; i < regexRules.value.length; i++) {
+      const rule = regexRules.value[i];
+      if (!rule) continue;
+
+      const ruleData = {
+        name: rule.name,
+        findPattern: rule.findPattern,
+        replacePattern: rule.replacePattern,
+        isEnabled: rule.isEnabled,
+        runOnEdit: rule.runOnEdit ?? false,
+        substituteRegex: rule.substituteRegex ?? true,
+        minDepth: rule.minDepth ?? 0,
+        maxDepth: rule.maxDepth ?? 0,
+        affectFlags: rule.affectFlags,
+        sortOrder: i
+      };
+
+      if (rule.id > 0) {
+        // 更新已有规则
+        const resp = await regexRuleClient.updateRegexRule({ id: rule.id, ...ruleData });
+        if (resp.rule) {
+          regexRules.value[i] = resp.rule;
+        }
+      } else {
+        // 新增规则
+        const resp = await regexRuleClient.addRegexRule({ presetId: presetId.value, ...ruleData });
+        if (resp.rule) {
+          regexRules.value[i] = resp.rule;
+        }
+      }
+    }
+
+    // 更新原始ID记录
+    originalRegexRuleIds.value = new Set(regexRules.value.filter(r => r.id > 0).map(r => r.id));
+
     message.success('预设保存成功');
   } catch {
     message.error('保存失败，请重试');
@@ -698,6 +751,25 @@ const handleSaveAs = () => {
         });
 
         if (newPreset) {
+          // 为新预设创建关联的正则规则
+          for (let i = 0; i < regexRules.value.length; i++) {
+            const rule = regexRules.value[i];
+            if (!rule) continue;
+            await regexRuleClient.addRegexRule({
+              presetId: newPreset.id,
+              name: rule.name,
+              findPattern: rule.findPattern,
+              replacePattern: rule.replacePattern,
+              isEnabled: rule.isEnabled,
+              runOnEdit: rule.runOnEdit ?? false,
+              substituteRegex: rule.substituteRegex ?? true,
+              minDepth: rule.minDepth ?? 0,
+              maxDepth: rule.maxDepth ?? 0,
+              affectFlags: rule.affectFlags,
+              sortOrder: i
+            });
+          }
+
           message.success('预设已另存为: ' + newName.value);
           router.push(`/preset/${newPreset.id}`);
         }

@@ -18,14 +18,14 @@ import (
 )
 
 type presetImpl struct {
-	presetRepo    *database.PresetRepo
-	regexRuleRepo *database.RegexRuleRepo
+	presetRepo    database.PresetRepository
+	regexRuleRepo database.RegexRuleRepository
 }
 
 func newPreset() *presetImpl {
 	return &presetImpl{
-		presetRepo:    &database.PresetRepo{},
-		regexRuleRepo: &database.RegexRuleRepo{},
+		presetRepo:    database.NewPresetRepo(),
+		regexRuleRepo: database.NewRegexRuleRepo(),
 	}
 }
 

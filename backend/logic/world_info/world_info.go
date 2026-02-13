@@ -18,12 +18,12 @@ import (
 )
 
 type worldInfoImpl struct {
-	worldInfoRepo *database.WorldInfoRepo
+	worldInfoRepo database.WorldInfoRepository
 }
 
 func newWorldInfo() *worldInfoImpl {
 	return &worldInfoImpl{
-		worldInfoRepo: &database.WorldInfoRepo{},
+		worldInfoRepo: database.NewWorldInfoRepo(),
 	}
 }
 

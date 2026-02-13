@@ -19,12 +19,12 @@ import (
 )
 
 type chatImpl struct {
-	chatRepo      *database.ChatRepo
-	presetRepo    *database.PresetRepo
-	worldInfoRepo *database.WorldInfoRepo
-	regexRepo     *database.RegexRuleRepo
-	charRepo      *database.CharacterRepo
-	userRepo      *database.UserRepo
+	chatRepo      database.ChatRepository
+	presetRepo    database.PresetRepository
+	worldInfoRepo database.WorldInfoRepository
+	regexRepo     database.RegexRuleRepository
+	charRepo      database.CharacterRepository
+	userRepo      database.UserRepository
 
 	// 会话缓存管理器
 	cacheManager *cache.SessionCacheManager
@@ -32,12 +32,12 @@ type chatImpl struct {
 
 func newChat() *chatImpl {
 	return &chatImpl{
-		chatRepo:      &database.ChatRepo{},
-		presetRepo:    &database.PresetRepo{},
-		worldInfoRepo: &database.WorldInfoRepo{},
-		regexRepo:     &database.RegexRuleRepo{},
-		charRepo:      &database.CharacterRepo{},
-		userRepo:      &database.UserRepo{},
+		chatRepo:      database.NewChatRepo(),
+		presetRepo:    database.NewPresetRepo(),
+		worldInfoRepo: database.NewWorldInfoRepo(),
+		regexRepo:     database.NewRegexRuleRepo(),
+		charRepo:      database.NewCharacterRepo(),
+		userRepo:      database.NewUserRepo(),
 		cacheManager:  cache.GetSessionCacheManager(),
 	}
 }

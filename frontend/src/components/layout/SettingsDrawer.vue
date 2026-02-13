@@ -166,6 +166,7 @@ import { AddOutline } from '@vicons/ionicons5';
 import { useMediaQuery } from '@vueuse/core';
 import { useThemeStore } from '@/stores/theme';
 import { useUserStore } from '@/stores/user';
+import { userClient } from '@/api/client';
 
 const props = defineProps<{
   visible: boolean;
@@ -215,12 +216,18 @@ const fontSizeOptions = [
 const apiConfigs = computed(() => userStore.apiConfigs);
 const proxyUrl = ref('');
 
-const handleSetActiveConfig = (configId: number) => {
-  userStore.setActiveApiConfigId(configId);
+const handleSetActiveConfig = async (configId: number) => {
+  try {
+    await userClient.setActiveAPIConfig({ configId });
+    userStore.setActiveApiConfigId(configId);
+  } catch (e) {
+    console.error('切换API配置失败:', e);
+  }
 };
 
 const handleAddApiConfig = () => {
-  // TODO: 弹出API配置编辑弹窗
+  emit('update:visible', false);
+  router.push('/settings');
 };
 
 // ====== 对话设置 ======
@@ -232,7 +239,8 @@ const streamOutput = ref(true);
 const currentUser = computed(() => userStore.currentUser);
 
 const handleChangePassword = () => {
-  // TODO: 弹出修改密码弹窗
+  emit('update:visible', false);
+  router.push('/settings');
 };
 
 const handleLogout = () => {

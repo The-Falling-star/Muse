@@ -11,7 +11,11 @@ import (
 )
 
 // WorldInfoRepo 世界书数据库仓库
-type WorldInfoRepo struct {
+type WorldInfoRepo struct{}
+
+// NewWorldInfoRepo 创建世界书数据仓库实例
+func NewWorldInfoRepo() WorldInfoRepository {
+	return &WorldInfoRepo{}
 }
 
 // Create 创建世界书

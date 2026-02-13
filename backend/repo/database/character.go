@@ -11,7 +11,11 @@ import (
 )
 
 // CharacterRepo 角色卡数据库仓库
-type CharacterRepo struct {
+type CharacterRepo struct{}
+
+// NewCharacterRepo 创建角色卡数据仓库实例
+func NewCharacterRepo() CharacterRepository {
+	return &CharacterRepo{}
 }
 
 // Create 创建角色

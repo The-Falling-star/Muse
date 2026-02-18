@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"connectrpc.com/connect"
-	"github.com/ling/muse/common/constrant"
+	"github.com/ling/muse/common/constant"
 	"github.com/ling/muse/common/convert"
 	"github.com/ling/muse/common/errs"
 	"github.com/ling/muse/common/jwt"
@@ -44,7 +44,7 @@ func newChat() *chatImpl {
 
 func (c *chatImpl) ListChatSessions(ctx context.Context, req *pb.ListChatSessionsRequest) (*pb.ListChatSessionsResponse, error) {
 	// 获取并规范化分页参数
-	page, pageSize := constrant.NormalizePagination(int(req.GetPage()), int(req.GetPageSize()))
+	page, pageSize := constant.NormalizePagination(int(req.GetPage()), int(req.GetPageSize()))
 	characterID := int(req.GetCharacterId())
 
 	// 从数据库获取会话列表
@@ -101,16 +101,40 @@ func (c *chatImpl) CreateChatSession(ctx context.Context, req *pb.CreateChatSess
 		name = "新会话"
 	}
 
+	// 插入第一条消息
+	character, err := c.charRepo.GetByID(ctx, characterID, userId)
+	if err != nil {
+		return nil, err
+	}
+	if character == nil {
+		return nil, errs.NewStandardf(connect.CodeNotFound, errs.CharacterNotFound)
+	}
+	swipes := make([]entity.MessageSwipe, len(character.FirstMessage))
+	for i, content := range character.FirstMessage {
+		swipes[i] = entity.MessageSwipe{
+			Content:   content,
+			SortOrder: i * constant.SortOrderInterval,
+		}
+	}
+
+	message := []entity.Message{{
+		Role:             pb.Role_Assistant,
+		ActiveSwipeIndex: 0,
+		SortOrder:        0,
+		Swipes:           swipes,
+	}}
+
 	// 构建会话实体
 	session := &entity.ChatSession{
 		UserID:      userId,
 		CharacterID: characterID,
 		Name:        name,
 		Version:     1,
+		Messages:    message,
 	}
 
 	// 保存到数据库
-	if err := c.chatRepo.CreateSession(ctx, session); err != nil {
+	if err = c.chatRepo.CreateSession(ctx, session); err != nil {
 		return nil, err
 	}
 

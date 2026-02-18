@@ -227,17 +227,6 @@ import { useUserStore } from '@/stores/user';
 import { chatClient } from '@/api/client';
 import type { ChatSession, Message as PbMessage, Character, Persona } from '@/gen/muse/muse_pb';
 
-// 本地Message类型适配
-interface LocalMessage {
-  id: string;
-  role: 'user' | 'assistant' | 'system';
-  swipes: Array<{
-    id: string;
-    content: string;
-    timestamp: number;
-  }>;
-  currentSwipeIndex: number;
-}
 
 const route = useRoute();
 const router = useRouter();
@@ -268,24 +257,7 @@ const currentPersona = computed<Persona | null>(() => {
   return userStore.activePersona ?? null;
 });
 
-// 将PbMessage转换为本地格式
-const convertToLocalMessage = (msg: PbMessage): LocalMessage => {
-  const roleMap: Record<number, 'user' | 'assistant' | 'system'> = {
-    1: 'system',
-    2: 'user',
-    3: 'assistant'
-  };
-  return {
-    id: msg.id.toString(),
-    role: roleMap[msg.role] || 'assistant',
-    swipes: msg.swipes.map(s => ({
-      id: s.id.toString(),
-      content: s.content,
-      timestamp: Number(s.createdAt)
-    })),
-    currentSwipeIndex: msg.activeSwipeIndex
-  };
-};
+
 
 // 会话辅助函数
 const getSessionDisplayName = (session: ChatSession): string => {
@@ -317,22 +289,42 @@ const formatSessionTime = (timestamp: bigint): string => {
   return date.toLocaleDateString();
 };
 
-// 消息列表（转换为本地格式）
-const messages = computed<LocalMessage[]>(() => {
-  return chatStore.messages.map(convertToLocalMessage);
+// 消息列表（使用PbMessage类型）
+const messages = computed<PbMessage[]>(() => {
+  return chatStore.messages;
 });
 
 // 计算属性：消息列表（包含输入指示器）
 const messagesWithTyping = computed(() => {
-  const items = [...messages.value];
+  const items = [...messages.value.map(pbMsg => {
+    // 将 PbMessage 转换为 MessageItem 组件需要的格式
+    const roleMap: Record<number, 'user' | 'assistant' | 'system'> = {
+      1: 'system',
+      2: 'user',
+      3: 'assistant'
+    };
+    
+    return {
+      id: pbMsg.id,
+      role: roleMap[pbMsg.role] || 'assistant',
+      swipes: pbMsg.swipes.map(swipe => ({
+        id: swipe.id,
+        content: swipe.content,
+        timestamp: Number(swipe.createdAt)
+      })),
+      currentSwipeIndex: pbMsg.activeSwipeIndex
+    };
+  })];
+  
   if (isTyping.value) {
     items.push({
-      id: 'typing-indicator',
+      id: 0,
       role: 'assistant',
       swipes: [],
       currentSwipeIndex: 0
     });
   }
+  
   return items;
 });
 
@@ -484,7 +476,7 @@ const handleDeleteChat = () => {
       try {
         await chatClient.deleteChatSession({ id: chatStore.activeSessionId });
         chatStore.removeSession(chatStore.activeSessionId);
-        router.push('/chat');
+        router.push('/');
         message.success('会话已删除');
       } catch (e) {
         message.error('删除失败');

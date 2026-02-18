@@ -1,4 +1,4 @@
-package constrant
+package constant
 
 const (
 	// DefaultPageNum 默认页码
@@ -9,8 +9,11 @@ const (
 	MaxPageSize = 100
 )
 
+type TranKey string
+
 // TransactionKey 获取ctx中的事务键
-const TransactionKey = "transaction"
+const TransactionKey TranKey = "transaction"
+const SortOrderInterval = 100
 
 // NormalizePagination 处理分页参数，返回规范化后的 page 和 pageSize
 func NormalizePagination(page, pageSize int) (int, int) {

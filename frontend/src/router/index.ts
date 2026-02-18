@@ -28,6 +28,16 @@ const routes = [
     meta: { title: '登录', requiresAuth: false }
   },
   {
+    path: '/chat/:sessionId',
+    name: 'ChatSession',
+    component: () => import('../views/ChatView.vue'),
+    meta: { title: '聊天会话', requiresAuth: true }
+  },
+  {
+    path: '/chat',
+    redirect: '/'
+  },
+  {
     path: '/',
     name: 'Chat',
     component: () => import('../views/ChatView.vue'),

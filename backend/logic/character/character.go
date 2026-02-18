@@ -12,7 +12,7 @@ import (
 
 	"connectrpc.com/connect"
 	png "github.com/dsoprea/go-png-image-structure/v2"
-	"github.com/ling/muse/common/constrant"
+	"github.com/ling/muse/common/constant"
 	"github.com/ling/muse/common/convert"
 	"github.com/ling/muse/common/errs"
 	"github.com/ling/muse/common/jwt"
@@ -38,7 +38,7 @@ func newCharacter() *characterImpl {
 
 func (c *characterImpl) ListCharacters(ctx context.Context, req *pb.ListCharactersRequest) (*pb.ListCharactersResponse, error) {
 	// 获取并规范化分页参数
-	page, pageSize := constrant.NormalizePagination(int(req.GetPage()), int(req.GetPageSize()))
+	page, pageSize := constant.NormalizePagination(int(req.GetPage()), int(req.GetPageSize()))
 
 	// 从数据库获取角色列表
 	userId := jwt.GetUserId(ctx)

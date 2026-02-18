@@ -29,6 +29,8 @@ func (c *ChatRepo) GetSessionByID(ctx context.Context, id int, userID int) (*ent
 	db := GetDB(ctx)
 	var session entity.ChatSession
 	result := db.Where("id = ? AND user_id = ?", id, userID).
+		Preload("Messages").
+		Preload("Messages.Swipes").
 		First(&session)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {

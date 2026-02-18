@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"connectrpc.com/connect"
-	"github.com/ling/muse/common/constrant"
+	"github.com/ling/muse/common/constant"
 	"github.com/ling/muse/common/convert"
 	"github.com/ling/muse/common/errs"
 	"github.com/ling/muse/common/jwt"
@@ -31,7 +31,7 @@ func newPreset() *presetImpl {
 
 func (p *presetImpl) ListPresets(ctx context.Context, req *pb.ListPresetsRequest) (*pb.ListPresetsResponse, error) {
 	// 获取并规范化分页参数
-	page, pageSize := constrant.NormalizePagination(int(req.GetPage()), int(req.GetPageSize()))
+	page, pageSize := constant.NormalizePagination(int(req.GetPage()), int(req.GetPageSize()))
 
 	// 从数据库获取预设列表（不加载关联的PromptItems和RegexRules）
 	userId := jwt.GetUserId(ctx)

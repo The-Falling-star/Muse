@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"connectrpc.com/connect"
-	"github.com/ling/muse/common/constrant"
+	"github.com/ling/muse/common/constant"
 	"github.com/ling/muse/config"
 	pb "github.com/ling/muse/gen/muse"
 	"github.com/ling/muse/logic/character"
@@ -178,11 +178,11 @@ func beginTransaction(ctx context.Context) (context.Context, error) {
 		log.Errorf("开启事务失败: %v", tx.Error)
 		return ctx, tx.Error
 	}
-	return context.WithValue(ctx, constrant.TransactionKey, tx), nil
+	return context.WithValue(ctx, constant.TransactionKey, tx), nil
 }
 
 // getTransaction 从 context 中获取事务
 func getTransaction(ctx context.Context) (*gorm.DB, bool) {
-	tx, ok := ctx.Value(constrant.TransactionKey).(*gorm.DB)
+	tx, ok := ctx.Value(constant.TransactionKey).(*gorm.DB)
 	return tx, ok
 }

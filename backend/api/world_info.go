@@ -47,7 +47,7 @@ func (w *WorldInfoServer) CreateWorldInfo(ctx context.Context, req *connect.Requ
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "CreateWorldInfo", req.Msg, (*pb.CreateWorldInfoResponse)(nil), err)
 	}
 
 	resp, err := w.worldInfo.CreateWorldInfo(ctx, req.Msg)
@@ -64,7 +64,7 @@ func (w *WorldInfoServer) UpdateWorldInfo(ctx context.Context, req *connect.Requ
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "UpdateWorldInfo", req.Msg, (*pb.UpdateWorldInfoResponse)(nil), err)
 	}
 
 	resp, err := w.worldInfo.UpdateWorldInfo(ctx, req.Msg)
@@ -81,7 +81,7 @@ func (w *WorldInfoServer) DeleteWorldInfo(ctx context.Context, req *connect.Requ
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "DeleteWorldInfo", req.Msg, (*pb.DeleteWorldInfoResponse)(nil), err)
 	}
 
 	resp, err := w.worldInfo.DeleteWorldInfo(ctx, req.Msg)
@@ -98,7 +98,7 @@ func (w *WorldInfoServer) ImportWorldInfo(ctx context.Context, req *connect.Requ
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "ImportWorldInfo", req.Msg, (*pb.ImportWorldInfoResponse)(nil), err)
 	}
 
 	resp, err := w.worldInfo.ImportWorldInfo(ctx, req.Msg)
@@ -137,7 +137,7 @@ func (w *WorldInfoServer) AddWorldInfoEntry(ctx context.Context,
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "AddWorldInfoEntry", req.Msg, (*pb.AddWorldInfoEntryResponse)(nil), err)
 	}
 
 	resp, err := w.worldInfo.AddWorldInfoEntry(ctx, req.Msg)
@@ -155,7 +155,7 @@ func (w *WorldInfoServer) UpdateWorldInfoEntry(ctx context.Context,
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "UpdateWorldInfoEntry", req.Msg, (*pb.UpdateWorldInfoEntryResponse)(nil), err)
 	}
 
 	resp, err := w.worldInfo.UpdateWorldInfoEntry(ctx, req.Msg)
@@ -173,7 +173,7 @@ func (w *WorldInfoServer) DeleteWorldInfoEntry(ctx context.Context,
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "DeleteWorldInfoEntry", req.Msg, (*pb.DeleteWorldInfoEntryResponse)(nil), err)
 	}
 
 	resp, err := w.worldInfo.DeleteWorldInfoEntry(ctx, req.Msg)
@@ -191,7 +191,7 @@ func (w *WorldInfoServer) UpdateWorldInfoEntriesOrder(ctx context.Context,
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "UpdateWorldInfoEntriesOrder", req.Msg, (*pb.UpdateWorldInfoEntriesOrderResponse)(nil), err)
 	}
 
 	resp, err := w.worldInfo.UpdateWorldInfoEntriesOrder(ctx, req.Msg)

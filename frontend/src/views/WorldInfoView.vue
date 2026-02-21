@@ -309,18 +309,7 @@
       </n-upload>
     </n-modal>
 
-    <!-- 测试按钮（仅在开发环境显示） -->
-    <div v-if="__DEV__" class="test-buttons">
-      <n-button @click="showSidebar = true" type="primary" size="small">
-        打开侧边栏
-      </n-button>
-      <n-button @click="showSidebar = false" type="error" size="small">
-        关闭侧边栏
-      </n-button>
-      <n-button @click="isMobile = !isMobile" type="warning" size="small">
-        切换移动端模式: {{ isMobile ? 'ON' : 'OFF' }}
-      </n-button>
-    </div>
+    <!-- 测试按钮已移除 -->
   </div>
 </template>
 
@@ -396,8 +385,8 @@ onUnmounted(() => {
   window.removeEventListener('resize', handleResize);
 });
 
-// 提供全局属性访问
-const $isMobile = isMobile;
+// 移除未使用的变量
+// const $isMobile = isMobile;
 
 // 状态
 const loading = ref(false);

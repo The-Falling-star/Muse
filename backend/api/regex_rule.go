@@ -48,7 +48,7 @@ func (r *RegexRuleServer) AddRegexRule(ctx context.Context, req *connect.Request
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "AddRegexRule", req.Msg, (*pb.AddRegexRuleResponse)(nil), err)
 	}
 
 	resp, err := r.regexRule.AddRegexRule(ctx, req.Msg)
@@ -65,7 +65,7 @@ func (r *RegexRuleServer) UpdateRegexRule(ctx context.Context, req *connect.Requ
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "UpdateRegexRule", req.Msg, (*pb.UpdateRegexRuleResponse)(nil), err)
 	}
 
 	resp, err := r.regexRule.UpdateRegexRule(ctx, req.Msg)
@@ -82,7 +82,7 @@ func (r *RegexRuleServer) DeleteRegexRule(ctx context.Context, req *connect.Requ
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "DeleteRegexRule", req.Msg, (*pb.DeleteRegexRuleResponse)(nil), err)
 	}
 
 	resp, err := r.regexRule.DeleteRegexRule(ctx, req.Msg)
@@ -100,7 +100,7 @@ func (r *RegexRuleServer) UpdateRegexRulesOrder(ctx context.Context,
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "UpdateRegexRulesOrder", req.Msg, (*pb.UpdateRegexRulesOrderResponse)(nil), err)
 	}
 
 	resp, err := r.regexRule.UpdateRegexRulesOrder(ctx, req.Msg)
@@ -118,7 +118,7 @@ func (r *RegexRuleServer) ImportRegexRules(ctx context.Context,
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "ImportRegexRules", c.Msg, (*pb.ImportRegexRulesResponse)(nil), err)
 	}
 
 	resp, err := r.regexRule.ImportRegexRules(ctx, c.Msg)

@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/ling/muse/common/constant"
 	"github.com/ling/muse/config"
 	"github.com/ling/muse/middleware"
 )
@@ -48,7 +49,10 @@ func ParseJWT(tokenString string) (*middleware.JWTClaims, error) {
 
 // GetUserId 获取用户Id
 func GetUserId(ctx context.Context) int {
-	if userId, ok := ctx.Value("userId").(int); ok && userId != 0 {
+	var userId int
+	var ok bool
+
+	if userId, ok = ctx.Value(constant.UserIDKey).(int); ok && userId != 0 {
 		return userId
 	}
 	return 0

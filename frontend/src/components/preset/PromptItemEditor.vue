@@ -127,9 +127,11 @@ import {
 } from '@vicons/ionicons5';
 
 // 提示项类型（组件本地使用）
+import type { PromptItemIdentifier } from '@/gen/muse/muse_pb';
+
 interface PromptItem {
   id: number;
-  identifier: string;
+  identifier: PromptItemIdentifier;
   name: string;
   role: 'system' | 'user' | 'assistant';
   content: string;

@@ -1,1 +1,1 @@
-go build -o muse && ./muse
+go build -o muse && ./muse && rm ./muse

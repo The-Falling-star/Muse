@@ -3,10 +3,12 @@ package chat
 import (
 	"context"
 	"regexp"
+	"slices"
 	"sort"
 	"strings"
 
 	"connectrpc.com/connect"
+	"github.com/dlclark/regexp2"
 	"github.com/ling/muse/common/constant"
 	"github.com/ling/muse/common/convert"
 	"github.com/ling/muse/common/errs"
@@ -16,6 +18,7 @@ import (
 	"github.com/ling/muse/repo/cache"
 	"github.com/ling/muse/repo/database"
 	"github.com/ling/muse/repo/model"
+	log "github.com/sirupsen/logrus"
 )
 
 type chatImpl struct {
@@ -214,18 +217,8 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 		return errs.NewStandard(connect.CodeNotFound, "用户不存在")
 	}
 
-	// 获取活跃的 API 配置
-	apiConfig, err := c.userRepo.GetActiveAPIConfig(ctx, userID)
-	if err != nil {
-		return err
-	}
-	if apiConfig == nil {
-		return errs.NewStandard(connect.CodeFailedPrecondition, "请先配置并激活 API")
-	}
-
 	// 尝试从缓存获取会话数据
 	sessionCache, cacheHit := c.cacheManager.Get(int64(userID), int64(sessionID))
-
 	// 如果缓存命中，校验版本是否有效
 	if cacheHit {
 		versions, verifyErr := c.getVersionInfo(ctx, userID, sessionCache)
@@ -392,6 +385,14 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 	}
 
 	// 选择 LLM 模型并调用
+	// 获取活跃的 API 配置
+	apiConfig, err := c.userRepo.GetActiveAPIConfig(ctx, userID)
+	if err != nil {
+		return err
+	}
+	if apiConfig == nil {
+		return errs.NewStandard(connect.CodeFailedPrecondition, "请先配置并激活 API")
+	}
 	llm := c.getLLM(apiConfig.Provider)
 
 	// 流式调用大模型
@@ -702,10 +703,13 @@ func (c *chatImpl) buildMessages(
 			systemContent.WriteString("\n\n")
 		}
 		// 添加示例对话
-		if session.Character.ExampleDialogue != "" {
+		if len(session.Character.ExampleDialogue) > 0 {
 			systemContent.WriteString("示例对话:\n")
-			systemContent.WriteString(session.Character.ExampleDialogue)
-			systemContent.WriteString("\n\n")
+			for _, dialogue := range session.Character.ExampleDialogue {
+				systemContent.WriteString(dialogue)
+				systemContent.WriteString("\n")
+			}
+			systemContent.WriteString("\n")
 		}
 	}
 
@@ -828,15 +832,12 @@ func (c *chatImpl) matchWorldInfoKeys(entry entity.WorldInfoEntry, session *enti
 
 	searchText := strings.ToLower(searchContent.String())
 
-	// 分割关键词列表
-	keys := strings.Split(entry.KeysList, ",")
-	for _, key := range keys {
+	for _, key := range entry.Keys {
 		key = strings.TrimSpace(strings.ToLower(key))
 		if key != "" && strings.Contains(searchText, key) {
 			// 如果有次要关键词，需要同时匹配
-			if entry.Selective && entry.SecondaryKeys != "" {
-				secondaryKeys := strings.Split(entry.SecondaryKeys, ",")
-				for _, sk := range secondaryKeys {
+			if entry.Selective && len(entry.SecondaryKeys) > 0 {
+				for _, sk := range entry.SecondaryKeys {
 					sk = strings.TrimSpace(strings.ToLower(sk))
 					if sk != "" && strings.Contains(searchText, sk) {
 						return true
@@ -949,4 +950,259 @@ func (c *chatImpl) DeleteMessage(ctx context.Context, req *pb.DeleteMessageReque
 func (c *chatImpl) SwitchSwipe(ctx context.Context, req *pb.SwitchSwipeRequest) (*pb.SwitchSwipeResponse, error) {
 	//TODO implement me
 	panic("implement me")
+}
+
+func (c *chatImpl) buildMessage(
+	char *entity.Character,
+	session *entity.ChatSession,
+	promptItems []*entity.PromptItem,
+	worldBook []*entity.WorldInfo,
+	regexRules []*entity.RegexRule,
+) ([]model.Message, error) {
+	var messages []model.Message
+	for _, promptItem := range promptItems {
+		switch promptItem.Identifier {
+		case pb.PromptItemIdentifier_PromptItemIdentifierUnspecified, pb.PromptItemIdentifier_Main,
+			pb.PromptItemIdentifier_Jailbreak, pb.PromptItemIdentifier_Nsfw:
+			messages = append(messages, model.Message{
+				Role:    promptItem.Role,
+				Content: promptItem.Content,
+				Module:  constant.Preset,
+			})
+		case pb.PromptItemIdentifier_ChatHistory:
+			var msgs []model.Message
+			var systemCount, assistantCount, userCount int
+			systemMsg, assistantMsg, userMsg := collectMsg(worldBook, promptItems, session)
+			// 添加历史消息
+			for i := len(session.Messages) - 1; i >= 0; i-- {
+				history := session.Messages[i]
+				if len(history.Swipes) == 0 {
+					continue
+				}
+				switch history.Role {
+				case pb.Role_System:
+					if insertContent, exist := systemMsg[systemCount]; exist {
+						msgs = append(msgs, insertContent...)
+					}
+					systemCount++
+				case pb.Role_User:
+					if insertContent, exist := userMsg[userCount]; exist {
+						msgs = append(msgs, insertContent...)
+					}
+					userCount++
+				case pb.Role_Assistant:
+					if insertContent, exist := assistantMsg[assistantCount]; exist {
+						msgs = append(msgs, insertContent...)
+					}
+					assistantCount++
+				}
+				index := history.ActiveSwipeIndex
+				if index >= len(history.Swipes) {
+					index = len(history.Swipes) - 1
+				}
+				message := model.Message{
+					Role:    history.Role,
+					Content: history.Swipes[index].Content,
+				}
+				switch history.Role {
+				case pb.Role_User:
+					message.Module = constant.UserInput
+				case pb.Role_Assistant:
+					message.Module = constant.AIOutput
+				}
+				msgs = append(msgs, message)
+			}
+			slices.Reverse(msgs)
+			messages = append(messages, msgs...)
+		case pb.PromptItemIdentifier_CharDescription, pb.PromptItemIdentifier_PersonaDescription:
+			messages = append(messages, model.Message{
+				Role:    promptItem.Role,
+				Content: char.Description,
+				Module:  constant.Preset,
+			})
+		case pb.PromptItemIdentifier_DialogueExamples:
+			for _, example := range char.ExampleDialogue {
+				messages = append(messages, model.Message{
+					Role:    promptItem.Role,
+					Content: example,
+					Module:  constant.Preset,
+				})
+			}
+		case pb.PromptItemIdentifier_WorldInfoBefore, pb.PromptItemIdentifier_WorldInfoAfter:
+			for _, worldInfo := range worldBook {
+				for _, entry := range worldInfo.Entries {
+					if !(promptItem.Identifier == pb.PromptItemIdentifier_WorldInfoBefore &&
+						entry.Position == pb.EntryPosition_BeforeChar ||
+						promptItem.Identifier == pb.PromptItemIdentifier_WorldInfoAfter &&
+							entry.Position == pb.EntryPosition_AfterChar) {
+						continue
+					}
+					if !isWorldInfoEntryValid(&entry, session) {
+						continue
+					}
+					messages = append(messages, model.Message{
+						Role:    promptItem.Role,
+						Content: entry.Content,
+						Module:  constant.WorldInfo,
+					})
+				}
+			}
+		}
+	}
+	// TODO 添加正则规则处理
+	for _, regex := range regexRules {
+		if !regex.IsEnabled {
+			continue
+		}
+		re, err := regexp2.Compile(regex.FindPattern, 0)
+		if err != nil {
+			log.Warnf("正则规则编译失败: %v", err)
+			continue
+		}
+		for i, message := range messages {
+			if message.Module != constant.Preset && regex.AffectFlagsPrompt ||
+				message.Module != constant.UserInput && regex.AffectFlagsUserInput ||
+				message.Module != constant.AIOutput && regex.AffectFlagsAIOutput ||
+				message.Module != constant.WorldInfo && regex.AffectFlagsWorldInfo {
+				continue
+			}
+			// 检查消息深度是否在允许范围内
+			if regex.MinDepth < len(messages)-i && regex.MaxDepth > len(messages)-i {
+				continue
+			}
+			content, err := re.Replace(message.Content, regex.ReplacePattern, -1, -1)
+			if err != nil {
+				log.Warnf("正则规则替换内容失败: %v", err)
+				return nil, errs.NewStandardf(connect.CodeInternal, "正则规则替换内容失败: %v", err)
+			}
+			messages[i].Content = content
+		}
+	}
+	return messages, nil
+}
+
+// PriorityMessage 继承model.Message并添加优先级字段
+type PriorityMessage struct {
+	model.Message
+	Priority int
+}
+
+func collectMsg(worldBooks []*entity.WorldInfo, preset []*entity.PromptItem, session *entity.ChatSession) (
+	systemMsg, assistantMsg, userMsg map[int][]model.Message) {
+	systemMsgTemp := make(map[int][]PriorityMessage)
+	assistantMsgTemp := make(map[int][]PriorityMessage)
+	userMsgTemp := make(map[int][]PriorityMessage)
+	for _, worldBook := range worldBooks {
+		for _, entry := range worldBook.Entries {
+			if entry.Position != pb.EntryPosition_AtDepth {
+				continue
+			}
+			if !isWorldInfoEntryValid(&entry, session) {
+				continue
+			}
+			message := PriorityMessage{
+				Message: model.Message{
+					Role:    entry.Role,
+					Content: entry.Content,
+					Module:  constant.WorldInfo,
+				},
+				Priority: entry.SortOrder,
+			}
+			switch entry.Role {
+			case pb.Role_System:
+				systemMsgTemp[entry.Depth] = append(systemMsgTemp[entry.Depth], message)
+			case pb.Role_User:
+				userMsgTemp[entry.Depth] = append(userMsgTemp[entry.Depth], message)
+			case pb.Role_Assistant:
+				assistantMsgTemp[entry.Depth] = append(assistantMsgTemp[entry.Depth], message)
+			}
+		}
+	}
+	for _, item := range preset {
+		message := PriorityMessage{
+			Message: model.Message{
+				Role:    item.Role,
+				Content: item.Content,
+				Module:  constant.Preset,
+			},
+			Priority: item.SortOrder,
+		}
+		switch item.Role {
+		case pb.Role_System:
+			systemMsgTemp[item.InjectionDepth] = append(systemMsgTemp[item.InjectionDepth], message)
+		case pb.Role_User:
+			userMsgTemp[item.InjectionDepth] = append(userMsgTemp[item.InjectionDepth], message)
+		case pb.Role_Assistant:
+			assistantMsgTemp[item.InjectionDepth] = append(assistantMsgTemp[item.InjectionDepth], message)
+		}
+	}
+
+	// 为每个深度的数组按优先级进行排序，优先级越大越靠前
+	for depth := range systemMsgTemp {
+		sort.Slice(systemMsgTemp[depth], func(i, j int) bool {
+			return systemMsgTemp[depth][i].Priority > systemMsgTemp[depth][j].Priority
+		})
+	}
+	for depth := range assistantMsgTemp {
+		sort.Slice(assistantMsgTemp[depth], func(i, j int) bool {
+			return assistantMsgTemp[depth][i].Priority > assistantMsgTemp[depth][j].Priority
+		})
+	}
+	for depth := range userMsgTemp {
+		sort.Slice(userMsgTemp[depth], func(i, j int) bool {
+			return userMsgTemp[depth][i].Priority > userMsgTemp[depth][j].Priority
+		})
+	}
+
+	// 将排序后的PriorityMessage转换为model.Message并写入返回值
+	systemMsg = make(map[int][]model.Message)
+	assistantMsg = make(map[int][]model.Message)
+	userMsg = make(map[int][]model.Message)
+	for depth, messages := range systemMsgTemp {
+		systemMsg[depth] = convertPriorityMessages(messages)
+	}
+	for depth, messages := range assistantMsgTemp {
+		assistantMsg[depth] = convertPriorityMessages(messages)
+	}
+	for depth, messages := range userMsgTemp {
+		userMsg[depth] = convertPriorityMessages(messages)
+	}
+	return systemMsg, assistantMsg, userMsg
+}
+
+// convertPriorityMessages 将PriorityMessage切片转换为model.Message切片
+func convertPriorityMessages(messages []PriorityMessage) []model.Message {
+	result := make([]model.Message, len(messages))
+	for i, msg := range messages {
+		result[i] = msg.Message
+	}
+	return result
+}
+
+func isWorldInfoEntryValid(entry *entity.WorldInfoEntry, session *entity.ChatSession) bool {
+	if !entry.IsEnabled {
+		return false
+	}
+	if entry.Constant {
+		return true
+	}
+	if len(session.Messages) == 0 {
+		return false
+	}
+	for _, message := range session.Messages {
+		if len(message.Swipes) == 0 {
+			continue
+		}
+		index := message.ActiveSwipeIndex
+		if index >= len(message.Swipes) {
+			index = len(message.Swipes) - 1
+		}
+
+		for _, key := range entry.Keys {
+			if strings.Contains(message.Swipes[index].Content, key) {
+				return true
+			}
+		}
+	}
+	return false
 }

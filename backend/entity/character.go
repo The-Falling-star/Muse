@@ -11,12 +11,12 @@ type Character struct {
 	UserID int `gorm:"column:user_id;not null;index:idx_user_id" json:"userId"` // 所属用户ID
 
 	// 用户能够编辑的内容
-	Name            string   `gorm:"column:name;type:varchar(128);not null" json:"name"`                       // 角色名称
-	Avatar          string   `gorm:"column:avatar;type:text" json:"avatar"`                                    // 角色头像（Base64编码或URL）
-	Description     string   `gorm:"column:description;type:mediumtext" json:"description"`                    // 角色描述/人设，包含角色的性格、背景等信息
-	FirstMessage    []string `gorm:"column:first_message;type:mediumtext;serializer:json" json:"firstMessage"` // 角色开场白，对话开始时角色发送的第一条消息
-	ExampleDialogue string   `gorm:"column:example_dialogue;type:mediumtext" json:"exampleDialogue"`           // 示例对话，用于指导AI如何扮演该角色
-	CreatorNotes    string   `gorm:"column:creator_notes;type:text" json:"creatorNotes"`                       // 创作者备注，角色卡创建者留下的说明
+	Name            string   `gorm:"column:name;type:varchar(128);not null" json:"name"`                             // 角色名称
+	Avatar          string   `gorm:"column:avatar;type:text" json:"avatar"`                                          // 角色头像（Base64编码或URL）
+	Description     string   `gorm:"column:description;type:mediumtext" json:"description"`                          // 角色描述/人设，包含角色的性格、背景等信息
+	FirstMessage    []string `gorm:"column:first_message;type:mediumtext;serializer:json" json:"firstMessage"`       // 角色开场白，对话开始时角色发送的第一条消息
+	ExampleDialogue []string `gorm:"column:example_dialogue;type:mediumtext;serializer:json" json:"exampleDialogue"` // 示例对话，用于指导AI如何扮演该角色
+	CreatorNotes    string   `gorm:"column:creator_notes;type:text" json:"creatorNotes"`                             // 创作者备注，角色卡创建者留下的说明
 
 	// 数据库字段内容
 	WorldInfoID     int       `gorm:"column:world_info_id;index:idx_world_info_id" json:"worldInfoId"` // 关联的世界书ID，0表示无关联

@@ -15,6 +15,7 @@ require (
 	cloud.google.com/go/auth v0.9.3 // indirect
 	cloud.google.com/go/compute/metadata v0.5.0 // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
+	github.com/dlclark/regexp2 v1.11.5 // indirect
 	github.com/dsoprea/go-exif/v3 v3.0.0-20210428042052-dca55bf8ca15 // indirect
 	github.com/dsoprea/go-logging v0.0.0-20200517223158-a10564966e9d // indirect
 	github.com/dsoprea/go-png-image-structure/v2 v2.0.0-20210512210324-29b889a6093d // indirect

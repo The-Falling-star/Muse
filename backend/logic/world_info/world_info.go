@@ -201,23 +201,13 @@ func (w *worldInfoImpl) AddWorldInfoEntry(ctx context.Context, req *pb.AddWorldI
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidWorldInfoID)
 	}
 
-	keysList := strings.TrimSpace(req.GetKeysList())
-	if keysList == "" {
-		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptyKeysList)
-	}
-
-	content := strings.TrimSpace(req.GetContent())
-	if content == "" {
-		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptyContent)
-	}
-
 	// 构建条目实体
 	entry := &entity.WorldInfoEntry{
 		WorldInfoID:    worldInfoID,
 		UID:            strings.TrimSpace(req.GetUid()),
-		KeysList:       keysList,
+		Keys:           req.KeysList,
 		SecondaryKeys:  req.GetSecondaryKeys(),
-		Content:        content,
+		Content:        req.Content,
 		Comment:        req.GetComment(),
 		IsEnabled:      req.GetIsEnabled(),
 		Constant:       req.GetConstant(),
@@ -225,6 +215,7 @@ func (w *worldInfoImpl) AddWorldInfoEntry(ctx context.Context, req *pb.AddWorldI
 		InsertionOrder: int(req.GetInsertionOrder()),
 		Position:       req.GetPosition(),
 		Depth:          int(req.GetDepth()),
+		Role:           req.GetRole(),
 		SortOrder:      int(req.GetSortOrder()),
 	}
 
@@ -250,17 +241,6 @@ func (w *worldInfoImpl) UpdateWorldInfoEntry(ctx context.Context, req *pb.Update
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidWorldInfoEntryID)
 	}
 
-	// 参数校验
-	keysList := strings.TrimSpace(req.GetKeysList())
-	if keysList == "" {
-		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptyKeysList)
-	}
-
-	content := strings.TrimSpace(req.GetContent())
-	if content == "" {
-		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptyContent)
-	}
-
 	// 获取当前条目
 	entry, err := w.worldInfoRepo.GetEntryByID(ctx, id)
 	if err != nil {
@@ -272,9 +252,9 @@ func (w *worldInfoImpl) UpdateWorldInfoEntry(ctx context.Context, req *pb.Update
 
 	// 更新条目字段
 	entry.UID = strings.TrimSpace(req.GetUid())
-	entry.KeysList = keysList
+	entry.Keys = req.KeysList
 	entry.SecondaryKeys = req.GetSecondaryKeys()
-	entry.Content = content
+	entry.Content = req.Content
 	entry.Comment = req.GetComment()
 	entry.IsEnabled = req.GetIsEnabled()
 	entry.Constant = req.GetConstant()
@@ -282,6 +262,7 @@ func (w *worldInfoImpl) UpdateWorldInfoEntry(ctx context.Context, req *pb.Update
 	entry.InsertionOrder = int(req.GetInsertionOrder())
 	entry.Position = req.GetPosition()
 	entry.Depth = int(req.GetDepth())
+	entry.Role = req.GetRole()
 	entry.SortOrder = int(req.GetSortOrder())
 
 	// 更新数据库

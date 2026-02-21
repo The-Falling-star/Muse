@@ -27,7 +27,7 @@ func (u *UserServer) Register(ctx context.Context, req *connect.Request[pb.Regis
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "Register", req.Msg, (*pb.RegisterResponse)(nil), err)
 	}
 
 	resp, err := u.user.Register(ctx, req.Msg)
@@ -64,7 +64,7 @@ func (u *UserServer) ChangePassword(ctx context.Context, req *connect.Request[pb
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "ChangePassword", req.Msg, (*pb.ChangePasswordResponse)(nil), err)
 	}
 
 	resp, err := u.user.ChangePassword(ctx, req.Msg)
@@ -101,7 +101,7 @@ func (u *UserServer) CreatePersona(ctx context.Context, req *connect.Request[pb.
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "CreatePersona", req.Msg, (*pb.CreatePersonaResponse)(nil), err)
 	}
 
 	resp, err := u.user.CreatePersona(ctx, req.Msg)
@@ -118,7 +118,7 @@ func (u *UserServer) UpdatePersona(ctx context.Context, req *connect.Request[pb.
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "UpdatePersona", req.Msg, (*pb.UpdatePersonaResponse)(nil), err)
 	}
 
 	resp, err := u.user.UpdatePersona(ctx, req.Msg)
@@ -135,7 +135,7 @@ func (u *UserServer) DeletePersona(ctx context.Context, req *connect.Request[pb.
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "DeletePersona", req.Msg, (*pb.DeletePersonaResponse)(nil), err)
 	}
 
 	resp, err := u.user.DeletePersona(ctx, req.Msg)
@@ -152,7 +152,7 @@ func (u *UserServer) SetActivePersona(ctx context.Context, req *connect.Request[
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "SetActivePersona", req.Msg, (*pb.SetActivePersonaResponse)(nil), err)
 	}
 
 	resp, err := u.user.SetActivePersona(ctx, req.Msg)
@@ -179,7 +179,7 @@ func (u *UserServer) UpdateUserSetting(ctx context.Context, req *connect.Request
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "UpdateUserSetting", req.Msg, (*pb.UpdateUserSettingResponse)(nil), err)
 	}
 
 	resp, err := u.user.UpdateUserSetting(ctx, req.Msg)
@@ -216,7 +216,7 @@ func (u *UserServer) CreateAPIConfig(ctx context.Context, req *connect.Request[p
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "CreateAPIConfig", req.Msg, (*pb.CreateAPIConfigResponse)(nil), err)
 	}
 
 	resp, err := u.user.CreateAPIConfig(ctx, req.Msg)
@@ -233,7 +233,7 @@ func (u *UserServer) UpdateAPIConfig(ctx context.Context, req *connect.Request[p
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "UpdateAPIConfig", req.Msg, (*pb.UpdateAPIConfigResponse)(nil), err)
 	}
 
 	resp, err := u.user.UpdateAPIConfig(ctx, req.Msg)
@@ -250,7 +250,7 @@ func (u *UserServer) DeleteAPIConfig(ctx context.Context, req *connect.Request[p
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "DeleteAPIConfig", req.Msg, (*pb.DeleteAPIConfigResponse)(nil), err)
 	}
 
 	resp, err := u.user.DeleteAPIConfig(ctx, req.Msg)
@@ -267,7 +267,7 @@ func (u *UserServer) SetActiveAPIConfig(ctx context.Context, req *connect.Reques
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "SetActiveAPIConfig", req.Msg, (*pb.SetActiveAPIConfigResponse)(nil), err)
 	}
 
 	resp, err := u.user.SetActiveAPIConfig(ctx, req.Msg)

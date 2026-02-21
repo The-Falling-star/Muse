@@ -105,7 +105,7 @@ func (p *presetImpl) CreatePreset(ctx context.Context, req *pb.CreatePresetReque
 	for _, itemReq := range req.GetPromptItems() {
 		item := &entity.PromptItem{
 			PresetID:          preset.ID,
-			Identifier:        strings.TrimSpace(itemReq.GetIdentifier()),
+			Identifier:        itemReq.GetIdentifier(),
 			Name:              strings.TrimSpace(itemReq.GetName()),
 			Content:           itemReq.GetContent(),
 			Role:              itemReq.GetRole(),
@@ -241,7 +241,7 @@ func (p *presetImpl) AddPromptItem(ctx context.Context, req *pb.AddPromptItemReq
 	// 构建提示项实体
 	item := &entity.PromptItem{
 		PresetID:          presetID,
-		Identifier:        strings.TrimSpace(req.Identifier),
+		Identifier:        req.GetIdentifier(),
 		Name:              name,
 		Content:           req.GetContent(),
 		Role:              req.GetRole(),
@@ -290,7 +290,7 @@ func (p *presetImpl) UpdatePromptItem(ctx context.Context, req *pb.UpdatePromptI
 	}
 
 	// 更新提示项字段
-	item.Identifier = strings.TrimSpace(req.Identifier)
+	item.Identifier = req.GetIdentifier()
 	item.Name = name
 	if req.Content != nil {
 		item.Content = *req.Content

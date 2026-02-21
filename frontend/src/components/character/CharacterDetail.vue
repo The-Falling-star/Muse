@@ -47,7 +47,12 @@
         </n-collapse-item>
 
         <n-collapse-item title="示例对话" name="exampleDialogue">
-          <pre class="info-code">{{ character.exampleDialogue || '暂无示例对话' }}</pre>
+          <div v-if="character.exampleDialogue && character.exampleDialogue.length > 0" class="example-dialogues">
+            <div v-for="(dialogue, index) in character.exampleDialogue" :key="index" class="dialogue-item">
+              <pre class="info-code">{{ dialogue }}</pre>
+            </div>
+          </div>
+          <p v-else class="info-text">暂无示例对话</p>
         </n-collapse-item>
 
         <n-collapse-item title="创作者备注" name="creatorNotes">
@@ -181,9 +186,30 @@ const formatDate = (timestamp: bigint) => {
   background: var(--bg-tertiary);
   padding: 12px;
   border-radius: 8px;
-  margin: 0;
+  margin: 0 0 12px 0;
   overflow-x: auto;
   white-space: pre-wrap;
+}
+
+/* 示例对话列表样式 */
+.example-dialogues {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dialogue-item {
+  position: relative;
+}
+
+.dialogue-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--border-color);
 }
 
 /* 元信息 */

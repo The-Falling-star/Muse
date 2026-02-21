@@ -47,7 +47,7 @@ func (p *PresetServer) CreatePreset(ctx context.Context, req *connect.Request[pb
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "CreatePreset", req.Msg, (*pb.CreatePresetResponse)(nil), err)
 	}
 
 	resp, err := p.preset.CreatePreset(ctx, req.Msg)
@@ -64,7 +64,7 @@ func (p *PresetServer) UpdatePreset(ctx context.Context, req *connect.Request[pb
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "UpdatePreset", req.Msg, (*pb.UpdatePresetResponse)(nil), err)
 	}
 
 	resp, err := p.preset.UpdatePreset(ctx, req.Msg)
@@ -81,7 +81,7 @@ func (p *PresetServer) DeletePreset(ctx context.Context, req *connect.Request[pb
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "DeletePreset", req.Msg, (*pb.DeletePresetResponse)(nil), err)
 	}
 
 	resp, err := p.preset.DeletePreset(ctx, req.Msg)
@@ -98,7 +98,7 @@ func (p *PresetServer) SetActivePreset(ctx context.Context, req *connect.Request
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "SetActivePreset", req.Msg, (*pb.SetActivePresetResponse)(nil), err)
 	}
 
 	resp, err := p.preset.SetActivePreset(ctx, req.Msg)
@@ -115,7 +115,7 @@ func (p *PresetServer) ImportPreset(ctx context.Context, req *connect.Request[pb
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "ImportPreset", req.Msg, (*pb.ImportPresetResponse)(nil), err)
 	}
 
 	resp, err := p.preset.ImportPreset(ctx, req.Msg)
@@ -152,7 +152,7 @@ func (p *PresetServer) AddPromptItem(ctx context.Context, req *connect.Request[p
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "AddPromptItem", req.Msg, (*pb.AddPromptItemResponse)(nil), err)
 	}
 
 	resp, err := p.preset.AddPromptItem(ctx, req.Msg)
@@ -169,7 +169,7 @@ func (p *PresetServer) UpdatePromptItem(ctx context.Context, req *connect.Reques
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "UpdatePromptItem", req.Msg, (*pb.UpdatePromptItemResponse)(nil), err)
 	}
 
 	resp, err := p.preset.UpdatePromptItem(ctx, req.Msg)
@@ -186,7 +186,7 @@ func (p *PresetServer) DeletePromptItem(ctx context.Context, req *connect.Reques
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "DeletePromptItem", req.Msg, (*pb.DeletePromptItemResponse)(nil), err)
 	}
 
 	resp, err := p.preset.DeletePromptItem(ctx, req.Msg)
@@ -204,7 +204,7 @@ func (p *PresetServer) UpdatePromptItemsOrder(ctx context.Context,
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "UpdatePromptItemsOrder", req.Msg, (*pb.UpdatePromptItemsOrderResponse)(nil), err)
 	}
 
 	resp, err := p.preset.UpdatePromptItemsOrder(ctx, req.Msg)

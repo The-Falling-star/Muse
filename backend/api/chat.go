@@ -94,13 +94,45 @@ func (c *ChatServer) DeleteChatSession(ctx context.Context, req *connect.Request
 // SendMessage 发送消息（流式响应）
 func (c *ChatServer) SendMessage(ctx context.Context, req *connect.Request[pb.SendMessageRequest],
 	stream *connect.ServerStream[pb.SendMessageResponse]) error {
-	return c.chat.SendMessage(ctx, req.Msg, stream)
+	// 开启事务
+	var (
+		err error                   = nil
+		rsp *pb.SendMessageResponse = nil
+	)
+
+	ctx, err = beginTransaction(ctx)
+	if err != nil {
+		_, err = doResponseExp(ctx, "SendMessage", req.Msg, rsp, err)
+		return err
+	}
+	if err = c.chat.SendMessage(ctx, req.Msg, stream); err != nil {
+		_, err = doResponseExp(ctx, "SendMessage", req.Msg, rsp, err)
+		return err
+	}
+	_, _ = doResponse(ctx, "SendMessage", req.Msg, rsp)
+	return nil
 }
 
 // RegenerateMessage 重新生成消息（流式响应）
 func (c *ChatServer) RegenerateMessage(ctx context.Context, req *connect.Request[pb.RegenerateMessageRequest],
 	stream *connect.ServerStream[pb.RegenerateMessageResponse]) error {
-	return c.chat.RegenerateMessage(ctx, req.Msg, stream)
+	// 开启事务
+	var (
+		err error                         = nil
+		rsp *pb.RegenerateMessageResponse = nil
+	)
+
+	ctx, err = beginTransaction(ctx)
+	if err != nil {
+		_, err = doResponseExp(ctx, "RegenerateMessage", req.Msg, rsp, err)
+		return err
+	}
+	if err = c.chat.RegenerateMessage(ctx, req.Msg, stream); err != nil {
+		_, err = doResponseExp(ctx, "RegenerateMessage", req.Msg, rsp, err)
+		return err
+	}
+	_, _ = doResponse(ctx, "RegenerateMessage", req.Msg, rsp)
+	return nil
 }
 
 // EditMessage 编辑消息

@@ -462,7 +462,7 @@ import PromptItemEditor from '../components/preset/PromptItemEditor.vue';
 import PresetRegexManager from '../components/preset/PresetRegexManager.vue';
 import { presetClient, regexRuleClient } from '@/api/client';
 import type {Preset, PromptItem, RegexRule} from '@/gen/muse/muse_pb';
-import { Role, InjectionPosition } from '@/gen/muse/muse_pb';
+import { Role, InjectionPosition, PromptItemIdentifier } from '@/gen/muse/muse_pb';
 
 // 设备检测
 const isMobile = ref(false);
@@ -636,7 +636,17 @@ const createPreset = async () => {
         frequencyPenalty: 0,
         presencePenalty: 0,
         // 创建预设时自动添加默认提示项
-        promptItems: defaultPromptItems
+        promptItems: defaultPromptItems.map(item => ({
+          identifier: item.identifier as PromptItemIdentifier,
+          name: item.name,
+          content: item.content,
+          role: item.role,
+          isEnabled: item.isEnabled,
+          injectionPosition: item.injectionPosition,
+          injectionDepth: item.injectionDepth,
+          forbidOverrides: item.forbidOverrides,
+          sortOrder: item.sortOrder
+        }))
       });
       if (response.preset) {
         presets.value.push(response.preset);
@@ -781,7 +791,7 @@ const editPromptItem = (item: PromptItem) => {
   };
   editingPromptItem.value = {
     id: item.id,
-    identifier: item.identifier,
+    identifier: item.identifier as unknown as string,
     name: item.name,
     role: roleMap[item.role] || 'system',
     content: item.content,
@@ -808,7 +818,7 @@ const handleSavePromptItem = async (itemData: Partial<LocalPromptItem>) => {
       const originalItem = promptItems.value.find(p => p.id === editingPromptItem.value!.id);
       const response = await presetClient.updatePromptItem({
         id: editingPromptItem.value.id,
-        identifier: itemData.identifier || '',
+        identifier: itemData.identifier as unknown as PromptItemIdentifier,
         name: itemData.name || '',
         content: itemData.content,
         role: role,
@@ -829,7 +839,7 @@ const handleSavePromptItem = async (itemData: Partial<LocalPromptItem>) => {
       // 添加新项
       const response = await presetClient.addPromptItem({
         presetId: selectedPreset.value.id,
-        identifier: itemData.identifier || `prompt_${Date.now()}`,
+        identifier: itemData.identifier as unknown as PromptItemIdentifier,
         name: itemData.name || '',
         content: itemData.content,
         role: role,
@@ -875,7 +885,7 @@ const togglePromptEnabled = async (item: PromptItem, enabled: boolean) => {
   try {
     const response = await presetClient.updatePromptItem({
       id: item.id,
-      identifier: item.identifier,
+      identifier: item.identifier as PromptItemIdentifier,
       name: item.name,
       content: item.content,
       role: item.role,
@@ -915,7 +925,7 @@ const handlePromptContentChange = async (item: PromptItem) => {
   try {
     await presetClient.updatePromptItem({
       id: item.id,
-      identifier: item.identifier,
+      identifier: item.identifier as PromptItemIdentifier,
       name: item.name,
       content: item.content,
       role: item.role,
@@ -973,7 +983,7 @@ const variablesList = [
 // marker: true 表示系统标记项，仅作为占位符使用，由系统自动填充内容
 const defaultPromptItems = [
   {
-    identifier: 'main',
+    identifier: PromptItemIdentifier.Main,
     name: '主提示词',
     content: '在 {{char}} 和 {{user}} 的虚构聊天中，撰写 {{char}} 的下一条回复。',
     role: Role.System,
@@ -984,7 +994,7 @@ const defaultPromptItems = [
     sortOrder: 0
   },
   {
-    identifier: 'worldInfoBefore',
+    identifier: PromptItemIdentifier.WorldInfoBefore,
     name: '世界信息（前）',
     content: '',
     role: Role.System,
@@ -995,7 +1005,7 @@ const defaultPromptItems = [
     sortOrder: 1
   },
   {
-    identifier: 'personaDescription',
+    identifier: PromptItemIdentifier.PersonaDescription,
     name: '人设描述',
     content: '',
     role: Role.System,
@@ -1006,7 +1016,7 @@ const defaultPromptItems = [
     sortOrder: 2
   },
   {
-    identifier: 'charDescription',
+    identifier: PromptItemIdentifier.CharDescription,
     name: '角色描述',
     content: '',
     role: Role.System,
@@ -1017,7 +1027,7 @@ const defaultPromptItems = [
     sortOrder: 3
   },
   {
-    identifier: 'charPersonality',
+    identifier: PromptItemIdentifier.CharPersonality,
     name: '角色性格',
     content: '',
     role: Role.System,
@@ -1028,7 +1038,7 @@ const defaultPromptItems = [
     sortOrder: 4
   },
   {
-    identifier: 'scenario',
+    identifier: PromptItemIdentifier.Scenario,
     name: '场景',
     content: '',
     role: Role.System,
@@ -1039,7 +1049,7 @@ const defaultPromptItems = [
     sortOrder: 5
   },
   {
-    identifier: 'nsfw',
+    identifier: PromptItemIdentifier.Nsfw,
     name: '辅助提示词',
     content: '',
     role: Role.System,
@@ -1050,7 +1060,7 @@ const defaultPromptItems = [
     sortOrder: 6
   },
   {
-    identifier: 'worldInfoAfter',
+    identifier: PromptItemIdentifier.WorldInfoAfter,
     name: '世界信息（后）',
     content: '',
     role: Role.System,
@@ -1061,7 +1071,7 @@ const defaultPromptItems = [
     sortOrder: 7
   },
   {
-    identifier: 'dialogueExamples',
+    identifier: PromptItemIdentifier.DialogueExamples,
     name: '对话示例',
     content: '',
     role: Role.System,
@@ -1072,7 +1082,7 @@ const defaultPromptItems = [
     sortOrder: 8
   },
   {
-    identifier: 'chatHistory',
+    identifier: PromptItemIdentifier.ChatHistory,
     name: '聊天记录',
     content: '',
     role: Role.System,
@@ -1083,7 +1093,7 @@ const defaultPromptItems = [
     sortOrder: 9
   },
   {
-    identifier: 'jailbreak',
+    identifier: PromptItemIdentifier.Jailbreak,
     name: '越狱提示词',
     content: '',
     role: Role.System,

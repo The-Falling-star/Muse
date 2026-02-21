@@ -9,11 +9,31 @@ const (
 	MaxPageSize = 100
 )
 
-type TranKey string
+// CtxKey 上下文键
+type CtxKey string
 
-// TransactionKey 获取ctx中的事务键
-const TransactionKey TranKey = "transaction"
+const (
+	// TransactionKey 获取ctx中的事务键
+	TransactionKey CtxKey = "transaction"
+	// UserIDKey 获取ctx中的用户ID键
+	UserIDKey CtxKey = "userId"
+)
+
 const SortOrderInterval = 100
+
+// ModuleType 模块类型
+type ModuleType int
+
+const (
+	// UserInput 用户输入
+	UserInput ModuleType = iota
+	// AIOutput AI输出
+	AIOutput
+	// Preset 预设
+	Preset
+	// WorldInfo 世界信息
+	WorldInfo
+)
 
 // NormalizePagination 处理分页参数，返回规范化后的 page 和 pageSize
 func NormalizePagination(page, pageSize int) (int, int) {

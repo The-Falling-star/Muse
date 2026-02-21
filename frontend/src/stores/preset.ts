@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { presetClient } from '@/api/client';
-import type { Preset, PromptItem, Role, InjectionPosition } from '@/gen/muse/muse_pb';
+import type { Preset, PromptItem, Role, InjectionPosition, PromptItemIdentifier } from '@/gen/muse/muse_pb';
 import { DEFAULT_PAGE_NUM, DEFAULT_PAGE_SIZE, FETCH_ALL_PAGE_SIZE } from '@/utils/constants';
 
 export const usePresetStore = defineStore('preset', () => {
@@ -107,7 +107,7 @@ export const usePresetStore = defineStore('preset', () => {
     frequencyPenalty: number;
     presencePenalty: number;
     promptItems?: Array<{
-      identifier: string;
+      identifier: PromptItemIdentifier;
       name: string;
       content?: string;
       role: Role;
@@ -211,7 +211,7 @@ export const usePresetStore = defineStore('preset', () => {
   const addPromptItem = async (
     presetId: number,
     data: {
-      identifier: string;
+      identifier: PromptItemIdentifier;
       name: string;
       content?: string;
       role: Role;
@@ -233,7 +233,7 @@ export const usePresetStore = defineStore('preset', () => {
   const updatePromptItem = async (
     id: number,
     data: {
-      identifier: string;
+      identifier: PromptItemIdentifier;
       name: string;
       content?: string;
       role: Role;

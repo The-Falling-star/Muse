@@ -49,6 +49,22 @@ enum Theme {
   Dark = 2;  // 深色主题
 }
 
+// PromptItemIdentifier 提示项标识符枚举
+enum PromptItemIdentifier {
+  PromptItemIdentifierUnspecified = 0;  // 未指定
+  Main = 1;                             // 主提示词
+  WorldInfoBefore = 2;                  // 世界信息（前）
+  PersonaDescription = 3;               // 人设描述
+  CharDescription = 4;                  // 角色描述
+  CharPersonality = 5;                  // 角色性格
+  Scenario = 6;                         // 场景
+  Nsfw = 7;                             // 辅助提示词
+  WorldInfoAfter = 8;                   // 世界信息（后）
+  DialogueExamples = 9;                 // 对话示例
+  ChatHistory = 10;                     // 聊天记录
+  Jailbreak = 11;                       // 越狱提示词
+}
+
 // ================================
 // 用户相关消息
 // ================================
@@ -98,7 +114,7 @@ message Character {
   string avatar = 4;             // 角色头像（Base64编码或URL）
   string description = 5;        // 角色描述，包含性格、背景等设定
   repeated string first_message = 8;      // 角色开场白，对话开始时AI的第一条消息
-  string example_dialogue = 9;   // 示例对话，展示角色的对话风格
+  repeated string example_dialogue = 9;   // 示例对话，展示角色的对话风格
   string creator_notes = 10;     // 创作者备注，角色卡的使用说明
   int32 world_info_id = 12;      // 关联的世界书ID，提供角色相关的背景知识
   int64 version = 13;            // 乐观锁版本号，用于并发控制
@@ -173,7 +189,7 @@ message Preset {
 message PromptItem {
   int32 id = 1;                              // 提示项唯一标识ID
   int32 preset_id = 2;                       // 所属预设ID
-  string identifier = 3;                     // 唯一标识符，用于程序识别
+  PromptItemIdentifier identifier = 3;       // 唯一标识符枚举，用于程序识别
   string name = 4;                           // 显示名称
   string content = 5;                        // 提示词内容
   Role role = 6;                             // 消息角色类型
@@ -235,8 +251,8 @@ message WorldInfoEntry {
   int32 id = 1;               // 条目唯一标识ID
   int32 world_info_id = 2;    // 所属世界书ID
   string uid = 3;             // 条目唯一标识符（用于导入导出）
-  string keys_list = 4;       // 主关键词列表，逗号分隔，匹配时触发条目
-  string secondary_keys = 5;  // 次要关键词列表，与主关键词配合使用
+  repeated string keys_list = 4;       // 主关键词列表，逗号分隔，匹配时触发条目
+  repeated string secondary_keys = 5;  // 次要关键词列表，与主关键词配合使用
   string content = 6;         // 条目内容，注入到提示词中的文本
   string comment = 7;         // 条目备注，仅用于管理不会注入
   bool is_enabled = 8;        // 是否启用
@@ -248,6 +264,7 @@ message WorldInfoEntry {
   int32 sort_order = 14;      // 排序序号
   int64 created_at = 15;      // 创建时间（Unix时间戳）
   int64 updated_at = 16;      // 最后更新时间（Unix时间戳）
+  Role role = 17;             // 消息角色类型，用于区分该条目的作用角色
 }
 
 // ================================
@@ -573,7 +590,7 @@ message CreateCharacterRequest {
   optional string personality = 4;
   optional string scenario = 5;
   repeated string first_message = 6;
-  optional string example_dialogue = 7;
+  repeated string example_dialogue = 7;
   optional string creator_notes = 8;
   optional string system_prompt = 9;
   optional int32 world_info_id = 10;
@@ -593,7 +610,7 @@ message UpdateCharacterRequest {
   optional string personality = 5;
   optional string scenario = 6;
   repeated string first_message = 7;
-  optional string example_dialogue = 8;
+  repeated string example_dialogue = 8;
   optional string creator_notes = 9;
   optional string system_prompt = 10;
   optional int32 world_info_id = 11;
@@ -731,7 +748,7 @@ message SendMessageRequest {
   string content = 2;
 }
 
-// 发送消息响应（流式）
+// 发送消息响应
 message SendMessageResponse {
   int32 index = 1; // 多个候选回复时，候选回复的下标
   string content = 2;
@@ -850,7 +867,7 @@ message CreatePresetRequest {
 
 // 创建提示项请求（嵌套）
 message CreatePromptItemRequest {
-  string identifier = 1;
+  PromptItemIdentifier identifier = 1;
   string name = 2;
   optional string content = 3;
   Role role = 4;
@@ -949,7 +966,7 @@ message ListPromptItemsResponse {
 // 创建提示项请求
 message AddPromptItemRequest {
   int32 preset_id = 1;
-  string identifier = 2;
+  PromptItemIdentifier identifier = 2;
   string name = 3;
   optional string content = 4;
   Role role = 5;
@@ -968,7 +985,7 @@ message AddPromptItemResponse {
 // 更新提示项请求
 message UpdatePromptItemRequest {
   int32 id = 1;
-  string identifier = 2;
+  PromptItemIdentifier identifier = 2;
   string name = 3;
   optional string content = 4;
   Role role = 5;
@@ -1250,8 +1267,8 @@ message ListWorldInfoEntriesResponse {
 message AddWorldInfoEntryRequest {
   int32 world_info_id = 1;
   optional string uid = 2;
-  string keys_list = 3;
-  optional string secondary_keys = 4;
+  repeated string keys_list = 3;
+  repeated string secondary_keys = 4;
   string content = 5;
   optional string comment = 6;
   bool is_enabled = 7;
@@ -1260,6 +1277,7 @@ message AddWorldInfoEntryRequest {
   int32 insertion_order = 10;
   EntryPosition position = 11;
   int32 depth = 12;
+  Role role = 14;             // 消息角色类型，用于区分该条目的作用角色
   int32 sort_order = 13;
 }
 
@@ -1272,8 +1290,8 @@ message AddWorldInfoEntryResponse {
 message UpdateWorldInfoEntryRequest {
   int32 id = 1;
   optional string uid = 2;
-  string keys_list = 3;
-  optional string secondary_keys = 4;
+  repeated string keys_list = 3;
+  repeated string secondary_keys = 4;
   string content = 5;
   optional string comment = 6;
   bool is_enabled = 7;
@@ -1282,6 +1300,7 @@ message UpdateWorldInfoEntryRequest {
   int32 insertion_order = 10;
   EntryPosition position = 11;
   int32 depth = 12;
+  Role role = 14;             // 消息角色类型，用于区分该条目的作用角色
   int32 sort_order = 13;
 }
 

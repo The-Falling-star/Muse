@@ -95,7 +95,7 @@ func WorldInfoEntryEntityToPb(entry *entity.WorldInfoEntry) *pb.WorldInfoEntry {
 		Id:             int32(entry.ID),
 		WorldInfoId:    int32(entry.WorldInfoID),
 		Uid:            entry.UID,
-		KeysList:       entry.KeysList,
+		KeysList:       entry.Keys,
 		SecondaryKeys:  entry.SecondaryKeys,
 		Content:        entry.Content,
 		Comment:        entry.Comment,
@@ -105,6 +105,7 @@ func WorldInfoEntryEntityToPb(entry *entity.WorldInfoEntry) *pb.WorldInfoEntry {
 		InsertionOrder: int32(entry.InsertionOrder),
 		Position:       entry.Position,
 		Depth:          int32(entry.Depth),
+		Role:           entry.Role,
 		SortOrder:      int32(entry.SortOrder),
 		CreatedAt:      entry.CreatedAt.Unix(),
 		UpdatedAt:      entry.UpdatedAt.Unix(),
@@ -240,6 +241,33 @@ func STPresetToEntity(stPreset *sillytavern.OpenAIPreset, userID int, presetName
 	return preset
 }
 
+// ConvertSTIdentifier 将 SillyTavern 标识符字符串转换为 PromptItemIdentifier 枚举
+func ConvertSTIdentifier(identifier string) pb.PromptItemIdentifier {
+	switch strings.ToLower(identifier) {
+	case "main":
+		return pb.PromptItemIdentifier_Main
+	case "world_info", "worldinfo":
+		return pb.PromptItemIdentifier_WorldInfoBefore
+	case "persona_description":
+		return pb.PromptItemIdentifier_PersonaDescription
+	case "char_description", "character_description":
+		return pb.PromptItemIdentifier_CharDescription
+	case "char_personality", "character_personality":
+		return pb.PromptItemIdentifier_CharPersonality
+	case "scenario":
+		return pb.PromptItemIdentifier_Scenario
+	case "nsfw", "jailbreak":
+		return pb.PromptItemIdentifier_Nsfw
+	case "dialogue_examples", "examples":
+		return pb.PromptItemIdentifier_DialogueExamples
+	case "chat_history", "history":
+		return pb.PromptItemIdentifier_ChatHistory
+	default:
+		// 默认返回未指定
+		return pb.PromptItemIdentifier_PromptItemIdentifierUnspecified
+	}
+}
+
 // STPromptToEntity 将 SillyTavern 提示项转换为 Muse 提示项实体
 // presetID: 关联的预设ID
 // stPrompt: SillyTavern 提示项
@@ -248,6 +276,9 @@ func STPresetToEntity(stPreset *sillytavern.OpenAIPreset, userID int, presetName
 func STPromptToEntity(presetID int, stPrompt *sillytavern.PresetPromptItem, sortOrder int, promptOrderMap map[string]sillytavern.PromptOrderIdentifier) *entity.PromptItem {
 	// 转换角色
 	role := ConvertSTRole(stPrompt.Role)
+
+	// 转换标识符
+	identifier := ConvertSTIdentifier(stPrompt.Identifier)
 
 	// 从 prompt_order 获取启用状态，默认启用
 	isEnabled := true
@@ -263,7 +294,7 @@ func STPromptToEntity(presetID int, stPrompt *sillytavern.PresetPromptItem, sort
 
 	return &entity.PromptItem{
 		PresetID:          presetID,
-		Identifier:        stPrompt.Identifier,
+		Identifier:        identifier,
 		Name:              stPrompt.Name,
 		Content:           stPrompt.Content,
 		Role:              role,
@@ -494,16 +525,12 @@ func STWorldInfoToEntity(stWorldBook *sillytavern.WorldBook) *entity.WorldInfo {
 
 // STBookEntryToEntity 将 SillyTavern 世界书条目转换为 Muse 条目实体
 func STBookEntryToEntity(stEntry *sillytavern.BookEntry) *entity.WorldInfoEntry {
-	// 将关键词数组转换为逗号分隔的字符串
-	keysList := strings.Join(stEntry.Key, ",")
-	secondaryKeys := strings.Join(stEntry.KeySecondary, ",")
-
 	// 转换位置
 	position := pb.EntryPosition(stEntry.Position + 1)
 	return &entity.WorldInfoEntry{
 		UID:            fmt.Sprintf("%d", stEntry.UID),
-		KeysList:       keysList,
-		SecondaryKeys:  secondaryKeys,
+		Keys:           stEntry.Key,
+		SecondaryKeys:  stEntry.KeySecondary,
 		Content:        stEntry.Content,
 		Comment:        stEntry.Comment,
 		IsEnabled:      !stEntry.Disable,
@@ -512,6 +539,7 @@ func STBookEntryToEntity(stEntry *sillytavern.BookEntry) *entity.WorldInfoEntry 
 		InsertionOrder: stEntry.Order,
 		Position:       position,
 		Depth:          stEntry.Depth,
+		Role:           pb.Role_System, // 从SillyTavern导入时默认为系统角色
 	}
 }
 
@@ -539,24 +567,6 @@ func EntityToSTWorldInfo(worldInfo *entity.WorldInfo) *sillytavern.WorldBook {
 
 // EntityToSTBookEntry 将 Muse 条目实体转换为 SillyTavern 条目格式
 func EntityToSTBookEntry(entry *entity.WorldInfoEntry, index int) sillytavern.BookEntry {
-	// 将逗号分隔的字符串转换为数组
-	var keys []string
-	if entry.KeysList != "" {
-		keys = strings.Split(entry.KeysList, ",")
-		// 去除空白
-		for i := range keys {
-			keys[i] = strings.TrimSpace(keys[i])
-		}
-	}
-
-	var secondaryKeys []string
-	if entry.SecondaryKeys != "" {
-		secondaryKeys = strings.Split(entry.SecondaryKeys, ",")
-		for i := range secondaryKeys {
-			secondaryKeys[i] = strings.TrimSpace(secondaryKeys[i])
-		}
-	}
-
 	// 尝试解析 UID 为整数，如果失败则使用索引
 	uid := index
 	if entry.UID != "" {
@@ -576,8 +586,8 @@ func EntityToSTBookEntry(entry *entity.WorldInfoEntry, index int) sillytavern.Bo
 
 	return sillytavern.BookEntry{
 		UID:            uid,
-		Key:            keys,
-		KeySecondary:   secondaryKeys,
+		Key:            entry.Keys,
+		KeySecondary:   entry.SecondaryKeys,
 		Content:        entry.Content,
 		Comment:        entry.Comment,
 		Disable:        !entry.IsEnabled,
@@ -647,14 +657,10 @@ func PbBookPositionToString(position pb.EntryPosition) int {
 
 // STCharacterBookEntryToEntity 将 SillyTavern 角色卡世界书条目转换为 Muse 条目实体
 func STCharacterBookEntryToEntity(stEntry *sillytavern.CharacterBookEntry) *entity.WorldInfoEntry {
-	// 将关键词数组转换为逗号分隔的字符串
-	keysList := strings.Join(stEntry.Keys, ",")
-	secondaryKeys := strings.Join(stEntry.SecondaryKeys, ",")
-
 	entry := &entity.WorldInfoEntry{
 		UID:            fmt.Sprintf("%d", stEntry.ID),
-		KeysList:       keysList,
-		SecondaryKeys:  secondaryKeys,
+		Keys:           stEntry.Keys,
+		SecondaryKeys:  stEntry.SecondaryKeys,
 		Content:        stEntry.Content,
 		Comment:        stEntry.Comment,
 		IsEnabled:      stEntry.Enabled,
@@ -663,6 +669,7 @@ func STCharacterBookEntryToEntity(stEntry *sillytavern.CharacterBookEntry) *enti
 		InsertionOrder: stEntry.InsertionOrder,
 		Position:       BookPositionToPb(stEntry.Extensions.Position),
 		Depth:          stEntry.Extensions.Depth,
+		Role:           pb.Role_System, // 从SillyTavern导入时默认为系统角色
 	}
 	return entry
 }
@@ -685,24 +692,6 @@ func EntityToSTCharacterBook(worldInfo *entity.WorldInfo) *sillytavern.Character
 
 // EntityToSTCharacterBookEntry 将 Muse 条目实体转换为 SillyTavern 角色卡世界书条目格式
 func EntityToSTCharacterBookEntry(entry *entity.WorldInfoEntry) sillytavern.CharacterBookEntry {
-	// 将逗号分隔的字符串转换为数组
-	var keys []string
-	if entry.KeysList != "" {
-		keys = strings.Split(entry.KeysList, ",")
-		// 去除空白
-		for i := range keys {
-			keys[i] = strings.TrimSpace(keys[i])
-		}
-	}
-
-	var secondaryKeys []string
-	if entry.SecondaryKeys != "" {
-		secondaryKeys = strings.Split(entry.SecondaryKeys, ",")
-		for i := range secondaryKeys {
-			secondaryKeys[i] = strings.TrimSpace(secondaryKeys[i])
-		}
-	}
-
 	// 解析 UID 为整数 ID
 	id := 0
 	if entry.UID != "" {
@@ -711,8 +700,8 @@ func EntityToSTCharacterBookEntry(entry *entity.WorldInfoEntry) sillytavern.Char
 
 	return sillytavern.CharacterBookEntry{
 		ID:             id,
-		Keys:           keys,
-		SecondaryKeys:  secondaryKeys,
+		Keys:           entry.Keys,
+		SecondaryKeys:  entry.SecondaryKeys,
 		Content:        entry.Content,
 		Comment:        entry.Comment,
 		Enabled:        entry.IsEnabled,
@@ -754,7 +743,12 @@ func STCharacterCardToEntity(stCard *sillytavern.CharacterCard, userID int) *ent
 	if exampleDialogue == "" {
 		exampleDialogue = stCard.MesExample
 	}
-	character.ExampleDialogue = exampleDialogue
+	// 将单个示例对话转换为数组
+	var exampleDialogues []string
+	if exampleDialogue != "" {
+		exampleDialogues = []string{exampleDialogue}
+	}
+	character.ExampleDialogue = exampleDialogues
 
 	character.Avatar = stCard.Avatar
 
@@ -795,9 +789,15 @@ func EntityToSTCharacterCard(character *entity.Character) *sillytavern.Character
 		Description: character.Description,
 		Avatar:      character.Avatar,
 		Data: sillytavern.CharacterData{
-			Name:         character.Name,
-			Description:  character.Description,
-			MesExample:   character.ExampleDialogue,
+			Name:        character.Name,
+			Description: character.Description,
+			// 将数组转换为单个字符串（取第一个元素）
+			MesExample: func() string {
+				if len(character.ExampleDialogue) > 0 {
+					return character.ExampleDialogue[0]
+				}
+				return ""
+			}(),
 			CreatorNotes: character.CreatorNotes,
 		},
 	}

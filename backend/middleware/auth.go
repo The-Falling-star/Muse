@@ -6,8 +6,10 @@ import (
 
 	"connectrpc.com/connect"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/ling/muse/common/constant"
 	"github.com/ling/muse/common/errs"
 	"github.com/ling/muse/config"
+	log "github.com/sirupsen/logrus"
 )
 
 // JWTClaims JWT声明结构
@@ -16,53 +18,87 @@ type JWTClaims struct {
 	jwt.RegisteredClaims
 }
 
-// AuthInterceptor JWT认证中间件
-func AuthInterceptor(skipProcedures []string) connect.UnaryInterceptorFunc {
-	skipMap := make(map[string]bool)
+// AuthInterceptor 认证拦截器
+type AuthInterceptor struct {
+	skipMap map[string]struct{}
+}
+
+// NewAuthInterceptor 创建认证拦截器实例
+func NewAuthInterceptor(skipProcedures []string) *AuthInterceptor {
+	skipMap := make(map[string]struct{})
 	for _, proc := range skipProcedures {
-		skipMap[proc] = true
+		skipMap[proc] = struct{}{}
 	}
+	return &AuthInterceptor{skipMap: skipMap}
+}
 
-	cfg := config.Get()
-
-	return func(next connect.UnaryFunc) connect.UnaryFunc {
-		return func(ctx context.Context, req connect.AnyRequest) (connect.AnyResponse, error) {
-			if config.Get().Auth.SkipAuth {
-				ctx = context.WithValue(ctx, "userId", config.Get().Auth.AdminUserId)
-				return next(ctx, req)
-			}
-
-			// 跳过无需认证的接口
-			if skipMap[req.Spec().Procedure] {
-				return next(ctx, req)
-			}
-
-			// 从 Header 中获取 Authorization
-			auth := req.Header().Get("Authorization")
-			if auth == "" {
-				return nil, errs.NewStandard(connect.CodeUnauthenticated, "请先登录")
-			}
-
-			// 解析 Bearer Token
-			auth = strings.TrimPrefix(auth, "Bearer ")
-			// 验证 JWT Token
-			claims := &JWTClaims{}
-			token, err := jwt.ParseWithClaims(auth, claims, func(token *jwt.Token) (interface{}, error) {
-				return []byte(cfg.Auth.JWTSecret), nil
-			})
-
-			if err != nil {
-				return nil, errs.NewStandard(connect.CodeUnauthenticated, "解析Token失败")
-			}
-
-			if !token.Valid {
-				return nil, errs.NewStandard(connect.CodeUnauthenticated, "Token无效或已过期")
-			}
-
-			// 将用户ID存入 context
-			ctx = context.WithValue(ctx, "userId", claims.UserID)
-
+// WrapUnary 包装一元调用的认证拦截器
+func (a *AuthInterceptor) WrapUnary(next connect.UnaryFunc) connect.UnaryFunc {
+	return func(ctx context.Context, req connect.AnyRequest) (connect.AnyResponse, error) {
+		// 跳过无需认证的接口
+		if config.Get().Auth.SkipAuth {
+			ctx = context.WithValue(ctx, constant.UserIDKey, config.Get().Auth.AdminUserId)
 			return next(ctx, req)
 		}
+		if _, exist := a.skipMap[req.Spec().Procedure]; exist {
+			return next(ctx, req)
+		}
+		if ctxWithUserId, err := Auth(ctx, req.Header().Get("Authorization")); err != nil {
+			log.Errorf("auth failed: %v", err)
+			return nil, err
+		} else {
+			return next(ctxWithUserId, req)
+		}
 	}
+}
+
+// WrapStreamingClient 包装流式客户端调用的认证拦截器
+func (a *AuthInterceptor) WrapStreamingClient(next connect.StreamingClientFunc) connect.StreamingClientFunc {
+	return next
+}
+
+// WrapStreamingHandler 包装流式处理调用的认证拦截器
+func (a *AuthInterceptor) WrapStreamingHandler(next connect.StreamingHandlerFunc) connect.StreamingHandlerFunc {
+	return func(ctx context.Context, req connect.StreamingHandlerConn) error {
+		// 跳过无需认证的接口
+		if config.Get().Auth.SkipAuth {
+			ctx = context.WithValue(ctx, constant.UserIDKey, config.Get().Auth.AdminUserId)
+			return next(ctx, req)
+		}
+		if _, exist := a.skipMap[req.Spec().Procedure]; exist {
+			return next(ctx, req)
+		}
+		if ctxWithUserId, err := Auth(ctx, req.RequestHeader().Get("Authorization")); err != nil {
+			log.Errorf("auth failed: %v", err)
+			return err
+		} else {
+			return next(ctxWithUserId, req)
+		}
+	}
+}
+
+// Auth 验证JWT令牌并提取用户ID
+func Auth(ctx context.Context, accessToken string) (context.Context, error) {
+	// 解析 Bearer Token
+	accessToken = strings.TrimPrefix(accessToken, "Bearer ")
+	// 验证 JWT Token
+	claims := &JWTClaims{}
+	cfg := config.Get()
+	token, err := jwt.ParseWithClaims(accessToken, claims, func(token *jwt.Token) (interface{}, error) {
+		return []byte(cfg.Auth.JWTSecret), nil
+	})
+
+	if err != nil {
+		return ctx, errs.NewStandard(connect.CodeUnauthenticated, "解析Token失败")
+	}
+
+	if !token.Valid {
+		return ctx, errs.NewStandard(connect.CodeUnauthenticated, "Token无效或已过期")
+	}
+
+	// 将用户ID存入 context
+	ctx = context.WithValue(ctx, constant.UserIDKey, claims.UserID)
+	log.Debugf("user id: %d", claims.UserID)
+
+	return ctx, nil
 }

@@ -3,6 +3,7 @@ package model
 import (
 	"context"
 
+	"github.com/ling/muse/common/constant"
 	"github.com/ling/muse/entity"
 	pb "github.com/ling/muse/gen/muse"
 )
@@ -22,4 +23,5 @@ type StreamStruct struct {
 type Message struct {
 	Role    pb.Role
 	Content string
+	Module  constant.ModuleType
 }

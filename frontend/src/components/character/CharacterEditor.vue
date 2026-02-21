@@ -104,12 +104,28 @@
           </n-form-item>
 
           <n-form-item label="示例对话" path="exampleDialogue">
-            <n-input
-              v-model:value="formData.exampleDialogue"
-              type="textarea"
-              :autosize="{ minRows: 6, maxRows: 12 }"
-              placeholder="示例对话格式：&#10;{{user}}: 用户消息&#10;{{char}}: 角色回复"
-            />
+            <div class="example-dialogue-editor">
+              <div v-for="(_, index) in formData.exampleDialogues" :key="index" class="dialogue-input-group">
+                <n-input
+                  v-model:value="formData.exampleDialogues[index]"
+                  type="textarea"
+                  :autosize="{ minRows: 4, maxRows: 8 }"
+                  :placeholder="`示例对话 ${index + 1}`"
+                />
+                <n-button 
+                  v-if="formData.exampleDialogues.length > 1"
+                  type="error" 
+                  size="small" 
+                  @click="removeExampleDialogue(index)"
+                  class="remove-btn"
+                >
+                  删除
+                </n-button>
+              </div>
+              <n-button @click="addExampleDialogue" type="primary" ghost>
+                添加示例对话
+              </n-button>
+            </div>
           </n-form-item>
         </n-tab-pane>
 
@@ -162,7 +178,7 @@ interface CharacterFormData {
   avatar: string;
   description: string;
   firstMessages: string[];
-  exampleDialogue: string;
+  exampleDialogues: string[];
   creatorNotes: string;
 }
 
@@ -189,7 +205,7 @@ const formData = reactive<CharacterFormData>({
   avatar: '',
   description: '',
   firstMessages: [''],
-  exampleDialogue: '',
+  exampleDialogues: [''],
   creatorNotes: ''
 });
 
@@ -211,7 +227,9 @@ watch(() => props.character, (char) => {
       firstMessages: (char.firstMessage && char.firstMessage.length > 0) 
         ? [...char.firstMessage] 
         : [''],
-      exampleDialogue: char.exampleDialogue || '',
+      exampleDialogues: (char.exampleDialogue && char.exampleDialogue.length > 0)
+        ? [...char.exampleDialogue]
+        : [''],
       creatorNotes: char.creatorNotes || ''
     });
   } else {
@@ -221,7 +239,7 @@ watch(() => props.character, (char) => {
       avatar: '',
       description: '',
       firstMessages: [''],
-      exampleDialogue: '',
+      exampleDialogues: [''],
       creatorNotes: ''
     });
   }
@@ -305,16 +323,28 @@ const deleteCurrentMessage = () => {
     message.warning('至少需要保留一条开场白');
     return;
   }
-
+  
   // 删除当前索引的开场白
   formData.firstMessages.splice(currentMessageIndex.value, 1);
-
+  
   // 调整当前索引
   if (currentMessageIndex.value >= formData.firstMessages.length) {
     currentMessageIndex.value = formData.firstMessages.length - 1;
   }
-
+  
   message.success('已删除开场白');
+};
+
+// 添加示例对话
+const addExampleDialogue = () => {
+  formData.exampleDialogues.push('');
+};
+
+// 删除示例对话
+const removeExampleDialogue = (index: number) => {
+  if (formData.exampleDialogues.length > 1) {
+    formData.exampleDialogues.splice(index, 1);
+  }
 };
 
 // 处理头像上传
@@ -333,7 +363,7 @@ const handleAvatarChange = (options: { fileList: UploadFileInfo[] }) => {
 const handleSubmit = async () => {
   try {
     await formRef.value?.validate();
-
+    
     // 如果当前在新增模式，需要检查是否保存
     if (isAddingNew.value) {
       if (newMessageContent.value.trim() !== '') {
@@ -342,20 +372,21 @@ const handleSubmit = async () => {
       isAddingNew.value = false;
       newMessageContent.value = '';
     }
-
-    // 过滤掉空的开场白
+    
+    // 过滤掉空的开场白和示例对话
     const filteredFirstMessages = formData.firstMessages.filter(msg => msg.trim() !== '');
-
+    const filteredExampleDialogues = formData.exampleDialogues.filter(dialogue => dialogue.trim() !== '');
+    
     const character: Partial<Character> = {
       id: props.character?.id || 0,
       name: formData.name,
       avatar: formData.avatar,
       description: formData.description,
       firstMessage: filteredFirstMessages.length > 0 ? filteredFirstMessages : [''],
-      exampleDialogue: formData.exampleDialogue,
+      exampleDialogue: filteredExampleDialogues.length > 0 ? filteredExampleDialogues : [''],
       creatorNotes: formData.creatorNotes
     };
-
+    
     emit('save', character);
   } catch {
     message.error('请检查表单填写是否正确');
@@ -407,6 +438,28 @@ const handleSubmit = async () => {
 /* 开场白轮播 */
 .first-message-carousel {
   width: 100%;
+}
+
+/* 示例对话编辑器 */
+.example-dialogue-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dialogue-input-group {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.dialogue-input-group .n-input {
+  flex: 1;
+}
+
+.remove-btn {
+  flex-shrink: 0;
+  margin-top: 8px;
 }
 
 .carousel-header {

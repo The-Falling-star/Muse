@@ -36,19 +36,19 @@ func (Preset) TableName() string {
 // PromptItem 提示项表实体
 // 提示项是预设中的提示词模板，可以按角色和位置插入到对话中
 type PromptItem struct {
-	ID                int                  `gorm:"column:id;primaryKey;autoIncrement" json:"id"`                                                // 提示项ID，主键自增
-	PresetID          int                  `gorm:"column:preset_id;not null;index:idx_preset_id" json:"presetId"`                               // 所属预设ID
-	Identifier        string               `gorm:"column:identifier;type:varchar(64);not null" json:"identifier"`                               // 标识符，用于唯一标识提示项（如 "main_prompt", "jailbreak"）
-	Name              string               `gorm:"column:name;type:varchar(128);not null" json:"name"`                                          // 显示名称
-	Content           string               `gorm:"column:content;type:text" json:"content"`                                                     // 提示词内容
-	Role              pb.Role              `gorm:"column:role;type:tinyint unsigned;not null;default:0" json:"role"`                            // 消息角色：System/User/Assistant
-	IsEnabled         bool                 `gorm:"column:is_enabled;not null;default:true" json:"isEnabled"`                                    // 是否启用
-	InjectionPosition pb.InjectionPosition `gorm:"column:injection_position;type:tinyint unsigned;not null;default:0" json:"injectionPosition"` // 注入位置：Relative(相对位置)/Absolute(绝对深度)
-	InjectionDepth    int                  `gorm:"column:injection_depth;not null;default:0" json:"injectionDepth"`                             // 注入深度，当InjectionPosition为Absolute时生效，表示从对话末尾往前数的位置
-	ForbidOverrides   bool                 `gorm:"column:forbid_overrides;not null;default:false" json:"forbidOverrides"`                       // 禁止角色卡覆盖此提示项
-	SortOrder         int                  `gorm:"column:sort_order;not null;default:0;index:idx_sort_order" json:"sortOrder"`                  // 排序顺序，数值越小越靠前
-	CreatedAt         time.Time            `gorm:"column:created_at;autoCreateTime" json:"createdAt"`                                           // 创建时间
-	UpdatedAt         time.Time            `gorm:"column:updated_at;autoUpdateTime" json:"updatedAt"`                                           // 更新时间
+	ID                int                     `gorm:"column:id;primaryKey;autoIncrement" json:"id"`                                                // 提示项ID，主键自增
+	PresetID          int                     `gorm:"column:preset_id;not null;index:idx_preset_id" json:"presetId"`                               // 所属预设ID
+	Identifier        pb.PromptItemIdentifier `gorm:"column:identifier;type:tinyint unsigned;not null;default:0" json:"identifier"`                // 标识符枚举，用于唯一标识提示项
+	Name              string                  `gorm:"column:name;type:varchar(128);not null" json:"name"`                                          // 显示名称
+	Content           string                  `gorm:"column:content;type:text" json:"content"`                                                     // 提示词内容
+	Role              pb.Role                 `gorm:"column:role;type:tinyint unsigned;not null;default:0" json:"role"`                            // 消息角色：System/User/Assistant
+	IsEnabled         bool                    `gorm:"column:is_enabled;not null;default:true" json:"isEnabled"`                                    // 是否启用
+	InjectionPosition pb.InjectionPosition    `gorm:"column:injection_position;type:tinyint unsigned;not null;default:0" json:"injectionPosition"` // 注入位置：Relative(相对位置)/Absolute(绝对深度)
+	InjectionDepth    int                     `gorm:"column:injection_depth;not null;default:0" json:"injectionDepth"`                             // 注入深度，当InjectionPosition为Absolute时生效，表示从对话末尾往前数的位置
+	ForbidOverrides   bool                    `gorm:"column:forbid_overrides;not null;default:false" json:"forbidOverrides"`                       // 禁止角色卡覆盖此提示项
+	SortOrder         int                     `gorm:"column:sort_order;not null;default:0;index:idx_sort_order" json:"sortOrder"`                  // 排序顺序，数值越小越靠前
+	CreatedAt         time.Time               `gorm:"column:created_at;autoCreateTime" json:"createdAt"`                                           // 创建时间
+	UpdatedAt         time.Time               `gorm:"column:updated_at;autoUpdateTime" json:"updatedAt"`                                           // 更新时间
 }
 
 // TableName 返回表名

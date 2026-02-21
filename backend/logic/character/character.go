@@ -154,7 +154,7 @@ func (c *characterImpl) UpdateCharacter(ctx context.Context, req *pb.UpdateChara
 		character.FirstMessage = req.FirstMessage
 	}
 	if req.ExampleDialogue != nil {
-		character.ExampleDialogue = *req.ExampleDialogue
+		character.ExampleDialogue = req.ExampleDialogue
 	}
 	if req.CreatorNotes != nil {
 		character.CreatorNotes = *req.CreatorNotes

@@ -51,7 +51,7 @@ func (c *CharacterServer) CreateCharacter(ctx context.Context, req *connect.Requ
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "CreateCharacter", req.Msg, (*pb.CreateCharacterResponse)(nil), err)
 	}
 
 	resp, err := c.character.CreateCharacter(ctx, req.Msg)
@@ -68,7 +68,7 @@ func (c *CharacterServer) UpdateCharacter(ctx context.Context, req *connect.Requ
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "UpdateCharacter", req.Msg, (*pb.UpdateCharacterResponse)(nil), err)
 	}
 
 	resp, err := c.character.UpdateCharacter(ctx, req.Msg)
@@ -85,7 +85,7 @@ func (c *CharacterServer) DeleteCharacter(ctx context.Context, req *connect.Requ
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "DeleteCharacter", req.Msg, (*pb.DeleteCharacterResponse)(nil), err)
 	}
 
 	resp, err := c.character.DeleteCharacter(ctx, req.Msg)
@@ -102,7 +102,7 @@ func (c *CharacterServer) ImportCharacter(ctx context.Context, req *connect.Requ
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "ImportCharacter", req.Msg.FileName, (*pb.ImportCharacterResponse)(nil), err)
 	}
 
 	resp, err := c.character.ImportCharacter(ctx, req.Msg)
@@ -129,7 +129,7 @@ func (c *CharacterServer) RestoreCharacterWorldInfo(ctx context.Context, req *co
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return doResponseExp(ctx, "RestoreCharacterWorldInfo", req.Msg, (*pb.RestoreCharacterWorldInfoResponse)(nil), err)
 	}
 
 	resp, err := c.character.RestoreCharacterWorldInfo(ctx, req.Msg)

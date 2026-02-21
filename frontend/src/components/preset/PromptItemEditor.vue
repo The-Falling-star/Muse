@@ -154,7 +154,7 @@ const SYSTEM_MARKERS = {
 
 interface FormData {
   name: string;
-  identifier: string;
+  identifier: PromptItemIdentifier;
   role: 'system' | 'user' | 'assistant';
   content: string;
   marker: boolean;

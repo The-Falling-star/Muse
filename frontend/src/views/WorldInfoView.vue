@@ -450,7 +450,7 @@ const filteredEntries = computed(() => {
   if (entrySearchQuery.value) {
     const query = entrySearchQuery.value.toLowerCase();
     list = list.filter(e =>
-      e.keysList.toLowerCase().includes(query) ||
+      e.keysList.some(key => key.toLowerCase().includes(query)) ||
       e.content.toLowerCase().includes(query)
     );
   }
@@ -459,15 +459,15 @@ const filteredEntries = computed(() => {
   if (entrySort.value === 'order') {
     list.sort((a, b) => b.insertionOrder - a.insertionOrder);
   } else if (entrySort.value === 'name') {
-    list.sort((a, b) => a.keysList.localeCompare(b.keysList));
+    list.sort((a, b) => (a.keysList[0] || '').localeCompare(b.keysList[0] || ''));
   }
 
   return list;
 });
 
 // 解析关键词列表
-const parseKeys = (keysList: string): string[] => {
-  return keysList.split(',').map(k => k.trim()).filter(k => k.length > 0);
+const parseKeys = (keysList: string[]): string[] => {
+  return keysList;
 };
 
 // 控制条目展开/收起
@@ -653,8 +653,8 @@ const handleSaveEntry = async (entryData: Partial<WorldInfoEntry>) => {
       const response = await worldInfoClient.updateWorldInfoEntry({
         id: editingEntry.value.id,
         uid: entryData.uid || '',
-        keysList: entryData.keysList || '',
-        secondaryKeys: entryData.secondaryKeys || '',
+        keysList: entryData.keysList || [],
+        secondaryKeys: entryData.secondaryKeys || [],
         content: entryData.content || '',
         comment: entryData.comment || '',
         isEnabled: entryData.isEnabled ?? true,
@@ -663,6 +663,7 @@ const handleSaveEntry = async (entryData: Partial<WorldInfoEntry>) => {
         insertionOrder: entryData.insertionOrder ?? 100,
         position: entryData.position ?? EntryPosition.BeforeChar,
         depth: entryData.depth ?? 4,
+        role: entryData.role ?? 0,
         sortOrder: entryData.sortOrder ?? 0
       });
       if (response.entry) {
@@ -677,8 +678,8 @@ const handleSaveEntry = async (entryData: Partial<WorldInfoEntry>) => {
       const response = await worldInfoClient.addWorldInfoEntry({
         worldInfoId: selectedWorld.value.id,
         uid: entryData.uid || '',
-        keysList: entryData.keysList || '',
-        secondaryKeys: entryData.secondaryKeys || '',
+        keysList: entryData.keysList || [],
+        secondaryKeys: entryData.secondaryKeys || [],
         content: entryData.content || '',
         comment: entryData.comment || '',
         isEnabled: entryData.isEnabled ?? true,
@@ -687,6 +688,7 @@ const handleSaveEntry = async (entryData: Partial<WorldInfoEntry>) => {
         insertionOrder: entryData.insertionOrder ?? 100,
         position: entryData.position ?? EntryPosition.BeforeChar,
         depth: entryData.depth ?? 4,
+        role: entryData.role ?? 0,
         sortOrder: entries.value.length
       });
       if (response.entry) {

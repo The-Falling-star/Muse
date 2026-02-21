@@ -208,7 +208,7 @@ const handleSubmit = async () => {
       id: props.entry?.id || 0,
       worldId: props.entry?.worldId || 0,
       keys: formData.keys,
-      secondaryKeys: formData.secondaryKeys.length > 0 ? formData.secondaryKeys : undefined,
+      secondaryKeys: formData.secondaryKeys,
       content: formData.content,
       comment: formData.comment || undefined,
       enabled: formData.enabled,

@@ -134,8 +134,8 @@ export const useWorldInfoStore = defineStore('worldInfo', () => {
   // =====================
 
   // 解析关键词列表
-  const parseKeysList = (keysList: string): string[] => {
-    return keysList.split(',').map(k => k.trim()).filter(k => k.length > 0);
+  const parseKeysList = (keysList: string[]): string[] => {
+    return keysList;
   };
 
   // 清空缓存

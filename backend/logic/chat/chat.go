@@ -330,8 +330,14 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 	}
 
 	// 构建消息列表
-	messages := c.buildMessages(session, content, promptItems, globalWorldInfos, charWorldInfo, regexRules)
-
+	worldBook := append(globalWorldInfos, charWorldInfo)
+	log.Debugf("会话: %+v, 世界书: %+v, 预设: %+v, 正则: %+v",
+		session, globalWorldInfos, preset, regexRules)
+	messages, err := c.buildMessages(session, promptItems, worldBook, regexRules)
+	log.Debugf("构建的消息列表: %v", messages)
+	if err != nil {
+		return err
+	}
 	// 保存用户消息到数据库
 	maxOrder, err := c.chatRepo.GetMaxMessageSortOrder(ctx, sessionID)
 	if err != nil {
@@ -620,139 +626,6 @@ func (c *chatImpl) GetCacheStats() int {
 	return c.cacheManager.Size()
 }
 
-// buildMessages 构建发送给大模型的消息列表
-func (c *chatImpl) buildMessages(
-	session *entity.ChatSession,
-	userContent string,
-	promptItems []*entity.PromptItem,
-	globalWorldInfos []*entity.WorldInfo,
-	charWorldInfo *entity.WorldInfo,
-	regexRules []*entity.RegexRule,
-) []model.Message {
-	var messages []model.Message
-
-	// 按深度分组的世界书条目
-	worldInfoByDepth := make(map[int][]string)
-
-	// 收集全局世界书条目
-	for _, wi := range globalWorldInfos {
-		for _, entry := range wi.Entries {
-			if entry.Constant || c.matchWorldInfoKeys(entry, session, userContent) {
-				worldInfoByDepth[entry.Depth] = append(worldInfoByDepth[entry.Depth], entry.Content)
-			}
-		}
-	}
-
-	// 收集角色世界书条目
-	if charWorldInfo != nil {
-		for _, entry := range charWorldInfo.Entries {
-			if entry.Constant || c.matchWorldInfoKeys(entry, session, userContent) {
-				worldInfoByDepth[entry.Depth] = append(worldInfoByDepth[entry.Depth], entry.Content)
-			}
-		}
-	}
-
-	// 分离不同位置的提示项
-	var systemPrompts []string
-	var beforeCharPrompts []string
-	var afterCharPrompts []string
-	depthPrompts := make(map[int][]string)
-
-	for _, item := range promptItems {
-		if !item.IsEnabled {
-			continue
-		}
-		content := c.applyRegexRules(item.Content, regexRules, RegexTextTypePrompt)
-
-		switch item.InjectionPosition {
-		case pb.InjectionPosition_Relative:
-			// 相对位置：根据角色添加到对应位置
-			switch item.Role {
-			case pb.Role_System:
-				systemPrompts = append(systemPrompts, content)
-			case pb.Role_User:
-				beforeCharPrompts = append(beforeCharPrompts, content)
-			case pb.Role_Assistant:
-				afterCharPrompts = append(afterCharPrompts, content)
-			}
-		case pb.InjectionPosition_Absolute:
-			// 绝对位置：按深度插入
-			depthPrompts[item.InjectionDepth] = append(depthPrompts[item.InjectionDepth], content)
-		}
-	}
-
-	// 构建系统提示（包含角色描述）
-	var systemContent strings.Builder
-	for _, prompt := range systemPrompts {
-		systemContent.WriteString(prompt)
-		systemContent.WriteString("\n\n")
-	}
-
-	// 添加角色描述
-	if session.Character != nil {
-		for _, prompt := range beforeCharPrompts {
-			systemContent.WriteString(prompt)
-			systemContent.WriteString("\n\n")
-		}
-		if session.Character.Description != "" {
-			systemContent.WriteString(session.Character.Description)
-			systemContent.WriteString("\n\n")
-		}
-		for _, prompt := range afterCharPrompts {
-			systemContent.WriteString(prompt)
-			systemContent.WriteString("\n\n")
-		}
-		// 添加示例对话
-		if len(session.Character.ExampleDialogue) > 0 {
-			systemContent.WriteString("示例对话:\n")
-			for _, dialogue := range session.Character.ExampleDialogue {
-				systemContent.WriteString(dialogue)
-				systemContent.WriteString("\n")
-			}
-			systemContent.WriteString("\n")
-		}
-	}
-
-	// 添加深度0的世界书和提示项到系统消息
-	for _, content := range worldInfoByDepth[0] {
-		systemContent.WriteString(content)
-		systemContent.WriteString("\n\n")
-	}
-	for _, content := range depthPrompts[0] {
-		systemContent.WriteString(content)
-		systemContent.WriteString("\n\n")
-	}
-
-	if systemContent.Len() > 0 {
-		messages = append(messages, model.Message{
-			Role:    pb.Role_System,
-			Content: strings.TrimSpace(systemContent.String()),
-		})
-	}
-
-	// 添加角色开场白
-	if session.Character != nil && len(session.Character.FirstMessage) != 0 && len(session.Messages) == 0 {
-		firstMsg := c.applyRegexRules(session.Character.FirstMessage[0], regexRules, RegexTextTypePrompt)
-		messages = append(messages, model.Message{
-			Role:    pb.Role_Assistant,
-			Content: firstMsg,
-		})
-	}
-
-	// 添加历史消息（按深度插入世界书条目）
-	historyMessages := c.buildHistoryMessages(session.Messages, worldInfoByDepth, depthPrompts, regexRules)
-	messages = append(messages, historyMessages...)
-
-	// 添加用户新消息
-	processedUserContent := c.applyRegexRules(userContent, regexRules, RegexTextTypeUserInput)
-	messages = append(messages, model.Message{
-		Role:    pb.Role_User,
-		Content: processedUserContent,
-	})
-
-	return messages
-}
-
 // buildHistoryMessages 构建历史消息列表，并在对应深度插入世界书条目
 func (c *chatImpl) buildHistoryMessages(
 	historyMsgs []entity.Message,
@@ -952,8 +825,7 @@ func (c *chatImpl) SwitchSwipe(ctx context.Context, req *pb.SwitchSwipeRequest) 
 	panic("implement me")
 }
 
-func (c *chatImpl) buildMessage(
-	char *entity.Character,
+func (c *chatImpl) buildMessages(
 	session *entity.ChatSession,
 	promptItems []*entity.PromptItem,
 	worldBook []*entity.WorldInfo,
@@ -1017,11 +889,11 @@ func (c *chatImpl) buildMessage(
 		case pb.PromptItemIdentifier_CharDescription, pb.PromptItemIdentifier_PersonaDescription:
 			messages = append(messages, model.Message{
 				Role:    promptItem.Role,
-				Content: char.Description,
+				Content: session.Character.Description,
 				Module:  constant.Preset,
 			})
 		case pb.PromptItemIdentifier_DialogueExamples:
-			for _, example := range char.ExampleDialogue {
+			for _, example := range session.Character.ExampleDialogue {
 				messages = append(messages, model.Message{
 					Role:    promptItem.Role,
 					Content: example,
@@ -1049,7 +921,6 @@ func (c *chatImpl) buildMessage(
 			}
 		}
 	}
-	// TODO 添加正则规则处理
 	for _, regex := range regexRules {
 		if !regex.IsEnabled {
 			continue

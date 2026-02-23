@@ -35,6 +35,16 @@ const (
 	WorldInfo
 )
 
+// STInjectPos 酒馆提示词注入位置
+type STInjectPos int
+
+const (
+	// STInjectPosRelative 相对注入
+	STInjectPosRelative STInjectPos = iota
+	// STInjectPosAbsolute 绝对注入
+	STInjectPosAbsolute
+)
+
 // NormalizePagination 处理分页参数，返回规范化后的 page 和 pageSize
 func NormalizePagination(page, pageSize int) (int, int) {
 	if page <= 0 {

@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package muse;
+
+option go_package = "github.com/ling/muse/gen/muse;muse";
+
+// ================================
+// 枚举定义
+// ================================
+
+// Role 消息角色类型
+enum Role {
+  RoleUnspecified = 0; // 未指定角色
+  System = 1;          // 系统消息，用于设定AI行为和上下文
+  User = 2;            // 用户消息，用户输入的内容
+  Assistant = 3;       // 助手消息，AI生成的回复
+}
+
+// InjectionPosition 提示项注入位置类型
+enum InjectionPosition {
+  InjectionPositionUnspecified = 0; // 未指定位置
+  Relative = 1;                     // 相对位置，根据角色类型决定插入位置
+  Absolute = 2;                     // 绝对位置，按深度值插入到消息列表中
+}
+
+// EntryPosition 世界书条目插入位置
+enum EntryPosition {
+  EntryPositionUnspecified = 0; // 未指定位置
+  BeforeChar = 1;               // 角色描述之前
+  AfterChar = 2;                // 角色描述之后
+  BeforeExample = 3;            // 示例对话之前
+  AfterExample = 4;             // 示例对话之后
+  AtDepth = 5;                  // 按深度插入到消息列表中
+}
+
+// APIProvider API服务提供商类型
+enum APIProvider {
+  APIProviderUnspecified = 0; // 未指定提供商
+  OpenAI = 1;                 // OpenAI（ChatGPT）
+  Claude = 2;                 // Anthropic Claude
+  Gemini = 3;                 // Google Gemini
+}
+
+// Theme 界面主题类型
+enum Theme {
+  Auto = 0;  // 自动，跟随系统设置
+  Light = 1; // 浅色主题
+  Dark = 2;  // 深色主题
+}
+
+// PromptItemIdentifier 提示项标识符枚举
+enum PromptItemIdentifier {
+  PromptItemIdentifierUnspecified = 0;  // 未指定
+  Main = 1;                             // 主提示词
+  WorldInfoBefore = 2;                  // 世界信息（前）
+  PersonaDescription = 3;               // 人设描述
+  CharDescription = 4;                  // 角色描述
+  CharPersonality = 5;                  // 角色性格
+  Scenario = 6;                         // 场景
+  Nsfw = 7;                             // 辅助提示词
+  WorldInfoAfter = 8;                   // 世界信息（后）
+  DialogueExamples = 9;                 // 对话示例
+  ChatHistory = 10;                     // 聊天记录
+  Jailbreak = 11;                       // 越狱提示词
+}

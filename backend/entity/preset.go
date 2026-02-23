@@ -46,9 +46,10 @@ type PromptItem struct {
 	InjectionPosition pb.InjectionPosition    `gorm:"column:injection_position;type:tinyint unsigned;not null;default:0" json:"injectionPosition"` // 注入位置：Relative(相对位置)/Absolute(绝对深度)
 	InjectionDepth    int                     `gorm:"column:injection_depth;not null;default:0" json:"injectionDepth"`                             // 注入深度，当InjectionPosition为Absolute时生效，表示从对话末尾往前数的位置
 	ForbidOverrides   bool                    `gorm:"column:forbid_overrides;not null;default:false" json:"forbidOverrides"`                       // 禁止角色卡覆盖此提示项
-	SortOrder         int                     `gorm:"column:sort_order;not null;default:0;index:idx_sort_order" json:"sortOrder"`                  // 排序顺序，数值越小越靠前
 	CreatedAt         time.Time               `gorm:"column:created_at;autoCreateTime" json:"createdAt"`                                           // 创建时间
 	UpdatedAt         time.Time               `gorm:"column:updated_at;autoUpdateTime" json:"updatedAt"`                                           // 更新时间
+	Pre               *int                    `gorm:"column:pre;default:null" json:"pre"`                                                          // 前一个提示项ID，用于排序
+	Next              *int                    `gorm:"column:next;default:null" json:"next"`                                                        // 后一个提示项ID，用于排序
 }
 
 // TableName 返回表名

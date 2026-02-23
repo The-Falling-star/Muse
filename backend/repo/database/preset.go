@@ -3,6 +3,7 @@ package database
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"connectrpc.com/connect"
 	"github.com/ling/muse/common/errs"
@@ -130,6 +131,16 @@ func (p *PresetRepo) CreatePromptItem(ctx context.Context, item *entity.PromptIt
 	return nil
 }
 
+// BatchCreatePromptItem 批量创建提示项
+func (p *PresetRepo) BatchCreatePromptItem(ctx context.Context, items []*entity.PromptItem) error {
+	db := GetDB(ctx)
+	result := db.Create(items)
+	if result.Error != nil {
+		return errs.NewStandardf(connect.CodeInternal, "创建提示项失败: %v", result.Error)
+	}
+	return nil
+}
+
 // GetPromptItemByID 根据ID获取提示项
 func (p *PresetRepo) GetPromptItemByID(ctx context.Context, id int) (*entity.PromptItem, error) {
 	db := GetDB(ctx)
@@ -170,10 +181,44 @@ func (p *PresetRepo) UpdatePromptItem(ctx context.Context, item *entity.PromptIt
 			"injection_position": item.InjectionPosition,
 			"injection_depth":    item.InjectionDepth,
 			"forbid_overrides":   item.ForbidOverrides,
-			"sort_order":         item.SortOrder,
+			"pre":                item.Pre,
+			"next":               item.Next,
 		})
 	if result.Error != nil {
 		return errs.NewStandardf(connect.CodeInternal, "更新提示项失败: %v", result.Error)
+	}
+	return nil
+}
+
+// BatchUpdatePromptItemOrder 批量更新提示项排序
+func (p *PresetRepo) BatchUpdatePromptItemOrder(ctx context.Context, items []*entity.PromptItem) error {
+	db := GetDB(ctx)
+	preCase := ""
+	nextCase := ""
+	ids := make([]int, 0, len(items))
+	for _, item := range items {
+		preCase += fmt.Sprintf(`WHEN %d THEN %d`, item.ID, item.Pre)
+		nextCase += fmt.Sprintf(`WHEN %d THEN %d`, item.ID, item.Next)
+		ids = append(ids, item.ID)
+	}
+
+	premptItem := entity.PromptItem{}
+	sql := fmt.Sprintf(`
+UPDATE %s SET
+    %s = CASE id
+        %s
+        ELSE %s
+    END,
+    %s = CASE id
+        %s
+        ELSE %s
+    END
+WHERE id IN (?);`, premptItem.TableName(),
+		"pre", preCase, "pre",
+		"`next`", nextCase, "`next`")
+
+	if err := db.Exec(sql, ids).Error; err != nil {
+		return errs.NewStandardf(connect.CodeInternal, "更新提示项排序失败: %v", err)
 	}
 	return nil
 }

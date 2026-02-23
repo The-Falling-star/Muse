@@ -1,0 +1,230 @@
+syntax = "proto3";
+
+package muse;
+
+import "muse/common.proto";
+
+option go_package = "github.com/ling/muse/gen/muse;muse";
+
+// ================================
+// 世界书相关消息
+// ================================
+
+// WorldInfo 世界书，存储角色相关的背景知识
+message WorldInfo {
+  int32 id = 1;                          // 世界书唯一标识ID
+  int32 user_id = 2;                     // 所属用户ID
+  string name = 3;                       // 世界书名称
+  string description = 4;                // 世界书描述
+  bool is_global = 5;                    // 是否为全局世界书，全局世界书对所有角色生效
+  int64 created_at = 6;                  // 创建时间（Unix时间戳）
+  int64 updated_at = 7;                  // 最后更新时间（Unix时间戳）
+  repeated WorldInfoEntry entries = 8;   // 世界书条目列表（可选加载）
+}
+
+// WorldInfoEntry 世界书条目，单条背景知识
+message WorldInfoEntry {
+  int32 id = 1;               // 条目唯一标识ID
+  int32 world_info_id = 2;    // 所属世界书ID
+  string uid = 3;             // 条目唯一标识符（用于导入导出）
+  repeated string keys_list = 4;       // 主关键词列表，逗号分隔，匹配时触发条目
+  repeated string secondary_keys = 5;  // 次要关键词列表，与主关键词配合使用
+  string content = 6;         // 条目内容，注入到提示词中的文本
+  string comment = 7;         // 条目备注，仅用于管理不会注入
+  bool is_enabled = 8;        // 是否启用
+  bool constant = 9;          // 是否常驻，常驻条目始终注入不需要关键词匹配
+  bool selective = 10;        // 选择性匹配，需同时匹配主关键词和次要关键词
+  int32 insertion_order = 11; // 插入优先级，数值越小优先级越高
+  EntryPosition position = 12; // 插入位置类型
+  int32 depth = 13;           // 插入深度，AtDepth位置时的深度值
+  int32 sort_order = 14;      // 排序序号
+  int64 created_at = 15;      // 创建时间（Unix时间戳）
+  int64 updated_at = 16;      // 最后更新时间（Unix时间戳）
+  Role role = 17;             // 消息角色类型，用于区分该条目的作用角色
+}
+
+// ================================
+// 世界书服务
+// ================================
+
+// 获取世界书列表请求
+message ListWorldInfosRequest {
+  optional bool is_global = 1;  // 可选，筛选全局/非全局
+  optional int32 page = 2;      // 页码，从1开始，默认为1
+  optional int32 page_size = 3; // 每页数量，默认为20，最大100
+}
+
+// 获取世界书列表响应
+message ListWorldInfosResponse {
+  repeated WorldInfo world_infos = 1;
+  int64 total = 2;  // 总数
+  int32 page = 3;   // 当前页码
+  int32 page_size = 4; // 每页数量
+}
+
+// 获取单个世界书请求
+message GetWorldInfoRequest {
+  int32 id = 1;
+}
+
+// 获取单个世界书响应
+message GetWorldInfoResponse {
+  WorldInfo world_info = 1;
+}
+
+// 创建世界书请求
+message CreateWorldInfoRequest {
+  string name = 1;
+  optional string description = 2;
+  bool is_global = 3;
+}
+
+// 创建世界书响应
+message CreateWorldInfoResponse {
+  WorldInfo world_info = 1;
+}
+
+// 更新世界书请求
+message UpdateWorldInfoRequest {
+  int32 id = 1;
+  string name = 2;
+  optional string description = 3;
+  bool is_global = 4;
+}
+
+// 更新世界书响应
+message UpdateWorldInfoResponse {
+  WorldInfo world_info = 1;
+}
+
+// 删除世界书请求
+message DeleteWorldInfoRequest {
+  int32 id = 1;
+}
+
+// 删除世界书响应
+message DeleteWorldInfoResponse {}
+
+// 导入世界书请求
+message ImportWorldInfoRequest {
+  bytes file_content = 1;  // JSON文件内容
+  string file_name = 2;
+}
+
+// 导入世界书响应
+message ImportWorldInfoResponse {
+  WorldInfo world_info = 1;
+}
+
+// 导出世界书请求
+message ExportWorldInfoRequest {
+  int32 id = 1;
+}
+
+// 导出世界书响应
+message ExportWorldInfoResponse {
+  bytes file_content = 1;
+  string file_name = 2;
+}
+
+// 获取世界书条目列表请求
+message ListWorldInfoEntriesRequest {
+  int32 world_info_id = 1;
+}
+
+// 获取世界书条目列表响应
+message ListWorldInfoEntriesResponse {
+  repeated WorldInfoEntry entries = 1;
+}
+
+// 添加世界书条目请求
+message AddWorldInfoEntryRequest {
+  int32 world_info_id = 1;
+  optional string uid = 2;
+  repeated string keys_list = 3;
+  repeated string secondary_keys = 4;
+  string content = 5;
+  optional string comment = 6;
+  bool is_enabled = 7;
+  bool constant = 8;
+  bool selective = 9;
+  int32 insertion_order = 10;
+  EntryPosition position = 11;
+  int32 depth = 12;
+  Role role = 14;             // 消息角色类型，用于区分该条目的作用角色
+  int32 sort_order = 13;
+}
+
+// 添加世界书条目响应
+message AddWorldInfoEntryResponse {
+  WorldInfoEntry entry = 1;
+}
+
+// 更新世界书条目请求
+message UpdateWorldInfoEntryRequest {
+  int32 id = 1;
+  optional string uid = 2;
+  repeated string keys_list = 3;
+  repeated string secondary_keys = 4;
+  string content = 5;
+  optional string comment = 6;
+  bool is_enabled = 7;
+  bool constant = 8;
+  bool selective = 9;
+  int32 insertion_order = 10;
+  EntryPosition position = 11;
+  int32 depth = 12;
+  Role role = 14;             // 消息角色类型，用于区分该条目的作用角色
+  int32 sort_order = 13;
+}
+
+// 更新世界书条目响应
+message UpdateWorldInfoEntryResponse {
+  WorldInfoEntry entry = 1;
+}
+
+// 删除世界书条目请求
+message DeleteWorldInfoEntryRequest {
+  int32 id = 1;
+}
+
+// 删除世界书条目响应
+message DeleteWorldInfoEntryResponse {}
+
+// 批量更新世界书条目排序请求
+message UpdateWorldInfoEntriesOrderRequest {
+  int32 world_info_id = 1;
+  repeated int32 entry_ids = 2;  // 按新顺序排列的ID列表
+}
+
+// 批量更新世界书条目排序响应
+message UpdateWorldInfoEntriesOrderResponse {}
+
+// 世界书服务（包含世界书和世界书条目的管理）
+service WorldInfoService {
+  // 获取世界书列表
+  rpc ListWorldInfos(ListWorldInfosRequest) returns (ListWorldInfosResponse);
+  // 获取单个世界书
+  rpc GetWorldInfo(GetWorldInfoRequest) returns (GetWorldInfoResponse);
+  // 创建世界书
+  rpc CreateWorldInfo(CreateWorldInfoRequest) returns (CreateWorldInfoResponse);
+  // 更新世界书
+  rpc UpdateWorldInfo(UpdateWorldInfoRequest) returns (UpdateWorldInfoResponse);
+  // 删除世界书
+  rpc DeleteWorldInfo(DeleteWorldInfoRequest) returns (DeleteWorldInfoResponse);
+  // 导入世界书（支持SillyTavern格式）
+  rpc ImportWorldInfo(ImportWorldInfoRequest) returns (ImportWorldInfoResponse);
+  // 导出世界书
+  rpc ExportWorldInfo(ExportWorldInfoRequest) returns (ExportWorldInfoResponse);
+
+  // 获取世界书条目列表
+  rpc ListWorldInfoEntries(ListWorldInfoEntriesRequest) returns (ListWorldInfoEntriesResponse);
+  // 添加世界书条目
+  rpc AddWorldInfoEntry(AddWorldInfoEntryRequest) returns (AddWorldInfoEntryResponse);
+  // 更新世界书条目
+  rpc UpdateWorldInfoEntry(UpdateWorldInfoEntryRequest) returns (UpdateWorldInfoEntryResponse);
+  // 删除世界书条目
+  rpc DeleteWorldInfoEntry(DeleteWorldInfoEntryRequest) returns (DeleteWorldInfoEntryResponse);
+  // 批量更新世界书条目排序
+  rpc UpdateWorldInfoEntriesOrder(UpdateWorldInfoEntriesOrderRequest) returns (UpdateWorldInfoEntriesOrderResponse);
+}

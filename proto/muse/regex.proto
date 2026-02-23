@@ -1,0 +1,155 @@
+syntax = "proto3";
+
+package muse;
+
+import "muse/common.proto";
+
+option go_package = "github.com/ling/muse/gen/muse;muse";
+
+// RegexAffectFlags 正则规则作用范围标志
+message RegexAffectFlags {
+  bool user_input = 1;    // 是否作用于用户输入
+  bool ai_output = 2;     // 是否作用于AI输出
+  bool slash_command = 3; // 是否作用于斜杠命令
+  bool world_info = 4;    // 是否作用于世界书内容
+  bool prompt = 5;        // 是否作用于提示词
+}
+
+// RegexRule 正则替换规则，用于文本预处理和后处理
+message RegexRule {
+  int32 id = 1;                      // 规则唯一标识ID
+  int32 preset_id = 2;               // 关联的预设ID（0表示全局规则）
+  int32 character_id = 15;           // 关联的角色ID（0表示非角色范围规则）
+  string name = 3;                   // 规则名称
+  string find_pattern = 4;           // 查找模式（正则表达式）
+  string replace_pattern = 5;        // 替换模式
+  bool is_enabled = 6;               // 是否启用
+  bool run_on_edit = 7;              // 编辑消息时是否运行
+  bool substitute_regex = 8;         // 是否使用正则替换（否则为字面量替换）
+  int32 min_depth = 9;               // 最小作用深度
+  int32 max_depth = 10;              // 最大作用深度
+  RegexAffectFlags affect_flags = 11; // 作用范围标志
+  int32 sort_order = 12;             // 排序序号，决定规则执行顺序
+  int64 created_at = 13;             // 创建时间（Unix时间戳）
+  int64 updated_at = 14;             // 最后更新时间（Unix时间戳）
+}
+
+// ================================
+// 正则规则服务
+// ================================
+
+// 获取全局正则规则列表请求（preset_id = 0）
+message ListRegexRulesRequest {}
+
+// 获取全局正则规则列表响应
+message ListRegexRulesResponse {
+  repeated RegexRule rules = 1;
+}
+
+// 获取预设的正则规则列表请求
+message ListPresetRegexRulesRequest {
+  int32 preset_id = 1;
+}
+
+// 获取预设的正则规则列表响应
+message ListPresetRegexRulesResponse {
+  repeated RegexRule rules = 1;
+}
+
+// 添加正则规则请求
+message AddRegexRuleRequest {
+  int32 preset_id = 1;
+  string name = 2;
+  string find_pattern = 3;
+  optional string replace_pattern = 4;
+  bool is_enabled = 5;
+  bool run_on_edit = 6;
+  bool substitute_regex = 7;
+  optional int32 min_depth = 8;
+  optional int32 max_depth = 9;
+  RegexAffectFlags affect_flags = 10;
+  int32 sort_order = 11;
+}
+
+// 添加正则规则响应
+message AddRegexRuleResponse {
+  RegexRule rule = 1;
+}
+
+// 更新正则规则请求
+message UpdateRegexRuleRequest {
+  int32 id = 1;
+  string name = 2;
+  string find_pattern = 3;
+  optional string replace_pattern = 4;
+  bool is_enabled = 5;
+  bool run_on_edit = 6;
+  bool substitute_regex = 7;
+  optional int32 min_depth = 8;
+  optional int32 max_depth = 9;
+  RegexAffectFlags affect_flags = 10;
+  int32 sort_order = 11;
+}
+
+// 更新正则规则响应
+message UpdateRegexRuleResponse {
+  RegexRule rule = 1;
+}
+
+// 删除正则规则请求
+message DeleteRegexRuleRequest {
+  int32 id = 1;
+}
+
+// 删除正则规则响应
+message DeleteRegexRuleResponse {}
+
+// 批量更新正则规则排序请求
+message UpdateRegexRulesOrderRequest {
+  int32 preset_id = 1;
+  repeated int32 rule_ids = 2;  // 按新顺序排列的ID列表
+}
+
+// 批量更新正则规则排序响应
+message UpdateRegexRulesOrderResponse {}
+
+// 导入正则规则请求
+// 导入的都是全局正则（preset_id = 0）
+message ImportRegexRulesRequest {
+  bytes file_content = 1;  // JSON文件内容
+  string file_name = 2;
+}
+
+// 导入正则规则响应
+message ImportRegexRulesResponse {}
+
+// 导出正则规则请求
+message ExportRegexRulesRequest {
+  int32 preset_id = 1;
+}
+
+// 导出正则规则响应
+message ExportRegexRulesResponse {
+  bytes file_content = 1;
+  string file_name = 2;
+}
+
+// 正则规则服务
+service RegexRuleService {
+  // 获取全局正则规则列表
+  rpc ListRegexRules(ListRegexRulesRequest) returns (ListRegexRulesResponse);
+  // 获取预设的正则规则列表
+  rpc ListPresetRegexRules(ListPresetRegexRulesRequest) returns (ListPresetRegexRulesResponse);
+  // 添加正则规则
+  rpc AddRegexRule(AddRegexRuleRequest) returns (AddRegexRuleResponse);
+  // 更新正则规则
+  rpc UpdateRegexRule(UpdateRegexRuleRequest) returns (UpdateRegexRuleResponse);
+  // 删除正则规则
+  rpc DeleteRegexRule(DeleteRegexRuleRequest) returns (DeleteRegexRuleResponse);
+  // 批量更新正则规则排序
+  rpc UpdateRegexRulesOrder(UpdateRegexRulesOrderRequest) returns (UpdateRegexRulesOrderResponse);
+  // 导入正则规则
+  rpc ImportRegexRules(ImportRegexRulesRequest) returns (ImportRegexRulesResponse);
+  // 导出正则规则
+  rpc ExportRegexRules(ExportRegexRulesRequest) returns (ExportRegexRulesResponse);
+}

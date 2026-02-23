@@ -1,0 +1,159 @@
+syntax = "proto3";
+
+package muse;
+
+import "muse/common.proto";
+import "muse/user.proto";
+import "muse/regex.proto";
+import "muse/worldinfo.proto";
+
+option go_package = "github.com/ling/muse/gen/muse;muse";
+
+// ================================
+// 角色卡相关消息
+// ================================
+
+// Character 角色卡，定义AI扮演的角色
+message Character {
+  int32 id = 1;                  // 角色卡唯一标识ID
+  int32 user_id = 2;             // 所属用户ID
+  string name = 3;               // 角色名称
+  string avatar = 4;             // 角色头像（Base64编码或URL）
+  string description = 5;        // 角色描述，包含性格、背景等设定
+  repeated string first_message = 8;      // 角色开场白，对话开始时AI的第一条消息
+  repeated string example_dialogue = 9;   // 示例对话，展示角色的对话风格
+  string creator_notes = 10;     // 创作者备注，角色卡的使用说明
+  int32 world_info_id = 12;      // 关联的世界书ID，提供角色相关的背景知识
+  int64 version = 13;            // 乐观锁版本号，用于并发控制
+  int64 created_at = 14;         // 创建时间（Unix时间戳）
+  int64 updated_at = 15;         // 最后更新时间（Unix时间戳）
+  WorldInfo world_info = 16;     // 关联的世界书详情（可选加载）
+  repeated RegexRule regex_rules = 17;     // 正则规则列表（可选加载）
+}
+
+// ================================
+// 角色卡服务
+// ================================
+
+// 获取角色卡列表请求
+message ListCharactersRequest {
+  optional int32 page = 1;
+  optional int32 page_size = 2;
+}
+
+// 获取角色卡列表响应
+message ListCharactersResponse {
+  repeated Character characters = 1;
+  int32 total = 2;
+}
+
+// 获取单个角色卡请求
+message GetCharacterRequest {
+  int32 id = 1;
+}
+
+// 获取单个角色卡响应
+message GetCharacterResponse {
+  Character character = 1;
+}
+
+// 创建角色卡请求
+message CreateCharacterRequest {
+  string name = 1;
+  optional string avatar = 2;
+  optional string description = 3;
+  optional string personality = 4;
+  optional string scenario = 5;
+  repeated string first_message = 6;
+  repeated string example_dialogue = 7;
+  optional string creator_notes = 8;
+  optional string system_prompt = 9;
+  optional int32 world_info_id = 10;
+}
+
+// 创建角色卡响应
+message CreateCharacterResponse {
+  Character character = 1;
+}
+
+// 更新角色卡请求
+message UpdateCharacterRequest {
+  int32 id = 1;
+  string name = 2;
+  optional string avatar = 3;
+  optional string description = 4;
+  optional string personality = 5;
+  optional string scenario = 6;
+  repeated string first_message = 7;
+  repeated string example_dialogue = 8;
+  optional string creator_notes = 9;
+  optional string system_prompt = 10;
+  optional int32 world_info_id = 11;
+  int64 version = 12;  // 乐观锁版本号
+}
+
+// 更新角色卡响应
+message UpdateCharacterResponse {
+  Character character = 1;
+}
+
+// 删除角色卡请求
+message DeleteCharacterRequest {
+  int32 id = 1;
+}
+
+// 删除角色卡响应
+message DeleteCharacterResponse {}
+
+// 导入角色卡请求
+message ImportCharacterRequest {
+  bytes file_content = 1;  // PNG图片或JSON文件内容
+  string file_name = 2;    // 文件名，用于判断格式
+}
+
+// 导入角色卡响应
+message ImportCharacterResponse {
+  Character character = 1;
+}
+
+// 导出角色卡请求
+message ExportCharacterRequest {
+  int32 id = 1;
+  string format = 2;  // "png" 或 "json"
+}
+
+// 导出角色卡响应
+message ExportCharacterResponse {
+  bytes file_content = 1;
+  string file_name = 2;
+}
+
+// 恢复角色卡世界书请求
+message RestoreCharacterWorldInfoRequest {
+  int32 character_id = 1;
+}
+
+// 恢复角色卡世界书响应
+message RestoreCharacterWorldInfoResponse {
+  WorldInfo world_info = 1;
+}
+
+// 角色卡服务
+service CharacterService {
+  // 获取角色卡列表
+  rpc ListCharacters(ListCharactersRequest) returns (ListCharactersResponse);
+  // 获取单个角色卡
+  rpc GetCharacter(GetCharacterRequest) returns (GetCharacterResponse);
+  // 创建角色卡
+  rpc CreateCharacter(CreateCharacterRequest) returns (CreateCharacterResponse);
+  // 更新角色卡
+  rpc UpdateCharacter(UpdateCharacterRequest) returns (UpdateCharacterResponse);
+  // 删除角色卡
+  rpc DeleteCharacter(DeleteCharacterRequest) returns (DeleteCharacterResponse);
+  // 导入角色卡（支持SillyTavern格式）
+  rpc ImportCharacter(ImportCharacterRequest) returns (ImportCharacterResponse);
+  // 导出角色卡
+  rpc ExportCharacter(ExportCharacterRequest) returns (ExportCharacterResponse);
+  // 恢复角色卡的世界书（从备份恢复）
+  rpc RestoreCharacterWorldInfo(RestoreCharacterWorldInfoRequest) returns (RestoreCharacterWorldInfoResponse);
+}

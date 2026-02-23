@@ -1,0 +1,185 @@
+syntax = "proto3";
+
+package muse;
+
+import "muse/common.proto";
+import "muse/character.proto";
+
+option go_package = "github.com/ling/muse/gen/muse;muse";
+
+// ================================
+// 聊天相关消息
+// ================================
+
+// ChatSession 聊天会话，记录与某个角色的对话
+message ChatSession {
+  int32 id = 1;                    // 会话唯一标识ID
+  int32 user_id = 2;               // 所属用户ID
+  int32 character_id = 3;          // 关联的角色卡ID
+  string name = 4;                 // 会话名称（可选）
+  int64 version = 5;               // 乐观锁版本号，用于并发控制
+  int64 created_at = 6;            // 创建时间（Unix时间戳）
+  int64 updated_at = 7;            // 最后更新时间（Unix时间戳）
+  Character character = 8;         // 关联的角色卡详情（可选加载）
+  repeated Message messages = 9;   // 会话中的消息列表（可选加载）
+}
+
+// Message 聊天消息
+message Message {
+  int32 id = 1;                        // 消息唯一标识ID
+  int32 session_id = 2;                // 所属会话ID
+  Role role = 3;                       // 消息角色（用户/助手/系统）
+  int32 active_swipe_index = 4;        // 当前激活的swipe索引
+  int32 sort_order = 5;                // 消息排序序号，用于确定显示顺序
+  int64 created_at = 6;                // 创建时间（Unix时间戳）
+  int64 updated_at = 7;                // 最后更新时间（Unix时间戳）
+  repeated MessageSwipe swipes = 8;    // 消息内容列表（支持多个候选回复）
+}
+
+// MessageSwipe 消息内容变体，支持同一消息的多个候选回复
+message MessageSwipe {
+  int32 id = 1;          // Swipe唯一标识ID
+  int32 message_id = 2;  // 所属消息ID
+  string content = 3;    // 消息文本内容
+  int32 sort_order = 4;  // 排序序号
+  int64 created_at = 5;  // 创建时间（Unix时间戳）
+}
+
+// ================================
+// 聊天服务
+// ================================
+
+// 获取会话列表请求
+message ListChatSessionsRequest {
+  optional int32 character_id = 1;  // 可选，按角色筛选
+  optional int32 page = 2;
+  optional int32 page_size = 3;
+}
+
+// 获取会话列表响应
+message ListChatSessionsResponse {
+  repeated ChatSession sessions = 1;
+  int32 total = 2;
+}
+
+// 获取单个会话请求
+message GetChatSessionRequest {
+  int32 id = 1;
+  bool include_messages = 2;  // 是否包含消息
+}
+
+// 获取单个会话响应
+message GetChatSessionResponse {
+  ChatSession session = 1;
+}
+
+// 创建会话请求
+message CreateChatSessionRequest {
+  int32 character_id = 1;
+  optional string name = 2;
+}
+
+// 创建会话响应
+message CreateChatSessionResponse {
+  ChatSession session = 1;
+}
+
+// 更新会话请求
+message UpdateChatSessionRequest {
+  int32 id = 1;
+  optional string name = 2;
+  int64 version = 3;  // 乐观锁版本号
+}
+
+// 更新会话响应
+message UpdateChatSessionResponse {
+  ChatSession session = 1;
+}
+
+// 删除会话请求
+message DeleteChatSessionRequest {
+  int32 id = 1;
+}
+
+// 删除会话响应
+message DeleteChatSessionResponse {}
+
+// 发送消息请求
+message SendMessageRequest {
+  int32 session_id = 1;
+  string content = 2;
+}
+
+// 发送消息响应
+message SendMessageResponse {
+  int32 index = 1; // 多个候选回复时，候选回复的下标
+  string content = 2;
+  bool is_complete = 3;           // 是否完成
+}
+
+// 重新生成消息请求
+message RegenerateMessageRequest {
+  int32 message_id = 1;  // 要重新生成的AI消息ID
+}
+
+// 重新生成消息响应（流式）
+message RegenerateMessageResponse {
+  MessageSwipe new_swipe = 1;  // 新的swipe
+  string content_delta = 2;    // 内容增量
+  bool is_complete = 3;        // 是否完成
+}
+
+// 编辑消息请求
+message EditMessageRequest {
+  int32 message_id = 1;
+  int32 swipe_id = 2;     // 要编辑的swipe ID
+  string content = 3;      // 新内容
+}
+
+// 编辑消息响应
+message EditMessageResponse {
+  MessageSwipe swipe = 1;
+}
+
+// 删除消息请求
+message DeleteMessageRequest {
+  int32 message_id = 1;
+}
+
+// 删除消息响应
+message DeleteMessageResponse {}
+
+// 切换Swipe请求
+message SwitchSwipeRequest {
+  int32 message_id = 1;
+  int32 swipe_index = 2;
+}
+
+// 切换Swipe响应
+message SwitchSwipeResponse {
+  Message message = 1;
+}
+
+// 聊天服务
+service ChatService {
+  // 获取会话列表
+  rpc ListChatSessions(ListChatSessionsRequest) returns (ListChatSessionsResponse);
+  // 获取单个会话
+  rpc GetChatSession(GetChatSessionRequest) returns (GetChatSessionResponse);
+  // 创建会话
+  rpc CreateChatSession(CreateChatSessionRequest) returns (CreateChatSessionResponse);
+  // 更新会话
+  rpc UpdateChatSession(UpdateChatSessionRequest) returns (UpdateChatSessionResponse);
+  // 删除会话
+  rpc DeleteChatSession(DeleteChatSessionRequest) returns (DeleteChatSessionResponse);
+  // 发送消息（流式响应）
+  rpc SendMessage(SendMessageRequest) returns (stream SendMessageResponse);
+  // 重新生成消息（流式响应）
+  rpc RegenerateMessage(RegenerateMessageRequest) returns (stream RegenerateMessageResponse);
+  // 编辑消息
+  rpc EditMessage(EditMessageRequest) returns (EditMessageResponse);
+  // 删除消息
+  rpc DeleteMessage(DeleteMessageRequest) returns (DeleteMessageResponse);
+  // 切换Swipe
+  rpc SwitchSwipe(SwitchSwipeRequest) returns (SwitchSwipeResponse);
+}

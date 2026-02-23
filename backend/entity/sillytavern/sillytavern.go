@@ -1,5 +1,7 @@
 package sillytavern
 
+import "github.com/ling/muse/common/constant"
+
 // CharacterCard 角色卡数据结构（兼容V2/V3格式）
 // 字段说明参考 SillyTavern Character Card V2/V3 规范
 type CharacterCard struct {
@@ -297,18 +299,18 @@ type PresetExtensions struct {
 
 // PresetPromptItem 预设中的提示词项
 type PresetPromptItem struct {
-	Identifier        string   `json:"identifier"`                   // 唯一标识符
-	Name              string   `json:"name"`                         // 显示名称
-	Content           string   `json:"content,omitempty"`            // 提示词内容
-	Role              string   `json:"role,omitempty"`               // 角色：system, user, assistant
-	SystemPrompt      bool     `json:"system_prompt,omitempty"`      // 是否为系统提示词
-	Marker            bool     `json:"marker,omitempty"`             // 是否为标记（占位符）
-	InjectionPosition int      `json:"injection_position,omitempty"` // 注入位置
-	InjectionDepth    int      `json:"injection_depth,omitempty"`    // 注入深度
-	InjectionOrder    int      `json:"injection_order,omitempty"`    // 注入顺序
-	InjectionTrigger  []string `json:"injection_trigger,omitempty"`  // 注入触发器
-	ForbidOverrides   bool     `json:"forbid_overrides,omitempty"`   // 禁止覆盖
-	Enabled           bool     `json:"enabled,omitempty"`            // 是否启用
+	Identifier        string               `json:"identifier"`                   // 唯一标识符
+	Name              string               `json:"name"`                         // 显示名称
+	Content           string               `json:"content,omitempty"`            // 提示词内容
+	Role              string               `json:"role,omitempty"`               // 角色：system, user, assistant
+	SystemPrompt      bool                 `json:"system_prompt,omitempty"`      // 是否为系统提示词
+	Marker            bool                 `json:"marker,omitempty"`             // 是否为标记（占位符）
+	InjectionPosition constant.STInjectPos `json:"injection_position,omitempty"` // 注入位置
+	InjectionDepth    int                  `json:"injection_depth,omitempty"`    // 注入深度
+	InjectionOrder    int                  `json:"injection_order,omitempty"`    // 注入顺序
+	InjectionTrigger  []string             `json:"injection_trigger,omitempty"`  // 注入触发器
+	ForbidOverrides   bool                 `json:"forbid_overrides,omitempty"`   // 禁止覆盖
+	Enabled           bool                 `json:"enabled,omitempty"`            // 是否启用
 }
 
 // PromptOrderItem 提示词顺序项

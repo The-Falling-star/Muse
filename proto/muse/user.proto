@@ -1,0 +1,329 @@
+syntax = "proto3";
+
+package muse;
+
+import "muse/common.proto";
+
+option go_package = "github.com/ling/muse/gen/muse;muse";
+
+// ================================
+// 用户相关消息
+// ================================
+
+// SysUser 系统用户信息
+message SysUser {
+  int32 id = 1;                 // 用户唯一标识ID
+  string username = 2;          // 用户名，用于登录
+  int32 active_persona_id = 4;  // 当前激活的用户人设ID
+  int32 active_preset_id = 5;   // 当前激活的预设ID
+  int64 created_at = 6;         // 创建时间（Unix时间戳）
+  int64 updated_at = 7;         // 最后更新时间（Unix时间戳）
+}
+
+// Persona 用户人设，定义用户在对话中的身份
+message Persona {
+  int32 id = 1;           // 人设唯一标识ID
+  int32 user_id = 2;      // 所属用户ID
+  string name = 3;        // 人设名称
+  string avatar = 4;      // 人设头像（Base64编码或URL）
+  string description = 5; // 人设描述，定义用户的角色设定
+  int64 created_at = 6;   // 创建时间（Unix时间戳）
+  int64 updated_at = 7;   // 最后更新时间（Unix时间戳）
+}
+
+// UserSetting 用户个性化设置
+message UserSetting {
+  int32 id = 1;              // 设置记录ID
+  int32 user_id = 2;         // 所属用户ID
+  Theme theme = 3;           // 界面主题
+  string language = 4;       // 语言设置（如 zh-CN、en-US）
+  bool send_on_enter = 5;    // 是否按回车键发送消息
+  bool show_timestamps = 6;  // 是否显示消息时间戳
+  int64 created_at = 7;      // 创建时间（Unix时间戳）
+  int64 updated_at = 8;      // 最后更新时间（Unix时间戳）
+}
+
+// APIConfig API连接配置
+message APIConfig {
+  int32 id = 1;            // 配置唯一标识ID
+  int32 user_id = 2;       // 所属用户ID
+  string name = 3;         // 配置名称
+  APIProvider provider = 4; // API服务提供商
+  string api_key = 5;      // API密钥（创建/更新时使用，查询时不返回）
+  string base_url = 6;     // API基础URL（用于代理或自定义端点）
+  string model = 7;        // 使用的模型名称
+  bool is_active = 8;      // 是否为当前激活的配置
+  int64 created_at = 9;    // 创建时间（Unix时间戳）
+  int64 updated_at = 10;   // 最后更新时间（Unix时间戳）
+}
+
+// ================================
+// 认证
+// ================================
+
+// 注册请求
+message RegisterRequest {
+  string username = 1;
+  string password = 2;
+}
+
+// 注册响应
+message RegisterResponse {
+  SysUser user = 1;
+  string token = 2;
+}
+
+// 登录请求
+message LoginRequest {
+  string username = 1;
+  string password = 2;
+}
+
+// 登录响应
+message LoginResponse {
+  SysUser user = 1;
+  string token = 2;
+}
+
+// 获取当前用户请求
+message GetCurrentUserRequest {}
+
+// 获取当前用户响应
+message GetCurrentUserResponse {
+  SysUser user = 1;
+}
+
+// 修改密码请求
+message ChangePasswordRequest {
+  string old_password = 1;
+  string new_password = 2;
+}
+
+// 修改密码响应
+message ChangePasswordResponse {}
+
+// ================================
+// 用户服务（包含认证、人设、用户设置和API配置的管理）
+// ================================
+
+// 获取人设列表请求
+message ListPersonasRequest {}
+
+// 获取人设列表响应
+message ListPersonasResponse {
+  repeated Persona personas = 1;
+}
+
+// 获取单个人设请求
+message GetPersonaRequest {
+  int32 id = 1;
+}
+
+// 获取单个人设响应
+message GetPersonaResponse {
+  Persona persona = 1;
+}
+
+// 创建人设请求
+message CreatePersonaRequest {
+  string name = 1;
+  optional string avatar = 2;
+  optional string description = 3;
+}
+
+// 创建人设响应
+message CreatePersonaResponse {
+  Persona persona = 1;
+}
+
+// 更新人设请求
+message UpdatePersonaRequest {
+  int32 id = 1;
+  string name = 2;
+  optional string avatar = 3;
+  optional string description = 4;
+}
+
+// 更新人设响应
+message UpdatePersonaResponse {
+  Persona persona = 1;
+}
+
+// 删除人设请求
+message DeletePersonaRequest {
+  int32 id = 1;
+}
+
+// 删除人设响应
+message DeletePersonaResponse {}
+
+// 设置活跃人设请求
+message SetActivePersonaRequest {
+  int32 persona_id = 1;
+}
+
+// 设置活跃人设响应
+message SetActivePersonaResponse {}
+
+// ================================
+// 用户设置
+// ================================
+
+// 获取用户设置请求
+message GetUserSettingRequest {}
+
+// 获取用户设置响应
+message GetUserSettingResponse {
+  UserSetting setting = 1;
+}
+
+// 更新用户设置请求
+message UpdateUserSettingRequest {
+  Theme theme = 1;
+  string language = 2;
+  bool send_on_enter = 3;
+  bool show_timestamps = 4;
+}
+
+// 更新用户设置响应
+message UpdateUserSettingResponse {
+  UserSetting setting = 1;
+}
+
+// ================================
+// API配置
+// ================================
+
+// 获取API配置列表请求
+message ListAPIConfigsRequest {}
+
+// 获取API配置列表响应
+message ListAPIConfigsResponse {
+  repeated APIConfig configs = 1;
+}
+
+// 获取单个API配置请求
+message GetAPIConfigRequest {
+  int32 id = 1;
+}
+
+// 获取单个API配置响应
+message GetAPIConfigResponse {
+  APIConfig config = 1;
+}
+
+// 创建API配置请求
+message CreateAPIConfigRequest {
+  string name = 1;
+  APIProvider provider = 2;
+  string api_key = 3;
+  optional string base_url = 4;
+  optional string model = 5;
+}
+
+// 创建API配置响应
+message CreateAPIConfigResponse {
+  APIConfig config = 1;
+}
+
+// 更新API配置请求
+message UpdateAPIConfigRequest {
+  int32 id = 1;
+  string name = 2;
+  APIProvider provider = 3;
+  optional string api_key = 4;  // 可选，不传则不更新
+  optional string base_url = 5;
+  optional string model = 6;
+}
+
+// 更新API配置响应
+message UpdateAPIConfigResponse {
+  APIConfig config = 1;
+}
+
+// 删除API配置请求
+message DeleteAPIConfigRequest {
+  int32 id = 1;
+}
+
+// 删除API配置响应
+message DeleteAPIConfigResponse {}
+
+// 设置活跃API配置请求
+message SetActiveAPIConfigRequest {
+  int32 config_id = 1;
+}
+
+// 设置活跃API配置响应
+message SetActiveAPIConfigResponse {}
+
+// 测试API配置请求
+message TestAPIConfigRequest {
+  int32 id = 1;
+}
+
+// 测试API配置响应
+message TestAPIConfigResponse {
+  bool success = 1;
+  optional string error_message = 2;
+  optional string model_info = 3;  // 返回的模型信息
+}
+
+// ================================
+// 公共配置（无需认证）
+// ================================
+
+// 获取公共配置请求
+message GetPublicConfigRequest {}
+
+// 获取公共配置响应
+message GetPublicConfigResponse {
+  bool skip_auth = 1;  // 是否跳过认证
+}
+
+// 用户服务（包含认证、人设、用户设置和API配置的管理）
+service UserService {
+  // 获取公共配置（无需认证）
+  rpc GetPublicConfig(GetPublicConfigRequest) returns (GetPublicConfigResponse);
+  // 用户注册
+  rpc Register(RegisterRequest) returns (RegisterResponse);
+  // 用户登录
+  rpc Login(LoginRequest) returns (LoginResponse);
+  // 获取当前用户信息
+  rpc GetCurrentUser(GetCurrentUserRequest) returns (GetCurrentUserResponse);
+  // 修改密码
+  rpc ChangePassword(ChangePasswordRequest) returns (ChangePasswordResponse);
+
+  // 获取人设列表
+  rpc ListPersonas(ListPersonasRequest) returns (ListPersonasResponse);
+  // 获取单个人设
+  rpc GetPersona(GetPersonaRequest) returns (GetPersonaResponse);
+  // 创建人设
+  rpc CreatePersona(CreatePersonaRequest) returns (CreatePersonaResponse);
+  // 更新人设
+  rpc UpdatePersona(UpdatePersonaRequest) returns (UpdatePersonaResponse);
+  // 删除人设
+  rpc DeletePersona(DeletePersonaRequest) returns (DeletePersonaResponse);
+  // 设置活跃人设
+  rpc SetActivePersona(SetActivePersonaRequest) returns (SetActivePersonaResponse);
+
+  // 获取用户设置
+  rpc GetUserSetting(GetUserSettingRequest) returns (GetUserSettingResponse);
+  // 更新用户设置
+  rpc UpdateUserSetting(UpdateUserSettingRequest) returns (UpdateUserSettingResponse);
+
+  // 获取API配置列表
+  rpc ListAPIConfigs(ListAPIConfigsRequest) returns (ListAPIConfigsResponse);
+  // 获取单个API配置
+  rpc GetAPIConfig(GetAPIConfigRequest) returns (GetAPIConfigResponse);
+  // 创建API配置
+  rpc CreateAPIConfig(CreateAPIConfigRequest) returns (CreateAPIConfigResponse);
+  // 更新API配置
+  rpc UpdateAPIConfig(UpdateAPIConfigRequest) returns (UpdateAPIConfigResponse);
+  // 删除API配置
+  rpc DeleteAPIConfig(DeleteAPIConfigRequest) returns (DeleteAPIConfigResponse);
+  // 设置活跃API配置
+  rpc SetActiveAPIConfig(SetActiveAPIConfigRequest) returns (SetActiveAPIConfigResponse);
+  // 测试API配置连接
+  rpc TestAPIConfig(TestAPIConfigRequest) returns (TestAPIConfigResponse);
+}

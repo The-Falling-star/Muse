@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/ling/muse/common/constant"
 	"github.com/ling/muse/config"
 	"github.com/ling/muse/entity"
 	"github.com/ling/muse/entity/sillytavern"
@@ -138,6 +139,16 @@ func PresetEntityToPb(preset *entity.Preset) *pb.Preset {
 
 // PromptItemEntityToPb 将提示项实体类转换为pb
 func PromptItemEntityToPb(item *entity.PromptItem) *pb.PromptItem {
+	var pre *int32 = nil
+	if item.Pre != nil {
+		val := int32(*item.Pre)
+		pre = &val
+	}
+	var next *int32 = nil
+	if item.Next != nil {
+		val := int32(*item.Next)
+		next = &val
+	}
 	return &pb.PromptItem{
 		Id:                int32(item.ID),
 		PresetId:          int32(item.PresetID),
@@ -149,9 +160,10 @@ func PromptItemEntityToPb(item *entity.PromptItem) *pb.PromptItem {
 		InjectionPosition: item.InjectionPosition,
 		InjectionDepth:    int32(item.InjectionDepth),
 		ForbidOverrides:   item.ForbidOverrides,
-		SortOrder:         int32(item.SortOrder),
 		CreatedAt:         item.CreatedAt.Unix(),
 		UpdatedAt:         item.UpdatedAt.Unix(),
+		Pre:               pre,
+		Next:              next,
 	}
 }
 
@@ -209,11 +221,39 @@ func MessageSwipeEntityToPb(swipe *entity.MessageSwipe) *pb.MessageSwipe {
 	}
 }
 
+// PromptItemPbToEntity 将提示项pb转换为实体类
+func PromptItemPbToEntity(item *pb.PromptItem) *entity.PromptItem {
+	var pre *int = nil
+	if item.Pre != nil {
+		val := int(*item.Pre)
+		pre = &val
+	}
+
+	var next *int = nil
+	if item.Next != nil {
+		val := int(*item.Next)
+		next = &val
+	}
+
+	return &entity.PromptItem{
+		ID:                int(item.Id),
+		PresetID:          int(item.PresetId),
+		Identifier:        item.Identifier,
+		Name:              item.Name,
+		Content:           item.Content,
+		Role:              item.Role,
+		IsEnabled:         item.IsEnabled,
+		InjectionPosition: item.InjectionPosition,
+		InjectionDepth:    int(item.InjectionDepth),
+		ForbidOverrides:   item.ForbidOverrides,
+		Pre:               pre,
+		Next:              next,
+	}
+}
+
 // ============ SillyTavern 预设转换 ============
 
 // STPresetToEntity 将 SillyTavern OpenAI 预设转换为 Muse 预设实体
-// userID: 用户ID
-// presetName: 预设名称
 func STPresetToEntity(stPreset *sillytavern.OpenAIPreset, userID int, presetName string) *entity.Preset {
 	preset := &entity.Preset{
 		UserID:           userID,
@@ -269,26 +309,15 @@ func ConvertSTIdentifier(identifier string) pb.PromptItemIdentifier {
 }
 
 // STPromptToEntity 将 SillyTavern 提示项转换为 Muse 提示项实体
-// presetID: 关联的预设ID
-// stPrompt: SillyTavern 提示项
-// sortOrder: 排序顺序
-// promptOrderMap: 提示词顺序映射（用于确定启用状态）
-func STPromptToEntity(presetID int, stPrompt *sillytavern.PresetPromptItem, sortOrder int, promptOrderMap map[string]sillytavern.PromptOrderIdentifier) *entity.PromptItem {
+func STPromptToEntity(presetID int, stPrompt *sillytavern.PresetPromptItem) *entity.PromptItem {
 	// 转换角色
 	role := ConvertSTRole(stPrompt.Role)
 
 	// 转换标识符
 	identifier := ConvertSTIdentifier(stPrompt.Identifier)
-
-	// 从 prompt_order 获取启用状态，默认启用
-	isEnabled := true
-	if orderInfo, ok := promptOrderMap[stPrompt.Identifier]; ok {
-		isEnabled = orderInfo.Enabled
-	}
-
 	// 转换注入位置
 	injectionPosition := pb.InjectionPosition_Relative
-	if stPrompt.InjectionPosition == 1 {
+	if stPrompt.InjectionPosition == constant.STInjectPosAbsolute {
 		injectionPosition = pb.InjectionPosition_Absolute
 	}
 
@@ -298,37 +327,11 @@ func STPromptToEntity(presetID int, stPrompt *sillytavern.PresetPromptItem, sort
 		Name:              stPrompt.Name,
 		Content:           stPrompt.Content,
 		Role:              role,
-		IsEnabled:         isEnabled,
+		IsEnabled:         stPrompt.Enabled,
 		InjectionPosition: injectionPosition,
 		InjectionDepth:    stPrompt.InjectionDepth,
 		ForbidOverrides:   stPrompt.ForbidOverrides,
-		SortOrder:         sortOrder,
 	}
-}
-
-// BuildPromptOrderMap 构建提示词顺序映射
-// SillyTavern 的 prompt_order 包含多个角色的顺序配置，这里取默认角色（100000）的配置
-func BuildPromptOrderMap(promptOrder []sillytavern.PromptOrderItem) map[string]sillytavern.PromptOrderIdentifier {
-	result := make(map[string]sillytavern.PromptOrderIdentifier)
-
-	for _, order := range promptOrder {
-		// 优先使用默认角色（100000）的配置
-		if order.CharacterID == 100000 {
-			for _, item := range order.Order {
-				result[item.Identifier] = item
-			}
-			break
-		}
-	}
-
-	// 如果没有找到默认角色，使用第一个配置
-	if len(result) == 0 && len(promptOrder) > 0 {
-		for _, item := range promptOrder[0].Order {
-			result[item.Identifier] = item
-		}
-	}
-
-	return result
 }
 
 // ConvertSTRole 将 SillyTavern 角色字符串转换为 pb.Role

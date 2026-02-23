@@ -958,7 +958,7 @@ type PriorityMessage struct {
 	Priority int
 }
 
-func collectMsg(worldBooks []*entity.WorldInfo, preset []*entity.PromptItem, session *entity.ChatSession) (
+func collectMsg(worldBooks []*entity.WorldInfo, promptItems []*entity.PromptItem, session *entity.ChatSession) (
 	systemMsg, assistantMsg, userMsg map[int][]model.Message) {
 	systemMsgTemp := make(map[int][]PriorityMessage)
 	assistantMsgTemp := make(map[int][]PriorityMessage)
@@ -989,14 +989,14 @@ func collectMsg(worldBooks []*entity.WorldInfo, preset []*entity.PromptItem, ses
 			}
 		}
 	}
-	for _, item := range preset {
+	for _, item := range promptItems {
 		message := PriorityMessage{
 			Message: model.Message{
 				Role:    item.Role,
 				Content: item.Content,
 				Module:  constant.Preset,
 			},
-			Priority: item.SortOrder,
+			// TODO Priority: item.SortOrder,
 		}
 		switch item.Role {
 		case pb.Role_System:

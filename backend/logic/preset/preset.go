@@ -113,7 +113,6 @@ func (p *presetImpl) CreatePreset(ctx context.Context, req *pb.CreatePresetReque
 			InjectionPosition: itemReq.GetInjectionPosition(),
 			InjectionDepth:    int(itemReq.GetInjectionDepth()),
 			ForbidOverrides:   itemReq.GetForbidOverrides(),
-			SortOrder:         int(itemReq.GetSortOrder()),
 		}
 		// 创建提示项，忽略单个失败继续创建其他项
 		_ = p.presetRepo.CreatePromptItem(ctx, item)
@@ -249,7 +248,6 @@ func (p *presetImpl) AddPromptItem(ctx context.Context, req *pb.AddPromptItemReq
 		InjectionPosition: req.GetInjectionPosition(),
 		InjectionDepth:    int(req.GetInjectionDepth()),
 		ForbidOverrides:   req.GetForbidOverrides(),
-		SortOrder:         int(req.GetSortOrder()),
 	}
 
 	// 保存到数据库
@@ -300,7 +298,6 @@ func (p *presetImpl) UpdatePromptItem(ctx context.Context, req *pb.UpdatePromptI
 	item.InjectionPosition = req.InjectionPosition
 	item.InjectionDepth = int(req.InjectionDepth)
 	item.ForbidOverrides = req.ForbidOverrides
-	item.SortOrder = int(req.SortOrder)
 
 	// 更新数据库
 	if err := p.presetRepo.UpdatePromptItem(ctx, item); err != nil {
@@ -397,22 +394,27 @@ func (p *presetImpl) ImportPreset(ctx context.Context, req *pb.ImportPresetReque
 
 	// 转换并保存提示项
 	if len(stPreset.Prompts) > 0 {
-		// 构建 prompt_order 映射，用于确定启用状态和排序
-		promptOrderMap := convert.BuildPromptOrderMap(stPreset.PromptOrder)
-
-		for i, stPrompt := range stPreset.Prompts {
-			// 跳过 marker 类型的占位符提示项
-			if stPrompt.Marker {
-				continue
-			}
-
+		promptItems := orderPrompt(stPreset.Prompts, stPreset.PromptOrder)
+		items := make([]*entity.PromptItem, 0, len(promptItems))
+		for _, stPrompt := range promptItems {
 			// 使用 convert 包转换提示项
-			item := convert.STPromptToEntity(preset.ID, &stPrompt, i, promptOrderMap)
-
-			if err := p.presetRepo.CreatePromptItem(ctx, item); err != nil {
-				// 即使提示项创建失败，也不影响预设的创建
-				continue
+			item := convert.STPromptToEntity(preset.ID, &stPrompt)
+			items = append(items, item)
+		}
+		if err := p.presetRepo.BatchCreatePromptItem(ctx, items); err != nil {
+			return nil, err
+		}
+		// 排序提示项
+		var pre *int = nil
+		for i := 0; i < len(items); i++ {
+			items[i].Pre = pre
+			pre = &items[i].ID
+			if i < len(items)-1 {
+				items[i].Next = &items[i+1].ID
 			}
+		}
+		if err := p.presetRepo.BatchUpdatePromptItemOrder(ctx, items); err != nil {
+			return nil, err
 		}
 	}
 
@@ -446,4 +448,38 @@ func (p *presetImpl) ImportPreset(ctx context.Context, req *pb.ImportPresetReque
 func (p *presetImpl) ExportPreset(ctx context.Context, req *pb.ExportPresetRequest) (*pb.ExportPresetResponse, error) {
 	//TODO implement me
 	panic("implement me")
+}
+
+// orderPrompt 构建提示词顺序映射
+func orderPrompt(prompt []sillytavern.PresetPromptItem,
+	promptOrder []sillytavern.PromptOrderItem) []sillytavern.PresetPromptItem {
+
+	promptMap := make(map[string]*sillytavern.PresetPromptItem, len(prompt))
+	for _, item := range prompt {
+		promptMap[item.Identifier] = &item
+	}
+	clear(prompt)
+
+	const defaultCharacterID = 100001
+
+	for _, order := range promptOrder {
+		if order.CharacterID != defaultCharacterID {
+			continue
+		}
+		for _, item := range order.Order {
+			if promptItem, exist := promptMap[item.Identifier]; exist {
+				prompt = append(prompt, *promptItem)
+			}
+		}
+		break
+	}
+	// 如果没有找到默认角色，使用第一个配置
+	if len(prompt) == 0 && len(promptOrder) > 0 {
+		for _, item := range promptOrder[0].Order {
+			if promptItem, exist := promptMap[item.Identifier]; exist {
+				prompt = append(prompt, *promptItem)
+			}
+		}
+	}
+	return prompt
 }

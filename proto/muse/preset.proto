@@ -1,0 +1,264 @@
+syntax = "proto3";
+
+package muse;
+
+import "muse/common.proto";
+import "muse/regex.proto";
+
+option go_package = "github.com/ling/muse/gen/muse;muse";
+
+// ================================
+// 预设相关消息
+// ================================
+
+// Preset 预设配置，定义AI生成参数和提示词模板
+message Preset {
+  int32 id = 1;                              // 预设唯一标识ID
+  int32 user_id = 2;                         // 所属用户ID
+  string name = 3;                           // 预设名称
+  float temperature = 4;                     // 温度参数，控制输出随机性（0.0-2.0）
+  float top_p = 5;                           // Top-P采样参数，核采样概率阈值（0.0-1.0）
+  int32 top_k = 6;                           // Top-K采样参数，限制候选词数量
+  int32 max_tokens = 7;                      // 最大生成令牌数，限制回复长度
+  float frequency_penalty = 8;               // 频率惩罚，降低重复词出现概率（-2.0-2.0）
+  float presence_penalty = 9;                // 存在惩罚，鼓励谈论新话题（-2.0-2.0）
+  int64 version = 10;                        // 乐观锁版本号
+  int64 created_at = 11;                     // 创建时间（Unix时间戳）
+  int64 updated_at = 12;                     // 最后更新时间（Unix时间戳）
+  int32 candidate_count = 15;                // 候选回复数量，一次生成多少个备选回复
+  repeated PromptItem prompt_items = 13;     // 提示项列表（可选加载）
+  repeated RegexRule regex_rules = 14;       // 正则规则列表（可选加载）
+}
+
+// PromptItem 提示项，组成发送给AI的提示词
+message PromptItem {
+  int32 id = 1;                              // 提示项唯一标识ID
+  int32 preset_id = 2;                       // 所属预设ID
+  PromptItemIdentifier identifier = 3;       // 唯一标识符枚举，用于程序识别
+  string name = 4;                           // 显示名称
+  string content = 5;                        // 提示词内容
+  Role role = 6;                             // 消息角色类型
+  bool is_enabled = 7;                       // 是否启用
+  InjectionPosition injection_position = 8; // 注入位置类型
+  int32 injection_depth = 9;                 // 注入深度，绝对位置时的插入深度
+  bool forbid_overrides = 10;                // 禁止覆盖，是否允许被其他设置覆盖
+  int64 created_at = 12;                     // 创建时间（Unix时间戳）
+  int64 updated_at = 13;                     // 最后更新时间（Unix时间戳）
+  optional int32 pre = 14;                   // 上一个提示项
+  optional int32 next = 15;                 // 下一个提示项
+}
+
+// ================================
+// 预设服务
+// ================================
+
+// 获取预设列表请求
+// 注意：此接口不加载关联的PromptItems和RegexRules数据，仅返回预设基本信息
+message ListPresetsRequest {
+  int32 page = 1; // 页码，从1开始，默认为1
+  int32 page_size = 2; // 每页数量，默认为20，最大100
+}
+
+// 获取预设列表响应
+// 注意：返回的预设不包含关联的PromptItems和RegexRules数据
+message ListPresetsResponse {
+  repeated Preset presets = 1; // 预设列表
+  int64 total = 2; // 总数
+  int32 page = 3; // 当前页码
+  int32 page_size = 4; // 每页数量
+}
+
+// 获取单个预设请求
+message GetPresetRequest {
+  int32 id = 1;
+}
+
+// 获取单个预设响应
+message GetPresetResponse {
+  Preset preset = 1;
+}
+
+// 创建预设请求
+message CreatePresetRequest {
+  string name = 1;
+  float temperature = 2;
+  float top_p = 3;
+  int32 top_k = 4;
+  int32 max_tokens = 5;
+  float frequency_penalty = 6;
+  float presence_penalty = 7;
+  repeated CreatePromptItemRequest prompt_items = 8;
+  repeated AddRegexRuleRequest regex_rules = 9;
+}
+
+// 创建提示项请求（嵌套）
+message CreatePromptItemRequest {
+  PromptItemIdentifier identifier = 1;
+  string name = 2;
+  optional string content = 3;
+  Role role = 4;
+  bool is_enabled = 5;
+  InjectionPosition injection_position = 6;
+  int32 injection_depth = 7;
+  bool forbid_overrides = 8;
+  int32 sort_order = 9;
+}
+
+// 创建预设响应
+message CreatePresetResponse {
+  Preset preset = 1;
+}
+
+// 更新预设请求
+message UpdatePresetRequest {
+  int32 id = 1;
+  string name = 2;
+  float temperature = 3;
+  float top_p = 4;
+  int32 top_k = 5;
+  int32 max_tokens = 6;
+  float frequency_penalty = 7;
+  float presence_penalty = 8;
+  int64 version = 9;  // 乐观锁版本号
+}
+
+// 更新预设响应
+message UpdatePresetResponse {
+  Preset preset = 1;
+}
+
+// 删除预设请求
+message DeletePresetRequest {
+  int32 id = 1;
+}
+
+// 删除预设响应
+message DeletePresetResponse {}
+
+// 设置活跃预设请求
+message SetActivePresetRequest {
+  int32 preset_id = 1;
+}
+
+// 设置活跃预设响应
+message SetActivePresetResponse {}
+
+// 导入预设请求
+message ImportPresetRequest {
+  bytes file_content = 1;  // JSON文件内容
+  string file_name = 2;
+}
+
+// 导入预设响应
+message ImportPresetResponse {
+  Preset preset = 1;
+}
+
+// 导出预设请求
+message ExportPresetRequest {
+  int32 id = 1;
+}
+
+// 导出预设响应
+message ExportPresetResponse {
+  bytes file_content = 1;
+  string file_name = 2;
+}
+
+// 获取预设的提示项列表请求
+message ListPromptItemsRequest {
+  int32 preset_id = 1;
+}
+
+// 获取预设的提示项列表响应
+message ListPromptItemsResponse {
+  repeated PromptItem items = 1;
+}
+
+// 创建提示项请求
+message AddPromptItemRequest {
+  int32 preset_id = 1;
+  PromptItemIdentifier identifier = 2;
+  string name = 3;
+  optional string content = 4;
+  Role role = 5;
+  bool is_enabled = 6;
+  InjectionPosition injection_position = 7;
+  int32 injection_depth = 8;
+  bool forbid_overrides = 9;
+  int32 sort_order = 10;
+}
+
+// 创建提示项响应
+message AddPromptItemResponse {
+  PromptItem item = 1;
+}
+
+// 更新提示项请求
+message UpdatePromptItemRequest {
+  int32 id = 1;
+  PromptItemIdentifier identifier = 2;
+  string name = 3;
+  optional string content = 4;
+  Role role = 5;
+  bool is_enabled = 6;
+  InjectionPosition injection_position = 7;
+  int32 injection_depth = 8;
+  bool forbid_overrides = 9;
+  int32 sort_order = 10;
+  optional int32 pre = 11;    // 上一个提示项
+  optional int32 next = 12;   // 下一个提示项
+}
+
+// 更新提示项响应
+message UpdatePromptItemResponse {
+  PromptItem item = 1;
+}
+
+// 删除提示项请求
+message DeletePromptItemRequest {
+  int32 id = 1;
+}
+
+// 删除提示项响应
+message DeletePromptItemResponse {}
+
+// 批量更新提示项排序请求
+message UpdatePromptItemsOrderRequest {
+  int32 preset_id = 1;
+  repeated int32 item_ids = 2;  // 按新顺序排列的ID列表
+}
+
+// 批量更新提示项排序响应
+message UpdatePromptItemsOrderResponse {}
+
+// 预设服务（包含预设和提示项的管理）
+service PresetService {
+  // 获取预设列表
+  rpc ListPresets(ListPresetsRequest) returns (ListPresetsResponse);
+  // 获取单个预设
+  rpc GetPreset(GetPresetRequest) returns (GetPresetResponse);
+  // 创建预设
+  rpc CreatePreset(CreatePresetRequest) returns (CreatePresetResponse);
+  // 更新预设
+  rpc UpdatePreset(UpdatePresetRequest) returns (UpdatePresetResponse);
+  // 删除预设
+  rpc DeletePreset(DeletePresetRequest) returns (DeletePresetResponse);
+  // 设置活跃预设
+  rpc SetActivePreset(SetActivePresetRequest) returns (SetActivePresetResponse);
+  // 导入预设（支持SillyTavern格式）
+  rpc ImportPreset(ImportPresetRequest) returns (ImportPresetResponse);
+  // 导出预设
+  rpc ExportPreset(ExportPresetRequest) returns (ExportPresetResponse);
+
+  // 获取预设的提示项列表
+  rpc ListPromptItems(ListPromptItemsRequest) returns (ListPromptItemsResponse);
+  // 添加提示项
+  rpc AddPromptItem(AddPromptItemRequest) returns (AddPromptItemResponse);
+  // 更新提示项
+  rpc UpdatePromptItem(UpdatePromptItemRequest) returns (UpdatePromptItemResponse);
+  // 删除提示项
+  rpc DeletePromptItem(DeletePromptItemRequest) returns (DeletePromptItemResponse);
+  // 批量更新提示项排序
+  rpc UpdatePromptItemsOrder(UpdatePromptItemsOrderRequest) returns (UpdatePromptItemsOrderResponse);
+}

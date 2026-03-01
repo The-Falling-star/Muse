@@ -296,7 +296,7 @@ import {
   FlaskOutline
 } from '@vicons/ionicons5';
 import { useRegexRuleStore } from '@/stores/regexRule';
-import type { RegexRule } from '@/gen/muse/muse_pb';
+import type { RegexRule } from '@/gen/muse/regex_pb';
 
 const route = useRoute();
 const router = useRouter();

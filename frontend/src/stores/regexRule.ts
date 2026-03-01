@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { regexRuleClient } from '@/api/client';
-import type { RegexRule, RegexAffectFlags } from '@/gen/muse/muse_pb';
+import type { RegexRule, RegexAffectFlags } from '@/gen/muse/regex_pb';
 
 export const useRegexRuleStore = defineStore('regexRule', () => {
   // =====================

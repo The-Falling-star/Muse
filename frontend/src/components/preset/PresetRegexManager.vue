@@ -145,7 +145,7 @@ import {
 } from 'naive-ui';
 import type { FormInst, FormRules } from 'naive-ui';
 import { AddOutline, CreateOutline, TrashOutline } from '@vicons/ionicons5';
-import type { RegexRule } from '@/gen/muse/muse_pb';
+import type { RegexRule } from '@/gen/muse/regex_pb';
 
 const props = defineProps<{
   regexRules: RegexRule[];

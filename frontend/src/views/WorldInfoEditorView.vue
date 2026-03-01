@@ -93,15 +93,15 @@
               <div class="entry-header-right">
                 <div v-if="!expandedIds.has(entry.id || -index - 1)" class="entry-keywords-preview">
                   <n-tag
-                    v-for="kw in parseKeysList(entry.keysList).slice(0, 3)"
+                    v-for="kw in entry.keysList.slice(0, 3)"
                     :key="kw"
                     size="tiny"
                     :bordered="false"
                   >
                     {{ kw }}
                   </n-tag>
-                  <span v-if="parseKeysList(entry.keysList).length > 3" class="more-tag">
-                    +{{ parseKeysList(entry.keysList).length - 3 }}
+                  <span v-if="entry.keysList.length > 3" class="more-tag">
+                    +{{ entry.keysList.length - 3 }}
                   </span>
                 </div>
                 <n-button quaternary circle size="tiny" @click.stop="toggleEntry(entry.id || -index - 1)">
@@ -135,8 +135,8 @@
                 <div class="form-field full">
                   <label class="field-label">关键词 (逗号分隔)</label>
                   <n-input
-                    :value="entry.keysList"
-                    @update:value="(val: string) => entry.keysList = val"
+                    :value="entry.keysList.join(', ')"
+                    @update:value="(val: string) => entry.keysList = val.split(',').map(k => k.trim()).filter(k => k.length > 0)"
                     placeholder="输入关键词，用逗号分隔"
                     size="small"
                   />
@@ -148,8 +148,8 @@
                 <div class="form-field full">
                   <label class="field-label">辅助关键词 <span class="optional">(可选，逗号分隔)</span></label>
                   <n-input
-                    :value="entry.secondaryKeys"
-                    @update:value="(val: string) => entry.secondaryKeys = val"
+                    :value="entry.secondaryKeys.join(', ')"
+                    @update:value="(val: string) => entry.secondaryKeys = val.split(',').map(k => k.trim()).filter(k => k.length > 0)"
                     placeholder="输入辅助关键词，用逗号分隔"
                     size="small"
                   />
@@ -280,8 +280,8 @@ import {
 } from '@vicons/ionicons5';
 import { worldInfoClient } from '@/api/client';
 import { useWorldInfoStore } from '@/stores/worldInfo';
-import { EntryPosition } from '@/gen/muse/muse_pb';
-import type { WorldInfoEntry } from '@/gen/muse/muse_pb';
+import { EntryPosition, Role } from '@/gen/muse/common_pb';
+import type { WorldInfoEntry } from '@/gen/muse/worldinfo_pb';
 
 const route = useRoute();
 const router = useRouter();
@@ -371,7 +371,7 @@ const filteredEntries = computed(() => {
   return entries.value.filter((entry) => {
     return (
       (entry.comment || '').toLowerCase().includes(keyword) ||
-      entry.keysList.toLowerCase().includes(keyword) ||
+      entry.keysList.some(k => k.toLowerCase().includes(keyword)) ||
       entry.content.toLowerCase().includes(keyword)
     );
   });
@@ -381,17 +381,10 @@ const filteredEntries = computed(() => {
 // 辅助方法
 // =====================
 
-// 解析逗号分隔的关键词列表
-const parseKeysList = (keysList: string): string[] => {
-  if (!keysList) return [];
-  return keysList.split(',').map(k => k.trim()).filter(k => k.length > 0);
-};
-
 // 条目显示名
 const entryDisplayName = (entry: WorldInfoEntry, index: number): string => {
   if (entry.comment) return entry.comment;
-  const keys = parseKeysList(entry.keysList);
-  if (keys.length > 0 && keys[0]) return keys[0];
+  if (entry.keysList.length > 0 && entry.keysList[0]) return entry.keysList[0];
   return `词条 #${index + 1}`;
 };
 
@@ -425,8 +418,8 @@ const addEntry = () => {
     id: 0,
     worldInfoId: worldInfoId.value,
     uid: '',
-    keysList: '',
-    secondaryKeys: '',
+    keysList: [] as string[],
+    secondaryKeys: [] as string[],
     content: '',
     comment: '',
     isEnabled: true,
@@ -438,6 +431,7 @@ const addEntry = () => {
     sortOrder: maxSortOrder + 1,
     createdAt: 0n,
     updatedAt: 0n,
+    role: Role.System,
     _tempId: tempId
   } as WorldInfoEntry & { _tempId?: number };
 
@@ -451,7 +445,7 @@ const removeEntry = (index: number) => {
   const entry = entries.value[index];
   if (!entry) return;
 
-  const name = entry.comment || parseKeysList(entry.keysList)[0] || `词条 #${index + 1}`;
+  const name = entry.comment || entry.keysList[0] || `词条 #${index + 1}`;
   dialog.warning({
     title: '确认删除',
     content: `确定要删除词条"${name}"吗？`,
@@ -519,7 +513,8 @@ const handleSave = async () => {
         insertionOrder: entry.insertionOrder,
         position: entry.position,
         depth: entry.depth,
-        sortOrder: i
+        sortOrder: i,
+        role: entry.role
       };
 
       if (entry.id > 0) {

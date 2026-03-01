@@ -159,7 +159,7 @@ import {
 } from '@vicons/ionicons5';
 import RegexEditor from '../components/regex/RegexEditor.vue';
 import { regexRuleClient } from '@/api/client';
-import type { RegexRule } from '@/gen/muse/muse_pb';
+import type { RegexRule } from '@/gen/muse/regex_pb';
 
 const message = useMessage();
 const dialog = useDialog();

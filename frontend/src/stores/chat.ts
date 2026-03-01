@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import type { ChatSession, Message } from '@/gen/muse/muse_pb';
+import type { ChatSession, Message } from '@/gen/muse/chat_pb';
 
 /**
  * 聊天 Store
@@ -13,7 +13,7 @@ export const useChatStore = defineStore('chat', () => {
   // =====================
 
   // 会话列表缓存
-  const sessions = ref<ChatSession[]>([]);
+  const sessions = ref<Map<number, ChatSession>>(new Map());
   // 当前激活的会话
   const activeSession = ref<ChatSession | null>(null);
   // 当前会话的消息列表
@@ -40,22 +40,23 @@ export const useChatStore = defineStore('chat', () => {
   // 设置会话列表
   const setSessions = (list: ChatSession[], append = false) => {
     if (append) {
-      sessions.value = [...sessions.value, ...list];
+      list.forEach(s => sessions.value.set(s.id, s))
     } else {
-      sessions.value = list;
+      sessions.value = new Map(list.map(s => [s.id, s]));
     }
   };
 
   // 添加会话到列表头部
   const addSession = (session: ChatSession) => {
-    sessions.value.unshift(session);
+    sessions.value.set(session.id, session);
   };
 
   // 更新会话
   const updateSessionInList = (session: ChatSession) => {
-    const index = sessions.value.findIndex(s => s.id === session.id);
-    if (index >= 0) {
-      sessions.value[index] = session;
+    sessions.value.set(session.id, session);
+    if (activeSession.value?.id === session.id) {
+      activeSession.value = session;
+      sessions.value.set(session.id, session);
     }
     if (activeSession.value?.id === session.id) {
       activeSession.value = session;
@@ -64,7 +65,7 @@ export const useChatStore = defineStore('chat', () => {
 
   // 移除会话
   const removeSession = (id: number) => {
-    sessions.value = sessions.value.filter(s => s.id !== id);
+    sessions.value.delete(id)
     if (activeSession.value?.id === id) {
       activeSession.value = null;
       messages.value = [];
@@ -74,11 +75,17 @@ export const useChatStore = defineStore('chat', () => {
   // 设置当前激活会话
   const setActiveSession = (session: ChatSession | null) => {
     activeSession.value = session;
-    if (session?.messages) {
+    if (session && session.messages) {
       messages.value = session.messages;
-    } else if (!session) {
-      messages.value = [];
+      const sessionInMap = sessions.value.get(session.id);
+      if (!sessionInMap) {
+          console.error("Session not found in map")
+      } else {
+          sessionInMap.messages = session.messages;
+      }
+      return
     }
+    messages.value = [];
   };
 
   // =====================
@@ -196,7 +203,7 @@ export const useChatStore = defineStore('chat', () => {
 
   // 重置状态
   const reset = () => {
-    sessions.value = [];
+    sessions.value = new Map();
     activeSession.value = null;
     messages.value = [];
     isStreaming.value = false;

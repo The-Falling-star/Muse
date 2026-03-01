@@ -201,7 +201,7 @@ import go from 'highlight.js/lib/languages/go';
 import sql from 'highlight.js/lib/languages/sql';
 import DOMPurify from 'dompurify';
 
-import type { Character } from '@/gen/muse/muse_pb';
+import type { Character } from '@/gen/muse/character_pb';
 
 // 消息 Swipe 类型
 interface MessageSwipe {

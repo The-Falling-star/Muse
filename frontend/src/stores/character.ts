@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import type { Character } from '@/gen/muse/muse_pb';
+import type { Character } from '@/gen/muse/character_pb';
 
 /**
  * 角色 Store

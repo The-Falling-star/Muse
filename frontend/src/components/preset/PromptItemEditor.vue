@@ -13,10 +13,10 @@
         </n-gi>
         <n-gi>
           <n-form-item label="标识符" path="identifier">
-            <n-input
+            <n-select
               v-model:value="formData.identifier"
-              placeholder="唯一标识符"
-              :disabled="isSystemMarker"
+              :options="identifierOptions"
+              placeholder="选择标识符类型"
             />
           </n-form-item>
         </n-gi>
@@ -24,15 +24,15 @@
 
       <n-form-item label="角色" path="role">
         <n-radio-group v-model:value="formData.role">
-          <n-radio-button value="system">
+          <n-radio-button :value="Role.System">
             <n-icon><ServerOutline /></n-icon>
             系统
           </n-radio-button>
-          <n-radio-button value="user">
+          <n-radio-button :value="Role.User">
             <n-icon><PersonOutline /></n-icon>
             用户
           </n-radio-button>
-          <n-radio-button value="assistant">
+          <n-radio-button :value="Role.Assistant">
             <n-icon><SparklesOutline /></n-icon>
             助手
           </n-radio-button>
@@ -127,13 +127,13 @@ import {
 } from '@vicons/ionicons5';
 
 // 提示项类型（组件本地使用）
-import type { PromptItemIdentifier } from '@/gen/muse/muse_pb';
+import { PromptItemIdentifier, Role } from '@/gen/muse/common_pb';
 
 interface PromptItem {
   id: number;
   identifier: PromptItemIdentifier;
   name: string;
-  role: 'system' | 'user' | 'assistant';
+  role: Role;
   content: string;
   enabled: boolean;
   marker?: boolean;
@@ -144,18 +144,26 @@ interface PromptItem {
   };
 }
 
-// 系统标记常量
-const SYSTEM_MARKERS = {
-  CHAT_HISTORY: 'chat_history',
-  WORLD_INFO: 'world_info',
-  PERSONA: 'persona',
-  CHARACTER: 'character'
-} as const;
+// 标识符选项
+const identifierOptions = [
+  { label: '未指定', value: PromptItemIdentifier.PromptItemIdentifierUnspecified },
+  { label: '主提示词', value: PromptItemIdentifier.Main },
+  { label: '世界信息（前）', value: PromptItemIdentifier.WorldInfoBefore },
+  { label: '人设描述', value: PromptItemIdentifier.PersonaDescription },
+  { label: '角色描述', value: PromptItemIdentifier.CharDescription },
+  { label: '角色性格', value: PromptItemIdentifier.CharPersonality },
+  { label: '场景', value: PromptItemIdentifier.Scenario },
+  { label: '辅助提示词', value: PromptItemIdentifier.Nsfw },
+  { label: '世界信息（后）', value: PromptItemIdentifier.WorldInfoAfter },
+  { label: '对话示例', value: PromptItemIdentifier.DialogueExamples },
+  { label: '聊天记录', value: PromptItemIdentifier.ChatHistory },
+  { label: '越狱提示词', value: PromptItemIdentifier.Jailbreak },
+];
 
 interface FormData {
   name: string;
   identifier: PromptItemIdentifier;
-  role: 'system' | 'user' | 'assistant';
+  role: Role;
   content: string;
   marker: boolean;
   injectionPosition: 'before' | 'after' | null;
@@ -170,8 +178,8 @@ const formRef = ref<FormInst | null>(null);
 
 const formData = reactive<FormData>({
   name: '',
-  identifier: '',
-  role: 'system',
+  identifier: PromptItemIdentifier.PromptItemIdentifierUnspecified,
+  role: Role.System,
   content: '',
   marker: false,
   injectionPosition: null,
@@ -179,27 +187,13 @@ const formData = reactive<FormData>({
 });
 
 const formRules: FormRules = {
-  name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
-  identifier: [
-    { required: true, message: '请输入标识符', trigger: 'blur' },
-    {
-      pattern: /^[a-zA-Z_][a-zA-Z0-9_]*$/,
-      message: '标识符只能包含字母、数字和下划线，且不能以数字开头',
-      trigger: 'blur'
-    }
-  ]
+  name: [{ required: true, message: '请输入名称', trigger: 'blur' }]
 };
 
 const injectionOptions = [
   { label: '在聊天历史之前', value: 'before' },
   { label: '在聊天历史之后', value: 'after' }
 ];
-
-// 检查是否为系统标记（不可编辑标识符）
-const isSystemMarker = computed(() => {
-  if (!props.item) return false;
-  return Object.values(SYSTEM_MARKERS).includes(props.item.identifier as any);
-});
 
 // 检查是否禁止覆盖（名称和内容不可编辑）
 const isForbidOverrides = computed(() => {
@@ -221,8 +215,8 @@ watch(() => props.item, (item) => {
   } else {
     Object.assign(formData, {
       name: '',
-      identifier: '',
-      role: 'system',
+      identifier: PromptItemIdentifier.PromptItemIdentifierUnspecified,
+      role: Role.System,
       content: '',
       marker: false,
       injectionPosition: null,
@@ -230,19 +224,6 @@ watch(() => props.item, (item) => {
     });
   }
 }, { immediate: true });
-
-// 自动生成标识符
-watch(() => formData.name, (name) => {
-  if (!props.item && name && !formData.identifier) {
-    // 将名称转换为标识符格式
-    formData.identifier = name
-      .toLowerCase()
-      .replace(/[^a-zA-Z0-9\u4e00-\u9fa5]/g, '_')
-      .replace(/^[0-9]/, '_$&')
-      .replace(/_+/g, '_')
-      .replace(/^_|_$/g, '') || 'prompt';
-  }
-});
 
 const handleSubmit = async () => {
   try {

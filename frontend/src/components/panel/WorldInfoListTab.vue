@@ -77,7 +77,7 @@ import { CloudUploadOutline, AddOutline, EllipsisHorizontal } from '@vicons/ioni
 import { worldInfoClient } from '@/api/client';
 import { useWorldInfoStore } from '@/stores/worldInfo';
 import { globalMessage } from '@/composables/useGlobalMessage';
-import type { WorldInfo } from '@/gen/muse/muse_pb';
+import type { WorldInfo } from '@/gen/muse/worldinfo_pb';
 
 const router = useRouter();
 const route = useRoute();

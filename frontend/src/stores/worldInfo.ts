@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import type { WorldInfo, WorldInfoEntry } from '@/gen/muse/muse_pb';
+import type { WorldInfo, WorldInfoEntry } from '@/gen/muse/worldinfo_pb';
 
 /**
  * 世界书 Store

@@ -19,7 +19,7 @@
               <n-avatar
                 :size="100"
                 round
-                :src="formData.avatar"
+                :src="avatarUrl"
                 class="upload-avatar"
               >
                 <template #placeholder>
@@ -171,7 +171,8 @@ import {
 import type { FormInst, FormRules, UploadFileInfo } from 'naive-ui';
 import { CameraOutline, ChevronBackOutline, ChevronForwardOutline, TrashOutline } from '@vicons/ionicons5';
 
-import type { Character } from '@/gen/muse/muse_pb';
+import type { Character } from '@/gen/muse/character_pb';
+import { getAvatarUrlSync } from '@/utils/common';
 
 interface CharacterFormData {
   name: string;
@@ -207,6 +208,14 @@ const formData = reactive<CharacterFormData>({
   firstMessages: [''],
   exampleDialogues: [''],
   creatorNotes: ''
+});
+
+// 头像URL（用于显示）
+const avatarUrl = computed(() => {
+  if (formData.avatar.startsWith('data:') || formData.avatar.startsWith('http')) {
+    return formData.avatar;
+  }
+  return getAvatarUrlSync(formData.avatar) || '';
 });
 
 // 表单验证规则

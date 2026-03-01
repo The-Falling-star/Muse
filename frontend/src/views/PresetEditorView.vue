@@ -284,8 +284,9 @@ import {
 import draggable from 'vuedraggable';
 import { usePresetStore } from '@/stores/preset';
 import { regexRuleClient } from '@/api/client';
-import { Role, InjectionPosition } from '@/gen/muse/muse_pb';
-import type { PromptItem, RegexRule, RegexAffectFlags } from '@/gen/muse/muse_pb';
+import { Role, InjectionPosition, PromptItemIdentifier } from '@/gen/muse/common_pb';
+import type { PromptItem } from '@/gen/muse/preset_pb';
+import type { RegexRule, RegexAffectFlags } from '@/gen/muse/regex_pb';
 
 const route = useRoute();
 const router = useRouter();
@@ -394,12 +395,11 @@ const togglePrompt = (index: number) => {
 
 // 添加 Prompt
 const addPrompt = () => {
-  const maxSortOrder = prompts.value.reduce((max, p) => Math.max(max, p.sortOrder), 0);
   prompts.value.push({
     $typeName: 'muse.PromptItem',
     id: 0,
     presetId: presetId.value,
-    identifier: `prompt_${Date.now()}`,
+    identifier: PromptItemIdentifier.PromptItemIdentifierUnspecified,
     name: '',
     content: '',
     role: Role.System,
@@ -407,7 +407,6 @@ const addPrompt = () => {
     injectionPosition: InjectionPosition.Relative,
     injectionDepth: 0,
     forbidOverrides: false,
-    sortOrder: maxSortOrder + 1,
     createdAt: 0n,
     updatedAt: 0n,
     expanded: true
@@ -633,7 +632,7 @@ const handleSave = async () => {
       const prompt = prompts.value[i];
       if (!prompt) continue;
       const promptData = {
-        identifier: prompt.identifier || `prompt_${i}`,
+        identifier: prompt.identifier || PromptItemIdentifier.PromptItemIdentifierUnspecified,
         name: prompt.name,
         content: prompt.content,
         role: prompt.role,
@@ -738,7 +737,7 @@ const handleSaveAs = () => {
           frequencyPenalty: 0,
           presencePenalty: 0,
           promptItems: prompts.value.map((p, i) => ({
-            identifier: p.identifier || `prompt_${i}`,
+            identifier: p.identifier || PromptItemIdentifier.PromptItemIdentifierUnspecified,
             name: p.name,
             content: p.content,
             role: p.role,

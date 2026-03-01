@@ -75,6 +75,10 @@ func main() {
 		api.NewWorldInfoServer(),
 		connect.WithInterceptors(authInterceptor),
 	))
+	mux.Handle(museconnect.NewFileServiceHandler(
+		api.NewFileServer(),
+		connect.WithInterceptors(authInterceptor),
+	))
 
 	// 健康检查端点
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {

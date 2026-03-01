@@ -14,6 +14,7 @@ type Config struct {
 	Auth       AuthConfig       `mapstructure:"auth"`
 	APIEncrypt APIEncryptConfig `mapstructure:"api_encrypt"`
 	StaticFile StaticFileConfig `mapstructure:"static_file"`
+	File       FileConfig       `mapstructure:"file"`
 	LogLevel   string           `mapstructure:"log_level"`
 }
 
@@ -63,6 +64,13 @@ type StaticFileConfig struct {
 	FrontendDir string `mapstructure:"frontend_dir"` // 前端构建目录路径
 }
 
+// FileConfig 文件服务配置
+type FileConfig struct {
+	UploadPath     string `mapstructure:"upload_path"`      // 上传文件根目录
+	MaxUploadSize  int    `mapstructure:"max_upload_size"`  // 最大上传文件大小（MB）
+	CacheExpireMin int    `mapstructure:"cache_expire_min"` // 前端缓存过期时间（分钟）
+}
+
 // IsSQLite 判断是否使用SQLite
 func (d *DatabaseConfig) IsSQLite() bool {
 	return d.Driver == "sqlite"
@@ -107,6 +115,9 @@ func Load(configPath string) (*Config, error) {
 	viper.SetDefault("api_encrypt.allow_get_key", true)                         // 默认允许获取API密钥
 	viper.SetDefault("static_file.enabled", true)                               // 默认启用静态文件服务
 	viper.SetDefault("static_file.frontend_dir", "./frontend/dist")             // 默认前端目录
+	viper.SetDefault("file.upload_path", "./data/uploads")                      // 默认上传目录
+	viper.SetDefault("file.max_upload_size", 10)                                // 默认最大上传大小10MB
+	viper.SetDefault("file.cache_expire_min", 1440)                             // 默认缓存过期时间1440分钟（1天）
 
 	if err := viper.ReadInConfig(); err != nil {
 		return nil, fmt.Errorf("读取配置文件失败: %w", err)

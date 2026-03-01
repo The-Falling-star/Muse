@@ -2,6 +2,7 @@ package database
 
 import (
 	"context"
+	"time"
 
 	"github.com/ling/muse/common/constant"
 	"github.com/ling/muse/config"
@@ -61,6 +62,10 @@ type ChatRepository interface {
 	GetMaxMessageSortOrder(ctx context.Context, sessionID int) (int, error)
 	// UpdateMessageSwipe 更新消息swipe内容
 	UpdateMessageSwipe(ctx context.Context, swipeID int, content string) error
+	// GetCharLatestSessionWithMsg 获取角色最新的会话
+	GetCharLatestSessionWithMsg(ctx context.Context, charID, userID int) (*entity.ChatSession, error)
+	// UpdateSessionTime 更新会话的更新时间
+	UpdateSessionTime(ctx context.Context, sessionID int, updateTime time.Time) error
 }
 
 // PresetRepository 预设数据仓库接口
@@ -89,6 +94,10 @@ type PresetRepository interface {
 	UpdatePromptItemsOrder(ctx context.Context, presetID int, itemOrders map[int]int) error
 	// GetVersion 获取预设的版本号
 	GetVersion(ctx context.Context, id int, userID int) (int, error)
+	// BatchCreatePromptItem 批量创建提示项目
+	BatchCreatePromptItem(ctx context.Context, items []*entity.PromptItem) error
+	// BatchUpdatePromptItemOrder 批量更新提示项排序
+	BatchUpdatePromptItemOrder(ctx context.Context, items []*entity.PromptItem) error
 }
 
 // RegexRuleRepository 正则规则数据仓库接口

@@ -6,7 +6,7 @@
         <n-avatar
           :size="80"
           round
-          :src="character.avatar"
+          :src="avatarUrl"
           class="character-avatar"
         >
           {{ character.name.charAt(0) }}
@@ -53,7 +53,9 @@ import {
   ChatbubbleOutline
 } from '@vicons/ionicons5';
 
-import type { Character } from '@/gen/muse/muse_pb';
+import type { Character } from '@/gen/muse/character_pb';
+import { useAvatar } from '@/composables/useAvatar';
+import { toRef } from 'vue';
 
 const props = defineProps<{
   character: Character;
@@ -65,6 +67,9 @@ const emit = defineEmits<{
   delete: [character: Character];
   chat: [character: Character];
 }>();
+
+// 使用头像加载hook
+const { avatarUrl } = useAvatar(toRef(() => props.character.avatar));
 
 // 操作菜单选项
 const actionOptions = [

@@ -185,3 +185,27 @@ func (c *ChatServer) SwitchSwipe(ctx context.Context, req *connect.Request[pb.Sw
 	}
 	return doResponse(ctx, "SwitchSwipe", req.Msg, resp)
 }
+
+func (c *ChatServer) GetCharLatestSession(ctx context.Context, req *connect.Request[pb.GetCharLatestSessionRequest]) (
+	*connect.Response[pb.GetCharLatestSessionResponse], error) {
+	resp, err := c.chat.GetCharLatestSession(ctx, req.Msg)
+	if err != nil {
+		return doResponseExp(ctx, "GetCharLatestSession", req.Msg, resp, err)
+	}
+	return doResponse(ctx, "GetCharLatestSession", req.Msg, resp)
+}
+
+func (c *ChatServer) UpdateSessionTime(ctx context.Context, req *connect.Request[pb.UpdateSessionTimeRequest]) (
+	*connect.Response[pb.UpdateSessionTimeResponse], error) {
+	var err error
+	ctx, err = beginTransaction(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	resp, err := c.chat.UpdateSessionTime(ctx, req.Msg)
+	if err != nil {
+		return doResponseExp(ctx, "UpdateSessionTime", req.Msg, resp, err)
+	}
+	return doResponse(ctx, "UpdateSessionTime", req.Msg, resp)
+}

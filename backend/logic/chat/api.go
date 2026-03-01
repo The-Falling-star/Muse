@@ -38,6 +38,10 @@ type Chat interface {
 	DeleteMessage(ctx context.Context, req *pb.DeleteMessageRequest) (*pb.DeleteMessageResponse, error)
 	// SwitchSwipe 切换消息滑动选项
 	SwitchSwipe(ctx context.Context, req *pb.SwitchSwipeRequest) (*pb.SwitchSwipeResponse, error)
+	// GetCharLatestSession 获取角色的最新
+	GetCharLatestSession(ctx context.Context, req *pb.GetCharLatestSessionRequest) (*pb.GetCharLatestSessionResponse, error)
+	// UpdateSessionTime 更新会话时间
+	UpdateSessionTime(ctx context.Context, req *pb.UpdateSessionTimeRequest) (*pb.UpdateSessionTimeResponse, error)
 }
 
 // NewChat 创建一个新的Chat实例

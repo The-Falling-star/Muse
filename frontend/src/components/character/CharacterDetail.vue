@@ -6,7 +6,7 @@
         <n-avatar
           :size="120"
           round
-          :src="character.avatar"
+          :src="avatarUrl"
           class="detail-avatar"
         >
           {{ character.name.charAt(0) }}
@@ -84,8 +84,10 @@ import {
   NCollapseItem
 } from 'naive-ui';
 import { ChatbubbleOutline, CreateOutline } from '@vicons/ionicons5';
+import { toRef } from 'vue';
 
-import type { Character } from '@/gen/muse/muse_pb';
+import type { Character } from '@/gen/muse/character_pb';
+import { useAvatar } from '@/composables/useAvatar';
 
 const props = defineProps<{
   character: Character;
@@ -95,6 +97,9 @@ defineEmits<{
   edit: [];
   chat: [];
 }>();
+
+// 使用头像加载hook
+const { avatarUrl } = useAvatar(toRef(() => props.character.avatar));
 
 const formatDate = (timestamp: bigint) => {
   return new Date(Number(timestamp)).toLocaleDateString('zh-CN');

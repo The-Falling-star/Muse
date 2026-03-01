@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { presetClient } from '@/api/client';
-import type { Preset, PromptItem, Role, InjectionPosition, PromptItemIdentifier } from '@/gen/muse/muse_pb';
+import type { Preset, PromptItem } from '@/gen/muse/preset_pb';
+import type { Role, InjectionPosition, PromptItemIdentifier } from '@/gen/muse/common_pb';
 import { DEFAULT_PAGE_NUM, DEFAULT_PAGE_SIZE, FETCH_ALL_PAGE_SIZE } from '@/utils/constants';
 
 export const usePresetStore = defineStore('preset', () => {
@@ -37,9 +38,9 @@ export const usePresetStore = defineStore('preset', () => {
     return presets.value.filter(p => p.name.toLowerCase().includes(query));
   });
 
-  // 按排序顺序排列的提示项
+  // 按排序顺序排列的提示项（后端已按顺序返回）
   const sortedPromptItems = computed(() => {
-    return [...promptItems.value].sort((a, b) => a.sortOrder - b.sortOrder);
+    return [...promptItems.value];
   });
 
   // =====================
@@ -263,14 +264,8 @@ export const usePresetStore = defineStore('preset', () => {
   // 更新提示项排序
   const updatePromptItemsOrder = async (presetId: number, itemIds: number[]) => {
     await presetClient.updatePromptItemsOrder({ presetId, itemIds });
-    // 更新本地排序
-    const newOrder = new Map(itemIds.map((id, index) => [id, index]));
-    promptItems.value.forEach(item => {
-      const newSortOrder = newOrder.get(item.id);
-      if (newSortOrder !== undefined) {
-        item.sortOrder = newSortOrder;
-      }
-    });
+    // 重新获取提示项列表以更新本地状态
+    await fetchPromptItems(presetId);
   };
 
   // =====================

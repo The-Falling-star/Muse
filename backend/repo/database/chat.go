@@ -3,8 +3,11 @@ package database
 import (
 	"context"
 	"errors"
+	"fmt"
+	"time"
 
 	"connectrpc.com/connect"
+	"github.com/ling/muse/common/constant"
 	"github.com/ling/muse/common/errs"
 	"github.com/ling/muse/entity"
 	"gorm.io/gorm"
@@ -65,7 +68,7 @@ func (c *ChatRepo) ListSessions(ctx context.Context, userID, characterID, page, 
 	// 分页查询 - 只查询列表展示需要的字段，不加载关联数据
 	offset := (page - 1) * pageSize
 	query = query.Select("id", "user_id", "character_id", "name", "version", "created_at", "updated_at").
-		Order("created_at DESC").
+		Order("updated_at DESC").
 		Offset(offset).
 		Limit(pageSize)
 
@@ -184,6 +187,7 @@ func (c *ChatRepo) UpdateMessage(ctx context.Context, message *entity.Message) e
 	if result.Error != nil {
 		return errs.NewStandardf(connect.CodeInternal, "更新消息的active swipe失败: %v", result.Error)
 	}
+
 	return nil
 }
 
@@ -222,7 +226,13 @@ func (c *ChatRepo) CreateMessage(ctx context.Context, message *entity.Message) e
 // CreateMessageSwipe 创建消息swipe
 func (c *ChatRepo) CreateMessageSwipe(ctx context.Context, swipe *entity.MessageSwipe) error {
 	db := GetDB(ctx)
-	result := db.Create(swipe)
+	sql := fmt.Sprintf(`INSERT INTO %s (message_id, content, sort_order)
+    VALUES (?, ?, (SELECT COALESCE(MAX(sort_order), -100) + ? 
+    	FROM message_swipes 
+    	WHERE message_id = ? 
+    	FOR UPDATE))`,
+		swipe.TableName())
+	result := db.Exec(sql, swipe.MessageID, swipe.Content, swipe.MessageID, constant.SortOrderInterval)
 	if result.Error != nil {
 		return errs.NewStandardf(connect.CodeInternal, "创建消息swipe失败: %v", result.Error)
 	}
@@ -251,6 +261,36 @@ func (c *ChatRepo) UpdateMessageSwipe(ctx context.Context, swipeID int, content 
 		Update("content", content)
 	if result.Error != nil {
 		return errs.NewStandardf(connect.CodeInternal, "更新消息swipe失败: %v", result.Error)
+	}
+	return nil
+}
+
+// GetCharLatestSessionWithMsg 获取角色最新的会话
+func (c *ChatRepo) GetCharLatestSessionWithMsg(ctx context.Context, charID, userID int) (*entity.ChatSession, error) {
+	db := GetDB(ctx)
+	session := &entity.ChatSession{}
+	if err := db.Preload("Messages").
+		Preload("Messages.Swipes").
+		Where("character_id = ? AND user_id = ?", charID, userID).
+		Order("updated_at DESC").
+		First(session).
+		Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, errs.NewStandardf(connect.CodeInternal, "获取角色最新会话失败: %v", err)
+	}
+	return session, nil
+}
+
+// UpdateSessionTime 更新会话时间
+func (c *ChatRepo) UpdateSessionTime(ctx context.Context, sessionID int, updateTime time.Time) error {
+	db := GetDB(ctx)
+	if err := db.Model(&entity.ChatSession{}).
+		Where("id = ?", sessionID).
+		Update("updated_at", updateTime).
+		Error; err != nil {
+		return errs.NewStandardf(connect.CodeInternal, "更新会话时间失败: %v", err)
 	}
 	return nil
 }

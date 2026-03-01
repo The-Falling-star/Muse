@@ -80,7 +80,7 @@
 import { ref, reactive, computed, watch } from 'vue';
 import { NForm, NFormItem, NInput, NInputNumber, NSwitch, NCheckboxGroup, NCheckbox, NSpace, NGrid, NGi, NDivider, NButton, useMessage } from 'naive-ui';
 import type { FormInst, FormRules } from 'naive-ui';
-import type { RegexRule, RegexAffectFlags } from '@/gen/muse/muse_pb';
+import type { RegexRule, RegexAffectFlags } from '@/gen/muse/regex_pb';
 
 interface RegexFormData {
   name: string;

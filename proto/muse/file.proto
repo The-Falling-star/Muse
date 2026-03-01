@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package muse;
+
+option go_package = "github.com/ling/muse/gen/muse;muse";
+
+// ================================
+// 文件服务相关消息
+// ================================
+
+// UploadFileRequest 上传文件请求
+message UploadFileRequest {
+  bytes file_content = 1;     // 文件内容
+  string file_name = 2;       // 文件名
+  string file_type = 3;       // 文件类型（如 "avatar"）
+}
+
+// UploadFileResponse 上传文件响应
+message UploadFileResponse {
+  string file_path = 1;  // 文件相对路径（相对于用户目录）
+}
+
+// DownloadFileRequest 下载文件请求
+message DownloadFileRequest {
+  string file_path = 1;  // 文件相对路径（相对于用户目录）
+}
+
+// DownloadFileResponse 下载文件响应
+message DownloadFileResponse {
+  bytes file_content = 1;    // 文件内容
+  string content_type = 2;   // 文件MIME类型
+  string file_name = 3;      // 文件名
+}
+
+// 文件服务
+service FileService {
+  // 上传文件
+  rpc UploadFile(UploadFileRequest) returns (UploadFileResponse);
+  // 下载文件
+  rpc DownloadFile(DownloadFileRequest) returns (DownloadFileResponse);
+}

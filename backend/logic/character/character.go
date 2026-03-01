@@ -19,6 +19,7 @@ import (
 	"github.com/ling/muse/entity"
 	"github.com/ling/muse/entity/sillytavern"
 	pb "github.com/ling/muse/gen/muse"
+	"github.com/ling/muse/logic/file"
 	"github.com/ling/muse/repo/cache"
 	"github.com/ling/muse/repo/database"
 	log "github.com/sirupsen/logrus"
@@ -209,12 +210,18 @@ func (c *characterImpl) ImportCharacter(ctx context.Context, req *pb.ImportChara
 
 	// 根据文件扩展名判断格式
 	ext := strings.ToLower(filepath.Ext(fileName))
+	var pngData []byte
+	var avatarData []byte // 用于存储解码后的头像图片数据
 	switch ext {
 	case ".png":
 		// 从PNG图片中解析角色卡
-		card, err = readFromPNG(fileContent)
+		card, pngData, err = readFromPNG(fileContent)
 		if err != nil {
 			return nil, errs.NewStandardf(connect.CodeInvalidArgument, "无法解析PNG文件: %v", err)
+		}
+		// 如果角色卡没有头像且是PNG文件，使用PNG图片作为头像
+		if card.Avatar == "" || card.Avatar == "none" && len(pngData) > 0 {
+			avatarData = pngData
 		}
 	case ".json":
 		// 直接解析JSON格式
@@ -230,8 +237,29 @@ func (c *characterImpl) ImportCharacter(ctx context.Context, req *pb.ImportChara
 		return nil, errs.NewStandardf(connect.CodeInvalidArgument, "图片不包含任何相关数据: %v", err)
 	}
 
+	// 解析头像数据（如果不是PNG文件或没有从PNG获取头像数据）
+	if len(avatarData) == 0 && card.Avatar != "" && card.Avatar != "none" {
+		// 尝试从Avatar字段解析base64数据
+		avatarStr := card.Avatar
+		// 处理data URI格式
+		if strings.HasPrefix(avatarStr, "data:image/") {
+			// 提取base64部分
+			parts := strings.SplitN(avatarStr, ",", 2)
+			if len(parts) == 2 {
+				avatarStr = parts[1]
+			}
+		}
+		// 解码base64
+		decoded, decodeErr := base64.StdEncoding.DecodeString(avatarStr)
+		if decodeErr == nil && len(decoded) > 0 {
+			avatarData = decoded
+		}
+	}
+
 	userId := jwt.GetUserId(ctx)
 	character := convert.STCharacterCardToEntity(card, userId)
+	// 清空Avatar字段，后面会设置为文件路径
+	character.Avatar = ""
 
 	// 压缩世界书数据
 	var buf bytes.Buffer
@@ -243,16 +271,25 @@ func (c *characterImpl) ImportCharacter(ctx context.Context, req *pb.ImportChara
 	}
 	character.WorldInfoBackup = buf.Bytes()
 
-	// 如果PNG本身作为头像，将其转为base64 data URI
-	if character.Avatar == "" && ext == ".png" {
-		character.Avatar = "data:image/png;base64," + base64.StdEncoding.EncodeToString(fileContent)
-	}
-
 	if err = c.charaRepo.Create(ctx, character); err != nil {
 		return nil, err
 	}
 	log.Infof("角色创建成功，ID: %d, 名称: %s", character.ID, character.Name)
 	log.Debugf("角色世界书创建成功: %d", len(character.WorldInfo.Entries))
+
+	// 保存头像到文件系统
+	if len(avatarData) > 0 {
+		avatarPath, saveErr := file.SaveAvatarFile(ctx, userId, character.ID, character.Name, avatarData)
+		if saveErr != nil {
+			log.Warnf("保存头像文件失败: %v", saveErr)
+		} else {
+			// 更新角色的Avatar字段
+			character.Avatar = avatarPath
+			if updateErr := c.charaRepo.Update(ctx, character); updateErr != nil {
+				log.Warnf("更新角色头像路径失败: %v", updateErr)
+			}
+		}
+	}
 
 	// 构建响应前先打印调试信息
 	pbChar := convert.CharaEntityToPb(character)
@@ -275,11 +312,13 @@ func (c *characterImpl) ExportCharacter(ctx context.Context, req *pb.ExportChara
 	// 将角色数据转换为CharacterCard
 	card := convert.EntityToSTCharacterCard(character)
 
-	// 获取原始头像PNG数据
-	// 如果头像是data URI格式，需要解码
+	// 从文件系统读取头像PNG数据
 	var avatarPNG []byte
-	if character.Avatar != "" && strings.HasPrefix(character.Avatar, "data:image/png;base64,") {
-		avatarPNG, _ = base64.StdEncoding.DecodeString(strings.TrimPrefix(character.Avatar, "data:image/png;base64,"))
+	if character.Avatar != "" {
+		avatarPNG, err = file.ReadAvatarFile(ctx, userId, character.Avatar)
+		if err != nil {
+			log.Warnf("读取头像文件失败: %v, 使用默认头像", err)
+		}
 	}
 
 	// 如果没有头像，使用默认空白PNG
@@ -308,18 +347,19 @@ func (c *characterImpl) RestoreCharacterWorldInfo(ctx context.Context, req *pb.R
 }
 
 // readFromPNG 从PNG文件字节数据中读取角色卡信息
-func readFromPNG(data []byte) (*sillytavern.CharacterCard, error) {
+// 返回角色卡数据、干净的PNG图片数据（去掉嵌入的角色卡元数据）和错误
+func readFromPNG(data []byte) (*sillytavern.CharacterCard, []byte, error) {
 	// 使用库解析PNG
 	pmp := png.NewPngMediaParser()
 	mc, err := pmp.ParseBytes(data)
 	if err != nil {
-		return nil, fmt.Errorf("invalid PNG file: signature mismatch: %v", err)
+		return nil, nil, fmt.Errorf("invalid PNG file: signature mismatch: %v", err)
 	}
 
 	// 类型断言为ChunkSlice
 	cs, ok := mc.(*png.ChunkSlice)
 	if !ok {
-		return nil, fmt.Errorf("invalid PNG file: not a chunk slice")
+		return nil, nil, fmt.Errorf("invalid PNG file: not a chunk slice")
 	}
 
 	// 获取所有Chunk
@@ -349,24 +389,52 @@ func readFromPNG(data []byte) (*sillytavern.CharacterCard, error) {
 		textData = charaData
 	}
 	if textData == "" {
-		return nil, fmt.Errorf("no character card data found")
+		return nil, nil, fmt.Errorf("no character card data found")
 	}
 
 	// Base64解码
 	decoded, err := base64.StdEncoding.DecodeString(textData)
 	if err != nil {
-		return nil, fmt.Errorf("invalid base64 data: %v", err)
+		return nil, nil, fmt.Errorf("invalid base64 data: %v", err)
 	}
-
-	//log.Debugf("解码图片数据: %s", string(decoded))
 
 	// JSON解析
 	var card sillytavern.CharacterCard
 	if err = json.Unmarshal(decoded, &card); err != nil {
-		return nil, fmt.Errorf("invalid JSON data: %v", err)
+		return nil, nil, fmt.Errorf("invalid JSON data: %v", err)
 	}
 
-	return &card, nil
+	// 过滤掉包含角色卡数据的tEXt块，构建干净的PNG图片数据
+	var filteredChunks []*png.Chunk
+	for _, chunk := range chunks {
+		// 只过滤掉chara和ccv3的tEXt块
+		if chunk.Type == "tEXt" {
+			keyword, _ := parseTextChunk(chunk.Data)
+			keywordLower := strings.ToLower(keyword)
+			if keywordLower == "chara" || keywordLower == "ccv3" {
+				continue
+			}
+		}
+		filteredChunks = append(filteredChunks, chunk)
+	}
+
+	// 重新构建干净的PNG
+	cleanPNG, buildErr := buildPNGFromChunks(filteredChunks)
+	if buildErr != nil {
+		return nil, nil, fmt.Errorf("failed to build clean PNG: %v", buildErr)
+	}
+
+	return &card, cleanPNG, nil
+}
+
+// buildPNGFromChunks 从chunks构建PNG数据
+func buildPNGFromChunks(chunks []*png.Chunk) ([]byte, error) {
+	newCs := png.NewChunkSlice(chunks)
+	var buf bytes.Buffer
+	if err := newCs.WriteTo(&buf); err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
 }
 
 // WriteToPNG 将角色卡数据写入PNG图片
@@ -462,6 +530,6 @@ func parseTextChunk(data []byte) (keyword, text string) {
 
 // HasCharacterData 检查PNG数据中是否包含角色卡信息
 func HasCharacterData(data []byte) bool {
-	card, err := readFromPNG(data)
+	card, _, err := readFromPNG(data)
 	return err == nil && card != nil && card.Name != ""
 }

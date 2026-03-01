@@ -2,10 +2,12 @@ package chat
 
 import (
 	"context"
+	"fmt"
 	"regexp"
 	"slices"
 	"sort"
 	"strings"
+	"time"
 
 	"connectrpc.com/connect"
 	"github.com/dlclark/regexp2"
@@ -97,20 +99,31 @@ func (c *chatImpl) CreateChatSession(ctx context.Context, req *pb.CreateChatSess
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidCharacterID)
 	}
 
-	userId := jwt.GetUserId(ctx)
-
-	name := strings.TrimSpace(req.GetName())
-	if name == "" {
-		name = "新会话"
+	fullSession, err := c.createSession(ctx, int(req.GetCharacterId()), req.GetName())
+	if err != nil {
+		return nil, err
 	}
+
+	return &pb.CreateChatSessionResponse{
+		Session: convert.SessionEntityToPb(fullSession),
+	}, nil
+}
+
+func (c *chatImpl) createSession(ctx context.Context, characterID int, name string) (*entity.ChatSession, error) {
+	userId := jwt.GetUserId(ctx)
 
 	// 插入第一条消息
 	character, err := c.charRepo.GetByID(ctx, characterID, userId)
 	if err != nil {
+		log.Error("failed to get character")
 		return nil, err
 	}
 	if character == nil {
+		log.Infof("未找到角色卡")
 		return nil, errs.NewStandardf(connect.CodeNotFound, errs.CharacterNotFound)
+	}
+	if name == "" {
+		name = fmt.Sprintf("%s_%s", character.Name, time.Now().Format(time.DateTime))
 	}
 	swipes := make([]entity.MessageSwipe, len(character.FirstMessage))
 	for i, content := range character.FirstMessage {
@@ -138,18 +151,17 @@ func (c *chatImpl) CreateChatSession(ctx context.Context, req *pb.CreateChatSess
 
 	// 保存到数据库
 	if err = c.chatRepo.CreateSession(ctx, session); err != nil {
+		log.Error("failed to create session")
 		return nil, err
 	}
 
 	// 重新获取完整数据（包含关联）
 	fullSession, err := c.chatRepo.GetSessionByID(ctx, session.ID, userId)
 	if err != nil {
+		log.Error("failed to get session")
 		return nil, err
 	}
-
-	return &pb.CreateChatSessionResponse{
-		Session: convert.SessionEntityToPb(fullSession),
-	}, nil
+	return fullSession, nil
 }
 
 func (c *chatImpl) UpdateChatSession(ctx context.Context, req *pb.UpdateChatSessionRequest) (*pb.UpdateChatSessionResponse, error) {
@@ -1076,4 +1088,34 @@ func isWorldInfoEntryValid(entry *entity.WorldInfoEntry, session *entity.ChatSes
 		}
 	}
 	return false
+}
+
+func (c *chatImpl) GetCharLatestSession(ctx context.Context, req *pb.GetCharLatestSessionRequest) (
+	*pb.GetCharLatestSessionResponse, error) {
+	if req.GetCharacterId() <= 0 {
+		return nil, errs.NewStandardf(connect.CodeInvalidArgument, "character_id不能为空")
+	}
+
+	userId := jwt.GetUserId(ctx)
+	session, err := c.chatRepo.GetCharLatestSessionWithMsg(ctx, int(req.GetCharacterId()), userId)
+	if err != nil {
+		return nil, err
+	}
+	if session == nil {
+		session, err = c.createSession(ctx, int(req.GetCharacterId()), "")
+		if err != nil {
+			return nil, err
+		}
+	}
+	return &pb.GetCharLatestSessionResponse{
+		Session: convert.SessionEntityToPb(session),
+	}, nil
+}
+
+func (c *chatImpl) UpdateSessionTime(ctx context.Context, req *pb.UpdateSessionTimeRequest) (
+	*pb.UpdateSessionTimeResponse, error) {
+	if err := c.chatRepo.UpdateSessionTime(ctx, int(req.GetSessionId()), time.Now()); err != nil {
+		return nil, err
+	}
+	return &pb.UpdateSessionTimeResponse{}, nil
 }

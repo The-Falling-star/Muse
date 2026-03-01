@@ -178,7 +178,7 @@
                   />
                   <div class="entry-keys">
                     <n-tag
-                      v-for="key in parseKeys(entry.keysList).slice(0, 3)"
+                      v-for="key in entry.keysList.slice(0, 3)"
                       :key="key"
                       size="small"
                       type="primary"
@@ -186,8 +186,8 @@
                     >
                       {{ key }}
                     </n-tag>
-                    <n-tag v-if="parseKeys(entry.keysList).length > 3" size="small" :bordered="false">
-                      +{{ parseKeys(entry.keysList).length - 3 }}
+                    <n-tag v-if="entry.keysList.length > 3" size="small" :bordered="false">
+                      +{{ entry.keysList.length - 3 }}
                     </n-tag>
                   </div>
                   <div class="entry-actions">
@@ -361,8 +361,8 @@ import draggable from 'vuedraggable';
 
 import WorldInfoEntryEditor from '../components/worldinfo/WorldInfoEntryEditor.vue';
 import { worldInfoClient } from '@/api/client';
-import type { WorldInfo, WorldInfoEntry } from '@/gen/muse/muse_pb';
-import { EntryPosition } from '@/gen/muse/muse_pb';
+import type { WorldInfo, WorldInfoEntry } from '@/gen/muse/worldinfo_pb';
+import { EntryPosition } from '@/gen/muse/common_pb';
 
 const message = useMessage();
 const dialog = useDialog();
@@ -458,7 +458,7 @@ const filteredEntries = computed(() => {
   if (entrySearchQuery.value) {
     const query = entrySearchQuery.value.toLowerCase();
     list = list.filter(e =>
-      e.keysList.toLowerCase().includes(query) ||
+      e.keysList.some(k => k.toLowerCase().includes(query)) ||
       e.content.toLowerCase().includes(query)
     );
   }
@@ -467,7 +467,7 @@ const filteredEntries = computed(() => {
   if (entrySort.value === 'order') {
     list.sort((a, b) => b.insertionOrder - a.insertionOrder);
   } else if (entrySort.value === 'name') {
-    list.sort((a, b) => a.keysList.localeCompare(b.keysList));
+    list.sort((a, b) => (a.keysList[0] || '').localeCompare(b.keysList[0] || ''));
   }
 
   return list;
@@ -494,11 +494,6 @@ const handleEntryOrderChange = async () => {
   } catch {
     // 排序失败时静默处理
   }
-};
-
-// 解析关键词列表
-const parseKeys = (keysList: string): string[] => {
-  return keysList.split(',').map(k => k.trim()).filter(k => k.length > 0);
 };
 
 // 控制条目展开/收起
@@ -684,8 +679,8 @@ const handleSaveEntry = async (entryData: Partial<WorldInfoEntry>) => {
       const response = await worldInfoClient.updateWorldInfoEntry({
         id: editingEntry.value.id,
         uid: entryData.uid || '',
-        keysList: entryData.keysList || '',
-        secondaryKeys: entryData.secondaryKeys || '',
+        keysList: entryData.keysList || [],
+        secondaryKeys: entryData.secondaryKeys || [],
         content: entryData.content || '',
         comment: entryData.comment || '',
         isEnabled: entryData.isEnabled ?? true,
@@ -708,8 +703,8 @@ const handleSaveEntry = async (entryData: Partial<WorldInfoEntry>) => {
       const response = await worldInfoClient.addWorldInfoEntry({
         worldInfoId: selectedWorld.value.id,
         uid: entryData.uid || '',
-        keysList: entryData.keysList || '',
-        secondaryKeys: entryData.secondaryKeys || '',
+        keysList: entryData.keysList || [],
+        secondaryKeys: entryData.secondaryKeys || [],
         content: entryData.content || '',
         comment: entryData.comment || '',
         isEnabled: entryData.isEnabled ?? true,
@@ -762,7 +757,8 @@ const handleToggleEntry = async (entry: WorldInfoEntry, enabled: boolean) => {
     insertionOrder: entry.insertionOrder,
     position: entry.position,
     depth: entry.depth,
-    sortOrder: entry.sortOrder
+    sortOrder: entry.sortOrder,
+    role: entry.role
   });
   if (response.entry) {
     const index = entries.value.findIndex(e => e.id === entry.id);

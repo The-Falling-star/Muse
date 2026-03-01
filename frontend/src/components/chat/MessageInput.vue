@@ -172,7 +172,7 @@ import {
 } from '@vicons/ionicons5';
 import { useUserStore } from '@/stores/user';
 import { userClient } from '@/api/client';
-import type { Persona } from '@/gen/muse/muse_pb';
+import type { Persona } from '@/gen/muse/user_pb';
 
 interface AttachmentFile {
   name: string;

@@ -1,14 +1,13 @@
 import { createClient, ConnectError, Code, type Interceptor } from '@connectrpc/connect';
 import { createConnectTransport } from '@connectrpc/connect-web';
-import {
-  UserService,
-  CharacterService,
-  ChatService,
-  PresetService,
-  RegexRuleService,
-  WorldInfoService
-} from '@/gen/muse/muse_pb';
 import { globalMessage } from '@/composables/useGlobalMessage';
+import {UserService} from "@/gen/muse/user_pb.ts";
+import {CharacterService} from "@/gen/muse/character_pb.ts";
+import {ChatService} from "@/gen/muse/chat_pb.ts";
+import {PresetService} from "@/gen/muse/preset_pb.ts";
+import {RegexRuleService} from "@/gen/muse/regex_pb.ts";
+import {WorldInfoService} from "@/gen/muse/worldinfo_pb.ts";
+import {FileService} from "@/gen/muse/file_pb.ts";
 
 // 认证拦截器 - 自动添加token到请求头
 const authInterceptor: Interceptor = (next) => async (req) => {
@@ -80,3 +79,4 @@ export const chatClient = createClient(ChatService, transport);
 export const presetClient = createClient(PresetService, transport);
 export const regexRuleClient = createClient(RegexRuleService, transport);
 export const worldInfoClient = createClient(WorldInfoService, transport);
+export const fileClient = createClient(FileService, transport);

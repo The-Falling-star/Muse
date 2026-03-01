@@ -6,7 +6,7 @@ import type {
   Persona,
   UserSetting,
   APIConfig
-} from '@/gen/muse/muse_pb';
+} from '@/gen/muse/user_pb';
 
 /**
  * 用户 Store

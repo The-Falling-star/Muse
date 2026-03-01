@@ -173,7 +173,7 @@ import {
 } from 'naive-ui';
 import { useUserStore } from '@/stores/user';
 import { usePresetStore } from '@/stores/preset';
-import type { Preset } from '@/gen/muse/muse_pb';
+import type { Preset } from '@/gen/muse/preset_pb';
 
 const userStore = useUserStore();
 const presetStore = usePresetStore();

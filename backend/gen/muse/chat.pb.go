@@ -424,11 +424,10 @@ func (x *ListChatSessionsResponse) GetTotal() int32 {
 
 // 获取单个会话请求
 type GetChatSessionRequest struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	Id              int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	IncludeMessages bool                   `protobuf:"varint,2,opt,name=include_messages,json=includeMessages,proto3" json:"include_messages,omitempty"` // 是否包含消息
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *GetChatSessionRequest) Reset() {
@@ -466,13 +465,6 @@ func (x *GetChatSessionRequest) GetId() int32 {
 		return x.Id
 	}
 	return 0
-}
-
-func (x *GetChatSessionRequest) GetIncludeMessages() bool {
-	if x != nil {
-		return x.IncludeMessages
-	}
-	return false
 }
 
 // 获取单个会话响应
@@ -1312,6 +1304,178 @@ func (x *SwitchSwipeResponse) GetMessage() *Message {
 	return nil
 }
 
+// 获取角色最新会话请求
+type GetCharLatestSessionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CharacterId   int32                  `protobuf:"varint,1,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetCharLatestSessionRequest) Reset() {
+	*x = GetCharLatestSessionRequest{}
+	mi := &file_muse_chat_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetCharLatestSessionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetCharLatestSessionRequest) ProtoMessage() {}
+
+func (x *GetCharLatestSessionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_muse_chat_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetCharLatestSessionRequest.ProtoReflect.Descriptor instead.
+func (*GetCharLatestSessionRequest) Descriptor() ([]byte, []int) {
+	return file_muse_chat_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *GetCharLatestSessionRequest) GetCharacterId() int32 {
+	if x != nil {
+		return x.CharacterId
+	}
+	return 0
+}
+
+// 获取角色最新会话响应
+type GetCharLatestSessionResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Session       *ChatSession           `protobuf:"bytes,1,opt,name=session,proto3" json:"session,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetCharLatestSessionResponse) Reset() {
+	*x = GetCharLatestSessionResponse{}
+	mi := &file_muse_chat_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetCharLatestSessionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetCharLatestSessionResponse) ProtoMessage() {}
+
+func (x *GetCharLatestSessionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_muse_chat_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetCharLatestSessionResponse.ProtoReflect.Descriptor instead.
+func (*GetCharLatestSessionResponse) Descriptor() ([]byte, []int) {
+	return file_muse_chat_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *GetCharLatestSessionResponse) GetSession() *ChatSession {
+	if x != nil {
+		return x.Session
+	}
+	return nil
+}
+
+// 更新会话时间戳请求
+type UpdateSessionTimeRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SessionId     int32                  `protobuf:"varint,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateSessionTimeRequest) Reset() {
+	*x = UpdateSessionTimeRequest{}
+	mi := &file_muse_chat_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateSessionTimeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateSessionTimeRequest) ProtoMessage() {}
+
+func (x *UpdateSessionTimeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_muse_chat_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateSessionTimeRequest.ProtoReflect.Descriptor instead.
+func (*UpdateSessionTimeRequest) Descriptor() ([]byte, []int) {
+	return file_muse_chat_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *UpdateSessionTimeRequest) GetSessionId() int32 {
+	if x != nil {
+		return x.SessionId
+	}
+	return 0
+}
+
+// 更新会话时间戳响应
+type UpdateSessionTimeResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateSessionTimeResponse) Reset() {
+	*x = UpdateSessionTimeResponse{}
+	mi := &file_muse_chat_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateSessionTimeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateSessionTimeResponse) ProtoMessage() {}
+
+func (x *UpdateSessionTimeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_muse_chat_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateSessionTimeResponse.ProtoReflect.Descriptor instead.
+func (*UpdateSessionTimeResponse) Descriptor() ([]byte, []int) {
+	return file_muse_chat_proto_rawDescGZIP(), []int{26}
+}
+
 var File_muse_chat_proto protoreflect.FileDescriptor
 
 const file_muse_chat_proto_rawDesc = "" +
@@ -1362,10 +1526,9 @@ const file_muse_chat_proto_rawDesc = "" +
 	"_page_size\"_\n" +
 	"\x18ListChatSessionsResponse\x12-\n" +
 	"\bsessions\x18\x01 \x03(\v2\x11.muse.ChatSessionR\bsessions\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05total\"R\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\"'\n" +
 	"\x15GetChatSessionRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\x12)\n" +
-	"\x10include_messages\x18\x02 \x01(\bR\x0fincludeMessages\"E\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\"E\n" +
 	"\x16GetChatSessionResponse\x12+\n" +
 	"\asession\x18\x01 \x01(\v2\x11.muse.ChatSessionR\asession\"_\n" +
 	"\x18CreateChatSessionRequest\x12!\n" +
@@ -1418,7 +1581,15 @@ const file_muse_chat_proto_rawDesc = "" +
 	"\vswipe_index\x18\x02 \x01(\x05R\n" +
 	"swipeIndex\">\n" +
 	"\x13SwitchSwipeResponse\x12'\n" +
-	"\amessage\x18\x01 \x01(\v2\r.muse.MessageR\amessage2\x9f\x06\n" +
+	"\amessage\x18\x01 \x01(\v2\r.muse.MessageR\amessage\"@\n" +
+	"\x1bGetCharLatestSessionRequest\x12!\n" +
+	"\fcharacter_id\x18\x01 \x01(\x05R\vcharacterId\"K\n" +
+	"\x1cGetCharLatestSessionResponse\x12+\n" +
+	"\asession\x18\x01 \x01(\v2\x11.muse.ChatSessionR\asession\"9\n" +
+	"\x18UpdateSessionTimeRequest\x12\x1d\n" +
+	"\n" +
+	"session_id\x18\x01 \x01(\x05R\tsessionId\"\x1b\n" +
+	"\x19UpdateSessionTimeResponse2\xd4\a\n" +
 	"\vChatService\x12Q\n" +
 	"\x10ListChatSessions\x12\x1d.muse.ListChatSessionsRequest\x1a\x1e.muse.ListChatSessionsResponse\x12K\n" +
 	"\x0eGetChatSession\x12\x1b.muse.GetChatSessionRequest\x1a\x1c.muse.GetChatSessionResponse\x12T\n" +
@@ -1429,7 +1600,9 @@ const file_muse_chat_proto_rawDesc = "" +
 	"\x11RegenerateMessage\x12\x1e.muse.RegenerateMessageRequest\x1a\x1f.muse.RegenerateMessageResponse0\x01\x12B\n" +
 	"\vEditMessage\x12\x18.muse.EditMessageRequest\x1a\x19.muse.EditMessageResponse\x12H\n" +
 	"\rDeleteMessage\x12\x1a.muse.DeleteMessageRequest\x1a\x1b.muse.DeleteMessageResponse\x12B\n" +
-	"\vSwitchSwipe\x12\x18.muse.SwitchSwipeRequest\x1a\x19.muse.SwitchSwipeResponseBd\n" +
+	"\vSwitchSwipe\x12\x18.muse.SwitchSwipeRequest\x1a\x19.muse.SwitchSwipeResponse\x12]\n" +
+	"\x14GetCharLatestSession\x12!.muse.GetCharLatestSessionRequest\x1a\".muse.GetCharLatestSessionResponse\x12T\n" +
+	"\x11UpdateSessionTime\x12\x1e.muse.UpdateSessionTimeRequest\x1a\x1f.muse.UpdateSessionTimeResponseBd\n" +
 	"\bcom.museB\tChatProtoP\x01Z\x1dgithub.com/ling/muse/gen/muse\xa2\x02\x03MXX\xaa\x02\x04Muse\xca\x02\x04Muse\xe2\x02\x10Muse\\GPBMetadata\xea\x02\x04Museb\x06proto3"
 
 var (
@@ -1444,38 +1617,42 @@ func file_muse_chat_proto_rawDescGZIP() []byte {
 	return file_muse_chat_proto_rawDescData
 }
 
-var file_muse_chat_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
+var file_muse_chat_proto_msgTypes = make([]protoimpl.MessageInfo, 27)
 var file_muse_chat_proto_goTypes = []any{
-	(*ChatSession)(nil),               // 0: muse.ChatSession
-	(*Message)(nil),                   // 1: muse.Message
-	(*MessageSwipe)(nil),              // 2: muse.MessageSwipe
-	(*ListChatSessionsRequest)(nil),   // 3: muse.ListChatSessionsRequest
-	(*ListChatSessionsResponse)(nil),  // 4: muse.ListChatSessionsResponse
-	(*GetChatSessionRequest)(nil),     // 5: muse.GetChatSessionRequest
-	(*GetChatSessionResponse)(nil),    // 6: muse.GetChatSessionResponse
-	(*CreateChatSessionRequest)(nil),  // 7: muse.CreateChatSessionRequest
-	(*CreateChatSessionResponse)(nil), // 8: muse.CreateChatSessionResponse
-	(*UpdateChatSessionRequest)(nil),  // 9: muse.UpdateChatSessionRequest
-	(*UpdateChatSessionResponse)(nil), // 10: muse.UpdateChatSessionResponse
-	(*DeleteChatSessionRequest)(nil),  // 11: muse.DeleteChatSessionRequest
-	(*DeleteChatSessionResponse)(nil), // 12: muse.DeleteChatSessionResponse
-	(*SendMessageRequest)(nil),        // 13: muse.SendMessageRequest
-	(*SendMessageResponse)(nil),       // 14: muse.SendMessageResponse
-	(*RegenerateMessageRequest)(nil),  // 15: muse.RegenerateMessageRequest
-	(*RegenerateMessageResponse)(nil), // 16: muse.RegenerateMessageResponse
-	(*EditMessageRequest)(nil),        // 17: muse.EditMessageRequest
-	(*EditMessageResponse)(nil),       // 18: muse.EditMessageResponse
-	(*DeleteMessageRequest)(nil),      // 19: muse.DeleteMessageRequest
-	(*DeleteMessageResponse)(nil),     // 20: muse.DeleteMessageResponse
-	(*SwitchSwipeRequest)(nil),        // 21: muse.SwitchSwipeRequest
-	(*SwitchSwipeResponse)(nil),       // 22: muse.SwitchSwipeResponse
-	(*Character)(nil),                 // 23: muse.Character
-	(Role)(0),                         // 24: muse.Role
+	(*ChatSession)(nil),                  // 0: muse.ChatSession
+	(*Message)(nil),                      // 1: muse.Message
+	(*MessageSwipe)(nil),                 // 2: muse.MessageSwipe
+	(*ListChatSessionsRequest)(nil),      // 3: muse.ListChatSessionsRequest
+	(*ListChatSessionsResponse)(nil),     // 4: muse.ListChatSessionsResponse
+	(*GetChatSessionRequest)(nil),        // 5: muse.GetChatSessionRequest
+	(*GetChatSessionResponse)(nil),       // 6: muse.GetChatSessionResponse
+	(*CreateChatSessionRequest)(nil),     // 7: muse.CreateChatSessionRequest
+	(*CreateChatSessionResponse)(nil),    // 8: muse.CreateChatSessionResponse
+	(*UpdateChatSessionRequest)(nil),     // 9: muse.UpdateChatSessionRequest
+	(*UpdateChatSessionResponse)(nil),    // 10: muse.UpdateChatSessionResponse
+	(*DeleteChatSessionRequest)(nil),     // 11: muse.DeleteChatSessionRequest
+	(*DeleteChatSessionResponse)(nil),    // 12: muse.DeleteChatSessionResponse
+	(*SendMessageRequest)(nil),           // 13: muse.SendMessageRequest
+	(*SendMessageResponse)(nil),          // 14: muse.SendMessageResponse
+	(*RegenerateMessageRequest)(nil),     // 15: muse.RegenerateMessageRequest
+	(*RegenerateMessageResponse)(nil),    // 16: muse.RegenerateMessageResponse
+	(*EditMessageRequest)(nil),           // 17: muse.EditMessageRequest
+	(*EditMessageResponse)(nil),          // 18: muse.EditMessageResponse
+	(*DeleteMessageRequest)(nil),         // 19: muse.DeleteMessageRequest
+	(*DeleteMessageResponse)(nil),        // 20: muse.DeleteMessageResponse
+	(*SwitchSwipeRequest)(nil),           // 21: muse.SwitchSwipeRequest
+	(*SwitchSwipeResponse)(nil),          // 22: muse.SwitchSwipeResponse
+	(*GetCharLatestSessionRequest)(nil),  // 23: muse.GetCharLatestSessionRequest
+	(*GetCharLatestSessionResponse)(nil), // 24: muse.GetCharLatestSessionResponse
+	(*UpdateSessionTimeRequest)(nil),     // 25: muse.UpdateSessionTimeRequest
+	(*UpdateSessionTimeResponse)(nil),    // 26: muse.UpdateSessionTimeResponse
+	(*Character)(nil),                    // 27: muse.Character
+	(Role)(0),                            // 28: muse.Role
 }
 var file_muse_chat_proto_depIdxs = []int32{
-	23, // 0: muse.ChatSession.character:type_name -> muse.Character
+	27, // 0: muse.ChatSession.character:type_name -> muse.Character
 	1,  // 1: muse.ChatSession.messages:type_name -> muse.Message
-	24, // 2: muse.Message.role:type_name -> muse.Role
+	28, // 2: muse.Message.role:type_name -> muse.Role
 	2,  // 3: muse.Message.swipes:type_name -> muse.MessageSwipe
 	0,  // 4: muse.ListChatSessionsResponse.sessions:type_name -> muse.ChatSession
 	0,  // 5: muse.GetChatSessionResponse.session:type_name -> muse.ChatSession
@@ -1484,31 +1661,36 @@ var file_muse_chat_proto_depIdxs = []int32{
 	2,  // 8: muse.RegenerateMessageResponse.new_swipe:type_name -> muse.MessageSwipe
 	2,  // 9: muse.EditMessageResponse.swipe:type_name -> muse.MessageSwipe
 	1,  // 10: muse.SwitchSwipeResponse.message:type_name -> muse.Message
-	3,  // 11: muse.ChatService.ListChatSessions:input_type -> muse.ListChatSessionsRequest
-	5,  // 12: muse.ChatService.GetChatSession:input_type -> muse.GetChatSessionRequest
-	7,  // 13: muse.ChatService.CreateChatSession:input_type -> muse.CreateChatSessionRequest
-	9,  // 14: muse.ChatService.UpdateChatSession:input_type -> muse.UpdateChatSessionRequest
-	11, // 15: muse.ChatService.DeleteChatSession:input_type -> muse.DeleteChatSessionRequest
-	13, // 16: muse.ChatService.SendMessage:input_type -> muse.SendMessageRequest
-	15, // 17: muse.ChatService.RegenerateMessage:input_type -> muse.RegenerateMessageRequest
-	17, // 18: muse.ChatService.EditMessage:input_type -> muse.EditMessageRequest
-	19, // 19: muse.ChatService.DeleteMessage:input_type -> muse.DeleteMessageRequest
-	21, // 20: muse.ChatService.SwitchSwipe:input_type -> muse.SwitchSwipeRequest
-	4,  // 21: muse.ChatService.ListChatSessions:output_type -> muse.ListChatSessionsResponse
-	6,  // 22: muse.ChatService.GetChatSession:output_type -> muse.GetChatSessionResponse
-	8,  // 23: muse.ChatService.CreateChatSession:output_type -> muse.CreateChatSessionResponse
-	10, // 24: muse.ChatService.UpdateChatSession:output_type -> muse.UpdateChatSessionResponse
-	12, // 25: muse.ChatService.DeleteChatSession:output_type -> muse.DeleteChatSessionResponse
-	14, // 26: muse.ChatService.SendMessage:output_type -> muse.SendMessageResponse
-	16, // 27: muse.ChatService.RegenerateMessage:output_type -> muse.RegenerateMessageResponse
-	18, // 28: muse.ChatService.EditMessage:output_type -> muse.EditMessageResponse
-	20, // 29: muse.ChatService.DeleteMessage:output_type -> muse.DeleteMessageResponse
-	22, // 30: muse.ChatService.SwitchSwipe:output_type -> muse.SwitchSwipeResponse
-	21, // [21:31] is the sub-list for method output_type
-	11, // [11:21] is the sub-list for method input_type
-	11, // [11:11] is the sub-list for extension type_name
-	11, // [11:11] is the sub-list for extension extendee
-	0,  // [0:11] is the sub-list for field type_name
+	0,  // 11: muse.GetCharLatestSessionResponse.session:type_name -> muse.ChatSession
+	3,  // 12: muse.ChatService.ListChatSessions:input_type -> muse.ListChatSessionsRequest
+	5,  // 13: muse.ChatService.GetChatSession:input_type -> muse.GetChatSessionRequest
+	7,  // 14: muse.ChatService.CreateChatSession:input_type -> muse.CreateChatSessionRequest
+	9,  // 15: muse.ChatService.UpdateChatSession:input_type -> muse.UpdateChatSessionRequest
+	11, // 16: muse.ChatService.DeleteChatSession:input_type -> muse.DeleteChatSessionRequest
+	13, // 17: muse.ChatService.SendMessage:input_type -> muse.SendMessageRequest
+	15, // 18: muse.ChatService.RegenerateMessage:input_type -> muse.RegenerateMessageRequest
+	17, // 19: muse.ChatService.EditMessage:input_type -> muse.EditMessageRequest
+	19, // 20: muse.ChatService.DeleteMessage:input_type -> muse.DeleteMessageRequest
+	21, // 21: muse.ChatService.SwitchSwipe:input_type -> muse.SwitchSwipeRequest
+	23, // 22: muse.ChatService.GetCharLatestSession:input_type -> muse.GetCharLatestSessionRequest
+	25, // 23: muse.ChatService.UpdateSessionTime:input_type -> muse.UpdateSessionTimeRequest
+	4,  // 24: muse.ChatService.ListChatSessions:output_type -> muse.ListChatSessionsResponse
+	6,  // 25: muse.ChatService.GetChatSession:output_type -> muse.GetChatSessionResponse
+	8,  // 26: muse.ChatService.CreateChatSession:output_type -> muse.CreateChatSessionResponse
+	10, // 27: muse.ChatService.UpdateChatSession:output_type -> muse.UpdateChatSessionResponse
+	12, // 28: muse.ChatService.DeleteChatSession:output_type -> muse.DeleteChatSessionResponse
+	14, // 29: muse.ChatService.SendMessage:output_type -> muse.SendMessageResponse
+	16, // 30: muse.ChatService.RegenerateMessage:output_type -> muse.RegenerateMessageResponse
+	18, // 31: muse.ChatService.EditMessage:output_type -> muse.EditMessageResponse
+	20, // 32: muse.ChatService.DeleteMessage:output_type -> muse.DeleteMessageResponse
+	22, // 33: muse.ChatService.SwitchSwipe:output_type -> muse.SwitchSwipeResponse
+	24, // 34: muse.ChatService.GetCharLatestSession:output_type -> muse.GetCharLatestSessionResponse
+	26, // 35: muse.ChatService.UpdateSessionTime:output_type -> muse.UpdateSessionTimeResponse
+	24, // [24:36] is the sub-list for method output_type
+	12, // [12:24] is the sub-list for method input_type
+	12, // [12:12] is the sub-list for extension type_name
+	12, // [12:12] is the sub-list for extension extendee
+	0,  // [0:12] is the sub-list for field type_name
 }
 
 func init() { file_muse_chat_proto_init() }
@@ -1527,7 +1709,7 @@ func file_muse_chat_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_muse_chat_proto_rawDesc), len(file_muse_chat_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   23,
+			NumMessages:   27,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

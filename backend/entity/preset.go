@@ -11,7 +11,7 @@ import (
 type Preset struct {
 	ID               int       `gorm:"column:id;primaryKey;autoIncrement" json:"id"`                                             // 预设ID，主键自增
 	UserID           int       `gorm:"column:user_id;not null;index:idx_user_id" json:"userId"`                                  // 所属用户ID
-	Name             string    `gorm:"column:name;type:varchar(128);not null" json:"name"`                                       // 预设名称
+	Name             string    `gorm:"column:name;type:varchar(128);not null;" json:"name"`                                      // 预设名称
 	Temperature      float32   `gorm:"column:temperature;type:decimal(3,2);not null;default:1.00" json:"temperature"`            // 温度参数，控制输出随机性，范围0-2，值越高输出越随机
 	TopP             float32   `gorm:"column:top_p;type:decimal(3,2);not null;default:1.00" json:"topP"`                         // 核采样参数，控制候选token的累积概率阈值，范围0-1
 	TopK             int       `gorm:"column:top_k;not null;default:0" json:"topK"`                                              // Top-K采样参数，限制候选token数量，0表示不限制
@@ -39,8 +39,8 @@ type PromptItem struct {
 	ID                int                     `gorm:"column:id;primaryKey;autoIncrement" json:"id"`                                                // 提示项ID，主键自增
 	PresetID          int                     `gorm:"column:preset_id;not null;index:idx_preset_id" json:"presetId"`                               // 所属预设ID
 	Identifier        pb.PromptItemIdentifier `gorm:"column:identifier;type:tinyint unsigned;not null;default:0" json:"identifier"`                // 标识符枚举，用于唯一标识提示项
-	Name              string                  `gorm:"column:name;type:varchar(128);not null" json:"name"`                                          // 显示名称
-	Content           string                  `gorm:"column:content;type:text" json:"content"`                                                     // 提示词内容
+	Name              string                  `gorm:"column:name;type:varchar(128);not null;default:''" json:"name"`                               // 显示名称
+	Content           string                  `gorm:"column:content;type:text;not null" json:"content"`                                            // 提示词内容
 	Role              pb.Role                 `gorm:"column:role;type:tinyint unsigned;not null;default:0" json:"role"`                            // 消息角色：System/User/Assistant
 	IsEnabled         bool                    `gorm:"column:is_enabled;not null;default:true" json:"isEnabled"`                                    // 是否启用
 	InjectionPosition pb.InjectionPosition    `gorm:"column:injection_position;type:tinyint unsigned;not null;default:0" json:"injectionPosition"` // 注入位置：Relative(相对位置)/Absolute(绝对深度)

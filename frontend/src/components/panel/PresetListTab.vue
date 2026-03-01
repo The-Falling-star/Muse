@@ -85,7 +85,7 @@ import { NSelect, NButton, NIcon, NDropdown, NEmpty, NSpin, useMessage, useDialo
 import { CloudUploadOutline, AddOutline, EllipsisHorizontal } from '@vicons/ionicons5';
 import { usePresetStore } from '@/stores/preset';
 import { useUserStore } from '@/stores/user';
-import type { Preset } from '@/gen/muse/muse_pb';
+import type { Preset } from '@/gen/muse/preset_pb';
 
 const router = useRouter();
 const route = useRoute();
@@ -246,7 +246,7 @@ const handleCopy = async (preset: Preset) => {
       maxTokens: fullPreset.maxTokens,
       frequencyPenalty: fullPreset.frequencyPenalty,
       presencePenalty: fullPreset.presencePenalty,
-      promptItems: fullPreset.promptItems?.map(item => ({
+      promptItems: fullPreset.promptItems?.map((item, index) => ({
         identifier: item.identifier,
         name: item.name,
         content: item.content,
@@ -255,7 +255,7 @@ const handleCopy = async (preset: Preset) => {
         injectionPosition: item.injectionPosition,
         injectionDepth: item.injectionDepth,
         forbidOverrides: item.forbidOverrides,
-        sortOrder: item.sortOrder,
+        sortOrder: index,
       })),
     });
     if (newPreset) {

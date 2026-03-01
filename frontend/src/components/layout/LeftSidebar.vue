@@ -6,7 +6,9 @@
       <div class="sidebar-top">
         <n-button class="new-chat-btn" block quaternary @click="handleNewChat">
           <template #icon>
-            <n-icon size="18"><AddOutline /></n-icon>
+            <n-icon size="18">
+              <AddOutline/>
+            </n-icon>
           </template>
           新建对话
         </n-button>
@@ -15,13 +17,15 @@
       <!-- 搜索框 -->
       <div class="sidebar-search">
         <n-input
-          v-model:value="searchQuery"
-          placeholder="搜索对话..."
-          clearable
-          size="small"
+            v-model:value="searchQuery"
+            placeholder="搜索对话..."
+            clearable
+            size="small"
         >
           <template #prefix>
-            <n-icon size="16"><SearchOutline /></n-icon>
+            <n-icon size="16">
+              <SearchOutline/>
+            </n-icon>
           </template>
         </n-input>
       </div>
@@ -31,29 +35,31 @@
         <div class="session-list">
           <template v-if="filteredGroupedSessions.length > 0">
             <div
-              v-for="group in filteredGroupedSessions"
-              :key="group.label"
-              class="session-group"
+                v-for="group in filteredGroupedSessions"
+                :key="group.label"
+                class="session-group"
             >
               <div class="group-label">{{ group.label }}</div>
               <div
-                v-for="session in group.sessions"
-                :key="session.id"
-                class="session-item"
-                :class="{ active: chatStore.activeSessionId === session.id }"
-                @click="handleSelectSession(session)"
-                @contextmenu.prevent="handleSessionContextMenu($event, session)"
+                  v-for="session in group.sessions"
+                  :key="session.id"
+                  class="session-item"
+                  :class="{ active: chatStore.activeSessionId === session.id }"
+                  @click="handleSelectSession(session)"
+                  @contextmenu.prevent="handleSessionContextMenu($event, session)"
               >
                 <!-- 角色头像 -->
                 <n-avatar
-                  v-if="session.character?.avatar"
-                  :src="session.character.avatar"
-                  :size="24"
-                  round
-                  class="session-avatar"
+                    v-if="session.character?.avatar"
+                    :src="getAvatarUrlSync(session.character.avatar)"
+                    :size="24"
+                    round
+                    class="session-avatar"
                 />
                 <div v-else class="session-avatar-placeholder">
-                  <n-icon size="14"><ChatbubblesOutline /></n-icon>
+                  <n-icon size="14">
+                    <ChatbubblesOutline/>
+                  </n-icon>
                 </div>
 
                 <!-- 会话标题 -->
@@ -61,14 +67,16 @@
 
                 <!-- 更多操作按钮 -->
                 <n-button
-                  quaternary
-                  circle
-                  size="tiny"
-                  class="session-more-btn"
-                  @click.stop="handleSessionContextMenu($event, session)"
+                    quaternary
+                    circle
+                    size="tiny"
+                    class="session-more-btn"
+                    @click.stop="handleSessionContextMenu($event, session)"
                 >
                   <template #icon>
-                    <n-icon size="14"><EllipsisHorizontalOutline /></n-icon>
+                    <n-icon size="14">
+                      <EllipsisHorizontalOutline/>
+                    </n-icon>
                   </template>
                 </n-button>
               </div>
@@ -77,7 +85,9 @@
 
           <!-- 空状态 -->
           <div v-else class="empty-state">
-            <n-icon size="32" color="var(--text-tertiary)"><ChatbubblesOutline /></n-icon>
+            <n-icon size="32" color="var(--text-tertiary)">
+              <ChatbubblesOutline/>
+            </n-icon>
             <span>{{ searchQuery ? '没有找到匹配的对话' : '暂无对话记录' }}</span>
           </div>
         </div>
@@ -86,12 +96,18 @@
       <!-- 底部快捷入口 -->
       <div class="sidebar-bottom">
         <div class="bottom-entry" @click="appStore.setSidebarView('characters')">
-          <n-icon size="18"><PeopleOutline /></n-icon>
+          <n-icon size="18">
+            <PeopleOutline/>
+          </n-icon>
           <span>角色管理</span>
-          <n-icon size="14" class="entry-arrow"><ChevronForwardOutline /></n-icon>
+          <n-icon size="14" class="entry-arrow">
+            <ChevronForwardOutline/>
+          </n-icon>
         </div>
         <div class="bottom-entry" @click="appStore.openSettings()">
-          <n-icon size="18"><SettingsOutline /></n-icon>
+          <n-icon size="18">
+            <SettingsOutline/>
+          </n-icon>
           <span>设置</span>
         </div>
       </div>
@@ -103,7 +119,9 @@
       <div class="sidebar-top character-top">
         <n-button quaternary size="small" @click="appStore.setSidebarView('sessions')">
           <template #icon>
-            <n-icon size="16"><ArrowBackOutline /></n-icon>
+            <n-icon size="16">
+              <ArrowBackOutline/>
+            </n-icon>
           </template>
           返回
         </n-button>
@@ -113,13 +131,15 @@
       <!-- 角色搜索和导入 -->
       <div class="sidebar-search">
         <n-input
-          v-model:value="characterSearchQuery"
-          placeholder="搜索角色..."
-          clearable
-          size="small"
+            v-model:value="characterSearchQuery"
+            placeholder="搜索角色..."
+            clearable
+            size="small"
         >
           <template #prefix>
-            <n-icon size="16"><SearchOutline /></n-icon>
+            <n-icon size="16">
+              <SearchOutline/>
+            </n-icon>
           </template>
         </n-input>
       </div>
@@ -127,7 +147,9 @@
       <div class="character-actions">
         <n-button size="small" quaternary block @click="handleImportCharacter">
           <template #icon>
-            <n-icon size="16"><CloudUploadOutline /></n-icon>
+            <n-icon size="16">
+              <CloudUploadOutline/>
+            </n-icon>
           </template>
           导入角色
         </n-button>
@@ -137,21 +159,23 @@
       <n-scrollbar class="character-list-scroll">
         <div class="character-list">
           <div
-            v-for="char in filteredCharacters"
-            :key="char.id"
-            class="character-item"
-            @click="handleSelectCharacter(char)"
-            @contextmenu.prevent="handleCharacterContextMenu($event, char)"
+              v-for="char in filteredCharacters"
+              :key="char.id"
+              class="character-item"
+              @click="handleSelectCharacter(char)"
+              @contextmenu.prevent="handleCharacterContextMenu($event, char)"
           >
             <n-avatar
-              v-if="char.avatar"
-              :src="char.avatar"
-              :size="40"
-              round
-              class="character-avatar"
+                v-if="char.avatar"
+                :src="getAvatarUrlSync(char.avatar)"
+                :size="40"
+                round
+                class="character-avatar"
             />
             <div v-else class="character-avatar-default">
-              <n-icon size="20"><PersonOutline /></n-icon>
+              <n-icon size="20">
+                <PersonOutline/>
+              </n-icon>
             </div>
             <div class="character-info">
               <span class="character-name">{{ char.name || '未命名角色' }}</span>
@@ -161,7 +185,9 @@
 
           <!-- 空状态 -->
           <div v-if="filteredCharacters.length === 0" class="empty-state">
-            <n-icon size="32" color="var(--text-tertiary)"><PeopleOutline /></n-icon>
+            <n-icon size="32" color="var(--text-tertiary)">
+              <PeopleOutline/>
+            </n-icon>
             <span>{{ characterSearchQuery ? '没有找到匹配的角色' : '暂无角色' }}</span>
           </div>
         </div>
@@ -170,55 +196,56 @@
 
     <!-- 会话右键菜单 -->
     <n-dropdown
-      trigger="manual"
-      :show="showSessionMenu"
-      :options="sessionMenuOptions"
-      :x="menuX"
-      :y="menuY"
-      placement="bottom-start"
-      @select="handleSessionMenuSelect"
-      @clickoutside="showSessionMenu = false"
+        trigger="manual"
+        :show="showSessionMenu"
+        :options="sessionMenuOptions"
+        :x="menuX"
+        :y="menuY"
+        placement="bottom-start"
+        @select="handleSessionMenuSelect"
+        @clickoutside="showSessionMenu = false"
     />
 
     <!-- 角色右键菜单 -->
     <n-dropdown
-      trigger="manual"
-      :show="showCharacterMenu"
-      :options="characterMenuOptions"
-      :x="menuX"
-      :y="menuY"
-      placement="bottom-start"
-      @select="handleCharacterMenuSelect"
-      @clickoutside="showCharacterMenu = false"
+        trigger="manual"
+        :show="showCharacterMenu"
+        :options="characterMenuOptions"
+        :x="menuX"
+        :y="menuY"
+        placement="bottom-start"
+        @select="handleCharacterMenuSelect"
+        @clickoutside="showCharacterMenu = false"
     />
   </aside>
 </template>
 
 <script setup lang="ts">
-import { h, ref, computed, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
-import {
-  NButton, NIcon, NInput, NScrollbar, NAvatar, NDropdown,
-  useMessage, useDialog
-} from 'naive-ui';
+// ====== 切换到角色视图时加载角色数据 ======
+import {computed, h, onMounted, ref, watch} from 'vue';
+import {useRouter} from 'vue-router';
+import {NAvatar, NButton, NDropdown, NIcon, NInput, NScrollbar, useDialog, useMessage} from 'naive-ui';
 import {
   AddOutline,
-  SearchOutline,
+  ArrowBackOutline,
   ChatbubblesOutline,
+  ChevronForwardOutline,
+  CloudUploadOutline,
   EllipsisHorizontalOutline,
   PeopleOutline,
-  SettingsOutline,
-  ChevronForwardOutline,
-  ArrowBackOutline,
-  CloudUploadOutline,
-  PersonOutline
+  PersonOutline,
+  SearchOutline,
+  SettingsOutline
 } from '@vicons/ionicons5';
 
-import { useAppStore } from '@/stores/app';
-import { useChatStore } from '@/stores/chat';
-import { useCharacterStore } from '@/stores/character';
-import { chatClient, characterClient } from '@/api/client';
-import type { ChatSession, Character } from '@/gen/muse/muse_pb';
+import {useAppStore} from '@/stores/app';
+import {useChatStore} from '@/stores/chat';
+import {useCharacterStore} from '@/stores/character';
+import {characterClient, chatClient} from '@/api/client';
+import type {ChatSession} from '@/gen/muse/chat_pb';
+import type {Character} from '@/gen/muse/character_pb';
+import {DEFAULT_PAGE_NUM, DEFAULT_PAGE_SIZE} from "@/utils/constants.ts";
+import {getAvatarUrlSync} from '@/utils/common';
 
 const router = useRouter();
 const appStore = useAppStore();
@@ -242,7 +269,7 @@ const contextCharacter = ref<Character | null>(null);
 // ====== 加载数据 ======
 const loadSessions = async () => {
   try {
-    const response = await chatClient.listChatSessions({});
+    const response = await chatClient.listChatSessions({page: DEFAULT_PAGE_NUM, pageSize: DEFAULT_PAGE_SIZE});
     chatStore.setSessions(response.sessions);
   } catch {
     // 错误由拦截器统一处理
@@ -252,7 +279,7 @@ const loadSessions = async () => {
 const loadCharacters = async () => {
   if (characterStore.hasCached) return;
   try {
-    const response = await characterClient.listCharacters({ page: 1, pageSize: 50 });
+    const response = await characterClient.listCharacters({page: DEFAULT_PAGE_NUM, pageSize: DEFAULT_PAGE_SIZE});
     characterStore.setCharacters(response.characters, response.total);
   } catch {
     // 错误由拦截器统一处理
@@ -300,17 +327,17 @@ const groupSessionsByTime = (sessions: ChatSession[]): SessionGroup[] => {
   }
 
   return Array.from(groups.entries())
-    .filter(([, sessions]) => sessions.length > 0)
-    .map(([label, sessions]) => ({ label, sessions }));
+      .filter(([, sessions]) => sessions.length > 0)
+      .map(([label, sessions]) => ({label, sessions}));
 };
 
 // ====== 计算属性 ======
 const filteredGroupedSessions = computed(() => {
-  let sessions = chatStore.sessions;
+  let sessions = [...chatStore.sessions.values()];
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase();
     sessions = sessions.filter(s =>
-      (s.name || '').toLowerCase().includes(query)
+        (s.name || '').toLowerCase().includes(query)
     );
   }
   return groupSessionsByTime(sessions);
@@ -321,24 +348,39 @@ const filteredCharacters = computed(() => {
   if (characterSearchQuery.value) {
     const query = characterSearchQuery.value.toLowerCase();
     chars = chars.filter(c =>
-      (c.name || '').toLowerCase().includes(query) ||
-      (c.description || '').toLowerCase().includes(query)
+        (c.name || '').toLowerCase().includes(query) ||
+        (c.description || '').toLowerCase().includes(query)
     );
   }
   return chars;
 });
 
 // ====== 会话操作 ======
-const handleNewChat = () => {
+function handleNewChat() {
   router.push('/');
+  chatStore.setActiveSession(null)
   if (appStore.isCompactMode) {
     appStore.closeLeftSidebar();
   }
-};
+}
 
-const handleSelectSession = (session: ChatSession) => {
+const handleSelectSession = async (session: ChatSession) => {
+  if (!session.messages?.length) {
+    const sessionWithMsg = await chatClient.getChatSession({id: session.id});
+    if (!sessionWithMsg) {
+      console.warn("获取到的会话为null")
+    } else {
+      session = sessionWithMsg.session!
+    }
+  }
   chatStore.setActiveSession(session);
-  router.push('/');
+  // 更新会话访问时间
+  try {
+    await chatClient.updateSessionTime({sessionId: session.id})
+  } catch (e) {
+    console.error("更新会话访问时间失败: ", e);
+  }
+  await router.push('/');
   if (appStore.isCompactMode) {
     appStore.closeLeftSidebar();
   }
@@ -353,8 +395,8 @@ const handleSessionContextMenu = (e: MouseEvent, session: ChatSession) => {
 };
 
 const sessionMenuOptions = [
-  { label: '重命名', key: 'rename' },
-  { label: '删除', key: 'delete' }
+  {label: '重命名', key: 'rename'},
+  {label: '删除', key: 'delete'}
 ];
 
 const handleSessionMenuSelect = (key: string) => {
@@ -370,7 +412,9 @@ const handleSessionMenuSelect = (key: string) => {
         content: () => {
           return h(NInput, {
             value: newName.value,
-            'onUpdate:value': (v: string) => { newName.value = v; },
+            'onUpdate:value': (v: string) => {
+              newName.value = v;
+            },
             placeholder: '输入新的对话名称',
             autofocus: true
           });
@@ -406,7 +450,7 @@ const handleSessionMenuSelect = (key: string) => {
         negativeText: '取消',
         onPositiveClick: async () => {
           try {
-            await chatClient.deleteChatSession({ id: session.id });
+            await chatClient.deleteChatSession({id: session.id});
             chatStore.removeSession(session.id);
             message.success('对话已删除');
           } catch {
@@ -420,18 +464,21 @@ const handleSessionMenuSelect = (key: string) => {
 
 // ====== 角色操作 ======
 const handleSelectCharacter = async (char: Character) => {
-  // 以该角色创建新会话
-  try {
-    const response = await chatClient.createChatSession({ characterId: char.id });
-    if (response.session) {
-      chatStore.addSession(response.session);
-      chatStore.setActiveSession(response.session);
-      // 切换回会话视图并跳转到聊天页
-      appStore.setSidebarView('sessions');
-      router.push('/');
+  // 获取角色最新的会话
+  const response = await chatClient.getCharLatestSession({
+    characterId: char.id,
+  });
+  if (response.session) {
+    chatStore.addSession(response.session);
+    chatStore.setActiveSession(response.session);
+    try {
+      await chatClient.updateSessionTime({sessionId: response.session.id})
+    } catch (e) {
+      console.error("更新会话访问时间失败: ", e)
     }
-  } catch {
-    // 错误由拦截器统一处理
+    // 切换回会话视图并跳转到聊天页
+    appStore.setSidebarView('sessions');
+    router.push('/');
   }
   if (appStore.isCompactMode) {
     appStore.closeLeftSidebar();
@@ -489,10 +536,10 @@ const handleCharacterContextMenu = (e: MouseEvent, char: Character) => {
 };
 
 const characterMenuOptions = [
-  { label: '开始聊天', key: 'chat' },
-  { label: '编辑', key: 'edit' },
-  { type: 'divider', key: 'd1' },
-  { label: '删除', key: 'delete' }
+  {label: '开始聊天', key: 'chat'},
+  {label: '编辑', key: 'edit'},
+  {type: 'divider', key: 'd1'},
+  {label: '删除', key: 'delete'}
 ];
 
 const handleCharacterMenuSelect = (key: string) => {
@@ -516,7 +563,7 @@ const handleCharacterMenuSelect = (key: string) => {
         negativeText: '取消',
         onPositiveClick: async () => {
           try {
-            await characterClient.deleteCharacter({ id: char.id });
+            await characterClient.deleteCharacter({id: char.id});
             characterStore.removeCharacter(char.id);
             message.success('角色已删除');
           } catch {
@@ -528,8 +575,6 @@ const handleCharacterMenuSelect = (key: string) => {
   }
 };
 
-// ====== 切换到角色视图时加载角色数据 ======
-import { watch } from 'vue';
 watch(() => appStore.sidebarView, (view) => {
   if (view === 'characters') {
     loadCharacters();

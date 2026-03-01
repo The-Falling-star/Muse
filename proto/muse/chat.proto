@@ -65,7 +65,6 @@ message ListChatSessionsResponse {
 // 获取单个会话请求
 message GetChatSessionRequest {
   int32 id = 1;
-  bool include_messages = 2;  // 是否包含消息
 }
 
 // 获取单个会话响应
@@ -160,6 +159,24 @@ message SwitchSwipeResponse {
   Message message = 1;
 }
 
+// 获取角色最新会话请求
+message GetCharLatestSessionRequest {
+  int32 character_id = 1;
+}
+
+// 获取角色最新会话响应
+message GetCharLatestSessionResponse {
+  ChatSession session = 1;
+}
+
+// 更新会话时间戳请求
+message UpdateSessionTimeRequest {
+  int32 session_id = 1;
+}
+
+// 更新会话时间戳响应
+message UpdateSessionTimeResponse {}
+
 // 聊天服务
 service ChatService {
   // 获取会话列表
@@ -182,4 +199,8 @@ service ChatService {
   rpc DeleteMessage(DeleteMessageRequest) returns (DeleteMessageResponse);
   // 切换Swipe
   rpc SwitchSwipe(SwitchSwipeRequest) returns (SwitchSwipeResponse);
+  // 获取角色最新会话
+  rpc GetCharLatestSession(GetCharLatestSessionRequest) returns (GetCharLatestSessionResponse);
+  // 更新会话时间戳
+  rpc UpdateSessionTime(UpdateSessionTimeRequest) returns (UpdateSessionTimeResponse);
 }

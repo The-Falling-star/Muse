@@ -402,8 +402,8 @@ import {
 import { userClient } from '@/api/client';
 import { useUserStore } from '@/stores/user';
 import { useThemeStore } from '@/stores/theme';
-import type { APIConfig, Persona } from '@/gen/muse/muse_pb';
-import { APIProvider, Theme } from '@/gen/muse/muse_pb';
+import type { APIConfig, Persona } from '@/gen/muse/user_pb';
+import { APIProvider, Theme } from '@/gen/muse/common_pb';
 
 const message = useMessage();
 const dialog = useDialog();

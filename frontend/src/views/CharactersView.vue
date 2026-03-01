@@ -231,7 +231,8 @@ import CharacterDetail from '@/components/character/CharacterDetail.vue';
 import CharacterEditor from '@/components/character/CharacterEditor.vue';
 import { useCharacterStore } from '@/stores/character';
 import { characterClient, chatClient } from '@/api/client';
-import type { Character } from '@/gen/muse/muse_pb';
+import type { Character } from '@/gen/muse/character_pb';
+import {generateSessionName, getAvatarUrlSync} from "@/utils/common.ts";
 
 const message = useMessage();
 const dialog = useDialog();
@@ -295,7 +296,7 @@ const tableColumns: DataTableColumns<Character> = [
       return h(NAvatar, {
         size: 40,
         round: true,
-        src: row.avatar,
+        src: getAvatarUrlSync(row.avatar),
         style: 'background: var(--gradient-primary)'
       }, { default: () => row.name.charAt(0) });
     }
@@ -404,7 +405,10 @@ const handleDeleteCharacter = (character: Character) => {
 
 // 开始聊天 - 直接调用client
 const startChat = async (character: Character) => {
-  const response = await chatClient.createChatSession({ characterId: character.id });
+  const response = await chatClient.createChatSession({
+    characterId: character.id,
+    name: generateSessionName(character.name),
+  });
   if (response.session) {
     router.push(`/chat/${response.session.id}`);
   }

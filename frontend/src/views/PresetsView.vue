@@ -461,8 +461,9 @@ import draggable from 'vuedraggable';
 import PromptItemEditor from '../components/preset/PromptItemEditor.vue';
 import PresetRegexManager from '../components/preset/PresetRegexManager.vue';
 import { presetClient, regexRuleClient } from '@/api/client';
-import type {Preset, PromptItem, RegexRule} from '@/gen/muse/muse_pb';
-import { Role, InjectionPosition, PromptItemIdentifier } from '@/gen/muse/muse_pb';
+import type {Preset, PromptItem} from '@/gen/muse/preset_pb';
+import type {RegexRule} from '@/gen/muse/regex_pb';
+import { Role, InjectionPosition, PromptItemIdentifier } from '@/gen/muse/common_pb';
 
 // 设备检测
 const isMobile = ref(false);
@@ -495,9 +496,9 @@ onUnmounted(() => {
 // 组件本地使用的提示项接口
 interface LocalPromptItem {
   id: number;
-  identifier: string;
+  identifier: PromptItemIdentifier;
   name: string;
-  role: 'system' | 'user' | 'assistant';
+  role: Role;
   content: string;
   enabled: boolean;
   marker?: boolean;
@@ -677,7 +678,7 @@ const handlePresetMenu = async (key: string, preset: Preset) => {
           maxTokens: originalPreset.maxTokens,
           frequencyPenalty: originalPreset.frequencyPenalty,
           presencePenalty: originalPreset.presencePenalty,
-          promptItems: originalPreset.promptItems?.map(item => ({
+          promptItems: originalPreset.promptItems?.map((item, index) => ({
             identifier: item.identifier,
             name: item.name,
             content: item.content,
@@ -686,7 +687,7 @@ const handlePresetMenu = async (key: string, preset: Preset) => {
             injectionPosition: item.injectionPosition,
             injectionDepth: item.injectionDepth,
             forbidOverrides: item.forbidOverrides,
-            sortOrder: item.sortOrder
+            sortOrder: index
           }))
         });
         if (response.preset) {
@@ -783,17 +784,11 @@ const addPromptItem = () => {
 
 // 编辑提示项
 const editPromptItem = (item: PromptItem) => {
-  // 转换为组件本地类型
-  const roleMap: Record<number, 'system' | 'user' | 'assistant'> = {
-    [Role.System]: 'system',
-    [Role.User]: 'user',
-    [Role.Assistant]: 'assistant'
-  };
   editingPromptItem.value = {
     id: item.id,
-    identifier: item.identifier as unknown as string,
+    identifier: item.identifier,
     name: item.name,
-    role: roleMap[item.role] || 'system',
+    role: item.role,
     content: item.content,
     enabled: item.isEnabled,
     forbidOverrides: item.forbidOverrides // 传递禁止覆盖标记
@@ -803,13 +798,7 @@ const editPromptItem = (item: PromptItem) => {
 
 // 保存提示项
 const handleSavePromptItem = async (itemData: Partial<LocalPromptItem>) => {
-  // 角色映射
-  const roleMap: Record<string, Role> = {
-    'system': Role.System,
-    'user': Role.User,
-    'assistant': Role.Assistant
-  };
-  const role = itemData.role ? roleMap[itemData.role] : Role.System;
+  const role = itemData.role ?? Role.System;
   if (!selectedPreset.value) return;
 
   try {
@@ -818,15 +807,14 @@ const handleSavePromptItem = async (itemData: Partial<LocalPromptItem>) => {
       const originalItem = promptItems.value.find(p => p.id === editingPromptItem.value!.id);
       const response = await presetClient.updatePromptItem({
         id: editingPromptItem.value.id,
-        identifier: itemData.identifier as unknown as PromptItemIdentifier,
+        identifier: itemData.identifier ?? PromptItemIdentifier.PromptItemIdentifierUnspecified,
         name: itemData.name || '',
         content: itemData.content,
         role: role,
         isEnabled: itemData.enabled ?? true,
         injectionPosition: InjectionPosition.Relative,
         injectionDepth: 0,
-        forbidOverrides: itemData.forbidOverrides ?? originalItem?.forbidOverrides ?? false,
-        sortOrder: originalItem?.sortOrder ?? 0
+        forbidOverrides: itemData.forbidOverrides ?? originalItem?.forbidOverrides ?? false
       });
       if (response.item) {
         const index = promptItems.value.findIndex(p => p.id === editingPromptItem.value!.id);
@@ -839,15 +827,14 @@ const handleSavePromptItem = async (itemData: Partial<LocalPromptItem>) => {
       // 添加新项
       const response = await presetClient.addPromptItem({
         presetId: selectedPreset.value.id,
-        identifier: itemData.identifier as unknown as PromptItemIdentifier,
+        identifier: itemData.identifier ?? PromptItemIdentifier.PromptItemIdentifierUnspecified,
         name: itemData.name || '',
         content: itemData.content,
         role: role,
         isEnabled: itemData.enabled ?? true,
         injectionPosition: InjectionPosition.Relative,
         injectionDepth: 0,
-        forbidOverrides: false,
-        sortOrder: promptItems.value.length
+        forbidOverrides: false
       });
       if (response.item) {
         promptItems.value.push(response.item);
@@ -885,15 +872,14 @@ const togglePromptEnabled = async (item: PromptItem, enabled: boolean) => {
   try {
     const response = await presetClient.updatePromptItem({
       id: item.id,
-      identifier: item.identifier as PromptItemIdentifier,
+      identifier: item.identifier,
       name: item.name,
       content: item.content,
       role: item.role,
       isEnabled: enabled,
       injectionPosition: item.injectionPosition,
       injectionDepth: item.injectionDepth,
-      forbidOverrides: item.forbidOverrides,
-      sortOrder: item.sortOrder
+      forbidOverrides: item.forbidOverrides
     });
     if (response.item) {
       const index = promptItems.value.findIndex(p => p.id === item.id);
@@ -925,15 +911,14 @@ const handlePromptContentChange = async (item: PromptItem) => {
   try {
     await presetClient.updatePromptItem({
       id: item.id,
-      identifier: item.identifier as PromptItemIdentifier,
+      identifier: item.identifier,
       name: item.name,
       content: item.content,
       role: item.role,
       isEnabled: item.isEnabled,
       injectionPosition: item.injectionPosition,
       injectionDepth: item.injectionDepth,
-      forbidOverrides: item.forbidOverrides,
-      sortOrder: item.sortOrder
+      forbidOverrides: item.forbidOverrides
     });
   } finally {
     // 内容更新完成后自动处理

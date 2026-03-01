@@ -17,7 +17,7 @@
     <div v-else class="messages-area">
       <!-- 角色信息条（当有角色时显示） -->
       <div v-if="currentCharacter" class="character-banner">
-        <n-avatar :size="28" round :src="currentCharacter.avatar" class="character-avatar">
+        <n-avatar :size="28" round :src="characterAvatarUrl" class="character-avatar">
           {{ currentCharacter.name?.charAt(0) }}
         </n-avatar>
         <span class="character-name">{{ currentCharacter.name }}</span>
@@ -40,7 +40,7 @@
             <!-- 正在输入指示器 -->
             <div v-if="item.id === -1" class="typing-indicator">
               <div class="typing-avatar">
-                <n-avatar :size="32" round :src="currentCharacter?.avatar">
+                <n-avatar :size="32" round :src="characterAvatarUrl">
                   {{ currentCharacter?.name?.charAt(0) || '?' }}
                 </n-avatar>
               </div>
@@ -129,7 +129,9 @@ import MessageInput from '@/components/chat/MessageInput.vue';
 import {useChatStore} from '@/stores/chat';
 import {useUserStore} from '@/stores/user';
 import {chatClient} from '@/api/client';
-import type {Character, Persona} from '@/gen/muse/muse_pb';
+import type {Character} from '@/gen/muse/character_pb';
+import type {Persona} from '@/gen/muse/user_pb';
+import {useAvatar} from '@/composables/useAvatar';
 
 // 本地Message类型适配
 interface LocalMessage {
@@ -168,6 +170,9 @@ const inputPlaceholder = computed(() => {
 const currentCharacter = computed<Character | null>(() => {
   return chatStore.activeCharacter ?? null;
 });
+
+// 角色头像URL
+const { avatarUrl: characterAvatarUrl } = useAvatar(computed(() => currentCharacter.value?.avatar));
 
 // 当前人设
 const currentPersona = computed<Persona | null>(() => {
@@ -218,7 +223,6 @@ const loadSession = async (sessionId: number) => {
   try {
     const response = await chatClient.getChatSession({
       id: sessionId,
-      includeMessages: true
     });
     if (response.session) {
       chatStore.setActiveSession(response.session);

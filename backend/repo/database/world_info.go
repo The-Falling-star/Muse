@@ -165,7 +165,7 @@ func (w *WorldInfoRepo) UpdateEntry(ctx context.Context, entry *entity.WorldInfo
 		Where("id = ?", entry.ID).
 		Updates(map[string]interface{}{
 			"uid":             entry.UID,
-			"keys_list":       entry.Keys,
+			"keys":            entry.Keys,
 			"secondary_keys":  entry.SecondaryKeys,
 			"content":         entry.Content,
 			"comment":         entry.Comment,

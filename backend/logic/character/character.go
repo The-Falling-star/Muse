@@ -25,14 +25,14 @@ import (
 )
 
 type characterImpl struct {
-	charaRepo     *database.CharacterRepo
-	regexRuleRepo *database.RegexRuleRepo
+	charaRepo     database.CharacterRepository
+	regexRuleRepo database.RegexRuleRepository
 }
 
 func newCharacter() *characterImpl {
 	return &characterImpl{
-		charaRepo:     &database.CharacterRepo{},
-		regexRuleRepo: &database.RegexRuleRepo{},
+		charaRepo:     database.NewCharacterRepo(),
+		regexRuleRepo: database.NewRegexRuleRepo(),
 	}
 }
 

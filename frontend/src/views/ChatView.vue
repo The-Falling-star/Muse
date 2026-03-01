@@ -1,137 +1,32 @@
 <template>
   <div class="chat-view">
-    <!-- 左侧：会话列表 -->
-    <div class="chat-sessions" :class="{ 'show-mobile': showSessionsPanel }">
-      <div class="sessions-header">
-        <h3>会话列表</h3>
-        <n-button quaternary circle size="small" @click="createNewSession">
-          <template #icon>
-            <n-icon><AddOutline /></n-icon>
-          </template>
-        </n-button>
-      </div>
-
-      <n-scrollbar class="sessions-list">
-        <div
-          v-for="session in sessions"
-          :key="session.id"
-          class="session-item"
-          :class="{ 'active': activeSessionId === session.id }"
-          @click="selectSession(session.id)"
-        >
-          <n-avatar
-            :size="40"
-            round
-            :src="session.character?.avatar"
-            class="session-avatar"
-          >
-            {{ getSessionDisplayName(session).charAt(0) }}
-          </n-avatar>
-          <div class="session-info">
-            <div class="session-name">{{ getSessionDisplayName(session) }}</div>
-            <div class="session-preview">{{ getSessionPreview(session) }}</div>
-          </div>
-          <div class="session-meta">
-            <span class="session-time">{{ formatSessionTime(session.updatedAt) }}</span>
-          </div>
+    <!-- 欢迎界面（无消息时显示） -->
+    <div v-if="messages.length === 0" class="welcome-screen">
+      <div class="welcome-content">
+        <div class="welcome-logo">
+          <n-icon size="56" color="var(--color-primary)">
+            <SparklesOutline/>
+          </n-icon>
         </div>
-
-        <n-empty v-if="sessions.length === 0" description="暂无会话" class="sessions-empty">
-          <template #extra>
-            <n-button size="small" type="primary" @click="createNewSession">
-              开始新对话
-            </n-button>
-          </template>
-        </n-empty>
-      </n-scrollbar>
+        <h1 class="welcome-title">Muse</h1>
+        <p class="welcome-subtitle">开始你的创意之旅</p>
+      </div>
     </div>
 
-    <!-- 右侧：聊天区域 -->
-    <div class="chat-main">
-      <!-- 聊天头部 -->
-      <div class="chat-header">
-        <n-button
-          quaternary
-          circle
-          class="hide-desktop mobile-back-btn"
-          @click="showSessionsPanel = !showSessionsPanel"
-        >
-          <template #icon>
-            <n-icon><ListOutline /></n-icon>
-          </template>
-        </n-button>
-
-        <div v-if="currentCharacter" class="chat-character">
-          <n-avatar :size="36" round :src="currentCharacter.avatar" class="character-avatar">
-            {{ currentCharacter.name.charAt(0) }}
-          </n-avatar>
-          <div class="character-info">
-            <span class="character-name">{{ currentCharacter.name }}</span>
-            <span class="character-status">
-              <span class="status-dot"></span>
-              在线
-            </span>
-          </div>
-        </div>
-
-        <div class="chat-actions">
-          <n-tooltip trigger="hover">
-            <template #trigger>
-              <n-button quaternary circle size="small">
-                <template #icon>
-                  <n-icon><RefreshOutline /></n-icon>
-                </template>
-              </n-button>
-            </template>
-            重新生成
-          </n-tooltip>
-
-          <n-tooltip trigger="hover">
-            <template #trigger>
-              <n-button quaternary circle size="small">
-                <template #icon>
-                  <n-icon><SettingsOutline /></n-icon>
-                </template>
-              </n-button>
-            </template>
-            会话设置
-          </n-tooltip>
-
-<n-dropdown :options="moreOptions" trigger="click" @select="handleMoreOptionSelect">
-            <n-button quaternary circle size="small">
-              <template #icon>
-                <n-icon><EllipsisVerticalOutline /></n-icon>
-              </template>
-            </n-button>
-          </n-dropdown>
-
-          <!-- 隐藏的文件上传组件 -->
-          <n-upload
-            ref="uploadRef"
-            :show-file-list="false"
-            accept=".json"
-            :custom-request="handleImportFile"
-            style="display: none;"
-          />
-        </div>
+    <!-- 消息列表 -->
+    <div v-else class="messages-area">
+      <!-- 角色信息条（当有角色时显示） -->
+      <div v-if="currentCharacter" class="character-banner">
+        <n-avatar :size="28" round :src="currentCharacter.avatar" class="character-avatar">
+          {{ currentCharacter.name?.charAt(0) }}
+        </n-avatar>
+        <span class="character-name">{{ currentCharacter.name }}</span>
       </div>
 
-      <!-- 消息列表 -->
-      <div class="chat-messages">
-        <!-- 欢迎信息 -->
-        <div v-if="messages.length === 0" class="welcome-message">
-          <div class="welcome-icon">
-            <n-icon size="48"><SparklesOutline /></n-icon>
-          </div>
-          <h2>开始新的对话</h2>
-          <p>选择一个角色或开始输入来创建对话</p>
-        </div>
-
-        <!-- 虚拟滚动消息列表 -->
-        <n-virtual-list
-          v-else
+      <!-- 虚拟滚动消息列表 -->
+      <n-virtual-list
           ref="virtualListRef"
-          style="height: 100%"
+          class="message-list"
           :items="messagesWithTyping"
           :item-size="120"
           item-resizable
@@ -139,113 +34,135 @@
           :padding-top="20"
           :padding-bottom="20"
           :intersection-observer-options="{ rootMargin: '100px 0px 100px 0px' }"
-        >
-          <template #default="{ item }">
-            <div :key="item.id" class="message-item-wrapper gpu-accelerated">
+      >
+        <template #default="{ item }">
+          <div :key="item.id" class="message-item-wrapper">
             <!-- 正在输入指示器 -->
-            <div v-if="item.id === 'typing-indicator'" class="typing-indicator">
-              <div class="typing-dots">
-                <span></span>
-                <span></span>
-                <span></span>
+            <div v-if="item.id === -1" class="typing-indicator">
+              <div class="typing-avatar">
+                <n-avatar :size="32" round :src="currentCharacter?.avatar">
+                  {{ currentCharacter?.name?.charAt(0) || '?' }}
+                </n-avatar>
               </div>
-              <span class="typing-text">{{ currentCharacter?.name }} 正在输入...</span>
+              <div class="typing-bubble">
+                <div class="typing-dots">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
             </div>
             <!-- 消息项 -->
             <MessageItem
-              v-else
-              :message="item"
-              :character="currentCharacter"
-              :persona="currentPersona"
-              @edit="handleEditMessage"
-              @delete="handleDeleteMessage"
-              @delete-swipe="handleDeleteSwipe"
-              @regenerate="handleRegenerateMessage"
-              @swipe-change="handleSwipeChange"
-              @branch="handleBranch"
-              @duplicate-swipe="handleDuplicateSwipe"
+                v-else
+                :message="item"
+                :character="currentCharacter"
+                :persona="currentPersona"
+                @edit="handleEditMessage"
+                @delete="handleDeleteMessage"
+                @delete-swipe="handleDeleteSwipe"
+                @regenerate="handleRegenerateMessage"
+                @swipe-change="handleSwipeChange"
+                @branch="handleBranch"
+                @duplicate-swipe="handleDuplicateSwipe"
             />
-            </div>
-          </template>
-        </n-virtual-list>
-      </div>
+          </div>
+        </template>
+      </n-virtual-list>
 
-      <!-- 输入区域 -->
-      <div class="chat-input-area">
+      <!-- 跳到最新按钮 -->
+      <Transition name="fade">
+        <n-button
+            v-if="showScrollToBottom"
+            class="scroll-to-bottom-btn"
+            circle
+            secondary
+            size="small"
+            @click="scrollToBottom"
+        >
+          <template #icon>
+            <n-icon>
+              <ChevronDownOutline/>
+            </n-icon>
+          </template>
+        </n-button>
+      </Transition>
+    </div>
+
+    <!-- 浮动输入区域 -->
+    <div class="input-area-float">
+      <div class="input-container">
         <MessageInput
-          v-model="inputMessage"
-          :disabled="isTyping"
-          @send="handleSendMessage"
-          @stop="handleStopGeneration"
-          @persona-change="(p: any) => handlePersonaChange(p)"
+            v-model="inputMessage"
+            :disabled="inputDisabled"
+            :placeholder="inputPlaceholder"
+            @send="handleSendMessage"
+            @stop="handleStopGeneration"
+            @persona-change="(p: any) => handlePersonaChange(p)"
         />
       </div>
     </div>
 
-    <!-- 移动端会话面板遮罩 -->
-    <Transition name="fade">
-      <div
-        v-if="showSessionsPanel"
-        class="sessions-overlay hide-desktop"
-        @click="showSessionsPanel = false"
-      ></div>
-    </Transition>
+    <!-- 隐藏的文件上传组件 -->
+    <n-upload
+        ref="uploadRef"
+        :show-file-list="false"
+        accept=".json"
+        :custom-request="handleImportFile"
+        style="display: none;"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import {computed, nextTick, onBeforeUnmount, onMounted, ref, watch} from 'vue';
+import {useRoute} from 'vue-router';
+import type {UploadFileInfo, VirtualListInst} from 'naive-ui';
+import {NAvatar, NButton, NIcon, NUpload, NVirtualList, useDialog, useMessage} from 'naive-ui';
 import {
-  NScrollbar,
-  NAvatar,
-  NButton,
-  NIcon,
-  NTooltip,
-  NDropdown,
-  NEmpty,
-  NVirtualList,
-  NUpload,
-  useMessage,
-  useDialog
-} from 'naive-ui';
-import type { UploadFileInfo } from 'naive-ui';
-import type { VirtualListInst } from 'naive-ui';
-import {
-  AddOutline,
-  ListOutline,
-  RefreshOutline,
-  SettingsOutline,
-  EllipsisVerticalOutline,
+  ChevronDownOutline,
   SparklesOutline
 } from '@vicons/ionicons5';
 
-import MessageItem from '../components/chat/MessageItem.vue';
-import MessageInput from '../components/chat/MessageInput.vue';
-import { useChatStore } from '@/stores/chat';
-import { useUserStore } from '@/stores/user';
-import { chatClient } from '@/api/client';
-import type { ChatSession, Message as PbMessage, Character, Persona } from '@/gen/muse/muse_pb';
+import MessageItem from '@/components/chat/MessageItem.vue';
+import MessageInput from '@/components/chat/MessageInput.vue';
+import {useChatStore} from '@/stores/chat';
+import {useUserStore} from '@/stores/user';
+import {chatClient} from '@/api/client';
+import type {Character, Persona} from '@/gen/muse/muse_pb';
 
+// 本地Message类型适配
+interface LocalMessage {
+  id: number;
+  role: 'user' | 'assistant' | 'system';
+  swipes: Array<{
+    id: number;
+    content: string;
+    timestamp: number;
+  }>;
+  currentSwipeIndex: number;
+}
 
 const route = useRoute();
-const router = useRouter();
-const message = useMessage();
+const messageApi = useMessage();
 const dialog = useDialog();
 const chatStore = useChatStore();
 const userStore = useUserStore();
 
 // 响应式状态
-const showSessionsPanel = ref(false);
 const inputMessage = ref('');
 const virtualListRef = ref<VirtualListInst | null>(null);
-const uploadRef = ref<InstanceType<typeof NUpload> | null>(null);
 const loading = ref(false);
+const showScrollToBottom = ref(false);
 
-// 从Store获取数据
-const sessions = computed(() => chatStore.sessions);
-const activeSessionId = computed(() => chatStore.activeSessionId);
+// 从 Store 获取数据
 const isTyping = computed(() => chatStore.isStreaming);
+const hasActiveSession = computed(() => !!chatStore.activeSessionId);
+const inputDisabled = computed(() => !hasActiveSession.value || isTyping.value);
+const inputPlaceholder = computed(() => {
+  if (!hasActiveSession.value) return '请先选择或创建一个会话';
+  return '输入消息...';
+});
 
 // 当前角色
 const currentCharacter = computed<Character | null>(() => {
@@ -257,111 +174,106 @@ const currentPersona = computed<Persona | null>(() => {
   return userStore.activePersona ?? null;
 });
 
-
-
-// 会话辅助函数
-const getSessionDisplayName = (session: ChatSession): string => {
-  return session.name || session.character?.name || '未命名会话';
+// 将PbMessage转换为本地格式
+const convertToLocalMessage = (msg: any): LocalMessage => {
+  const roleMap: Record<number, 'user' | 'assistant' | 'system'> = {
+    1: 'system',
+    2: 'user',
+    3: 'assistant'
+  };
+  return {
+    id: msg.id,
+    role: roleMap[msg.role] || 'assistant',
+    swipes: msg.swipes.map((s: any) => ({
+      id: s.id,
+      content: s.content,
+      timestamp: Number(s.createdAt)
+    })),
+    currentSwipeIndex: msg.activeSwipeIndex
+  };
 };
 
-const getSessionPreview = (session: ChatSession): string => {
-  if (session.messages && session.messages.length > 0) {
-    const lastMsg = session.messages[session.messages.length - 1];
-    if (lastMsg && lastMsg.swipes && lastMsg.swipes.length > 0) {
-      const swipe = lastMsg.swipes[lastMsg.activeSwipeIndex];
-      const content = swipe?.content || '';
-      return content.length > 50 ? content.slice(0, 50) + '...' : content;
-    }
-  }
-  return '暂无消息';
-};
-
-const formatSessionTime = (timestamp: bigint): string => {
-  const date = new Date(Number(timestamp));
-  const now = new Date();
-  const diff = now.getTime() - date.getTime();
-
-  if (diff < 60000) return '刚刚';
-  if (diff < 3600000) return `${Math.floor(diff / 60000)}分钟前`;
-  if (diff < 86400000) return `${Math.floor(diff / 3600000)}小时前`;
-  if (diff < 604800000) return `${Math.floor(diff / 86400000)}天前`;
-
-  return date.toLocaleDateString();
-};
-
-// 消息列表（使用PbMessage类型）
-const messages = computed<PbMessage[]>(() => {
-  return chatStore.messages;
+// 消息列表（转换为本地格式）
+const messages = computed<LocalMessage[]>(() => {
+  return chatStore.messages.map(convertToLocalMessage);
 });
 
 // 计算属性：消息列表（包含输入指示器）
 const messagesWithTyping = computed(() => {
-  const items = [...messages.value.map(pbMsg => {
-    // 将 PbMessage 转换为 MessageItem 组件需要的格式
-    const roleMap: Record<number, 'user' | 'assistant' | 'system'> = {
-      1: 'system',
-      2: 'user',
-      3: 'assistant'
-    };
-    
-    return {
-      id: pbMsg.id,
-      role: roleMap[pbMsg.role] || 'assistant',
-      swipes: pbMsg.swipes.map(swipe => ({
-        id: swipe.id,
-        content: swipe.content,
-        timestamp: Number(swipe.createdAt)
-      })),
-      currentSwipeIndex: pbMsg.activeSwipeIndex
-    };
-  })];
-  
+  const items = [...messages.value];
   if (isTyping.value) {
     items.push({
-      id: 0,
+      id: -1,
       role: 'assistant',
       swipes: [],
       currentSwipeIndex: 0
     });
   }
-  
   return items;
 });
-
-// 加载会话列表
-const loadSessions = async (characterId?: number) => {
-  loading.value = true;
-  const response = await chatClient.listChatSessions({
-    characterId: characterId,
-    page: 1,
-    pageSize: 50
-  });
-  chatStore.setSessions(response.sessions);
-  loading.value = false;
-};
 
 // 加载会话详情（包含消息）
 const loadSession = async (sessionId: number) => {
   loading.value = true;
-  const response = await chatClient.getChatSession({
-    id: sessionId,
-    includeMessages: true
-  });
-  if (response.session) {
-    chatStore.setActiveSession(response.session);
+  try {
+    const response = await chatClient.getChatSession({
+      id: sessionId,
+      includeMessages: true
+    });
+    if (response.session) {
+      chatStore.setActiveSession(response.session);
+    }
+  } finally {
+    loading.value = false;
   }
-  loading.value = false;
+};
+
+// 优化PC端滚轮滚动：阻止Naive UI的n-scrollbar拦截wheel事件，让浏览器原生滚动接管
+let wheelCleanup: (() => void) | null = null;
+
+const setupNativeScroll = () => {
+  const vvl = document.querySelector('.messages-area .v-vl') as HTMLElement | null;
+  if (!vvl) return;
+
+  // 在capture阶段拦截wheel事件，阻止Naive UI的scrollbar处理器接收到事件
+  // 使用stopImmediatePropagation阻止同一元素上的其他监听器
+  const handler = (e: WheelEvent) => {
+    const canScrollUp = vvl.scrollTop > 0;
+    const canScrollDown = vvl.scrollTop < vvl.scrollHeight - vvl.clientHeight - 1;
+    const scrollingDown = e.deltaY > 0;
+    const scrollingUp = e.deltaY < 0;
+
+    if ((scrollingDown && canScrollDown) || (scrollingUp && canScrollUp)) {
+      e.stopImmediatePropagation();
+    }
+  };
+
+  // 在vvl的父元素(n-scrollbar-container)上capture阶段拦截
+  const scrollbarEl = vvl.parentElement;
+  if (scrollbarEl) {
+    scrollbarEl.addEventListener('wheel', handler, { capture: true, passive: true });
+    wheelCleanup = () => {
+      scrollbarEl.removeEventListener('wheel', handler, { capture: true } as EventListenerOptions);
+    };
+  }
 };
 
 // 初始化
 onMounted(async () => {
-  await loadSessions();
-
   // 如果URL中有sessionId参数，加载该会话
   const sessionId = route.params.sessionId;
   if (sessionId) {
     await loadSession(Number(sessionId));
   }
+
+  // 延迟设置原生滚动优化，确保DOM已渲染
+  nextTick(() => {
+    setupNativeScroll();
+  });
+});
+
+onBeforeUnmount(() => {
+  wheelCleanup?.();
 });
 
 // 监听路由参数变化
@@ -376,125 +288,24 @@ watch(() => route.params.sessionId, async (newId) => {
 // 滚动到底部
 const scrollToBottom = () => {
   if (virtualListRef.value) {
-    virtualListRef.value.scrollTo({ position: 'bottom', behavior: 'smooth' });
+    virtualListRef.value.scrollTo({position: 'bottom', behavior: 'smooth'});
   }
-};
-
-// 更多操作选项
-const moreOptions = [
-  { label: '导入聊天记录', key: 'import', icon: () => null },
-  { label: '导出会话', key: 'export', icon: () => null },
-  { label: '分享', key: 'share', icon: () => null },
-  { type: 'divider', key: 'd1' },
-  { label: '清空会话', key: 'clear', icon: () => null },
-  { label: '删除会话', key: 'delete', icon: () => null }
-];
-
-// 处理更多选项点击
-const handleMoreOptionSelect = (key: string) => {
-  switch (key) {
-    case 'import':
-      triggerImportChat();
-      break;
-    case 'export':
-      handleExportChat();
-      break;
-    case 'clear':
-      handleClearChat();
-      break;
-    case 'delete':
-      handleDeleteChat();
-      break;
-  }
-};
-
-// 触发导入聊天记录
-const triggerImportChat = () => {
-  uploadRef.value?.openOpenFileDialog();
+  showScrollToBottom.value = false;
 };
 
 // 处理文件上传
 const handleImportFile = (options: { file: UploadFileInfo }) => {
-  const { file } = options;
+  const {file} = options;
   if (!file.file) return false;
 
   const reader = new FileReader();
-reader.onload = (e) => {
-    try {
-      const content = e.target?.result as string;
-      JSON.parse(content); // 验证JSON格式
-      // TODO: 调用后端导入接口
-      message.info('导入功能暂未实现');
-    } catch (err) {
-      message.error('解析文件失败，请确保是有效的JSON文件');
-    }
+  reader.onload = (e) => {
+    const content = e.target?.result as string;
+    JSON.parse(content);
+    messageApi.info('导入功能暂未实现');
   };
   reader.readAsText(file.file);
   return false;
-};
-
-// 导出聊天记录
-const handleExportChat = async () => {
-  if (!chatStore.activeSessionId) {
-    message.warning('请先选择一个会话');
-    return;
-  }
-
-  // TODO: 后端实现导出接口后启用
-  message.info('导出功能暂未实现');
-};
-
-// 清空会话
-const handleClearChat = () => {
-  dialog.warning({
-    title: '确认清空',
-    content: '确定要清空当前会话的所有消息吗？此操作不可撤销。',
-    positiveText: '清空',
-    negativeText: '取消',
-    onPositiveClick: async () => {
-      if (!chatStore.activeSessionId) return;
-      // TODO: 后端实现清空接口后启用
-      message.info('清空功能暂未实现');
-    }
-  });
-};
-
-// 删除会话
-const handleDeleteChat = () => {
-  if (!chatStore.activeSession) {
-    message.warning('请先选择一个会话');
-    return;
-  }
-
-  dialog.warning({
-    title: '确认删除',
-    content: '确定要删除当前会话吗？此操作不可撤销。',
-    positiveText: '删除',
-    negativeText: '取消',
-    onPositiveClick: async () => {
-      if (!chatStore.activeSessionId) return;
-      try {
-        await chatClient.deleteChatSession({ id: chatStore.activeSessionId });
-        chatStore.removeSession(chatStore.activeSessionId);
-        router.push('/');
-        message.success('会话已删除');
-      } catch (e) {
-        message.error('删除失败');
-      }
-    }
-  });
-};
-
-// 创建新会话
-const createNewSession = () => {
-  // 跳转到角色选择页面或显示角色选择弹窗
-  router.push('/characters');
-};
-
-// 选择会话
-const selectSession = async (id: number) => {
-  router.push(`/chat/${id}`);
-  showSessionsPanel.value = false;
 };
 
 // 发送消息
@@ -511,7 +322,8 @@ const handleSendMessage = async (content: string) => {
   chatStore.addMessage(tempAiMsg);
 
   // 滚动到底部
-  setTimeout(scrollToBottom, 50);
+  await nextTick();
+  scrollToBottom();
 
   // 开始流式生成
   chatStore.startStreaming();
@@ -519,22 +331,18 @@ const handleSendMessage = async (content: string) => {
 
   try {
     const stream = chatClient.sendMessage(
-      { sessionId: chatStore.activeSessionId, content: content },
-      { signal: signal }
+        {sessionId: chatStore.activeSessionId, content: content},
+        {signal: signal}
     );
 
-    // 存储每个候选回复的内容
     const swipeContents: Map<number, string> = new Map();
 
     for await (const response of stream) {
       const index = response.index;
-
-      // 累加内容
       const currentContent = swipeContents.get(index) || '';
       const newContent = currentContent + response.content;
       swipeContents.set(index, newContent);
 
-      // 更新临时AI消息的swipes
       const aiMsgIndex = chatStore.messages.findIndex(m => m.id === tempAiMsg.id);
       if (aiMsgIndex >= 0) {
         const aiMsg = chatStore.messages[aiMsgIndex];
@@ -556,19 +364,18 @@ const handleSendMessage = async (content: string) => {
       }
     }
 
-    // 流式完成后，重新加载会话获取真实的消息ID
     await loadSession(chatStore.activeSessionId);
-
   } catch (error) {
     if ((error as Error).name === 'AbortError') {
-      message.info('消息生成已取消');
+      messageApi.info('消息生成已取消');
     } else {
-      message.error('发送消息失败');
+      messageApi.error('发送消息失败');
       console.error('发送消息失败:', error);
     }
   } finally {
     chatStore.stopStreaming();
-    setTimeout(scrollToBottom, 50);
+    await nextTick();
+    scrollToBottom();
   }
 };
 
@@ -579,25 +386,20 @@ const handleStopGeneration = () => {
 
 // 编辑消息内容
 const handleEditMessage = async (messageId: number, swipeId: number, content: string) => {
-  try {
-    await chatClient.editMessage({
-      messageId: messageId,
-      swipeId: swipeId,
-      content: content
-    });
+  await chatClient.editMessage({
+    messageId: messageId,
+    swipeId: swipeId,
+    content: content
+  });
 
-    // 更新本地状态
-    const msg = chatStore.messages.find(m => m.id === messageId);
-    if (msg) {
-      const swipe = msg.swipes.find(s => s.id === swipeId);
-      if (swipe) {
-        swipe.content = content;
-      }
+  const msg = chatStore.messages.find(m => m.id === messageId);
+  if (msg) {
+    const swipe = msg.swipes.find(s => s.id === swipeId);
+    if (swipe) {
+      swipe.content = content;
     }
-    message.success('消息已更新');
-  } catch (e) {
-    message.error('编辑失败');
   }
+  messageApi.success('消息已更新');
 };
 
 // 删除整个楼层
@@ -608,13 +410,9 @@ const handleDeleteMessage = async (id: number) => {
     positiveText: '删除',
     negativeText: '取消',
     onPositiveClick: async () => {
-      try {
-        await chatClient.deleteMessage({ messageId: id });
-        chatStore.removeMessage(id);
-        message.success('消息已删除');
-      } catch (e) {
-        message.error('删除失败');
-      }
+      await chatClient.deleteMessage({messageId: id});
+      chatStore.removeMessage(id);
+      messageApi.success('消息已删除');
     }
   });
 };
@@ -623,12 +421,10 @@ const handleDeleteMessage = async (id: number) => {
 const handleDeleteSwipe = async (messageId: number, swipeId: number) => {
   const msg = chatStore.messages.find(m => m.id === messageId);
   if (!msg || msg.swipes.length <= 1) {
-    message.warning('无法删除最后一条回复');
+    messageApi.warning('无法删除最后一条回复');
     return;
   }
 
-  // TODO: 后端实现删除swipe接口后启用
-  // 本地删除
   const swipeIndex = msg.swipes.findIndex(s => s.id === swipeId);
   if (swipeIndex >= 0) {
     msg.swipes.splice(swipeIndex, 1);
@@ -636,34 +432,32 @@ const handleDeleteSwipe = async (messageId: number, swipeId: number) => {
       msg.activeSwipeIndex = msg.swipes.length - 1;
     }
   }
-  message.success('回复已删除');
+  messageApi.success('回复已删除');
 };
 
-// 重新生成消息（添加新的 swipe）
+// 重新生成消息
 const handleRegenerateMessage = async (id: number) => {
   const msg = chatStore.messages.find(m => m.id === id);
-  if (!msg || msg.role !== 3) return; // 只能重新生成助手消息
+  if (!msg || msg.role !== 3) return;
 
   chatStore.startStreaming();
   const signal = chatStore.createAbortController();
 
   try {
     const stream = chatClient.regenerateMessage(
-      { messageId: id },
-      { signal: signal }
+        {messageId: id},
+        {signal: signal}
     );
 
     let newSwipeContent = '';
 
     for await (const response of stream) {
       if (response.newSwipe) {
-        // 添加新的swipe
         msg.swipes.push(response.newSwipe);
         msg.activeSwipeIndex = msg.swipes.length - 1;
       }
       if (response.contentDelta) {
         newSwipeContent += response.contentDelta;
-        // 更新最后一个swipe的内容
         const lastSwipe = msg.swipes[msg.swipes.length - 1];
         if (lastSwipe) {
           lastSwipe.content = newSwipeContent;
@@ -671,12 +465,12 @@ const handleRegenerateMessage = async (id: number) => {
       }
     }
 
-    message.success('重新生成完成');
+    messageApi.success('重新生成完成');
   } catch (error) {
     if ((error as Error).name === 'AbortError') {
-      message.info('重新生成已取消');
+      messageApi.info('重新生成已取消');
     } else {
-      message.error('重新生成失败');
+      messageApi.error('重新生成失败');
     }
   } finally {
     chatStore.stopStreaming();
@@ -691,19 +485,17 @@ const handleSwipeChange = async (messageId: number, index: number) => {
       swipeIndex: index
     });
     chatStore.localSwitchSwipe(messageId, index);
-  } catch (e) {
-    // 即使API失败，也更新本地状态
+  } catch {
     chatStore.localSwitchSwipe(messageId, index);
   }
 };
 
 // 创建分支
 const handleBranch = async (_messageId: number) => {
-  // TODO: 后端实现分支接口后启用
-  message.info('分支功能暂未实现');
+  messageApi.info('分支功能暂未实现');
 };
 
-// 复制当前消息为新版本（用户消息专用）
+// 复制当前消息为新版本
 const handleDuplicateSwipe = async (messageId: number) => {
   const msg = chatStore.messages.find(m => m.id === messageId);
   if (!msg) return;
@@ -711,8 +503,6 @@ const handleDuplicateSwipe = async (messageId: number) => {
   const currentSwipe = msg.swipes[msg.activeSwipeIndex];
   if (!currentSwipe) return;
 
-  // TODO: 后端实现复制swipe接口后启用
-  // 本地复制
   const newSwipe = {
     ...currentSwipe,
     id: Date.now(),
@@ -720,267 +510,151 @@ const handleDuplicateSwipe = async (messageId: number) => {
   };
   msg.swipes.push(newSwipe as any);
   msg.activeSwipeIndex = msg.swipes.length - 1;
-  message.success('已创建副本');
+  messageApi.success('已创建副本');
 };
 
 // 处理人设切换
 const handlePersonaChange = async (persona: { id: number; name: string; avatar: string }) => {
-  try {
-    await userStore.setActivePersonaId(persona.id);
-  } catch (e) {
-    message.error('切换人设失败');
-  }
+  await userStore.setActivePersonaId(persona.id);
 };
 </script>
 
 <style scoped>
 .chat-view {
   display: flex;
-  height: calc(100vh - 64px - 48px);
-  background: var(--bg-primary);
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid var(--border-color);
-}
-
-/* 会话列表 */
-.chat-sessions {
-  width: 300px;
-  background: var(--bg-secondary);
-  border-right: 1px solid var(--border-color);
-  display: flex;
   flex-direction: column;
-  flex-shrink: 0;
+  height: 100%;
+  min-height: 0;
+  background: var(--bg-primary);
+  position: relative;
+  overflow: hidden;
 }
 
-@media (max-width: 768px) {
-  .chat-sessions {
-    position: fixed;
-    left: 0;
-    top: 64px;
-    bottom: 0;
-    width: 300px;
-    z-index: 100;
-    transform: translateX(-100%);
-    transition: transform var(--transition-normal);
-  }
-
-  .chat-sessions.show-mobile {
-    transform: translateX(0);
-    box-shadow: var(--shadow-xl);
-  }
-}
-
-.sessions-header {
+/* ==================== 欢迎界面 ==================== */
+.welcome-screen {
+  flex: 1;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 16px;
-  border-bottom: 1px solid var(--border-color);
+  justify-content: center;
+  padding: 24px;
+  padding-bottom: 100px;
+  overflow-y: auto;
 }
 
-.sessions-header h3 {
-  font-size: 16px;
+.welcome-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 640px;
+  width: 100%;
+}
+
+.welcome-logo {
+  width: 88px;
+  height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gradient-glow);
+  border: 1px solid var(--border-light);
+  border-radius: 24px;
+  margin-bottom: 20px;
+  box-shadow: var(--glow-primary);
+  animation: logo-breathe 4s ease-in-out infinite;
+}
+
+@keyframes logo-breathe {
+  0%, 100% {
+    box-shadow: var(--glow-primary-sm);
+  }
+  50% {
+    box-shadow: var(--glow-primary);
+  }
+}
+
+.welcome-title {
+  font-size: 32px;
   font-weight: 600;
-  color: var(--text-primary);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 8px;
+  letter-spacing: -.5px;
+}
+
+.welcome-subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
   margin: 0;
 }
 
-.sessions-list {
+/* ==================== 消息区域 ==================== */
+.messages-area {
   flex: 1;
-}
-
-.session-item {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  border-bottom: 1px solid var(--border-color);
-  transform: translateZ(0);
-}
-
-.session-item:hover {
-  background: var(--bg-card-hover);
-  transform: translateX(2px);
-}
-
-.session-item.active {
-  background: rgba(0, 240, 255, 0.1);
-  border-left: 3px solid var(--color-primary);
-}
-
-.session-avatar {
-  flex-shrink: 0;
-  background: var(--gradient-primary);
-}
-
-.session-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.session-name {
-  font-weight: 500;
-  color: var(--text-primary);
-  margin-bottom: 4px;
-}
-
-.session-preview {
-  font-size: 13px;
-  color: var(--text-tertiary);
+  flex-direction: column;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  position: relative;
+  min-height: 0;
 }
 
-.session-meta {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
-}
-
-.session-time {
-  font-size: 12px;
-  color: var(--text-tertiary);
-}
-
-.sessions-empty {
-  padding: 40px 20px;
-}
-
-/* 聊天主区域 */
-.chat-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  transition: transform var(--transition-normal);
-}
-
-.chat-header {
+.character-banner {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 20px;
-  background: var(--bg-secondary);
+  gap: 8px;
+  padding: 10px 24px;
   border-bottom: 1px solid var(--border-color);
-  transition: background var(--transition-fast);
-}
-
-.mobile-back-btn {
-  margin-right: 4px;
-}
-
-.chat-character {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex: 1;
+  background: var(--bg-secondary);
 }
 
 .character-avatar {
-  background: var(--gradient-primary);
-  box-shadow: var(--glow-soft);
-}
-
-.character-info {
-  display: flex;
-  flex-direction: column;
+  flex-shrink: 0;
 }
 
 .character-name {
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 500;
   color: var(--text-primary);
 }
 
-.character-status {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  color: var(--color-success);
-}
-
-.status-dot {
-  width: 8px;
-  height: 8px;
-  background: var(--color-success);
-  border-radius: 50%;
-  animation: pulse 2s ease-in-out infinite;
-}
-
-.chat-actions {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-/* 消息区域 */
-.chat-messages {
+.message-list {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  /* 移动端滚动优化 */
+  min-height: 0;
+  padding-bottom: 100px;
+}
+
+/* 优化虚拟列表滚动性能 */
+.message-list :deep(.v-vl) {
+  overscroll-behavior: contain;
+  will-change: scroll-position;
   -webkit-overflow-scrolling: touch;
 }
 
-/* 消息项包装器 */
 .message-item-wrapper {
-  max-width: 900px;
+  max-width: 768px;
   margin: 0 auto;
-  padding: 0 20px;
-  animation: fade-in 0.3s ease-out;
-}
-
-.welcome-message {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 60px 20px;
-  color: var(--text-tertiary);
-}
-
-.welcome-icon {
-  width: 80px;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--bg-tertiary);
-  border-radius: 20px;
-  margin-bottom: 20px;
-  color: var(--color-primary);
-}
-
-.welcome-message h2 {
-  font-size: 24px;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin: 0 0 8px;
-}
-
-.welcome-message p {
-  margin: 0;
-  font-size: 14px;
+  padding: 0 40px;
 }
 
 /* 输入指示器 */
 .typing-indicator {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   padding: 16px 0;
 }
 
+.typing-bubble {
+  padding: 12px 16px;
+  background: var(--bg-secondary);
+  border-radius: 18px 18px 18px 4px;
+}
+
 .typing-dots {
   display: flex;
-  gap: 4px;
+  gap: 5px;
 }
 
 .typing-dots span {
@@ -989,6 +663,7 @@ const handlePersonaChange = async (persona: { id: number; name: string; avatar: 
   background: var(--color-primary);
   border-radius: 50%;
   animation: typing-bounce 1.4s ease-in-out infinite;
+  box-shadow: 0 0 6px rgba(77, 168, 255, .4);
 }
 
 .typing-dots span:nth-child(2) {
@@ -1002,62 +677,72 @@ const handlePersonaChange = async (persona: { id: number; name: string; avatar: 
 @keyframes typing-bounce {
   0%, 60%, 100% {
     transform: translateY(0);
-    opacity: 0.4;
+    opacity: .4;
   }
   30% {
-    transform: translateY(-8px);
+    transform: translateY(-6px);
     opacity: 1;
   }
 }
 
-.typing-text {
-  font-size: 13px;
-  color: var(--text-tertiary);
+/* 跳到最新按钮 */
+.scroll-to-bottom-btn {
+  position: absolute;
+  bottom: 110px;
+  right: 24px;
+  z-index: 10;
+  box-shadow: var(--glow-primary-sm);
+  border: 1px solid var(--border-light);
 }
 
-/* 输入区域 */
-.chat-input-area {
-  padding: 16px 20px;
-  background: var(--bg-secondary);
-  border-top: 1px solid var(--border-color);
+/* ==================== 浮动输入区域 ==================== */
+.input-area-float {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 12px 24px 20px;
+  background: linear-gradient(to bottom, transparent, var(--bg-primary) 28%);
+  pointer-events: none;
 }
 
-/* 会话面板遮罩 */
-.sessions-overlay {
-  position: fixed;
-  inset: 0;
-  background: var(--bg-overlay);
-  z-index: 99;
-  backdrop-filter: blur(4px);
-  transition: opacity var(--transition-fast);
+.input-area-float .input-container {
+  pointer-events: auto;
 }
 
-/* 移动端优化 */
-@media (max-width: 768px) {
-  .chat-sessions {
-    transition: transform var(--transition-mobile);
-    will-change: transform;
-  }
-  
-  .chat-sessions.show-mobile {
-    transform: translateX(0);
-  }
-  
-  .session-item:active {
-    transform: scale(0.98);
-    background: var(--bg-card-hover);
-  }
-  
-  .chat-header {
-    padding: 12px 16px;
-  }
-  
-  .chat-input-area {
-    padding: 12px 16px;
-  }
-  
+.input-container {
+  max-width: 768px;
+  margin: 0 auto;
+}
+
+/* ==================== 响应式 ==================== */
+@media (max-width: 1023px) {
   .message-item-wrapper {
-    padding: 0 12px;
+    padding: 0 24px;
+  }
+}
+
+@media (max-width: 767px) {
+  .welcome-title {
+    font-size: 24px;
+  }
+
+  .welcome-subtitle {
+    font-size: 14px;
+    margin-bottom: 28px;
+  }
+
+  .message-item-wrapper {
+    padding: 0 16px;
+  }
+
+  .input-area-float {
+    padding: 8px 16px 12px;
+  }
+
+  .character-banner {
+    padding: 8px 16px;
   }
 }
 </style>

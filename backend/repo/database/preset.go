@@ -12,7 +12,11 @@ import (
 )
 
 // PresetRepo 预设数据库仓库
-type PresetRepo struct {
+type PresetRepo struct{}
+
+// NewPresetRepo 创建预设数据仓库实例
+func NewPresetRepo() PresetRepository {
+	return &PresetRepo{}
 }
 
 // Create 创建预设

@@ -1,22 +1,8 @@
 <template>
   <div class="login-container">
-    <!-- 科幻背景效果 -->
+    <!-- 简洁背景 -->
     <div class="login-bg">
-      <div class="bg-grid"></div>
       <div class="bg-glow"></div>
-      <div class="bg-particles">
-        <div
-          v-for="i in 30"
-          :key="i"
-          class="particle"
-          :style="{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            animationDelay: `${Math.random() * 5}s`,
-            animationDuration: `${3 + Math.random() * 4}s`
-          }"
-        ></div>
-      </div>
     </div>
 
     <!-- 登录卡片 -->
@@ -29,7 +15,6 @@
               <SparklesOutline />
             </n-icon>
           </div>
-          <div class="logo-glow"></div>
         </div>
         <h1 class="title">Muse</h1>
         <p class="subtitle">AI 对话助手</p>
@@ -86,14 +71,6 @@
           </n-button>
         </n-form-item>
       </n-form>
-
-      <!-- 装饰边框 -->
-      <div class="card-border card-border--top"></div>
-      <div class="card-border card-border--bottom"></div>
-      <div class="card-corner card-corner--tl"></div>
-      <div class="card-corner card-corner--tr"></div>
-      <div class="card-corner card-corner--bl"></div>
-      <div class="card-corner card-corner--br"></div>
     </div>
 
     <!-- 版权信息 -->
@@ -204,17 +181,6 @@ const handleLogin = async () => {
   z-index: 0;
 }
 
-.bg-grid {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-image:
-    linear-gradient(var(--grid-color) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-  background-size: 50px 50px;
-  opacity: 0.5;
-}
-
 .bg-glow {
   position: absolute;
   top: 50%;
@@ -222,45 +188,18 @@ const handleLogin = async () => {
   transform: translate(-50%, -50%);
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, rgba(0, 240, 255, 0.1) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(138, 180, 248, .12) 0%, transparent 70%);
   animation: pulse 4s ease-in-out infinite;
 }
 
 @keyframes pulse {
   0%, 100% {
-    opacity: 0.5;
+    opacity: .5;
     transform: translate(-50%, -50%) scale(1);
   }
   50% {
-    opacity: 0.8;
+    opacity: .8;
     transform: translate(-50%, -50%) scale(1.1);
-  }
-}
-
-.bg-particles {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-
-.particle {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  background: var(--color-primary);
-  border-radius: 50%;
-  opacity: 0;
-  animation: float 5s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% {
-    opacity: 0;
-    transform: translateY(0);
-  }
-  50% {
-    opacity: 0.6;
-    transform: translateY(-100px);
   }
 }
 
@@ -275,7 +214,6 @@ const handleLogin = async () => {
   border-radius: 16px;
   box-shadow: var(--shadow-xl);
   z-index: 1;
-  backdrop-filter: blur(20px);
 }
 
 /* 登录头部 */
@@ -299,19 +237,11 @@ const handleLogin = async () => {
 
 @keyframes glow {
   0%, 100% {
-    filter: drop-shadow(0 0 10px var(--color-primary));
+    filter: drop-shadow(0 0 8px rgba(138, 180, 248, .4));
   }
   50% {
-    filter: drop-shadow(0 0 20px var(--color-primary));
+    filter: drop-shadow(0 0 16px rgba(138, 180, 248, .6));
   }
-}
-
-.logo-glow {
-  position: absolute;
-  width: 80px;
-  height: 80px;
-  background: radial-gradient(circle, rgba(0, 240, 255, 0.2) 0%, transparent 70%);
-  border-radius: 50%;
 }
 
 .title {
@@ -320,10 +250,6 @@ const handleLogin = async () => {
   color: var(--text-primary);
   margin: 0 0 8px 0;
   letter-spacing: 2px;
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 .subtitle {
@@ -353,11 +279,11 @@ const handleLogin = async () => {
 
 .login-form :deep(.n-input:focus-within) {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px rgba(0, 240, 255, 0.1);
+  box-shadow: 0 0 0 2px rgba(138, 180, 248, .15);
 }
 
 .login-form :deep(.n-button--primary-type) {
-  background: var(--gradient-primary);
+  background: var(--color-primary);
   border: none;
   font-weight: 600;
   letter-spacing: 1px;
@@ -365,72 +291,13 @@ const handleLogin = async () => {
 }
 
 .login-form :deep(.n-button--primary-type:hover) {
-  transform: translateY(-2px);
-  box-shadow: var(--glow-primary);
+  background: var(--color-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(138, 180, 248, .3);
 }
 
 .login-form :deep(.n-button--primary-type:active) {
   transform: translateY(0);
-}
-
-/* 装饰边框 */
-.card-border {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60%;
-  height: 2px;
-  background: var(--gradient-primary);
-  opacity: 0.5;
-}
-
-.card-border--top {
-  top: 0;
-}
-
-.card-border--bottom {
-  bottom: 0;
-}
-
-/* 角落装饰 */
-.card-corner {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--color-primary);
-  opacity: 0.3;
-}
-
-.card-corner--tl {
-  top: -1px;
-  left: -1px;
-  border-right: none;
-  border-bottom: none;
-  border-radius: 16px 0 0 0;
-}
-
-.card-corner--tr {
-  top: -1px;
-  right: -1px;
-  border-left: none;
-  border-bottom: none;
-  border-radius: 0 16px 0 0;
-}
-
-.card-corner--bl {
-  bottom: -1px;
-  left: -1px;
-  border-right: none;
-  border-top: none;
-  border-radius: 0 0 0 16px;
-}
-
-.card-corner--br {
-  bottom: -1px;
-  right: -1px;
-  border-left: none;
-  border-top: none;
-  border-radius: 0 0 16px 0;
 }
 
 /* 页脚 */

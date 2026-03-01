@@ -157,6 +157,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { NInput, NButton, NIcon, NTooltip, NDropdown, NAvatar, NPopover, NScrollbar } from 'naive-ui';
 import {
   FlashOutline,
@@ -169,13 +170,9 @@ import {
   CheckmarkOutline,
   AddOutline
 } from '@vicons/ionicons5';
-
-// Persona 类型定义
-interface Persona {
-  id: number;
-  name: string;
-  avatar: string;
-}
+import { useUserStore } from '@/stores/user';
+import { userClient } from '@/api/client';
+import type { Persona } from '@/gen/muse/muse_pb';
 
 interface AttachmentFile {
   name: string;
@@ -203,37 +200,35 @@ const emit = defineEmits<{
   'persona-change': [persona: Persona];
 }>();
 
+const router = useRouter();
+const userStore = useUserStore();
+
 const inputRef = ref<InstanceType<typeof NInput> | null>(null);
 const fileInputRef = ref<HTMLInputElement | null>(null);
 const attachments = ref<AttachmentFile[]>([]);
 
-// 默认 Persona
-const defaultPersona: Persona = { id: 1, name: '默认用户', avatar: '' };
+// 从 userStore 获取真实 personas 数据
+const personas = computed(() => userStore.personas);
 
-// 模拟 Persona 数据（后续对接后端）
-const personas = ref<Persona[]>([
-  defaultPersona,
-  { id: 2, name: '勇者', avatar: '' },
-  { id: 3, name: '魔法师', avatar: '' },
-  { id: 4, name: '小明', avatar: '' }
-]);
-
-const currentPersonaId = ref(1);
-
-const currentPersona = computed<Persona>(() => {
-  return personas.value.find(p => p.id === currentPersonaId.value) ?? defaultPersona;
+// 当前活跃人设（从 store 获取）
+const currentPersona = computed(() => {
+  return userStore.activePersona ?? { id: 0, name: '默认用户', avatar: '' } as Persona;
 });
 
-// 选择 Persona
-const selectPersona = (persona: Persona) => {
-  currentPersonaId.value = persona.id;
-  emit('persona-change', persona);
+// 选择 Persona，调用后端 API 设置活跃人设
+const selectPersona = async (persona: Persona) => {
+  try {
+    await userClient.setActivePersona({ personaId: persona.id });
+    userStore.setActivePersonaId(persona.id);
+    emit('persona-change', persona);
+  } catch (e) {
+    console.error('切换人设失败:', e);
+  }
 };
 
-// 打开 Persona 管理（暂时只打印日志）
+// 打开人设管理 - 导航到设置页
 const openPersonaManager = () => {
-  console.log('Open persona manager');
-  // TODO: 打开人设管理弹窗
+  router.push('/settings');
 };
 
 // 本地值
@@ -370,15 +365,33 @@ defineExpose({ focus });
   align-items: flex-end;
   gap: 8px;
   background: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-light);
   border-radius: 12px;
   padding: 8px 12px;
   transition: all var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 输入框科幻光辉 */
+.input-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-glow);
+  opacity: .5;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.input-wrapper > * {
+  position: relative;
+  z-index: 1;
 }
 
 .input-wrapper:focus-within {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px rgba(0, 240, 255, 0.15);
+  box-shadow: var(--glow-primary-sm);
 }
 
 /* Persona 选择器 */
@@ -408,7 +421,7 @@ defineExpose({ focus });
   .persona-selector:hover {
     transform: scale(1.03);
   }
-  
+
   .persona-selector:active {
     transform: scale(0.95);
   }
@@ -609,26 +622,26 @@ defineExpose({ focus });
     padding: 6px 10px;
     gap: 6px;
   }
-  
+
   .input-actions-left .n-button,
   .send-button,
   .stop-button {
     width: 36px;
     height: 36px;
   }
-  
+
   .message-textarea :deep(.n-input__textarea-el) {
     padding: 4px 0 !important;
   }
-  
+
   .send-button:not(:disabled):hover {
     transform: scale(1.03);
   }
-  
+
   .send-button:not(:disabled):active {
     transform: scale(0.98);
   }
-  
+
   .persona-hint {
     display: none;
   }

@@ -13,6 +13,11 @@ import (
 // UserRepo 用户数据库仓库
 type UserRepo struct{}
 
+// NewUserRepo 创建用户数据仓库实例
+func NewUserRepo() UserRepository {
+	return &UserRepo{}
+}
+
 // Create 创建用户
 func (u *UserRepo) Create(ctx context.Context, user *entity.User) error {
 	db := GetDB(ctx)

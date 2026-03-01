@@ -1,13 +1,13 @@
 <template>
   <div class="sidebar-container">
     <!-- Logo区域 -->
-    <div class="sidebar-logo" :class="{ 'collapsed': appStore.sidebarCollapsed }">
+    <div class="sidebar-logo" :class="{ 'collapsed': !appStore.leftSidebarVisible }">
       <div class="logo-icon">
         <div class="logo-glow"></div>
         <span class="logo-text">M</span>
       </div>
       <Transition name="fade">
-        <span v-if="!appStore.sidebarCollapsed" class="logo-title">Muse</span>
+        <span v-if="appStore.leftSidebarVisible" class="logo-title">Muse</span>
       </Transition>
     </div>
 
@@ -15,7 +15,7 @@
     <n-scrollbar class="sidebar-nav">
       <n-menu
         :value="activeKey"
-        :collapsed="appStore.sidebarCollapsed"
+        :collapsed="!appStore.leftSidebarVisible"
         :collapsed-width="72"
         :collapsed-icon-size="24"
         :options="menuOptions"
@@ -24,10 +24,10 @@
     </n-scrollbar>
 
     <!-- 底部操作区 -->
-    <div class="sidebar-footer" :class="{ 'collapsed': appStore.sidebarCollapsed }">
-      <n-tooltip v-if="appStore.sidebarCollapsed" trigger="hover" placement="right">
+    <div class="sidebar-footer" :class="{ 'collapsed': !appStore.leftSidebarVisible }">
+      <n-tooltip v-if="!appStore.leftSidebarVisible" trigger="hover" placement="right">
         <template #trigger>
-          <n-button quaternary circle size="large" @click="appStore.toggleSidebar">
+          <n-button quaternary circle size="large" @click="appStore.toggleLeftSidebar">
             <template #icon>
               <n-icon size="20">
                 <ChevronForwardOutline />
@@ -42,7 +42,7 @@
         v-else
         quaternary
         class="collapse-btn"
-        @click="appStore.toggleSidebar"
+        @click="appStore.toggleLeftSidebar"
       >
         <template #icon>
           <n-icon size="18">
@@ -54,7 +54,7 @@
 
       <!-- 版本信息 -->
       <Transition name="fade">
-        <div v-if="!appStore.sidebarCollapsed" class="version-info">
+        <div v-if="appStore.leftSidebarVisible" class="version-info">
           <span>v1.0.0</span>
         </div>
       </Transition>
@@ -135,7 +135,7 @@ const handleMenuSelect = (key: string) => {
 
   // 移动端选择后关闭侧边栏
   if (appStore.isMobile) {
-    appStore.closeSidebar();
+    appStore.closeLeftSidebar();
   }
 };
 </script>
@@ -256,15 +256,15 @@ const handleMenuSelect = (key: string) => {
   .sidebar-container {
     transition: transform var(--transition-mobile);
   }
-  
+
   .sidebar-logo {
     transition: all var(--transition-mobile);
   }
-  
+
   .collapse-btn {
     transition: all var(--transition-mobile);
   }
-  
+
   .version-info {
     transition: all var(--transition-mobile);
   }

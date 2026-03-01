@@ -16,12 +16,12 @@ import (
 )
 
 type userImpl struct {
-	userRepo *database.UserRepo
+	userRepo database.UserRepository
 }
 
 func newUser() *userImpl {
 	return &userImpl{
-		userRepo: &database.UserRepo{},
+		userRepo: database.NewUserRepo(),
 	}
 }
 

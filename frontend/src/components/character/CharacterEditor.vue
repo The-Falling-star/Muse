@@ -172,7 +172,7 @@ import type { FormInst, FormRules, UploadFileInfo } from 'naive-ui';
 import { CameraOutline, ChevronBackOutline, ChevronForwardOutline, TrashOutline } from '@vicons/ionicons5';
 
 import type { Character } from '@/gen/muse/character_pb';
-import { getAvatarUrlSync } from '@/utils/common';
+import {useFileStore} from "@/stores/file.ts";
 
 interface CharacterFormData {
   name: string;
@@ -210,12 +210,10 @@ const formData = reactive<CharacterFormData>({
   creatorNotes: ''
 });
 
+const fileStore = useFileStore()
 // 头像URL（用于显示）
 const avatarUrl = computed(() => {
-  if (formData.avatar.startsWith('data:') || formData.avatar.startsWith('http')) {
-    return formData.avatar;
-  }
-  return getAvatarUrlSync(formData.avatar) || '';
+  return fileStore.getCachedUrl(formData.avatar) || '';
 });
 
 // 表单验证规则

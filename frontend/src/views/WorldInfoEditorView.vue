@@ -1,6 +1,7 @@
 <template>
   <div class="worldinfo-editor-view">
     <n-spin :show="pageLoading" description="加载中..." style="width: 100%; height: 100%;">
+      <div class="spin-content">
 
     <!-- 编辑器顶部栏 -->
     <div class="editor-top-bar">
@@ -248,6 +249,7 @@
       </div>
     </div>
 
+      </div>
     </n-spin>
   </div>
 </template>
@@ -583,6 +585,25 @@ const backToChat = () => {
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+
+.worldinfo-editor-view :deep(.n-spin-container) {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.worldinfo-editor-view :deep(.n-spin-content) {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.spin-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
 }
 
 .editor-top-bar {

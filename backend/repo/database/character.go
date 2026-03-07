@@ -2,6 +2,7 @@ package database
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 
 	"connectrpc.com/connect"
@@ -76,6 +77,10 @@ func (c *CharacterRepo) List(ctx context.Context, userID, page, pageSize int) ([
 func (c *CharacterRepo) Update(ctx context.Context, character *entity.Character) error {
 	db := GetDB(ctx)
 
+	// 序列化 JSON 字段
+	firstMessageJSON, _ := json.Marshal(character.FirstMessage)
+	exampleDialogueJSON, _ := json.Marshal(character.ExampleDialogue)
+
 	// 使用乐观锁更新
 	result := db.Model(character).
 		Where("id = ? AND user_id = ? AND lock_version = ?", character.ID, character.UserID, character.Version).
@@ -83,8 +88,8 @@ func (c *CharacterRepo) Update(ctx context.Context, character *entity.Character)
 			"name":             character.Name,
 			"avatar":           character.Avatar,
 			"description":      character.Description,
-			"first_message":    character.FirstMessage,
-			"example_dialogue": character.ExampleDialogue,
+			"first_message":    firstMessageJSON,
+			"example_dialogue": exampleDialogueJSON,
 			"creator_notes":    character.CreatorNotes,
 			"world_info_id":    character.WorldInfoID,
 			"lock_version":     character.Version + 1,
@@ -112,6 +117,42 @@ func (c *CharacterRepo) Delete(ctx context.Context, id, userID int) error {
 	}
 	if result.RowsAffected == 0 {
 		return errs.NewStandard(connect.CodeNotFound, "角色不存在")
+	}
+	// 获取所有会话ID
+	var sessionIDs []int
+	if err := db.Model(&entity.ChatSession{}).
+		Where("character_id = ?", id).
+		Pluck("id", &sessionIDs).Error; err != nil {
+		return errs.NewStandardf(connect.CodeInternal, "根据角色ID删除会话时查询会话ID失败: %v", err)
+	}
+
+	if len(sessionIDs) == 0 {
+		return nil
+	}
+
+	// 获取所有消息ID
+	var messageIDs []int
+	if err := db.Model(&entity.Message{}).
+		Where("session_id IN ?", sessionIDs).
+		Pluck("id", &messageIDs).Error; err != nil {
+		return errs.NewStandardf(connect.CodeInternal, "根据角色ID删除会话时查询消息ID失败: %v", err)
+	}
+
+	// 删除swipes
+	if len(messageIDs) > 0 {
+		if err := db.Where("message_id IN ?", messageIDs).Delete(&entity.MessageSwipe{}).Error; err != nil {
+			return errs.NewStandardf(connect.CodeInternal, "根据角色ID删除会话时删除swipes失败: %v", err)
+		}
+	}
+
+	// 删除消息
+	if err := db.Where("session_id IN ?", sessionIDs).Delete(&entity.Message{}).Error; err != nil {
+		return errs.NewStandardf(connect.CodeInternal, "根据角色ID删除会话时删除消息失败: %v", err)
+	}
+
+	// 删除会话
+	if err := db.Where("id IN ?", sessionIDs).Delete(&entity.ChatSession{}).Error; err != nil {
+		return errs.NewStandardf(connect.CodeInternal, "根据角色ID删除会话时删除会话失败: %v", err)
 	}
 	return nil
 }

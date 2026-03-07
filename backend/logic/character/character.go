@@ -16,6 +16,7 @@ import (
 	"github.com/ling/muse/common/convert"
 	"github.com/ling/muse/common/errs"
 	"github.com/ling/muse/common/jwt"
+	"github.com/ling/muse/config"
 	"github.com/ling/muse/entity"
 	"github.com/ling/muse/entity/sillytavern"
 	pb "github.com/ling/muse/gen/muse"
@@ -26,13 +27,15 @@ import (
 )
 
 type characterImpl struct {
-	charaRepo     database.CharacterRepository
+	charRepo      database.CharacterRepository
+	chatRepo      database.ChatRepository
 	regexRuleRepo database.RegexRuleRepository
 }
 
 func newCharacter() *characterImpl {
 	return &characterImpl{
-		charaRepo:     database.NewCharacterRepo(),
+		charRepo:      database.NewCharacterRepo(),
+		chatRepo:      database.NewChatRepo(),
 		regexRuleRepo: database.NewRegexRuleRepo(),
 	}
 }
@@ -43,7 +46,7 @@ func (c *characterImpl) ListCharacters(ctx context.Context, req *pb.ListCharacte
 
 	// 从数据库获取角色列表
 	userId := jwt.GetUserId(ctx)
-	characters, total, err := c.charaRepo.List(ctx, userId, page, pageSize)
+	characters, total, err := c.charRepo.List(ctx, userId, page, pageSize)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +71,7 @@ func (c *characterImpl) GetCharacter(ctx context.Context, req *pb.GetCharacterRe
 
 	// 从数据库获取角色
 	userId := jwt.GetUserId(ctx)
-	character, err := c.charaRepo.GetByID(ctx, id, userId)
+	character, err := c.charRepo.GetByID(ctx, id, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -107,7 +110,7 @@ func (c *characterImpl) CreateCharacter(ctx context.Context, req *pb.CreateChara
 	}
 
 	// 保存到数据库
-	if err := c.charaRepo.Create(ctx, character); err != nil {
+	if err := c.charRepo.Create(ctx, character); err != nil {
 		return nil, err
 	}
 
@@ -130,7 +133,7 @@ func (c *characterImpl) UpdateCharacter(ctx context.Context, req *pb.UpdateChara
 
 	// 获取当前角色
 	userId := jwt.GetUserId(ctx)
-	character, err := c.charaRepo.GetByID(ctx, id, userId)
+	character, err := c.charRepo.GetByID(ctx, id, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -165,7 +168,7 @@ func (c *characterImpl) UpdateCharacter(ctx context.Context, req *pb.UpdateChara
 	}
 
 	// 更新数据库
-	if err := c.charaRepo.Update(ctx, character); err != nil {
+	if err := c.charRepo.Update(ctx, character); err != nil {
 		return nil, err
 	}
 
@@ -173,7 +176,7 @@ func (c *characterImpl) UpdateCharacter(ctx context.Context, req *pb.UpdateChara
 	cache.InvalidateCacheByCharacter(int64(id))
 
 	// 重新获取更新后的角色（包含关联数据）
-	updatedCharacter, err := c.charaRepo.GetByID(ctx, id, userId)
+	updatedCharacter, err := c.charRepo.GetByID(ctx, id, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -194,10 +197,9 @@ func (c *characterImpl) DeleteCharacter(ctx context.Context, req *pb.DeleteChara
 
 	// 删除角色
 	userId := jwt.GetUserId(ctx)
-	if err := c.charaRepo.Delete(ctx, id, userId); err != nil {
+	if err := c.charRepo.Delete(ctx, id, userId); err != nil {
 		return nil, err
 	}
-
 	return &pb.DeleteCharacterResponse{}, nil
 }
 
@@ -220,7 +222,7 @@ func (c *characterImpl) ImportCharacter(ctx context.Context, req *pb.ImportChara
 			return nil, errs.NewStandardf(connect.CodeInvalidArgument, "无法解析PNG文件: %v", err)
 		}
 		// 如果角色卡没有头像且是PNG文件，使用PNG图片作为头像
-		if card.Avatar == "" || card.Avatar == "none" && len(pngData) > 0 {
+		if (card.Avatar == "" || card.Avatar == "none") && len(pngData) > 0 {
 			avatarData = pngData
 		}
 	case ".json":
@@ -271,7 +273,7 @@ func (c *characterImpl) ImportCharacter(ctx context.Context, req *pb.ImportChara
 	}
 	character.WorldInfoBackup = buf.Bytes()
 
-	if err = c.charaRepo.Create(ctx, character); err != nil {
+	if err = c.charRepo.Create(ctx, character); err != nil {
 		return nil, err
 	}
 	log.Infof("角色创建成功，ID: %d, 名称: %s", character.ID, character.Name)
@@ -281,13 +283,16 @@ func (c *characterImpl) ImportCharacter(ctx context.Context, req *pb.ImportChara
 	if len(avatarData) > 0 {
 		avatarPath, saveErr := file.SaveAvatarFile(ctx, userId, character.ID, character.Name, avatarData)
 		if saveErr != nil {
-			log.Warnf("保存头像文件失败: %v", saveErr)
-		} else {
-			// 更新角色的Avatar字段
-			character.Avatar = avatarPath
-			if updateErr := c.charaRepo.Update(ctx, character); updateErr != nil {
-				log.Warnf("更新角色头像路径失败: %v", updateErr)
+			return nil, errs.NewStandardf(connect.CodeInternal, "保存头像文件失败: %v", saveErr)
+		}
+		// 更新角色的Avatar字段
+		character.Avatar = avatarPath
+		if updateErr := c.charRepo.Update(ctx, character); updateErr != nil {
+			if err = file.DeleteAvatarFile(file.BuildAvatarURL(config.Get().File.UploadPath,
+				userId, character.ID, character.Name)); err != nil {
+				log.Warnf("删除头像文件失败: %v", err)
 			}
+			return nil, errs.NewStandardf(connect.CodeInternal, "更新角色头像路径失败: %v", err)
 		}
 	}
 
@@ -301,7 +306,7 @@ func (c *characterImpl) ImportCharacter(ctx context.Context, req *pb.ImportChara
 
 func (c *characterImpl) ExportCharacter(ctx context.Context, req *pb.ExportCharacterRequest) (*pb.ExportCharacterResponse, error) {
 	userId := jwt.GetUserId(ctx)
-	character, err := c.charaRepo.GetByID(ctx, int(req.GetId()), userId)
+	character, err := c.charRepo.GetByID(ctx, int(req.GetId()), userId)
 	if err != nil {
 		return nil, err
 	}

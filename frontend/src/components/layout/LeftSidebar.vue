@@ -51,7 +51,7 @@
                 <!-- 角色头像 -->
                 <n-avatar
                     v-if="session.character?.avatar"
-                    :src="getAvatarUrlSync(session.character.avatar)"
+                    :src="getAvatarSrc(session.character.avatar)"
                     :size="24"
                     round
                     class="session-avatar"
@@ -167,7 +167,7 @@
           >
             <n-avatar
                 v-if="char.avatar"
-                :src="getAvatarUrlSync(char.avatar)"
+                :src="getAvatarSrc(char.avatar)"
                 :size="40"
                 round
                 class="character-avatar"
@@ -241,18 +241,24 @@ import {
 import {useAppStore} from '@/stores/app';
 import {useChatStore} from '@/stores/chat';
 import {useCharacterStore} from '@/stores/character';
+import {useFileStore} from '@/stores/file';
 import {characterClient, chatClient} from '@/api/client';
 import type {ChatSession} from '@/gen/muse/chat_pb';
 import type {Character} from '@/gen/muse/character_pb';
-import {DEFAULT_PAGE_NUM, DEFAULT_PAGE_SIZE} from "@/utils/constants.ts";
-import {getAvatarUrlSync} from '@/utils/common';
+import {DEFAULT_PAGE_NUM, DEFAULT_PAGE_SIZE} from '@/utils/constants.ts';
 
 const router = useRouter();
 const appStore = useAppStore();
 const chatStore = useChatStore();
 const characterStore = useCharacterStore();
+const fileStore = useFileStore();
 const message = useMessage();
 const dialog = useDialog();
+
+// 头像URL获取函数
+const getAvatarSrc = (path: string | undefined): string => {
+  return fileStore.getCachedUrl(path) || '';
+};
 
 // ====== 搜索状态 ======
 const searchQuery = ref('');
@@ -268,22 +274,32 @@ const contextCharacter = ref<Character | null>(null);
 
 // ====== 加载数据 ======
 const loadSessions = async () => {
-  try {
     const response = await chatClient.listChatSessions({page: DEFAULT_PAGE_NUM, pageSize: DEFAULT_PAGE_SIZE});
     chatStore.setSessions(response.sessions);
-  } catch {
-    // 错误由拦截器统一处理
-  }
+    
+    // 预加载会话中角色的头像
+    const avatarPaths = response.sessions
+      .map(s => s.character?.avatar)
+      .filter((path): path is string => !!path && !path.startsWith('http') && !path.startsWith('data:'));
+    if (avatarPaths.length > 0) {
+      fileStore.preloadFiles(avatarPaths);
+    }
 };
 
 const loadCharacters = async () => {
-  if (characterStore.hasCached) return;
-  try {
+  if (characterStore.hasCached) {
+    return;
+  }
     const response = await characterClient.listCharacters({page: DEFAULT_PAGE_NUM, pageSize: DEFAULT_PAGE_SIZE});
     characterStore.setCharacters(response.characters, response.total);
-  } catch {
-    // 错误由拦截器统一处理
-  }
+    
+    // 预加载角色头像
+    const avatarPaths = response.characters
+      .map(c => c.avatar)
+      .filter((path): path is string => !!path && !path.startsWith('http') && !path.startsWith('data:'));
+    if (avatarPaths.length > 0) {
+      fileStore.preloadFiles(avatarPaths);
+    }
 };
 
 onMounted(() => {
@@ -508,6 +524,7 @@ const handleImportCharacter = () => {
         });
         if (response.character) {
           characterStore.addCharacter(response.character);
+          fileStore.preloadFile(response.character.avatar)
           successCount++;
         } else {
           failCount++;
@@ -565,6 +582,7 @@ const handleCharacterMenuSelect = (key: string) => {
           try {
             await characterClient.deleteCharacter({id: char.id});
             characterStore.removeCharacter(char.id);
+            chatStore.removeCharSession(char.id)
             message.success('角色已删除');
           } catch {
             // 错误由拦截器统一处理

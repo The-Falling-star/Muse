@@ -49,7 +49,8 @@ func (c *ChatRepo) GetSessionByID(ctx context.Context, id int, userID int) (*ent
 }
 
 // ListSessions 获取会话列表
-func (c *ChatRepo) ListSessions(ctx context.Context, userID, characterID, page, pageSize int) ([]*entity.ChatSession, int64, error) {
+func (c *ChatRepo) ListSessions(ctx context.Context, userID, characterID, page, pageSize int) (
+	[]*entity.ChatSession, int64, error) {
 	db := GetDB(ctx)
 	var sessions []*entity.ChatSession
 	var total int64
@@ -67,7 +68,10 @@ func (c *ChatRepo) ListSessions(ctx context.Context, userID, characterID, page, 
 
 	// 分页查询 - 只查询列表展示需要的字段，不加载关联数据
 	offset := (page - 1) * pageSize
-	query = query.Select("id", "user_id", "character_id", "name", "version", "created_at", "updated_at").
+	query = query.Preload("Character", func(db *gorm.DB) *gorm.DB {
+		return db.Select("id", "name", "avatar")
+	}).
+		Select("id", "user_id", "character_id", "name", "version", "created_at", "updated_at").
 		Order("updated_at DESC").
 		Offset(offset).
 		Limit(pageSize)
@@ -108,7 +112,6 @@ func (c *ChatRepo) DeleteSession(ctx context.Context, id, userID int) error {
 	// 删除关联的消息和swipes
 	var session entity.ChatSession
 	if err := db.Where("id = ? AND user_id = ?", id, userID).First(&session).Error; err != nil {
-		db.Rollback()
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return errs.NewStandard(connect.CodeNotFound, "删除会话失败：会话不存在")
 		}
@@ -118,27 +121,23 @@ func (c *ChatRepo) DeleteSession(ctx context.Context, id, userID int) error {
 	// 获取所有消息ID
 	var messageIDs []int
 	if err := db.Model(&entity.Message{}).Where("session_id = ?", id).Pluck("id", &messageIDs).Error; err != nil {
-		db.Rollback()
 		return errs.NewStandardf(connect.CodeInternal, "删除会话失败：查询关联消息ID时出错: %v", err)
 	}
 
 	// 删除swipes
 	if len(messageIDs) > 0 {
 		if err := db.Where("message_id IN ?", messageIDs).Delete(&entity.MessageSwipe{}).Error; err != nil {
-			db.Rollback()
 			return errs.NewStandardf(connect.CodeInternal, "删除会话失败：删除关联的swipes时出错: %v", err)
 		}
 	}
 
 	// 删除消息
 	if err := db.Where("session_id = ?", id).Delete(&entity.Message{}).Error; err != nil {
-		db.Rollback()
 		return errs.NewStandardf(connect.CodeInternal, "删除会话失败：删除关联的消息时出错: %v", err)
 	}
 
 	// 删除会话
 	if err := db.Delete(&session).Error; err != nil {
-		db.Rollback()
 		return errs.NewStandardf(connect.CodeInternal, "删除会话失败：删除会话本体时出错: %v", err)
 	}
 	return nil
@@ -163,16 +162,12 @@ func (c *ChatRepo) GetMessageByID(ctx context.Context, id int) (*entity.Message,
 // DeleteMessage 删除消息
 func (c *ChatRepo) DeleteMessage(ctx context.Context, id int) error {
 	db := GetDB(ctx)
-
 	// 删除swipes
 	if err := db.Where("message_id = ?", id).Delete(&entity.MessageSwipe{}).Error; err != nil {
-		db.Rollback()
 		return errs.NewStandardf(connect.CodeInternal, "删除消息失败：删除关联的swipes时出错: %v", err)
 	}
-
 	// 删除消息
 	if err := db.Where("id = ?", id).Delete(&entity.Message{}).Error; err != nil {
-		db.Rollback()
 		return errs.NewStandardf(connect.CodeInternal, "删除消息失败：删除消息本体时出错: %v", err)
 	}
 	return nil

@@ -25,7 +25,7 @@ func (f *FileServer) UploadFile(ctx context.Context, req *connect.Request[pb.Upl
 	*connect.Response[pb.UploadFileResponse], error) {
 	resp, err := f.file.UploadFile(ctx, req.Msg)
 	if err != nil {
-		return doResponseExp(ctx, "UploadFile", req.Msg, resp, err)
+		return doResponseExp(ctx, "UploadFile", &req.Msg.FileName, resp, err)
 	}
 	return doResponse(ctx, "UploadFile", req.Msg, resp)
 }
@@ -37,5 +37,6 @@ func (f *FileServer) DownloadFile(ctx context.Context, req *connect.Request[pb.D
 	if err != nil {
 		return doResponseExp(ctx, "DownloadFile", req.Msg, resp, err)
 	}
-	return doResponse(ctx, "DownloadFile", req.Msg, resp)
+	_, _ = doResponse(ctx, "DownloadFile", req.Msg, &resp.FileName)
+	return connect.NewResponse(resp), nil
 }

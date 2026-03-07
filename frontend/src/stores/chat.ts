@@ -72,6 +72,12 @@ export const useChatStore = defineStore('chat', () => {
     }
   };
 
+  // 移除角色相关的会话
+  const removeCharSession = (charID: number) => {
+      let sessionsToRemove = Array.from(sessions.value.values()).filter(s => s.character?.id === charID);
+      sessionsToRemove.forEach(s => removeSession(s.id))
+  };
+
   // 设置当前激活会话
   const setActiveSession = (session: ChatSession | null) => {
     activeSession.value = session;
@@ -228,6 +234,7 @@ export const useChatStore = defineStore('chat', () => {
     updateSessionInList,
     removeSession,
     setActiveSession,
+    removeCharSession,
 
     // 消息方法
     setMessages,

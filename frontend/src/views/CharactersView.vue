@@ -230,14 +230,16 @@ import CharacterCard from '@/components/character/CharacterCard.vue';
 import CharacterDetail from '@/components/character/CharacterDetail.vue';
 import CharacterEditor from '@/components/character/CharacterEditor.vue';
 import { useCharacterStore } from '@/stores/character';
+import { useFileStore } from '@/stores/file';
 import { characterClient, chatClient } from '@/api/client';
 import type { Character } from '@/gen/muse/character_pb';
-import {generateSessionName, getAvatarUrlSync} from "@/utils/common.ts";
+import {generateSessionName} from "@/utils/common.ts";
 
 const message = useMessage();
 const dialog = useDialog();
 const router = useRouter();
 const characterStore = useCharacterStore();
+const fileStore = useFileStore();
 
 // 状态
 const searchQuery = ref('');
@@ -264,6 +266,15 @@ const loadCharacters = async () => {
   });
   // 更新Store缓存
   characterStore.setCharacters(response.characters, response.total);
+  
+  // 预加载头像
+  const avatarPaths = response.characters
+    .map(c => c.avatar)
+    .filter((path): path is string => !!path && !path.startsWith('http') && !path.startsWith('data:'));
+  if (avatarPaths.length > 0) {
+    fileStore.preloadFiles(avatarPaths);
+  }
+  
   loading.value = false;
 };
 
@@ -293,10 +304,11 @@ const tableColumns: DataTableColumns<Character> = [
     key: 'avatar',
     width: 60,
     render(row) {
+      const avatarSrc = fileStore.getCachedUrl(row.avatar) || '';
       return h(NAvatar, {
         size: 40,
         round: true,
-        src: getAvatarUrlSync(row.avatar),
+        src: avatarSrc,
         style: 'background: var(--gradient-primary)'
       }, { default: () => row.name.charAt(0) });
     }
@@ -473,6 +485,7 @@ const handleImportFiles = async (options: { file: UploadFileInfo; fileList: Uplo
 
   let successCount = 0;
   let failCount = 0;
+  const importedCharacters: Character[] = [];
 
   for (const fileInfo of files) {
     const file = fileInfo.file;
@@ -486,6 +499,7 @@ const handleImportFiles = async (options: { file: UploadFileInfo; fileList: Uplo
     });
     if (response.character) {
       characterStore.addCharacter(response.character);
+      importedCharacters.push(response.character);
       successCount++;
     } else {
       failCount++;

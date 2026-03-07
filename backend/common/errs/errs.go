@@ -1,6 +1,7 @@
 package errs
 
 import (
+	"errors"
 	"fmt"
 
 	"connectrpc.com/connect"
@@ -91,4 +92,13 @@ func NewStandard(code connect.Code, msg string) error {
 // NewStandardf 格式化创建标准错误
 func NewStandardf(code connect.Code, format string, args ...any) error {
 	return connect.NewError(code, fmt.Errorf(format, args...))
+}
+
+// Code 获取错误码
+func Code(err error) connect.Code {
+	var e *connect.Error
+	if errors.As(err, &e) {
+		return e.Code()
+	}
+	return connect.CodeUnknown
 }

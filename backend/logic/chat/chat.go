@@ -833,8 +833,15 @@ func (c *chatImpl) DeleteMessage(ctx context.Context, req *pb.DeleteMessageReque
 }
 
 func (c *chatImpl) SwitchSwipe(ctx context.Context, req *pb.SwitchSwipeRequest) (*pb.SwitchSwipeResponse, error) {
-	//TODO implement me
-	panic("implement me")
+	err := c.chatRepo.SwitchSwipe(ctx, int(req.MessageId), int(req.SwipeIndex))
+	if err != nil {
+		if errs.Code(err) == connect.CodeNotFound {
+			return nil, errs.NewStandardf(connect.CodeInvalidArgument,
+				"参数错误, 消息或swipe不存在, messageID: %d", req.MessageId)
+		}
+		return nil, err
+	}
+	return &pb.SwitchSwipeResponse{}, nil
 }
 
 func (c *chatImpl) buildMessages(

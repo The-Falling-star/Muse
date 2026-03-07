@@ -289,3 +289,36 @@ func (c *ChatRepo) UpdateSessionTime(ctx context.Context, sessionID int, updateT
 	}
 	return nil
 }
+
+// SwitchSwipe 切换消息的swipe
+func (c *ChatRepo) SwitchSwipe(ctx context.Context, messageID, index int) error {
+	db := GetDB(ctx)
+	msg := &entity.Message{}
+	if err := db.Select("SessionID", "ActiveSwipeIndex").
+		Where("ID = ?", messageID).
+		First(&msg).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return errs.NewStandardf(connect.CodeNotFound, "消息不存在")
+		}
+		return errs.NewStandardf(connect.CodeInternal, "切换消息swipe时查询message失败: %v", err)
+	}
+	if msg.ActiveSwipeIndex == index {
+		return nil
+	}
+	var cnt int64
+	if err := db.Model(&entity.ChatSession{}).
+		Where("id = ?", msg.SessionID).
+		Count(&cnt).Error; err != nil {
+		return errs.NewStandardf(connect.CodeInternal, "切换消息swipe时查询会话失败: %v", err)
+	}
+	if cnt == 0 {
+		return errs.NewStandard(connect.CodeNotFound, "会话不存在")
+	}
+	if err := db.Model(&entity.Message{}).
+		Where("ID = ?", messageID).
+		Update("ActiveSwipeIndex", index).
+		Error; err != nil {
+		return errs.NewStandardf(connect.CodeInternal, "切换消息swipe时更新message失败: %v", err)
+	}
+	return nil
+}

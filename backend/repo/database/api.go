@@ -66,6 +66,8 @@ type ChatRepository interface {
 	GetCharLatestSessionWithMsg(ctx context.Context, charID, userID int) (*entity.ChatSession, error)
 	// UpdateSessionTime 更新会话的更新时间
 	UpdateSessionTime(ctx context.Context, sessionID int, updateTime time.Time) error
+	// SwitchSwipe 切换消息的swipe
+	SwitchSwipe(ctx context.Context, messageID, index int) error
 }
 
 // PresetRepository 预设数据仓库接口

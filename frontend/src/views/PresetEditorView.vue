@@ -1,7 +1,7 @@
 <template>
   <div class="preset-editor-view">
     <!-- 加载状态 -->
-    <n-spin :show="pageLoading" description="加载中..." style="width: 100%; height: 100%;">
+    <n-spin :show="pageLoading" description="加载中..." class="loading-spin">
 
     <!-- 编辑器顶部栏 -->
     <div class="editor-top-bar">
@@ -791,6 +791,21 @@ const backToChat = () => {
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+
+/* n-spin 包裹了全部内容，需要让其内部容器也参与 flex 布局，否则高度会无限撑开 */
+.loading-spin {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.loading-spin :deep(.n-spin-content) {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .editor-top-bar {

@@ -35,7 +35,7 @@ func (p *PresetRepo) GetByID(ctx context.Context, id int, userID int) (*entity.P
 	var preset entity.Preset
 	result := db.Where("id = ? AND user_id = ?", id, userID).
 		Preload("PromptItems", func(db *gorm.DB) *gorm.DB {
-			return db.Order("sort_order ASC")
+			return db.Order("`next` ASC")
 		}).
 		First(&preset)
 	if result.Error != nil {
@@ -201,8 +201,16 @@ func (p *PresetRepo) BatchUpdatePromptItemOrder(ctx context.Context, items []*en
 	nextCase := ""
 	ids := make([]int, 0, len(items))
 	for _, item := range items {
-		preCase += fmt.Sprintf(`WHEN %d THEN %d`, item.ID, item.Pre)
-		nextCase += fmt.Sprintf(`WHEN %d THEN %d`, item.ID, item.Next)
+		pre := "NULL"
+		if item.Pre != nil && *item.Pre != 0 {
+			pre = fmt.Sprintf("%d", *item.Pre)
+		}
+		next := "NULL"
+		if item.Next != nil && *item.Next != 0 {
+			next = fmt.Sprintf("%d", *item.Next)
+		}
+		preCase += fmt.Sprintf(`WHEN %d THEN %s `, item.ID, pre)
+		nextCase += fmt.Sprintf(`WHEN %d THEN %s `, item.ID, next)
 		ids = append(ids, item.ID)
 	}
 

@@ -3,6 +3,7 @@ package preset
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"strings"
 
 	"connectrpc.com/connect"
@@ -15,6 +16,7 @@ import (
 	pb "github.com/ling/muse/gen/muse"
 	"github.com/ling/muse/repo/cache"
 	"github.com/ling/muse/repo/database"
+	log "github.com/sirupsen/logrus"
 )
 
 type presetImpl struct {
@@ -402,8 +404,10 @@ func (p *presetImpl) ImportPreset(ctx context.Context, req *pb.ImportPresetReque
 			items = append(items, item)
 		}
 		if err := p.presetRepo.BatchCreatePromptItem(ctx, items); err != nil {
+			log.Errorf("failed to batch create prompt items: %v", err)
 			return nil, err
 		}
+		log.Infof("batch created %d prompt items", len(items))
 		// 排序提示项
 		var pre *int = nil
 		for i := 0; i < len(items); i++ {
@@ -412,8 +416,18 @@ func (p *presetImpl) ImportPreset(ctx context.Context, req *pb.ImportPresetReque
 			if i < len(items)-1 {
 				items[i].Next = &items[i+1].ID
 			}
+			preLog := "nil"
+			if items[i].Pre != nil {
+				preLog = fmt.Sprintf("%d", *items[i].Pre)
+			}
+			nextLog := "nil"
+			if items[i].Next != nil {
+				nextLog = fmt.Sprintf("%d", *items[i].Next)
+			}
+			log.Debugf("当前提示项 ID: %d, Pre: %s, Next: %s", items[i].ID, preLog, nextLog)
 		}
 		if err := p.presetRepo.BatchUpdatePromptItemOrder(ctx, items); err != nil {
+			log.Errorf("failed to batch update prompt item order: %v", err)
 			return nil, err
 		}
 	}
@@ -429,8 +443,8 @@ func (p *presetImpl) ImportPreset(ctx context.Context, req *pb.ImportPresetReque
 
 		// 批量创建正则规则
 		if err := p.regexRuleRepo.BatchCreate(ctx, regexRules); err != nil {
-			// 即使正则规则创建失败，也不影响预设的导入
-			// 可以记录日志但不返回错误
+			log.Errorf("failed to batch create regex rules: %v", err)
+			return nil, errs.NewStandardf(errs.Code(err), "导入预设时批量创建正则规则失败: %v", err.Error())
 		}
 	}
 
@@ -458,7 +472,7 @@ func orderPrompt(prompt []sillytavern.PresetPromptItem,
 	for _, item := range prompt {
 		promptMap[item.Identifier] = &item
 	}
-	clear(prompt)
+	orderPrompts := make([]sillytavern.PresetPromptItem, 0, len(prompt))
 
 	const defaultCharacterID = 100001
 
@@ -468,18 +482,19 @@ func orderPrompt(prompt []sillytavern.PresetPromptItem,
 		}
 		for _, item := range order.Order {
 			if promptItem, exist := promptMap[item.Identifier]; exist {
-				prompt = append(prompt, *promptItem)
+				orderPrompts = append(orderPrompts, *promptItem)
 			}
 		}
 		break
 	}
 	// 如果没有找到默认角色，使用第一个配置
-	if len(prompt) == 0 && len(promptOrder) > 0 {
+	if len(orderPrompts) == 0 && len(promptOrder) > 0 {
+		log.Info("没有找到默认角色，使用第一个配置")
 		for _, item := range promptOrder[0].Order {
 			if promptItem, exist := promptMap[item.Identifier]; exist {
-				prompt = append(prompt, *promptItem)
+				orderPrompts = append(orderPrompts, *promptItem)
 			}
 		}
 	}
-	return prompt
+	return orderPrompts
 }

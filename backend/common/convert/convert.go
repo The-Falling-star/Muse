@@ -286,21 +286,25 @@ func ConvertSTIdentifier(identifier string) pb.PromptItemIdentifier {
 	switch strings.ToLower(identifier) {
 	case "main":
 		return pb.PromptItemIdentifier_Main
-	case "world_info", "worldinfo":
+	case "worldInfoBefore":
 		return pb.PromptItemIdentifier_WorldInfoBefore
-	case "persona_description":
+	case "worldInfoAfter":
+		return pb.PromptItemIdentifier_WorldInfoAfter
+	case "personaDescription":
 		return pb.PromptItemIdentifier_PersonaDescription
-	case "char_description", "character_description":
+	case "charDescription":
 		return pb.PromptItemIdentifier_CharDescription
-	case "char_personality", "character_personality":
+	case "charPersonality":
 		return pb.PromptItemIdentifier_CharPersonality
 	case "scenario":
 		return pb.PromptItemIdentifier_Scenario
-	case "nsfw", "jailbreak":
+	case "nsfw":
 		return pb.PromptItemIdentifier_Nsfw
-	case "dialogue_examples", "examples":
+	case "jailbreak":
+		return pb.PromptItemIdentifier_Jailbreak
+	case "dialogueExamples":
 		return pb.PromptItemIdentifier_DialogueExamples
-	case "chat_history", "history":
+	case "chatHistory":
 		return pb.PromptItemIdentifier_ChatHistory
 	default:
 		// 默认返回未指定

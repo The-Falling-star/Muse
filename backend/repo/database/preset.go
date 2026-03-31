@@ -8,6 +8,8 @@ import (
 	"connectrpc.com/connect"
 	"github.com/ling/muse/common/errs"
 	"github.com/ling/muse/entity"
+	pb "github.com/ling/muse/gen/muse"
+	log "github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 )
 
@@ -34,9 +36,7 @@ func (p *PresetRepo) GetByID(ctx context.Context, id int, userID int) (*entity.P
 	db := GetDB(ctx)
 	var preset entity.Preset
 	result := db.Where("id = ? AND user_id = ?", id, userID).
-		Preload("PromptItems", func(db *gorm.DB) *gorm.DB {
-			return db.Order("`next` ASC")
-		}).
+		Preload("PromptItems", func(db *gorm.DB) *gorm.DB { return db.Order("pre") }).
 		First(&preset)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
@@ -249,17 +249,55 @@ func (p *PresetRepo) DeletePromptItem(ctx context.Context, id int) error {
 }
 
 // UpdatePromptItemsOrder 更新提示项排序
-func (p *PresetRepo) UpdatePromptItemsOrder(ctx context.Context, presetID int, itemOrders map[int]int) error {
+func (p *PresetRepo) UpdatePromptItemsOrder(ctx context.Context, presetID, userID, sourceID,
+	desID int, operation pb.SortOperation) error {
 	db := GetDB(ctx)
-	for itemID, sortOrder := range itemOrders {
-		if err := db.Model(&entity.PromptItem{}).
-			Where("id = ? AND preset_id = ?", itemID, presetID).
-			Update("sort_order", sortOrder).Error; err != nil {
-			db.Rollback()
-			return errs.NewStandardf(connect.CodeInternal, "更新提示项排序失败: %v", err)
-		}
+	var cnt int64 = 0
+	if err := db.Where("preset_id = ? AND user_id = ?", presetID, userID).Count(&cnt).Error; err != nil {
+		return errs.NewStandardf(connect.CodeInternal, "更新提示项排序时获取预设失败: %v", err)
+	}
+	if cnt == 0 {
+		return errs.NewStandard(connect.CodeNotFound, "预设不存在")
+	}
+	ids := [2]int{sourceID, desID}
+	var prompts []*entity.PromptItem
+	if err := db.Select("id", "pre", "`next`").
+		Where("preset_id = ? AND (id IN(?) OR pre IN (?) OR `next` IN (?))", presetID, ids, ids, ids).
+		Find(&prompts).
+		Error; err != nil {
+		return errs.NewStandardf(connect.CodeInternal, "更新提示项排序时获取提示项失败: %v", err)
+	}
+	promptMap := make(map[int]*entity.PromptItem, len(prompts))
+	for _, prompt := range prompts {
+		promptMap[prompt.ID] = prompt
+	}
+	if _, ok := promptMap[sourceID]; !ok {
+		return errs.NewStandardf(connect.CodeNotFound, "原提示项 %d 不存在", sourceID)
+	}
+	if _, ok := promptMap[desID]; !ok {
+		return errs.NewStandardf(connect.CodeNotFound, "目标提示项 %d 不存在", desID)
+	}
+	if operation == pb.SortOperation_Pre {
+		moveToHead(promptMap, sourceID, desID)
+	} else {
+		moveToHead(promptMap, desID, sourceID)
 	}
 	return nil
+}
+
+func moveToHead(prompts map[int]*entity.PromptItem, sourceID, desID int) {
+	if prompts[sourceID].Next != nil {
+		prompts[*prompts[sourceID].Next].Pre = prompts[sourceID].Pre
+	}
+	prompts[*prompts[sourceID].Pre].Next = prompts[sourceID].Next
+
+	prompts[sourceID].Pre = prompts[desID].Pre
+	prompts[sourceID].Next = &desID
+
+	if prompts[sourceID].Pre != nil {
+		prompts[*prompts[sourceID].Pre].Next = &sourceID
+	}
+	prompts[desID].Pre = &sourceID
 }
 
 // GetVersion 获取预设的版本号
@@ -278,4 +316,16 @@ func (p *PresetRepo) GetVersion(ctx context.Context, id int, userID int) (int, e
 		return 0, errs.NewStandardf(connect.CodeInternal, "获取预设版本失败: %v", result.Error)
 	}
 	return version, nil
+}
+
+// SetActivePreset 设置用户启用的预设
+func (p *PresetRepo) SetActivePreset(ctx context.Context, userID, presetID int) error {
+	log.Infof("Setting active preset for user %d to %d", userID, presetID)
+	db := GetDB(ctx)
+	if err := db.Model(&entity.User{}).
+		Where("id = ?", userID).
+		Update("active_preset_id", presetID).Error; err != nil {
+		return errs.NewStandardf(connect.CodeInternal, "设置用户启用的预设失败: %v", err)
+	}
+	return nil
 }

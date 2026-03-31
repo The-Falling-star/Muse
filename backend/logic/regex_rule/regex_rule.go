@@ -70,11 +70,6 @@ func (r *regexRuleImpl) ListPresetRegexRules(ctx context.Context, req *pb.ListPr
 
 func (r *regexRuleImpl) AddRegexRule(ctx context.Context, req *pb.AddRegexRuleRequest) (*pb.AddRegexRuleResponse, error) {
 	// 参数校验
-	presetID := int(req.GetPresetId())
-	if presetID <= 0 {
-		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidPresetID)
-	}
-
 	name := strings.TrimSpace(req.GetName())
 	if name == "" {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptyRegexRuleName)
@@ -93,7 +88,7 @@ func (r *regexRuleImpl) AddRegexRule(ctx context.Context, req *pb.AddRegexRuleRe
 	userId := jwt.GetUserId(ctx)
 	// 构建正则规则实体
 	rule := &entity.RegexRule{
-		PresetID:                presetID,
+		PresetID:                int(req.GetPresetId()),
 		UserID:                  userId,
 		Name:                    name,
 		FindPattern:             findPattern,

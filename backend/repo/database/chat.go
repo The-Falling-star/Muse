@@ -3,11 +3,9 @@ package database
 import (
 	"context"
 	"errors"
-	"fmt"
 	"time"
 
 	"connectrpc.com/connect"
-	"github.com/ling/muse/common/constant"
 	"github.com/ling/muse/common/errs"
 	"github.com/ling/muse/entity"
 	"gorm.io/gorm"
@@ -196,7 +194,7 @@ func (c *ChatRepo) GetSessionWithMessages(ctx context.Context, id int, userID in
 			return db.Order("sort_order ASC")
 		}).
 		Preload("Messages.Swipes", func(db *gorm.DB) *gorm.DB {
-			return db.Order("sort_order ASC")
+			return db.Order("created_at ASC").Order("id ASC")
 		}).
 		First(&session)
 	if result.Error != nil {
@@ -221,15 +219,8 @@ func (c *ChatRepo) CreateMessage(ctx context.Context, message *entity.Message) e
 // CreateMessageSwipe 创建消息swipe
 func (c *ChatRepo) CreateMessageSwipe(ctx context.Context, swipe *entity.MessageSwipe) error {
 	db := GetDB(ctx)
-	sql := fmt.Sprintf(`INSERT INTO %s (message_id, content, sort_order)
-    VALUES (?, ?, (SELECT COALESCE(MAX(sort_order), -100) + ? 
-    	FROM message_swipes 
-    	WHERE message_id = ? 
-    	FOR UPDATE))`,
-		swipe.TableName())
-	result := db.Exec(sql, swipe.MessageID, swipe.Content, swipe.MessageID, constant.SortOrderInterval)
-	if result.Error != nil {
-		return errs.NewStandardf(connect.CodeInternal, "创建消息swipe失败: %v", result.Error)
+	if err := db.Create(swipe).Error; err != nil {
+		return errs.NewStandardf(connect.CodeInternal, "创建消息swipe失败: %v", err)
 	}
 	return nil
 }

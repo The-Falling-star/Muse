@@ -42,7 +42,7 @@ type PromptItem struct {
 	Name              string                  `gorm:"column:name;type:varchar(128);not null;default:''" json:"name"`                               // 显示名称
 	Content           string                  `gorm:"column:content;type:text;not null" json:"content"`                                            // 提示词内容
 	Role              pb.Role                 `gorm:"column:role;type:tinyint unsigned;not null;default:0" json:"role"`                            // 消息角色：System/User/Assistant
-	IsEnabled         bool                    `gorm:"column:is_enabled;not null;default:true" json:"isEnabled"`                                    // 是否启用
+	IsEnabled         bool                    `gorm:"column:is_enabled;not null;default:false" json:"isEnabled"`                                   // 是否启用
 	InjectionPosition pb.InjectionPosition    `gorm:"column:injection_position;type:tinyint unsigned;not null;default:0" json:"injectionPosition"` // 注入位置：Relative(相对位置)/Absolute(绝对深度)
 	InjectionDepth    int                     `gorm:"column:injection_depth;not null;default:0" json:"injectionDepth"`                             // 注入深度，当InjectionPosition为Absolute时生效，表示从对话末尾往前数的位置
 	ForbidOverrides   bool                    `gorm:"column:forbid_overrides;not null;default:false" json:"forbidOverrides"`                       // 禁止角色卡覆盖此提示项

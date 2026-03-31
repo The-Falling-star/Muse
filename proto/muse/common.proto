@@ -63,3 +63,10 @@ enum PromptItemIdentifier {
   ChatHistory = 10;                     // 聊天记录
   Jailbreak = 11;                       // 越狱提示词
 }
+
+// 挪动顺序位置操作
+enum SortOperation {
+    OrderOperationUnspecified = 0;
+    Pre = 1; // 前
+    Next = 2; //后
+}

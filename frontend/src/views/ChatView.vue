@@ -351,7 +351,7 @@ const handleSendMessage = async (content: string) => {
       if (aiMsgIndex >= 0) {
         const aiMsg = chatStore.messages[aiMsgIndex];
         if (aiMsg) {
-          const swipe = aiMsg.swipes.find(s => s.sortOrder === index);
+          const swipe = aiMsg.swipes.find(s => s.id === tempAiMsg.id + index);
           if (swipe) {
             swipe.content = newContent;
           } else {
@@ -359,7 +359,6 @@ const handleSendMessage = async (content: string) => {
               id: tempAiMsg.id + index,
               messageId: tempAiMsg.id,
               content: newContent,
-              sortOrder: index,
               createdAt: BigInt(Date.now()),
               $typeName: 'muse.MessageSwipe'
             } as any);

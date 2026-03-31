@@ -51,11 +51,10 @@ func (Message) TableName() string {
 // Swipe是SillyTavern中的概念，表示同一条消息的不同候选回复
 // 用户可以在多个候选回复之间切换，类似于"左右滑动"选择不同回复
 type MessageSwipe struct {
-	ID        int       `gorm:"column:id;primaryKey;autoIncrement" json:"id"`                               // Swipe唯一标识
-	MessageID int       `gorm:"column:message_id;not null;index:idx_message_id" json:"messageId"`           // 所属消息ID
-	Content   string    `gorm:"column:content;type:mediumtext;not null;" json:"content"`                    // 消息文本内容
-	SortOrder int       `gorm:"column:sort_order;not null;default:0;index:idx_sort_order" json:"sortOrder"` // 排序顺序，决定swipe的显示顺序
-	CreatedAt time.Time `gorm:"column:created_at;autoCreateTime" json:"createdAt"`                          // 创建时间
+	ID        int       `gorm:"column:id;primaryKey;autoIncrement" json:"id"`                     // Swipe唯一标识
+	MessageID int       `gorm:"column:message_id;not null;index:idx_message_id" json:"messageId"` // 所属消息ID
+	Content   string    `gorm:"column:content;type:mediumtext;not null;" json:"content"`          // 消息文本内容
+	CreatedAt time.Time `gorm:"column:created_at;autoCreateTime" json:"createdAt"`                // 创建时间
 }
 
 // TableName 返回表名

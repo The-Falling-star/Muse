@@ -216,7 +216,6 @@ func MessageSwipeEntityToPb(swipe *entity.MessageSwipe) *pb.MessageSwipe {
 		Id:        int32(swipe.ID),
 		MessageId: int32(swipe.MessageID),
 		Content:   swipe.Content,
-		SortOrder: int32(swipe.SortOrder),
 		CreatedAt: swipe.CreatedAt.Unix(),
 	}
 }
@@ -283,7 +282,7 @@ func STPresetToEntity(stPreset *sillytavern.OpenAIPreset, userID int, presetName
 
 // ConvertSTIdentifier 将 SillyTavern 标识符字符串转换为 PromptItemIdentifier 枚举
 func ConvertSTIdentifier(identifier string) pb.PromptItemIdentifier {
-	switch strings.ToLower(identifier) {
+	switch identifier {
 	case "main":
 		return pb.PromptItemIdentifier_Main
 	case "worldInfoBefore":
@@ -331,7 +330,7 @@ func STPromptToEntity(presetID int, stPrompt *sillytavern.PresetPromptItem) *ent
 		Name:              stPrompt.Name,
 		Content:           stPrompt.Content,
 		Role:              role,
-		IsEnabled:         stPrompt.Enabled,
+		IsEnabled:         stPrompt.Enabled, // 注意这里是从排序时得来的值
 		InjectionPosition: injectionPosition,
 		InjectionDepth:    stPrompt.InjectionDepth,
 		ForbidOverrides:   stPrompt.ForbidOverrides,
@@ -744,7 +743,11 @@ func STCharacterCardToEntity(stCard *sillytavern.CharacterCard, userID int) *ent
 	if description == "" {
 		description = stCard.Description
 	}
-	character.Description = description
+	personality := stCard.Data.Personality
+	if personality == "" {
+		personality = stCard.Personality
+	}
+	character.Description = description + "\n" + personality
 
 	exampleDialogue := stCard.Data.MesExample
 	if exampleDialogue == "" {

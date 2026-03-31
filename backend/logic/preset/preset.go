@@ -340,18 +340,13 @@ func (p *presetImpl) UpdatePromptItemsOrder(ctx context.Context, req *pb.UpdateP
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidPresetID)
 	}
 
-	if len(req.ItemIds) == 0 {
+	if req.SourceId <= 0 || req.DesId <= 0 || req.SortOperation == pb.SortOperation_OrderOperationUnspecified {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptySortData)
 	}
 
-	// 构建排序映射
-	itemOrders := make(map[int]int)
-	for i, itemID := range req.ItemIds {
-		itemOrders[int(itemID)] = i
-	}
-
+	userID := jwt.GetUserId(ctx)
 	// 更新排序
-	if err := p.presetRepo.UpdatePromptItemsOrder(ctx, presetID, itemOrders); err != nil {
+	if err := p.presetRepo.UpdatePromptItemsOrder(ctx, presetID, userID, int(req.SourceId), int(req.DesId), req.SortOperation); err != nil {
 		return nil, err
 	}
 
@@ -359,8 +354,14 @@ func (p *presetImpl) UpdatePromptItemsOrder(ctx context.Context, req *pb.UpdateP
 }
 
 func (p *presetImpl) SetActivePreset(ctx context.Context, req *pb.SetActivePresetRequest) (*pb.SetActivePresetResponse, error) {
-	//TODO implement me
-	panic("implement me")
+	presetID := int(req.GetPresetId())
+	if presetID <= 0 {
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidPresetID)
+	}
+	if err := p.presetRepo.SetActivePreset(ctx, jwt.GetUserId(ctx), presetID); err != nil {
+		return nil, err
+	}
+	return &pb.SetActivePresetResponse{}, nil
 }
 
 func (p *presetImpl) ImportPreset(ctx context.Context, req *pb.ImportPresetRequest) (*pb.ImportPresetResponse, error) {
@@ -482,6 +483,7 @@ func orderPrompt(prompt []sillytavern.PresetPromptItem,
 		}
 		for _, item := range order.Order {
 			if promptItem, exist := promptMap[item.Identifier]; exist {
+				promptItem.Enabled = item.Enabled // 注意这里特别坑, Enable放在了顺序这里, 所以得手动赋值到外层结构体
 				orderPrompts = append(orderPrompts, *promptItem)
 			}
 		}
@@ -492,6 +494,7 @@ func orderPrompt(prompt []sillytavern.PresetPromptItem,
 		log.Info("没有找到默认角色，使用第一个配置")
 		for _, item := range promptOrder[0].Order {
 			if promptItem, exist := promptMap[item.Identifier]; exist {
+				promptItem.Enabled = item.Enabled // 注意这里特别坑, Enable放在了顺序这里, 所以得手动赋值到外层结构体
 				orderPrompts = append(orderPrompts, *promptItem)
 			}
 		}

@@ -135,7 +135,7 @@ func (c *characterImpl) UpdateCharacter(ctx context.Context, req *pb.UpdateChara
 	userId := jwt.GetUserId(ctx)
 	character, err := c.charRepo.GetByID(ctx, id, userId)
 	if err != nil {
-		return nil, err
+		return nil, errs.NewStandardf(errs.Code(err), "获取角色失败: %v", err)
 	}
 	if character == nil {
 		return nil, errs.NewStandard(connect.CodeNotFound, errs.CharacterNotFound)

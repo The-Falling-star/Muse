@@ -283,7 +283,7 @@ import {
 } from '@vicons/ionicons5';
 import draggable from 'vuedraggable';
 import { usePresetStore } from '@/stores/preset';
-import { regexRuleClient } from '@/api/client';
+import {presetClient, regexRuleClient} from '@/api/client';
 import { Role, InjectionPosition, PromptItemIdentifier } from '@/gen/muse/common_pb';
 import type { PromptItem } from '@/gen/muse/preset_pb';
 import type { RegexRule, RegexAffectFlags } from '@/gen/muse/regex_pb';
@@ -415,6 +415,10 @@ const addPrompt = () => {
 
 // 删除 Prompt
 const removePrompt = (index: number) => {
+  if (index >= prompts.value.length) {
+    return
+  }
+  presetClient.deletePromptItem({ id: prompts.value[index]!.id });
   prompts.value.splice(index, 1);
 };
 

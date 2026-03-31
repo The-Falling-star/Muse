@@ -1833,8 +1833,10 @@ func (*DeletePromptItemResponse) Descriptor() ([]byte, []int) {
 // 批量更新提示项排序请求
 type UpdatePromptItemsOrderRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	PresetId      int32                  `protobuf:"varint,1,opt,name=preset_id,json=presetId,proto3" json:"preset_id,omitempty"`
-	ItemIds       []int32                `protobuf:"varint,2,rep,packed,name=item_ids,json=itemIds,proto3" json:"item_ids,omitempty"` // 按新顺序排列的ID列表
+	PresetId      int32                  `protobuf:"varint,1,opt,name=preset_id,json=presetId,proto3" json:"preset_id,omitempty"`                                        // 预设ID
+	SourceId      int32                  `protobuf:"varint,2,opt,name=source_id,json=sourceId,proto3" json:"source_id,omitempty"`                                        // 原提示词ID
+	DesId         int32                  `protobuf:"varint,3,opt,name=des_id,json=desId,proto3" json:"des_id,omitempty"`                                                 // 目标提示词ID
+	SortOperation SortOperation          `protobuf:"varint,4,opt,name=sort_operation,json=sortOperation,proto3,enum=muse.SortOperation" json:"sort_operation,omitempty"` // 原移动到目标的前或后
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1876,11 +1878,25 @@ func (x *UpdatePromptItemsOrderRequest) GetPresetId() int32 {
 	return 0
 }
 
-func (x *UpdatePromptItemsOrderRequest) GetItemIds() []int32 {
+func (x *UpdatePromptItemsOrderRequest) GetSourceId() int32 {
 	if x != nil {
-		return x.ItemIds
+		return x.SourceId
 	}
-	return nil
+	return 0
+}
+
+func (x *UpdatePromptItemsOrderRequest) GetDesId() int32 {
+	if x != nil {
+		return x.DesId
+	}
+	return 0
+}
+
+func (x *UpdatePromptItemsOrderRequest) GetSortOperation() SortOperation {
+	if x != nil {
+		return x.SortOperation
+	}
+	return SortOperation_OrderOperationUnspecified
 }
 
 // 批量更新提示项排序响应
@@ -2095,10 +2111,12 @@ const file_muse_preset_proto_rawDesc = "" +
 	"\x04item\x18\x01 \x01(\v2\x10.muse.PromptItemR\x04item\")\n" +
 	"\x17DeletePromptItemRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\"\x1a\n" +
-	"\x18DeletePromptItemResponse\"W\n" +
+	"\x18DeletePromptItemResponse\"\xac\x01\n" +
 	"\x1dUpdatePromptItemsOrderRequest\x12\x1b\n" +
-	"\tpreset_id\x18\x01 \x01(\x05R\bpresetId\x12\x19\n" +
-	"\bitem_ids\x18\x02 \x03(\x05R\aitemIds\" \n" +
+	"\tpreset_id\x18\x01 \x01(\x05R\bpresetId\x12\x1b\n" +
+	"\tsource_id\x18\x02 \x01(\x05R\bsourceId\x12\x15\n" +
+	"\x06des_id\x18\x03 \x01(\x05R\x05desId\x12:\n" +
+	"\x0esort_operation\x18\x04 \x01(\x0e2\x13.muse.SortOperationR\rsortOperation\" \n" +
 	"\x1eUpdatePromptItemsOrderResponse2\xe9\a\n" +
 	"\rPresetService\x12B\n" +
 	"\vListPresets\x12\x18.muse.ListPresetsRequest\x1a\x19.muse.ListPresetsResponse\x12<\n" +
@@ -2164,6 +2182,7 @@ var file_muse_preset_proto_goTypes = []any{
 	(Role)(0),                              // 31: muse.Role
 	(InjectionPosition)(0),                 // 32: muse.InjectionPosition
 	(*AddRegexRuleRequest)(nil),            // 33: muse.AddRegexRuleRequest
+	(SortOperation)(0),                     // 34: muse.SortOperation
 }
 var file_muse_preset_proto_depIdxs = []int32{
 	1,  // 0: muse.Preset.prompt_items:type_name -> muse.PromptItem
@@ -2190,37 +2209,38 @@ var file_muse_preset_proto_depIdxs = []int32{
 	31, // 21: muse.UpdatePromptItemRequest.role:type_name -> muse.Role
 	32, // 22: muse.UpdatePromptItemRequest.injection_position:type_name -> muse.InjectionPosition
 	1,  // 23: muse.UpdatePromptItemResponse.item:type_name -> muse.PromptItem
-	2,  // 24: muse.PresetService.ListPresets:input_type -> muse.ListPresetsRequest
-	4,  // 25: muse.PresetService.GetPreset:input_type -> muse.GetPresetRequest
-	6,  // 26: muse.PresetService.CreatePreset:input_type -> muse.CreatePresetRequest
-	9,  // 27: muse.PresetService.UpdatePreset:input_type -> muse.UpdatePresetRequest
-	11, // 28: muse.PresetService.DeletePreset:input_type -> muse.DeletePresetRequest
-	13, // 29: muse.PresetService.SetActivePreset:input_type -> muse.SetActivePresetRequest
-	15, // 30: muse.PresetService.ImportPreset:input_type -> muse.ImportPresetRequest
-	17, // 31: muse.PresetService.ExportPreset:input_type -> muse.ExportPresetRequest
-	19, // 32: muse.PresetService.ListPromptItems:input_type -> muse.ListPromptItemsRequest
-	21, // 33: muse.PresetService.AddPromptItem:input_type -> muse.AddPromptItemRequest
-	23, // 34: muse.PresetService.UpdatePromptItem:input_type -> muse.UpdatePromptItemRequest
-	25, // 35: muse.PresetService.DeletePromptItem:input_type -> muse.DeletePromptItemRequest
-	27, // 36: muse.PresetService.UpdatePromptItemsOrder:input_type -> muse.UpdatePromptItemsOrderRequest
-	3,  // 37: muse.PresetService.ListPresets:output_type -> muse.ListPresetsResponse
-	5,  // 38: muse.PresetService.GetPreset:output_type -> muse.GetPresetResponse
-	8,  // 39: muse.PresetService.CreatePreset:output_type -> muse.CreatePresetResponse
-	10, // 40: muse.PresetService.UpdatePreset:output_type -> muse.UpdatePresetResponse
-	12, // 41: muse.PresetService.DeletePreset:output_type -> muse.DeletePresetResponse
-	14, // 42: muse.PresetService.SetActivePreset:output_type -> muse.SetActivePresetResponse
-	16, // 43: muse.PresetService.ImportPreset:output_type -> muse.ImportPresetResponse
-	18, // 44: muse.PresetService.ExportPreset:output_type -> muse.ExportPresetResponse
-	20, // 45: muse.PresetService.ListPromptItems:output_type -> muse.ListPromptItemsResponse
-	22, // 46: muse.PresetService.AddPromptItem:output_type -> muse.AddPromptItemResponse
-	24, // 47: muse.PresetService.UpdatePromptItem:output_type -> muse.UpdatePromptItemResponse
-	26, // 48: muse.PresetService.DeletePromptItem:output_type -> muse.DeletePromptItemResponse
-	28, // 49: muse.PresetService.UpdatePromptItemsOrder:output_type -> muse.UpdatePromptItemsOrderResponse
-	37, // [37:50] is the sub-list for method output_type
-	24, // [24:37] is the sub-list for method input_type
-	24, // [24:24] is the sub-list for extension type_name
-	24, // [24:24] is the sub-list for extension extendee
-	0,  // [0:24] is the sub-list for field type_name
+	34, // 24: muse.UpdatePromptItemsOrderRequest.sort_operation:type_name -> muse.SortOperation
+	2,  // 25: muse.PresetService.ListPresets:input_type -> muse.ListPresetsRequest
+	4,  // 26: muse.PresetService.GetPreset:input_type -> muse.GetPresetRequest
+	6,  // 27: muse.PresetService.CreatePreset:input_type -> muse.CreatePresetRequest
+	9,  // 28: muse.PresetService.UpdatePreset:input_type -> muse.UpdatePresetRequest
+	11, // 29: muse.PresetService.DeletePreset:input_type -> muse.DeletePresetRequest
+	13, // 30: muse.PresetService.SetActivePreset:input_type -> muse.SetActivePresetRequest
+	15, // 31: muse.PresetService.ImportPreset:input_type -> muse.ImportPresetRequest
+	17, // 32: muse.PresetService.ExportPreset:input_type -> muse.ExportPresetRequest
+	19, // 33: muse.PresetService.ListPromptItems:input_type -> muse.ListPromptItemsRequest
+	21, // 34: muse.PresetService.AddPromptItem:input_type -> muse.AddPromptItemRequest
+	23, // 35: muse.PresetService.UpdatePromptItem:input_type -> muse.UpdatePromptItemRequest
+	25, // 36: muse.PresetService.DeletePromptItem:input_type -> muse.DeletePromptItemRequest
+	27, // 37: muse.PresetService.UpdatePromptItemsOrder:input_type -> muse.UpdatePromptItemsOrderRequest
+	3,  // 38: muse.PresetService.ListPresets:output_type -> muse.ListPresetsResponse
+	5,  // 39: muse.PresetService.GetPreset:output_type -> muse.GetPresetResponse
+	8,  // 40: muse.PresetService.CreatePreset:output_type -> muse.CreatePresetResponse
+	10, // 41: muse.PresetService.UpdatePreset:output_type -> muse.UpdatePresetResponse
+	12, // 42: muse.PresetService.DeletePreset:output_type -> muse.DeletePresetResponse
+	14, // 43: muse.PresetService.SetActivePreset:output_type -> muse.SetActivePresetResponse
+	16, // 44: muse.PresetService.ImportPreset:output_type -> muse.ImportPresetResponse
+	18, // 45: muse.PresetService.ExportPreset:output_type -> muse.ExportPresetResponse
+	20, // 46: muse.PresetService.ListPromptItems:output_type -> muse.ListPromptItemsResponse
+	22, // 47: muse.PresetService.AddPromptItem:output_type -> muse.AddPromptItemResponse
+	24, // 48: muse.PresetService.UpdatePromptItem:output_type -> muse.UpdatePromptItemResponse
+	26, // 49: muse.PresetService.DeletePromptItem:output_type -> muse.DeletePromptItemResponse
+	28, // 50: muse.PresetService.UpdatePromptItemsOrder:output_type -> muse.UpdatePromptItemsOrderResponse
+	38, // [38:51] is the sub-list for method output_type
+	25, // [25:38] is the sub-list for method input_type
+	25, // [25:25] is the sub-list for extension type_name
+	25, // [25:25] is the sub-list for extension extendee
+	0,  // [0:25] is the sub-list for field type_name
 }
 
 func init() { file_muse_preset_proto_init() }

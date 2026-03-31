@@ -16,6 +16,12 @@ type Config struct {
 	StaticFile StaticFileConfig `mapstructure:"static_file"`
 	File       FileConfig       `mapstructure:"file"`
 	LogLevel   string           `mapstructure:"log_level"`
+	Chat       ChatConfig       `mapstructure:"chat"`
+}
+
+// ChatConfig 聊天配置
+type ChatConfig struct {
+	EnableCache bool `mapstructure:"enable_cache"`
 }
 
 // ServerConfig 服务器配置

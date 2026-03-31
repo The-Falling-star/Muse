@@ -183,7 +183,6 @@ export const useChatStore = defineStore('chat', () => {
         id: tempId,
         messageId: tempId,
         content,
-        sortOrder: 0,
         createdAt: BigInt(Date.now()),
         $typeName: 'muse.MessageSwipe'
       }],

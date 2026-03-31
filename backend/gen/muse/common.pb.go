@@ -363,6 +363,56 @@ func (PromptItemIdentifier) EnumDescriptor() ([]byte, []int) {
 	return file_muse_common_proto_rawDescGZIP(), []int{5}
 }
 
+// 挪动顺序位置操作
+type SortOperation int32
+
+const (
+	SortOperation_OrderOperationUnspecified SortOperation = 0
+	SortOperation_Pre                       SortOperation = 1 // 前
+	SortOperation_Next                      SortOperation = 2 //后
+)
+
+// Enum value maps for SortOperation.
+var (
+	SortOperation_name = map[int32]string{
+		0: "OrderOperationUnspecified",
+		1: "Pre",
+		2: "Next",
+	}
+	SortOperation_value = map[string]int32{
+		"OrderOperationUnspecified": 0,
+		"Pre":                       1,
+		"Next":                      2,
+	}
+)
+
+func (x SortOperation) Enum() *SortOperation {
+	p := new(SortOperation)
+	*p = x
+	return p
+}
+
+func (x SortOperation) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (SortOperation) Descriptor() protoreflect.EnumDescriptor {
+	return file_muse_common_proto_enumTypes[6].Descriptor()
+}
+
+func (SortOperation) Type() protoreflect.EnumType {
+	return &file_muse_common_proto_enumTypes[6]
+}
+
+func (x SortOperation) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use SortOperation.Descriptor instead.
+func (SortOperation) EnumDescriptor() ([]byte, []int) {
+	return file_muse_common_proto_rawDescGZIP(), []int{6}
+}
+
 var File_muse_common_proto protoreflect.FileDescriptor
 
 const file_muse_common_proto_rawDesc = "" +
@@ -411,7 +461,11 @@ const file_muse_common_proto_rawDesc = "" +
 	"\x10DialogueExamples\x10\t\x12\x0f\n" +
 	"\vChatHistory\x10\n" +
 	"\x12\r\n" +
-	"\tJailbreak\x10\vBf\n" +
+	"\tJailbreak\x10\v*A\n" +
+	"\rSortOperation\x12\x1d\n" +
+	"\x19OrderOperationUnspecified\x10\x00\x12\a\n" +
+	"\x03Pre\x10\x01\x12\b\n" +
+	"\x04Next\x10\x02Bf\n" +
 	"\bcom.museB\vCommonProtoP\x01Z\x1dgithub.com/ling/muse/gen/muse\xa2\x02\x03MXX\xaa\x02\x04Muse\xca\x02\x04Muse\xe2\x02\x10Muse\\GPBMetadata\xea\x02\x04Museb\x06proto3"
 
 var (
@@ -426,7 +480,7 @@ func file_muse_common_proto_rawDescGZIP() []byte {
 	return file_muse_common_proto_rawDescData
 }
 
-var file_muse_common_proto_enumTypes = make([]protoimpl.EnumInfo, 6)
+var file_muse_common_proto_enumTypes = make([]protoimpl.EnumInfo, 7)
 var file_muse_common_proto_goTypes = []any{
 	(Role)(0),                 // 0: muse.Role
 	(InjectionPosition)(0),    // 1: muse.InjectionPosition
@@ -434,6 +488,7 @@ var file_muse_common_proto_goTypes = []any{
 	(APIProvider)(0),          // 3: muse.APIProvider
 	(Theme)(0),                // 4: muse.Theme
 	(PromptItemIdentifier)(0), // 5: muse.PromptItemIdentifier
+	(SortOperation)(0),        // 6: muse.SortOperation
 }
 var file_muse_common_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -453,7 +508,7 @@ func file_muse_common_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_muse_common_proto_rawDesc), len(file_muse_common_proto_rawDesc)),
-			NumEnums:      6,
+			NumEnums:      7,
 			NumMessages:   0,
 			NumExtensions: 0,
 			NumServices:   0,

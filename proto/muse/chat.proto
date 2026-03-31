@@ -41,8 +41,7 @@ message MessageSwipe {
   int32 id = 1;          // Swipe唯一标识ID
   int32 message_id = 2;  // 所属消息ID
   string content = 3;    // 消息文本内容
-  int32 sort_order = 4;  // 排序序号
-  int64 created_at = 5;  // 创建时间（Unix时间戳）
+  int64 created_at = 4;  // 创建时间（Unix时间戳）
 }
 
 // ================================

@@ -128,8 +128,7 @@ func (c *chatImpl) createSession(ctx context.Context, characterID int, name stri
 	swipes := make([]entity.MessageSwipe, len(character.FirstMessage))
 	for i, content := range character.FirstMessage {
 		swipes[i] = entity.MessageSwipe{
-			Content:   content,
-			SortOrder: i * constant.SortOrderInterval,
+			Content: content,
 		}
 	}
 
@@ -308,9 +307,11 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 		}
 
 		// 加载预设的提示项
-		promptItems, err = c.presetRepo.ListPromptItems(ctx, preset.ID)
-		if err != nil {
-			return err
+		promptItems = make([]*entity.PromptItem, 0, len(preset.PromptItems))
+		for _, item := range preset.PromptItems {
+			if item.IsEnabled {
+				promptItems = append(promptItems, &item)
+			}
 		}
 
 		// 加载全局世界书
@@ -343,10 +344,17 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 
 	// 构建消息列表
 	worldBook := append(globalWorldInfos, charWorldInfo)
-	log.Debugf("会话: %+v, 世界书: %+v, 预设: %+v, 正则: %+v",
-		session, globalWorldInfos, preset, regexRules)
+	session.Messages = append(session.Messages, entity.Message{
+		Role:             pb.Role_User,
+		ActiveSwipeIndex: 0,
+		Swipes: []entity.MessageSwipe{
+			{
+				Content: content,
+			},
+		},
+	})
 	messages, err := c.buildMessages(session, promptItems, worldBook, regexRules)
-	log.Debugf("构建的消息列表: %v", messages)
+	log.Debugf("构建的消息列表: %+v", messages)
 	if err != nil {
 		return err
 	}
@@ -367,7 +375,6 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 	userSwipe := &entity.MessageSwipe{
 		MessageID: userMessage.ID,
 		Content:   content,
-		SortOrder: 0,
 	}
 	if err = c.chatRepo.CreateMessageSwipe(ctx, userSwipe); err != nil {
 		return err
@@ -394,7 +401,6 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 		aiSwipe := &entity.MessageSwipe{
 			MessageID: aiMessage.ID,
 			Content:   "",
-			SortOrder: i,
 		}
 		if err = c.chatRepo.CreateMessageSwipe(ctx, aiSwipe); err != nil {
 			return err
@@ -851,9 +857,10 @@ func (c *chatImpl) buildMessages(
 	regexRules []*entity.RegexRule,
 ) ([]model.Message, error) {
 	var messages []model.Message
+	// 根据预设填充对应的信息
 	for _, promptItem := range promptItems {
 		switch promptItem.Identifier {
-		case pb.PromptItemIdentifier_PromptItemIdentifierUnspecified, pb.PromptItemIdentifier_Main,
+		case pb.PromptItemIdentifier_Main,
 			pb.PromptItemIdentifier_Jailbreak, pb.PromptItemIdentifier_Nsfw:
 			messages = append(messages, model.Message{
 				Role:    promptItem.Role,
@@ -862,30 +869,17 @@ func (c *chatImpl) buildMessages(
 			})
 		case pb.PromptItemIdentifier_ChatHistory:
 			var msgs []model.Message
-			var systemCount, assistantCount, userCount int
-			systemMsg, assistantMsg, userMsg := collectMsg(worldBook, promptItems, session)
+			// 收集需要按照深度插入的消息
+			insertMsg := collectMsg(worldBook, promptItems, session)
+
 			// 添加历史消息
 			for i := len(session.Messages) - 1; i >= 0; i-- {
 				history := session.Messages[i]
 				if len(history.Swipes) == 0 {
 					continue
 				}
-				switch history.Role {
-				case pb.Role_System:
-					if insertContent, exist := systemMsg[systemCount]; exist {
-						msgs = append(msgs, insertContent...)
-					}
-					systemCount++
-				case pb.Role_User:
-					if insertContent, exist := userMsg[userCount]; exist {
-						msgs = append(msgs, insertContent...)
-					}
-					userCount++
-				case pb.Role_Assistant:
-					if insertContent, exist := assistantMsg[assistantCount]; exist {
-						msgs = append(msgs, insertContent...)
-					}
-					assistantCount++
+				if needToInsert, ok := insertMsg[len(session.Messages)-i]; ok {
+					msgs = append(msgs, needToInsert...)
 				}
 				index := history.ActiveSwipeIndex
 				if index >= len(history.Swipes) {
@@ -903,9 +897,11 @@ func (c *chatImpl) buildMessages(
 				}
 				msgs = append(msgs, message)
 			}
+			// 插入那些大于当前消息深度的预设或世界书
+			msgs = insertMaxDepthMsg(len(session.Messages), insertMsg, msgs)
 			slices.Reverse(msgs)
 			messages = append(messages, msgs...)
-		case pb.PromptItemIdentifier_CharDescription, pb.PromptItemIdentifier_PersonaDescription:
+		case pb.PromptItemIdentifier_CharDescription:
 			messages = append(messages, model.Message{
 				Role:    promptItem.Role,
 				Content: session.Character.Description,
@@ -938,6 +934,15 @@ func (c *chatImpl) buildMessages(
 					})
 				}
 			}
+		default:
+			if promptItem.InjectionPosition == pb.InjectionPosition_Absolute {
+				continue
+			}
+			messages = append(messages, model.Message{
+				Role:    promptItem.Role,
+				Content: promptItem.Content,
+				Module:  constant.Preset,
+			})
 		}
 	}
 	for _, regex := range regexRules {
@@ -965,6 +970,8 @@ func (c *chatImpl) buildMessages(
 				log.Warnf("正则规则替换内容失败: %v", err)
 				return nil, errs.NewStandardf(connect.CodeInternal, "正则规则替换内容失败: %v", err)
 			}
+			log.Debugf("应用正则表达式: %s, 替换为文本: %s, 替换前: %s, 替换后: %s",
+				regex.FindPattern, regex.ReplacePattern, message.Content, content)
 			messages[i].Content = content
 		}
 	}
@@ -977,11 +984,11 @@ type PriorityMessage struct {
 	Priority int
 }
 
+// collectMsg 收集需要按照深度插入的消息
 func collectMsg(worldBooks []*entity.WorldInfo, promptItems []*entity.PromptItem, session *entity.ChatSession) (
-	systemMsg, assistantMsg, userMsg map[int][]model.Message) {
-	systemMsgTemp := make(map[int][]PriorityMessage)
-	assistantMsgTemp := make(map[int][]PriorityMessage)
-	userMsgTemp := make(map[int][]PriorityMessage)
+	insertMsg map[int][]model.Message) {
+	insertMsgTemp := make(map[int][]PriorityMessage)
+	// 处理世界书的深度插入信息
 	for _, worldBook := range worldBooks {
 		for _, entry := range worldBook.Entries {
 			if entry.Position != pb.EntryPosition_AtDepth {
@@ -998,17 +1005,14 @@ func collectMsg(worldBooks []*entity.WorldInfo, promptItems []*entity.PromptItem
 				},
 				Priority: entry.SortOrder,
 			}
-			switch entry.Role {
-			case pb.Role_System:
-				systemMsgTemp[entry.Depth] = append(systemMsgTemp[entry.Depth], message)
-			case pb.Role_User:
-				userMsgTemp[entry.Depth] = append(userMsgTemp[entry.Depth], message)
-			case pb.Role_Assistant:
-				assistantMsgTemp[entry.Depth] = append(assistantMsgTemp[entry.Depth], message)
-			}
+			insertMsgTemp[entry.Depth] = append(insertMsgTemp[entry.Depth], message)
 		}
 	}
+	// 处理预设的深度插入信息
 	for _, item := range promptItems {
+		if item.InjectionPosition != pb.InjectionPosition_Absolute {
+			continue
+		}
 		message := PriorityMessage{
 			Message: model.Message{
 				Role:    item.Role,
@@ -1017,47 +1021,22 @@ func collectMsg(worldBooks []*entity.WorldInfo, promptItems []*entity.PromptItem
 			},
 			// TODO Priority: item.SortOrder,
 		}
-		switch item.Role {
-		case pb.Role_System:
-			systemMsgTemp[item.InjectionDepth] = append(systemMsgTemp[item.InjectionDepth], message)
-		case pb.Role_User:
-			userMsgTemp[item.InjectionDepth] = append(userMsgTemp[item.InjectionDepth], message)
-		case pb.Role_Assistant:
-			assistantMsgTemp[item.InjectionDepth] = append(assistantMsgTemp[item.InjectionDepth], message)
-		}
+		insertMsgTemp[item.InjectionDepth] = append(insertMsgTemp[item.InjectionDepth], message)
 	}
 
 	// 为每个深度的数组按优先级进行排序，优先级越大越靠前
-	for depth := range systemMsgTemp {
-		sort.Slice(systemMsgTemp[depth], func(i, j int) bool {
-			return systemMsgTemp[depth][i].Priority > systemMsgTemp[depth][j].Priority
-		})
-	}
-	for depth := range assistantMsgTemp {
-		sort.Slice(assistantMsgTemp[depth], func(i, j int) bool {
-			return assistantMsgTemp[depth][i].Priority > assistantMsgTemp[depth][j].Priority
-		})
-	}
-	for depth := range userMsgTemp {
-		sort.Slice(userMsgTemp[depth], func(i, j int) bool {
-			return userMsgTemp[depth][i].Priority > userMsgTemp[depth][j].Priority
+	for depth := range insertMsgTemp {
+		sort.Slice(insertMsgTemp[depth], func(i, j int) bool {
+			return insertMsgTemp[depth][i].Priority > insertMsgTemp[depth][j].Priority
 		})
 	}
 
 	// 将排序后的PriorityMessage转换为model.Message并写入返回值
-	systemMsg = make(map[int][]model.Message)
-	assistantMsg = make(map[int][]model.Message)
-	userMsg = make(map[int][]model.Message)
-	for depth, messages := range systemMsgTemp {
-		systemMsg[depth] = convertPriorityMessages(messages)
+	insertMsg = make(map[int][]model.Message)
+	for depth, messages := range insertMsgTemp {
+		insertMsg[depth] = convertPriorityMessages(messages)
 	}
-	for depth, messages := range assistantMsgTemp {
-		assistantMsg[depth] = convertPriorityMessages(messages)
-	}
-	for depth, messages := range userMsgTemp {
-		userMsg[depth] = convertPriorityMessages(messages)
-	}
-	return systemMsg, assistantMsg, userMsg
+	return insertMsg
 }
 
 // convertPriorityMessages 将PriorityMessage切片转换为model.Message切片
@@ -1125,4 +1104,19 @@ func (c *chatImpl) UpdateSessionTime(ctx context.Context, req *pb.UpdateSessionT
 		return nil, err
 	}
 	return &pb.UpdateSessionTimeResponse{}, nil
+}
+
+func insertMaxDepthMsg(maxDepth int, msgMap map[int][]model.Message, msgs []model.Message) []model.Message {
+	var depths []int
+	for depth := range msgMap {
+		depths = append(depths, depth)
+	}
+	sort.Ints(depths)
+	for _, depth := range depths {
+		if depth < maxDepth {
+			continue
+		}
+		msgs = append(msgs, msgMap[depth]...)
+	}
+	return msgs
 }

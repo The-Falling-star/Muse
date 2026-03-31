@@ -225,8 +225,10 @@ message DeletePromptItemResponse {}
 
 // 批量更新提示项排序请求
 message UpdatePromptItemsOrderRequest {
-  int32 preset_id = 1;
-  repeated int32 item_ids = 2;  // 按新顺序排列的ID列表
+  int32 preset_id = 1; // 预设ID
+  int32 source_id = 2; // 原提示词ID
+  int32 des_id = 3; // 目标提示词ID
+  SortOperation sort_operation = 4; // 原移动到目标的前或后
 }
 
 // 批量更新提示项排序响应

@@ -237,7 +237,6 @@ type MessageSwipe struct {
 	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`                                // Swipe唯一标识ID
 	MessageId     int32                  `protobuf:"varint,2,opt,name=message_id,json=messageId,proto3" json:"message_id,omitempty"` // 所属消息ID
 	Content       string                 `protobuf:"bytes,3,opt,name=content,proto3" json:"content,omitempty"`                       // 消息文本内容
-	SortOrder     int32                  `protobuf:"varint,4,opt,name=sort_order,json=sortOrder,proto3" json:"sort_order,omitempty"` // 排序序号
 	CreatedAt     int64                  `protobuf:"varint,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"` // 创建时间（Unix时间戳）
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -292,13 +291,6 @@ func (x *MessageSwipe) GetContent() string {
 		return x.Content
 	}
 	return ""
-}
-
-func (x *MessageSwipe) GetSortOrder() int32 {
-	if x != nil {
-		return x.SortOrder
-	}
-	return 0
 }
 
 func (x *MessageSwipe) GetCreatedAt() int64 {
@@ -1506,14 +1498,12 @@ const file_muse_chat_proto_rawDesc = "" +
 	"created_at\x18\x06 \x01(\x03R\tcreatedAt\x12\x1d\n" +
 	"\n" +
 	"updated_at\x18\a \x01(\x03R\tupdatedAt\x12*\n" +
-	"\x06swipes\x18\b \x03(\v2\x12.muse.MessageSwipeR\x06swipes\"\x95\x01\n" +
+	"\x06swipes\x18\b \x03(\v2\x12.muse.MessageSwipeR\x06swipes\"v\n" +
 	"\fMessageSwipe\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x1d\n" +
 	"\n" +
 	"message_id\x18\x02 \x01(\x05R\tmessageId\x12\x18\n" +
 	"\acontent\x18\x03 \x01(\tR\acontent\x12\x1d\n" +
-	"\n" +
-	"sort_order\x18\x04 \x01(\x05R\tsortOrder\x12\x1d\n" +
 	"\n" +
 	"created_at\x18\x05 \x01(\x03R\tcreatedAt\"\xa4\x01\n" +
 	"\x17ListChatSessionsRequest\x12&\n" +

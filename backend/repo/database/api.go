@@ -7,6 +7,7 @@ import (
 	"github.com/ling/muse/common/constant"
 	"github.com/ling/muse/config"
 	"github.com/ling/muse/entity"
+	pb "github.com/ling/muse/gen/muse"
 	"gorm.io/gorm"
 )
 
@@ -93,13 +94,15 @@ type PresetRepository interface {
 	// DeletePromptItem 删除提示项
 	DeletePromptItem(ctx context.Context, id int) error
 	// UpdatePromptItemsOrder 更新提示项排序
-	UpdatePromptItemsOrder(ctx context.Context, presetID int, itemOrders map[int]int) error
+	UpdatePromptItemsOrder(ctx context.Context, presetID int, userID int, sourceID int, desID int, operation pb.SortOperation) error
 	// GetVersion 获取预设的版本号
 	GetVersion(ctx context.Context, id int, userID int) (int, error)
 	// BatchCreatePromptItem 批量创建提示项目
 	BatchCreatePromptItem(ctx context.Context, items []*entity.PromptItem) error
 	// BatchUpdatePromptItemOrder 批量更新提示项排序
 	BatchUpdatePromptItemOrder(ctx context.Context, items []*entity.PromptItem) error
+	// SetActivePreset 设置用户的启用预设
+	SetActivePreset(ctx context.Context, userID, presetID int) error
 }
 
 // RegexRuleRepository 正则规则数据仓库接口

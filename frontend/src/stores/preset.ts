@@ -262,8 +262,8 @@ export const usePresetStore = defineStore('preset', () => {
   };
 
   // 更新提示项排序
-  const updatePromptItemsOrder = async (presetId: number, itemIds: number[]) => {
-    await presetClient.updatePromptItemsOrder({ presetId, itemIds });
+  const updatePromptItemsOrder = async (presetId: number) => {
+    await presetClient.updatePromptItemsOrder({ presetId });
     // 重新获取提示项列表以更新本地状态
     await fetchPromptItems(presetId);
   };

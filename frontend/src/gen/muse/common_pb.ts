@@ -9,7 +9,7 @@ import { enumDesc, fileDesc } from "@bufbuild/protobuf/codegenv2";
  * Describes the file muse/common.proto.
  */
 export const file_muse_common: GenFile = /*@__PURE__*/
-  fileDesc("ChFtdXNlL2NvbW1vbi5wcm90bxIEbXVzZSpACgRSb2xlEhMKD1JvbGVVbnNwZWNpZmllZBAAEgoKBlN5c3RlbRABEggKBFVzZXIQAhINCglBc3Npc3RhbnQQAypRChFJbmplY3Rpb25Qb3NpdGlvbhIgChxJbmplY3Rpb25Qb3NpdGlvblVuc3BlY2lmaWVkEAASDAoIUmVsYXRpdmUQARIMCghBYnNvbHV0ZRACKn4KDUVudHJ5UG9zaXRpb24SHAoYRW50cnlQb3NpdGlvblVuc3BlY2lmaWVkEAASDgoKQmVmb3JlQ2hhchABEg0KCUFmdGVyQ2hhchACEhEKDUJlZm9yZUV4YW1wbGUQAxIQCgxBZnRlckV4YW1wbGUQBBILCgdBdERlcHRoEAUqTQoLQVBJUHJvdmlkZXISGgoWQVBJUHJvdmlkZXJVbnNwZWNpZmllZBAAEgoKBk9wZW5BSRABEgoKBkNsYXVkZRACEgoKBkdlbWluaRADKiYKBVRoZW1lEggKBEF1dG8QABIJCgVMaWdodBABEggKBERhcmsQAir+AQoUUHJvbXB0SXRlbUlkZW50aWZpZXISIwofUHJvbXB0SXRlbUlkZW50aWZpZXJVbnNwZWNpZmllZBAAEggKBE1haW4QARITCg9Xb3JsZEluZm9CZWZvcmUQAhIWChJQZXJzb25hRGVzY3JpcHRpb24QAxITCg9DaGFyRGVzY3JpcHRpb24QBBITCg9DaGFyUGVyc29uYWxpdHkQBRIMCghTY2VuYXJpbxAGEggKBE5zZncQBxISCg5Xb3JsZEluZm9BZnRlchAIEhQKEERpYWxvZ3VlRXhhbXBsZXMQCRIPCgtDaGF0SGlzdG9yeRAKEg0KCUphaWxicmVhaxALQmYKCGNvbS5tdXNlQgtDb21tb25Qcm90b1ABWh1naXRodWIuY29tL2xpbmcvbXVzZS9nZW4vbXVzZaICA01YWKoCBE11c2XKAgRNdXNl4gIQTXVzZVxHUEJNZXRhZGF0YeoCBE11c2ViBnByb3RvMw");
+  fileDesc("ChFtdXNlL2NvbW1vbi5wcm90bxIEbXVzZSpACgRSb2xlEhMKD1JvbGVVbnNwZWNpZmllZBAAEgoKBlN5c3RlbRABEggKBFVzZXIQAhINCglBc3Npc3RhbnQQAypRChFJbmplY3Rpb25Qb3NpdGlvbhIgChxJbmplY3Rpb25Qb3NpdGlvblVuc3BlY2lmaWVkEAASDAoIUmVsYXRpdmUQARIMCghBYnNvbHV0ZRACKn4KDUVudHJ5UG9zaXRpb24SHAoYRW50cnlQb3NpdGlvblVuc3BlY2lmaWVkEAASDgoKQmVmb3JlQ2hhchABEg0KCUFmdGVyQ2hhchACEhEKDUJlZm9yZUV4YW1wbGUQAxIQCgxBZnRlckV4YW1wbGUQBBILCgdBdERlcHRoEAUqTQoLQVBJUHJvdmlkZXISGgoWQVBJUHJvdmlkZXJVbnNwZWNpZmllZBAAEgoKBk9wZW5BSRABEgoKBkNsYXVkZRACEgoKBkdlbWluaRADKiYKBVRoZW1lEggKBEF1dG8QABIJCgVMaWdodBABEggKBERhcmsQAir+AQoUUHJvbXB0SXRlbUlkZW50aWZpZXISIwofUHJvbXB0SXRlbUlkZW50aWZpZXJVbnNwZWNpZmllZBAAEggKBE1haW4QARITCg9Xb3JsZEluZm9CZWZvcmUQAhIWChJQZXJzb25hRGVzY3JpcHRpb24QAxITCg9DaGFyRGVzY3JpcHRpb24QBBITCg9DaGFyUGVyc29uYWxpdHkQBRIMCghTY2VuYXJpbxAGEggKBE5zZncQBxISCg5Xb3JsZEluZm9BZnRlchAIEhQKEERpYWxvZ3VlRXhhbXBsZXMQCRIPCgtDaGF0SGlzdG9yeRAKEg0KCUphaWxicmVhaxALKkEKDVNvcnRPcGVyYXRpb24SHQoZT3JkZXJPcGVyYXRpb25VbnNwZWNpZmllZBAAEgcKA1ByZRABEggKBE5leHQQAkJmCghjb20ubXVzZUILQ29tbW9uUHJvdG9QAVodZ2l0aHViLmNvbS9saW5nL211c2UvZ2VuL211c2WiAgNNWFiqAgRNdXNlygIETXVzZeICEE11c2VcR1BCTWV0YWRhdGHqAgRNdXNlYgZwcm90bzM");
 
 /**
  * Role 消息角色类型
@@ -312,4 +312,36 @@ export enum PromptItemIdentifier {
  */
 export const PromptItemIdentifierSchema: GenEnum<PromptItemIdentifier> = /*@__PURE__*/
   enumDesc(file_muse_common, 5);
+
+/**
+ * 挪动顺序位置操作
+ *
+ * @generated from enum muse.SortOperation
+ */
+export enum SortOperation {
+  /**
+   * @generated from enum value: OrderOperationUnspecified = 0;
+   */
+  OrderOperationUnspecified = 0,
+
+  /**
+   * 前
+   *
+   * @generated from enum value: Pre = 1;
+   */
+  Pre = 1,
+
+  /**
+   * 后
+   *
+   * @generated from enum value: Next = 2;
+   */
+  Next = 2,
+}
+
+/**
+ * Describes the enum muse.SortOperation.
+ */
+export const SortOperationSchema: GenEnum<SortOperation> = /*@__PURE__*/
+  enumDesc(file_muse_common, 6);
 

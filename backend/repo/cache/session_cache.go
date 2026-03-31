@@ -7,6 +7,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/ling/muse/config"
 	"github.com/ling/muse/entity"
 )
 
@@ -124,6 +125,9 @@ func NewSessionCacheManager(maxSize int, ttl time.Duration) *SessionCacheManager
 // Get 获取缓存
 // 返回缓存数据和是否命中
 func (m *SessionCacheManager) Get(userID, sessionID int64) (*SessionCache, bool) {
+	if !config.Get().Chat.EnableCache {
+		return nil, false
+	}
 	m.mu.Lock()
 	defer m.mu.Unlock()
 

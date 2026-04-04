@@ -857,16 +857,17 @@ func (c *chatImpl) buildMessages(
 	regexRules []*entity.RegexRule,
 ) ([]model.Message, error) {
 	var messages []model.Message
+	regexMap := make(map[string]*regexp2.Regexp, len(regexRules))
 	// 根据预设填充对应的信息
 	for _, promptItem := range promptItems {
 		switch promptItem.Identifier {
-		case pb.PromptItemIdentifier_Main,
-			pb.PromptItemIdentifier_Jailbreak, pb.PromptItemIdentifier_Nsfw:
-			messages = append(messages, model.Message{
-				Role:    promptItem.Role,
-				Content: promptItem.Content,
-				Module:  constant.Preset,
-			})
+		case pb.PromptItemIdentifier_Main, pb.PromptItemIdentifier_Jailbreak, pb.PromptItemIdentifier_Nsfw:
+			message, err := createModelMsg(promptItem.Role, promptItem.Content, constant.Preset,
+				regexMap, regexRules, 0)
+			if err != nil {
+				return nil, err
+			}
+			messages = append(messages, message)
 		case pb.PromptItemIdentifier_ChatHistory:
 			var msgs []model.Message
 			// 收集需要按照深度插入的消息
@@ -878,42 +879,68 @@ func (c *chatImpl) buildMessages(
 				if len(history.Swipes) == 0 {
 					continue
 				}
-				if needToInsert, ok := insertMsg[len(session.Messages)-i]; ok {
-					msgs = append(msgs, needToInsert...)
+				depth := len(session.Messages) - i
+
+				// 查看世界书和某些预设是否符合插入要求, 符合便插入
+				if needWorldInfos, ok := insertMsg[depth]; ok {
+					for _, needWorldInfo := range needWorldInfos {
+						message, err := createModelMsg(
+							needWorldInfo.Role, needWorldInfo.Content, needWorldInfo.Module,
+							regexMap, regexRules, 0,
+						)
+						if err != nil {
+							return nil, err
+						}
+						msgs = append(msgs, message)
+					}
 				}
 				index := history.ActiveSwipeIndex
 				if index >= len(history.Swipes) {
 					index = len(history.Swipes) - 1
 				}
-				message := model.Message{
-					Role:    history.Role,
-					Content: history.Swipes[index].Content,
-				}
+
+				// 插入普通聊天记录
+				var messageModule constant.ModuleType
 				switch history.Role {
 				case pb.Role_User:
-					message.Module = constant.UserInput
+					messageModule = constant.UserInput
 				case pb.Role_Assistant:
-					message.Module = constant.AIOutput
+					messageModule = constant.AIOutput
+				}
+				message, err := createModelMsg(history.Role, history.Swipes[index].Content, messageModule,
+					regexMap, regexRules, depth)
+				if err != nil {
+					return nil, err
 				}
 				msgs = append(msgs, message)
 			}
+
 			// 插入那些大于当前消息深度的预设或世界书
-			msgs = insertMaxDepthMsg(len(session.Messages), insertMsg, msgs)
+			moreDeepMsgs := insertMaxDepthMsg(len(session.Messages), insertMsg)
+			for _, msg := range moreDeepMsgs {
+				message, err := createModelMsg(msg.Role, msg.Content, msg.Module, regexMap, regexRules, 0)
+				if err != nil {
+					return nil, err
+				}
+				msgs = append(msgs, message)
+			}
 			slices.Reverse(msgs)
 			messages = append(messages, msgs...)
 		case pb.PromptItemIdentifier_CharDescription:
-			messages = append(messages, model.Message{
-				Role:    promptItem.Role,
-				Content: session.Character.Description,
-				Module:  constant.Preset,
-			})
+			msg, err := createModelMsg(promptItem.Role, session.Character.Description, constant.Preset,
+				regexMap, regexRules, 0)
+			if err != nil {
+				return nil, err
+			}
+			messages = append(messages, msg)
 		case pb.PromptItemIdentifier_DialogueExamples:
 			for _, example := range session.Character.ExampleDialogue {
-				messages = append(messages, model.Message{
-					Role:    promptItem.Role,
-					Content: example,
-					Module:  constant.Preset,
-				})
+				msg, err := createModelMsg(promptItem.Role, example, constant.Preset,
+					regexMap, regexRules, 0)
+				if err != nil {
+					return nil, err
+				}
+				messages = append(messages, msg)
 			}
 		case pb.PromptItemIdentifier_WorldInfoBefore, pb.PromptItemIdentifier_WorldInfoAfter:
 			for _, worldInfo := range worldBook {
@@ -927,52 +954,24 @@ func (c *chatImpl) buildMessages(
 					if !isWorldInfoEntryValid(&entry, session) {
 						continue
 					}
-					messages = append(messages, model.Message{
-						Role:    promptItem.Role,
-						Content: entry.Content,
-						Module:  constant.WorldInfo,
-					})
+					msg, err := createModelMsg(promptItem.Role, entry.Content, constant.WorldInfo,
+						regexMap, regexRules, 0)
+					if err != nil {
+						return nil, err
+					}
+					messages = append(messages, msg)
 				}
 			}
 		default:
 			if promptItem.InjectionPosition == pb.InjectionPosition_Absolute {
 				continue
 			}
-			messages = append(messages, model.Message{
-				Role:    promptItem.Role,
-				Content: promptItem.Content,
-				Module:  constant.Preset,
-			})
-		}
-	}
-	for _, regex := range regexRules {
-		if !regex.IsEnabled {
-			continue
-		}
-		re, err := regexp2.Compile(regex.FindPattern, 0)
-		if err != nil {
-			log.Warnf("正则规则编译失败: %v", err)
-			continue
-		}
-		for i, message := range messages {
-			if message.Module != constant.Preset && regex.AffectFlagsPrompt ||
-				message.Module != constant.UserInput && regex.AffectFlagsUserInput ||
-				message.Module != constant.AIOutput && regex.AffectFlagsAIOutput ||
-				message.Module != constant.WorldInfo && regex.AffectFlagsWorldInfo {
-				continue
-			}
-			// 检查消息深度是否在允许范围内
-			if regex.MinDepth < len(messages)-i && regex.MaxDepth > len(messages)-i {
-				continue
-			}
-			content, err := re.Replace(message.Content, regex.ReplacePattern, -1, -1)
+			msg, err := createModelMsg(promptItem.Role, promptItem.Content, constant.Preset,
+				regexMap, regexRules, 0)
 			if err != nil {
-				log.Warnf("正则规则替换内容失败: %v", err)
-				return nil, errs.NewStandardf(connect.CodeInternal, "正则规则替换内容失败: %v", err)
+				return nil, err
 			}
-			log.Debugf("应用正则表达式: %s, 替换为文本: %s, 替换前: %s, 替换后: %s",
-				regex.FindPattern, regex.ReplacePattern, message.Content, content)
-			messages[i].Content = content
+			messages = append(messages, msg)
 		}
 	}
 	return messages, nil
@@ -985,9 +984,9 @@ type PriorityMessage struct {
 }
 
 // collectMsg 收集需要按照深度插入的消息
-func collectMsg(worldBooks []*entity.WorldInfo, promptItems []*entity.PromptItem, session *entity.ChatSession) (
-	insertMsg map[int][]model.Message) {
-	insertMsgTemp := make(map[int][]PriorityMessage)
+func collectMsg(worldBooks []*entity.WorldInfo, promptItems []*entity.PromptItem,
+	session *entity.ChatSession) map[int][]PriorityMessage {
+	insertMsg := make(map[int][]PriorityMessage)
 	// 处理世界书的深度插入信息
 	for _, worldBook := range worldBooks {
 		for _, entry := range worldBook.Entries {
@@ -1005,7 +1004,7 @@ func collectMsg(worldBooks []*entity.WorldInfo, promptItems []*entity.PromptItem
 				},
 				Priority: entry.SortOrder,
 			}
-			insertMsgTemp[entry.Depth] = append(insertMsgTemp[entry.Depth], message)
+			insertMsg[entry.Depth] = append(insertMsg[entry.Depth], message)
 		}
 	}
 	// 处理预设的深度插入信息
@@ -1021,31 +1020,17 @@ func collectMsg(worldBooks []*entity.WorldInfo, promptItems []*entity.PromptItem
 			},
 			// TODO Priority: item.SortOrder,
 		}
-		insertMsgTemp[item.InjectionDepth] = append(insertMsgTemp[item.InjectionDepth], message)
+		insertMsg[item.InjectionDepth] = append(insertMsg[item.InjectionDepth], message)
 	}
 
 	// 为每个深度的数组按优先级进行排序，优先级越大越靠前
-	for depth := range insertMsgTemp {
-		sort.Slice(insertMsgTemp[depth], func(i, j int) bool {
-			return insertMsgTemp[depth][i].Priority > insertMsgTemp[depth][j].Priority
+	for depth := range insertMsg {
+		sort.Slice(insertMsg[depth], func(i, j int) bool {
+			return insertMsg[depth][i].Priority > insertMsg[depth][j].Priority
 		})
 	}
 
-	// 将排序后的PriorityMessage转换为model.Message并写入返回值
-	insertMsg = make(map[int][]model.Message)
-	for depth, messages := range insertMsgTemp {
-		insertMsg[depth] = convertPriorityMessages(messages)
-	}
 	return insertMsg
-}
-
-// convertPriorityMessages 将PriorityMessage切片转换为model.Message切片
-func convertPriorityMessages(messages []PriorityMessage) []model.Message {
-	result := make([]model.Message, len(messages))
-	for i, msg := range messages {
-		result[i] = msg.Message
-	}
-	return result
 }
 
 func isWorldInfoEntryValid(entry *entity.WorldInfoEntry, session *entity.ChatSession) bool {
@@ -1106,11 +1091,12 @@ func (c *chatImpl) UpdateSessionTime(ctx context.Context, req *pb.UpdateSessionT
 	return &pb.UpdateSessionTimeResponse{}, nil
 }
 
-func insertMaxDepthMsg(maxDepth int, msgMap map[int][]model.Message, msgs []model.Message) []model.Message {
+func insertMaxDepthMsg(maxDepth int, msgMap map[int][]PriorityMessage) []PriorityMessage {
 	var depths []int
 	for depth := range msgMap {
 		depths = append(depths, depth)
 	}
+	msgs := make([]PriorityMessage, 0)
 	sort.Ints(depths)
 	for _, depth := range depths {
 		if depth < maxDepth {
@@ -1119,4 +1105,72 @@ func insertMaxDepthMsg(maxDepth int, msgMap map[int][]model.Message, msgs []mode
 		msgs = append(msgs, msgMap[depth]...)
 	}
 	return msgs
+}
+
+// createModelMsg 创建一个消息, 并进行正则匹配
+func createModelMsg(role pb.Role, content string, module constant.ModuleType,
+	regexsMap map[string]*regexp2.Regexp, regexs []*entity.RegexRule, depth int) (model.Message, error) {
+	msg := model.Message{
+		Role:    role,
+		Content: content,
+		Module:  module,
+	}
+	// 进行正则匹配
+	replaceContent, err := applyRegex(regexsMap, regexs, msg, depth)
+	if err != nil {
+		log.Errorf("applyRegex error: %+v", err)
+		return msg, err
+	}
+	msg.Content = replaceContent
+	return msg, nil
+}
+
+func applyRegex(regexsMap map[string]*regexp2.Regexp, regexs []*entity.RegexRule,
+	message model.Message, depth int) (string, error) {
+	content := message.Content
+	for _, regex := range regexs {
+		if !regex.IsEnabled {
+			log.Debugf("正则: %s规则未启用", regex.FindPattern)
+			continue
+		}
+		if message.Module != constant.Preset && !regex.AffectFlagsPrompt ||
+			message.Module != constant.UserInput && !regex.AffectFlagsUserInput ||
+			message.Module != constant.AIOutput && !regex.AffectFlagsAIOutput ||
+			message.Module != constant.WorldInfo && !regex.AffectFlagsWorldInfo {
+			log.Debugf("正则: %s生效范围: prompt: %v, user_input: %v, ai_output: %v, world_info: %v",
+				regex.FindPattern, regex.AffectFlagsPrompt, regex.AffectFlagsUserInput, regex.AffectFlagsAIOutput, regex.AffectFlagsWorldInfo)
+			log.Debugf("正则: %s规则不影响模块: %d", regex.FindPattern, message.Module)
+			continue
+		}
+		// 检查消息深度是否在允许范围内, 且只有聊天记录才检查深度
+		if message.Module != constant.Preset && message.Module != constant.WorldInfo &&
+			depth < regex.MinDepth && depth > regex.MaxDepth {
+			log.Debugf("正则: %s规则消息深度超出范围: %d, min: %d, max: %d",
+				regex.FindPattern, depth, regex.MinDepth, regex.MaxDepth)
+			continue
+		}
+
+		re, ok := regexsMap[regex.FindPattern]
+		if regexsMap != nil && !ok {
+			log.Debugf("正则: %s规则未编译，正在编译...", regex.FindPattern)
+			compileRe, err := convert.ConvertToRegexp2(regex.FindPattern)
+			if err != nil {
+				return message.Content, errs.NewStandardf(connect.CodeInternal, "正则: %s转换失败: %v",
+					regex.FindPattern, err)
+			}
+			regexsMap[regex.FindPattern] = compileRe.Engine
+			re = compileRe.Engine
+		}
+		replaceContent, err := re.Replace(message.Content, regex.ReplacePattern, -1, -1)
+		if err != nil {
+			return message.Content, errs.NewStandardf(connect.CodeInternal, "正则: %s替换内容失败: %v",
+				regex.FindPattern, err)
+		}
+		if content != replaceContent {
+			log.Debugf("应用正则表达式: %s, 替换为文本: %s, 替换前: %s,\n\n\n 替换后: %s\n",
+				regex.FindPattern, regex.ReplacePattern, content, replaceContent)
+		}
+		content = replaceContent
+	}
+	return content, nil
 }

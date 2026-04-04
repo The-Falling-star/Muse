@@ -24,8 +24,8 @@ type RegexRule struct {
 	SubstituteRegex bool `gorm:"column:substitute_regex;not null;default:true" json:"substituteRegex"` // 是否使用正则替换（false则使用字面量替换）
 
 	// 深度范围限制
-	MinDepth int `gorm:"column:min_depth" json:"minDepth,omitempty"` // 最小深度（从对话末尾开始计算）
-	MaxDepth int `gorm:"column:max_depth" json:"maxDepth,omitempty"` // 最大深度（从对话末尾开始计算）
+	MinDepth int `gorm:"column:min_depth;not null;default:0" json:"minDepth,omitempty"`          // 最小深度（从对话末尾开始计算）
+	MaxDepth int `gorm:"column:max_depth;not null;default:2147483647" json:"maxDepth,omitempty"` // 最大深度（从对话末尾开始计算）
 
 	// 作用范围标志
 	AffectFlagsUserInput    bool `gorm:"column:affect_flags_user_input;not null;default:0" json:"affectFlagsUserInput"`           // 是否作用于用户输入

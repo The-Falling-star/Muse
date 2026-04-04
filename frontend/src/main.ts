@@ -7,6 +7,7 @@ import { initGlobalMessage } from './composables/useGlobalMessage';
 import './styles/global.css';
 // 引入 highlight.js 代码高亮样式
 import 'highlight.js/styles/atom-one-dark.css';
+import {useUserStore} from "@/stores/user.ts";
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -22,3 +23,6 @@ console.log('[Main] App mounted!');
 console.log('[Main] Calling initGlobalMessage...');
 initGlobalMessage();
 console.log('[Main] initGlobalMessage returned');
+
+const userStore = useUserStore();
+userStore.initUserData().catch(console.error)

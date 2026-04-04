@@ -90,10 +90,9 @@ router.beforeEach(async (to, _from, next) => {
     // 如果访问的是登录页，跳转到首页
     if (to.name === 'Login') {
       next({ name: 'Chat' });
-    } else {
-      next();
+      return;
     }
-    return;
+    next();
   }
 
   // 检查是否需要认证
@@ -104,12 +103,14 @@ router.beforeEach(async (to, _from, next) => {
   if (requiresAuth && !token) {
     // 需要认证但未登录，重定向到登录页
     next({ name: 'Login', query: { redirect: to.fullPath } });
-  } else if (to.name === 'Login' && token) {
+    return;
+  }
+  if (to.name === 'Login' && token) {
     // 已登录但访问登录页，重定向到首页
     next({ name: 'Chat' });
-  } else {
-    next();
+    return;
   }
+  next();
 });
 
 export default router;

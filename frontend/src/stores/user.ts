@@ -58,9 +58,9 @@ export const useUserStore = defineStore('user', () => {
     token.value = newToken;
     if (newToken) {
       localStorage.setItem('token', newToken);
-    } else {
-      localStorage.removeItem('token');
+      return
     }
+    localStorage.removeItem('token');
   };
 
   // 设置当前用户
@@ -170,10 +170,8 @@ export const useUserStore = defineStore('user', () => {
   // 初始化方法
   // =====================
 
-  // 初始化用户数据（登录后调用）
+  // 初始化用户数据
   const initUserData = async () => {
-    if (!token.value) return;
-
     try {
       const [userRes, personaRes, settingRes, configsRes] = await Promise.all([
         userClient.getCurrentUser({}),

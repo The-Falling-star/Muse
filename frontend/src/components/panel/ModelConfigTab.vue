@@ -206,6 +206,7 @@ const syncFromPreset = (preset: Preset) => {
 // 加载活跃预设
 const loadActivePreset = async () => {
   const activePresetId = userStore.currentUser?.activePresetId;
+  console.log('activePresetId:', activePresetId)
   if (!activePresetId) {
     activePreset.value = null;
     return;

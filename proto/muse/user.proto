@@ -14,10 +14,17 @@ option go_package = "github.com/ling/muse/gen/muse;muse";
 message SysUser {
   int32 id = 1;                 // 用户唯一标识ID
   string username = 2;          // 用户名，用于登录
-  int32 active_persona_id = 4;  // 当前激活的用户人设ID
-  int32 active_preset_id = 5;   // 当前激活的预设ID
-  int64 created_at = 6;         // 创建时间（Unix时间戳）
-  int64 updated_at = 7;         // 最后更新时间（Unix时间戳）
+  int32 active_persona_id = 3;  // 当前激活的用户人设ID
+  int32 active_preset_id = 4;   // 当前激活的预设ID
+  Theme theme = 5;              // 界面主题
+  string language = 6;          // 语言设置（如 zh-CN、en-US）
+  bool send_on_enter = 7;       // 是否按回车键发送消息
+  bool show_timestamps = 8;     // 是否显示消息时间戳
+  int64 created_at = 9;         // 创建时间（Unix时间戳）
+  int64 updated_at = 10;        // 最后更新时间（Unix时间戳）
+  APIProvider provider = 11;    // API服务提供商
+  string model = 12;            // 使用的模型名称
+  string base_url = 13;         // API基础URL（用于代理或自定义端点）
 }
 
 // Persona 用户人设，定义用户在对话中的身份
@@ -31,26 +38,12 @@ message Persona {
   int64 updated_at = 7;   // 最后更新时间（Unix时间戳）
 }
 
-// UserSetting 用户个性化设置
-message UserSetting {
-  int32 id = 1;              // 设置记录ID
-  int32 user_id = 2;         // 所属用户ID
-  Theme theme = 3;           // 界面主题
-  string language = 4;       // 语言设置（如 zh-CN、en-US）
-  bool send_on_enter = 5;    // 是否按回车键发送消息
-  bool show_timestamps = 6;  // 是否显示消息时间戳
-  int64 created_at = 7;      // 创建时间（Unix时间戳）
-  int64 updated_at = 8;      // 最后更新时间（Unix时间戳）
-}
-
 // APIConfig API连接配置
 message APIConfig {
   int32 id = 1;            // 配置唯一标识ID
   int32 user_id = 2;       // 所属用户ID
-  string name = 3;         // 配置名称
   APIProvider provider = 4; // API服务提供商
   string api_key = 5;      // API密钥（创建/更新时使用，查询时不返回）
-  string base_url = 6;     // API基础URL（用于代理或自定义端点）
   string model = 7;        // 使用的模型名称
   bool is_active = 8;      // 是否为当前激活的配置
   int64 created_at = 9;    // 创建时间（Unix时间戳）
@@ -170,76 +163,61 @@ message SetActivePersonaResponse {}
 // ================================
 
 // 获取用户设置请求
-message GetUserSettingRequest {}
+message GetUserInfoRequest {}
 
-// 获取用户设置响应
-message GetUserSettingResponse {
-  UserSetting setting = 1;
+// 获取用户信息响应
+message GetUserInfoResponse {
+  SysUser user = 1;
 }
 
-// 更新用户设置请求
-message UpdateUserSettingRequest {
+// 更新用户信息请求
+message UpdateUserInfoRequest {
   Theme theme = 1;
   string language = 2;
   bool send_on_enter = 3;
   bool show_timestamps = 4;
+  APIProvider provider = 5;
+  string model = 6;
+  string base_url = 7;
 }
 
-// 更新用户设置响应
-message UpdateUserSettingResponse {
-  UserSetting setting = 1;
-}
+// 更新用户信息响应
+message UpdateUserInfoResponse {}
 
 // ================================
 // API配置
 // ================================
 
 // 获取API配置列表请求
-message ListAPIConfigsRequest {}
+message ListAPIConfigsRequest {
+  APIProvider provider = 1;
+}
 
 // 获取API配置列表响应
 message ListAPIConfigsResponse {
   repeated APIConfig configs = 1;
 }
 
-// 获取单个API配置请求
-message GetAPIConfigRequest {
-  int32 id = 1;
-}
-
-// 获取单个API配置响应
-message GetAPIConfigResponse {
-  APIConfig config = 1;
-}
-
 // 创建API配置请求
 message CreateAPIConfigRequest {
-  string name = 1;
   APIProvider provider = 2;
   string api_key = 3;
-  optional string base_url = 4;
   optional string model = 5;
 }
 
 // 创建API配置响应
-message CreateAPIConfigResponse {
-  APIConfig config = 1;
-}
+message CreateAPIConfigResponse {}
 
 // 更新API配置请求
 message UpdateAPIConfigRequest {
   int32 id = 1;
-  string name = 2;
   APIProvider provider = 3;
   optional string api_key = 4;  // 可选，不传则不更新
-  optional string base_url = 5;
   optional string model = 6;
 }
 
 // 更新API配置响应
-message UpdateAPIConfigResponse {
-  APIConfig config = 1;
-}
+message UpdateAPIConfigResponse {}
 
 // 删除API配置请求
 message DeleteAPIConfigRequest {
@@ -307,15 +285,13 @@ service UserService {
   // 设置活跃人设
   rpc SetActivePersona(SetActivePersonaRequest) returns (SetActivePersonaResponse);
 
-  // 获取用户设置
-  rpc GetUserSetting(GetUserSettingRequest) returns (GetUserSettingResponse);
-  // 更新用户设置
-  rpc UpdateUserSetting(UpdateUserSettingRequest) returns (UpdateUserSettingResponse);
+  // 获取用户信息
+  rpc GetUserInfo(GetUserInfoRequest) returns (GetUserInfoResponse);
+  // 更新用户信息
+  rpc UpdateUserInfo(UpdateUserInfoRequest) returns (UpdateUserInfoResponse);
 
   // 获取API配置列表
   rpc ListAPIConfigs(ListAPIConfigsRequest) returns (ListAPIConfigsResponse);
-  // 获取单个API配置
-  rpc GetAPIConfig(GetAPIConfigRequest) returns (GetAPIConfigResponse);
   // 创建API配置
   rpc CreateAPIConfig(CreateAPIConfigRequest) returns (CreateAPIConfigResponse);
   // 更新API配置

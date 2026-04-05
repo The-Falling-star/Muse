@@ -162,31 +162,31 @@ func (u *UserServer) SetActivePersona(ctx context.Context, req *connect.Request[
 	return doResponse(ctx, "SetActivePersona", req.Msg, resp)
 }
 
-// GetUserSetting 获取用户设置
-func (u *UserServer) GetUserSetting(ctx context.Context, req *connect.Request[pb.GetUserSettingRequest]) (
-	*connect.Response[pb.GetUserSettingResponse], error) {
-	resp, err := u.user.GetUserSetting(ctx, req.Msg)
+// GetUserInfo 获取用户信息
+func (u *UserServer) GetUserInfo(ctx context.Context, req *connect.Request[pb.GetUserInfoRequest]) (
+	*connect.Response[pb.GetUserInfoResponse], error) {
+	resp, err := u.user.GetUserInfo(ctx, req.Msg)
 	if err != nil {
-		return doResponseExp(ctx, "GetUserSetting", req.Msg, resp, err)
+		return doResponseExp(ctx, "GetUserInfo", req.Msg, resp, err)
 	}
-	return doResponse(ctx, "GetUserSetting", req.Msg, resp)
+	return doResponse(ctx, "GetUserInfo", req.Msg, resp)
 }
 
-// UpdateUserSetting 更新用户设置
-func (u *UserServer) UpdateUserSetting(ctx context.Context, req *connect.Request[pb.UpdateUserSettingRequest]) (
-	*connect.Response[pb.UpdateUserSettingResponse], error) {
+// UpdateUserInfo 更新用户信息
+func (u *UserServer) UpdateUserInfo(ctx context.Context, req *connect.Request[pb.UpdateUserInfoRequest]) (
+	*connect.Response[pb.UpdateUserInfoResponse], error) {
 	// 开启事务
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return doResponseExp(ctx, "UpdateUserSetting", req.Msg, (*pb.UpdateUserSettingResponse)(nil), err)
+		return doResponseExp(ctx, "UpdateUserInfo", req.Msg, (*pb.UpdateUserInfoResponse)(nil), err)
 	}
 
-	resp, err := u.user.UpdateUserSetting(ctx, req.Msg)
+	resp, err := u.user.UpdateUserInfo(ctx, req.Msg)
 	if err != nil {
-		return doResponseExp(ctx, "UpdateUserSetting", req.Msg, resp, err)
+		return doResponseExp(ctx, "UpdateUserInfo", req.Msg, resp, err)
 	}
-	return doResponse(ctx, "UpdateUserSetting", req.Msg, resp)
+	return doResponse(ctx, "UpdateUserInfo", req.Msg, resp)
 }
 
 // ListAPIConfigs 获取API配置列表
@@ -197,16 +197,6 @@ func (u *UserServer) ListAPIConfigs(ctx context.Context, req *connect.Request[pb
 		return doResponseExp(ctx, "ListAPIConfigs", req.Msg, resp, err)
 	}
 	return doResponse(ctx, "ListAPIConfigs", req.Msg, resp)
-}
-
-// GetAPIConfig 获取指定的API配置
-func (u *UserServer) GetAPIConfig(ctx context.Context, req *connect.Request[pb.GetAPIConfigRequest]) (
-	*connect.Response[pb.GetAPIConfigResponse], error) {
-	resp, err := u.user.GetAPIConfig(ctx, req.Msg)
-	if err != nil {
-		return doResponseExp(ctx, "GetAPIConfig", req.Msg, resp, err)
-	}
-	return doResponse(ctx, "GetAPIConfig", req.Msg, resp)
 }
 
 // CreateAPIConfig 创建新的API配置

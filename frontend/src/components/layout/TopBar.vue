@@ -127,6 +127,7 @@ import {
 import { useAppStore } from '@/stores/app';
 import { useThemeStore } from '@/stores/theme';
 import { useUserStore } from '@/stores/user';
+import { APIProvider } from '@/gen/muse/common_pb';
 
 const route = useRoute();
 const router = useRouter();
@@ -152,7 +153,7 @@ const activeModelName = computed(() => {
   if (!config) {
     return '选择模型';
   }
-  return config.model || config.name || '选择模型';
+  return config.model || APIProvider[config.provider] || '选择模型';
 });
 
 // 点击Logo回到对话

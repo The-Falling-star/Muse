@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file muse/user.proto.
  */
 export const file_muse_user: GenFile = /*@__PURE__*/
-  fileDesc("Cg9tdXNlL3VzZXIucHJvdG8SBG11c2UihAEKB1N5c1VzZXISCgoCaWQYASABKAUSEAoIdXNlcm5hbWUYAiABKAkSGQoRYWN0aXZlX3BlcnNvbmFfaWQYBCABKAUSGAoQYWN0aXZlX3ByZXNldF9pZBgFIAEoBRISCgpjcmVhdGVkX2F0GAYgASgDEhIKCnVwZGF0ZWRfYXQYByABKAMigQEKB1BlcnNvbmESCgoCaWQYASABKAUSDwoHdXNlcl9pZBgCIAEoBRIMCgRuYW1lGAMgASgJEg4KBmF2YXRhchgEIAEoCRITCgtkZXNjcmlwdGlvbhgFIAEoCRISCgpjcmVhdGVkX2F0GAYgASgDEhIKCnVwZGF0ZWRfYXQYByABKAMisAEKC1VzZXJTZXR0aW5nEgoKAmlkGAEgASgFEg8KB3VzZXJfaWQYAiABKAUSGgoFdGhlbWUYAyABKA4yCy5tdXNlLlRoZW1lEhAKCGxhbmd1YWdlGAQgASgJEhUKDXNlbmRfb25fZW50ZXIYBSABKAgSFwoPc2hvd190aW1lc3RhbXBzGAYgASgIEhIKCmNyZWF0ZWRfYXQYByABKAMSEgoKdXBkYXRlZF9hdBgIIAEoAyLIAQoJQVBJQ29uZmlnEgoKAmlkGAEgASgFEg8KB3VzZXJfaWQYAiABKAUSDAoEbmFtZRgDIAEoCRIjCghwcm92aWRlchgEIAEoDjIRLm11c2UuQVBJUHJvdmlkZXISDwoHYXBpX2tleRgFIAEoCRIQCghiYXNlX3VybBgGIAEoCRINCgVtb2RlbBgHIAEoCRIRCglpc19hY3RpdmUYCCABKAgSEgoKY3JlYXRlZF9hdBgJIAEoAxISCgp1cGRhdGVkX2F0GAogASgDIjUKD1JlZ2lzdGVyUmVxdWVzdBIQCgh1c2VybmFtZRgBIAEoCRIQCghwYXNzd29yZBgCIAEoCSI+ChBSZWdpc3RlclJlc3BvbnNlEhsKBHVzZXIYASABKAsyDS5tdXNlLlN5c1VzZXISDQoFdG9rZW4YAiABKAkiMgoMTG9naW5SZXF1ZXN0EhAKCHVzZXJuYW1lGAEgASgJEhAKCHBhc3N3b3JkGAIgASgJIjsKDUxvZ2luUmVzcG9uc2USGwoEdXNlchgBIAEoCzINLm11c2UuU3lzVXNlchINCgV0b2tlbhgCIAEoCSIXChVHZXRDdXJyZW50VXNlclJlcXVlc3QiNQoWR2V0Q3VycmVudFVzZXJSZXNwb25zZRIbCgR1c2VyGAEgASgLMg0ubXVzZS5TeXNVc2VyIkMKFUNoYW5nZVBhc3N3b3JkUmVxdWVzdBIUCgxvbGRfcGFzc3dvcmQYASABKAkSFAoMbmV3X3Bhc3N3b3JkGAIgASgJIhgKFkNoYW5nZVBhc3N3b3JkUmVzcG9uc2UiFQoTTGlzdFBlcnNvbmFzUmVxdWVzdCI3ChRMaXN0UGVyc29uYXNSZXNwb25zZRIfCghwZXJzb25hcxgBIAMoCzINLm11c2UuUGVyc29uYSIfChFHZXRQZXJzb25hUmVxdWVzdBIKCgJpZBgBIAEoBSI0ChJHZXRQZXJzb25hUmVzcG9uc2USHgoHcGVyc29uYRgBIAEoCzINLm11c2UuUGVyc29uYSJuChRDcmVhdGVQZXJzb25hUmVxdWVzdBIMCgRuYW1lGAEgASgJEhMKBmF2YXRhchgCIAEoCUgAiAEBEhgKC2Rlc2NyaXB0aW9uGAMgASgJSAGIAQFCCQoHX2F2YXRhckIOCgxfZGVzY3JpcHRpb24iNwoVQ3JlYXRlUGVyc29uYVJlc3BvbnNlEh4KB3BlcnNvbmEYASABKAsyDS5tdXNlLlBlcnNvbmEiegoUVXBkYXRlUGVyc29uYVJlcXVlc3QSCgoCaWQYASABKAUSDAoEbmFtZRgCIAEoCRITCgZhdmF0YXIYAyABKAlIAIgBARIYCgtkZXNjcmlwdGlvbhgEIAEoCUgBiAEBQgkKB19hdmF0YXJCDgoMX2Rlc2NyaXB0aW9uIjcKFVVwZGF0ZVBlcnNvbmFSZXNwb25zZRIeCgdwZXJzb25hGAEgASgLMg0ubXVzZS5QZXJzb25hIiIKFERlbGV0ZVBlcnNvbmFSZXF1ZXN0EgoKAmlkGAEgASgFIhcKFURlbGV0ZVBlcnNvbmFSZXNwb25zZSItChdTZXRBY3RpdmVQZXJzb25hUmVxdWVzdBISCgpwZXJzb25hX2lkGAEgASgFIhoKGFNldEFjdGl2ZVBlcnNvbmFSZXNwb25zZSIXChVHZXRVc2VyU2V0dGluZ1JlcXVlc3QiPAoWR2V0VXNlclNldHRpbmdSZXNwb25zZRIiCgdzZXR0aW5nGAEgASgLMhEubXVzZS5Vc2VyU2V0dGluZyJ4ChhVcGRhdGVVc2VyU2V0dGluZ1JlcXVlc3QSGgoFdGhlbWUYASABKA4yCy5tdXNlLlRoZW1lEhAKCGxhbmd1YWdlGAIgASgJEhUKDXNlbmRfb25fZW50ZXIYAyABKAgSFwoPc2hvd190aW1lc3RhbXBzGAQgASgIIj8KGVVwZGF0ZVVzZXJTZXR0aW5nUmVzcG9uc2USIgoHc2V0dGluZxgBIAEoCzIRLm11c2UuVXNlclNldHRpbmciFwoVTGlzdEFQSUNvbmZpZ3NSZXF1ZXN0IjoKFkxpc3RBUElDb25maWdzUmVzcG9uc2USIAoHY29uZmlncxgBIAMoCzIPLm11c2UuQVBJQ29uZmlnIiEKE0dldEFQSUNvbmZpZ1JlcXVlc3QSCgoCaWQYASABKAUiNwoUR2V0QVBJQ29uZmlnUmVzcG9uc2USHwoGY29uZmlnGAEgASgLMg8ubXVzZS5BUElDb25maWcingEKFkNyZWF0ZUFQSUNvbmZpZ1JlcXVlc3QSDAoEbmFtZRgBIAEoCRIjCghwcm92aWRlchgCIAEoDjIRLm11c2UuQVBJUHJvdmlkZXISDwoHYXBpX2tleRgDIAEoCRIVCghiYXNlX3VybBgEIAEoCUgAiAEBEhIKBW1vZGVsGAUgASgJSAGIAQFCCwoJX2Jhc2VfdXJsQggKBl9tb2RlbCI6ChdDcmVhdGVBUElDb25maWdSZXNwb25zZRIfCgZjb25maWcYASABKAsyDy5tdXNlLkFQSUNvbmZpZyK7AQoWVXBkYXRlQVBJQ29uZmlnUmVxdWVzdBIKCgJpZBgBIAEoBRIMCgRuYW1lGAIgASgJEiMKCHByb3ZpZGVyGAMgASgOMhEubXVzZS5BUElQcm92aWRlchIUCgdhcGlfa2V5GAQgASgJSACIAQESFQoIYmFzZV91cmwYBSABKAlIAYgBARISCgVtb2RlbBgGIAEoCUgCiAEBQgoKCF9hcGlfa2V5QgsKCV9iYXNlX3VybEIICgZfbW9kZWwiOgoXVXBkYXRlQVBJQ29uZmlnUmVzcG9uc2USHwoGY29uZmlnGAEgASgLMg8ubXVzZS5BUElDb25maWciJAoWRGVsZXRlQVBJQ29uZmlnUmVxdWVzdBIKCgJpZBgBIAEoBSIZChdEZWxldGVBUElDb25maWdSZXNwb25zZSIuChlTZXRBY3RpdmVBUElDb25maWdSZXF1ZXN0EhEKCWNvbmZpZ19pZBgBIAEoBSIcChpTZXRBY3RpdmVBUElDb25maWdSZXNwb25zZSIiChRUZXN0QVBJQ29uZmlnUmVxdWVzdBIKCgJpZBgBIAEoBSJ+ChVUZXN0QVBJQ29uZmlnUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIaCg1lcnJvcl9tZXNzYWdlGAIgASgJSACIAQESFwoKbW9kZWxfaW5mbxgDIAEoCUgBiAEBQhAKDl9lcnJvcl9tZXNzYWdlQg0KC19tb2RlbF9pbmZvIhgKFkdldFB1YmxpY0NvbmZpZ1JlcXVlc3QiLAoXR2V0UHVibGljQ29uZmlnUmVzcG9uc2USEQoJc2tpcF9hdXRoGAEgASgIMucLCgtVc2VyU2VydmljZRJOCg9HZXRQdWJsaWNDb25maWcSHC5tdXNlLkdldFB1YmxpY0NvbmZpZ1JlcXVlc3QaHS5tdXNlLkdldFB1YmxpY0NvbmZpZ1Jlc3BvbnNlEjkKCFJlZ2lzdGVyEhUubXVzZS5SZWdpc3RlclJlcXVlc3QaFi5tdXNlLlJlZ2lzdGVyUmVzcG9uc2USMAoFTG9naW4SEi5tdXNlLkxvZ2luUmVxdWVzdBoTLm11c2UuTG9naW5SZXNwb25zZRJLCg5HZXRDdXJyZW50VXNlchIbLm11c2UuR2V0Q3VycmVudFVzZXJSZXF1ZXN0GhwubXVzZS5HZXRDdXJyZW50VXNlclJlc3BvbnNlEksKDkNoYW5nZVBhc3N3b3JkEhsubXVzZS5DaGFuZ2VQYXNzd29yZFJlcXVlc3QaHC5tdXNlLkNoYW5nZVBhc3N3b3JkUmVzcG9uc2USRQoMTGlzdFBlcnNvbmFzEhkubXVzZS5MaXN0UGVyc29uYXNSZXF1ZXN0GhoubXVzZS5MaXN0UGVyc29uYXNSZXNwb25zZRI/CgpHZXRQZXJzb25hEhcubXVzZS5HZXRQZXJzb25hUmVxdWVzdBoYLm11c2UuR2V0UGVyc29uYVJlc3BvbnNlEkgKDUNyZWF0ZVBlcnNvbmESGi5tdXNlLkNyZWF0ZVBlcnNvbmFSZXF1ZXN0GhsubXVzZS5DcmVhdGVQZXJzb25hUmVzcG9uc2USSAoNVXBkYXRlUGVyc29uYRIaLm11c2UuVXBkYXRlUGVyc29uYVJlcXVlc3QaGy5tdXNlLlVwZGF0ZVBlcnNvbmFSZXNwb25zZRJICg1EZWxldGVQZXJzb25hEhoubXVzZS5EZWxldGVQZXJzb25hUmVxdWVzdBobLm11c2UuRGVsZXRlUGVyc29uYVJlc3BvbnNlElEKEFNldEFjdGl2ZVBlcnNvbmESHS5tdXNlLlNldEFjdGl2ZVBlcnNvbmFSZXF1ZXN0Gh4ubXVzZS5TZXRBY3RpdmVQZXJzb25hUmVzcG9uc2USSwoOR2V0VXNlclNldHRpbmcSGy5tdXNlLkdldFVzZXJTZXR0aW5nUmVxdWVzdBocLm11c2UuR2V0VXNlclNldHRpbmdSZXNwb25zZRJUChFVcGRhdGVVc2VyU2V0dGluZxIeLm11c2UuVXBkYXRlVXNlclNldHRpbmdSZXF1ZXN0Gh8ubXVzZS5VcGRhdGVVc2VyU2V0dGluZ1Jlc3BvbnNlEksKDkxpc3RBUElDb25maWdzEhsubXVzZS5MaXN0QVBJQ29uZmlnc1JlcXVlc3QaHC5tdXNlLkxpc3RBUElDb25maWdzUmVzcG9uc2USRQoMR2V0QVBJQ29uZmlnEhkubXVzZS5HZXRBUElDb25maWdSZXF1ZXN0GhoubXVzZS5HZXRBUElDb25maWdSZXNwb25zZRJOCg9DcmVhdGVBUElDb25maWcSHC5tdXNlLkNyZWF0ZUFQSUNvbmZpZ1JlcXVlc3QaHS5tdXNlLkNyZWF0ZUFQSUNvbmZpZ1Jlc3BvbnNlEk4KD1VwZGF0ZUFQSUNvbmZpZxIcLm11c2UuVXBkYXRlQVBJQ29uZmlnUmVxdWVzdBodLm11c2UuVXBkYXRlQVBJQ29uZmlnUmVzcG9uc2USTgoPRGVsZXRlQVBJQ29uZmlnEhwubXVzZS5EZWxldGVBUElDb25maWdSZXF1ZXN0Gh0ubXVzZS5EZWxldGVBUElDb25maWdSZXNwb25zZRJXChJTZXRBY3RpdmVBUElDb25maWcSHy5tdXNlLlNldEFjdGl2ZUFQSUNvbmZpZ1JlcXVlc3QaIC5tdXNlLlNldEFjdGl2ZUFQSUNvbmZpZ1Jlc3BvbnNlEkgKDVRlc3RBUElDb25maWcSGi5tdXNlLlRlc3RBUElDb25maWdSZXF1ZXN0GhsubXVzZS5UZXN0QVBJQ29uZmlnUmVzcG9uc2VCZAoIY29tLm11c2VCCVVzZXJQcm90b1ABWh1naXRodWIuY29tL2xpbmcvbXVzZS9nZW4vbXVzZaICA01YWKoCBE11c2XKAgRNdXNl4gIQTXVzZVxHUEJNZXRhZGF0YeoCBE11c2ViBnByb3RvMw", [file_muse_common]);
+  fileDesc("Cg9tdXNlL3VzZXIucHJvdG8SBG11c2UiqAIKB1N5c1VzZXISCgoCaWQYASABKAUSEAoIdXNlcm5hbWUYAiABKAkSGQoRYWN0aXZlX3BlcnNvbmFfaWQYAyABKAUSGAoQYWN0aXZlX3ByZXNldF9pZBgEIAEoBRIaCgV0aGVtZRgFIAEoDjILLm11c2UuVGhlbWUSEAoIbGFuZ3VhZ2UYBiABKAkSFQoNc2VuZF9vbl9lbnRlchgHIAEoCBIXCg9zaG93X3RpbWVzdGFtcHMYCCABKAgSEgoKY3JlYXRlZF9hdBgJIAEoAxISCgp1cGRhdGVkX2F0GAogASgDEiMKCHByb3ZpZGVyGAsgASgOMhEubXVzZS5BUElQcm92aWRlchINCgVtb2RlbBgMIAEoCRIQCghiYXNlX3VybBgNIAEoCSKBAQoHUGVyc29uYRIKCgJpZBgBIAEoBRIPCgd1c2VyX2lkGAIgASgFEgwKBG5hbWUYAyABKAkSDgoGYXZhdGFyGAQgASgJEhMKC2Rlc2NyaXB0aW9uGAUgASgJEhIKCmNyZWF0ZWRfYXQYBiABKAMSEgoKdXBkYXRlZF9hdBgHIAEoAyKoAQoJQVBJQ29uZmlnEgoKAmlkGAEgASgFEg8KB3VzZXJfaWQYAiABKAUSIwoIcHJvdmlkZXIYBCABKA4yES5tdXNlLkFQSVByb3ZpZGVyEg8KB2FwaV9rZXkYBSABKAkSDQoFbW9kZWwYByABKAkSEQoJaXNfYWN0aXZlGAggASgIEhIKCmNyZWF0ZWRfYXQYCSABKAMSEgoKdXBkYXRlZF9hdBgKIAEoAyI1Cg9SZWdpc3RlclJlcXVlc3QSEAoIdXNlcm5hbWUYASABKAkSEAoIcGFzc3dvcmQYAiABKAkiPgoQUmVnaXN0ZXJSZXNwb25zZRIbCgR1c2VyGAEgASgLMg0ubXVzZS5TeXNVc2VyEg0KBXRva2VuGAIgASgJIjIKDExvZ2luUmVxdWVzdBIQCgh1c2VybmFtZRgBIAEoCRIQCghwYXNzd29yZBgCIAEoCSI7Cg1Mb2dpblJlc3BvbnNlEhsKBHVzZXIYASABKAsyDS5tdXNlLlN5c1VzZXISDQoFdG9rZW4YAiABKAkiFwoVR2V0Q3VycmVudFVzZXJSZXF1ZXN0IjUKFkdldEN1cnJlbnRVc2VyUmVzcG9uc2USGwoEdXNlchgBIAEoCzINLm11c2UuU3lzVXNlciJDChVDaGFuZ2VQYXNzd29yZFJlcXVlc3QSFAoMb2xkX3Bhc3N3b3JkGAEgASgJEhQKDG5ld19wYXNzd29yZBgCIAEoCSIYChZDaGFuZ2VQYXNzd29yZFJlc3BvbnNlIhUKE0xpc3RQZXJzb25hc1JlcXVlc3QiNwoUTGlzdFBlcnNvbmFzUmVzcG9uc2USHwoIcGVyc29uYXMYASADKAsyDS5tdXNlLlBlcnNvbmEiHwoRR2V0UGVyc29uYVJlcXVlc3QSCgoCaWQYASABKAUiNAoSR2V0UGVyc29uYVJlc3BvbnNlEh4KB3BlcnNvbmEYASABKAsyDS5tdXNlLlBlcnNvbmEibgoUQ3JlYXRlUGVyc29uYVJlcXVlc3QSDAoEbmFtZRgBIAEoCRITCgZhdmF0YXIYAiABKAlIAIgBARIYCgtkZXNjcmlwdGlvbhgDIAEoCUgBiAEBQgkKB19hdmF0YXJCDgoMX2Rlc2NyaXB0aW9uIjcKFUNyZWF0ZVBlcnNvbmFSZXNwb25zZRIeCgdwZXJzb25hGAEgASgLMg0ubXVzZS5QZXJzb25hInoKFFVwZGF0ZVBlcnNvbmFSZXF1ZXN0EgoKAmlkGAEgASgFEgwKBG5hbWUYAiABKAkSEwoGYXZhdGFyGAMgASgJSACIAQESGAoLZGVzY3JpcHRpb24YBCABKAlIAYgBAUIJCgdfYXZhdGFyQg4KDF9kZXNjcmlwdGlvbiI3ChVVcGRhdGVQZXJzb25hUmVzcG9uc2USHgoHcGVyc29uYRgBIAEoCzINLm11c2UuUGVyc29uYSIiChREZWxldGVQZXJzb25hUmVxdWVzdBIKCgJpZBgBIAEoBSIXChVEZWxldGVQZXJzb25hUmVzcG9uc2UiLQoXU2V0QWN0aXZlUGVyc29uYVJlcXVlc3QSEgoKcGVyc29uYV9pZBgBIAEoBSIaChhTZXRBY3RpdmVQZXJzb25hUmVzcG9uc2UiFAoSR2V0VXNlckluZm9SZXF1ZXN0IjIKE0dldFVzZXJJbmZvUmVzcG9uc2USGwoEdXNlchgBIAEoCzINLm11c2UuU3lzVXNlciK7AQoVVXBkYXRlVXNlckluZm9SZXF1ZXN0EhoKBXRoZW1lGAEgASgOMgsubXVzZS5UaGVtZRIQCghsYW5ndWFnZRgCIAEoCRIVCg1zZW5kX29uX2VudGVyGAMgASgIEhcKD3Nob3dfdGltZXN0YW1wcxgEIAEoCBIjCghwcm92aWRlchgFIAEoDjIRLm11c2UuQVBJUHJvdmlkZXISDQoFbW9kZWwYBiABKAkSEAoIYmFzZV91cmwYByABKAkiGAoWVXBkYXRlVXNlckluZm9SZXNwb25zZSI8ChVMaXN0QVBJQ29uZmlnc1JlcXVlc3QSIwoIcHJvdmlkZXIYASABKA4yES5tdXNlLkFQSVByb3ZpZGVyIjoKFkxpc3RBUElDb25maWdzUmVzcG9uc2USIAoHY29uZmlncxgBIAMoCzIPLm11c2UuQVBJQ29uZmlnImwKFkNyZWF0ZUFQSUNvbmZpZ1JlcXVlc3QSIwoIcHJvdmlkZXIYAiABKA4yES5tdXNlLkFQSVByb3ZpZGVyEg8KB2FwaV9rZXkYAyABKAkSEgoFbW9kZWwYBSABKAlIAIgBAUIICgZfbW9kZWwiGQoXQ3JlYXRlQVBJQ29uZmlnUmVzcG9uc2UiiQEKFlVwZGF0ZUFQSUNvbmZpZ1JlcXVlc3QSCgoCaWQYASABKAUSIwoIcHJvdmlkZXIYAyABKA4yES5tdXNlLkFQSVByb3ZpZGVyEhQKB2FwaV9rZXkYBCABKAlIAIgBARISCgVtb2RlbBgGIAEoCUgBiAEBQgoKCF9hcGlfa2V5QggKBl9tb2RlbCIZChdVcGRhdGVBUElDb25maWdSZXNwb25zZSIkChZEZWxldGVBUElDb25maWdSZXF1ZXN0EgoKAmlkGAEgASgFIhkKF0RlbGV0ZUFQSUNvbmZpZ1Jlc3BvbnNlIi4KGVNldEFjdGl2ZUFQSUNvbmZpZ1JlcXVlc3QSEQoJY29uZmlnX2lkGAEgASgFIhwKGlNldEFjdGl2ZUFQSUNvbmZpZ1Jlc3BvbnNlIiIKFFRlc3RBUElDb25maWdSZXF1ZXN0EgoKAmlkGAEgASgFIn4KFVRlc3RBUElDb25maWdSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEhoKDWVycm9yX21lc3NhZ2UYAiABKAlIAIgBARIXCgptb2RlbF9pbmZvGAMgASgJSAGIAQFCEAoOX2Vycm9yX21lc3NhZ2VCDQoLX21vZGVsX2luZm8iGAoWR2V0UHVibGljQ29uZmlnUmVxdWVzdCIsChdHZXRQdWJsaWNDb25maWdSZXNwb25zZRIRCglza2lwX2F1dGgYASABKAgyjgsKC1VzZXJTZXJ2aWNlEk4KD0dldFB1YmxpY0NvbmZpZxIcLm11c2UuR2V0UHVibGljQ29uZmlnUmVxdWVzdBodLm11c2UuR2V0UHVibGljQ29uZmlnUmVzcG9uc2USOQoIUmVnaXN0ZXISFS5tdXNlLlJlZ2lzdGVyUmVxdWVzdBoWLm11c2UuUmVnaXN0ZXJSZXNwb25zZRIwCgVMb2dpbhISLm11c2UuTG9naW5SZXF1ZXN0GhMubXVzZS5Mb2dpblJlc3BvbnNlEksKDkdldEN1cnJlbnRVc2VyEhsubXVzZS5HZXRDdXJyZW50VXNlclJlcXVlc3QaHC5tdXNlLkdldEN1cnJlbnRVc2VyUmVzcG9uc2USSwoOQ2hhbmdlUGFzc3dvcmQSGy5tdXNlLkNoYW5nZVBhc3N3b3JkUmVxdWVzdBocLm11c2UuQ2hhbmdlUGFzc3dvcmRSZXNwb25zZRJFCgxMaXN0UGVyc29uYXMSGS5tdXNlLkxpc3RQZXJzb25hc1JlcXVlc3QaGi5tdXNlLkxpc3RQZXJzb25hc1Jlc3BvbnNlEj8KCkdldFBlcnNvbmESFy5tdXNlLkdldFBlcnNvbmFSZXF1ZXN0GhgubXVzZS5HZXRQZXJzb25hUmVzcG9uc2USSAoNQ3JlYXRlUGVyc29uYRIaLm11c2UuQ3JlYXRlUGVyc29uYVJlcXVlc3QaGy5tdXNlLkNyZWF0ZVBlcnNvbmFSZXNwb25zZRJICg1VcGRhdGVQZXJzb25hEhoubXVzZS5VcGRhdGVQZXJzb25hUmVxdWVzdBobLm11c2UuVXBkYXRlUGVyc29uYVJlc3BvbnNlEkgKDURlbGV0ZVBlcnNvbmESGi5tdXNlLkRlbGV0ZVBlcnNvbmFSZXF1ZXN0GhsubXVzZS5EZWxldGVQZXJzb25hUmVzcG9uc2USUQoQU2V0QWN0aXZlUGVyc29uYRIdLm11c2UuU2V0QWN0aXZlUGVyc29uYVJlcXVlc3QaHi5tdXNlLlNldEFjdGl2ZVBlcnNvbmFSZXNwb25zZRJCCgtHZXRVc2VySW5mbxIYLm11c2UuR2V0VXNlckluZm9SZXF1ZXN0GhkubXVzZS5HZXRVc2VySW5mb1Jlc3BvbnNlEksKDlVwZGF0ZVVzZXJJbmZvEhsubXVzZS5VcGRhdGVVc2VySW5mb1JlcXVlc3QaHC5tdXNlLlVwZGF0ZVVzZXJJbmZvUmVzcG9uc2USSwoOTGlzdEFQSUNvbmZpZ3MSGy5tdXNlLkxpc3RBUElDb25maWdzUmVxdWVzdBocLm11c2UuTGlzdEFQSUNvbmZpZ3NSZXNwb25zZRJOCg9DcmVhdGVBUElDb25maWcSHC5tdXNlLkNyZWF0ZUFQSUNvbmZpZ1JlcXVlc3QaHS5tdXNlLkNyZWF0ZUFQSUNvbmZpZ1Jlc3BvbnNlEk4KD1VwZGF0ZUFQSUNvbmZpZxIcLm11c2UuVXBkYXRlQVBJQ29uZmlnUmVxdWVzdBodLm11c2UuVXBkYXRlQVBJQ29uZmlnUmVzcG9uc2USTgoPRGVsZXRlQVBJQ29uZmlnEhwubXVzZS5EZWxldGVBUElDb25maWdSZXF1ZXN0Gh0ubXVzZS5EZWxldGVBUElDb25maWdSZXNwb25zZRJXChJTZXRBY3RpdmVBUElDb25maWcSHy5tdXNlLlNldEFjdGl2ZUFQSUNvbmZpZ1JlcXVlc3QaIC5tdXNlLlNldEFjdGl2ZUFQSUNvbmZpZ1Jlc3BvbnNlEkgKDVRlc3RBUElDb25maWcSGi5tdXNlLlRlc3RBUElDb25maWdSZXF1ZXN0GhsubXVzZS5UZXN0QVBJQ29uZmlnUmVzcG9uc2VCZAoIY29tLm11c2VCCVVzZXJQcm90b1ABWh1naXRodWIuY29tL2xpbmcvbXVzZS9nZW4vbXVzZaICA01YWKoCBE11c2XKAgRNdXNl4gIQTXVzZVxHUEJNZXRhZGF0YeoCBE11c2ViBnByb3RvMw", [file_muse_common]);
 
 /**
  * SysUser 系统用户信息
@@ -37,30 +37,79 @@ export type SysUser = Message<"muse.SysUser"> & {
   /**
    * 当前激活的用户人设ID
    *
-   * @generated from field: int32 active_persona_id = 4;
+   * @generated from field: int32 active_persona_id = 3;
    */
   activePersonaId: number;
 
   /**
    * 当前激活的预设ID
    *
-   * @generated from field: int32 active_preset_id = 5;
+   * @generated from field: int32 active_preset_id = 4;
    */
   activePresetId: number;
 
   /**
+   * 界面主题
+   *
+   * @generated from field: muse.Theme theme = 5;
+   */
+  theme: Theme;
+
+  /**
+   * 语言设置（如 zh-CN、en-US）
+   *
+   * @generated from field: string language = 6;
+   */
+  language: string;
+
+  /**
+   * 是否按回车键发送消息
+   *
+   * @generated from field: bool send_on_enter = 7;
+   */
+  sendOnEnter: boolean;
+
+  /**
+   * 是否显示消息时间戳
+   *
+   * @generated from field: bool show_timestamps = 8;
+   */
+  showTimestamps: boolean;
+
+  /**
    * 创建时间（Unix时间戳）
    *
-   * @generated from field: int64 created_at = 6;
+   * @generated from field: int64 created_at = 9;
    */
   createdAt: bigint;
 
   /**
    * 最后更新时间（Unix时间戳）
    *
-   * @generated from field: int64 updated_at = 7;
+   * @generated from field: int64 updated_at = 10;
    */
   updatedAt: bigint;
+
+  /**
+   * API服务提供商
+   *
+   * @generated from field: muse.APIProvider provider = 11;
+   */
+  provider: APIProvider;
+
+  /**
+   * 使用的模型名称
+   *
+   * @generated from field: string model = 12;
+   */
+  model: string;
+
+  /**
+   * API基础URL（用于代理或自定义端点）
+   *
+   * @generated from field: string base_url = 13;
+   */
+  baseUrl: string;
 };
 
 /**
@@ -134,76 +183,6 @@ export const PersonaSchema: GenMessage<Persona> = /*@__PURE__*/
   messageDesc(file_muse_user, 1);
 
 /**
- * UserSetting 用户个性化设置
- *
- * @generated from message muse.UserSetting
- */
-export type UserSetting = Message<"muse.UserSetting"> & {
-  /**
-   * 设置记录ID
-   *
-   * @generated from field: int32 id = 1;
-   */
-  id: number;
-
-  /**
-   * 所属用户ID
-   *
-   * @generated from field: int32 user_id = 2;
-   */
-  userId: number;
-
-  /**
-   * 界面主题
-   *
-   * @generated from field: muse.Theme theme = 3;
-   */
-  theme: Theme;
-
-  /**
-   * 语言设置（如 zh-CN、en-US）
-   *
-   * @generated from field: string language = 4;
-   */
-  language: string;
-
-  /**
-   * 是否按回车键发送消息
-   *
-   * @generated from field: bool send_on_enter = 5;
-   */
-  sendOnEnter: boolean;
-
-  /**
-   * 是否显示消息时间戳
-   *
-   * @generated from field: bool show_timestamps = 6;
-   */
-  showTimestamps: boolean;
-
-  /**
-   * 创建时间（Unix时间戳）
-   *
-   * @generated from field: int64 created_at = 7;
-   */
-  createdAt: bigint;
-
-  /**
-   * 最后更新时间（Unix时间戳）
-   *
-   * @generated from field: int64 updated_at = 8;
-   */
-  updatedAt: bigint;
-};
-
-/**
- * Describes the message muse.UserSetting.
- * Use `create(UserSettingSchema)` to create a new message.
- */
-export const UserSettingSchema: GenMessage<UserSetting> = /*@__PURE__*/
-  messageDesc(file_muse_user, 2);
-
-/**
  * APIConfig API连接配置
  *
  * @generated from message muse.APIConfig
@@ -224,13 +203,6 @@ export type APIConfig = Message<"muse.APIConfig"> & {
   userId: number;
 
   /**
-   * 配置名称
-   *
-   * @generated from field: string name = 3;
-   */
-  name: string;
-
-  /**
    * API服务提供商
    *
    * @generated from field: muse.APIProvider provider = 4;
@@ -243,13 +215,6 @@ export type APIConfig = Message<"muse.APIConfig"> & {
    * @generated from field: string api_key = 5;
    */
   apiKey: string;
-
-  /**
-   * API基础URL（用于代理或自定义端点）
-   *
-   * @generated from field: string base_url = 6;
-   */
-  baseUrl: string;
 
   /**
    * 使用的模型名称
@@ -285,7 +250,7 @@ export type APIConfig = Message<"muse.APIConfig"> & {
  * Use `create(APIConfigSchema)` to create a new message.
  */
 export const APIConfigSchema: GenMessage<APIConfig> = /*@__PURE__*/
-  messageDesc(file_muse_user, 3);
+  messageDesc(file_muse_user, 2);
 
 /**
  * 注册请求
@@ -309,7 +274,7 @@ export type RegisterRequest = Message<"muse.RegisterRequest"> & {
  * Use `create(RegisterRequestSchema)` to create a new message.
  */
 export const RegisterRequestSchema: GenMessage<RegisterRequest> = /*@__PURE__*/
-  messageDesc(file_muse_user, 4);
+  messageDesc(file_muse_user, 3);
 
 /**
  * 注册响应
@@ -333,7 +298,7 @@ export type RegisterResponse = Message<"muse.RegisterResponse"> & {
  * Use `create(RegisterResponseSchema)` to create a new message.
  */
 export const RegisterResponseSchema: GenMessage<RegisterResponse> = /*@__PURE__*/
-  messageDesc(file_muse_user, 5);
+  messageDesc(file_muse_user, 4);
 
 /**
  * 登录请求
@@ -357,7 +322,7 @@ export type LoginRequest = Message<"muse.LoginRequest"> & {
  * Use `create(LoginRequestSchema)` to create a new message.
  */
 export const LoginRequestSchema: GenMessage<LoginRequest> = /*@__PURE__*/
-  messageDesc(file_muse_user, 6);
+  messageDesc(file_muse_user, 5);
 
 /**
  * 登录响应
@@ -381,7 +346,7 @@ export type LoginResponse = Message<"muse.LoginResponse"> & {
  * Use `create(LoginResponseSchema)` to create a new message.
  */
 export const LoginResponseSchema: GenMessage<LoginResponse> = /*@__PURE__*/
-  messageDesc(file_muse_user, 7);
+  messageDesc(file_muse_user, 6);
 
 /**
  * 获取当前用户请求
@@ -396,7 +361,7 @@ export type GetCurrentUserRequest = Message<"muse.GetCurrentUserRequest"> & {
  * Use `create(GetCurrentUserRequestSchema)` to create a new message.
  */
 export const GetCurrentUserRequestSchema: GenMessage<GetCurrentUserRequest> = /*@__PURE__*/
-  messageDesc(file_muse_user, 8);
+  messageDesc(file_muse_user, 7);
 
 /**
  * 获取当前用户响应
@@ -415,7 +380,7 @@ export type GetCurrentUserResponse = Message<"muse.GetCurrentUserResponse"> & {
  * Use `create(GetCurrentUserResponseSchema)` to create a new message.
  */
 export const GetCurrentUserResponseSchema: GenMessage<GetCurrentUserResponse> = /*@__PURE__*/
-  messageDesc(file_muse_user, 9);
+  messageDesc(file_muse_user, 8);
 
 /**
  * 修改密码请求
@@ -439,7 +404,7 @@ export type ChangePasswordRequest = Message<"muse.ChangePasswordRequest"> & {
  * Use `create(ChangePasswordRequestSchema)` to create a new message.
  */
 export const ChangePasswordRequestSchema: GenMessage<ChangePasswordRequest> = /*@__PURE__*/
-  messageDesc(file_muse_user, 10);
+  messageDesc(file_muse_user, 9);
 
 /**
  * 修改密码响应
@@ -454,7 +419,7 @@ export type ChangePasswordResponse = Message<"muse.ChangePasswordResponse"> & {
  * Use `create(ChangePasswordResponseSchema)` to create a new message.
  */
 export const ChangePasswordResponseSchema: GenMessage<ChangePasswordResponse> = /*@__PURE__*/
-  messageDesc(file_muse_user, 11);
+  messageDesc(file_muse_user, 10);
 
 /**
  * 获取人设列表请求
@@ -469,7 +434,7 @@ export type ListPersonasRequest = Message<"muse.ListPersonasRequest"> & {
  * Use `create(ListPersonasRequestSchema)` to create a new message.
  */
 export const ListPersonasRequestSchema: GenMessage<ListPersonasRequest> = /*@__PURE__*/
-  messageDesc(file_muse_user, 12);
+  messageDesc(file_muse_user, 11);
 
 /**
  * 获取人设列表响应
@@ -488,7 +453,7 @@ export type ListPersonasResponse = Message<"muse.ListPersonasResponse"> & {
  * Use `create(ListPersonasResponseSchema)` to create a new message.
  */
 export const ListPersonasResponseSchema: GenMessage<ListPersonasResponse> = /*@__PURE__*/
-  messageDesc(file_muse_user, 13);
+  messageDesc(file_muse_user, 12);
 
 /**
  * 获取单个人设请求
@@ -507,7 +472,7 @@ export type GetPersonaRequest = Message<"muse.GetPersonaRequest"> & {
  * Use `create(GetPersonaRequestSchema)` to create a new message.
  */
 export const GetPersonaRequestSchema: GenMessage<GetPersonaRequest> = /*@__PURE__*/
-  messageDesc(file_muse_user, 14);
+  messageDesc(file_muse_user, 13);
 
 /**
  * 获取单个人设响应
@@ -526,7 +491,7 @@ export type GetPersonaResponse = Message<"muse.GetPersonaResponse"> & {
  * Use `create(GetPersonaResponseSchema)` to create a new message.
  */
 export const GetPersonaResponseSchema: GenMessage<GetPersonaResponse> = /*@__PURE__*/
-  messageDesc(file_muse_user, 15);
+  messageDesc(file_muse_user, 14);
 
 /**
  * 创建人设请求
@@ -555,7 +520,7 @@ export type CreatePersonaRequest = Message<"muse.CreatePersonaRequest"> & {
  * Use `create(CreatePersonaRequestSchema)` to create a new message.
  */
 export const CreatePersonaRequestSchema: GenMessage<CreatePersonaRequest> = /*@__PURE__*/
-  messageDesc(file_muse_user, 16);
+  messageDesc(file_muse_user, 15);
 
 /**
  * 创建人设响应
@@ -574,7 +539,7 @@ export type CreatePersonaResponse = Message<"muse.CreatePersonaResponse"> & {
  * Use `create(CreatePersonaResponseSchema)` to create a new message.
  */
 export const CreatePersonaResponseSchema: GenMessage<CreatePersonaResponse> = /*@__PURE__*/
-  messageDesc(file_muse_user, 17);
+  messageDesc(file_muse_user, 16);
 
 /**
  * 更新人设请求
@@ -608,7 +573,7 @@ export type UpdatePersonaRequest = Message<"muse.UpdatePersonaRequest"> & {
  * Use `create(UpdatePersonaRequestSchema)` to create a new message.
  */
 export const UpdatePersonaRequestSchema: GenMessage<UpdatePersonaRequest> = /*@__PURE__*/
-  messageDesc(file_muse_user, 18);
+  messageDesc(file_muse_user, 17);
 
 /**
  * 更新人设响应
@@ -627,7 +592,7 @@ export type UpdatePersonaResponse = Message<"muse.UpdatePersonaResponse"> & {
  * Use `create(UpdatePersonaResponseSchema)` to create a new message.
  */
 export const UpdatePersonaResponseSchema: GenMessage<UpdatePersonaResponse> = /*@__PURE__*/
-  messageDesc(file_muse_user, 19);
+  messageDesc(file_muse_user, 18);
 
 /**
  * 删除人设请求
@@ -646,7 +611,7 @@ export type DeletePersonaRequest = Message<"muse.DeletePersonaRequest"> & {
  * Use `create(DeletePersonaRequestSchema)` to create a new message.
  */
 export const DeletePersonaRequestSchema: GenMessage<DeletePersonaRequest> = /*@__PURE__*/
-  messageDesc(file_muse_user, 20);
+  messageDesc(file_muse_user, 19);
 
 /**
  * 删除人设响应
@@ -661,7 +626,7 @@ export type DeletePersonaResponse = Message<"muse.DeletePersonaResponse"> & {
  * Use `create(DeletePersonaResponseSchema)` to create a new message.
  */
 export const DeletePersonaResponseSchema: GenMessage<DeletePersonaResponse> = /*@__PURE__*/
-  messageDesc(file_muse_user, 21);
+  messageDesc(file_muse_user, 20);
 
 /**
  * 设置活跃人设请求
@@ -680,7 +645,7 @@ export type SetActivePersonaRequest = Message<"muse.SetActivePersonaRequest"> & 
  * Use `create(SetActivePersonaRequestSchema)` to create a new message.
  */
 export const SetActivePersonaRequestSchema: GenMessage<SetActivePersonaRequest> = /*@__PURE__*/
-  messageDesc(file_muse_user, 22);
+  messageDesc(file_muse_user, 21);
 
 /**
  * 设置活跃人设响应
@@ -695,48 +660,48 @@ export type SetActivePersonaResponse = Message<"muse.SetActivePersonaResponse"> 
  * Use `create(SetActivePersonaResponseSchema)` to create a new message.
  */
 export const SetActivePersonaResponseSchema: GenMessage<SetActivePersonaResponse> = /*@__PURE__*/
-  messageDesc(file_muse_user, 23);
+  messageDesc(file_muse_user, 22);
 
 /**
  * 获取用户设置请求
  *
- * @generated from message muse.GetUserSettingRequest
+ * @generated from message muse.GetUserInfoRequest
  */
-export type GetUserSettingRequest = Message<"muse.GetUserSettingRequest"> & {
+export type GetUserInfoRequest = Message<"muse.GetUserInfoRequest"> & {
 };
 
 /**
- * Describes the message muse.GetUserSettingRequest.
- * Use `create(GetUserSettingRequestSchema)` to create a new message.
+ * Describes the message muse.GetUserInfoRequest.
+ * Use `create(GetUserInfoRequestSchema)` to create a new message.
  */
-export const GetUserSettingRequestSchema: GenMessage<GetUserSettingRequest> = /*@__PURE__*/
+export const GetUserInfoRequestSchema: GenMessage<GetUserInfoRequest> = /*@__PURE__*/
+  messageDesc(file_muse_user, 23);
+
+/**
+ * 获取用户信息响应
+ *
+ * @generated from message muse.GetUserInfoResponse
+ */
+export type GetUserInfoResponse = Message<"muse.GetUserInfoResponse"> & {
+  /**
+   * @generated from field: muse.SysUser user = 1;
+   */
+  user?: SysUser;
+};
+
+/**
+ * Describes the message muse.GetUserInfoResponse.
+ * Use `create(GetUserInfoResponseSchema)` to create a new message.
+ */
+export const GetUserInfoResponseSchema: GenMessage<GetUserInfoResponse> = /*@__PURE__*/
   messageDesc(file_muse_user, 24);
 
 /**
- * 获取用户设置响应
+ * 更新用户信息请求
  *
- * @generated from message muse.GetUserSettingResponse
+ * @generated from message muse.UpdateUserInfoRequest
  */
-export type GetUserSettingResponse = Message<"muse.GetUserSettingResponse"> & {
-  /**
-   * @generated from field: muse.UserSetting setting = 1;
-   */
-  setting?: UserSetting;
-};
-
-/**
- * Describes the message muse.GetUserSettingResponse.
- * Use `create(GetUserSettingResponseSchema)` to create a new message.
- */
-export const GetUserSettingResponseSchema: GenMessage<GetUserSettingResponse> = /*@__PURE__*/
-  messageDesc(file_muse_user, 25);
-
-/**
- * 更新用户设置请求
- *
- * @generated from message muse.UpdateUserSettingRequest
- */
-export type UpdateUserSettingRequest = Message<"muse.UpdateUserSettingRequest"> & {
+export type UpdateUserInfoRequest = Message<"muse.UpdateUserInfoRequest"> & {
   /**
    * @generated from field: muse.Theme theme = 1;
    */
@@ -756,33 +721,44 @@ export type UpdateUserSettingRequest = Message<"muse.UpdateUserSettingRequest"> 
    * @generated from field: bool show_timestamps = 4;
    */
   showTimestamps: boolean;
-};
 
-/**
- * Describes the message muse.UpdateUserSettingRequest.
- * Use `create(UpdateUserSettingRequestSchema)` to create a new message.
- */
-export const UpdateUserSettingRequestSchema: GenMessage<UpdateUserSettingRequest> = /*@__PURE__*/
-  messageDesc(file_muse_user, 26);
-
-/**
- * 更新用户设置响应
- *
- * @generated from message muse.UpdateUserSettingResponse
- */
-export type UpdateUserSettingResponse = Message<"muse.UpdateUserSettingResponse"> & {
   /**
-   * @generated from field: muse.UserSetting setting = 1;
+   * @generated from field: muse.APIProvider provider = 5;
    */
-  setting?: UserSetting;
+  provider: APIProvider;
+
+  /**
+   * @generated from field: string model = 6;
+   */
+  model: string;
+
+  /**
+   * @generated from field: string base_url = 7;
+   */
+  baseUrl: string;
 };
 
 /**
- * Describes the message muse.UpdateUserSettingResponse.
- * Use `create(UpdateUserSettingResponseSchema)` to create a new message.
+ * Describes the message muse.UpdateUserInfoRequest.
+ * Use `create(UpdateUserInfoRequestSchema)` to create a new message.
  */
-export const UpdateUserSettingResponseSchema: GenMessage<UpdateUserSettingResponse> = /*@__PURE__*/
-  messageDesc(file_muse_user, 27);
+export const UpdateUserInfoRequestSchema: GenMessage<UpdateUserInfoRequest> = /*@__PURE__*/
+  messageDesc(file_muse_user, 25);
+
+/**
+ * 更新用户信息响应
+ *
+ * @generated from message muse.UpdateUserInfoResponse
+ */
+export type UpdateUserInfoResponse = Message<"muse.UpdateUserInfoResponse"> & {
+};
+
+/**
+ * Describes the message muse.UpdateUserInfoResponse.
+ * Use `create(UpdateUserInfoResponseSchema)` to create a new message.
+ */
+export const UpdateUserInfoResponseSchema: GenMessage<UpdateUserInfoResponse> = /*@__PURE__*/
+  messageDesc(file_muse_user, 26);
 
 /**
  * 获取API配置列表请求
@@ -790,6 +766,10 @@ export const UpdateUserSettingResponseSchema: GenMessage<UpdateUserSettingRespon
  * @generated from message muse.ListAPIConfigsRequest
  */
 export type ListAPIConfigsRequest = Message<"muse.ListAPIConfigsRequest"> & {
+  /**
+   * @generated from field: muse.APIProvider provider = 1;
+   */
+  provider: APIProvider;
 };
 
 /**
@@ -797,7 +777,7 @@ export type ListAPIConfigsRequest = Message<"muse.ListAPIConfigsRequest"> & {
  * Use `create(ListAPIConfigsRequestSchema)` to create a new message.
  */
 export const ListAPIConfigsRequestSchema: GenMessage<ListAPIConfigsRequest> = /*@__PURE__*/
-  messageDesc(file_muse_user, 28);
+  messageDesc(file_muse_user, 27);
 
 /**
  * 获取API配置列表响应
@@ -816,45 +796,7 @@ export type ListAPIConfigsResponse = Message<"muse.ListAPIConfigsResponse"> & {
  * Use `create(ListAPIConfigsResponseSchema)` to create a new message.
  */
 export const ListAPIConfigsResponseSchema: GenMessage<ListAPIConfigsResponse> = /*@__PURE__*/
-  messageDesc(file_muse_user, 29);
-
-/**
- * 获取单个API配置请求
- *
- * @generated from message muse.GetAPIConfigRequest
- */
-export type GetAPIConfigRequest = Message<"muse.GetAPIConfigRequest"> & {
-  /**
-   * @generated from field: int32 id = 1;
-   */
-  id: number;
-};
-
-/**
- * Describes the message muse.GetAPIConfigRequest.
- * Use `create(GetAPIConfigRequestSchema)` to create a new message.
- */
-export const GetAPIConfigRequestSchema: GenMessage<GetAPIConfigRequest> = /*@__PURE__*/
-  messageDesc(file_muse_user, 30);
-
-/**
- * 获取单个API配置响应
- *
- * @generated from message muse.GetAPIConfigResponse
- */
-export type GetAPIConfigResponse = Message<"muse.GetAPIConfigResponse"> & {
-  /**
-   * @generated from field: muse.APIConfig config = 1;
-   */
-  config?: APIConfig;
-};
-
-/**
- * Describes the message muse.GetAPIConfigResponse.
- * Use `create(GetAPIConfigResponseSchema)` to create a new message.
- */
-export const GetAPIConfigResponseSchema: GenMessage<GetAPIConfigResponse> = /*@__PURE__*/
-  messageDesc(file_muse_user, 31);
+  messageDesc(file_muse_user, 28);
 
 /**
  * 创建API配置请求
@@ -862,11 +804,6 @@ export const GetAPIConfigResponseSchema: GenMessage<GetAPIConfigResponse> = /*@_
  * @generated from message muse.CreateAPIConfigRequest
  */
 export type CreateAPIConfigRequest = Message<"muse.CreateAPIConfigRequest"> & {
-  /**
-   * @generated from field: string name = 1;
-   */
-  name: string;
-
   /**
    * @generated from field: muse.APIProvider provider = 2;
    */
@@ -876,11 +813,6 @@ export type CreateAPIConfigRequest = Message<"muse.CreateAPIConfigRequest"> & {
    * @generated from field: string api_key = 3;
    */
   apiKey: string;
-
-  /**
-   * @generated from field: optional string base_url = 4;
-   */
-  baseUrl?: string;
 
   /**
    * @generated from field: optional string model = 5;
@@ -893,7 +825,7 @@ export type CreateAPIConfigRequest = Message<"muse.CreateAPIConfigRequest"> & {
  * Use `create(CreateAPIConfigRequestSchema)` to create a new message.
  */
 export const CreateAPIConfigRequestSchema: GenMessage<CreateAPIConfigRequest> = /*@__PURE__*/
-  messageDesc(file_muse_user, 32);
+  messageDesc(file_muse_user, 29);
 
 /**
  * 创建API配置响应
@@ -901,10 +833,6 @@ export const CreateAPIConfigRequestSchema: GenMessage<CreateAPIConfigRequest> = 
  * @generated from message muse.CreateAPIConfigResponse
  */
 export type CreateAPIConfigResponse = Message<"muse.CreateAPIConfigResponse"> & {
-  /**
-   * @generated from field: muse.APIConfig config = 1;
-   */
-  config?: APIConfig;
 };
 
 /**
@@ -912,7 +840,7 @@ export type CreateAPIConfigResponse = Message<"muse.CreateAPIConfigResponse"> & 
  * Use `create(CreateAPIConfigResponseSchema)` to create a new message.
  */
 export const CreateAPIConfigResponseSchema: GenMessage<CreateAPIConfigResponse> = /*@__PURE__*/
-  messageDesc(file_muse_user, 33);
+  messageDesc(file_muse_user, 30);
 
 /**
  * 更新API配置请求
@@ -924,11 +852,6 @@ export type UpdateAPIConfigRequest = Message<"muse.UpdateAPIConfigRequest"> & {
    * @generated from field: int32 id = 1;
    */
   id: number;
-
-  /**
-   * @generated from field: string name = 2;
-   */
-  name: string;
 
   /**
    * @generated from field: muse.APIProvider provider = 3;
@@ -943,11 +866,6 @@ export type UpdateAPIConfigRequest = Message<"muse.UpdateAPIConfigRequest"> & {
   apiKey?: string;
 
   /**
-   * @generated from field: optional string base_url = 5;
-   */
-  baseUrl?: string;
-
-  /**
    * @generated from field: optional string model = 6;
    */
   model?: string;
@@ -958,7 +876,7 @@ export type UpdateAPIConfigRequest = Message<"muse.UpdateAPIConfigRequest"> & {
  * Use `create(UpdateAPIConfigRequestSchema)` to create a new message.
  */
 export const UpdateAPIConfigRequestSchema: GenMessage<UpdateAPIConfigRequest> = /*@__PURE__*/
-  messageDesc(file_muse_user, 34);
+  messageDesc(file_muse_user, 31);
 
 /**
  * 更新API配置响应
@@ -966,10 +884,6 @@ export const UpdateAPIConfigRequestSchema: GenMessage<UpdateAPIConfigRequest> = 
  * @generated from message muse.UpdateAPIConfigResponse
  */
 export type UpdateAPIConfigResponse = Message<"muse.UpdateAPIConfigResponse"> & {
-  /**
-   * @generated from field: muse.APIConfig config = 1;
-   */
-  config?: APIConfig;
 };
 
 /**
@@ -977,7 +891,7 @@ export type UpdateAPIConfigResponse = Message<"muse.UpdateAPIConfigResponse"> & 
  * Use `create(UpdateAPIConfigResponseSchema)` to create a new message.
  */
 export const UpdateAPIConfigResponseSchema: GenMessage<UpdateAPIConfigResponse> = /*@__PURE__*/
-  messageDesc(file_muse_user, 35);
+  messageDesc(file_muse_user, 32);
 
 /**
  * 删除API配置请求
@@ -996,7 +910,7 @@ export type DeleteAPIConfigRequest = Message<"muse.DeleteAPIConfigRequest"> & {
  * Use `create(DeleteAPIConfigRequestSchema)` to create a new message.
  */
 export const DeleteAPIConfigRequestSchema: GenMessage<DeleteAPIConfigRequest> = /*@__PURE__*/
-  messageDesc(file_muse_user, 36);
+  messageDesc(file_muse_user, 33);
 
 /**
  * 删除API配置响应
@@ -1011,7 +925,7 @@ export type DeleteAPIConfigResponse = Message<"muse.DeleteAPIConfigResponse"> & 
  * Use `create(DeleteAPIConfigResponseSchema)` to create a new message.
  */
 export const DeleteAPIConfigResponseSchema: GenMessage<DeleteAPIConfigResponse> = /*@__PURE__*/
-  messageDesc(file_muse_user, 37);
+  messageDesc(file_muse_user, 34);
 
 /**
  * 设置活跃API配置请求
@@ -1030,7 +944,7 @@ export type SetActiveAPIConfigRequest = Message<"muse.SetActiveAPIConfigRequest"
  * Use `create(SetActiveAPIConfigRequestSchema)` to create a new message.
  */
 export const SetActiveAPIConfigRequestSchema: GenMessage<SetActiveAPIConfigRequest> = /*@__PURE__*/
-  messageDesc(file_muse_user, 38);
+  messageDesc(file_muse_user, 35);
 
 /**
  * 设置活跃API配置响应
@@ -1045,7 +959,7 @@ export type SetActiveAPIConfigResponse = Message<"muse.SetActiveAPIConfigRespons
  * Use `create(SetActiveAPIConfigResponseSchema)` to create a new message.
  */
 export const SetActiveAPIConfigResponseSchema: GenMessage<SetActiveAPIConfigResponse> = /*@__PURE__*/
-  messageDesc(file_muse_user, 39);
+  messageDesc(file_muse_user, 36);
 
 /**
  * 测试API配置请求
@@ -1064,7 +978,7 @@ export type TestAPIConfigRequest = Message<"muse.TestAPIConfigRequest"> & {
  * Use `create(TestAPIConfigRequestSchema)` to create a new message.
  */
 export const TestAPIConfigRequestSchema: GenMessage<TestAPIConfigRequest> = /*@__PURE__*/
-  messageDesc(file_muse_user, 40);
+  messageDesc(file_muse_user, 37);
 
 /**
  * 测试API配置响应
@@ -1095,7 +1009,7 @@ export type TestAPIConfigResponse = Message<"muse.TestAPIConfigResponse"> & {
  * Use `create(TestAPIConfigResponseSchema)` to create a new message.
  */
 export const TestAPIConfigResponseSchema: GenMessage<TestAPIConfigResponse> = /*@__PURE__*/
-  messageDesc(file_muse_user, 41);
+  messageDesc(file_muse_user, 38);
 
 /**
  * 获取公共配置请求
@@ -1110,7 +1024,7 @@ export type GetPublicConfigRequest = Message<"muse.GetPublicConfigRequest"> & {
  * Use `create(GetPublicConfigRequestSchema)` to create a new message.
  */
 export const GetPublicConfigRequestSchema: GenMessage<GetPublicConfigRequest> = /*@__PURE__*/
-  messageDesc(file_muse_user, 42);
+  messageDesc(file_muse_user, 39);
 
 /**
  * 获取公共配置响应
@@ -1131,7 +1045,7 @@ export type GetPublicConfigResponse = Message<"muse.GetPublicConfigResponse"> & 
  * Use `create(GetPublicConfigResponseSchema)` to create a new message.
  */
 export const GetPublicConfigResponseSchema: GenMessage<GetPublicConfigResponse> = /*@__PURE__*/
-  messageDesc(file_muse_user, 43);
+  messageDesc(file_muse_user, 40);
 
 /**
  * 用户服务（包含认证、人设、用户设置和API配置的管理）
@@ -1250,24 +1164,24 @@ export const UserService: GenService<{
     output: typeof SetActivePersonaResponseSchema;
   },
   /**
-   * 获取用户设置
+   * 获取用户信息
    *
-   * @generated from rpc muse.UserService.GetUserSetting
+   * @generated from rpc muse.UserService.GetUserInfo
    */
-  getUserSetting: {
+  getUserInfo: {
     methodKind: "unary";
-    input: typeof GetUserSettingRequestSchema;
-    output: typeof GetUserSettingResponseSchema;
+    input: typeof GetUserInfoRequestSchema;
+    output: typeof GetUserInfoResponseSchema;
   },
   /**
-   * 更新用户设置
+   * 更新用户信息
    *
-   * @generated from rpc muse.UserService.UpdateUserSetting
+   * @generated from rpc muse.UserService.UpdateUserInfo
    */
-  updateUserSetting: {
+  updateUserInfo: {
     methodKind: "unary";
-    input: typeof UpdateUserSettingRequestSchema;
-    output: typeof UpdateUserSettingResponseSchema;
+    input: typeof UpdateUserInfoRequestSchema;
+    output: typeof UpdateUserInfoResponseSchema;
   },
   /**
    * 获取API配置列表
@@ -1278,16 +1192,6 @@ export const UserService: GenService<{
     methodKind: "unary";
     input: typeof ListAPIConfigsRequestSchema;
     output: typeof ListAPIConfigsResponseSchema;
-  },
-  /**
-   * 获取单个API配置
-   *
-   * @generated from rpc muse.UserService.GetAPIConfig
-   */
-  getAPIConfig: {
-    methodKind: "unary";
-    input: typeof GetAPIConfigRequestSchema;
-    output: typeof GetAPIConfigResponseSchema;
   },
   /**
    * 创建API配置

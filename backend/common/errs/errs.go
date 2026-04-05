@@ -62,13 +62,8 @@ const (
 	EmptyPersonaName = "人设名称不能为空"
 	PersonaNotFound  = "人设不存在"
 
-	// User Setting
-	InvalidUserSettingID = "无效的用户设置ID"
-	UserSettingNotFound  = "用户设置不存在"
-
 	// API Config
 	InvalidAPIConfigID = "无效的API配置ID"
-	EmptyAPIConfigName = "API配置名称不能为空"
 	APIConfigNotFound  = "API配置不存在"
 	EmptyAPIKey        = "API Key不能为空"
 	InvalidAPIProvider = "无效的API提供商"

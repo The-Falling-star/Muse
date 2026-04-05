@@ -249,7 +249,6 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 	var globalWorldInfos []*entity.WorldInfo
 	var charWorldInfo *entity.WorldInfo
 	var regexRules []*entity.RegexRule
-	var worldInfoByDepth map[int][]string
 
 	if cacheHit {
 		// 使用缓存数据
@@ -268,7 +267,6 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 		promptItems = sessionCache.PromptItems
 		regexRules = sessionCache.RegexRules
 		globalWorldInfos = sessionCache.WorldInfos
-		worldInfoByDepth = sessionCache.WorldInfoByDepth
 
 		// 角色卡世界书从世界书列表中查找
 		if sessionCache.Character != nil && sessionCache.Character.WorldInfoID > 0 {
@@ -281,61 +279,13 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 		}
 	} else {
 		// 缓存未命中，从数据库加载数据
-		session, err = c.chatRepo.GetSessionWithMessages(ctx, sessionID, userID)
+		session, preset, promptItems, globalWorldInfos,
+			charWorldInfo, regexRules, err = c.loadSessionDataFromDB(ctx, sessionID, userID, user)
 		if err != nil {
-			return err
+			return errs.NewStandardf(errs.Code(err), "从数据库加载会话数据失败: %v", err)
 		}
-		if session == nil {
-			return errs.NewStandard(connect.CodeNotFound, errs.SessionNotFound)
-		}
-
-		// 获取预设（包含提示项）
-		if user.ActivePresetID > 0 {
-			preset, err = c.presetRepo.GetByID(ctx, user.ActivePresetID, userID)
-			if err != nil {
-				return err
-			}
-		}
-		if preset == nil {
-			// 使用默认预设
-			preset = &entity.Preset{
-				Temperature:    1.0,
-				TopP:           1.0,
-				MaxTokens:      2048,
-				CandidateCount: 1,
-			}
-		}
-
-		// 加载预设的提示项
-		promptItems = make([]*entity.PromptItem, 0, len(preset.PromptItems))
-		for _, item := range preset.PromptItems {
-			if item.IsEnabled {
-				promptItems = append(promptItems, &item)
-			}
-		}
-
-		// 加载全局世界书
-		globalWorldInfos, err = c.worldInfoRepo.ListGlobalWorldInfosWithEntries(ctx, userID)
-		if err != nil {
-			return err
-		}
-
-		// 加载角色卡关联的世界书
-		if session.Character != nil && session.Character.WorldInfoID > 0 {
-			charWorldInfo, err = c.worldInfoRepo.GetByIDWithEntries(ctx, session.Character.WorldInfoID, userID)
-			if err != nil {
-				return err
-			}
-		}
-
-		// 加载正则规则
-		regexRules, err = c.regexRepo.ListEnabledRules(ctx, preset.ID, session.CharacterID)
-		if err != nil {
-			return err
-		}
-
 		// 预计算世界书按深度分组
-		worldInfoByDepth = c.buildWorldInfoByDepth(globalWorldInfos, charWorldInfo)
+		worldInfoByDepth := c.buildWorldInfoByDepth(globalWorldInfos, charWorldInfo)
 
 		// 构建缓存
 		sessionCache = c.buildSessionCache(session, preset, promptItems, globalWorldInfos, charWorldInfo, regexRules, worldInfoByDepth)
@@ -526,6 +476,79 @@ func (c *chatImpl) getVersionInfo(ctx context.Context, userID int, sessionCache 
 	return versions, nil
 }
 
+// loadSessionDataFromDB 从数据库加载会话数据（缓存未命中时调用）
+func (c *chatImpl) loadSessionDataFromDB(ctx context.Context, sessionID, userID int, user *entity.User) (
+	session *entity.ChatSession,
+	preset *entity.Preset,
+	promptItems []*entity.PromptItem,
+	globalWorldInfos []*entity.WorldInfo,
+	charWorldInfo *entity.WorldInfo,
+	regexRules []*entity.RegexRule,
+	err error,
+) {
+	// 从数据库获取会话数据
+	session, err = c.chatRepo.GetSessionWithMessages(ctx, sessionID, userID)
+	if err != nil {
+		err = errs.NewStandardf(errs.Code(err), "获取会话数据失败: %v", err)
+		return
+	}
+	if session == nil {
+		err = errs.NewStandard(connect.CodeNotFound, errs.SessionNotFound)
+		return
+	}
+
+	// 获取预设（包含提示项）
+	if user.ActivePresetID > 0 {
+		preset, err = c.presetRepo.GetByID(ctx, user.ActivePresetID, userID)
+		if err != nil {
+			err = errs.NewStandardf(errs.Code(err), "用户: %d 获取预设: %d 数据失败: %v",
+				userID, user.ActivePresetID, err)
+			return
+		}
+	}
+	if preset == nil {
+		// 使用默认预设
+		preset = &entity.Preset{
+			Temperature:    constant.DefaultTemperature,
+			TopP:           constant.DefaultTopP,
+			MaxTokens:      constant.DefaultMaxTokens,
+			CandidateCount: constant.DefaultCandidateCount,
+		}
+	}
+
+	// 加载预设的提示项
+	promptItems = make([]*entity.PromptItem, 0, len(preset.PromptItems))
+	for _, item := range preset.PromptItems {
+		if item.IsEnabled {
+			promptItems = append(promptItems, &item)
+		}
+	}
+
+	// 加载全局世界书
+	globalWorldInfos, err = c.worldInfoRepo.ListGlobalWorldInfosWithEntries(ctx, userID)
+	if err != nil {
+		err = errs.NewStandardf(errs.Code(err), "用户: %d 获取全局世界书数据失败: %v", userID, err)
+		return
+	}
+
+	// 加载角色卡关联的世界书
+	if session.Character != nil && session.Character.WorldInfoID > 0 {
+		charWorldInfo, err = c.worldInfoRepo.GetByIDWithEntries(ctx, session.Character.WorldInfoID, userID)
+		if err != nil {
+			err = errs.NewStandardf(errs.Code(err), "用户: %d 获取角色世界书数据失败: %v", userID, err)
+			return
+		}
+	}
+
+	// 加载正则规则
+	regexRules, err = c.regexRepo.ListEnabledRules(ctx, preset.ID, session.CharacterID)
+	if err != nil {
+		err = errs.NewStandardf(errs.Code(err), "用户: %d 获取正则规则数据失败: %v", userID, err)
+		return
+	}
+	return
+}
+
 // buildWorldInfoByDepth 预计算世界书按深度分组
 func (c *chatImpl) buildWorldInfoByDepth(globalWorldInfos []*entity.WorldInfo, charWorldInfo *entity.WorldInfo) map[int][]string {
 	worldInfoByDepth := make(map[int][]string)
@@ -642,64 +665,6 @@ func (c *chatImpl) InvalidateCacheByUser(userID int64) {
 // GetCacheStats 获取缓存统计信息
 func (c *chatImpl) GetCacheStats() int {
 	return c.cacheManager.Size()
-}
-
-// buildHistoryMessages 构建历史消息列表，并在对应深度插入世界书条目
-func (c *chatImpl) buildHistoryMessages(
-	historyMsgs []entity.Message,
-	worldInfoByDepth map[int][]string,
-	depthPrompts map[int][]string,
-	regexRules []*entity.RegexRule,
-) []model.Message {
-	var messages []model.Message
-
-	// 计算每条消息的深度（从末尾开始计算）
-	totalMessages := len(historyMsgs)
-
-	for i, msg := range historyMsgs {
-		depth := totalMessages - i
-
-		// 在对应深度插入世界书条目和提示项
-		if contents, ok := worldInfoByDepth[depth]; ok {
-			for _, content := range contents {
-				messages = append(messages, model.Message{
-					Role:    pb.Role_System,
-					Content: content,
-				})
-			}
-		}
-		if contents, ok := depthPrompts[depth]; ok {
-			for _, content := range contents {
-				messages = append(messages, model.Message{
-					Role:    pb.Role_System,
-					Content: content,
-				})
-			}
-		}
-
-		// 添加消息内容（使用当前活跃的 swipe）
-		if len(msg.Swipes) > 0 {
-			swipeIndex := msg.ActiveSwipeIndex
-			if swipeIndex >= len(msg.Swipes) {
-				swipeIndex = 0
-			}
-			content := msg.Swipes[swipeIndex].Content
-
-			// 对历史消息应用正则
-			if msg.Role == pb.Role_Assistant {
-				content = c.applyRegexRules(content, regexRules, RegexTextTypeAIOutput)
-			} else {
-				content = c.applyRegexRules(content, regexRules, RegexTextTypeUserInput)
-			}
-
-			messages = append(messages, model.Message{
-				Role:    msg.Role,
-				Content: content,
-			})
-		}
-	}
-
-	return messages
 }
 
 // matchWorldInfoKeys 检查世界书条目的关键词是否匹配

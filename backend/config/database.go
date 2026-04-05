@@ -164,7 +164,6 @@ func autoMigrate(database *gorm.DB) error {
 	return database.AutoMigrate(
 		&entity.User{},
 		&entity.Persona{},
-		&entity.UserSetting{},
 		&entity.Character{},
 		&entity.ChatSession{},
 		&entity.Message{},

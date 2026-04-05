@@ -36,14 +36,13 @@
                       @click="handleSetActiveApiConfig(config.id)"
                     />
                   </template>
-                  <n-thing :title="config.name" :description="getProviderLabel(config.provider)">
+                  <n-thing :title="getProviderLabel(config.provider)" description="">
                     <template #header-extra>
                       <n-tag v-if="config.isActive" type="success" size="small">当前使用</n-tag>
                     </template>
                     <template #description>
                       <n-space :size="4">
                         <n-tag size="small">{{ config.model || '默认模型' }}</n-tag>
-                        <span style="opacity: 0.7">{{ config.baseUrl || '默认地址' }}</span>
                       </n-space>
                     </template>
                   </n-thing>
@@ -154,15 +153,15 @@
               <n-form-item label="主题">
                 <n-radio-group v-model:value="appearanceSettings.theme" @update:value="handleUpdateTheme">
                   <n-space>
-                    <n-radio-button value="DARK">
+                    <n-radio-button :value="Theme.Dark">
                       <n-icon><MoonOutline /></n-icon>
                       暗黑
                     </n-radio-button>
-                    <n-radio-button value="LIGHT">
+                    <n-radio-button :value="Theme.Light">
                       <n-icon><SunnyOutline /></n-icon>
                       明亮
                     </n-radio-button>
-                    <n-radio-button value="SYSTEM">
+                    <n-radio-button :value="Theme.Auto">
                       <n-icon><DesktopOutline /></n-icon>
                       跟随系统
                     </n-radio-button>
@@ -271,20 +270,12 @@
       :mask-closable="false"
     >
       <n-form ref="apiConfigFormRef" :model="apiConfigForm" :rules="apiConfigRules" label-placement="left" label-width="100">
-        <n-form-item label="配置名称" path="name">
-          <n-input v-model:value="apiConfigForm.name" placeholder="输入配置名称" />
-        </n-form-item>
-
         <n-form-item label="服务类型" path="provider">
           <n-select
             v-model:value="apiConfigForm.provider"
             :options="providerOptions"
             placeholder="选择API类型"
           />
-        </n-form-item>
-
-        <n-form-item label="API地址" path="baseUrl">
-          <n-input v-model:value="apiConfigForm.baseUrl" placeholder="https://api.openai.com/v1" />
         </n-form-item>
 
         <n-form-item label="API密钥" path="apiKey">
@@ -420,15 +411,12 @@ const showApiConfigModal = ref(false);
 const editingApiConfig = ref<APIConfig | null>(null);
 const apiConfigFormRef = ref<FormInst | null>(null);
 const apiConfigForm = reactive({
-  name: '',
   provider: APIProvider.OpenAI,
-  baseUrl: '',
   apiKey: '',
   model: ''
 });
 
 const apiConfigRules: FormRules = {
-  name: { required: true, message: '请输入配置名称', trigger: 'blur' },
   provider: { required: true, message: '请选择服务类型', trigger: 'change' }
 };
 
@@ -448,7 +436,7 @@ const personaRules: FormRules = {
 
 // 外观设置
 const appearanceSettings = reactive({
-  theme: 'DARK',
+  theme: Theme.Dark,
   showTimestamps: true
 });
 
@@ -459,12 +447,13 @@ const passwordForm = reactive({
   confirmPassword: ''
 });
 
-// 服务类型选项
-const providerOptions = [
-  { label: 'OpenAI', value: APIProvider.OpenAI },
-  { label: 'Claude', value: APIProvider.Claude },
-  { label: 'Google Gemini', value: APIProvider.Gemini }
-];
+// 服务类型选项（从枚举动态生成，排除 Unspecified）
+const providerOptions = Object.entries(APIProvider)
+  .filter(([key]) => key !== 'APIProviderUnspecified' && isNaN(Number(key)))
+  .map(([key, value]) => ({
+    label: key,
+    value: value as APIProvider
+  }));
 
 // 模型选项
 const modelOptions = [
@@ -477,20 +466,19 @@ const modelOptions = [
   { label: 'Gemini 1.5 Flash', value: 'gemini-1.5-flash' }
 ];
 
-// 获取服务类型标签
+// 获取服务类型标签（使用枚举反向映射）
 const getProviderLabel = (provider: APIProvider): string => {
-  const option = providerOptions.find(o => o.value === provider);
-  return option?.label || '未知';
+  return APIProvider[provider] || 'Unknown';
 };
 
 // 加载数据
 const loadData = async () => {
   loading.value = true;
   try {
-    const [configsRes, personasRes, settingRes] = await Promise.all([
+    const [configsRes, personasRes, userRes] = await Promise.all([
       userClient.listAPIConfigs({}),
       userClient.listPersonas({}),
-      userClient.getUserSetting({})
+      userClient.getUserInfo({})
     ]);
 
     apiConfigs.value = configsRes.configs;
@@ -500,14 +488,14 @@ const loadData = async () => {
     userStore.setApiConfigs(configsRes.configs);
     userStore.setPersonas(personasRes.personas);
 
-    // 更新外观设置
-    if (settingRes.setting) {
-      userStore.setUserSetting(settingRes.setting);
-      appearanceSettings.theme = settingRes.setting.theme === Theme.Dark ? 'DARK' : settingRes.setting.theme === Theme.Light ? 'LIGHT' : 'SYSTEM';
-      appearanceSettings.showTimestamps = settingRes.setting.showTimestamps;
+    // 更新外观设置（从用户信息获取）
+    if (userRes.user) {
+      userStore.setCurrentUser(userRes.user);
+      appearanceSettings.theme = userRes.user.theme;
+      appearanceSettings.showTimestamps = userRes.user.showTimestamps;
 
       // 初始化主题
-      handleUpdateTheme();
+      await handleUpdateTheme();
     }
   } finally {
     loading.value = false;
@@ -522,9 +510,7 @@ onMounted(() => {
 
 const handleEditApiConfig = (config: APIConfig) => {
   editingApiConfig.value = config;
-  apiConfigForm.name = config.name;
   apiConfigForm.provider = config.provider;
-  apiConfigForm.baseUrl = config.baseUrl || '';
   apiConfigForm.apiKey = '';
   apiConfigForm.model = config.model || '';
   showApiConfigModal.value = true;
@@ -537,36 +523,29 @@ const handleSaveApiConfig = async () => {
   try {
     if (editingApiConfig.value) {
       // 更新
-      const res = await userClient.updateAPIConfig({
+      await userClient.updateAPIConfig({
         id: editingApiConfig.value.id,
-        name: apiConfigForm.name,
         provider: apiConfigForm.provider,
-        baseUrl: apiConfigForm.baseUrl || undefined,
         apiKey: apiConfigForm.apiKey || undefined,
         model: apiConfigForm.model || undefined
       });
-      if (res.config) {
-        const index = apiConfigs.value.findIndex(c => c.id === editingApiConfig.value!.id);
-        if (index >= 0) {
-          apiConfigs.value[index] = res.config;
-        }
-        userStore.updateApiConfigInList(res.config);
-        message.success('API配置已更新');
-      }
+      // 重新获取列表以更新状态
+      const res = await userClient.listAPIConfigs({});
+      apiConfigs.value = res.configs;
+      userStore.setApiConfigs(res.configs);
+      message.success('API配置已更新');
     } else {
       // 创建
-      const res = await userClient.createAPIConfig({
-        name: apiConfigForm.name,
+      await userClient.createAPIConfig({
         provider: apiConfigForm.provider,
         apiKey: apiConfigForm.apiKey,
-        baseUrl: apiConfigForm.baseUrl || undefined,
         model: apiConfigForm.model || undefined
       });
-      if (res.config) {
-        apiConfigs.value.push(res.config);
-        userStore.addApiConfig(res.config);
-        message.success('API配置已创建');
-      }
+      // 重新获取列表以更新状态
+      const res = await userClient.listAPIConfigs({});
+      apiConfigs.value = res.configs;
+      userStore.setApiConfigs(res.configs);
+      message.success('API配置已创建');
     }
     showApiConfigModal.value = false;
     resetApiConfigForm();
@@ -578,7 +557,7 @@ const handleSaveApiConfig = async () => {
 const handleDeleteApiConfig = (config: APIConfig) => {
   dialog.warning({
     title: '确认删除',
-    content: `确定要删除API配置"${config.name}"吗？`,
+    content: `确定要删除${getProviderLabel(config.provider)}配置吗？`,
     positiveText: '删除',
     negativeText: '取消',
     onPositiveClick: async () => {
@@ -626,9 +605,7 @@ const handleTestApiConfig = async (configId: number) => {
 
 const resetApiConfigForm = () => {
   editingApiConfig.value = null;
-  apiConfigForm.name = '';
   apiConfigForm.provider = APIProvider.OpenAI;
-  apiConfigForm.baseUrl = '';
   apiConfigForm.apiKey = '';
   apiConfigForm.model = '';
 };
@@ -730,37 +707,38 @@ const resetPersonaForm = () => {
 // 更新主题
 const handleUpdateTheme = async () => {
   let themeMode: 'dark' | 'light';
-  const themeValue = appearanceSettings.theme;
 
-  if (themeValue === 'SYSTEM') {
+  if (appearanceSettings.theme === Theme.Auto) {
     themeMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
   } else {
-    themeMode = themeValue === 'LIGHT' ? 'light' : 'dark';
+    themeMode = appearanceSettings.theme === Theme.Light ? 'light' : 'dark';
   }
 
   themeStore.setTheme(themeMode);
 
   // 保存到后端
-  const protobufTheme = themeValue === 'DARK' ? Theme.Dark : themeValue === 'LIGHT' ? Theme.Light : Theme.Auto;
-  const res = await userClient.updateUserSetting({
-    theme: protobufTheme,
-    showTimestamps: appearanceSettings.showTimestamps
+  await userClient.updateUserInfo({
+    theme: appearanceSettings.theme,
+    language: userStore.currentUser?.language ?? '',
+    sendOnEnter: userStore.currentUser?.sendOnEnter ?? true,
+    showTimestamps: appearanceSettings.showTimestamps,
+    provider: userStore.currentUser?.provider ?? 0,
+    model: userStore.currentUser?.model ?? '',
+    baseUrl: userStore.currentUser?.baseUrl ?? ''
   });
-  if (res.setting) {
-    userStore.setUserSetting(res.setting);
-  }
 };
 
 // 更新其他用户设置
 const handleUpdateUserSetting = async () => {
-  const themeValue = appearanceSettings.theme === 'DARK' ? Theme.Dark : appearanceSettings.theme === 'LIGHT' ? Theme.Light : Theme.Auto;
-  const res = await userClient.updateUserSetting({
-    theme: themeValue,
-    showTimestamps: appearanceSettings.showTimestamps
+  await userClient.updateUserInfo({
+    theme: appearanceSettings.theme,
+    language: userStore.currentUser?.language ?? '',
+    sendOnEnter: userStore.currentUser?.sendOnEnter ?? true,
+    showTimestamps: appearanceSettings.showTimestamps,
+    provider: userStore.currentUser?.provider ?? 0,
+    model: userStore.currentUser?.model ?? '',
+    baseUrl: userStore.currentUser?.baseUrl ?? ''
   });
-  if (res.setting) {
-    userStore.setUserSetting(res.setting);
-  }
 };
 
 // ==================== 密码修改 ====================

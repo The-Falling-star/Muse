@@ -9,6 +9,19 @@ const (
 	MaxPageSize = 100
 )
 
+const (
+	// DefaultTemperature 默认温度
+	DefaultTemperature = 1.0
+	// DefaultTopK 默认TopK
+	DefaultTopK = 10
+	// DefaultTopP 默认TopP
+	DefaultTopP = 1.0
+	// DefaultMaxTokens 默认最大令牌数
+	DefaultMaxTokens = 2048
+	// DefaultCandidateCount 默认候选词数
+	DefaultCandidateCount = 1
+)
+
 // CtxKey 上下文键
 type CtxKey string
 
@@ -18,8 +31,6 @@ const (
 	// UserIDKey 获取ctx中的用户ID键
 	UserIDKey CtxKey = "userId"
 )
-
-const SortOrderInterval = 100
 
 // ModuleType 模块类型
 type ModuleType int

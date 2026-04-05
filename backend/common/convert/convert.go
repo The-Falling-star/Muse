@@ -364,6 +364,13 @@ func UserEntityToPb(user *entity.User) *pb.SysUser {
 		Username:        user.Username,
 		ActivePersonaId: int32(user.ActivePersonaID),
 		ActivePresetId:  int32(user.ActivePresetID),
+		Theme:           user.Theme,
+		Language:        user.Language,
+		SendOnEnter:     user.SendOnEnter,
+		ShowTimestamps:  user.ShowTimestamps,
+		Provider:        user.Provider,
+		Model:           user.Model,
+		BaseUrl:         user.BaseURL,
 		CreatedAt:       user.CreatedAt.Unix(),
 		UpdatedAt:       user.UpdatedAt.Unix(),
 	}
@@ -382,29 +389,13 @@ func PersonaEntityToPb(persona *entity.Persona) *pb.Persona {
 	}
 }
 
-// UserSettingEntityToPb 将用户设置实体类转换为pb
-func UserSettingEntityToPb(setting *entity.UserSetting) *pb.UserSetting {
-	return &pb.UserSetting{
-		Id:             int32(setting.ID),
-		UserId:         int32(setting.UserID),
-		Theme:          pb.Theme(setting.Theme),
-		Language:       setting.Language,
-		SendOnEnter:    setting.SendOnEnter,
-		ShowTimestamps: setting.ShowTimestamps,
-		CreatedAt:      setting.CreatedAt.Unix(),
-		UpdatedAt:      setting.UpdatedAt.Unix(),
-	}
-}
-
 // APIConfigEntityToPb 将API配置实体类转换为pb（不包含API Key）
 func APIConfigEntityToPb(config *entity.APIConfig) *pb.APIConfig {
 	return &pb.APIConfig{
 		Id:        int32(config.ID),
 		UserId:    int32(config.UserID),
-		Name:      config.Name,
 		Provider:  config.Provider,
 		ApiKey:    config.APIKey,
-		BaseUrl:   config.BaseURL,
 		Model:     config.Model,
 		IsActive:  config.IsActive,
 		CreatedAt: config.CreatedAt.Unix(),
@@ -428,10 +419,8 @@ func APIConfigEntityToPbWithKey(apiConfig *entity.APIConfig) *pb.APIConfig {
 	return &pb.APIConfig{
 		Id:        int32(apiConfig.ID),
 		UserId:    int32(apiConfig.UserID),
-		Name:      apiConfig.Name,
 		Provider:  apiConfig.Provider,
 		ApiKey:    apiKey,
-		BaseUrl:   apiConfig.BaseURL,
 		Model:     apiConfig.Model,
 		IsActive:  apiConfig.IsActive,
 		CreatedAt: apiConfig.CreatedAt.Unix(),

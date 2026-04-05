@@ -32,15 +32,13 @@ type User interface {
 	// SetActivePersona 设置当前激活的人设
 	SetActivePersona(ctx context.Context, req *pb.SetActivePersonaRequest) (*pb.SetActivePersonaResponse, error)
 
-	// GetUserSetting 获取用户设置
-	GetUserSetting(ctx context.Context, req *pb.GetUserSettingRequest) (*pb.GetUserSettingResponse, error)
-	// UpdateUserSetting 更新用户设置
-	UpdateUserSetting(ctx context.Context, req *pb.UpdateUserSettingRequest) (*pb.UpdateUserSettingResponse, error)
+	// GetUserInfo 获取用户信息
+	GetUserInfo(ctx context.Context, req *pb.GetUserInfoRequest) (*pb.GetUserInfoResponse, error)
+	// UpdateUserInfo 更新用户信息
+	UpdateUserInfo(ctx context.Context, req *pb.UpdateUserInfoRequest) (*pb.UpdateUserInfoResponse, error)
 
 	// ListAPIConfigs 获取API配置列表
 	ListAPIConfigs(ctx context.Context, req *pb.ListAPIConfigsRequest) (*pb.ListAPIConfigsResponse, error)
-	// GetAPIConfig 获取指定的API配置
-	GetAPIConfig(ctx context.Context, req *pb.GetAPIConfigRequest) (*pb.GetAPIConfigResponse, error)
 	// CreateAPIConfig 创建新的API配置
 	CreateAPIConfig(ctx context.Context, req *pb.CreateAPIConfigRequest) (*pb.CreateAPIConfigResponse, error)
 	// UpdateAPIConfig 更新指定的API配置

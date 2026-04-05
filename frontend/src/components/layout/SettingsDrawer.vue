@@ -56,7 +56,7 @@
               :class="{ active: config.isActive }"
             >
               <div class="config-info">
-                <div class="config-name">{{ config.name || '未命名配置' }}</div>
+                <div class="config-name">{{ APIProvider[config.provider] || '未命名配置' }}</div>
                 <div class="config-type">{{ config.provider || 'OpenAI' }}</div>
               </div>
               <n-switch
@@ -167,6 +167,7 @@ import { useMediaQuery } from '@vueuse/core';
 import { useThemeStore } from '@/stores/theme';
 import { useUserStore } from '@/stores/user';
 import { userClient } from '@/api/client';
+import { APIProvider } from '@/gen/muse/common_pb';
 
 const props = defineProps<{
   visible: boolean;

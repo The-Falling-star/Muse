@@ -152,42 +152,6 @@ func (u *UserRepo) DeletePersona(ctx context.Context, id int, userID int) error 
 	return nil
 }
 
-// ==================== UserSetting 相关方法 ====================
-
-// CreateUserSetting 创建用户设置
-func (u *UserRepo) CreateUserSetting(ctx context.Context, setting *entity.UserSetting) error {
-	db := GetDB(ctx)
-	result := db.Create(setting)
-	if result.Error != nil {
-		return errs.NewStandardf(connect.CodeInternal, "创建用户设置失败: %v", result.Error)
-	}
-	return nil
-}
-
-// GetUserSettingByUserID 根据用户ID获取用户设置
-func (u *UserRepo) GetUserSettingByUserID(ctx context.Context, userID int) (*entity.UserSetting, error) {
-	db := GetDB(ctx)
-	var setting entity.UserSetting
-	result := db.Where("user_id = ?", userID).First(&setting)
-	if result.Error != nil {
-		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-			return nil, nil
-		}
-		return nil, errs.NewStandardf(connect.CodeInternal, "获取用户设置失败: %v", result.Error)
-	}
-	return &setting, nil
-}
-
-// UpdateUserSetting 更新用户设置
-func (u *UserRepo) UpdateUserSetting(ctx context.Context, setting *entity.UserSetting) error {
-	db := GetDB(ctx)
-	result := db.Save(setting)
-	if result.Error != nil {
-		return errs.NewStandardf(connect.CodeInternal, "更新用户设置失败: %v", result.Error)
-	}
-	return nil
-}
-
 // ==================== APIConfig 相关方法 ====================
 
 // CreateAPIConfig 创建API配置
@@ -214,13 +178,15 @@ func (u *UserRepo) GetAPIConfigByID(ctx context.Context, id int, userID int) (*e
 	return &apiConfig, nil
 }
 
-// ListAPIConfigs 获取用户的API配置列表
-func (u *UserRepo) ListAPIConfigs(ctx context.Context, userID int) ([]*entity.APIConfig, error) {
+// ListAPIConfigs 获取用户的API配置列表，provider为0表示不过滤
+func (u *UserRepo) ListAPIConfigs(ctx context.Context, userID int, provider int) ([]*entity.APIConfig, error) {
 	db := GetDB(ctx)
 	var configs []*entity.APIConfig
-	result := db.Where("user_id = ?", userID).
-		Order("created_at DESC").
-		Find(&configs)
+	query := db.Where("user_id = ?", userID)
+	if provider > 0 {
+		query = query.Where("provider = ?", provider)
+	}
+	result := query.Order("created_at DESC").Find(&configs)
 	if result.Error != nil {
 		return nil, errs.NewStandardf(connect.CodeInternal, "获取API配置列表失败: %v", result.Error)
 	}

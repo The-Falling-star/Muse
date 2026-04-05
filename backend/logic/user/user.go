@@ -324,78 +324,60 @@ func (u *userImpl) SetActivePersona(ctx context.Context, req *pb.SetActivePerson
 	}
 
 	// 更新用户的活跃人设ID
-	if err := u.userRepo.UpdateActivePersonaID(ctx, userID, personaID); err != nil {
+	if err = u.userRepo.UpdateActivePersonaID(ctx, userID, personaID); err != nil {
 		return nil, err
 	}
 
 	return &pb.SetActivePersonaResponse{}, nil
 }
 
-func (u *userImpl) GetUserSetting(ctx context.Context, req *pb.GetUserSettingRequest) (*pb.GetUserSettingResponse, error) {
+// GetUserInfo 获取用户信息
+func (u *userImpl) GetUserInfo(ctx context.Context, req *pb.GetUserInfoRequest) (*pb.GetUserInfoResponse, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
 
-	// 获取用户设置
-	setting, err := u.userRepo.GetUserSettingByUserID(ctx, userID)
+	// 获取用户信息
+	user, err := u.userRepo.GetByID(ctx, userID)
 	if err != nil {
 		return nil, err
 	}
-
-	// 如果用户设置不存在，创建默认设置
-	if setting == nil {
-		setting = &entity.UserSetting{
-			UserID:         userID,
-			Theme:          0, // Auto
-			Language:       "zh-CN",
-			SendOnEnter:    true,
-			ShowTimestamps: true,
-		}
-		if err = u.userRepo.CreateUserSetting(ctx, setting); err != nil {
-			return nil, err
-		}
+	if user == nil {
+		return nil, errs.NewStandard(connect.CodeNotFound, errs.UserNotFound)
 	}
 
-	return &pb.GetUserSettingResponse{
-		Setting: convert.UserSettingEntityToPb(setting),
+	return &pb.GetUserInfoResponse{
+		User: convert.UserEntityToPb(user),
 	}, nil
 }
 
-func (u *userImpl) UpdateUserSetting(ctx context.Context, req *pb.UpdateUserSettingRequest) (*pb.UpdateUserSettingResponse, error) {
+// UpdateUserInfo 更新用户信息
+func (u *userImpl) UpdateUserInfo(ctx context.Context, req *pb.UpdateUserInfoRequest) (*pb.UpdateUserInfoResponse, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
 
-	// 获取用户设置
-	setting, err := u.userRepo.GetUserSettingByUserID(ctx, userID)
+	// 获取用户信息
+	user, err := u.userRepo.GetByID(ctx, userID)
 	if err != nil {
 		return nil, err
 	}
-
-	// 如果用户设置不存在，创建新的设置
-	if setting == nil {
-		setting = &entity.UserSetting{
-			UserID: userID,
-		}
+	if user == nil {
+		return nil, errs.NewStandard(connect.CodeNotFound, errs.UserNotFound)
 	}
 
-	// 更新设置字段
-	setting.Theme = int(req.GetTheme())
-	setting.Language = req.GetLanguage()
-	setting.SendOnEnter = req.GetSendOnEnter()
-	setting.ShowTimestamps = req.GetShowTimestamps()
+	// 更新用户信息字段
+	user.Theme = req.GetTheme()
+	user.Language = req.GetLanguage()
+	user.SendOnEnter = req.GetSendOnEnter()
+	user.ShowTimestamps = req.GetShowTimestamps()
+	user.Provider = req.GetProvider()
+	user.Model = req.GetModel()
+	user.BaseURL = req.GetBaseUrl()
 
-	if setting.ID == 0 {
-		if err = u.userRepo.CreateUserSetting(ctx, setting); err != nil {
-			return nil, err
-		}
-	} else {
-		if err = u.userRepo.UpdateUserSetting(ctx, setting); err != nil {
-			return nil, err
-		}
+	if err = u.userRepo.Update(ctx, user); err != nil {
+		return nil, err
 	}
 
-	return &pb.UpdateUserSettingResponse{
-		Setting: convert.UserSettingEntityToPb(setting),
-	}, nil
+	return &pb.UpdateUserInfoResponse{}, nil
 }
 
 func (u *userImpl) ListAPIConfigs(ctx context.Context, req *pb.ListAPIConfigsRequest) (*pb.ListAPIConfigsResponse, error) {
@@ -403,7 +385,8 @@ func (u *userImpl) ListAPIConfigs(ctx context.Context, req *pb.ListAPIConfigsReq
 	userID := jwt.GetUserId(ctx)
 
 	// 获取API配置列表
-	configs, err := u.userRepo.ListAPIConfigs(ctx, userID)
+	provider := int(req.GetProvider())
+	configs, err := u.userRepo.ListAPIConfigs(ctx, userID, provider)
 	if err != nil {
 		return nil, err
 	}
@@ -423,43 +406,11 @@ func (u *userImpl) ListAPIConfigs(ctx context.Context, req *pb.ListAPIConfigsReq
 	}, nil
 }
 
-func (u *userImpl) GetAPIConfig(ctx context.Context, req *pb.GetAPIConfigRequest) (*pb.GetAPIConfigResponse, error) {
-	// 获取当前用户ID
-	userID := jwt.GetUserId(ctx)
-
-	// 参数校验
-	id := int(req.GetId())
-	if id <= 0 {
-		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidAPIConfigID)
-	}
-
-	// 获取API配置
-	apiConfig, err := u.userRepo.GetAPIConfigByID(ctx, id, userID)
-	if err != nil {
-		return nil, err
-	}
-	if apiConfig == nil {
-		return nil, errs.NewStandard(connect.CodeNotFound, errs.APIConfigNotFound)
-	}
-
-	pbAPIConfig := convert.APIConfigEntityToPb(apiConfig)
-	if !config.Get().APIEncrypt.AllowGetKey {
-		pbAPIConfig.ApiKey = ""
-	}
-	return &pb.GetAPIConfigResponse{
-		Config: pbAPIConfig,
-	}, nil
-}
-
 func (u *userImpl) CreateAPIConfig(ctx context.Context, req *pb.CreateAPIConfigRequest) (*pb.CreateAPIConfigResponse, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
 
 	// 参数校验
-	name := strings.TrimSpace(req.GetName())
-	if name == "" {
-		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptyAPIConfigName)
-	}
 	if req.GetApiKey() == "" {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptyAPIKey)
 	}
@@ -483,10 +434,8 @@ func (u *userImpl) CreateAPIConfig(ctx context.Context, req *pb.CreateAPIConfigR
 	// 创建API配置
 	apiConfig := &entity.APIConfig{
 		UserID:   userID,
-		Name:     name,
 		Provider: req.GetProvider(),
 		APIKey:   encryptedAPIKey,
-		BaseURL:  req.GetBaseUrl(),
 		Model:    req.GetModel(),
 		IsActive: false, // 默认不激活
 	}
@@ -495,9 +444,7 @@ func (u *userImpl) CreateAPIConfig(ctx context.Context, req *pb.CreateAPIConfigR
 		return nil, err
 	}
 
-	return &pb.CreateAPIConfigResponse{
-		Config: convert.APIConfigEntityToPbWithKey(apiConfig),
-	}, nil
+	return &pb.CreateAPIConfigResponse{}, nil
 }
 
 func (u *userImpl) UpdateAPIConfig(ctx context.Context, req *pb.UpdateAPIConfigRequest) (*pb.UpdateAPIConfigResponse, error) {
@@ -508,10 +455,6 @@ func (u *userImpl) UpdateAPIConfig(ctx context.Context, req *pb.UpdateAPIConfigR
 	id := int(req.GetId())
 	if id <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidAPIConfigID)
-	}
-	name := strings.TrimSpace(req.GetName())
-	if name == "" {
-		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptyAPIConfigName)
 	}
 
 	// 获取API配置
@@ -527,7 +470,6 @@ func (u *userImpl) UpdateAPIConfig(ctx context.Context, req *pb.UpdateAPIConfigR
 	apiEncryptCfg := config.Get().APIEncrypt
 
 	// 更新API配置字段
-	apiConfig.Name = name
 	apiConfig.Provider = req.GetProvider()
 	if req.ApiKey != nil {
 		aesCrypt, err := crypto.NewAESGCMFromKey(apiEncryptCfg.EncryptionKey)
@@ -540,9 +482,6 @@ func (u *userImpl) UpdateAPIConfig(ctx context.Context, req *pb.UpdateAPIConfigR
 		}
 		apiConfig.APIKey = encryptedAPIKey
 	}
-	if req.BaseUrl != nil {
-		apiConfig.BaseURL = *req.BaseUrl
-	}
 	if req.Model != nil {
 		apiConfig.Model = *req.Model
 	}
@@ -551,9 +490,7 @@ func (u *userImpl) UpdateAPIConfig(ctx context.Context, req *pb.UpdateAPIConfigR
 		return nil, err
 	}
 
-	return &pb.UpdateAPIConfigResponse{
-		Config: convert.APIConfigEntityToPbWithKey(apiConfig),
-	}, nil
+	return &pb.UpdateAPIConfigResponse{}, nil
 }
 
 func (u *userImpl) DeleteAPIConfig(ctx context.Context, req *pb.DeleteAPIConfigRequest) (*pb.DeleteAPIConfigResponse, error) {

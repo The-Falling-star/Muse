@@ -4,13 +4,12 @@ import { userClient } from '@/api/client';
 import type {
   SysUser,
   Persona,
-  UserSetting,
   APIConfig
 } from '@/gen/muse/user_pb';
 
 /**
  * 用户 Store
- * 管理认证状态、用户信息、人设、设置、API配置等全局状态
+ * 管理认证状态、用户信息、人设、API配置等全局状态
  * 这些都是需要全局共享的核心数据
  */
 export const useUserStore = defineStore('user', () => {
@@ -24,9 +23,6 @@ export const useUserStore = defineStore('user', () => {
 
   // 人设
   const personas = ref<Persona[]>([]);
-
-  // 用户设置
-  const userSetting = ref<UserSetting | null>(null);
 
   // API配置
   const apiConfigs = ref<APIConfig[]>([]);
@@ -85,7 +81,6 @@ export const useUserStore = defineStore('user', () => {
     setToken(null);
     currentUser.value = null;
     personas.value = [];
-    userSetting.value = null;
     apiConfigs.value = [];
   };
 
@@ -121,15 +116,6 @@ export const useUserStore = defineStore('user', () => {
     if (currentUser.value) {
       currentUser.value.activePersonaId = personaId;
     }
-  };
-
-  // =====================
-  // 设置状态管理
-  // =====================
-
-  // 设置用户设置
-  const setUserSetting = (setting: UserSetting | null) => {
-    userSetting.value = setting;
   };
 
   // =====================
@@ -173,16 +159,14 @@ export const useUserStore = defineStore('user', () => {
   // 初始化用户数据
   const initUserData = async () => {
     try {
-      const [userRes, personaRes, settingRes, configsRes] = await Promise.all([
+      const [userRes, personaRes, configsRes] = await Promise.all([
         userClient.getCurrentUser({}),
         userClient.listPersonas({}),
-        userClient.getUserSetting({}),
         userClient.listAPIConfigs({})
       ]);
 
       currentUser.value = userRes.user ?? null;
       personas.value = personaRes.personas;
-      userSetting.value = settingRes.setting ?? null;
       apiConfigs.value = configsRes.configs;
     } catch (error) {
       // 如果获取用户数据失败（如token过期），则登出
@@ -199,7 +183,6 @@ export const useUserStore = defineStore('user', () => {
     isAuthenticated,
     personas,
     activePersona,
-    userSetting,
     apiConfigs,
     activeApiConfig,
 
@@ -215,9 +198,6 @@ export const useUserStore = defineStore('user', () => {
     updatePersonaInList,
     removePersona,
     setActivePersonaId,
-
-    // 设置方法
-    setUserSetting,
 
     // API配置方法
     setApiConfigs,

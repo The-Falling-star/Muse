@@ -191,19 +191,12 @@ type UserRepository interface {
 	// DeletePersona 删除人设
 	DeletePersona(ctx context.Context, id int, userID int) error
 
-	// CreateUserSetting 创建用户设置
-	CreateUserSetting(ctx context.Context, setting *entity.UserSetting) error
-	// GetUserSettingByUserID 根据用户ID获取用户设置
-	GetUserSettingByUserID(ctx context.Context, userID int) (*entity.UserSetting, error)
-	// UpdateUserSetting 更新用户设置
-	UpdateUserSetting(ctx context.Context, setting *entity.UserSetting) error
-
 	// CreateAPIConfig 创建API配置
 	CreateAPIConfig(ctx context.Context, apiConfig *entity.APIConfig) error
 	// GetAPIConfigByID 根据ID获取API配置
 	GetAPIConfigByID(ctx context.Context, id int, userID int) (*entity.APIConfig, error)
-	// ListAPIConfigs 获取用户的API配置列表
-	ListAPIConfigs(ctx context.Context, userID int) ([]*entity.APIConfig, error)
+	// ListAPIConfigs 获取用户的API配置列表，provider为0表示不过滤
+	ListAPIConfigs(ctx context.Context, userID int, provider int) ([]*entity.APIConfig, error)
 	// UpdateAPIConfig 更新API配置
 	UpdateAPIConfig(ctx context.Context, apiConfig *entity.APIConfig) error
 	// DeleteAPIConfig 删除API配置

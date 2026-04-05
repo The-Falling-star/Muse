@@ -114,10 +114,15 @@ func WorldInfoEntryEntityToPb(entry *entity.WorldInfoEntry) *pb.WorldInfoEntry {
 }
 
 // PresetEntityToPb 将预设实体类转换为pb
-func PresetEntityToPb(preset *entity.Preset) *pb.Preset {
+func PresetEntityToPb(preset *entity.Preset) (*pb.Preset, []*pb.PromptItem, []*pb.RegexRule) {
 	promptItems := make([]*pb.PromptItem, len(preset.PromptItems))
 	for i, item := range preset.PromptItems {
 		promptItems[i] = PromptItemEntityToPb(&item)
+	}
+
+	regexs := make([]*pb.RegexRule, len(preset.RegexRules))
+	for i, rule := range preset.RegexRules {
+		regexs[i] = RegexRuleEntityToPb(&rule)
 	}
 	return &pb.Preset{
 		Id:               int32(preset.ID),
@@ -133,8 +138,7 @@ func PresetEntityToPb(preset *entity.Preset) *pb.Preset {
 		Version:          int64(preset.Version),
 		CreatedAt:        preset.CreatedAt.Unix(),
 		UpdatedAt:        preset.UpdatedAt.Unix(),
-		PromptItems:      promptItems,
-	}
+	}, promptItems, regexs
 }
 
 // PromptItemEntityToPb 将提示项实体类转换为pb

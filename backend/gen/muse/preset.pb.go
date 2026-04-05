@@ -37,8 +37,6 @@ type Preset struct {
 	CreatedAt        int64                  `protobuf:"varint,11,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`                      // 创建时间（Unix时间戳）
 	UpdatedAt        int64                  `protobuf:"varint,12,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`                      // 最后更新时间（Unix时间戳）
 	CandidateCount   int32                  `protobuf:"varint,15,opt,name=candidate_count,json=candidateCount,proto3" json:"candidate_count,omitempty"`       // 候选回复数量，一次生成多少个备选回复
-	PromptItems      []*PromptItem          `protobuf:"bytes,13,rep,name=prompt_items,json=promptItems,proto3" json:"prompt_items,omitempty"`                 // 提示项列表（可选加载）
-	RegexRules       []*RegexRule           `protobuf:"bytes,14,rep,name=regex_rules,json=regexRules,proto3" json:"regex_rules,omitempty"`                    // 正则规则列表（可选加载）
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -164,14 +162,61 @@ func (x *Preset) GetCandidateCount() int32 {
 	return 0
 }
 
-func (x *Preset) GetPromptItems() []*PromptItem {
+// PresetWithAll 包含提示项和正则规则的预设
+type PresetWithAll struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Preset        *Preset                `protobuf:"bytes,1,opt,name=preset,proto3" json:"preset,omitempty"`
+	PromptItems   []*PromptItem          `protobuf:"bytes,2,rep,name=prompt_items,json=promptItems,proto3" json:"prompt_items,omitempty"`
+	RegexRules    []*RegexRule           `protobuf:"bytes,3,rep,name=regex_rules,json=regexRules,proto3" json:"regex_rules,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PresetWithAll) Reset() {
+	*x = PresetWithAll{}
+	mi := &file_muse_preset_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PresetWithAll) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PresetWithAll) ProtoMessage() {}
+
+func (x *PresetWithAll) ProtoReflect() protoreflect.Message {
+	mi := &file_muse_preset_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PresetWithAll.ProtoReflect.Descriptor instead.
+func (*PresetWithAll) Descriptor() ([]byte, []int) {
+	return file_muse_preset_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *PresetWithAll) GetPreset() *Preset {
+	if x != nil {
+		return x.Preset
+	}
+	return nil
+}
+
+func (x *PresetWithAll) GetPromptItems() []*PromptItem {
 	if x != nil {
 		return x.PromptItems
 	}
 	return nil
 }
 
-func (x *Preset) GetRegexRules() []*RegexRule {
+func (x *PresetWithAll) GetRegexRules() []*RegexRule {
 	if x != nil {
 		return x.RegexRules
 	}
@@ -201,7 +246,7 @@ type PromptItem struct {
 
 func (x *PromptItem) Reset() {
 	*x = PromptItem{}
-	mi := &file_muse_preset_proto_msgTypes[1]
+	mi := &file_muse_preset_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -213,7 +258,7 @@ func (x *PromptItem) String() string {
 func (*PromptItem) ProtoMessage() {}
 
 func (x *PromptItem) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_preset_proto_msgTypes[1]
+	mi := &file_muse_preset_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -226,7 +271,7 @@ func (x *PromptItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PromptItem.ProtoReflect.Descriptor instead.
 func (*PromptItem) Descriptor() ([]byte, []int) {
-	return file_muse_preset_proto_rawDescGZIP(), []int{1}
+	return file_muse_preset_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *PromptItem) GetId() int32 {
@@ -339,7 +384,7 @@ type ListPresetsRequest struct {
 
 func (x *ListPresetsRequest) Reset() {
 	*x = ListPresetsRequest{}
-	mi := &file_muse_preset_proto_msgTypes[2]
+	mi := &file_muse_preset_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -351,7 +396,7 @@ func (x *ListPresetsRequest) String() string {
 func (*ListPresetsRequest) ProtoMessage() {}
 
 func (x *ListPresetsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_preset_proto_msgTypes[2]
+	mi := &file_muse_preset_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -364,7 +409,7 @@ func (x *ListPresetsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPresetsRequest.ProtoReflect.Descriptor instead.
 func (*ListPresetsRequest) Descriptor() ([]byte, []int) {
-	return file_muse_preset_proto_rawDescGZIP(), []int{2}
+	return file_muse_preset_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListPresetsRequest) GetPage() int32 {
@@ -385,7 +430,7 @@ func (x *ListPresetsRequest) GetPageSize() int32 {
 // 注意：返回的预设不包含关联的PromptItems和RegexRules数据
 type ListPresetsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Presets       []*Preset              `protobuf:"bytes,1,rep,name=presets,proto3" json:"presets,omitempty"`                    // 预设列表
+	Presets       []*PresetWithPromptLen `protobuf:"bytes,1,rep,name=presets,proto3" json:"presets,omitempty"`                    // 预设列表
 	Total         int64                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`                       // 总数
 	Page          int32                  `protobuf:"varint,3,opt,name=page,proto3" json:"page,omitempty"`                         // 当前页码
 	PageSize      int32                  `protobuf:"varint,4,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"` // 每页数量
@@ -395,7 +440,7 @@ type ListPresetsResponse struct {
 
 func (x *ListPresetsResponse) Reset() {
 	*x = ListPresetsResponse{}
-	mi := &file_muse_preset_proto_msgTypes[3]
+	mi := &file_muse_preset_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -407,7 +452,7 @@ func (x *ListPresetsResponse) String() string {
 func (*ListPresetsResponse) ProtoMessage() {}
 
 func (x *ListPresetsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_preset_proto_msgTypes[3]
+	mi := &file_muse_preset_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -420,10 +465,10 @@ func (x *ListPresetsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPresetsResponse.ProtoReflect.Descriptor instead.
 func (*ListPresetsResponse) Descriptor() ([]byte, []int) {
-	return file_muse_preset_proto_rawDescGZIP(), []int{3}
+	return file_muse_preset_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *ListPresetsResponse) GetPresets() []*Preset {
+func (x *ListPresetsResponse) GetPresets() []*PresetWithPromptLen {
 	if x != nil {
 		return x.Presets
 	}
@@ -451,6 +496,59 @@ func (x *ListPresetsResponse) GetPageSize() int32 {
 	return 0
 }
 
+// PresetWithPromptLen 预设包含提示项数量
+type PresetWithPromptLen struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Preset        *Preset                `protobuf:"bytes,1,opt,name=preset,proto3" json:"preset,omitempty"`                         // 预设
+	PromptLen     int32                  `protobuf:"varint,2,opt,name=prompt_len,json=promptLen,proto3" json:"prompt_len,omitempty"` // 提示项数量
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PresetWithPromptLen) Reset() {
+	*x = PresetWithPromptLen{}
+	mi := &file_muse_preset_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PresetWithPromptLen) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PresetWithPromptLen) ProtoMessage() {}
+
+func (x *PresetWithPromptLen) ProtoReflect() protoreflect.Message {
+	mi := &file_muse_preset_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PresetWithPromptLen.ProtoReflect.Descriptor instead.
+func (*PresetWithPromptLen) Descriptor() ([]byte, []int) {
+	return file_muse_preset_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *PresetWithPromptLen) GetPreset() *Preset {
+	if x != nil {
+		return x.Preset
+	}
+	return nil
+}
+
+func (x *PresetWithPromptLen) GetPromptLen() int32 {
+	if x != nil {
+		return x.PromptLen
+	}
+	return 0
+}
+
 // 获取单个预设请求
 type GetPresetRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -461,7 +559,7 @@ type GetPresetRequest struct {
 
 func (x *GetPresetRequest) Reset() {
 	*x = GetPresetRequest{}
-	mi := &file_muse_preset_proto_msgTypes[4]
+	mi := &file_muse_preset_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -473,7 +571,7 @@ func (x *GetPresetRequest) String() string {
 func (*GetPresetRequest) ProtoMessage() {}
 
 func (x *GetPresetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_preset_proto_msgTypes[4]
+	mi := &file_muse_preset_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -486,7 +584,7 @@ func (x *GetPresetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetPresetRequest.ProtoReflect.Descriptor instead.
 func (*GetPresetRequest) Descriptor() ([]byte, []int) {
-	return file_muse_preset_proto_rawDescGZIP(), []int{4}
+	return file_muse_preset_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *GetPresetRequest) GetId() int32 {
@@ -499,14 +597,14 @@ func (x *GetPresetRequest) GetId() int32 {
 // 获取单个预设响应
 type GetPresetResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Preset        *Preset                `protobuf:"bytes,1,opt,name=preset,proto3" json:"preset,omitempty"`
+	Preset        *PresetWithAll         `protobuf:"bytes,1,opt,name=preset,proto3" json:"preset,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *GetPresetResponse) Reset() {
 	*x = GetPresetResponse{}
-	mi := &file_muse_preset_proto_msgTypes[5]
+	mi := &file_muse_preset_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -518,7 +616,7 @@ func (x *GetPresetResponse) String() string {
 func (*GetPresetResponse) ProtoMessage() {}
 
 func (x *GetPresetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_preset_proto_msgTypes[5]
+	mi := &file_muse_preset_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -531,10 +629,10 @@ func (x *GetPresetResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetPresetResponse.ProtoReflect.Descriptor instead.
 func (*GetPresetResponse) Descriptor() ([]byte, []int) {
-	return file_muse_preset_proto_rawDescGZIP(), []int{5}
+	return file_muse_preset_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *GetPresetResponse) GetPreset() *Preset {
+func (x *GetPresetResponse) GetPreset() *PresetWithAll {
 	if x != nil {
 		return x.Preset
 	}
@@ -559,7 +657,7 @@ type CreatePresetRequest struct {
 
 func (x *CreatePresetRequest) Reset() {
 	*x = CreatePresetRequest{}
-	mi := &file_muse_preset_proto_msgTypes[6]
+	mi := &file_muse_preset_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -571,7 +669,7 @@ func (x *CreatePresetRequest) String() string {
 func (*CreatePresetRequest) ProtoMessage() {}
 
 func (x *CreatePresetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_preset_proto_msgTypes[6]
+	mi := &file_muse_preset_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -584,7 +682,7 @@ func (x *CreatePresetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreatePresetRequest.ProtoReflect.Descriptor instead.
 func (*CreatePresetRequest) Descriptor() ([]byte, []int) {
-	return file_muse_preset_proto_rawDescGZIP(), []int{6}
+	return file_muse_preset_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *CreatePresetRequest) GetName() string {
@@ -668,7 +766,7 @@ type CreatePromptItemRequest struct {
 
 func (x *CreatePromptItemRequest) Reset() {
 	*x = CreatePromptItemRequest{}
-	mi := &file_muse_preset_proto_msgTypes[7]
+	mi := &file_muse_preset_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -680,7 +778,7 @@ func (x *CreatePromptItemRequest) String() string {
 func (*CreatePromptItemRequest) ProtoMessage() {}
 
 func (x *CreatePromptItemRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_preset_proto_msgTypes[7]
+	mi := &file_muse_preset_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -693,7 +791,7 @@ func (x *CreatePromptItemRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreatePromptItemRequest.ProtoReflect.Descriptor instead.
 func (*CreatePromptItemRequest) Descriptor() ([]byte, []int) {
-	return file_muse_preset_proto_rawDescGZIP(), []int{7}
+	return file_muse_preset_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *CreatePromptItemRequest) GetIdentifier() PromptItemIdentifier {
@@ -762,14 +860,13 @@ func (x *CreatePromptItemRequest) GetSortOrder() int32 {
 // 创建预设响应
 type CreatePresetResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Preset        *Preset                `protobuf:"bytes,1,opt,name=preset,proto3" json:"preset,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *CreatePresetResponse) Reset() {
 	*x = CreatePresetResponse{}
-	mi := &file_muse_preset_proto_msgTypes[8]
+	mi := &file_muse_preset_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -781,7 +878,7 @@ func (x *CreatePresetResponse) String() string {
 func (*CreatePresetResponse) ProtoMessage() {}
 
 func (x *CreatePresetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_preset_proto_msgTypes[8]
+	mi := &file_muse_preset_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -794,14 +891,7 @@ func (x *CreatePresetResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreatePresetResponse.ProtoReflect.Descriptor instead.
 func (*CreatePresetResponse) Descriptor() ([]byte, []int) {
-	return file_muse_preset_proto_rawDescGZIP(), []int{8}
-}
-
-func (x *CreatePresetResponse) GetPreset() *Preset {
-	if x != nil {
-		return x.Preset
-	}
-	return nil
+	return file_muse_preset_proto_rawDescGZIP(), []int{10}
 }
 
 // 更新预设请求
@@ -822,7 +912,7 @@ type UpdatePresetRequest struct {
 
 func (x *UpdatePresetRequest) Reset() {
 	*x = UpdatePresetRequest{}
-	mi := &file_muse_preset_proto_msgTypes[9]
+	mi := &file_muse_preset_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -834,7 +924,7 @@ func (x *UpdatePresetRequest) String() string {
 func (*UpdatePresetRequest) ProtoMessage() {}
 
 func (x *UpdatePresetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_preset_proto_msgTypes[9]
+	mi := &file_muse_preset_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -847,7 +937,7 @@ func (x *UpdatePresetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdatePresetRequest.ProtoReflect.Descriptor instead.
 func (*UpdatePresetRequest) Descriptor() ([]byte, []int) {
-	return file_muse_preset_proto_rawDescGZIP(), []int{9}
+	return file_muse_preset_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *UpdatePresetRequest) GetId() int32 {
@@ -916,14 +1006,13 @@ func (x *UpdatePresetRequest) GetVersion() int64 {
 // 更新预设响应
 type UpdatePresetResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Preset        *Preset                `protobuf:"bytes,1,opt,name=preset,proto3" json:"preset,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *UpdatePresetResponse) Reset() {
 	*x = UpdatePresetResponse{}
-	mi := &file_muse_preset_proto_msgTypes[10]
+	mi := &file_muse_preset_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -935,7 +1024,7 @@ func (x *UpdatePresetResponse) String() string {
 func (*UpdatePresetResponse) ProtoMessage() {}
 
 func (x *UpdatePresetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_preset_proto_msgTypes[10]
+	mi := &file_muse_preset_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -948,14 +1037,7 @@ func (x *UpdatePresetResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdatePresetResponse.ProtoReflect.Descriptor instead.
 func (*UpdatePresetResponse) Descriptor() ([]byte, []int) {
-	return file_muse_preset_proto_rawDescGZIP(), []int{10}
-}
-
-func (x *UpdatePresetResponse) GetPreset() *Preset {
-	if x != nil {
-		return x.Preset
-	}
-	return nil
+	return file_muse_preset_proto_rawDescGZIP(), []int{12}
 }
 
 // 删除预设请求
@@ -968,7 +1050,7 @@ type DeletePresetRequest struct {
 
 func (x *DeletePresetRequest) Reset() {
 	*x = DeletePresetRequest{}
-	mi := &file_muse_preset_proto_msgTypes[11]
+	mi := &file_muse_preset_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -980,7 +1062,7 @@ func (x *DeletePresetRequest) String() string {
 func (*DeletePresetRequest) ProtoMessage() {}
 
 func (x *DeletePresetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_preset_proto_msgTypes[11]
+	mi := &file_muse_preset_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -993,7 +1075,7 @@ func (x *DeletePresetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeletePresetRequest.ProtoReflect.Descriptor instead.
 func (*DeletePresetRequest) Descriptor() ([]byte, []int) {
-	return file_muse_preset_proto_rawDescGZIP(), []int{11}
+	return file_muse_preset_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *DeletePresetRequest) GetId() int32 {
@@ -1012,7 +1094,7 @@ type DeletePresetResponse struct {
 
 func (x *DeletePresetResponse) Reset() {
 	*x = DeletePresetResponse{}
-	mi := &file_muse_preset_proto_msgTypes[12]
+	mi := &file_muse_preset_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1024,7 +1106,7 @@ func (x *DeletePresetResponse) String() string {
 func (*DeletePresetResponse) ProtoMessage() {}
 
 func (x *DeletePresetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_preset_proto_msgTypes[12]
+	mi := &file_muse_preset_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1037,7 +1119,7 @@ func (x *DeletePresetResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeletePresetResponse.ProtoReflect.Descriptor instead.
 func (*DeletePresetResponse) Descriptor() ([]byte, []int) {
-	return file_muse_preset_proto_rawDescGZIP(), []int{12}
+	return file_muse_preset_proto_rawDescGZIP(), []int{14}
 }
 
 // 设置活跃预设请求
@@ -1050,7 +1132,7 @@ type SetActivePresetRequest struct {
 
 func (x *SetActivePresetRequest) Reset() {
 	*x = SetActivePresetRequest{}
-	mi := &file_muse_preset_proto_msgTypes[13]
+	mi := &file_muse_preset_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1062,7 +1144,7 @@ func (x *SetActivePresetRequest) String() string {
 func (*SetActivePresetRequest) ProtoMessage() {}
 
 func (x *SetActivePresetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_preset_proto_msgTypes[13]
+	mi := &file_muse_preset_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1075,7 +1157,7 @@ func (x *SetActivePresetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetActivePresetRequest.ProtoReflect.Descriptor instead.
 func (*SetActivePresetRequest) Descriptor() ([]byte, []int) {
-	return file_muse_preset_proto_rawDescGZIP(), []int{13}
+	return file_muse_preset_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *SetActivePresetRequest) GetPresetId() int32 {
@@ -1094,7 +1176,7 @@ type SetActivePresetResponse struct {
 
 func (x *SetActivePresetResponse) Reset() {
 	*x = SetActivePresetResponse{}
-	mi := &file_muse_preset_proto_msgTypes[14]
+	mi := &file_muse_preset_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1106,7 +1188,7 @@ func (x *SetActivePresetResponse) String() string {
 func (*SetActivePresetResponse) ProtoMessage() {}
 
 func (x *SetActivePresetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_preset_proto_msgTypes[14]
+	mi := &file_muse_preset_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1119,7 +1201,7 @@ func (x *SetActivePresetResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetActivePresetResponse.ProtoReflect.Descriptor instead.
 func (*SetActivePresetResponse) Descriptor() ([]byte, []int) {
-	return file_muse_preset_proto_rawDescGZIP(), []int{14}
+	return file_muse_preset_proto_rawDescGZIP(), []int{16}
 }
 
 // 导入预设请求
@@ -1133,7 +1215,7 @@ type ImportPresetRequest struct {
 
 func (x *ImportPresetRequest) Reset() {
 	*x = ImportPresetRequest{}
-	mi := &file_muse_preset_proto_msgTypes[15]
+	mi := &file_muse_preset_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1145,7 +1227,7 @@ func (x *ImportPresetRequest) String() string {
 func (*ImportPresetRequest) ProtoMessage() {}
 
 func (x *ImportPresetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_preset_proto_msgTypes[15]
+	mi := &file_muse_preset_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1158,7 +1240,7 @@ func (x *ImportPresetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportPresetRequest.ProtoReflect.Descriptor instead.
 func (*ImportPresetRequest) Descriptor() ([]byte, []int) {
-	return file_muse_preset_proto_rawDescGZIP(), []int{15}
+	return file_muse_preset_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *ImportPresetRequest) GetFileContent() []byte {
@@ -1178,14 +1260,14 @@ func (x *ImportPresetRequest) GetFileName() string {
 // 导入预设响应
 type ImportPresetResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Preset        *Preset                `protobuf:"bytes,1,opt,name=preset,proto3" json:"preset,omitempty"`
+	Preset        *PresetWithAll         `protobuf:"bytes,1,opt,name=preset,proto3" json:"preset,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ImportPresetResponse) Reset() {
 	*x = ImportPresetResponse{}
-	mi := &file_muse_preset_proto_msgTypes[16]
+	mi := &file_muse_preset_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1197,7 +1279,7 @@ func (x *ImportPresetResponse) String() string {
 func (*ImportPresetResponse) ProtoMessage() {}
 
 func (x *ImportPresetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_preset_proto_msgTypes[16]
+	mi := &file_muse_preset_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1210,10 +1292,10 @@ func (x *ImportPresetResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportPresetResponse.ProtoReflect.Descriptor instead.
 func (*ImportPresetResponse) Descriptor() ([]byte, []int) {
-	return file_muse_preset_proto_rawDescGZIP(), []int{16}
+	return file_muse_preset_proto_rawDescGZIP(), []int{18}
 }
 
-func (x *ImportPresetResponse) GetPreset() *Preset {
+func (x *ImportPresetResponse) GetPreset() *PresetWithAll {
 	if x != nil {
 		return x.Preset
 	}
@@ -1230,7 +1312,7 @@ type ExportPresetRequest struct {
 
 func (x *ExportPresetRequest) Reset() {
 	*x = ExportPresetRequest{}
-	mi := &file_muse_preset_proto_msgTypes[17]
+	mi := &file_muse_preset_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1242,7 +1324,7 @@ func (x *ExportPresetRequest) String() string {
 func (*ExportPresetRequest) ProtoMessage() {}
 
 func (x *ExportPresetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_preset_proto_msgTypes[17]
+	mi := &file_muse_preset_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1255,7 +1337,7 @@ func (x *ExportPresetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportPresetRequest.ProtoReflect.Descriptor instead.
 func (*ExportPresetRequest) Descriptor() ([]byte, []int) {
-	return file_muse_preset_proto_rawDescGZIP(), []int{17}
+	return file_muse_preset_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *ExportPresetRequest) GetId() int32 {
@@ -1276,7 +1358,7 @@ type ExportPresetResponse struct {
 
 func (x *ExportPresetResponse) Reset() {
 	*x = ExportPresetResponse{}
-	mi := &file_muse_preset_proto_msgTypes[18]
+	mi := &file_muse_preset_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1288,7 +1370,7 @@ func (x *ExportPresetResponse) String() string {
 func (*ExportPresetResponse) ProtoMessage() {}
 
 func (x *ExportPresetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_preset_proto_msgTypes[18]
+	mi := &file_muse_preset_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1301,7 +1383,7 @@ func (x *ExportPresetResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportPresetResponse.ProtoReflect.Descriptor instead.
 func (*ExportPresetResponse) Descriptor() ([]byte, []int) {
-	return file_muse_preset_proto_rawDescGZIP(), []int{18}
+	return file_muse_preset_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *ExportPresetResponse) GetFileContent() []byte {
@@ -1328,7 +1410,7 @@ type ListPromptItemsRequest struct {
 
 func (x *ListPromptItemsRequest) Reset() {
 	*x = ListPromptItemsRequest{}
-	mi := &file_muse_preset_proto_msgTypes[19]
+	mi := &file_muse_preset_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1340,7 +1422,7 @@ func (x *ListPromptItemsRequest) String() string {
 func (*ListPromptItemsRequest) ProtoMessage() {}
 
 func (x *ListPromptItemsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_preset_proto_msgTypes[19]
+	mi := &file_muse_preset_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1353,7 +1435,7 @@ func (x *ListPromptItemsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPromptItemsRequest.ProtoReflect.Descriptor instead.
 func (*ListPromptItemsRequest) Descriptor() ([]byte, []int) {
-	return file_muse_preset_proto_rawDescGZIP(), []int{19}
+	return file_muse_preset_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *ListPromptItemsRequest) GetPresetId() int32 {
@@ -1373,7 +1455,7 @@ type ListPromptItemsResponse struct {
 
 func (x *ListPromptItemsResponse) Reset() {
 	*x = ListPromptItemsResponse{}
-	mi := &file_muse_preset_proto_msgTypes[20]
+	mi := &file_muse_preset_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1385,7 +1467,7 @@ func (x *ListPromptItemsResponse) String() string {
 func (*ListPromptItemsResponse) ProtoMessage() {}
 
 func (x *ListPromptItemsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_preset_proto_msgTypes[20]
+	mi := &file_muse_preset_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1398,7 +1480,7 @@ func (x *ListPromptItemsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPromptItemsResponse.ProtoReflect.Descriptor instead.
 func (*ListPromptItemsResponse) Descriptor() ([]byte, []int) {
-	return file_muse_preset_proto_rawDescGZIP(), []int{20}
+	return file_muse_preset_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *ListPromptItemsResponse) GetItems() []*PromptItem {
@@ -1427,7 +1509,7 @@ type AddPromptItemRequest struct {
 
 func (x *AddPromptItemRequest) Reset() {
 	*x = AddPromptItemRequest{}
-	mi := &file_muse_preset_proto_msgTypes[21]
+	mi := &file_muse_preset_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1439,7 +1521,7 @@ func (x *AddPromptItemRequest) String() string {
 func (*AddPromptItemRequest) ProtoMessage() {}
 
 func (x *AddPromptItemRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_preset_proto_msgTypes[21]
+	mi := &file_muse_preset_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1452,7 +1534,7 @@ func (x *AddPromptItemRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddPromptItemRequest.ProtoReflect.Descriptor instead.
 func (*AddPromptItemRequest) Descriptor() ([]byte, []int) {
-	return file_muse_preset_proto_rawDescGZIP(), []int{21}
+	return file_muse_preset_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *AddPromptItemRequest) GetPresetId() int32 {
@@ -1535,7 +1617,7 @@ type AddPromptItemResponse struct {
 
 func (x *AddPromptItemResponse) Reset() {
 	*x = AddPromptItemResponse{}
-	mi := &file_muse_preset_proto_msgTypes[22]
+	mi := &file_muse_preset_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1547,7 +1629,7 @@ func (x *AddPromptItemResponse) String() string {
 func (*AddPromptItemResponse) ProtoMessage() {}
 
 func (x *AddPromptItemResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_preset_proto_msgTypes[22]
+	mi := &file_muse_preset_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1560,7 +1642,7 @@ func (x *AddPromptItemResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddPromptItemResponse.ProtoReflect.Descriptor instead.
 func (*AddPromptItemResponse) Descriptor() ([]byte, []int) {
-	return file_muse_preset_proto_rawDescGZIP(), []int{22}
+	return file_muse_preset_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *AddPromptItemResponse) GetItem() *PromptItem {
@@ -1591,7 +1673,7 @@ type UpdatePromptItemRequest struct {
 
 func (x *UpdatePromptItemRequest) Reset() {
 	*x = UpdatePromptItemRequest{}
-	mi := &file_muse_preset_proto_msgTypes[23]
+	mi := &file_muse_preset_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1603,7 +1685,7 @@ func (x *UpdatePromptItemRequest) String() string {
 func (*UpdatePromptItemRequest) ProtoMessage() {}
 
 func (x *UpdatePromptItemRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_preset_proto_msgTypes[23]
+	mi := &file_muse_preset_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1616,7 +1698,7 @@ func (x *UpdatePromptItemRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdatePromptItemRequest.ProtoReflect.Descriptor instead.
 func (*UpdatePromptItemRequest) Descriptor() ([]byte, []int) {
-	return file_muse_preset_proto_rawDescGZIP(), []int{23}
+	return file_muse_preset_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *UpdatePromptItemRequest) GetId() int32 {
@@ -1713,7 +1795,7 @@ type UpdatePromptItemResponse struct {
 
 func (x *UpdatePromptItemResponse) Reset() {
 	*x = UpdatePromptItemResponse{}
-	mi := &file_muse_preset_proto_msgTypes[24]
+	mi := &file_muse_preset_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1725,7 +1807,7 @@ func (x *UpdatePromptItemResponse) String() string {
 func (*UpdatePromptItemResponse) ProtoMessage() {}
 
 func (x *UpdatePromptItemResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_preset_proto_msgTypes[24]
+	mi := &file_muse_preset_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1738,7 +1820,7 @@ func (x *UpdatePromptItemResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdatePromptItemResponse.ProtoReflect.Descriptor instead.
 func (*UpdatePromptItemResponse) Descriptor() ([]byte, []int) {
-	return file_muse_preset_proto_rawDescGZIP(), []int{24}
+	return file_muse_preset_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *UpdatePromptItemResponse) GetItem() *PromptItem {
@@ -1758,7 +1840,7 @@ type DeletePromptItemRequest struct {
 
 func (x *DeletePromptItemRequest) Reset() {
 	*x = DeletePromptItemRequest{}
-	mi := &file_muse_preset_proto_msgTypes[25]
+	mi := &file_muse_preset_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1770,7 +1852,7 @@ func (x *DeletePromptItemRequest) String() string {
 func (*DeletePromptItemRequest) ProtoMessage() {}
 
 func (x *DeletePromptItemRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_preset_proto_msgTypes[25]
+	mi := &file_muse_preset_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1783,7 +1865,7 @@ func (x *DeletePromptItemRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeletePromptItemRequest.ProtoReflect.Descriptor instead.
 func (*DeletePromptItemRequest) Descriptor() ([]byte, []int) {
-	return file_muse_preset_proto_rawDescGZIP(), []int{25}
+	return file_muse_preset_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *DeletePromptItemRequest) GetId() int32 {
@@ -1802,7 +1884,7 @@ type DeletePromptItemResponse struct {
 
 func (x *DeletePromptItemResponse) Reset() {
 	*x = DeletePromptItemResponse{}
-	mi := &file_muse_preset_proto_msgTypes[26]
+	mi := &file_muse_preset_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1814,7 +1896,7 @@ func (x *DeletePromptItemResponse) String() string {
 func (*DeletePromptItemResponse) ProtoMessage() {}
 
 func (x *DeletePromptItemResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_preset_proto_msgTypes[26]
+	mi := &file_muse_preset_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1827,7 +1909,7 @@ func (x *DeletePromptItemResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeletePromptItemResponse.ProtoReflect.Descriptor instead.
 func (*DeletePromptItemResponse) Descriptor() ([]byte, []int) {
-	return file_muse_preset_proto_rawDescGZIP(), []int{26}
+	return file_muse_preset_proto_rawDescGZIP(), []int{28}
 }
 
 // 批量更新提示项排序请求
@@ -1843,7 +1925,7 @@ type UpdatePromptItemsOrderRequest struct {
 
 func (x *UpdatePromptItemsOrderRequest) Reset() {
 	*x = UpdatePromptItemsOrderRequest{}
-	mi := &file_muse_preset_proto_msgTypes[27]
+	mi := &file_muse_preset_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1855,7 +1937,7 @@ func (x *UpdatePromptItemsOrderRequest) String() string {
 func (*UpdatePromptItemsOrderRequest) ProtoMessage() {}
 
 func (x *UpdatePromptItemsOrderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_preset_proto_msgTypes[27]
+	mi := &file_muse_preset_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1868,7 +1950,7 @@ func (x *UpdatePromptItemsOrderRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdatePromptItemsOrderRequest.ProtoReflect.Descriptor instead.
 func (*UpdatePromptItemsOrderRequest) Descriptor() ([]byte, []int) {
-	return file_muse_preset_proto_rawDescGZIP(), []int{27}
+	return file_muse_preset_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *UpdatePromptItemsOrderRequest) GetPresetId() int32 {
@@ -1908,7 +1990,7 @@ type UpdatePromptItemsOrderResponse struct {
 
 func (x *UpdatePromptItemsOrderResponse) Reset() {
 	*x = UpdatePromptItemsOrderResponse{}
-	mi := &file_muse_preset_proto_msgTypes[28]
+	mi := &file_muse_preset_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1920,7 +2002,7 @@ func (x *UpdatePromptItemsOrderResponse) String() string {
 func (*UpdatePromptItemsOrderResponse) ProtoMessage() {}
 
 func (x *UpdatePromptItemsOrderResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_preset_proto_msgTypes[28]
+	mi := &file_muse_preset_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1933,14 +2015,14 @@ func (x *UpdatePromptItemsOrderResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdatePromptItemsOrderResponse.ProtoReflect.Descriptor instead.
 func (*UpdatePromptItemsOrderResponse) Descriptor() ([]byte, []int) {
-	return file_muse_preset_proto_rawDescGZIP(), []int{28}
+	return file_muse_preset_proto_rawDescGZIP(), []int{30}
 }
 
 var File_muse_preset_proto protoreflect.FileDescriptor
 
 const file_muse_preset_proto_rawDesc = "" +
 	"\n" +
-	"\x11muse/preset.proto\x12\x04muse\x1a\x11muse/common.proto\x1a\x10muse/regex.proto\"\xf0\x03\n" +
+	"\x11muse/preset.proto\x12\x04muse\x1a\x11muse/common.proto\x1a\x10muse/regex.proto\"\x89\x03\n" +
 	"\x06Preset\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\x05R\x06userId\x12\x12\n" +
@@ -1958,9 +2040,11 @@ const file_muse_preset_proto_rawDesc = "" +
 	"created_at\x18\v \x01(\x03R\tcreatedAt\x12\x1d\n" +
 	"\n" +
 	"updated_at\x18\f \x01(\x03R\tupdatedAt\x12'\n" +
-	"\x0fcandidate_count\x18\x0f \x01(\x05R\x0ecandidateCount\x123\n" +
-	"\fprompt_items\x18\r \x03(\v2\x10.muse.PromptItemR\vpromptItems\x120\n" +
-	"\vregex_rules\x18\x0e \x03(\v2\x0f.muse.RegexRuleR\n" +
+	"\x0fcandidate_count\x18\x0f \x01(\x05R\x0ecandidateCount\"\x9c\x01\n" +
+	"\rPresetWithAll\x12$\n" +
+	"\x06preset\x18\x01 \x01(\v2\f.muse.PresetR\x06preset\x123\n" +
+	"\fprompt_items\x18\x02 \x03(\v2\x10.muse.PromptItemR\vpromptItems\x120\n" +
+	"\vregex_rules\x18\x03 \x03(\v2\x0f.muse.RegexRuleR\n" +
 	"regexRules\"\xfd\x03\n" +
 	"\n" +
 	"PromptItem\x12\x0e\n" +
@@ -1989,16 +2073,20 @@ const file_muse_preset_proto_rawDesc = "" +
 	"\x05_next\"E\n" +
 	"\x12ListPresetsRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
-	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\"\x84\x01\n" +
-	"\x13ListPresetsResponse\x12&\n" +
-	"\apresets\x18\x01 \x03(\v2\f.muse.PresetR\apresets\x12\x14\n" +
+	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\"\x91\x01\n" +
+	"\x13ListPresetsResponse\x123\n" +
+	"\apresets\x18\x01 \x03(\v2\x19.muse.PresetWithPromptLenR\apresets\x12\x14\n" +
 	"\x05total\x18\x02 \x01(\x03R\x05total\x12\x12\n" +
 	"\x04page\x18\x03 \x01(\x05R\x04page\x12\x1b\n" +
-	"\tpage_size\x18\x04 \x01(\x05R\bpageSize\"\"\n" +
+	"\tpage_size\x18\x04 \x01(\x05R\bpageSize\"Z\n" +
+	"\x13PresetWithPromptLen\x12$\n" +
+	"\x06preset\x18\x01 \x01(\v2\f.muse.PresetR\x06preset\x12\x1d\n" +
+	"\n" +
+	"prompt_len\x18\x02 \x01(\x05R\tpromptLen\"\"\n" +
 	"\x10GetPresetRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\"9\n" +
-	"\x11GetPresetResponse\x12$\n" +
-	"\x06preset\x18\x01 \x01(\v2\f.muse.PresetR\x06preset\"\xea\x02\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\"@\n" +
+	"\x11GetPresetResponse\x12+\n" +
+	"\x06preset\x18\x01 \x01(\v2\x13.muse.PresetWithAllR\x06preset\"\xea\x02\n" +
 	"\x13CreatePresetRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
 	"\vtemperature\x18\x02 \x01(\x02R\vtemperature\x12\x13\n" +
@@ -2027,9 +2115,8 @@ const file_muse_preset_proto_rawDesc = "" +
 	"\n" +
 	"sort_order\x18\t \x01(\x05R\tsortOrderB\n" +
 	"\n" +
-	"\b_content\"<\n" +
-	"\x14CreatePresetResponse\x12$\n" +
-	"\x06preset\x18\x01 \x01(\v2\f.muse.PresetR\x06preset\"\x96\x02\n" +
+	"\b_content\"\x16\n" +
+	"\x14CreatePresetResponse\"\x96\x02\n" +
 	"\x13UpdatePresetRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
@@ -2040,9 +2127,8 @@ const file_muse_preset_proto_rawDesc = "" +
 	"max_tokens\x18\x06 \x01(\x05R\tmaxTokens\x12+\n" +
 	"\x11frequency_penalty\x18\a \x01(\x02R\x10frequencyPenalty\x12)\n" +
 	"\x10presence_penalty\x18\b \x01(\x02R\x0fpresencePenalty\x12\x18\n" +
-	"\aversion\x18\t \x01(\x03R\aversion\"<\n" +
-	"\x14UpdatePresetResponse\x12$\n" +
-	"\x06preset\x18\x01 \x01(\v2\f.muse.PresetR\x06preset\"%\n" +
+	"\aversion\x18\t \x01(\x03R\aversion\"\x16\n" +
+	"\x14UpdatePresetResponse\"%\n" +
 	"\x13DeletePresetRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\"\x16\n" +
 	"\x14DeletePresetResponse\"5\n" +
@@ -2051,9 +2137,9 @@ const file_muse_preset_proto_rawDesc = "" +
 	"\x17SetActivePresetResponse\"U\n" +
 	"\x13ImportPresetRequest\x12!\n" +
 	"\ffile_content\x18\x01 \x01(\fR\vfileContent\x12\x1b\n" +
-	"\tfile_name\x18\x02 \x01(\tR\bfileName\"<\n" +
-	"\x14ImportPresetResponse\x12$\n" +
-	"\x06preset\x18\x01 \x01(\v2\f.muse.PresetR\x06preset\"%\n" +
+	"\tfile_name\x18\x02 \x01(\tR\bfileName\"C\n" +
+	"\x14ImportPresetResponse\x12+\n" +
+	"\x06preset\x18\x01 \x01(\v2\x13.muse.PresetWithAllR\x06preset\"%\n" +
 	"\x13ExportPresetRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\"V\n" +
 	"\x14ExportPresetResponse\x12!\n" +
@@ -2146,96 +2232,98 @@ func file_muse_preset_proto_rawDescGZIP() []byte {
 	return file_muse_preset_proto_rawDescData
 }
 
-var file_muse_preset_proto_msgTypes = make([]protoimpl.MessageInfo, 29)
+var file_muse_preset_proto_msgTypes = make([]protoimpl.MessageInfo, 31)
 var file_muse_preset_proto_goTypes = []any{
 	(*Preset)(nil),                         // 0: muse.Preset
-	(*PromptItem)(nil),                     // 1: muse.PromptItem
-	(*ListPresetsRequest)(nil),             // 2: muse.ListPresetsRequest
-	(*ListPresetsResponse)(nil),            // 3: muse.ListPresetsResponse
-	(*GetPresetRequest)(nil),               // 4: muse.GetPresetRequest
-	(*GetPresetResponse)(nil),              // 5: muse.GetPresetResponse
-	(*CreatePresetRequest)(nil),            // 6: muse.CreatePresetRequest
-	(*CreatePromptItemRequest)(nil),        // 7: muse.CreatePromptItemRequest
-	(*CreatePresetResponse)(nil),           // 8: muse.CreatePresetResponse
-	(*UpdatePresetRequest)(nil),            // 9: muse.UpdatePresetRequest
-	(*UpdatePresetResponse)(nil),           // 10: muse.UpdatePresetResponse
-	(*DeletePresetRequest)(nil),            // 11: muse.DeletePresetRequest
-	(*DeletePresetResponse)(nil),           // 12: muse.DeletePresetResponse
-	(*SetActivePresetRequest)(nil),         // 13: muse.SetActivePresetRequest
-	(*SetActivePresetResponse)(nil),        // 14: muse.SetActivePresetResponse
-	(*ImportPresetRequest)(nil),            // 15: muse.ImportPresetRequest
-	(*ImportPresetResponse)(nil),           // 16: muse.ImportPresetResponse
-	(*ExportPresetRequest)(nil),            // 17: muse.ExportPresetRequest
-	(*ExportPresetResponse)(nil),           // 18: muse.ExportPresetResponse
-	(*ListPromptItemsRequest)(nil),         // 19: muse.ListPromptItemsRequest
-	(*ListPromptItemsResponse)(nil),        // 20: muse.ListPromptItemsResponse
-	(*AddPromptItemRequest)(nil),           // 21: muse.AddPromptItemRequest
-	(*AddPromptItemResponse)(nil),          // 22: muse.AddPromptItemResponse
-	(*UpdatePromptItemRequest)(nil),        // 23: muse.UpdatePromptItemRequest
-	(*UpdatePromptItemResponse)(nil),       // 24: muse.UpdatePromptItemResponse
-	(*DeletePromptItemRequest)(nil),        // 25: muse.DeletePromptItemRequest
-	(*DeletePromptItemResponse)(nil),       // 26: muse.DeletePromptItemResponse
-	(*UpdatePromptItemsOrderRequest)(nil),  // 27: muse.UpdatePromptItemsOrderRequest
-	(*UpdatePromptItemsOrderResponse)(nil), // 28: muse.UpdatePromptItemsOrderResponse
-	(*RegexRule)(nil),                      // 29: muse.RegexRule
-	(PromptItemIdentifier)(0),              // 30: muse.PromptItemIdentifier
-	(Role)(0),                              // 31: muse.Role
-	(InjectionPosition)(0),                 // 32: muse.InjectionPosition
-	(*AddRegexRuleRequest)(nil),            // 33: muse.AddRegexRuleRequest
-	(SortOperation)(0),                     // 34: muse.SortOperation
+	(*PresetWithAll)(nil),                  // 1: muse.PresetWithAll
+	(*PromptItem)(nil),                     // 2: muse.PromptItem
+	(*ListPresetsRequest)(nil),             // 3: muse.ListPresetsRequest
+	(*ListPresetsResponse)(nil),            // 4: muse.ListPresetsResponse
+	(*PresetWithPromptLen)(nil),            // 5: muse.PresetWithPromptLen
+	(*GetPresetRequest)(nil),               // 6: muse.GetPresetRequest
+	(*GetPresetResponse)(nil),              // 7: muse.GetPresetResponse
+	(*CreatePresetRequest)(nil),            // 8: muse.CreatePresetRequest
+	(*CreatePromptItemRequest)(nil),        // 9: muse.CreatePromptItemRequest
+	(*CreatePresetResponse)(nil),           // 10: muse.CreatePresetResponse
+	(*UpdatePresetRequest)(nil),            // 11: muse.UpdatePresetRequest
+	(*UpdatePresetResponse)(nil),           // 12: muse.UpdatePresetResponse
+	(*DeletePresetRequest)(nil),            // 13: muse.DeletePresetRequest
+	(*DeletePresetResponse)(nil),           // 14: muse.DeletePresetResponse
+	(*SetActivePresetRequest)(nil),         // 15: muse.SetActivePresetRequest
+	(*SetActivePresetResponse)(nil),        // 16: muse.SetActivePresetResponse
+	(*ImportPresetRequest)(nil),            // 17: muse.ImportPresetRequest
+	(*ImportPresetResponse)(nil),           // 18: muse.ImportPresetResponse
+	(*ExportPresetRequest)(nil),            // 19: muse.ExportPresetRequest
+	(*ExportPresetResponse)(nil),           // 20: muse.ExportPresetResponse
+	(*ListPromptItemsRequest)(nil),         // 21: muse.ListPromptItemsRequest
+	(*ListPromptItemsResponse)(nil),        // 22: muse.ListPromptItemsResponse
+	(*AddPromptItemRequest)(nil),           // 23: muse.AddPromptItemRequest
+	(*AddPromptItemResponse)(nil),          // 24: muse.AddPromptItemResponse
+	(*UpdatePromptItemRequest)(nil),        // 25: muse.UpdatePromptItemRequest
+	(*UpdatePromptItemResponse)(nil),       // 26: muse.UpdatePromptItemResponse
+	(*DeletePromptItemRequest)(nil),        // 27: muse.DeletePromptItemRequest
+	(*DeletePromptItemResponse)(nil),       // 28: muse.DeletePromptItemResponse
+	(*UpdatePromptItemsOrderRequest)(nil),  // 29: muse.UpdatePromptItemsOrderRequest
+	(*UpdatePromptItemsOrderResponse)(nil), // 30: muse.UpdatePromptItemsOrderResponse
+	(*RegexRule)(nil),                      // 31: muse.RegexRule
+	(PromptItemIdentifier)(0),              // 32: muse.PromptItemIdentifier
+	(Role)(0),                              // 33: muse.Role
+	(InjectionPosition)(0),                 // 34: muse.InjectionPosition
+	(*AddRegexRuleRequest)(nil),            // 35: muse.AddRegexRuleRequest
+	(SortOperation)(0),                     // 36: muse.SortOperation
 }
 var file_muse_preset_proto_depIdxs = []int32{
-	1,  // 0: muse.Preset.prompt_items:type_name -> muse.PromptItem
-	29, // 1: muse.Preset.regex_rules:type_name -> muse.RegexRule
-	30, // 2: muse.PromptItem.identifier:type_name -> muse.PromptItemIdentifier
-	31, // 3: muse.PromptItem.role:type_name -> muse.Role
-	32, // 4: muse.PromptItem.injection_position:type_name -> muse.InjectionPosition
-	0,  // 5: muse.ListPresetsResponse.presets:type_name -> muse.Preset
-	0,  // 6: muse.GetPresetResponse.preset:type_name -> muse.Preset
-	7,  // 7: muse.CreatePresetRequest.prompt_items:type_name -> muse.CreatePromptItemRequest
-	33, // 8: muse.CreatePresetRequest.regex_rules:type_name -> muse.AddRegexRuleRequest
-	30, // 9: muse.CreatePromptItemRequest.identifier:type_name -> muse.PromptItemIdentifier
-	31, // 10: muse.CreatePromptItemRequest.role:type_name -> muse.Role
-	32, // 11: muse.CreatePromptItemRequest.injection_position:type_name -> muse.InjectionPosition
-	0,  // 12: muse.CreatePresetResponse.preset:type_name -> muse.Preset
-	0,  // 13: muse.UpdatePresetResponse.preset:type_name -> muse.Preset
-	0,  // 14: muse.ImportPresetResponse.preset:type_name -> muse.Preset
-	1,  // 15: muse.ListPromptItemsResponse.items:type_name -> muse.PromptItem
-	30, // 16: muse.AddPromptItemRequest.identifier:type_name -> muse.PromptItemIdentifier
-	31, // 17: muse.AddPromptItemRequest.role:type_name -> muse.Role
-	32, // 18: muse.AddPromptItemRequest.injection_position:type_name -> muse.InjectionPosition
-	1,  // 19: muse.AddPromptItemResponse.item:type_name -> muse.PromptItem
-	30, // 20: muse.UpdatePromptItemRequest.identifier:type_name -> muse.PromptItemIdentifier
-	31, // 21: muse.UpdatePromptItemRequest.role:type_name -> muse.Role
-	32, // 22: muse.UpdatePromptItemRequest.injection_position:type_name -> muse.InjectionPosition
-	1,  // 23: muse.UpdatePromptItemResponse.item:type_name -> muse.PromptItem
-	34, // 24: muse.UpdatePromptItemsOrderRequest.sort_operation:type_name -> muse.SortOperation
-	2,  // 25: muse.PresetService.ListPresets:input_type -> muse.ListPresetsRequest
-	4,  // 26: muse.PresetService.GetPreset:input_type -> muse.GetPresetRequest
-	6,  // 27: muse.PresetService.CreatePreset:input_type -> muse.CreatePresetRequest
-	9,  // 28: muse.PresetService.UpdatePreset:input_type -> muse.UpdatePresetRequest
-	11, // 29: muse.PresetService.DeletePreset:input_type -> muse.DeletePresetRequest
-	13, // 30: muse.PresetService.SetActivePreset:input_type -> muse.SetActivePresetRequest
-	15, // 31: muse.PresetService.ImportPreset:input_type -> muse.ImportPresetRequest
-	17, // 32: muse.PresetService.ExportPreset:input_type -> muse.ExportPresetRequest
-	19, // 33: muse.PresetService.ListPromptItems:input_type -> muse.ListPromptItemsRequest
-	21, // 34: muse.PresetService.AddPromptItem:input_type -> muse.AddPromptItemRequest
-	23, // 35: muse.PresetService.UpdatePromptItem:input_type -> muse.UpdatePromptItemRequest
-	25, // 36: muse.PresetService.DeletePromptItem:input_type -> muse.DeletePromptItemRequest
-	27, // 37: muse.PresetService.UpdatePromptItemsOrder:input_type -> muse.UpdatePromptItemsOrderRequest
-	3,  // 38: muse.PresetService.ListPresets:output_type -> muse.ListPresetsResponse
-	5,  // 39: muse.PresetService.GetPreset:output_type -> muse.GetPresetResponse
-	8,  // 40: muse.PresetService.CreatePreset:output_type -> muse.CreatePresetResponse
-	10, // 41: muse.PresetService.UpdatePreset:output_type -> muse.UpdatePresetResponse
-	12, // 42: muse.PresetService.DeletePreset:output_type -> muse.DeletePresetResponse
-	14, // 43: muse.PresetService.SetActivePreset:output_type -> muse.SetActivePresetResponse
-	16, // 44: muse.PresetService.ImportPreset:output_type -> muse.ImportPresetResponse
-	18, // 45: muse.PresetService.ExportPreset:output_type -> muse.ExportPresetResponse
-	20, // 46: muse.PresetService.ListPromptItems:output_type -> muse.ListPromptItemsResponse
-	22, // 47: muse.PresetService.AddPromptItem:output_type -> muse.AddPromptItemResponse
-	24, // 48: muse.PresetService.UpdatePromptItem:output_type -> muse.UpdatePromptItemResponse
-	26, // 49: muse.PresetService.DeletePromptItem:output_type -> muse.DeletePromptItemResponse
-	28, // 50: muse.PresetService.UpdatePromptItemsOrder:output_type -> muse.UpdatePromptItemsOrderResponse
+	0,  // 0: muse.PresetWithAll.preset:type_name -> muse.Preset
+	2,  // 1: muse.PresetWithAll.prompt_items:type_name -> muse.PromptItem
+	31, // 2: muse.PresetWithAll.regex_rules:type_name -> muse.RegexRule
+	32, // 3: muse.PromptItem.identifier:type_name -> muse.PromptItemIdentifier
+	33, // 4: muse.PromptItem.role:type_name -> muse.Role
+	34, // 5: muse.PromptItem.injection_position:type_name -> muse.InjectionPosition
+	5,  // 6: muse.ListPresetsResponse.presets:type_name -> muse.PresetWithPromptLen
+	0,  // 7: muse.PresetWithPromptLen.preset:type_name -> muse.Preset
+	1,  // 8: muse.GetPresetResponse.preset:type_name -> muse.PresetWithAll
+	9,  // 9: muse.CreatePresetRequest.prompt_items:type_name -> muse.CreatePromptItemRequest
+	35, // 10: muse.CreatePresetRequest.regex_rules:type_name -> muse.AddRegexRuleRequest
+	32, // 11: muse.CreatePromptItemRequest.identifier:type_name -> muse.PromptItemIdentifier
+	33, // 12: muse.CreatePromptItemRequest.role:type_name -> muse.Role
+	34, // 13: muse.CreatePromptItemRequest.injection_position:type_name -> muse.InjectionPosition
+	1,  // 14: muse.ImportPresetResponse.preset:type_name -> muse.PresetWithAll
+	2,  // 15: muse.ListPromptItemsResponse.items:type_name -> muse.PromptItem
+	32, // 16: muse.AddPromptItemRequest.identifier:type_name -> muse.PromptItemIdentifier
+	33, // 17: muse.AddPromptItemRequest.role:type_name -> muse.Role
+	34, // 18: muse.AddPromptItemRequest.injection_position:type_name -> muse.InjectionPosition
+	2,  // 19: muse.AddPromptItemResponse.item:type_name -> muse.PromptItem
+	32, // 20: muse.UpdatePromptItemRequest.identifier:type_name -> muse.PromptItemIdentifier
+	33, // 21: muse.UpdatePromptItemRequest.role:type_name -> muse.Role
+	34, // 22: muse.UpdatePromptItemRequest.injection_position:type_name -> muse.InjectionPosition
+	2,  // 23: muse.UpdatePromptItemResponse.item:type_name -> muse.PromptItem
+	36, // 24: muse.UpdatePromptItemsOrderRequest.sort_operation:type_name -> muse.SortOperation
+	3,  // 25: muse.PresetService.ListPresets:input_type -> muse.ListPresetsRequest
+	6,  // 26: muse.PresetService.GetPreset:input_type -> muse.GetPresetRequest
+	8,  // 27: muse.PresetService.CreatePreset:input_type -> muse.CreatePresetRequest
+	11, // 28: muse.PresetService.UpdatePreset:input_type -> muse.UpdatePresetRequest
+	13, // 29: muse.PresetService.DeletePreset:input_type -> muse.DeletePresetRequest
+	15, // 30: muse.PresetService.SetActivePreset:input_type -> muse.SetActivePresetRequest
+	17, // 31: muse.PresetService.ImportPreset:input_type -> muse.ImportPresetRequest
+	19, // 32: muse.PresetService.ExportPreset:input_type -> muse.ExportPresetRequest
+	21, // 33: muse.PresetService.ListPromptItems:input_type -> muse.ListPromptItemsRequest
+	23, // 34: muse.PresetService.AddPromptItem:input_type -> muse.AddPromptItemRequest
+	25, // 35: muse.PresetService.UpdatePromptItem:input_type -> muse.UpdatePromptItemRequest
+	27, // 36: muse.PresetService.DeletePromptItem:input_type -> muse.DeletePromptItemRequest
+	29, // 37: muse.PresetService.UpdatePromptItemsOrder:input_type -> muse.UpdatePromptItemsOrderRequest
+	4,  // 38: muse.PresetService.ListPresets:output_type -> muse.ListPresetsResponse
+	7,  // 39: muse.PresetService.GetPreset:output_type -> muse.GetPresetResponse
+	10, // 40: muse.PresetService.CreatePreset:output_type -> muse.CreatePresetResponse
+	12, // 41: muse.PresetService.UpdatePreset:output_type -> muse.UpdatePresetResponse
+	14, // 42: muse.PresetService.DeletePreset:output_type -> muse.DeletePresetResponse
+	16, // 43: muse.PresetService.SetActivePreset:output_type -> muse.SetActivePresetResponse
+	18, // 44: muse.PresetService.ImportPreset:output_type -> muse.ImportPresetResponse
+	20, // 45: muse.PresetService.ExportPreset:output_type -> muse.ExportPresetResponse
+	22, // 46: muse.PresetService.ListPromptItems:output_type -> muse.ListPromptItemsResponse
+	24, // 47: muse.PresetService.AddPromptItem:output_type -> muse.AddPromptItemResponse
+	26, // 48: muse.PresetService.UpdatePromptItem:output_type -> muse.UpdatePromptItemResponse
+	28, // 49: muse.PresetService.DeletePromptItem:output_type -> muse.DeletePromptItemResponse
+	30, // 50: muse.PresetService.UpdatePromptItemsOrder:output_type -> muse.UpdatePromptItemsOrderResponse
 	38, // [38:51] is the sub-list for method output_type
 	25, // [25:38] is the sub-list for method input_type
 	25, // [25:25] is the sub-list for extension type_name
@@ -2250,17 +2338,17 @@ func file_muse_preset_proto_init() {
 	}
 	file_muse_common_proto_init()
 	file_muse_regex_proto_init()
-	file_muse_preset_proto_msgTypes[1].OneofWrappers = []any{}
-	file_muse_preset_proto_msgTypes[7].OneofWrappers = []any{}
-	file_muse_preset_proto_msgTypes[21].OneofWrappers = []any{}
+	file_muse_preset_proto_msgTypes[2].OneofWrappers = []any{}
+	file_muse_preset_proto_msgTypes[9].OneofWrappers = []any{}
 	file_muse_preset_proto_msgTypes[23].OneofWrappers = []any{}
+	file_muse_preset_proto_msgTypes[25].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_muse_preset_proto_rawDesc), len(file_muse_preset_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   29,
+			NumMessages:   31,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

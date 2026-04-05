@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file muse/preset.proto.
  */
 export const file_muse_preset: GenFile = /*@__PURE__*/
-  fileDesc("ChFtdXNlL3ByZXNldC5wcm90bxIEbXVzZSLPAgoGUHJlc2V0EgoKAmlkGAEgASgFEg8KB3VzZXJfaWQYAiABKAUSDAoEbmFtZRgDIAEoCRITCgt0ZW1wZXJhdHVyZRgEIAEoAhINCgV0b3BfcBgFIAEoAhINCgV0b3BfaxgGIAEoBRISCgptYXhfdG9rZW5zGAcgASgFEhkKEWZyZXF1ZW5jeV9wZW5hbHR5GAggASgCEhgKEHByZXNlbmNlX3BlbmFsdHkYCSABKAISDwoHdmVyc2lvbhgKIAEoAxISCgpjcmVhdGVkX2F0GAsgASgDEhIKCnVwZGF0ZWRfYXQYDCABKAMSFwoPY2FuZGlkYXRlX2NvdW50GA8gASgFEiYKDHByb21wdF9pdGVtcxgNIAMoCzIQLm11c2UuUHJvbXB0SXRlbRIkCgtyZWdleF9ydWxlcxgOIAMoCzIPLm11c2UuUmVnZXhSdWxlIu4CCgpQcm9tcHRJdGVtEgoKAmlkGAEgASgFEhEKCXByZXNldF9pZBgCIAEoBRIuCgppZGVudGlmaWVyGAMgASgOMhoubXVzZS5Qcm9tcHRJdGVtSWRlbnRpZmllchIMCgRuYW1lGAQgASgJEg8KB2NvbnRlbnQYBSABKAkSGAoEcm9sZRgGIAEoDjIKLm11c2UuUm9sZRISCgppc19lbmFibGVkGAcgASgIEjMKEmluamVjdGlvbl9wb3NpdGlvbhgIIAEoDjIXLm11c2UuSW5qZWN0aW9uUG9zaXRpb24SFwoPaW5qZWN0aW9uX2RlcHRoGAkgASgFEhgKEGZvcmJpZF9vdmVycmlkZXMYCiABKAgSEgoKY3JlYXRlZF9hdBgMIAEoAxISCgp1cGRhdGVkX2F0GA0gASgDEhAKA3ByZRgOIAEoBUgAiAEBEhEKBG5leHQYDyABKAVIAYgBAUIGCgRfcHJlQgcKBV9uZXh0IjUKEkxpc3RQcmVzZXRzUmVxdWVzdBIMCgRwYWdlGAEgASgFEhEKCXBhZ2Vfc2l6ZRgCIAEoBSJkChNMaXN0UHJlc2V0c1Jlc3BvbnNlEh0KB3ByZXNldHMYASADKAsyDC5tdXNlLlByZXNldBINCgV0b3RhbBgCIAEoAxIMCgRwYWdlGAMgASgFEhEKCXBhZ2Vfc2l6ZRgEIAEoBSIeChBHZXRQcmVzZXRSZXF1ZXN0EgoKAmlkGAEgASgFIjEKEUdldFByZXNldFJlc3BvbnNlEhwKBnByZXNldBgBIAEoCzIMLm11c2UuUHJlc2V0IoQCChNDcmVhdGVQcmVzZXRSZXF1ZXN0EgwKBG5hbWUYASABKAkSEwoLdGVtcGVyYXR1cmUYAiABKAISDQoFdG9wX3AYAyABKAISDQoFdG9wX2sYBCABKAUSEgoKbWF4X3Rva2VucxgFIAEoBRIZChFmcmVxdWVuY3lfcGVuYWx0eRgGIAEoAhIYChBwcmVzZW5jZV9wZW5hbHR5GAcgASgCEjMKDHByb21wdF9pdGVtcxgIIAMoCzIdLm11c2UuQ3JlYXRlUHJvbXB0SXRlbVJlcXVlc3QSLgoLcmVnZXhfcnVsZXMYCSADKAsyGS5tdXNlLkFkZFJlZ2V4UnVsZVJlcXVlc3QiowIKF0NyZWF0ZVByb21wdEl0ZW1SZXF1ZXN0Ei4KCmlkZW50aWZpZXIYASABKA4yGi5tdXNlLlByb21wdEl0ZW1JZGVudGlmaWVyEgwKBG5hbWUYAiABKAkSFAoHY29udGVudBgDIAEoCUgAiAEBEhgKBHJvbGUYBCABKA4yCi5tdXNlLlJvbGUSEgoKaXNfZW5hYmxlZBgFIAEoCBIzChJpbmplY3Rpb25fcG9zaXRpb24YBiABKA4yFy5tdXNlLkluamVjdGlvblBvc2l0aW9uEhcKD2luamVjdGlvbl9kZXB0aBgHIAEoBRIYChBmb3JiaWRfb3ZlcnJpZGVzGAggASgIEhIKCnNvcnRfb3JkZXIYCSABKAVCCgoIX2NvbnRlbnQiNAoUQ3JlYXRlUHJlc2V0UmVzcG9uc2USHAoGcHJlc2V0GAEgASgLMgwubXVzZS5QcmVzZXQivAEKE1VwZGF0ZVByZXNldFJlcXVlc3QSCgoCaWQYASABKAUSDAoEbmFtZRgCIAEoCRITCgt0ZW1wZXJhdHVyZRgDIAEoAhINCgV0b3BfcBgEIAEoAhINCgV0b3BfaxgFIAEoBRISCgptYXhfdG9rZW5zGAYgASgFEhkKEWZyZXF1ZW5jeV9wZW5hbHR5GAcgASgCEhgKEHByZXNlbmNlX3BlbmFsdHkYCCABKAISDwoHdmVyc2lvbhgJIAEoAyI0ChRVcGRhdGVQcmVzZXRSZXNwb25zZRIcCgZwcmVzZXQYASABKAsyDC5tdXNlLlByZXNldCIhChNEZWxldGVQcmVzZXRSZXF1ZXN0EgoKAmlkGAEgASgFIhYKFERlbGV0ZVByZXNldFJlc3BvbnNlIisKFlNldEFjdGl2ZVByZXNldFJlcXVlc3QSEQoJcHJlc2V0X2lkGAEgASgFIhkKF1NldEFjdGl2ZVByZXNldFJlc3BvbnNlIj4KE0ltcG9ydFByZXNldFJlcXVlc3QSFAoMZmlsZV9jb250ZW50GAEgASgMEhEKCWZpbGVfbmFtZRgCIAEoCSI0ChRJbXBvcnRQcmVzZXRSZXNwb25zZRIcCgZwcmVzZXQYASABKAsyDC5tdXNlLlByZXNldCIhChNFeHBvcnRQcmVzZXRSZXF1ZXN0EgoKAmlkGAEgASgFIj8KFEV4cG9ydFByZXNldFJlc3BvbnNlEhQKDGZpbGVfY29udGVudBgBIAEoDBIRCglmaWxlX25hbWUYAiABKAkiKwoWTGlzdFByb21wdEl0ZW1zUmVxdWVzdBIRCglwcmVzZXRfaWQYASABKAUiOgoXTGlzdFByb21wdEl0ZW1zUmVzcG9uc2USHwoFaXRlbXMYASADKAsyEC5tdXNlLlByb21wdEl0ZW0iswIKFEFkZFByb21wdEl0ZW1SZXF1ZXN0EhEKCXByZXNldF9pZBgBIAEoBRIuCgppZGVudGlmaWVyGAIgASgOMhoubXVzZS5Qcm9tcHRJdGVtSWRlbnRpZmllchIMCgRuYW1lGAMgASgJEhQKB2NvbnRlbnQYBCABKAlIAIgBARIYCgRyb2xlGAUgASgOMgoubXVzZS5Sb2xlEhIKCmlzX2VuYWJsZWQYBiABKAgSMwoSaW5qZWN0aW9uX3Bvc2l0aW9uGAcgASgOMhcubXVzZS5JbmplY3Rpb25Qb3NpdGlvbhIXCg9pbmplY3Rpb25fZGVwdGgYCCABKAUSGAoQZm9yYmlkX292ZXJyaWRlcxgJIAEoCBISCgpzb3J0X29yZGVyGAogASgFQgoKCF9jb250ZW50IjcKFUFkZFByb21wdEl0ZW1SZXNwb25zZRIeCgRpdGVtGAEgASgLMhAubXVzZS5Qcm9tcHRJdGVtIuUCChdVcGRhdGVQcm9tcHRJdGVtUmVxdWVzdBIKCgJpZBgBIAEoBRIuCgppZGVudGlmaWVyGAIgASgOMhoubXVzZS5Qcm9tcHRJdGVtSWRlbnRpZmllchIMCgRuYW1lGAMgASgJEhQKB2NvbnRlbnQYBCABKAlIAIgBARIYCgRyb2xlGAUgASgOMgoubXVzZS5Sb2xlEhIKCmlzX2VuYWJsZWQYBiABKAgSMwoSaW5qZWN0aW9uX3Bvc2l0aW9uGAcgASgOMhcubXVzZS5JbmplY3Rpb25Qb3NpdGlvbhIXCg9pbmplY3Rpb25fZGVwdGgYCCABKAUSGAoQZm9yYmlkX292ZXJyaWRlcxgJIAEoCBISCgpzb3J0X29yZGVyGAogASgFEhAKA3ByZRgLIAEoBUgBiAEBEhEKBG5leHQYDCABKAVIAogBAUIKCghfY29udGVudEIGCgRfcHJlQgcKBV9uZXh0IjoKGFVwZGF0ZVByb21wdEl0ZW1SZXNwb25zZRIeCgRpdGVtGAEgASgLMhAubXVzZS5Qcm9tcHRJdGVtIiUKF0RlbGV0ZVByb21wdEl0ZW1SZXF1ZXN0EgoKAmlkGAEgASgFIhoKGERlbGV0ZVByb21wdEl0ZW1SZXNwb25zZSKCAQodVXBkYXRlUHJvbXB0SXRlbXNPcmRlclJlcXVlc3QSEQoJcHJlc2V0X2lkGAEgASgFEhEKCXNvdXJjZV9pZBgCIAEoBRIOCgZkZXNfaWQYAyABKAUSKwoOc29ydF9vcGVyYXRpb24YBCABKA4yEy5tdXNlLlNvcnRPcGVyYXRpb24iIAoeVXBkYXRlUHJvbXB0SXRlbXNPcmRlclJlc3BvbnNlMukHCg1QcmVzZXRTZXJ2aWNlEkIKC0xpc3RQcmVzZXRzEhgubXVzZS5MaXN0UHJlc2V0c1JlcXVlc3QaGS5tdXNlLkxpc3RQcmVzZXRzUmVzcG9uc2USPAoJR2V0UHJlc2V0EhYubXVzZS5HZXRQcmVzZXRSZXF1ZXN0GhcubXVzZS5HZXRQcmVzZXRSZXNwb25zZRJFCgxDcmVhdGVQcmVzZXQSGS5tdXNlLkNyZWF0ZVByZXNldFJlcXVlc3QaGi5tdXNlLkNyZWF0ZVByZXNldFJlc3BvbnNlEkUKDFVwZGF0ZVByZXNldBIZLm11c2UuVXBkYXRlUHJlc2V0UmVxdWVzdBoaLm11c2UuVXBkYXRlUHJlc2V0UmVzcG9uc2USRQoMRGVsZXRlUHJlc2V0EhkubXVzZS5EZWxldGVQcmVzZXRSZXF1ZXN0GhoubXVzZS5EZWxldGVQcmVzZXRSZXNwb25zZRJOCg9TZXRBY3RpdmVQcmVzZXQSHC5tdXNlLlNldEFjdGl2ZVByZXNldFJlcXVlc3QaHS5tdXNlLlNldEFjdGl2ZVByZXNldFJlc3BvbnNlEkUKDEltcG9ydFByZXNldBIZLm11c2UuSW1wb3J0UHJlc2V0UmVxdWVzdBoaLm11c2UuSW1wb3J0UHJlc2V0UmVzcG9uc2USRQoMRXhwb3J0UHJlc2V0EhkubXVzZS5FeHBvcnRQcmVzZXRSZXF1ZXN0GhoubXVzZS5FeHBvcnRQcmVzZXRSZXNwb25zZRJOCg9MaXN0UHJvbXB0SXRlbXMSHC5tdXNlLkxpc3RQcm9tcHRJdGVtc1JlcXVlc3QaHS5tdXNlLkxpc3RQcm9tcHRJdGVtc1Jlc3BvbnNlEkgKDUFkZFByb21wdEl0ZW0SGi5tdXNlLkFkZFByb21wdEl0ZW1SZXF1ZXN0GhsubXVzZS5BZGRQcm9tcHRJdGVtUmVzcG9uc2USUQoQVXBkYXRlUHJvbXB0SXRlbRIdLm11c2UuVXBkYXRlUHJvbXB0SXRlbVJlcXVlc3QaHi5tdXNlLlVwZGF0ZVByb21wdEl0ZW1SZXNwb25zZRJRChBEZWxldGVQcm9tcHRJdGVtEh0ubXVzZS5EZWxldGVQcm9tcHRJdGVtUmVxdWVzdBoeLm11c2UuRGVsZXRlUHJvbXB0SXRlbVJlc3BvbnNlEmMKFlVwZGF0ZVByb21wdEl0ZW1zT3JkZXISIy5tdXNlLlVwZGF0ZVByb21wdEl0ZW1zT3JkZXJSZXF1ZXN0GiQubXVzZS5VcGRhdGVQcm9tcHRJdGVtc09yZGVyUmVzcG9uc2VCZgoIY29tLm11c2VCC1ByZXNldFByb3RvUAFaHWdpdGh1Yi5jb20vbGluZy9tdXNlL2dlbi9tdXNlogIDTVhYqgIETXVzZcoCBE11c2XiAhBNdXNlXEdQQk1ldGFkYXRh6gIETXVzZWIGcHJvdG8z", [file_muse_common, file_muse_regex]);
+  fileDesc("ChFtdXNlL3ByZXNldC5wcm90bxIEbXVzZSKBAgoGUHJlc2V0EgoKAmlkGAEgASgFEg8KB3VzZXJfaWQYAiABKAUSDAoEbmFtZRgDIAEoCRITCgt0ZW1wZXJhdHVyZRgEIAEoAhINCgV0b3BfcBgFIAEoAhINCgV0b3BfaxgGIAEoBRISCgptYXhfdG9rZW5zGAcgASgFEhkKEWZyZXF1ZW5jeV9wZW5hbHR5GAggASgCEhgKEHByZXNlbmNlX3BlbmFsdHkYCSABKAISDwoHdmVyc2lvbhgKIAEoAxISCgpjcmVhdGVkX2F0GAsgASgDEhIKCnVwZGF0ZWRfYXQYDCABKAMSFwoPY2FuZGlkYXRlX2NvdW50GA8gASgFInsKDVByZXNldFdpdGhBbGwSHAoGcHJlc2V0GAEgASgLMgwubXVzZS5QcmVzZXQSJgoMcHJvbXB0X2l0ZW1zGAIgAygLMhAubXVzZS5Qcm9tcHRJdGVtEiQKC3JlZ2V4X3J1bGVzGAMgAygLMg8ubXVzZS5SZWdleFJ1bGUi7gIKClByb21wdEl0ZW0SCgoCaWQYASABKAUSEQoJcHJlc2V0X2lkGAIgASgFEi4KCmlkZW50aWZpZXIYAyABKA4yGi5tdXNlLlByb21wdEl0ZW1JZGVudGlmaWVyEgwKBG5hbWUYBCABKAkSDwoHY29udGVudBgFIAEoCRIYCgRyb2xlGAYgASgOMgoubXVzZS5Sb2xlEhIKCmlzX2VuYWJsZWQYByABKAgSMwoSaW5qZWN0aW9uX3Bvc2l0aW9uGAggASgOMhcubXVzZS5JbmplY3Rpb25Qb3NpdGlvbhIXCg9pbmplY3Rpb25fZGVwdGgYCSABKAUSGAoQZm9yYmlkX292ZXJyaWRlcxgKIAEoCBISCgpjcmVhdGVkX2F0GAwgASgDEhIKCnVwZGF0ZWRfYXQYDSABKAMSEAoDcHJlGA4gASgFSACIAQESEQoEbmV4dBgPIAEoBUgBiAEBQgYKBF9wcmVCBwoFX25leHQiNQoSTGlzdFByZXNldHNSZXF1ZXN0EgwKBHBhZ2UYASABKAUSEQoJcGFnZV9zaXplGAIgASgFInEKE0xpc3RQcmVzZXRzUmVzcG9uc2USKgoHcHJlc2V0cxgBIAMoCzIZLm11c2UuUHJlc2V0V2l0aFByb21wdExlbhINCgV0b3RhbBgCIAEoAxIMCgRwYWdlGAMgASgFEhEKCXBhZ2Vfc2l6ZRgEIAEoBSJHChNQcmVzZXRXaXRoUHJvbXB0TGVuEhwKBnByZXNldBgBIAEoCzIMLm11c2UuUHJlc2V0EhIKCnByb21wdF9sZW4YAiABKAUiHgoQR2V0UHJlc2V0UmVxdWVzdBIKCgJpZBgBIAEoBSI4ChFHZXRQcmVzZXRSZXNwb25zZRIjCgZwcmVzZXQYASABKAsyEy5tdXNlLlByZXNldFdpdGhBbGwihAIKE0NyZWF0ZVByZXNldFJlcXVlc3QSDAoEbmFtZRgBIAEoCRITCgt0ZW1wZXJhdHVyZRgCIAEoAhINCgV0b3BfcBgDIAEoAhINCgV0b3BfaxgEIAEoBRISCgptYXhfdG9rZW5zGAUgASgFEhkKEWZyZXF1ZW5jeV9wZW5hbHR5GAYgASgCEhgKEHByZXNlbmNlX3BlbmFsdHkYByABKAISMwoMcHJvbXB0X2l0ZW1zGAggAygLMh0ubXVzZS5DcmVhdGVQcm9tcHRJdGVtUmVxdWVzdBIuCgtyZWdleF9ydWxlcxgJIAMoCzIZLm11c2UuQWRkUmVnZXhSdWxlUmVxdWVzdCKjAgoXQ3JlYXRlUHJvbXB0SXRlbVJlcXVlc3QSLgoKaWRlbnRpZmllchgBIAEoDjIaLm11c2UuUHJvbXB0SXRlbUlkZW50aWZpZXISDAoEbmFtZRgCIAEoCRIUCgdjb250ZW50GAMgASgJSACIAQESGAoEcm9sZRgEIAEoDjIKLm11c2UuUm9sZRISCgppc19lbmFibGVkGAUgASgIEjMKEmluamVjdGlvbl9wb3NpdGlvbhgGIAEoDjIXLm11c2UuSW5qZWN0aW9uUG9zaXRpb24SFwoPaW5qZWN0aW9uX2RlcHRoGAcgASgFEhgKEGZvcmJpZF9vdmVycmlkZXMYCCABKAgSEgoKc29ydF9vcmRlchgJIAEoBUIKCghfY29udGVudCIWChRDcmVhdGVQcmVzZXRSZXNwb25zZSK8AQoTVXBkYXRlUHJlc2V0UmVxdWVzdBIKCgJpZBgBIAEoBRIMCgRuYW1lGAIgASgJEhMKC3RlbXBlcmF0dXJlGAMgASgCEg0KBXRvcF9wGAQgASgCEg0KBXRvcF9rGAUgASgFEhIKCm1heF90b2tlbnMYBiABKAUSGQoRZnJlcXVlbmN5X3BlbmFsdHkYByABKAISGAoQcHJlc2VuY2VfcGVuYWx0eRgIIAEoAhIPCgd2ZXJzaW9uGAkgASgDIhYKFFVwZGF0ZVByZXNldFJlc3BvbnNlIiEKE0RlbGV0ZVByZXNldFJlcXVlc3QSCgoCaWQYASABKAUiFgoURGVsZXRlUHJlc2V0UmVzcG9uc2UiKwoWU2V0QWN0aXZlUHJlc2V0UmVxdWVzdBIRCglwcmVzZXRfaWQYASABKAUiGQoXU2V0QWN0aXZlUHJlc2V0UmVzcG9uc2UiPgoTSW1wb3J0UHJlc2V0UmVxdWVzdBIUCgxmaWxlX2NvbnRlbnQYASABKAwSEQoJZmlsZV9uYW1lGAIgASgJIjsKFEltcG9ydFByZXNldFJlc3BvbnNlEiMKBnByZXNldBgBIAEoCzITLm11c2UuUHJlc2V0V2l0aEFsbCIhChNFeHBvcnRQcmVzZXRSZXF1ZXN0EgoKAmlkGAEgASgFIj8KFEV4cG9ydFByZXNldFJlc3BvbnNlEhQKDGZpbGVfY29udGVudBgBIAEoDBIRCglmaWxlX25hbWUYAiABKAkiKwoWTGlzdFByb21wdEl0ZW1zUmVxdWVzdBIRCglwcmVzZXRfaWQYASABKAUiOgoXTGlzdFByb21wdEl0ZW1zUmVzcG9uc2USHwoFaXRlbXMYASADKAsyEC5tdXNlLlByb21wdEl0ZW0iswIKFEFkZFByb21wdEl0ZW1SZXF1ZXN0EhEKCXByZXNldF9pZBgBIAEoBRIuCgppZGVudGlmaWVyGAIgASgOMhoubXVzZS5Qcm9tcHRJdGVtSWRlbnRpZmllchIMCgRuYW1lGAMgASgJEhQKB2NvbnRlbnQYBCABKAlIAIgBARIYCgRyb2xlGAUgASgOMgoubXVzZS5Sb2xlEhIKCmlzX2VuYWJsZWQYBiABKAgSMwoSaW5qZWN0aW9uX3Bvc2l0aW9uGAcgASgOMhcubXVzZS5JbmplY3Rpb25Qb3NpdGlvbhIXCg9pbmplY3Rpb25fZGVwdGgYCCABKAUSGAoQZm9yYmlkX292ZXJyaWRlcxgJIAEoCBISCgpzb3J0X29yZGVyGAogASgFQgoKCF9jb250ZW50IjcKFUFkZFByb21wdEl0ZW1SZXNwb25zZRIeCgRpdGVtGAEgASgLMhAubXVzZS5Qcm9tcHRJdGVtIuUCChdVcGRhdGVQcm9tcHRJdGVtUmVxdWVzdBIKCgJpZBgBIAEoBRIuCgppZGVudGlmaWVyGAIgASgOMhoubXVzZS5Qcm9tcHRJdGVtSWRlbnRpZmllchIMCgRuYW1lGAMgASgJEhQKB2NvbnRlbnQYBCABKAlIAIgBARIYCgRyb2xlGAUgASgOMgoubXVzZS5Sb2xlEhIKCmlzX2VuYWJsZWQYBiABKAgSMwoSaW5qZWN0aW9uX3Bvc2l0aW9uGAcgASgOMhcubXVzZS5JbmplY3Rpb25Qb3NpdGlvbhIXCg9pbmplY3Rpb25fZGVwdGgYCCABKAUSGAoQZm9yYmlkX292ZXJyaWRlcxgJIAEoCBISCgpzb3J0X29yZGVyGAogASgFEhAKA3ByZRgLIAEoBUgBiAEBEhEKBG5leHQYDCABKAVIAogBAUIKCghfY29udGVudEIGCgRfcHJlQgcKBV9uZXh0IjoKGFVwZGF0ZVByb21wdEl0ZW1SZXNwb25zZRIeCgRpdGVtGAEgASgLMhAubXVzZS5Qcm9tcHRJdGVtIiUKF0RlbGV0ZVByb21wdEl0ZW1SZXF1ZXN0EgoKAmlkGAEgASgFIhoKGERlbGV0ZVByb21wdEl0ZW1SZXNwb25zZSKCAQodVXBkYXRlUHJvbXB0SXRlbXNPcmRlclJlcXVlc3QSEQoJcHJlc2V0X2lkGAEgASgFEhEKCXNvdXJjZV9pZBgCIAEoBRIOCgZkZXNfaWQYAyABKAUSKwoOc29ydF9vcGVyYXRpb24YBCABKA4yEy5tdXNlLlNvcnRPcGVyYXRpb24iIAoeVXBkYXRlUHJvbXB0SXRlbXNPcmRlclJlc3BvbnNlMukHCg1QcmVzZXRTZXJ2aWNlEkIKC0xpc3RQcmVzZXRzEhgubXVzZS5MaXN0UHJlc2V0c1JlcXVlc3QaGS5tdXNlLkxpc3RQcmVzZXRzUmVzcG9uc2USPAoJR2V0UHJlc2V0EhYubXVzZS5HZXRQcmVzZXRSZXF1ZXN0GhcubXVzZS5HZXRQcmVzZXRSZXNwb25zZRJFCgxDcmVhdGVQcmVzZXQSGS5tdXNlLkNyZWF0ZVByZXNldFJlcXVlc3QaGi5tdXNlLkNyZWF0ZVByZXNldFJlc3BvbnNlEkUKDFVwZGF0ZVByZXNldBIZLm11c2UuVXBkYXRlUHJlc2V0UmVxdWVzdBoaLm11c2UuVXBkYXRlUHJlc2V0UmVzcG9uc2USRQoMRGVsZXRlUHJlc2V0EhkubXVzZS5EZWxldGVQcmVzZXRSZXF1ZXN0GhoubXVzZS5EZWxldGVQcmVzZXRSZXNwb25zZRJOCg9TZXRBY3RpdmVQcmVzZXQSHC5tdXNlLlNldEFjdGl2ZVByZXNldFJlcXVlc3QaHS5tdXNlLlNldEFjdGl2ZVByZXNldFJlc3BvbnNlEkUKDEltcG9ydFByZXNldBIZLm11c2UuSW1wb3J0UHJlc2V0UmVxdWVzdBoaLm11c2UuSW1wb3J0UHJlc2V0UmVzcG9uc2USRQoMRXhwb3J0UHJlc2V0EhkubXVzZS5FeHBvcnRQcmVzZXRSZXF1ZXN0GhoubXVzZS5FeHBvcnRQcmVzZXRSZXNwb25zZRJOCg9MaXN0UHJvbXB0SXRlbXMSHC5tdXNlLkxpc3RQcm9tcHRJdGVtc1JlcXVlc3QaHS5tdXNlLkxpc3RQcm9tcHRJdGVtc1Jlc3BvbnNlEkgKDUFkZFByb21wdEl0ZW0SGi5tdXNlLkFkZFByb21wdEl0ZW1SZXF1ZXN0GhsubXVzZS5BZGRQcm9tcHRJdGVtUmVzcG9uc2USUQoQVXBkYXRlUHJvbXB0SXRlbRIdLm11c2UuVXBkYXRlUHJvbXB0SXRlbVJlcXVlc3QaHi5tdXNlLlVwZGF0ZVByb21wdEl0ZW1SZXNwb25zZRJRChBEZWxldGVQcm9tcHRJdGVtEh0ubXVzZS5EZWxldGVQcm9tcHRJdGVtUmVxdWVzdBoeLm11c2UuRGVsZXRlUHJvbXB0SXRlbVJlc3BvbnNlEmMKFlVwZGF0ZVByb21wdEl0ZW1zT3JkZXISIy5tdXNlLlVwZGF0ZVByb21wdEl0ZW1zT3JkZXJSZXF1ZXN0GiQubXVzZS5VcGRhdGVQcm9tcHRJdGVtc09yZGVyUmVzcG9uc2VCZgoIY29tLm11c2VCC1ByZXNldFByb3RvUAFaHWdpdGh1Yi5jb20vbGluZy9tdXNlL2dlbi9tdXNlogIDTVhYqgIETXVzZcoCBE11c2XiAhBNdXNlXEdQQk1ldGFkYXRh6gIETXVzZWIGcHJvdG8z", [file_muse_common, file_muse_regex]);
 
 /**
  * Preset 预设配置，定义AI生成参数和提示词模板
@@ -112,20 +112,6 @@ export type Preset = Message<"muse.Preset"> & {
    * @generated from field: int32 candidate_count = 15;
    */
   candidateCount: number;
-
-  /**
-   * 提示项列表（可选加载）
-   *
-   * @generated from field: repeated muse.PromptItem prompt_items = 13;
-   */
-  promptItems: PromptItem[];
-
-  /**
-   * 正则规则列表（可选加载）
-   *
-   * @generated from field: repeated muse.RegexRule regex_rules = 14;
-   */
-  regexRules: RegexRule[];
 };
 
 /**
@@ -134,6 +120,35 @@ export type Preset = Message<"muse.Preset"> & {
  */
 export const PresetSchema: GenMessage<Preset> = /*@__PURE__*/
   messageDesc(file_muse_preset, 0);
+
+/**
+ * PresetWithAll 包含提示项和正则规则的预设
+ *
+ * @generated from message muse.PresetWithAll
+ */
+export type PresetWithAll = Message<"muse.PresetWithAll"> & {
+  /**
+   * @generated from field: muse.Preset preset = 1;
+   */
+  preset?: Preset;
+
+  /**
+   * @generated from field: repeated muse.PromptItem prompt_items = 2;
+   */
+  promptItems: PromptItem[];
+
+  /**
+   * @generated from field: repeated muse.RegexRule regex_rules = 3;
+   */
+  regexRules: RegexRule[];
+};
+
+/**
+ * Describes the message muse.PresetWithAll.
+ * Use `create(PresetWithAllSchema)` to create a new message.
+ */
+export const PresetWithAllSchema: GenMessage<PresetWithAll> = /*@__PURE__*/
+  messageDesc(file_muse_preset, 1);
 
 /**
  * PromptItem 提示项，组成发送给AI的提示词
@@ -245,7 +260,7 @@ export type PromptItem = Message<"muse.PromptItem"> & {
  * Use `create(PromptItemSchema)` to create a new message.
  */
 export const PromptItemSchema: GenMessage<PromptItem> = /*@__PURE__*/
-  messageDesc(file_muse_preset, 1);
+  messageDesc(file_muse_preset, 2);
 
 /**
  * 获取预设列表请求
@@ -274,7 +289,7 @@ export type ListPresetsRequest = Message<"muse.ListPresetsRequest"> & {
  * Use `create(ListPresetsRequestSchema)` to create a new message.
  */
 export const ListPresetsRequestSchema: GenMessage<ListPresetsRequest> = /*@__PURE__*/
-  messageDesc(file_muse_preset, 2);
+  messageDesc(file_muse_preset, 3);
 
 /**
  * 获取预设列表响应
@@ -286,9 +301,9 @@ export type ListPresetsResponse = Message<"muse.ListPresetsResponse"> & {
   /**
    * 预设列表
    *
-   * @generated from field: repeated muse.Preset presets = 1;
+   * @generated from field: repeated muse.PresetWithPromptLen presets = 1;
    */
-  presets: Preset[];
+  presets: PresetWithPromptLen[];
 
   /**
    * 总数
@@ -317,7 +332,35 @@ export type ListPresetsResponse = Message<"muse.ListPresetsResponse"> & {
  * Use `create(ListPresetsResponseSchema)` to create a new message.
  */
 export const ListPresetsResponseSchema: GenMessage<ListPresetsResponse> = /*@__PURE__*/
-  messageDesc(file_muse_preset, 3);
+  messageDesc(file_muse_preset, 4);
+
+/**
+ * PresetWithPromptLen 预设包含提示项数量
+ *
+ * @generated from message muse.PresetWithPromptLen
+ */
+export type PresetWithPromptLen = Message<"muse.PresetWithPromptLen"> & {
+  /**
+   * 预设
+   *
+   * @generated from field: muse.Preset preset = 1;
+   */
+  preset?: Preset;
+
+  /**
+   * 提示项数量
+   *
+   * @generated from field: int32 prompt_len = 2;
+   */
+  promptLen: number;
+};
+
+/**
+ * Describes the message muse.PresetWithPromptLen.
+ * Use `create(PresetWithPromptLenSchema)` to create a new message.
+ */
+export const PresetWithPromptLenSchema: GenMessage<PresetWithPromptLen> = /*@__PURE__*/
+  messageDesc(file_muse_preset, 5);
 
 /**
  * 获取单个预设请求
@@ -336,7 +379,7 @@ export type GetPresetRequest = Message<"muse.GetPresetRequest"> & {
  * Use `create(GetPresetRequestSchema)` to create a new message.
  */
 export const GetPresetRequestSchema: GenMessage<GetPresetRequest> = /*@__PURE__*/
-  messageDesc(file_muse_preset, 4);
+  messageDesc(file_muse_preset, 6);
 
 /**
  * 获取单个预设响应
@@ -345,9 +388,9 @@ export const GetPresetRequestSchema: GenMessage<GetPresetRequest> = /*@__PURE__*
  */
 export type GetPresetResponse = Message<"muse.GetPresetResponse"> & {
   /**
-   * @generated from field: muse.Preset preset = 1;
+   * @generated from field: muse.PresetWithAll preset = 1;
    */
-  preset?: Preset;
+  preset?: PresetWithAll;
 };
 
 /**
@@ -355,7 +398,7 @@ export type GetPresetResponse = Message<"muse.GetPresetResponse"> & {
  * Use `create(GetPresetResponseSchema)` to create a new message.
  */
 export const GetPresetResponseSchema: GenMessage<GetPresetResponse> = /*@__PURE__*/
-  messageDesc(file_muse_preset, 5);
+  messageDesc(file_muse_preset, 7);
 
 /**
  * 创建预设请求
@@ -414,7 +457,7 @@ export type CreatePresetRequest = Message<"muse.CreatePresetRequest"> & {
  * Use `create(CreatePresetRequestSchema)` to create a new message.
  */
 export const CreatePresetRequestSchema: GenMessage<CreatePresetRequest> = /*@__PURE__*/
-  messageDesc(file_muse_preset, 6);
+  messageDesc(file_muse_preset, 8);
 
 /**
  * 创建提示项请求（嵌套）
@@ -473,7 +516,7 @@ export type CreatePromptItemRequest = Message<"muse.CreatePromptItemRequest"> & 
  * Use `create(CreatePromptItemRequestSchema)` to create a new message.
  */
 export const CreatePromptItemRequestSchema: GenMessage<CreatePromptItemRequest> = /*@__PURE__*/
-  messageDesc(file_muse_preset, 7);
+  messageDesc(file_muse_preset, 9);
 
 /**
  * 创建预设响应
@@ -481,10 +524,6 @@ export const CreatePromptItemRequestSchema: GenMessage<CreatePromptItemRequest> 
  * @generated from message muse.CreatePresetResponse
  */
 export type CreatePresetResponse = Message<"muse.CreatePresetResponse"> & {
-  /**
-   * @generated from field: muse.Preset preset = 1;
-   */
-  preset?: Preset;
 };
 
 /**
@@ -492,7 +531,7 @@ export type CreatePresetResponse = Message<"muse.CreatePresetResponse"> & {
  * Use `create(CreatePresetResponseSchema)` to create a new message.
  */
 export const CreatePresetResponseSchema: GenMessage<CreatePresetResponse> = /*@__PURE__*/
-  messageDesc(file_muse_preset, 8);
+  messageDesc(file_muse_preset, 10);
 
 /**
  * 更新预设请求
@@ -553,7 +592,7 @@ export type UpdatePresetRequest = Message<"muse.UpdatePresetRequest"> & {
  * Use `create(UpdatePresetRequestSchema)` to create a new message.
  */
 export const UpdatePresetRequestSchema: GenMessage<UpdatePresetRequest> = /*@__PURE__*/
-  messageDesc(file_muse_preset, 9);
+  messageDesc(file_muse_preset, 11);
 
 /**
  * 更新预设响应
@@ -561,10 +600,6 @@ export const UpdatePresetRequestSchema: GenMessage<UpdatePresetRequest> = /*@__P
  * @generated from message muse.UpdatePresetResponse
  */
 export type UpdatePresetResponse = Message<"muse.UpdatePresetResponse"> & {
-  /**
-   * @generated from field: muse.Preset preset = 1;
-   */
-  preset?: Preset;
 };
 
 /**
@@ -572,7 +607,7 @@ export type UpdatePresetResponse = Message<"muse.UpdatePresetResponse"> & {
  * Use `create(UpdatePresetResponseSchema)` to create a new message.
  */
 export const UpdatePresetResponseSchema: GenMessage<UpdatePresetResponse> = /*@__PURE__*/
-  messageDesc(file_muse_preset, 10);
+  messageDesc(file_muse_preset, 12);
 
 /**
  * 删除预设请求
@@ -591,7 +626,7 @@ export type DeletePresetRequest = Message<"muse.DeletePresetRequest"> & {
  * Use `create(DeletePresetRequestSchema)` to create a new message.
  */
 export const DeletePresetRequestSchema: GenMessage<DeletePresetRequest> = /*@__PURE__*/
-  messageDesc(file_muse_preset, 11);
+  messageDesc(file_muse_preset, 13);
 
 /**
  * 删除预设响应
@@ -606,7 +641,7 @@ export type DeletePresetResponse = Message<"muse.DeletePresetResponse"> & {
  * Use `create(DeletePresetResponseSchema)` to create a new message.
  */
 export const DeletePresetResponseSchema: GenMessage<DeletePresetResponse> = /*@__PURE__*/
-  messageDesc(file_muse_preset, 12);
+  messageDesc(file_muse_preset, 14);
 
 /**
  * 设置活跃预设请求
@@ -625,7 +660,7 @@ export type SetActivePresetRequest = Message<"muse.SetActivePresetRequest"> & {
  * Use `create(SetActivePresetRequestSchema)` to create a new message.
  */
 export const SetActivePresetRequestSchema: GenMessage<SetActivePresetRequest> = /*@__PURE__*/
-  messageDesc(file_muse_preset, 13);
+  messageDesc(file_muse_preset, 15);
 
 /**
  * 设置活跃预设响应
@@ -640,7 +675,7 @@ export type SetActivePresetResponse = Message<"muse.SetActivePresetResponse"> & 
  * Use `create(SetActivePresetResponseSchema)` to create a new message.
  */
 export const SetActivePresetResponseSchema: GenMessage<SetActivePresetResponse> = /*@__PURE__*/
-  messageDesc(file_muse_preset, 14);
+  messageDesc(file_muse_preset, 16);
 
 /**
  * 导入预设请求
@@ -666,7 +701,7 @@ export type ImportPresetRequest = Message<"muse.ImportPresetRequest"> & {
  * Use `create(ImportPresetRequestSchema)` to create a new message.
  */
 export const ImportPresetRequestSchema: GenMessage<ImportPresetRequest> = /*@__PURE__*/
-  messageDesc(file_muse_preset, 15);
+  messageDesc(file_muse_preset, 17);
 
 /**
  * 导入预设响应
@@ -675,9 +710,9 @@ export const ImportPresetRequestSchema: GenMessage<ImportPresetRequest> = /*@__P
  */
 export type ImportPresetResponse = Message<"muse.ImportPresetResponse"> & {
   /**
-   * @generated from field: muse.Preset preset = 1;
+   * @generated from field: muse.PresetWithAll preset = 1;
    */
-  preset?: Preset;
+  preset?: PresetWithAll;
 };
 
 /**
@@ -685,7 +720,7 @@ export type ImportPresetResponse = Message<"muse.ImportPresetResponse"> & {
  * Use `create(ImportPresetResponseSchema)` to create a new message.
  */
 export const ImportPresetResponseSchema: GenMessage<ImportPresetResponse> = /*@__PURE__*/
-  messageDesc(file_muse_preset, 16);
+  messageDesc(file_muse_preset, 18);
 
 /**
  * 导出预设请求
@@ -704,7 +739,7 @@ export type ExportPresetRequest = Message<"muse.ExportPresetRequest"> & {
  * Use `create(ExportPresetRequestSchema)` to create a new message.
  */
 export const ExportPresetRequestSchema: GenMessage<ExportPresetRequest> = /*@__PURE__*/
-  messageDesc(file_muse_preset, 17);
+  messageDesc(file_muse_preset, 19);
 
 /**
  * 导出预设响应
@@ -728,7 +763,7 @@ export type ExportPresetResponse = Message<"muse.ExportPresetResponse"> & {
  * Use `create(ExportPresetResponseSchema)` to create a new message.
  */
 export const ExportPresetResponseSchema: GenMessage<ExportPresetResponse> = /*@__PURE__*/
-  messageDesc(file_muse_preset, 18);
+  messageDesc(file_muse_preset, 20);
 
 /**
  * 获取预设的提示项列表请求
@@ -747,7 +782,7 @@ export type ListPromptItemsRequest = Message<"muse.ListPromptItemsRequest"> & {
  * Use `create(ListPromptItemsRequestSchema)` to create a new message.
  */
 export const ListPromptItemsRequestSchema: GenMessage<ListPromptItemsRequest> = /*@__PURE__*/
-  messageDesc(file_muse_preset, 19);
+  messageDesc(file_muse_preset, 21);
 
 /**
  * 获取预设的提示项列表响应
@@ -766,7 +801,7 @@ export type ListPromptItemsResponse = Message<"muse.ListPromptItemsResponse"> & 
  * Use `create(ListPromptItemsResponseSchema)` to create a new message.
  */
 export const ListPromptItemsResponseSchema: GenMessage<ListPromptItemsResponse> = /*@__PURE__*/
-  messageDesc(file_muse_preset, 20);
+  messageDesc(file_muse_preset, 22);
 
 /**
  * 创建提示项请求
@@ -830,7 +865,7 @@ export type AddPromptItemRequest = Message<"muse.AddPromptItemRequest"> & {
  * Use `create(AddPromptItemRequestSchema)` to create a new message.
  */
 export const AddPromptItemRequestSchema: GenMessage<AddPromptItemRequest> = /*@__PURE__*/
-  messageDesc(file_muse_preset, 21);
+  messageDesc(file_muse_preset, 23);
 
 /**
  * 创建提示项响应
@@ -849,7 +884,7 @@ export type AddPromptItemResponse = Message<"muse.AddPromptItemResponse"> & {
  * Use `create(AddPromptItemResponseSchema)` to create a new message.
  */
 export const AddPromptItemResponseSchema: GenMessage<AddPromptItemResponse> = /*@__PURE__*/
-  messageDesc(file_muse_preset, 22);
+  messageDesc(file_muse_preset, 24);
 
 /**
  * 更新提示项请求
@@ -927,7 +962,7 @@ export type UpdatePromptItemRequest = Message<"muse.UpdatePromptItemRequest"> & 
  * Use `create(UpdatePromptItemRequestSchema)` to create a new message.
  */
 export const UpdatePromptItemRequestSchema: GenMessage<UpdatePromptItemRequest> = /*@__PURE__*/
-  messageDesc(file_muse_preset, 23);
+  messageDesc(file_muse_preset, 25);
 
 /**
  * 更新提示项响应
@@ -946,7 +981,7 @@ export type UpdatePromptItemResponse = Message<"muse.UpdatePromptItemResponse"> 
  * Use `create(UpdatePromptItemResponseSchema)` to create a new message.
  */
 export const UpdatePromptItemResponseSchema: GenMessage<UpdatePromptItemResponse> = /*@__PURE__*/
-  messageDesc(file_muse_preset, 24);
+  messageDesc(file_muse_preset, 26);
 
 /**
  * 删除提示项请求
@@ -965,7 +1000,7 @@ export type DeletePromptItemRequest = Message<"muse.DeletePromptItemRequest"> & 
  * Use `create(DeletePromptItemRequestSchema)` to create a new message.
  */
 export const DeletePromptItemRequestSchema: GenMessage<DeletePromptItemRequest> = /*@__PURE__*/
-  messageDesc(file_muse_preset, 25);
+  messageDesc(file_muse_preset, 27);
 
 /**
  * 删除提示项响应
@@ -980,7 +1015,7 @@ export type DeletePromptItemResponse = Message<"muse.DeletePromptItemResponse"> 
  * Use `create(DeletePromptItemResponseSchema)` to create a new message.
  */
 export const DeletePromptItemResponseSchema: GenMessage<DeletePromptItemResponse> = /*@__PURE__*/
-  messageDesc(file_muse_preset, 26);
+  messageDesc(file_muse_preset, 28);
 
 /**
  * 批量更新提示项排序请求
@@ -1022,7 +1057,7 @@ export type UpdatePromptItemsOrderRequest = Message<"muse.UpdatePromptItemsOrder
  * Use `create(UpdatePromptItemsOrderRequestSchema)` to create a new message.
  */
 export const UpdatePromptItemsOrderRequestSchema: GenMessage<UpdatePromptItemsOrderRequest> = /*@__PURE__*/
-  messageDesc(file_muse_preset, 27);
+  messageDesc(file_muse_preset, 29);
 
 /**
  * 批量更新提示项排序响应
@@ -1037,7 +1072,7 @@ export type UpdatePromptItemsOrderResponse = Message<"muse.UpdatePromptItemsOrde
  * Use `create(UpdatePromptItemsOrderResponseSchema)` to create a new message.
  */
 export const UpdatePromptItemsOrderResponseSchema: GenMessage<UpdatePromptItemsOrderResponse> = /*@__PURE__*/
-  messageDesc(file_muse_preset, 28);
+  messageDesc(file_muse_preset, 30);
 
 /**
  * 预设服务（包含预设和提示项的管理）

@@ -65,6 +65,12 @@
                 <n-tag :type="roleTagType(prompt.role)" size="small" round>
                   {{ roleLabel(prompt.role) }}
                 </n-tag>
+                <n-tag v-if="prompt.identifier"
+                       :color="{ borderColor: '#9B7ED9', textColor: '#9B7ED9' }"
+                       size="small"
+                       round>
+                  系统内容引用
+                </n-tag>
               </div>
               <div class="prompt-header-right">
                 <n-button
@@ -119,8 +125,10 @@
                 <n-input
                   v-model:value="prompt.content"
                   type="textarea"
-                  placeholder="输入 Prompt 内容，支持 {{char}}、{{user}} 等宏变量..."
+                  :placeholder="prompt.identifier ? '此提示词的内容是从其他地方提取的, 无法在此处进行编辑。\n来源: '
+                  + PromptItemIdentifier[prompt.identifier]  : '输入 Prompt 内容，支持 {{char}}、{{user}} 等宏变量...'"
                   :autosize="{ minRows: 6, maxRows: 20 }"
+                  :disabled="!!prompt.identifier"
                   class="prompt-textarea"
                 />
               </div>
@@ -327,13 +335,13 @@ const loadPreset = async () => {
   pageLoading.value = true;
   try {
     const preset = await presetStore.fetchPreset(presetId.value);
-    if (!preset) {
+    if (!preset || !preset.preset) {
       message.error('预设不存在');
       router.push('/');
       return;
     }
-    presetName.value = preset.name;
-    presetVersion.value = preset.version;
+    presetName.value = preset.preset?.name ?? '';
+    presetVersion.value = preset.preset?.version ?? 0n;
     prompts.value = (preset.promptItems || []).map(item => ({
       ...item,
       expanded: false
@@ -598,7 +606,7 @@ const handleSave = async () => {
   saving.value = true;
   try {
     // 1. 更新预设基础信息
-    const updatedPreset = await presetStore.updatePreset(presetId.value, {
+    await presetStore.updatePreset(presetId.value, {
       name: presetName.value,
       temperature: 0,
       topP: 0,
@@ -609,14 +617,17 @@ const handleSave = async () => {
       version: presetVersion.value
     });
 
-    if (updatedPreset) {
-      presetVersion.value = updatedPreset.version;
+    // 重新获取最新版本号
+    const refreshedPreset = await presetStore.fetchPreset(presetId.value);
+    if (refreshedPreset?.preset) {
+      presetVersion.value = refreshedPreset.preset.version;
     }
 
     // 2. 更新prompt项排序
     const orderedIds = prompts.value.filter(p => p.id > 0).map(p => p.id);
-    if (orderedIds.length > 0) {
-      await presetStore.updatePromptItemsOrder(presetId.value, orderedIds);
+    if (orderedIds.length > 1) {
+      // 只需要传递第一个和最后一个ID
+      await presetStore.updatePromptItemsOrder(presetId.value);
     }
 
     // 3. 处理prompt项（新增/更新/删除）
@@ -732,7 +743,7 @@ const handleSaveAs = () => {
         return false;
       }
       try {
-        const newPreset = await presetStore.createPreset({
+        await presetStore.createPreset({
           name: newName.value,
           temperature: 0,
           topP: 0,
@@ -753,13 +764,17 @@ const handleSaveAs = () => {
           }))
         });
 
-        if (newPreset) {
+        // 重新加载列表获取新创建的预设
+        await presetStore.fetchAllPresets();
+        const newPreset = presetStore.presets.find(p => p.preset?.name === newName.value);
+        
+        if (newPreset && newPreset.preset) {
           // 为新预设创建关联的正则规则
           for (let i = 0; i < regexRules.value.length; i++) {
             const rule = regexRules.value[i];
             if (!rule) continue;
             await regexRuleClient.addRegexRule({
-              presetId: newPreset.id,
+              presetId: newPreset.preset.id,
               name: rule.name,
               findPattern: rule.findPattern,
               replacePattern: rule.replacePattern,
@@ -774,7 +789,7 @@ const handleSaveAs = () => {
           }
 
           message.success('预设已另存为: ' + newName.value);
-          router.push(`/preset/${newPreset.id}`);
+          router.push(`/preset/${newPreset.preset.id}`);
         }
       } catch {
         message.error('另存为失败');

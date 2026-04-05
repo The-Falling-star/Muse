@@ -11,7 +11,7 @@
       <!-- 当前预设名称 -->
       <div class="active-preset-header">
         <span class="preset-label">当前预设：</span>
-        <span class="preset-name">{{ activePreset.name }}</span>
+        <span class="preset-name">{{ activePreset.preset?.name }}</span>
       </div>
 
       <div class="config-section">
@@ -173,7 +173,7 @@ import {
 } from 'naive-ui';
 import { useUserStore } from '@/stores/user';
 import { usePresetStore } from '@/stores/preset';
-import type { Preset } from '@/gen/muse/preset_pb';
+import type { PresetWithAll } from '@/gen/muse/preset_pb';
 
 const userStore = useUserStore();
 const presetStore = usePresetStore();
@@ -183,7 +183,7 @@ const loading = ref(false);
 // 保存状态：null | 'saving' | 'saved' | 'error'
 const saveStatus = ref<string | null>(null);
 // 当前活跃预设
-const activePreset = ref<Preset | null>(null);
+const activePreset = ref<PresetWithAll | null>(null);
 
 // 模型配置参数
 const temperature = ref(0.7);
@@ -194,13 +194,15 @@ const frequencyPenalty = ref(0);
 const presencePenalty = ref(0);
 
 // 从预设数据同步到本地表单
-const syncFromPreset = (preset: Preset) => {
-  temperature.value = preset.temperature;
-  topP.value = preset.topP;
-  topK.value = preset.topK;
-  maxTokens.value = preset.maxTokens;
-  frequencyPenalty.value = preset.frequencyPenalty;
-  presencePenalty.value = preset.presencePenalty;
+const syncFromPreset = (preset: PresetWithAll) => {
+  if (!preset.preset) return;
+  
+  temperature.value = preset.preset.temperature;
+  topP.value = preset.preset.topP;
+  topK.value = preset.preset.topK;
+  maxTokens.value = preset.preset.maxTokens;
+  frequencyPenalty.value = preset.preset.frequencyPenalty;
+  presencePenalty.value = preset.preset.presencePenalty;
 };
 
 // 加载活跃预设
@@ -231,19 +233,19 @@ const loadActivePreset = async () => {
 
 // 保存模型配置到后端
 const saveConfig = async () => {
-  if (!activePreset.value) return;
+  if (!activePreset.value || !activePreset.value.preset) return;
 
   saveStatus.value = 'saving';
   try {
-    const updated = await presetStore.updatePreset(activePreset.value.id, {
-      name: activePreset.value.name,
+    const updated = await presetStore.updatePreset(activePreset.value.preset.id, {
+      name: activePreset.value.preset.name,
       temperature: temperature.value,
       topP: topP.value,
       topK: topK.value,
       maxTokens: maxTokens.value,
       frequencyPenalty: frequencyPenalty.value,
       presencePenalty: presencePenalty.value,
-      version: activePreset.value.version,
+      version: activePreset.value.preset.version,
     });
     if (updated) {
       activePreset.value = updated;

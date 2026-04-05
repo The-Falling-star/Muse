@@ -34,18 +34,18 @@
       <div class="list-container">
         <div
           v-for="preset in presets"
-          :key="preset.id"
+          :key="preset.preset?.id"
           class="list-item"
-          :class="{ active: isEditing(preset.id) }"
-          @click="openPresetEditor(preset.id)"
+          :class="{ active: isEditing(preset.preset?.id ?? 0) }"
+          @click="openPresetEditor(preset.preset?.id ?? 0)"
         >
           <div class="item-info">
             <div class="item-name">
-              <span v-if="preset.id === currentPresetId" class="star-icon">★</span>
-              {{ preset.name }}
+              <span v-if="preset.preset?.id === currentPresetId" class="star-icon">★</span>
+              {{ preset.preset?.name }}
             </div>
             <div class="item-desc">
-              {{ preset.promptItems?.length ?? 0 }}个Prompt项{{ (preset.regexRules?.length ?? 0) > 0 ? `, ${preset.regexRules.length}个正则` : '' }}
+              {{ preset.promptLen ?? 0 }}个Prompt项
             </div>
           </div>
           <n-dropdown
@@ -85,7 +85,7 @@ import { NSelect, NButton, NIcon, NDropdown, NEmpty, NSpin, useMessage, useDialo
 import { CloudUploadOutline, AddOutline, EllipsisHorizontal } from '@vicons/ionicons5';
 import { usePresetStore } from '@/stores/preset';
 import { useUserStore } from '@/stores/user';
-import type { Preset } from '@/gen/muse/preset_pb';
+import type { PresetWithPromptLen } from '@/gen/muse/preset_pb';
 
 const router = useRouter();
 const route = useRoute();
@@ -107,7 +107,7 @@ const currentPresetId = computed(() => userStore.currentUser?.activePresetId ?? 
 
 // 下拉选项
 const presetOptions = computed(() =>
-  presets.value.map((p) => ({ label: p.name, value: p.id }))
+  presets.value.map((p) => ({ label: p.preset?.name ?? '', value: p.preset?.id ?? 0 }))
 );
 
 // 右键菜单选项
@@ -181,8 +181,8 @@ const handleFileSelected = async (event: Event) => {
     const arrayBuffer = await file.arrayBuffer();
     const fileContent = new Uint8Array(arrayBuffer);
     const preset = await presetStore.importPreset(fileContent, file.name);
-    if (preset) {
-      message.success(`预设 "${preset.name}" 导入成功`);
+    if (preset && preset.preset) {
+      message.success(`预设 "${preset.preset.name}" 导入成功`);
     }
   } catch (error) {
     console.error('导入预设失败:', error);
@@ -195,7 +195,7 @@ const handleFileSelected = async (event: Event) => {
 // 新建预设
 const handleCreate = async () => {
   try {
-    const preset = await presetStore.createPreset({
+    await presetStore.createPreset({
       name: '新预设',
       temperature: 0.7,
       topP: 0.9,
@@ -204,9 +204,11 @@ const handleCreate = async () => {
       frequencyPenalty: 0,
       presencePenalty: 0,
     });
-    if (preset) {
-      message.success('预设创建成功');
-      router.push(`/preset/${preset.id}`);
+    message.success('预设创建成功');
+    // 重新加载列表并跳转到第一个预设
+    await loadPresets();
+    if (presets.value.length > 0 && presets.value[0]?.preset) {
+      router.push(`/preset/${presets.value[0].preset.id}`);
     }
   } catch (error) {
     console.error('创建预设失败:', error);
@@ -214,10 +216,12 @@ const handleCreate = async () => {
 };
 
 // 菜单操作
-const handleMenuSelect = (key: string, preset: Preset) => {
+const handleMenuSelect = (key: string, preset: PresetWithPromptLen) => {
+  if (!preset.preset) return;
+  
   switch (key) {
     case 'use':
-      handleSetActive(preset.id);
+      handleSetActive(preset.preset.id);
       break;
     case 'copy':
       handleCopy(preset);
@@ -232,20 +236,22 @@ const handleMenuSelect = (key: string, preset: Preset) => {
 };
 
 // 复制预设
-const handleCopy = async (preset: Preset) => {
+const handleCopy = async (preset: PresetWithPromptLen) => {
+  if (!preset.preset) return;
+  
   try {
     // 先获取完整预设数据（含 promptItems）
-    const fullPreset = await presetStore.fetchPreset(preset.id);
-    if (!fullPreset) return;
+    const fullPreset = await presetStore.fetchPreset(preset.preset.id);
+    if (!fullPreset || !fullPreset.preset) return;
 
-    const newPreset = await presetStore.createPreset({
-      name: `${fullPreset.name} (副本)`,
-      temperature: fullPreset.temperature,
-      topP: fullPreset.topP,
-      topK: fullPreset.topK,
-      maxTokens: fullPreset.maxTokens,
-      frequencyPenalty: fullPreset.frequencyPenalty,
-      presencePenalty: fullPreset.presencePenalty,
+    await presetStore.createPreset({
+      name: `${fullPreset.preset.name} (副本)`,
+      temperature: fullPreset.preset.temperature,
+      topP: fullPreset.preset.topP,
+      topK: fullPreset.preset.topK,
+      maxTokens: fullPreset.preset.maxTokens,
+      frequencyPenalty: fullPreset.preset.frequencyPenalty,
+      presencePenalty: fullPreset.preset.presencePenalty,
       promptItems: fullPreset.promptItems?.map((item, index) => ({
         identifier: item.identifier,
         name: item.name,
@@ -258,18 +264,18 @@ const handleCopy = async (preset: Preset) => {
         sortOrder: index,
       })),
     });
-    if (newPreset) {
-      message.success(`预设 "${newPreset.name}" 复制成功`);
-    }
+    message.success(`预设 "${fullPreset.preset.name}" 复制成功`);
   } catch (error) {
     console.error('复制预设失败:', error);
   }
 };
 
 // 导出预设
-const handleExport = async (preset: Preset) => {
+const handleExport = async (preset: PresetWithPromptLen) => {
+  if (!preset.preset) return;
+  
   try {
-    const result = await presetStore.exportPreset(preset.id);
+    const result = await presetStore.exportPreset(preset.preset.id);
     if (result.fileContent && result.fileName) {
       // 创建下载链接
       const blob = new Blob([new Uint8Array(result.fileContent)], { type: 'application/json' });
@@ -289,21 +295,23 @@ const handleExport = async (preset: Preset) => {
 };
 
 // 删除预设
-const handleDelete = (preset: Preset) => {
+const handleDelete = (preset: PresetWithPromptLen) => {
+  if (!preset.preset) return;
+  
   // 不允许删除当前活跃预设
-  if (preset.id === currentPresetId.value) {
+  if (preset.preset.id === currentPresetId.value) {
     message.warning('不能删除当前正在使用的预设');
     return;
   }
 
   dialog.warning({
     title: '确认删除',
-    content: `确定要删除预设 "${preset.name}" 吗？此操作不可撤销。`,
+    content: `确定要删除预设 "${preset.preset.name}" 吗？此操作不可撤销。`,
     positiveText: '删除',
     negativeText: '取消',
     onPositiveClick: async () => {
       try {
-        await presetStore.deletePreset(preset.id);
+        await presetStore.deletePreset(preset.preset!.id);
         message.success('预设已删除');
       } catch (error) {
         console.error('删除预设失败:', error);

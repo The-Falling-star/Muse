@@ -48,14 +48,15 @@ func (p *PresetRepo) GetByID(ctx context.Context, id int, userID int) (*entity.P
 }
 
 // List 获取预设列表
-func (p *PresetRepo) List(ctx context.Context, userID int, page int, pageSize int) ([]*entity.Preset, int64, error) {
+func (p *PresetRepo) List(ctx context.Context, userID int, page int, pageSize int) (
+	[]*entity.Preset, []int, int64, error) {
 	db := GetDB(ctx)
 	var presets []*entity.Preset
 	var total int64
 
 	// 计算总数
 	if err := db.Model(&entity.Preset{}).Where("user_id = ?", userID).Count(&total).Error; err != nil {
-		return nil, 0, errs.NewStandardf(connect.CodeInternal, "查询预设总数失败: %v", err)
+		return nil, nil, 0, errs.NewStandardf(connect.CodeInternal, "查询预设总数失败: %v", err)
 	}
 
 	// 分页查询 - 不加载关联的PromptItems和RegexRules
@@ -66,10 +67,41 @@ func (p *PresetRepo) List(ctx context.Context, userID int, page int, pageSize in
 		Limit(pageSize).
 		Find(&presets)
 	if result.Error != nil {
-		return nil, 0, errs.NewStandardf(connect.CodeInternal, "查询预设列表失败: %v", result.Error)
+		return nil, nil, 0, errs.NewStandardf(connect.CodeInternal, "查询预设列表失败: %v", result.Error)
 	}
 
-	return presets, total, nil
+	// 如果没有预设，直接返回
+	if len(presets) == 0 {
+		return presets, []int{}, total, nil
+	}
+
+	ids := make([]int, 0, len(presets))
+	for _, preset := range presets {
+		ids = append(ids, preset.ID)
+	}
+
+	promptLen := make([]struct {
+		PresetID  int
+		ItemCount int
+	}, 0, len(ids))
+	if err := db.Model(&entity.PromptItem{}).
+		Select("preset_id, COUNT(*) as item_count").
+		Where("preset_id IN (?)", ids).
+		Group("preset_id").
+		Find(&promptLen).Error; err != nil {
+		return nil, nil, 0, errs.NewStandardf(connect.CodeInternal, "查询预设提示项数量失败: %v", err)
+	}
+	log.Debugf("promptLen: %v", promptLen)
+	presetIDToPrompt := make(map[int]int, len(promptLen))
+	for _, v := range promptLen {
+		presetIDToPrompt[v.PresetID] = v.ItemCount
+	}
+	presetPromptLen := make([]int, 0, len(presets))
+	for _, preset := range presets {
+		presetPromptLen = append(presetPromptLen, presetIDToPrompt[preset.ID])
+	}
+
+	return presets, presetPromptLen, total, nil
 }
 
 // Update 更新预设

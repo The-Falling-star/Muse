@@ -42,14 +42,14 @@
           <div class="preset-list">
             <div
               v-for="preset in filteredPresets"
-              :key="preset.id"
+              :key="preset.preset?.id"
               class="preset-item"
-              :class="{ 'active': selectedPreset?.id === preset.id }"
+              :class="{ 'active': selectedPreset?.preset?.id === preset.preset?.id }"
               @click="selectPreset(preset)"
             >
               <div class="preset-item-info">
-                <span class="preset-item-name">{{ preset.name }}</span>
-                <span class="preset-item-count">{{ preset.promptItems?.length || 0 }} 项</span>
+                <span class="preset-item-name">{{ preset.preset?.name }}</span>
+                <span class="preset-item-count">{{ preset.promptLen || 0 }} 项</span>
               </div>
               <n-dropdown :options="presetMenuOptions" trigger="click" @select="(key: string) => handlePresetMenu(key, preset)">
                 <n-button quaternary circle size="tiny" @click.stop>
@@ -269,7 +269,7 @@
             <div class="section-content">
               <PresetRegexManager
                 v-model:regexRules="regexRules"
-                :preset-id="selectedPreset.id"
+                :preset-id="selectedPreset?.preset?.id"
               />
             </div>
           </section>
@@ -461,7 +461,7 @@ import draggable from 'vuedraggable';
 import PromptItemEditor from '../components/preset/PromptItemEditor.vue';
 import PresetRegexManager from '../components/preset/PresetRegexManager.vue';
 import { presetClient, regexRuleClient } from '@/api/client';
-import type {Preset, PromptItem} from '@/gen/muse/preset_pb';
+import type { PromptItem, PresetWithAll, PresetWithPromptLen } from '@/gen/muse/preset_pb';
 import type {RegexRule} from '@/gen/muse/regex_pb';
 import { Role, InjectionPosition, PromptItemIdentifier } from '@/gen/muse/common_pb';
 
@@ -516,8 +516,8 @@ const dialog = useDialog();
 const searchQuery = ref('');
 const loading = ref(false);
 const saving = ref(false);
-const presets = ref<Preset[]>([]);
-const selectedPreset = ref<Preset | null>(null);
+const presets = ref<PresetWithPromptLen[]>([]);
+const selectedPreset = ref<PresetWithAll | null>(null);
 const promptItems = ref<PromptItem[]>([]);
 const regexRules = ref<RegexRule[]>([]);
 const showPromptModal = ref(false);
@@ -549,7 +549,7 @@ const filteredPresets = computed(() => {
   if (!searchQuery.value) return presets.value;
   const query = searchQuery.value.toLowerCase();
   return presets.value.filter(p =>
-    p.name.toLowerCase().includes(query)
+    p.preset?.name.toLowerCase().includes(query)
   );
 });
 
@@ -562,7 +562,7 @@ const loadPresets = async () => {
     // 如果有预设且没有选中的，选择第一个
     if (presets.value.length > 0 && !selectedPreset.value) {
       const firstPreset = presets.value[0];
-      if (firstPreset) {
+      if (firstPreset && firstPreset.preset) {
         await selectPreset(firstPreset);
       }
     }
@@ -577,6 +577,8 @@ const loadPresetDetail = async (presetId: number) => {
     if (response.preset) {
       // 更新提示项列表
       promptItems.value = response.preset.promptItems || [];
+      // 更新正则规则
+      regexRules.value = response.preset.regexRules || [];
     }
 };
 
@@ -598,8 +600,10 @@ const loadPresetRegexRules = async (presetId: number) => {
 };
 
 // 选择预设
-const selectPreset = async (preset: Preset) => {
-  selectedPreset.value = preset;
+const selectPreset = async (preset: PresetWithPromptLen) => {
+  if (!preset.preset) return;
+  
+  selectedPreset.value = null; // 先清空，等待详情加载
   expandedPromptId.value = null;
   
   // 移动端选择后自动关闭侧边栏
@@ -609,26 +613,32 @@ const selectPreset = async (preset: Preset) => {
 
   // 同步编辑表单
   editForm.value = {
-    name: preset.name,
-    temperature: preset.temperature,
-    topP: preset.topP,
-    topK: preset.topK,
-    maxTokens: preset.maxTokens,
-    frequencyPenalty: preset.frequencyPenalty,
-    presencePenalty: preset.presencePenalty
+    name: preset.preset.name,
+    temperature: preset.preset.temperature,
+    topP: preset.preset.topP,
+    topK: preset.preset.topK,
+    maxTokens: preset.preset.maxTokens,
+    frequencyPenalty: preset.preset.frequencyPenalty,
+    presencePenalty: preset.preset.presencePenalty
   };
 
   // 加载详情和正则规则
   await Promise.all([
-    loadPresetDetail(preset.id),
-    loadPresetRegexRules(preset.id)
+    loadPresetDetail(preset.preset.id),
+    loadPresetRegexRules(preset.preset.id)
   ]);
+  
+  // 加载完成后设置选中状态
+  const detailResponse = await presetClient.getPreset({ id: preset.preset.id });
+  if (detailResponse.preset) {
+    selectedPreset.value = detailResponse.preset;
+  }
 };
 
 // 创建预设
 const createPreset = async () => {
     try {
-      const response = await presetClient.createPreset({
+      await presetClient.createPreset({
         name: '新预设',
         temperature: 1,
         topP: 1,
@@ -649,35 +659,35 @@ const createPreset = async () => {
           sortOrder: item.sortOrder
         }))
       });
-      if (response.preset) {
-        presets.value.push(response.preset);
-        await selectPreset(response.preset);
-        message.success('预设已创建');
-      }
+      // 重新加载列表
+      await loadPresets();
+      message.success('预设已创建');
     } finally {
       // 创建完成后自动处理
     }
 };
 
 // 处理预设菜单
-const handlePresetMenu = async (key: string, preset: Preset) => {
+const handlePresetMenu = async (key: string, preset: PresetWithPromptLen) => {
+  if (!preset.preset) return;
+  
   switch (key) {
     case 'copy':
       try {
         // 获取原预设的详情
-        const detailRes = await presetClient.getPreset({ id: preset.id });
+        const detailRes = await presetClient.getPreset({ id: preset.preset.id });
         const originalPreset = detailRes.preset;
         if (!originalPreset) return;
 
         // 创建副本
-        const response = await presetClient.createPreset({
-          name: `${preset.name} (副本)`,
-          temperature: originalPreset.temperature,
-          topP: originalPreset.topP,
-          topK: originalPreset.topK,
-          maxTokens: originalPreset.maxTokens,
-          frequencyPenalty: originalPreset.frequencyPenalty,
-          presencePenalty: originalPreset.presencePenalty,
+        await presetClient.createPreset({
+          name: `${preset.preset.name} (副本)`,
+          temperature: originalPreset.preset?.temperature ?? 1,
+          topP: originalPreset.preset?.topP ?? 1,
+          topK: originalPreset.preset?.topK ?? 0,
+          maxTokens: originalPreset.preset?.maxTokens ?? 300,
+          frequencyPenalty: originalPreset.preset?.frequencyPenalty ?? 0,
+          presencePenalty: originalPreset.preset?.presencePenalty ?? 0,
           promptItems: originalPreset.promptItems?.map((item, index) => ({
             identifier: item.identifier,
             name: item.name,
@@ -690,10 +700,9 @@ const handlePresetMenu = async (key: string, preset: Preset) => {
             sortOrder: index
           }))
         });
-        if (response.preset) {
-          presets.value.push(response.preset);
-          message.success('预设已复制');
-        }
+        // 重新加载列表
+        await loadPresets();
+        message.success('预设已复制');
       } finally {
         // 复制完成后自动处理
       }
@@ -701,13 +710,13 @@ const handlePresetMenu = async (key: string, preset: Preset) => {
 
     case 'export':
       try {
-        const exportRes = await presetClient.exportPreset({ id: preset.id });
+        const exportRes = await presetClient.exportPreset({ id: preset.preset.id });
         // 下载文件
         const blob = new Blob([new Uint8Array(exportRes.fileContent).buffer], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = exportRes.fileName || `${preset.name}.json`;
+        a.download = exportRes.fileName || `${preset.preset.name}.json`;
         a.click();
         URL.revokeObjectURL(url);
         message.success('预设已导出');
@@ -719,21 +728,19 @@ const handlePresetMenu = async (key: string, preset: Preset) => {
     case 'delete':
       dialog.warning({
         title: '确认删除',
-        content: `确定要删除预设"${preset.name}"吗？`,
+        content: `确定要删除预设"${preset.preset.name}"吗？`,
         positiveText: '删除',
         negativeText: '取消',
         onPositiveClick: async () => {
+          if (!preset.preset) return;
+          
           try {
-            await presetClient.deletePreset({ id: preset.id });
-            presets.value = presets.value.filter(p => p.id !== preset.id);
-            if (selectedPreset.value?.id === preset.id) {
-              selectedPreset.value = presets.value[0] ?? null;
-              if (selectedPreset.value) {
-                await selectPreset(selectedPreset.value);
-              } else {
-                promptItems.value = [];
-                regexRules.value = [];
-              }
+            await presetClient.deletePreset({ id: preset.preset.id });
+            presets.value = presets.value.filter(p => p.preset?.id !== preset.preset?.id);
+            if (selectedPreset.value?.preset?.id === preset.preset.id) {
+              selectedPreset.value = null;
+              promptItems.value = [];
+              regexRules.value = [];
             }
             message.success('预设已删除');
           } finally {
@@ -747,12 +754,12 @@ const handlePresetMenu = async (key: string, preset: Preset) => {
 
 // 保存预设
 const savePreset = async () => {
-  if (!selectedPreset.value) return;
+  if (!selectedPreset.value || !selectedPreset.value.preset) return;
 
   saving.value = true;
   try {
-    const response = await presetClient.updatePreset({
-      id: selectedPreset.value.id,
+    await presetClient.updatePreset({
+      id: selectedPreset.value.preset.id,
       name: editForm.value.name,
       temperature: editForm.value.temperature,
       topP: editForm.value.topP,
@@ -760,17 +767,29 @@ const savePreset = async () => {
       maxTokens: editForm.value.maxTokens,
       frequencyPenalty: editForm.value.frequencyPenalty,
       presencePenalty: editForm.value.presencePenalty,
-      version: selectedPreset.value.version
+      version: selectedPreset.value.preset.version
     });
-    if (response.preset) {
-      // 更新列表中的预设
-      const index = presets.value.findIndex(p => p.id === selectedPreset.value!.id);
-      if (index >= 0) {
-        presets.value[index] = response.preset;
-      }
-      selectedPreset.value = response.preset;
-      message.success('预设已保存');
+    
+    // 更新列表中的预设信息
+    const index = presets.value.findIndex(p => p.preset?.id === selectedPreset.value!.preset!.id);
+    if (index >= 0 && presets.value[index]) {
+      presets.value[index] = {
+        $typeName: 'muse.PresetWithPromptLen',
+        preset: {
+          ...selectedPreset.value.preset,
+          name: editForm.value.name,
+          temperature: editForm.value.temperature,
+          topP: editForm.value.topP,
+          topK: editForm.value.topK,
+          maxTokens: editForm.value.maxTokens,
+          frequencyPenalty: editForm.value.frequencyPenalty,
+          presencePenalty: editForm.value.presencePenalty
+        },
+        promptLen: presets.value[index].promptLen
+      };
     }
+    
+    message.success('预设已保存');
   } finally {
     saving.value = false;
   }
@@ -826,7 +845,7 @@ const handleSavePromptItem = async (itemData: Partial<LocalPromptItem>) => {
     } else {
       // 添加新项
       const response = await presetClient.addPromptItem({
-        presetId: selectedPreset.value.id,
+        presetId: selectedPreset.value.preset?.id ?? 0,
         identifier: itemData.identifier ?? PromptItemIdentifier.PromptItemIdentifierUnspecified,
         name: itemData.name || '',
         content: itemData.content,
@@ -894,12 +913,19 @@ const togglePromptEnabled = async (item: PromptItem, enabled: boolean) => {
 
 // 处理提示项排序变化
 const handlePromptOrderChange = async () => {
-  if (!selectedPreset.value) return;
+  if (!selectedPreset.value || !selectedPreset.value.preset) return;
   try {
-    const itemIds = promptItems.value.map(item => item.id);
+    // 获取拖拽后的第一个和最后一个元素
+    if (promptItems.value.length < 2) return;
+    
+    const sourceId = promptItems.value[0]?.id ?? 0;
+    const desId = promptItems.value[promptItems.value.length - 1]?.id ?? 0;
+    
     await presetClient.updatePromptItemsOrder({
-      presetId: selectedPreset.value.id,
-      itemIds: itemIds
+      presetId: selectedPreset.value.preset.id,
+      sourceId: sourceId,
+      desId: desId,
+      sortOperation: 0 // 默认操作
     });
   } finally {
     // 排序完成后自动处理

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { presetClient } from '@/api/client';
-import type { Preset, PromptItem } from '@/gen/muse/preset_pb';
+import type { PromptItem, PresetWithAll, PresetWithPromptLen } from '@/gen/muse/preset_pb';
 import type { Role, InjectionPosition, PromptItemIdentifier } from '@/gen/muse/common_pb';
 import { DEFAULT_PAGE_NUM, DEFAULT_PAGE_SIZE, FETCH_ALL_PAGE_SIZE } from '@/utils/constants';
 
@@ -11,9 +11,9 @@ export const usePresetStore = defineStore('preset', () => {
   // =====================
 
   // 预设列表
-  const presets = ref<Preset[]>([]);
+  const presets = ref<PresetWithPromptLen[]>([]);
   // 当前选中的预设
-  const selectedPreset = ref<Preset | null>(null);
+  const selectedPreset = ref<PresetWithAll | null>(null);
   // 当前预设的提示项列表
   const promptItems = ref<PromptItem[]>([]);
   // 加载状态
@@ -35,7 +35,7 @@ export const usePresetStore = defineStore('preset', () => {
   const filteredPresets = computed(() => {
     if (!searchQuery.value) return presets.value;
     const query = searchQuery.value.toLowerCase();
-    return presets.value.filter(p => p.name.toLowerCase().includes(query));
+    return presets.value.filter(p => p.preset?.name.toLowerCase().includes(query));
   });
 
   // 按排序顺序排列的提示项（后端已按顺序返回）
@@ -86,9 +86,14 @@ export const usePresetStore = defineStore('preset', () => {
   const fetchPreset = async (id: number) => {
     const response = await presetClient.getPreset({ id });
     if (response.preset) {
-      const index = presets.value.findIndex(p => p.id === id);
+      const index = presets.value.findIndex(p => p.preset?.id === id);
       if (index >= 0) {
-        presets.value[index] = response.preset;
+        // 更新列表中的预设信息（保持prompt_len）
+        presets.value[index] = {
+          $typeName: 'muse.PresetWithPromptLen',
+          preset: response.preset.preset,
+          promptLen: response.preset.promptItems?.length || 0
+        };
       }
       // 同步更新提示项
       if (response.preset.promptItems) {
@@ -119,11 +124,9 @@ export const usePresetStore = defineStore('preset', () => {
       sortOrder: number;
     }>;
   }) => {
-    const response = await presetClient.createPreset(data);
-    if (response.preset) {
-      presets.value.push(response.preset);
-    }
-    return response.preset;
+    await presetClient.createPreset(data);
+    // 创建成功后重新获取列表
+    await fetchPresets();
   };
 
   // 更新预设
@@ -140,24 +143,17 @@ export const usePresetStore = defineStore('preset', () => {
       version: bigint;
     }
   ) => {
-    const response = await presetClient.updatePreset({ id, ...data });
-    if (response.preset) {
-      const index = presets.value.findIndex(p => p.id === id);
-      if (index >= 0) {
-        presets.value[index] = response.preset;
-      }
-      if (selectedPreset.value?.id === id) {
-        selectedPreset.value = response.preset;
-      }
-    }
-    return response.preset;
+    await presetClient.updatePreset({ id, ...data });
+    // 更新成功后重新获取该预设的完整信息
+    const updatedPreset = await fetchPreset(id);
+    return updatedPreset;
   };
 
   // 删除预设
   const deletePreset = async (id: number) => {
     await presetClient.deletePreset({ id });
-    presets.value = presets.value.filter(p => p.id !== id);
-    if (selectedPreset.value?.id === id) {
+    presets.value = presets.value.filter(p => p.preset?.id !== id);
+    if (selectedPreset.value?.preset?.id === id) {
       selectedPreset.value = null;
       promptItems.value = [];
     }
@@ -172,7 +168,12 @@ export const usePresetStore = defineStore('preset', () => {
   const importPreset = async (fileContent: Uint8Array, fileName: string) => {
     const response = await presetClient.importPreset({ fileContent, fileName });
     if (response.preset) {
-      presets.value.push(response.preset);
+      // 添加到列表
+      presets.value.push({
+        $typeName: 'muse.PresetWithPromptLen',
+        preset: response.preset.preset,
+        promptLen: response.preset.promptItems?.length || 0
+      });
     }
     return response.preset;
   };
@@ -187,12 +188,15 @@ export const usePresetStore = defineStore('preset', () => {
   };
 
   // 选中预设
-  const selectPreset = async (preset: Preset | null) => {
-    selectedPreset.value = preset;
-    if (preset) {
-      // 加载预设的提示项
-      await fetchPromptItems(preset.id);
+  const selectPreset = async (preset: PresetWithPromptLen | null) => {
+    if (preset && preset.preset) {
+      // 加载完整的预设信息
+      const fullPreset = await fetchPreset(preset.preset.id);
+      if (fullPreset) {
+        selectedPreset.value = fullPreset;
+      }
     } else {
+      selectedPreset.value = null;
       promptItems.value = [];
     }
   };

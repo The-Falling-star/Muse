@@ -26,8 +26,13 @@ message Preset {
   int64 created_at = 11;                     // 创建时间（Unix时间戳）
   int64 updated_at = 12;                     // 最后更新时间（Unix时间戳）
   int32 candidate_count = 15;                // 候选回复数量，一次生成多少个备选回复
-  repeated PromptItem prompt_items = 13;     // 提示项列表（可选加载）
-  repeated RegexRule regex_rules = 14;       // 正则规则列表（可选加载）
+}
+
+// PresetWithAll 包含提示项和正则规则的预设
+message PresetWithAll {
+  Preset preset = 1;
+  repeated PromptItem prompt_items = 2;
+  repeated RegexRule regex_rules = 3;
 }
 
 // PromptItem 提示项，组成发送给AI的提示词
@@ -62,10 +67,16 @@ message ListPresetsRequest {
 // 获取预设列表响应
 // 注意：返回的预设不包含关联的PromptItems和RegexRules数据
 message ListPresetsResponse {
-  repeated Preset presets = 1; // 预设列表
+  repeated PresetWithPromptLen presets = 1; // 预设列表
   int64 total = 2; // 总数
   int32 page = 3; // 当前页码
   int32 page_size = 4; // 每页数量
+}
+
+// PresetWithPromptLen 预设包含提示项数量
+message PresetWithPromptLen {
+  Preset preset = 1; // 预设
+  int32 prompt_len = 2; // 提示项数量
 }
 
 // 获取单个预设请求
@@ -75,7 +86,7 @@ message GetPresetRequest {
 
 // 获取单个预设响应
 message GetPresetResponse {
-  Preset preset = 1;
+  PresetWithAll preset = 1;
 }
 
 // 创建预设请求
@@ -105,9 +116,7 @@ message CreatePromptItemRequest {
 }
 
 // 创建预设响应
-message CreatePresetResponse {
-  Preset preset = 1;
-}
+message CreatePresetResponse {}
 
 // 更新预设请求
 message UpdatePresetRequest {
@@ -123,9 +132,7 @@ message UpdatePresetRequest {
 }
 
 // 更新预设响应
-message UpdatePresetResponse {
-  Preset preset = 1;
-}
+message UpdatePresetResponse {}
 
 // 删除预设请求
 message DeletePresetRequest {
@@ -151,7 +158,7 @@ message ImportPresetRequest {
 
 // 导入预设响应
 message ImportPresetResponse {
-  Preset preset = 1;
+  PresetWithAll preset = 1;
 }
 
 // 导出预设请求

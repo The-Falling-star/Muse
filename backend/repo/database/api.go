@@ -78,7 +78,7 @@ type PresetRepository interface {
 	// GetByID 根据ID获取预设（包含关联的PromptItems）
 	GetByID(ctx context.Context, id int, userID int) (*entity.Preset, error)
 	// List 获取预设列表
-	List(ctx context.Context, userID int, page int, pageSize int) ([]*entity.Preset, int64, error)
+	List(ctx context.Context, userID int, page int, pageSize int) ([]*entity.Preset, []int, int64, error)
 	// Update 更新预设
 	Update(ctx context.Context, preset *entity.Preset) error
 	// Delete 删除预设

@@ -37,15 +37,19 @@ func (p *presetImpl) ListPresets(ctx context.Context, req *pb.ListPresetsRequest
 
 	// 从数据库获取预设列表（不加载关联的PromptItems和RegexRules）
 	userId := jwt.GetUserId(ctx)
-	presets, total, err := p.presetRepo.List(ctx, userId, page, pageSize)
+	presets, presetProLen, total, err := p.presetRepo.List(ctx, userId, page, pageSize)
 	if err != nil {
 		return nil, err
 	}
 
 	// 转换为pb格式
-	pbPresets := make([]*pb.Preset, 0, len(presets))
-	for _, preset := range presets {
-		pbPresets = append(pbPresets, convert.PresetEntityToPb(preset))
+	pbPresets := make([]*pb.PresetWithPromptLen, 0, len(presets))
+	for i := range presets {
+		pbPreset, _, _ := convert.PresetEntityToPb(presets[i])
+		pbPresets = append(pbPresets, &pb.PresetWithPromptLen{
+			Preset:    pbPreset,
+			PromptLen: int32(presetProLen[i]),
+		})
 	}
 
 	return &pb.ListPresetsResponse{
@@ -72,8 +76,13 @@ func (p *presetImpl) GetPreset(ctx context.Context, req *pb.GetPresetRequest) (*
 		return nil, errs.NewStandard(connect.CodeNotFound, errs.PresetNotFound)
 	}
 
+	pbPreset, pbPromptItem, pbRegex := convert.PresetEntityToPb(preset)
 	return &pb.GetPresetResponse{
-		Preset: convert.PresetEntityToPb(preset),
+		Preset: &pb.PresetWithAll{
+			Preset:      pbPreset,
+			PromptItems: pbPromptItem,
+			RegexRules:  pbRegex,
+		},
 	}, nil
 }
 
@@ -120,15 +129,7 @@ func (p *presetImpl) CreatePreset(ctx context.Context, req *pb.CreatePresetReque
 		_ = p.presetRepo.CreatePromptItem(ctx, item)
 	}
 
-	// 重新获取完整数据（包含关联）
-	fullPreset, err := p.presetRepo.GetByID(ctx, preset.ID, userId)
-	if err != nil {
-		return nil, err
-	}
-
-	return &pb.CreatePresetResponse{
-		Preset: convert.PresetEntityToPb(fullPreset),
-	}, nil
+	return &pb.CreatePresetResponse{}, nil
 }
 
 func (p *presetImpl) UpdatePreset(ctx context.Context, req *pb.UpdatePresetRequest) (*pb.UpdatePresetResponse, error) {
@@ -175,15 +176,7 @@ func (p *presetImpl) UpdatePreset(ctx context.Context, req *pb.UpdatePresetReque
 	// 使相关缓存失效
 	cache.InvalidateCacheByPreset(int64(id))
 
-	// 重新获取更新后的预设（包含关联数据）
-	updatedPreset, err := p.presetRepo.GetByID(ctx, id, userId)
-	if err != nil {
-		return nil, err
-	}
-
-	return &pb.UpdatePresetResponse{
-		Preset: convert.PresetEntityToPb(updatedPreset),
-	}, nil
+	return &pb.UpdatePresetResponse{}, nil
 }
 
 func (p *presetImpl) DeletePreset(ctx context.Context, req *pb.DeletePresetRequest) (*pb.DeletePresetResponse, error) {
@@ -455,8 +448,13 @@ func (p *presetImpl) ImportPreset(ctx context.Context, req *pb.ImportPresetReque
 		return nil, err
 	}
 
+	pbPreset, pbPromptItem, pbRegex := convert.PresetEntityToPb(fullPreset)
 	return &pb.ImportPresetResponse{
-		Preset: convert.PresetEntityToPb(fullPreset),
+		Preset: &pb.PresetWithAll{
+			Preset:      pbPreset,
+			PromptItems: pbPromptItem,
+			RegexRules:  pbRegex,
+		},
 	}, nil
 }
 

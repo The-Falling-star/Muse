@@ -1,34 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useUserStore } from '@/stores/user';
-import { userClient } from '@/api/client';
-
-// 缓存公共配置
-let publicConfigCache: { skipAuth: boolean } | null = null;
-
-// 带超时的 Promise 包装
-const withTimeout = <T>(promise: Promise<T>, ms: number): Promise<T> => {
-  return Promise.race([
-    promise,
-    new Promise<T>((_, reject) =>
-      setTimeout(() => reject(new Error('请求超时')), ms)
-    )
-  ]);
-};
-
-// 获取公共配置（带缓存 + 超时控制）
-const getPublicConfig = async () => {
-  if (publicConfigCache) {
-    return publicConfigCache;
-  }
-  try {
-    const res = await withTimeout(userClient.getPublicConfig({}), 2000);
-    publicConfigCache = { skipAuth: res.skipAuth };
-    return publicConfigCache;
-  } catch (error) {
-    console.error('获取公共配置失败:', error);
-    return { skipAuth: false };
-  }
-};
+import { useCommonStore } from '@/stores/common';
 
 const routes = [
   {
@@ -82,11 +54,11 @@ router.beforeEach(async (to, _from, next) => {
   const title = to.meta.title as string;
   document.title = title ? `${title} - Muse` : 'Muse';
 
-  // 获取公共配置
-  const publicConfig = await getPublicConfig();
+  // 从store获取公共配置
+  const commonStore = useCommonStore();
 
   // 如果配置了跳过认证，直接放行
-  if (publicConfig.skipAuth) {
+  if (commonStore.skipAuth) {
     // 如果访问的是登录页，跳转到首页
     if (to.name === 'Login') {
       next({ name: 'Chat' });

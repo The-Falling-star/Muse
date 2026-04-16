@@ -61,7 +61,10 @@ export const useUserStore = defineStore('user', () => {
 
   // 设置当前用户
   const setCurrentUser = (user: SysUser | null) => {
-    currentUser.value = user;
+      if (!user) {
+          return
+      }
+      currentUser.value = user;
   };
 
   // 登录

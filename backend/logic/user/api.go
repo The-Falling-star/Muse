@@ -8,8 +8,6 @@ import (
 
 // User 定义了用户服务的接口（包含认证、人设、用户设置和API配置的管理）
 type User interface {
-	// GetPublicConfig 获取公共配置（无需认证）
-	GetPublicConfig(ctx context.Context, req *pb.GetPublicConfigRequest) (*pb.GetPublicConfigResponse, error)
 	// Register 处理用户注册请求
 	Register(ctx context.Context, req *pb.RegisterRequest) (*pb.RegisterResponse, error)
 	// Login 处理用户登录请求

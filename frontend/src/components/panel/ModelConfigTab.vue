@@ -13,6 +13,17 @@
         <span class="preset-label">当前预设：</span>
         <span class="preset-name">{{ activePreset.preset?.name }}</span>
       </div>
+      <div class="config-section">
+        <div class="section-label">模型供应商: </div>
+        <n-select v-model:value="curProvider" :options="providers" @update:value="updateUserProvider" clearable/>
+        <div class="section-label">模型: </div>
+        <n-auto-complete v-model:value="curModel"
+                         size="small"
+                         :options="matchCandidateModel"
+                         @update:value="updateUserModel"
+                         placeholder="请输入模型模型名称"
+                         clearable/>
+      </div>
 
       <div class="config-section">
         <div class="section-label">Temperature</div>
@@ -164,19 +175,25 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue';
+import {ref, watch, onMounted, computed} from 'vue';
 import {
   NSlider,
   NInputNumber,
   NSpin,
-  NEmpty
+  NEmpty,
+  NSelect,
+  NAutoComplete
 } from 'naive-ui';
 import { useUserStore } from '@/stores/user';
 import { usePresetStore } from '@/stores/preset';
 import type { PresetWithAll } from '@/gen/muse/preset_pb';
+import {APIProvider} from "@/gen/muse/common_pb.ts";
+import {userClient} from "@/api/client.ts";
+import {useCommonStore} from "@/stores/common.ts";
 
 const userStore = useUserStore();
 const presetStore = usePresetStore();
+const common = useCommonStore();
 
 // 加载状态
 const loading = ref(false);
@@ -184,6 +201,84 @@ const loading = ref(false);
 const saveStatus = ref<string | null>(null);
 // 当前活跃预设
 const activePreset = ref<PresetWithAll | null>(null);
+
+const providers = Object.entries(APIProvider)
+  .filter(([key]) => key !== 'APIProviderUnspecified' && isNaN(Number(key))) // 过滤掉反向映射
+  .map(([key, value]) => ({ label: key, value: value as APIProvider }));
+const curProvider = ref<APIProvider>(userStore.currentUser?.provider || APIProvider.APIProviderUnspecified);
+const curModel = ref<string>(userStore.currentUser?.model || '');
+
+// 监听当前用户数据变化同步到本地
+watch(() => userStore.currentUser, (user) => {
+  if (user) {
+    curProvider.value = user.provider;
+    curModel.value = user.model;
+  }
+}, { deep: true });
+
+// 更新用户选择的模型的供应商
+const updateUserProvider = async (value: APIProvider) => {
+  curProvider.value = value;
+  curModel.value = '';
+  const curUser = userStore.currentUser;
+  if (!curUser) {
+    return
+  }
+  // 必须深拷贝或者解构，避免直接修改导致的响应式副作用问题
+  const updatedUser = { ...curUser, provider: value, model: '' };
+  userStore.setCurrentUser(updatedUser);
+  await userClient.updateUserInfo({
+    theme: updatedUser.theme,
+    language: updatedUser.language,
+    sendOnEnter: updatedUser.sendOnEnter,
+    showTimestamps: updatedUser.showTimestamps,
+    provider: updatedUser.provider,
+    model: updatedUser.model,
+    baseUrl: updatedUser.baseUrl
+  })
+};
+
+// 匹配候选模型
+const matchCandidateModel = computed(() => {
+  console.log('matchCandidateModel:', curProvider.value)
+  console.log('curModel:', curModel.value)
+  const candidateModel = common.candidateModels.get(curProvider.value);
+  console.log('candidateModel:', candidateModel)
+  console.log("common: ", common.candidateModels)
+  if (!candidateModel) {
+    return [];
+  }
+  return candidateModel
+    .filter(model => model.includes(curModel.value))
+    .map(model => ({ label: model, value: model }));
+})
+
+// 防抖更新模型（避免快速输入时频繁请求）
+let modelUpdateTimer: ReturnType<typeof setTimeout> | null = null;
+const updateUserModel = (value: string) => {
+  curModel.value = value;
+  if (modelUpdateTimer) {
+    clearTimeout(modelUpdateTimer);
+  }
+  modelUpdateTimer = setTimeout(async () => {
+    const curUser = userStore.currentUser;
+    if (!curUser) {
+      return
+    }
+    const updatedUser = { ...curUser, model: curModel.value };
+    userStore.setCurrentUser(updatedUser);
+    await userClient.updateUserInfo({
+      theme: updatedUser.theme,
+      language: updatedUser.language,
+      sendOnEnter: updatedUser.sendOnEnter,
+      showTimestamps: updatedUser.showTimestamps,
+      provider: updatedUser.provider,
+      model: updatedUser.model,
+      baseUrl: updatedUser.baseUrl
+    })
+  }, 1000);
+};
+
 
 // 模型配置参数
 const temperature = ref(0.7);

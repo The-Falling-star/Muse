@@ -2072,88 +2072,6 @@ func (x *TestAPIConfigResponse) GetModelInfo() string {
 	return ""
 }
 
-// 获取公共配置请求
-type GetPublicConfigRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetPublicConfigRequest) Reset() {
-	*x = GetPublicConfigRequest{}
-	mi := &file_muse_user_proto_msgTypes[39]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetPublicConfigRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetPublicConfigRequest) ProtoMessage() {}
-
-func (x *GetPublicConfigRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_user_proto_msgTypes[39]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetPublicConfigRequest.ProtoReflect.Descriptor instead.
-func (*GetPublicConfigRequest) Descriptor() ([]byte, []int) {
-	return file_muse_user_proto_rawDescGZIP(), []int{39}
-}
-
-// 获取公共配置响应
-type GetPublicConfigResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	SkipAuth      bool                   `protobuf:"varint,1,opt,name=skip_auth,json=skipAuth,proto3" json:"skip_auth,omitempty"` // 是否跳过认证
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetPublicConfigResponse) Reset() {
-	*x = GetPublicConfigResponse{}
-	mi := &file_muse_user_proto_msgTypes[40]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetPublicConfigResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetPublicConfigResponse) ProtoMessage() {}
-
-func (x *GetPublicConfigResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_user_proto_msgTypes[40]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetPublicConfigResponse.ProtoReflect.Descriptor instead.
-func (*GetPublicConfigResponse) Descriptor() ([]byte, []int) {
-	return file_muse_user_proto_rawDescGZIP(), []int{40}
-}
-
-func (x *GetPublicConfigResponse) GetSkipAuth() bool {
-	if x != nil {
-		return x.SkipAuth
-	}
-	return false
-}
-
 var File_muse_user_proto protoreflect.FileDescriptor
 
 const file_muse_user_proto_rawDesc = "" +
@@ -2293,12 +2211,9 @@ const file_muse_user_proto_rawDesc = "" +
 	"\n" +
 	"model_info\x18\x03 \x01(\tH\x01R\tmodelInfo\x88\x01\x01B\x10\n" +
 	"\x0e_error_messageB\r\n" +
-	"\v_model_info\"\x18\n" +
-	"\x16GetPublicConfigRequest\"6\n" +
-	"\x17GetPublicConfigResponse\x12\x1b\n" +
-	"\tskip_auth\x18\x01 \x01(\bR\bskipAuth2\x8e\v\n" +
-	"\vUserService\x12N\n" +
-	"\x0fGetPublicConfig\x12\x1c.muse.GetPublicConfigRequest\x1a\x1d.muse.GetPublicConfigResponse\x129\n" +
+	"\v_model_info2\xbe\n" +
+	"\n" +
+	"\vUserService\x129\n" +
 	"\bRegister\x12\x15.muse.RegisterRequest\x1a\x16.muse.RegisterResponse\x120\n" +
 	"\x05Login\x12\x12.muse.LoginRequest\x1a\x13.muse.LoginResponse\x12K\n" +
 	"\x0eGetCurrentUser\x12\x1b.muse.GetCurrentUserRequest\x1a\x1c.muse.GetCurrentUserResponse\x12K\n" +
@@ -2332,7 +2247,7 @@ func file_muse_user_proto_rawDescGZIP() []byte {
 	return file_muse_user_proto_rawDescData
 }
 
-var file_muse_user_proto_msgTypes = make([]protoimpl.MessageInfo, 41)
+var file_muse_user_proto_msgTypes = make([]protoimpl.MessageInfo, 39)
 var file_muse_user_proto_goTypes = []any{
 	(*SysUser)(nil),                    // 0: muse.SysUser
 	(*Persona)(nil),                    // 1: muse.Persona
@@ -2373,15 +2288,13 @@ var file_muse_user_proto_goTypes = []any{
 	(*SetActiveAPIConfigResponse)(nil), // 36: muse.SetActiveAPIConfigResponse
 	(*TestAPIConfigRequest)(nil),       // 37: muse.TestAPIConfigRequest
 	(*TestAPIConfigResponse)(nil),      // 38: muse.TestAPIConfigResponse
-	(*GetPublicConfigRequest)(nil),     // 39: muse.GetPublicConfigRequest
-	(*GetPublicConfigResponse)(nil),    // 40: muse.GetPublicConfigResponse
-	(Theme)(0),                         // 41: muse.Theme
-	(APIProvider)(0),                   // 42: muse.APIProvider
+	(Theme)(0),                         // 39: muse.Theme
+	(APIProvider)(0),                   // 40: muse.APIProvider
 }
 var file_muse_user_proto_depIdxs = []int32{
-	41, // 0: muse.SysUser.theme:type_name -> muse.Theme
-	42, // 1: muse.SysUser.provider:type_name -> muse.APIProvider
-	42, // 2: muse.APIConfig.provider:type_name -> muse.APIProvider
+	39, // 0: muse.SysUser.theme:type_name -> muse.Theme
+	40, // 1: muse.SysUser.provider:type_name -> muse.APIProvider
+	40, // 2: muse.APIConfig.provider:type_name -> muse.APIProvider
 	0,  // 3: muse.RegisterResponse.user:type_name -> muse.SysUser
 	0,  // 4: muse.LoginResponse.user:type_name -> muse.SysUser
 	0,  // 5: muse.GetCurrentUserResponse.user:type_name -> muse.SysUser
@@ -2390,52 +2303,50 @@ var file_muse_user_proto_depIdxs = []int32{
 	1,  // 8: muse.CreatePersonaResponse.persona:type_name -> muse.Persona
 	1,  // 9: muse.UpdatePersonaResponse.persona:type_name -> muse.Persona
 	0,  // 10: muse.GetUserInfoResponse.user:type_name -> muse.SysUser
-	41, // 11: muse.UpdateUserInfoRequest.theme:type_name -> muse.Theme
-	42, // 12: muse.UpdateUserInfoRequest.provider:type_name -> muse.APIProvider
-	42, // 13: muse.ListAPIConfigsRequest.provider:type_name -> muse.APIProvider
+	39, // 11: muse.UpdateUserInfoRequest.theme:type_name -> muse.Theme
+	40, // 12: muse.UpdateUserInfoRequest.provider:type_name -> muse.APIProvider
+	40, // 13: muse.ListAPIConfigsRequest.provider:type_name -> muse.APIProvider
 	2,  // 14: muse.ListAPIConfigsResponse.configs:type_name -> muse.APIConfig
-	42, // 15: muse.CreateAPIConfigRequest.provider:type_name -> muse.APIProvider
-	42, // 16: muse.UpdateAPIConfigRequest.provider:type_name -> muse.APIProvider
-	39, // 17: muse.UserService.GetPublicConfig:input_type -> muse.GetPublicConfigRequest
-	3,  // 18: muse.UserService.Register:input_type -> muse.RegisterRequest
-	5,  // 19: muse.UserService.Login:input_type -> muse.LoginRequest
-	7,  // 20: muse.UserService.GetCurrentUser:input_type -> muse.GetCurrentUserRequest
-	9,  // 21: muse.UserService.ChangePassword:input_type -> muse.ChangePasswordRequest
-	11, // 22: muse.UserService.ListPersonas:input_type -> muse.ListPersonasRequest
-	13, // 23: muse.UserService.GetPersona:input_type -> muse.GetPersonaRequest
-	15, // 24: muse.UserService.CreatePersona:input_type -> muse.CreatePersonaRequest
-	17, // 25: muse.UserService.UpdatePersona:input_type -> muse.UpdatePersonaRequest
-	19, // 26: muse.UserService.DeletePersona:input_type -> muse.DeletePersonaRequest
-	21, // 27: muse.UserService.SetActivePersona:input_type -> muse.SetActivePersonaRequest
-	23, // 28: muse.UserService.GetUserInfo:input_type -> muse.GetUserInfoRequest
-	25, // 29: muse.UserService.UpdateUserInfo:input_type -> muse.UpdateUserInfoRequest
-	27, // 30: muse.UserService.ListAPIConfigs:input_type -> muse.ListAPIConfigsRequest
-	29, // 31: muse.UserService.CreateAPIConfig:input_type -> muse.CreateAPIConfigRequest
-	31, // 32: muse.UserService.UpdateAPIConfig:input_type -> muse.UpdateAPIConfigRequest
-	33, // 33: muse.UserService.DeleteAPIConfig:input_type -> muse.DeleteAPIConfigRequest
-	35, // 34: muse.UserService.SetActiveAPIConfig:input_type -> muse.SetActiveAPIConfigRequest
-	37, // 35: muse.UserService.TestAPIConfig:input_type -> muse.TestAPIConfigRequest
-	40, // 36: muse.UserService.GetPublicConfig:output_type -> muse.GetPublicConfigResponse
-	4,  // 37: muse.UserService.Register:output_type -> muse.RegisterResponse
-	6,  // 38: muse.UserService.Login:output_type -> muse.LoginResponse
-	8,  // 39: muse.UserService.GetCurrentUser:output_type -> muse.GetCurrentUserResponse
-	10, // 40: muse.UserService.ChangePassword:output_type -> muse.ChangePasswordResponse
-	12, // 41: muse.UserService.ListPersonas:output_type -> muse.ListPersonasResponse
-	14, // 42: muse.UserService.GetPersona:output_type -> muse.GetPersonaResponse
-	16, // 43: muse.UserService.CreatePersona:output_type -> muse.CreatePersonaResponse
-	18, // 44: muse.UserService.UpdatePersona:output_type -> muse.UpdatePersonaResponse
-	20, // 45: muse.UserService.DeletePersona:output_type -> muse.DeletePersonaResponse
-	22, // 46: muse.UserService.SetActivePersona:output_type -> muse.SetActivePersonaResponse
-	24, // 47: muse.UserService.GetUserInfo:output_type -> muse.GetUserInfoResponse
-	26, // 48: muse.UserService.UpdateUserInfo:output_type -> muse.UpdateUserInfoResponse
-	28, // 49: muse.UserService.ListAPIConfigs:output_type -> muse.ListAPIConfigsResponse
-	30, // 50: muse.UserService.CreateAPIConfig:output_type -> muse.CreateAPIConfigResponse
-	32, // 51: muse.UserService.UpdateAPIConfig:output_type -> muse.UpdateAPIConfigResponse
-	34, // 52: muse.UserService.DeleteAPIConfig:output_type -> muse.DeleteAPIConfigResponse
-	36, // 53: muse.UserService.SetActiveAPIConfig:output_type -> muse.SetActiveAPIConfigResponse
-	38, // 54: muse.UserService.TestAPIConfig:output_type -> muse.TestAPIConfigResponse
-	36, // [36:55] is the sub-list for method output_type
-	17, // [17:36] is the sub-list for method input_type
+	40, // 15: muse.CreateAPIConfigRequest.provider:type_name -> muse.APIProvider
+	40, // 16: muse.UpdateAPIConfigRequest.provider:type_name -> muse.APIProvider
+	3,  // 17: muse.UserService.Register:input_type -> muse.RegisterRequest
+	5,  // 18: muse.UserService.Login:input_type -> muse.LoginRequest
+	7,  // 19: muse.UserService.GetCurrentUser:input_type -> muse.GetCurrentUserRequest
+	9,  // 20: muse.UserService.ChangePassword:input_type -> muse.ChangePasswordRequest
+	11, // 21: muse.UserService.ListPersonas:input_type -> muse.ListPersonasRequest
+	13, // 22: muse.UserService.GetPersona:input_type -> muse.GetPersonaRequest
+	15, // 23: muse.UserService.CreatePersona:input_type -> muse.CreatePersonaRequest
+	17, // 24: muse.UserService.UpdatePersona:input_type -> muse.UpdatePersonaRequest
+	19, // 25: muse.UserService.DeletePersona:input_type -> muse.DeletePersonaRequest
+	21, // 26: muse.UserService.SetActivePersona:input_type -> muse.SetActivePersonaRequest
+	23, // 27: muse.UserService.GetUserInfo:input_type -> muse.GetUserInfoRequest
+	25, // 28: muse.UserService.UpdateUserInfo:input_type -> muse.UpdateUserInfoRequest
+	27, // 29: muse.UserService.ListAPIConfigs:input_type -> muse.ListAPIConfigsRequest
+	29, // 30: muse.UserService.CreateAPIConfig:input_type -> muse.CreateAPIConfigRequest
+	31, // 31: muse.UserService.UpdateAPIConfig:input_type -> muse.UpdateAPIConfigRequest
+	33, // 32: muse.UserService.DeleteAPIConfig:input_type -> muse.DeleteAPIConfigRequest
+	35, // 33: muse.UserService.SetActiveAPIConfig:input_type -> muse.SetActiveAPIConfigRequest
+	37, // 34: muse.UserService.TestAPIConfig:input_type -> muse.TestAPIConfigRequest
+	4,  // 35: muse.UserService.Register:output_type -> muse.RegisterResponse
+	6,  // 36: muse.UserService.Login:output_type -> muse.LoginResponse
+	8,  // 37: muse.UserService.GetCurrentUser:output_type -> muse.GetCurrentUserResponse
+	10, // 38: muse.UserService.ChangePassword:output_type -> muse.ChangePasswordResponse
+	12, // 39: muse.UserService.ListPersonas:output_type -> muse.ListPersonasResponse
+	14, // 40: muse.UserService.GetPersona:output_type -> muse.GetPersonaResponse
+	16, // 41: muse.UserService.CreatePersona:output_type -> muse.CreatePersonaResponse
+	18, // 42: muse.UserService.UpdatePersona:output_type -> muse.UpdatePersonaResponse
+	20, // 43: muse.UserService.DeletePersona:output_type -> muse.DeletePersonaResponse
+	22, // 44: muse.UserService.SetActivePersona:output_type -> muse.SetActivePersonaResponse
+	24, // 45: muse.UserService.GetUserInfo:output_type -> muse.GetUserInfoResponse
+	26, // 46: muse.UserService.UpdateUserInfo:output_type -> muse.UpdateUserInfoResponse
+	28, // 47: muse.UserService.ListAPIConfigs:output_type -> muse.ListAPIConfigsResponse
+	30, // 48: muse.UserService.CreateAPIConfig:output_type -> muse.CreateAPIConfigResponse
+	32, // 49: muse.UserService.UpdateAPIConfig:output_type -> muse.UpdateAPIConfigResponse
+	34, // 50: muse.UserService.DeleteAPIConfig:output_type -> muse.DeleteAPIConfigResponse
+	36, // 51: muse.UserService.SetActiveAPIConfig:output_type -> muse.SetActiveAPIConfigResponse
+	38, // 52: muse.UserService.TestAPIConfig:output_type -> muse.TestAPIConfigResponse
+	35, // [35:53] is the sub-list for method output_type
+	17, // [17:35] is the sub-list for method input_type
 	17, // [17:17] is the sub-list for extension type_name
 	17, // [17:17] is the sub-list for extension extendee
 	0,  // [0:17] is the sub-list for field type_name
@@ -2458,7 +2369,7 @@ func file_muse_user_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_muse_user_proto_rawDesc), len(file_muse_user_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   41,
+			NumMessages:   39,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

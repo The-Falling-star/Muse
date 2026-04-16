@@ -8,6 +8,7 @@ import {PresetService} from "@/gen/muse/preset_pb.ts";
 import {RegexRuleService} from "@/gen/muse/regex_pb.ts";
 import {WorldInfoService} from "@/gen/muse/worldinfo_pb.ts";
 import {FileService} from "@/gen/muse/file_pb.ts";
+import {CommonService} from "@/gen/muse/common_pb.ts";
 
 // 认证拦截器 - 自动添加token到请求头
 const authInterceptor: Interceptor = (next) => async (req) => {
@@ -73,6 +74,7 @@ const transport = createConnectTransport({
 });
 
 // 创建各个服务的客户端
+export const commonClient = createClient(CommonService, transport);
 export const userClient = createClient(UserService, transport);
 export const characterClient = createClient(CharacterService, transport);
 export const chatClient = createClient(ChatService, transport);

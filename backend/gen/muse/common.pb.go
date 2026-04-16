@@ -413,11 +413,161 @@ func (SortOperation) EnumDescriptor() ([]byte, []int) {
 	return file_muse_common_proto_rawDescGZIP(), []int{6}
 }
 
+// 候选模型列表
+type CandidateModels struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Provider      APIProvider            `protobuf:"varint,1,opt,name=provider,proto3,enum=muse.APIProvider" json:"provider,omitempty"`
+	Models        []string               `protobuf:"bytes,2,rep,name=models,proto3" json:"models,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CandidateModels) Reset() {
+	*x = CandidateModels{}
+	mi := &file_muse_common_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CandidateModels) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CandidateModels) ProtoMessage() {}
+
+func (x *CandidateModels) ProtoReflect() protoreflect.Message {
+	mi := &file_muse_common_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CandidateModels.ProtoReflect.Descriptor instead.
+func (*CandidateModels) Descriptor() ([]byte, []int) {
+	return file_muse_common_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *CandidateModels) GetProvider() APIProvider {
+	if x != nil {
+		return x.Provider
+	}
+	return APIProvider_APIProviderUnspecified
+}
+
+func (x *CandidateModels) GetModels() []string {
+	if x != nil {
+		return x.Models
+	}
+	return nil
+}
+
+// 获取公共配置请求
+type GetPublicConfigRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetPublicConfigRequest) Reset() {
+	*x = GetPublicConfigRequest{}
+	mi := &file_muse_common_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetPublicConfigRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetPublicConfigRequest) ProtoMessage() {}
+
+func (x *GetPublicConfigRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_muse_common_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetPublicConfigRequest.ProtoReflect.Descriptor instead.
+func (*GetPublicConfigRequest) Descriptor() ([]byte, []int) {
+	return file_muse_common_proto_rawDescGZIP(), []int{1}
+}
+
+// 获取公共配置响应
+type GetPublicConfigResponse struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	SkipAuth        bool                   `protobuf:"varint,1,opt,name=skip_auth,json=skipAuth,proto3" json:"skip_auth,omitempty"`                     // 是否跳过认证
+	CandidateModels []*CandidateModels     `protobuf:"bytes,2,rep,name=candidate_models,json=candidateModels,proto3" json:"candidate_models,omitempty"` // 候选模型列表
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *GetPublicConfigResponse) Reset() {
+	*x = GetPublicConfigResponse{}
+	mi := &file_muse_common_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetPublicConfigResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetPublicConfigResponse) ProtoMessage() {}
+
+func (x *GetPublicConfigResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_muse_common_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetPublicConfigResponse.ProtoReflect.Descriptor instead.
+func (*GetPublicConfigResponse) Descriptor() ([]byte, []int) {
+	return file_muse_common_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *GetPublicConfigResponse) GetSkipAuth() bool {
+	if x != nil {
+		return x.SkipAuth
+	}
+	return false
+}
+
+func (x *GetPublicConfigResponse) GetCandidateModels() []*CandidateModels {
+	if x != nil {
+		return x.CandidateModels
+	}
+	return nil
+}
+
 var File_muse_common_proto protoreflect.FileDescriptor
 
 const file_muse_common_proto_rawDesc = "" +
 	"\n" +
-	"\x11muse/common.proto\x12\x04muse*@\n" +
+	"\x11muse/common.proto\x12\x04muse\"X\n" +
+	"\x0fCandidateModels\x12-\n" +
+	"\bprovider\x18\x01 \x01(\x0e2\x11.muse.APIProviderR\bprovider\x12\x16\n" +
+	"\x06models\x18\x02 \x03(\tR\x06models\"\x18\n" +
+	"\x16GetPublicConfigRequest\"x\n" +
+	"\x17GetPublicConfigResponse\x12\x1b\n" +
+	"\tskip_auth\x18\x01 \x01(\bR\bskipAuth\x12@\n" +
+	"\x10candidate_models\x18\x02 \x03(\v2\x15.muse.CandidateModelsR\x0fcandidateModels*@\n" +
 	"\x04Role\x12\x13\n" +
 	"\x0fRoleUnspecified\x10\x00\x12\n" +
 	"\n" +
@@ -465,7 +615,9 @@ const file_muse_common_proto_rawDesc = "" +
 	"\rSortOperation\x12\x1d\n" +
 	"\x19OrderOperationUnspecified\x10\x00\x12\a\n" +
 	"\x03Pre\x10\x01\x12\b\n" +
-	"\x04Next\x10\x02Bf\n" +
+	"\x04Next\x10\x022_\n" +
+	"\rCommonService\x12N\n" +
+	"\x0fGetPublicConfig\x12\x1c.muse.GetPublicConfigRequest\x1a\x1d.muse.GetPublicConfigResponseBf\n" +
 	"\bcom.museB\vCommonProtoP\x01Z\x1dgithub.com/ling/muse/gen/muse\xa2\x02\x03MXX\xaa\x02\x04Muse\xca\x02\x04Muse\xe2\x02\x10Muse\\GPBMetadata\xea\x02\x04Museb\x06proto3"
 
 var (
@@ -481,21 +633,29 @@ func file_muse_common_proto_rawDescGZIP() []byte {
 }
 
 var file_muse_common_proto_enumTypes = make([]protoimpl.EnumInfo, 7)
+var file_muse_common_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_muse_common_proto_goTypes = []any{
-	(Role)(0),                 // 0: muse.Role
-	(InjectionPosition)(0),    // 1: muse.InjectionPosition
-	(EntryPosition)(0),        // 2: muse.EntryPosition
-	(APIProvider)(0),          // 3: muse.APIProvider
-	(Theme)(0),                // 4: muse.Theme
-	(PromptItemIdentifier)(0), // 5: muse.PromptItemIdentifier
-	(SortOperation)(0),        // 6: muse.SortOperation
+	(Role)(0),                       // 0: muse.Role
+	(InjectionPosition)(0),          // 1: muse.InjectionPosition
+	(EntryPosition)(0),              // 2: muse.EntryPosition
+	(APIProvider)(0),                // 3: muse.APIProvider
+	(Theme)(0),                      // 4: muse.Theme
+	(PromptItemIdentifier)(0),       // 5: muse.PromptItemIdentifier
+	(SortOperation)(0),              // 6: muse.SortOperation
+	(*CandidateModels)(nil),         // 7: muse.CandidateModels
+	(*GetPublicConfigRequest)(nil),  // 8: muse.GetPublicConfigRequest
+	(*GetPublicConfigResponse)(nil), // 9: muse.GetPublicConfigResponse
 }
 var file_muse_common_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	3, // 0: muse.CandidateModels.provider:type_name -> muse.APIProvider
+	7, // 1: muse.GetPublicConfigResponse.candidate_models:type_name -> muse.CandidateModels
+	8, // 2: muse.CommonService.GetPublicConfig:input_type -> muse.GetPublicConfigRequest
+	9, // 3: muse.CommonService.GetPublicConfig:output_type -> muse.GetPublicConfigResponse
+	3, // [3:4] is the sub-list for method output_type
+	2, // [2:3] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_muse_common_proto_init() }
@@ -509,13 +669,14 @@ func file_muse_common_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_muse_common_proto_rawDesc), len(file_muse_common_proto_rawDesc)),
 			NumEnums:      7,
-			NumMessages:   0,
+			NumMessages:   3,
 			NumExtensions: 0,
-			NumServices:   0,
+			NumServices:   1,
 		},
 		GoTypes:           file_muse_common_proto_goTypes,
 		DependencyIndexes: file_muse_common_proto_depIdxs,
 		EnumInfos:         file_muse_common_proto_enumTypes,
+		MessageInfos:      file_muse_common_proto_msgTypes,
 	}.Build()
 	File_muse_common_proto = out.File
 	file_muse_common_proto_goTypes = nil

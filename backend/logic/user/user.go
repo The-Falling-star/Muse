@@ -25,13 +25,6 @@ func newUser() *userImpl {
 	}
 }
 
-// GetPublicConfig 获取公共配置（无需认证）
-func (u *userImpl) GetPublicConfig(ctx context.Context, req *pb.GetPublicConfigRequest) (*pb.GetPublicConfigResponse, error) {
-	return &pb.GetPublicConfigResponse{
-		SkipAuth: config.Get().Auth.SkipAuth,
-	}, nil
-}
-
 func (u *userImpl) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.RegisterResponse, error) {
 	// 检查权限
 	if userId := jwt.GetUserId(ctx); userId != config.Get().Auth.AdminUserId {

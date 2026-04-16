@@ -3,31 +3,36 @@ package config
 
 import (
 	"fmt"
+	"os"
 
-	"github.com/spf13/viper"
+	"github.com/caarlos0/env/v11"
+	"gopkg.in/yaml.v3"
 )
+
+const DefaultConfigPath = "config.yaml"
 
 // Config 应用配置结构
 type Config struct {
-	Server     ServerConfig     `mapstructure:"server"`
-	Database   DatabaseConfig   `mapstructure:"database"`
-	Auth       AuthConfig       `mapstructure:"auth"`
-	APIEncrypt APIEncryptConfig `mapstructure:"api_encrypt"`
-	StaticFile StaticFileConfig `mapstructure:"static_file"`
-	File       FileConfig       `mapstructure:"file"`
-	LogLevel   string           `mapstructure:"log_level"`
-	Chat       ChatConfig       `mapstructure:"chat"`
+	Server          ServerConfig        `yaml:"server"`
+	Database        DatabaseConfig      `yaml:"database"`
+	Auth            AuthConfig          `yaml:"auth"`
+	APIEncrypt      APIEncryptConfig    `yaml:"api_encrypt"`
+	StaticFile      StaticFileConfig    `yaml:"static_file"`
+	File            FileConfig          `yaml:"file"`
+	LogLevel        string              `yaml:"log_level" env:"LOG_LEVEL"`
+	Chat            ChatConfig          `yaml:"chat"`
+	CandidateModels map[string][]string `yaml:"candidate_models"`
 }
 
 // ChatConfig 聊天配置
 type ChatConfig struct {
-	EnableCache bool `mapstructure:"enable_cache"`
+	EnableCache bool `yaml:"enable_cache" env:"CHAT_ENABLE_CACHE"`
 }
 
 // ServerConfig 服务器配置
 type ServerConfig struct {
-	Host string `mapstructure:"host"`
-	Port int    `mapstructure:"port"`
+	Host string `yaml:"host" env:"SERVER_HOST"`
+	Port int    `yaml:"port" env:"SERVER_PORT"`
 }
 
 // Address 返回服务器监听地址
@@ -37,44 +42,44 @@ func (s ServerConfig) Address() string {
 
 // DatabaseConfig 数据库配置
 type DatabaseConfig struct {
-	Driver       string `mapstructure:"driver"`      // 数据库驱动: mysql 或 sqlite
-	SQLitePath   string `mapstructure:"sqlite_path"` // SQLite 数据库文件路径
-	Host         string `mapstructure:"host"`        // MySQL 主机地址
-	Port         int    `mapstructure:"port"`        // MySQL 端口
-	Username     string `mapstructure:"username"`    // MySQL 用户名
-	Password     string `mapstructure:"password"`    // MySQL 密码
-	Database     string `mapstructure:"database"`    // MySQL 数据库名
-	Charset      string `mapstructure:"charset"`     // MySQL 字符集
-	MaxIdleConns int    `mapstructure:"max_idle_conns"`
-	MaxOpenConns int    `mapstructure:"max_open_conns"`
+	Driver       string `yaml:"driver" env:"DB_DRIVER"`           // 数据库驱动: mysql 或 sqlite
+	SQLitePath   string `yaml:"sqlite_path" env:"DB_SQLITE_PATH"` // SQLite 数据库文件路径
+	Host         string `yaml:"host" env:"DB_HOST"`               // MySQL 主机地址
+	Port         int    `yaml:"port" env:"DB_PORT"`               // MySQL 端口
+	Username     string `yaml:"username" env:"DB_USERNAME"`       // MySQL 用户名
+	Password     string `yaml:"password" env:"DB_PASSWORD"`       // MySQL 密码
+	Database     string `yaml:"database" env:"DB_DATABASE"`       // MySQL 数据库名
+	Charset      string `yaml:"charset" env:"DB_CHARSET"`         // MySQL 字符集
+	MaxIdleConns int    `yaml:"max_idle_conns" env:"DB_MAX_IDLE_CONNS"`
+	MaxOpenConns int    `yaml:"max_open_conns" env:"DB_MAX_OPEN_CONNS"`
 }
 
 // AuthConfig 认证配置
 type AuthConfig struct {
-	JWTSecret     string `mapstructure:"jwt_secret"` // JWT 加密密钥
-	SkipAuth      bool   `mapstructure:"skip_auth"`
-	AdminUsername string `mapstructure:"admin_username"`
-	AdminUserId   int    `mapstructure:"admin_user_id"`
-	AdminPassword string `mapstructure:"admin_password"`
+	JWTSecret     string `yaml:"jwt_secret" env:"AUTH_JWT_SECRET"` // JWT 加密密钥
+	SkipAuth      bool   `yaml:"skip_auth" env:"AUTH_SKIP_AUTH"`
+	AdminUsername string `yaml:"admin_username" env:"AUTH_ADMIN_USERNAME"`
+	AdminUserId   int    `yaml:"admin_user_id" env:"AUTH_ADMIN_USER_ID"`
+	AdminPassword string `yaml:"admin_password" env:"AUTH_ADMIN_PASSWORD"`
 }
 
 // APIEncryptConfig API密钥加密配置
 type APIEncryptConfig struct {
-	EncryptionKey string `mapstructure:"encryption_key"` // 加密密钥（用于AES-256）
-	AllowGetKey   bool   `mapstructure:"allow_get_key"`  // 是否允许前端获取API密钥
+	EncryptionKey string `yaml:"encryption_key" env:"API_ENCRYPT_KEY"`  // 加密密钥（用于AES-256）
+	AllowGetKey   bool   `yaml:"allow_get_key" env:"API_ALLOW_GET_KEY"` // 是否允许前端获取API密钥
 }
 
 // StaticFileConfig 静态文件服务配置
 type StaticFileConfig struct {
-	Enabled     bool   `mapstructure:"enabled"`      // 是否启用静态文件服务
-	FrontendDir string `mapstructure:"frontend_dir"` // 前端构建目录路径
+	Enabled     bool   `yaml:"enabled" env:"STATIC_FILE_ENABLED"`           // 是否启用静态文件服务
+	FrontendDir string `yaml:"frontend_dir" env:"STATIC_FILE_FRONTEND_DIR"` // 前端构建目录路径
 }
 
 // FileConfig 文件服务配置
 type FileConfig struct {
-	UploadPath     string `mapstructure:"upload_path"`      // 上传文件根目录
-	MaxUploadSize  int    `mapstructure:"max_upload_size"`  // 最大上传文件大小（MB）
-	CacheExpireMin int    `mapstructure:"cache_expire_min"` // 前端缓存过期时间（分钟）
+	UploadPath     string `yaml:"upload_path" env:"FILE_UPLOAD_PATH"`           // 上传文件根目录
+	MaxUploadSize  int    `yaml:"max_upload_size" env:"FILE_MAX_UPLOAD_SIZE"`   // 最大上传文件大小（MB）
+	CacheExpireMin int    `yaml:"cache_expire_min" env:"FILE_CACHE_EXPIRE_MIN"` // 前端缓存过期时间（分钟）
 }
 
 // IsSQLite 判断是否使用SQLite
@@ -103,35 +108,23 @@ var globalConfig *Config
 
 // Load 从配置文件加载配置
 func Load(configPath string) (*Config, error) {
-	viper.SetConfigFile(configPath)
-	viper.SetConfigType("yaml")
-
-	// 设置默认值
-	viper.SetDefault("server.host", "0.0.0.0")
-	viper.SetDefault("server.port", 8080)
-	viper.SetDefault("database.driver", "sqlite") // 默认使用SQLite
-	viper.SetDefault("database.sqlite_path", "./data/muse.database")
-	viper.SetDefault("database.host", "localhost")
-	viper.SetDefault("database.port", 3306)
-	viper.SetDefault("database.charset", "utf8mb4")
-	viper.SetDefault("database.max_idle_conns", 10)
-	viper.SetDefault("database.max_open_conns", 100)
-	viper.SetDefault("auth.jwt_secret", "your-secret-key-change-in-production") // JWT密钥
-	viper.SetDefault("api_encrypt.enabled", false)                              // 默认不启用API密钥加密
-	viper.SetDefault("api_encrypt.allow_get_key", true)                         // 默认允许获取API密钥
-	viper.SetDefault("static_file.enabled", true)                               // 默认启用静态文件服务
-	viper.SetDefault("static_file.frontend_dir", "./frontend/dist")             // 默认前端目录
-	viper.SetDefault("file.upload_path", "./data/uploads")                      // 默认上传目录
-	viper.SetDefault("file.max_upload_size", 10)                                // 默认最大上传大小10MB
-	viper.SetDefault("file.cache_expire_min", 1440)                             // 默认缓存过期时间1440分钟（1天）
-
-	if err := viper.ReadInConfig(); err != nil {
+	// 1. 初始化默认值 (替代之前的 viper.SetDefault)
+	cfg := defaultConfig
+	// 2. 读取并解析配置文件 (YAML 库会自动处理大小写敏感的 Map)
+	if configPath == "" {
+		configPath = DefaultConfigPath
+	}
+	data, err := os.ReadFile(configPath)
+	if err != nil {
+		// 如果明确指定了路径但文件不存在，则报错
 		return nil, fmt.Errorf("读取配置文件失败: %w", err)
 	}
-
-	cfg := &Config{}
-	if err := viper.Unmarshal(cfg); err != nil {
+	if err = yaml.Unmarshal(data, cfg); err != nil {
 		return nil, fmt.Errorf("解析配置文件失败: %w", err)
+	}
+	// 3. 环境变量覆盖 (优先级最高)
+	if err = env.Parse(cfg); err != nil {
+		return nil, fmt.Errorf("解析环境变量失败: %w", err)
 	}
 
 	globalConfig = cfg
@@ -146,4 +139,37 @@ func Get() *Config {
 // SetGlobal 设置全局配置实例（主要用于测试）
 func SetGlobal(cfg *Config) {
 	globalConfig = cfg
+}
+
+// defaultConfig 默认配置
+var defaultConfig = &Config{
+	Server: ServerConfig{
+		Host: "0.0.0.0",
+		Port: 8080,
+	},
+	Database: DatabaseConfig{
+		Driver:       "sqlite",
+		SQLitePath:   "./data/muse.database",
+		Host:         "localhost",
+		Port:         3306,
+		Charset:      "utf8mb4",
+		MaxIdleConns: 10,
+		MaxOpenConns: 100,
+	},
+	Auth: AuthConfig{
+		JWTSecret: "your-secret-key-change-in-production",
+	},
+	APIEncrypt: APIEncryptConfig{
+		AllowGetKey: true,
+	},
+	StaticFile: StaticFileConfig{
+		Enabled:     true,
+		FrontendDir: "./frontend/dist",
+	},
+	File: FileConfig{
+		UploadPath:     "./data/uploads",
+		MaxUploadSize:  10,
+		CacheExpireMin: 1440,
+	},
+	LogLevel: "info",
 }

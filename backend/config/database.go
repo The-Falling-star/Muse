@@ -8,10 +8,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/glebarez/sqlite" // pure Go SQLite driver
 	"github.com/ling/muse/common/crypto"
 	log "github.com/sirupsen/logrus"
 	"gorm.io/driver/mysql"
-	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 

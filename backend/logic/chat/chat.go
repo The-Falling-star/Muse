@@ -939,7 +939,7 @@ func (c *chatImpl) buildMessages(
 			messages = append(messages, msg)
 		}
 	}
-	return messages, nil
+	return applyMacro(messages, session), nil
 }
 
 // PriorityMessage 继承model.Message并添加优先级字段
@@ -1138,4 +1138,102 @@ func applyRegex(regexsMap map[string]*regexp2.Regexp, regexs []*entity.RegexRule
 		content = replaceContent
 	}
 	return content, nil
+}
+
+// applyMacro 对消息列表应用宏替换
+// 支持的宏:
+//   - {{char}}, <char>, <bot>, <BOT>: 角色名称
+//   - {{newline}}: 换行符
+//   - {{noop}}: 空字符串
+//   - {{time}}: 当前时间 (HH:mm:ss)
+//   - {{date}}: 当前日期 (YYYY-MM-DD)
+//   - {{weekday}}: 星期几
+//   - {{isotime}}: ISO 时间 (HH:mm:ss)
+//   - {{isodate}}: ISO 日期 (YYYY-MM-DD)
+//   - {{description}}: 角色描述
+//   - {{mesExamples}}: 示例对话
+//   - {{lastMessage}}: 最后一条消息
+//   - {{lastUserMessage}}: 最后一条用户消息
+//   - {{lastCharMessage}}: 最后一条角色消息
+//   - {{lastMessageId}}: 最后一条消息ID
+func applyMacro(messages []model.Message, session *entity.ChatSession) []model.Message {
+	if session == nil || session.Character == nil {
+		return messages
+	}
+
+	// 获取时间相关数据
+	now := time.Now()
+	charName := session.Character.Name
+	description := session.Character.Description
+
+	// 处理示例对话
+	mesExamples := ""
+	if len(session.Character.ExampleDialogue) > 0 {
+		mesExamples = strings.Join(session.Character.ExampleDialogue, "\n")
+	}
+
+	// 获取消息相关数据
+	var lastMessage, lastUserMessage, lastCharMessage string
+	var lastMessageId int32
+
+	if len(session.Messages) > 0 {
+		lastMsg := session.Messages[len(session.Messages)-1]
+		lastMessageId = int32(lastMsg.ID)
+		if len(lastMsg.Swipes) > 0 && int(lastMsg.ActiveSwipeIndex) < len(lastMsg.Swipes) {
+			lastMessage = lastMsg.Swipes[lastMsg.ActiveSwipeIndex].Content
+		}
+
+		// 反向遍历查找最后一条用户消息和角色消息
+		for i := len(session.Messages) - 1; i >= 0; i-- {
+			msg := session.Messages[i]
+			if len(msg.Swipes) == 0 || int(msg.ActiveSwipeIndex) >= len(msg.Swipes) {
+				continue
+			}
+			content := msg.Swipes[msg.ActiveSwipeIndex].Content
+
+			if msg.Role == pb.Role_User && lastUserMessage == "" {
+				lastUserMessage = content
+			}
+			if msg.Role == pb.Role_Assistant && lastCharMessage == "" {
+				lastCharMessage = content
+			}
+
+			if lastUserMessage != "" && lastCharMessage != "" {
+				break
+			}
+		}
+	}
+
+	// 使用 strings.NewReplacer 进行高效替换
+	replacer := strings.NewReplacer(
+		// 角色名称
+		constant.Char1, charName,
+		constant.Char2, charName,
+		constant.Char3, charName,
+		constant.Char4, charName,
+		// 基础宏
+		constant.Newline, "\n",
+		constant.Noop, "",
+		// 时间日期宏
+		constant.Time, now.Format("15:04:05"),
+		constant.Date, now.Format("2006-01-02"),
+		constant.Weekday, now.Weekday().String(),
+		constant.IsoTime, now.Format("15:04:05"),
+		constant.IsoDate, now.Format("2006-01-02"),
+		// 角色数据宏
+		constant.Description, description,
+		constant.MesExamples, mesExamples,
+		// 消息相关宏
+		constant.LastMessage, lastMessage,
+		constant.LastUserMessage, lastUserMessage,
+		constant.LastCharMessage, lastCharMessage,
+		constant.LastMessageId, fmt.Sprintf("%d", lastMessageId),
+	)
+
+	// 应用替换
+	for i := range messages {
+		messages[i].Content = replacer.Replace(messages[i].Content)
+	}
+
+	return messages
 }

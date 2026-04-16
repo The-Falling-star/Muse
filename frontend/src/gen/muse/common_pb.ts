@@ -2,14 +2,82 @@
 // @generated from file muse/common.proto (package muse, syntax proto3)
 /* eslint-disable */
 
-import type { GenEnum, GenFile } from "@bufbuild/protobuf/codegenv2";
-import { enumDesc, fileDesc } from "@bufbuild/protobuf/codegenv2";
+import type { GenEnum, GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
+import { enumDesc, fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
+import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file muse/common.proto.
  */
 export const file_muse_common: GenFile = /*@__PURE__*/
-  fileDesc("ChFtdXNlL2NvbW1vbi5wcm90bxIEbXVzZSpACgRSb2xlEhMKD1JvbGVVbnNwZWNpZmllZBAAEgoKBlN5c3RlbRABEggKBFVzZXIQAhINCglBc3Npc3RhbnQQAypRChFJbmplY3Rpb25Qb3NpdGlvbhIgChxJbmplY3Rpb25Qb3NpdGlvblVuc3BlY2lmaWVkEAASDAoIUmVsYXRpdmUQARIMCghBYnNvbHV0ZRACKn4KDUVudHJ5UG9zaXRpb24SHAoYRW50cnlQb3NpdGlvblVuc3BlY2lmaWVkEAASDgoKQmVmb3JlQ2hhchABEg0KCUFmdGVyQ2hhchACEhEKDUJlZm9yZUV4YW1wbGUQAxIQCgxBZnRlckV4YW1wbGUQBBILCgdBdERlcHRoEAUqTQoLQVBJUHJvdmlkZXISGgoWQVBJUHJvdmlkZXJVbnNwZWNpZmllZBAAEgoKBk9wZW5BSRABEgoKBkNsYXVkZRACEgoKBkdlbWluaRADKiYKBVRoZW1lEggKBEF1dG8QABIJCgVMaWdodBABEggKBERhcmsQAir+AQoUUHJvbXB0SXRlbUlkZW50aWZpZXISIwofUHJvbXB0SXRlbUlkZW50aWZpZXJVbnNwZWNpZmllZBAAEggKBE1haW4QARITCg9Xb3JsZEluZm9CZWZvcmUQAhIWChJQZXJzb25hRGVzY3JpcHRpb24QAxITCg9DaGFyRGVzY3JpcHRpb24QBBITCg9DaGFyUGVyc29uYWxpdHkQBRIMCghTY2VuYXJpbxAGEggKBE5zZncQBxISCg5Xb3JsZEluZm9BZnRlchAIEhQKEERpYWxvZ3VlRXhhbXBsZXMQCRIPCgtDaGF0SGlzdG9yeRAKEg0KCUphaWxicmVhaxALKkEKDVNvcnRPcGVyYXRpb24SHQoZT3JkZXJPcGVyYXRpb25VbnNwZWNpZmllZBAAEgcKA1ByZRABEggKBE5leHQQAkJmCghjb20ubXVzZUILQ29tbW9uUHJvdG9QAVodZ2l0aHViLmNvbS9saW5nL211c2UvZ2VuL211c2WiAgNNWFiqAgRNdXNlygIETXVzZeICEE11c2VcR1BCTWV0YWRhdGHqAgRNdXNlYgZwcm90bzM");
+  fileDesc("ChFtdXNlL2NvbW1vbi5wcm90bxIEbXVzZSJGCg9DYW5kaWRhdGVNb2RlbHMSIwoIcHJvdmlkZXIYASABKA4yES5tdXNlLkFQSVByb3ZpZGVyEg4KBm1vZGVscxgCIAMoCSIYChZHZXRQdWJsaWNDb25maWdSZXF1ZXN0Il0KF0dldFB1YmxpY0NvbmZpZ1Jlc3BvbnNlEhEKCXNraXBfYXV0aBgBIAEoCBIvChBjYW5kaWRhdGVfbW9kZWxzGAIgAygLMhUubXVzZS5DYW5kaWRhdGVNb2RlbHMqQAoEUm9sZRITCg9Sb2xlVW5zcGVjaWZpZWQQABIKCgZTeXN0ZW0QARIICgRVc2VyEAISDQoJQXNzaXN0YW50EAMqUQoRSW5qZWN0aW9uUG9zaXRpb24SIAocSW5qZWN0aW9uUG9zaXRpb25VbnNwZWNpZmllZBAAEgwKCFJlbGF0aXZlEAESDAoIQWJzb2x1dGUQAip+Cg1FbnRyeVBvc2l0aW9uEhwKGEVudHJ5UG9zaXRpb25VbnNwZWNpZmllZBAAEg4KCkJlZm9yZUNoYXIQARINCglBZnRlckNoYXIQAhIRCg1CZWZvcmVFeGFtcGxlEAMSEAoMQWZ0ZXJFeGFtcGxlEAQSCwoHQXREZXB0aBAFKk0KC0FQSVByb3ZpZGVyEhoKFkFQSVByb3ZpZGVyVW5zcGVjaWZpZWQQABIKCgZPcGVuQUkQARIKCgZDbGF1ZGUQAhIKCgZHZW1pbmkQAyomCgVUaGVtZRIICgRBdXRvEAASCQoFTGlnaHQQARIICgREYXJrEAIq/gEKFFByb21wdEl0ZW1JZGVudGlmaWVyEiMKH1Byb21wdEl0ZW1JZGVudGlmaWVyVW5zcGVjaWZpZWQQABIICgRNYWluEAESEwoPV29ybGRJbmZvQmVmb3JlEAISFgoSUGVyc29uYURlc2NyaXB0aW9uEAMSEwoPQ2hhckRlc2NyaXB0aW9uEAQSEwoPQ2hhclBlcnNvbmFsaXR5EAUSDAoIU2NlbmFyaW8QBhIICgROc2Z3EAcSEgoOV29ybGRJbmZvQWZ0ZXIQCBIUChBEaWFsb2d1ZUV4YW1wbGVzEAkSDwoLQ2hhdEhpc3RvcnkQChINCglKYWlsYnJlYWsQCypBCg1Tb3J0T3BlcmF0aW9uEh0KGU9yZGVyT3BlcmF0aW9uVW5zcGVjaWZpZWQQABIHCgNQcmUQARIICgROZXh0EAIyXwoNQ29tbW9uU2VydmljZRJOCg9HZXRQdWJsaWNDb25maWcSHC5tdXNlLkdldFB1YmxpY0NvbmZpZ1JlcXVlc3QaHS5tdXNlLkdldFB1YmxpY0NvbmZpZ1Jlc3BvbnNlQmYKCGNvbS5tdXNlQgtDb21tb25Qcm90b1ABWh1naXRodWIuY29tL2xpbmcvbXVzZS9nZW4vbXVzZaICA01YWKoCBE11c2XKAgRNdXNl4gIQTXVzZVxHUEJNZXRhZGF0YeoCBE11c2ViBnByb3RvMw");
+
+/**
+ * 候选模型列表
+ *
+ * @generated from message muse.CandidateModels
+ */
+export type CandidateModels = Message<"muse.CandidateModels"> & {
+  /**
+   * @generated from field: muse.APIProvider provider = 1;
+   */
+  provider: APIProvider;
+
+  /**
+   * @generated from field: repeated string models = 2;
+   */
+  models: string[];
+};
+
+/**
+ * Describes the message muse.CandidateModels.
+ * Use `create(CandidateModelsSchema)` to create a new message.
+ */
+export const CandidateModelsSchema: GenMessage<CandidateModels> = /*@__PURE__*/
+  messageDesc(file_muse_common, 0);
+
+/**
+ * 获取公共配置请求
+ *
+ * @generated from message muse.GetPublicConfigRequest
+ */
+export type GetPublicConfigRequest = Message<"muse.GetPublicConfigRequest"> & {
+};
+
+/**
+ * Describes the message muse.GetPublicConfigRequest.
+ * Use `create(GetPublicConfigRequestSchema)` to create a new message.
+ */
+export const GetPublicConfigRequestSchema: GenMessage<GetPublicConfigRequest> = /*@__PURE__*/
+  messageDesc(file_muse_common, 1);
+
+/**
+ * 获取公共配置响应
+ *
+ * @generated from message muse.GetPublicConfigResponse
+ */
+export type GetPublicConfigResponse = Message<"muse.GetPublicConfigResponse"> & {
+  /**
+   * 是否跳过认证
+   *
+   * @generated from field: bool skip_auth = 1;
+   */
+  skipAuth: boolean;
+
+  /**
+   * 候选模型列表
+   *
+   * @generated from field: repeated muse.CandidateModels candidate_models = 2;
+   */
+  candidateModels: CandidateModels[];
+};
+
+/**
+ * Describes the message muse.GetPublicConfigResponse.
+ * Use `create(GetPublicConfigResponseSchema)` to create a new message.
+ */
+export const GetPublicConfigResponseSchema: GenMessage<GetPublicConfigResponse> = /*@__PURE__*/
+  messageDesc(file_muse_common, 2);
 
 /**
  * Role 消息角色类型
@@ -344,4 +412,23 @@ export enum SortOperation {
  */
 export const SortOperationSchema: GenEnum<SortOperation> = /*@__PURE__*/
   enumDesc(file_muse_common, 6);
+
+/**
+ * 公共服务
+ *
+ * @generated from service muse.CommonService
+ */
+export const CommonService: GenService<{
+  /**
+   * 获取公共配置（无需认证）
+   *
+   * @generated from rpc muse.CommonService.GetPublicConfig
+   */
+  getPublicConfig: {
+    methodKind: "unary";
+    input: typeof GetPublicConfigRequestSchema;
+    output: typeof GetPublicConfigResponseSchema;
+  },
+}> = /*@__PURE__*/
+  serviceDesc(file_muse_common, 0);
 

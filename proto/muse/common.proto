@@ -70,3 +70,28 @@ enum SortOperation {
     Pre = 1; // 前
     Next = 2; //后
 }
+
+// ================================
+// 公共配置（无需认证）
+// ================================
+
+// 候选模型列表
+message CandidateModels {
+  APIProvider provider = 1;
+  repeated string models = 2;
+}
+
+// 获取公共配置请求
+message GetPublicConfigRequest {}
+
+// 获取公共配置响应
+message GetPublicConfigResponse {
+  bool skip_auth = 1;  // 是否跳过认证
+  repeated CandidateModels candidate_models = 2; // 候选模型列表
+}
+
+// 公共服务
+service CommonService {
+  // 获取公共配置（无需认证）
+  rpc GetPublicConfig(GetPublicConfigRequest) returns (GetPublicConfigResponse);
+}

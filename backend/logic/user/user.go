@@ -447,7 +447,7 @@ func (u *userImpl) CreateAPIConfig(ctx context.Context, req *pb.CreateAPIConfigR
 		UserID:   userID,
 		Provider: req.GetProvider(),
 		APIKey:   encryptedAPIKey,
-		IsActive: false, // 默认不激活
+		IsActive: true,
 	}
 
 	if err = u.userRepo.CreateAPIConfig(ctx, apiConfig); err != nil {

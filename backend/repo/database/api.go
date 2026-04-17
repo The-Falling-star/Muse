@@ -206,5 +206,5 @@ type UserRepository interface {
 	// ActivateAPIConfig 激活API配置
 	ActivateAPIConfig(ctx context.Context, id int, userID int) error
 	// GetActiveAPIConfig 获取用户当前活跃的API配置
-	GetActiveAPIConfig(ctx context.Context, userID int) (*entity.APIConfig, error)
+	GetActiveAPIConfig(ctx context.Context, userID int, provider pb.APIProvider) ([]*entity.APIConfig, error)
 }

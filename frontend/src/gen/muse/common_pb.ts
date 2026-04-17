@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file muse/common.proto.
  */
 export const file_muse_common: GenFile = /*@__PURE__*/
-  fileDesc("ChFtdXNlL2NvbW1vbi5wcm90bxIEbXVzZSJGCg9DYW5kaWRhdGVNb2RlbHMSIwoIcHJvdmlkZXIYASABKA4yES5tdXNlLkFQSVByb3ZpZGVyEg4KBm1vZGVscxgCIAMoCSIYChZHZXRQdWJsaWNDb25maWdSZXF1ZXN0Il0KF0dldFB1YmxpY0NvbmZpZ1Jlc3BvbnNlEhEKCXNraXBfYXV0aBgBIAEoCBIvChBjYW5kaWRhdGVfbW9kZWxzGAIgAygLMhUubXVzZS5DYW5kaWRhdGVNb2RlbHMqQAoEUm9sZRITCg9Sb2xlVW5zcGVjaWZpZWQQABIKCgZTeXN0ZW0QARIICgRVc2VyEAISDQoJQXNzaXN0YW50EAMqUQoRSW5qZWN0aW9uUG9zaXRpb24SIAocSW5qZWN0aW9uUG9zaXRpb25VbnNwZWNpZmllZBAAEgwKCFJlbGF0aXZlEAESDAoIQWJzb2x1dGUQAip+Cg1FbnRyeVBvc2l0aW9uEhwKGEVudHJ5UG9zaXRpb25VbnNwZWNpZmllZBAAEg4KCkJlZm9yZUNoYXIQARINCglBZnRlckNoYXIQAhIRCg1CZWZvcmVFeGFtcGxlEAMSEAoMQWZ0ZXJFeGFtcGxlEAQSCwoHQXREZXB0aBAFKk0KC0FQSVByb3ZpZGVyEhoKFkFQSVByb3ZpZGVyVW5zcGVjaWZpZWQQABIKCgZPcGVuQUkQARIKCgZDbGF1ZGUQAhIKCgZHZW1pbmkQAyomCgVUaGVtZRIICgRBdXRvEAASCQoFTGlnaHQQARIICgREYXJrEAIq/gEKFFByb21wdEl0ZW1JZGVudGlmaWVyEiMKH1Byb21wdEl0ZW1JZGVudGlmaWVyVW5zcGVjaWZpZWQQABIICgRNYWluEAESEwoPV29ybGRJbmZvQmVmb3JlEAISFgoSUGVyc29uYURlc2NyaXB0aW9uEAMSEwoPQ2hhckRlc2NyaXB0aW9uEAQSEwoPQ2hhclBlcnNvbmFsaXR5EAUSDAoIU2NlbmFyaW8QBhIICgROc2Z3EAcSEgoOV29ybGRJbmZvQWZ0ZXIQCBIUChBEaWFsb2d1ZUV4YW1wbGVzEAkSDwoLQ2hhdEhpc3RvcnkQChINCglKYWlsYnJlYWsQCypBCg1Tb3J0T3BlcmF0aW9uEh0KGU9yZGVyT3BlcmF0aW9uVW5zcGVjaWZpZWQQABIHCgNQcmUQARIICgROZXh0EAIyXwoNQ29tbW9uU2VydmljZRJOCg9HZXRQdWJsaWNDb25maWcSHC5tdXNlLkdldFB1YmxpY0NvbmZpZ1JlcXVlc3QaHS5tdXNlLkdldFB1YmxpY0NvbmZpZ1Jlc3BvbnNlQmYKCGNvbS5tdXNlQgtDb21tb25Qcm90b1ABWh1naXRodWIuY29tL2xpbmcvbXVzZS9nZW4vbXVzZaICA01YWKoCBE11c2XKAgRNdXNl4gIQTXVzZVxHUEJNZXRhZGF0YeoCBE11c2ViBnByb3RvMw");
+  fileDesc("ChFtdXNlL2NvbW1vbi5wcm90bxIEbXVzZSJGCg9DYW5kaWRhdGVNb2RlbHMSIwoIcHJvdmlkZXIYASABKA4yES5tdXNlLkFQSVByb3ZpZGVyEg4KBm1vZGVscxgCIAMoCSIYChZHZXRQdWJsaWNDb25maWdSZXF1ZXN0Il0KF0dldFB1YmxpY0NvbmZpZ1Jlc3BvbnNlEhEKCXNraXBfYXV0aBgBIAEoCBIvChBjYW5kaWRhdGVfbW9kZWxzGAIgAygLMhUubXVzZS5DYW5kaWRhdGVNb2RlbHMqJQoHRXJyQ29kZRILCgdTdWNjZXNzEAASDQoITm9BUElLZXkQ6AcqQAoEUm9sZRITCg9Sb2xlVW5zcGVjaWZpZWQQABIKCgZTeXN0ZW0QARIICgRVc2VyEAISDQoJQXNzaXN0YW50EAMqUQoRSW5qZWN0aW9uUG9zaXRpb24SIAocSW5qZWN0aW9uUG9zaXRpb25VbnNwZWNpZmllZBAAEgwKCFJlbGF0aXZlEAESDAoIQWJzb2x1dGUQAip+Cg1FbnRyeVBvc2l0aW9uEhwKGEVudHJ5UG9zaXRpb25VbnNwZWNpZmllZBAAEg4KCkJlZm9yZUNoYXIQARINCglBZnRlckNoYXIQAhIRCg1CZWZvcmVFeGFtcGxlEAMSEAoMQWZ0ZXJFeGFtcGxlEAQSCwoHQXREZXB0aBAFKk0KC0FQSVByb3ZpZGVyEhoKFkFQSVByb3ZpZGVyVW5zcGVjaWZpZWQQABIKCgZPcGVuQUkQARIKCgZDbGF1ZGUQAhIKCgZHZW1pbmkQAyomCgVUaGVtZRIICgRBdXRvEAASCQoFTGlnaHQQARIICgREYXJrEAIq/gEKFFByb21wdEl0ZW1JZGVudGlmaWVyEiMKH1Byb21wdEl0ZW1JZGVudGlmaWVyVW5zcGVjaWZpZWQQABIICgRNYWluEAESEwoPV29ybGRJbmZvQmVmb3JlEAISFgoSUGVyc29uYURlc2NyaXB0aW9uEAMSEwoPQ2hhckRlc2NyaXB0aW9uEAQSEwoPQ2hhclBlcnNvbmFsaXR5EAUSDAoIU2NlbmFyaW8QBhIICgROc2Z3EAcSEgoOV29ybGRJbmZvQWZ0ZXIQCBIUChBEaWFsb2d1ZUV4YW1wbGVzEAkSDwoLQ2hhdEhpc3RvcnkQChINCglKYWlsYnJlYWsQCypBCg1Tb3J0T3BlcmF0aW9uEh0KGU9yZGVyT3BlcmF0aW9uVW5zcGVjaWZpZWQQABIHCgNQcmUQARIICgROZXh0EAIyXwoNQ29tbW9uU2VydmljZRJOCg9HZXRQdWJsaWNDb25maWcSHC5tdXNlLkdldFB1YmxpY0NvbmZpZ1JlcXVlc3QaHS5tdXNlLkdldFB1YmxpY0NvbmZpZ1Jlc3BvbnNlQmYKCGNvbS5tdXNlQgtDb21tb25Qcm90b1ABWh1naXRodWIuY29tL2xpbmcvbXVzZS9nZW4vbXVzZaICA01YWKoCBE11c2XKAgRNdXNl4gIQTXVzZVxHUEJNZXRhZGF0YeoCBE11c2ViBnByb3RvMw");
 
 /**
  * 候选模型列表
@@ -80,6 +80,31 @@ export const GetPublicConfigResponseSchema: GenMessage<GetPublicConfigResponse> 
   messageDesc(file_muse_common, 2);
 
 /**
+ * @generated from enum muse.ErrCode
+ */
+export enum ErrCode {
+  /**
+   * 成功
+   *
+   * @generated from enum value: Success = 0;
+   */
+  Success = 0,
+
+  /**
+   * 缺少API密钥
+   *
+   * @generated from enum value: NoAPIKey = 1000;
+   */
+  NoAPIKey = 1000,
+}
+
+/**
+ * Describes the enum muse.ErrCode.
+ */
+export const ErrCodeSchema: GenEnum<ErrCode> = /*@__PURE__*/
+  enumDesc(file_muse_common, 0);
+
+/**
  * Role 消息角色类型
  *
  * @generated from enum muse.Role
@@ -118,7 +143,7 @@ export enum Role {
  * Describes the enum muse.Role.
  */
 export const RoleSchema: GenEnum<Role> = /*@__PURE__*/
-  enumDesc(file_muse_common, 0);
+  enumDesc(file_muse_common, 1);
 
 /**
  * InjectionPosition 提示项注入位置类型
@@ -152,7 +177,7 @@ export enum InjectionPosition {
  * Describes the enum muse.InjectionPosition.
  */
 export const InjectionPositionSchema: GenEnum<InjectionPosition> = /*@__PURE__*/
-  enumDesc(file_muse_common, 1);
+  enumDesc(file_muse_common, 2);
 
 /**
  * EntryPosition 世界书条目插入位置
@@ -207,7 +232,7 @@ export enum EntryPosition {
  * Describes the enum muse.EntryPosition.
  */
 export const EntryPositionSchema: GenEnum<EntryPosition> = /*@__PURE__*/
-  enumDesc(file_muse_common, 2);
+  enumDesc(file_muse_common, 3);
 
 /**
  * APIProvider API服务提供商类型
@@ -248,7 +273,7 @@ export enum APIProvider {
  * Describes the enum muse.APIProvider.
  */
 export const APIProviderSchema: GenEnum<APIProvider> = /*@__PURE__*/
-  enumDesc(file_muse_common, 3);
+  enumDesc(file_muse_common, 4);
 
 /**
  * Theme 界面主题类型
@@ -282,7 +307,7 @@ export enum Theme {
  * Describes the enum muse.Theme.
  */
 export const ThemeSchema: GenEnum<Theme> = /*@__PURE__*/
-  enumDesc(file_muse_common, 4);
+  enumDesc(file_muse_common, 5);
 
 /**
  * PromptItemIdentifier 提示项标识符枚举
@@ -379,7 +404,7 @@ export enum PromptItemIdentifier {
  * Describes the enum muse.PromptItemIdentifier.
  */
 export const PromptItemIdentifierSchema: GenEnum<PromptItemIdentifier> = /*@__PURE__*/
-  enumDesc(file_muse_common, 5);
+  enumDesc(file_muse_common, 6);
 
 /**
  * 挪动顺序位置操作
@@ -411,7 +436,7 @@ export enum SortOperation {
  * Describes the enum muse.SortOperation.
  */
 export const SortOperationSchema: GenEnum<SortOperation> = /*@__PURE__*/
-  enumDesc(file_muse_common, 6);
+  enumDesc(file_muse_common, 7);
 
 /**
  * 公共服务

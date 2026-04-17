@@ -21,6 +21,52 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type ErrCode int32
+
+const (
+	ErrCode_Success  ErrCode = 0    // 成功
+	ErrCode_NoAPIKey ErrCode = 1000 // 缺少API密钥
+)
+
+// Enum value maps for ErrCode.
+var (
+	ErrCode_name = map[int32]string{
+		0:    "Success",
+		1000: "NoAPIKey",
+	}
+	ErrCode_value = map[string]int32{
+		"Success":  0,
+		"NoAPIKey": 1000,
+	}
+)
+
+func (x ErrCode) Enum() *ErrCode {
+	p := new(ErrCode)
+	*p = x
+	return p
+}
+
+func (x ErrCode) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ErrCode) Descriptor() protoreflect.EnumDescriptor {
+	return file_muse_common_proto_enumTypes[0].Descriptor()
+}
+
+func (ErrCode) Type() protoreflect.EnumType {
+	return &file_muse_common_proto_enumTypes[0]
+}
+
+func (x ErrCode) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ErrCode.Descriptor instead.
+func (ErrCode) EnumDescriptor() ([]byte, []int) {
+	return file_muse_common_proto_rawDescGZIP(), []int{0}
+}
+
 // Role 消息角色类型
 type Role int32
 
@@ -58,11 +104,11 @@ func (x Role) String() string {
 }
 
 func (Role) Descriptor() protoreflect.EnumDescriptor {
-	return file_muse_common_proto_enumTypes[0].Descriptor()
+	return file_muse_common_proto_enumTypes[1].Descriptor()
 }
 
 func (Role) Type() protoreflect.EnumType {
-	return &file_muse_common_proto_enumTypes[0]
+	return &file_muse_common_proto_enumTypes[1]
 }
 
 func (x Role) Number() protoreflect.EnumNumber {
@@ -71,7 +117,7 @@ func (x Role) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use Role.Descriptor instead.
 func (Role) EnumDescriptor() ([]byte, []int) {
-	return file_muse_common_proto_rawDescGZIP(), []int{0}
+	return file_muse_common_proto_rawDescGZIP(), []int{1}
 }
 
 // InjectionPosition 提示项注入位置类型
@@ -108,11 +154,11 @@ func (x InjectionPosition) String() string {
 }
 
 func (InjectionPosition) Descriptor() protoreflect.EnumDescriptor {
-	return file_muse_common_proto_enumTypes[1].Descriptor()
+	return file_muse_common_proto_enumTypes[2].Descriptor()
 }
 
 func (InjectionPosition) Type() protoreflect.EnumType {
-	return &file_muse_common_proto_enumTypes[1]
+	return &file_muse_common_proto_enumTypes[2]
 }
 
 func (x InjectionPosition) Number() protoreflect.EnumNumber {
@@ -121,7 +167,7 @@ func (x InjectionPosition) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use InjectionPosition.Descriptor instead.
 func (InjectionPosition) EnumDescriptor() ([]byte, []int) {
-	return file_muse_common_proto_rawDescGZIP(), []int{1}
+	return file_muse_common_proto_rawDescGZIP(), []int{2}
 }
 
 // EntryPosition 世界书条目插入位置
@@ -167,11 +213,11 @@ func (x EntryPosition) String() string {
 }
 
 func (EntryPosition) Descriptor() protoreflect.EnumDescriptor {
-	return file_muse_common_proto_enumTypes[2].Descriptor()
+	return file_muse_common_proto_enumTypes[3].Descriptor()
 }
 
 func (EntryPosition) Type() protoreflect.EnumType {
-	return &file_muse_common_proto_enumTypes[2]
+	return &file_muse_common_proto_enumTypes[3]
 }
 
 func (x EntryPosition) Number() protoreflect.EnumNumber {
@@ -180,7 +226,7 @@ func (x EntryPosition) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use EntryPosition.Descriptor instead.
 func (EntryPosition) EnumDescriptor() ([]byte, []int) {
-	return file_muse_common_proto_rawDescGZIP(), []int{2}
+	return file_muse_common_proto_rawDescGZIP(), []int{3}
 }
 
 // APIProvider API服务提供商类型
@@ -220,11 +266,11 @@ func (x APIProvider) String() string {
 }
 
 func (APIProvider) Descriptor() protoreflect.EnumDescriptor {
-	return file_muse_common_proto_enumTypes[3].Descriptor()
+	return file_muse_common_proto_enumTypes[4].Descriptor()
 }
 
 func (APIProvider) Type() protoreflect.EnumType {
-	return &file_muse_common_proto_enumTypes[3]
+	return &file_muse_common_proto_enumTypes[4]
 }
 
 func (x APIProvider) Number() protoreflect.EnumNumber {
@@ -233,7 +279,7 @@ func (x APIProvider) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use APIProvider.Descriptor instead.
 func (APIProvider) EnumDescriptor() ([]byte, []int) {
-	return file_muse_common_proto_rawDescGZIP(), []int{3}
+	return file_muse_common_proto_rawDescGZIP(), []int{4}
 }
 
 // Theme 界面主题类型
@@ -270,11 +316,11 @@ func (x Theme) String() string {
 }
 
 func (Theme) Descriptor() protoreflect.EnumDescriptor {
-	return file_muse_common_proto_enumTypes[4].Descriptor()
+	return file_muse_common_proto_enumTypes[5].Descriptor()
 }
 
 func (Theme) Type() protoreflect.EnumType {
-	return &file_muse_common_proto_enumTypes[4]
+	return &file_muse_common_proto_enumTypes[5]
 }
 
 func (x Theme) Number() protoreflect.EnumNumber {
@@ -283,7 +329,7 @@ func (x Theme) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use Theme.Descriptor instead.
 func (Theme) EnumDescriptor() ([]byte, []int) {
-	return file_muse_common_proto_rawDescGZIP(), []int{4}
+	return file_muse_common_proto_rawDescGZIP(), []int{5}
 }
 
 // PromptItemIdentifier 提示项标识符枚举
@@ -347,11 +393,11 @@ func (x PromptItemIdentifier) String() string {
 }
 
 func (PromptItemIdentifier) Descriptor() protoreflect.EnumDescriptor {
-	return file_muse_common_proto_enumTypes[5].Descriptor()
+	return file_muse_common_proto_enumTypes[6].Descriptor()
 }
 
 func (PromptItemIdentifier) Type() protoreflect.EnumType {
-	return &file_muse_common_proto_enumTypes[5]
+	return &file_muse_common_proto_enumTypes[6]
 }
 
 func (x PromptItemIdentifier) Number() protoreflect.EnumNumber {
@@ -360,7 +406,7 @@ func (x PromptItemIdentifier) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PromptItemIdentifier.Descriptor instead.
 func (PromptItemIdentifier) EnumDescriptor() ([]byte, []int) {
-	return file_muse_common_proto_rawDescGZIP(), []int{5}
+	return file_muse_common_proto_rawDescGZIP(), []int{6}
 }
 
 // 挪动顺序位置操作
@@ -397,11 +443,11 @@ func (x SortOperation) String() string {
 }
 
 func (SortOperation) Descriptor() protoreflect.EnumDescriptor {
-	return file_muse_common_proto_enumTypes[6].Descriptor()
+	return file_muse_common_proto_enumTypes[7].Descriptor()
 }
 
 func (SortOperation) Type() protoreflect.EnumType {
-	return &file_muse_common_proto_enumTypes[6]
+	return &file_muse_common_proto_enumTypes[7]
 }
 
 func (x SortOperation) Number() protoreflect.EnumNumber {
@@ -410,7 +456,7 @@ func (x SortOperation) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use SortOperation.Descriptor instead.
 func (SortOperation) EnumDescriptor() ([]byte, []int) {
-	return file_muse_common_proto_rawDescGZIP(), []int{6}
+	return file_muse_common_proto_rawDescGZIP(), []int{7}
 }
 
 // 候选模型列表
@@ -567,7 +613,10 @@ const file_muse_common_proto_rawDesc = "" +
 	"\x16GetPublicConfigRequest\"x\n" +
 	"\x17GetPublicConfigResponse\x12\x1b\n" +
 	"\tskip_auth\x18\x01 \x01(\bR\bskipAuth\x12@\n" +
-	"\x10candidate_models\x18\x02 \x03(\v2\x15.muse.CandidateModelsR\x0fcandidateModels*@\n" +
+	"\x10candidate_models\x18\x02 \x03(\v2\x15.muse.CandidateModelsR\x0fcandidateModels*%\n" +
+	"\aErrCode\x12\v\n" +
+	"\aSuccess\x10\x00\x12\r\n" +
+	"\bNoAPIKey\x10\xe8\a*@\n" +
 	"\x04Role\x12\x13\n" +
 	"\x0fRoleUnspecified\x10\x00\x12\n" +
 	"\n" +
@@ -632,30 +681,31 @@ func file_muse_common_proto_rawDescGZIP() []byte {
 	return file_muse_common_proto_rawDescData
 }
 
-var file_muse_common_proto_enumTypes = make([]protoimpl.EnumInfo, 7)
+var file_muse_common_proto_enumTypes = make([]protoimpl.EnumInfo, 8)
 var file_muse_common_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_muse_common_proto_goTypes = []any{
-	(Role)(0),                       // 0: muse.Role
-	(InjectionPosition)(0),          // 1: muse.InjectionPosition
-	(EntryPosition)(0),              // 2: muse.EntryPosition
-	(APIProvider)(0),                // 3: muse.APIProvider
-	(Theme)(0),                      // 4: muse.Theme
-	(PromptItemIdentifier)(0),       // 5: muse.PromptItemIdentifier
-	(SortOperation)(0),              // 6: muse.SortOperation
-	(*CandidateModels)(nil),         // 7: muse.CandidateModels
-	(*GetPublicConfigRequest)(nil),  // 8: muse.GetPublicConfigRequest
-	(*GetPublicConfigResponse)(nil), // 9: muse.GetPublicConfigResponse
+	(ErrCode)(0),                    // 0: muse.ErrCode
+	(Role)(0),                       // 1: muse.Role
+	(InjectionPosition)(0),          // 2: muse.InjectionPosition
+	(EntryPosition)(0),              // 3: muse.EntryPosition
+	(APIProvider)(0),                // 4: muse.APIProvider
+	(Theme)(0),                      // 5: muse.Theme
+	(PromptItemIdentifier)(0),       // 6: muse.PromptItemIdentifier
+	(SortOperation)(0),              // 7: muse.SortOperation
+	(*CandidateModels)(nil),         // 8: muse.CandidateModels
+	(*GetPublicConfigRequest)(nil),  // 9: muse.GetPublicConfigRequest
+	(*GetPublicConfigResponse)(nil), // 10: muse.GetPublicConfigResponse
 }
 var file_muse_common_proto_depIdxs = []int32{
-	3, // 0: muse.CandidateModels.provider:type_name -> muse.APIProvider
-	7, // 1: muse.GetPublicConfigResponse.candidate_models:type_name -> muse.CandidateModels
-	8, // 2: muse.CommonService.GetPublicConfig:input_type -> muse.GetPublicConfigRequest
-	9, // 3: muse.CommonService.GetPublicConfig:output_type -> muse.GetPublicConfigResponse
-	3, // [3:4] is the sub-list for method output_type
-	2, // [2:3] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	4,  // 0: muse.CandidateModels.provider:type_name -> muse.APIProvider
+	8,  // 1: muse.GetPublicConfigResponse.candidate_models:type_name -> muse.CandidateModels
+	9,  // 2: muse.CommonService.GetPublicConfig:input_type -> muse.GetPublicConfigRequest
+	10, // 3: muse.CommonService.GetPublicConfig:output_type -> muse.GetPublicConfigResponse
+	3,  // [3:4] is the sub-list for method output_type
+	2,  // [2:3] is the sub-list for method input_type
+	2,  // [2:2] is the sub-list for extension type_name
+	2,  // [2:2] is the sub-list for extension extendee
+	0,  // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_muse_common_proto_init() }
@@ -668,7 +718,7 @@ func file_muse_common_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_muse_common_proto_rawDesc), len(file_muse_common_proto_rawDesc)),
-			NumEnums:      7,
+			NumEnums:      8,
 			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   1,

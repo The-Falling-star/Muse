@@ -8,6 +8,7 @@ import (
 	"github.com/ling/muse/common/errs"
 	"github.com/ling/muse/entity"
 	pb "github.com/ling/muse/gen/muse"
+	log "github.com/sirupsen/logrus"
 	"google.golang.org/genai"
 )
 
@@ -80,6 +81,7 @@ func (g *Gemini) StreamGenerateContent(ctx context.Context, apiKey, model string
 	input []Message) <-chan StreamStruct {
 
 	resultChan := make(chan StreamStruct)
+	log.Debugf("APIKey: %s", apiKey)
 	if apiKey == "" {
 		go func() {
 			resultChan <- StreamStruct{

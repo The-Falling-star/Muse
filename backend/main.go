@@ -124,7 +124,7 @@ func main() {
 	defer cancel()
 
 	if err = server.Shutdown(ctx); err != nil {
-		log.Errorf("服务器关闭异常: %v", err)
+		log.Fatalf("服务器关闭异常: %v", err)
 	}
 
 	log.Info("服务器已关闭")

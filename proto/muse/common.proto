@@ -8,6 +8,11 @@ option go_package = "github.com/ling/muse/gen/muse;muse";
 // 枚举定义
 // ================================
 
+enum ErrCode {
+  Success = 0; // 成功
+  NoAPIKey = 1000; // 缺少API密钥
+}
+
 // Role 消息角色类型
 enum Role {
   RoleUnspecified = 0; // 未指定角色

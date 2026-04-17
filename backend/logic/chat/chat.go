@@ -33,6 +33,7 @@ type chatImpl struct {
 
 	// 会话缓存管理器
 	cacheManager *cache.SessionCacheManager
+	apiKeyCache  cache.APIKeyCache
 }
 
 func newChat() *chatImpl {
@@ -44,6 +45,7 @@ func newChat() *chatImpl {
 		charRepo:      database.NewCharacterRepo(),
 		userRepo:      database.NewUserRepo(),
 		cacheManager:  cache.GetSessionCacheManager(),
+		apiKeyCache:   cache.NewAPIKeyCache(),
 	}
 }
 
@@ -363,12 +365,17 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 
 	// 选择 LLM 模型并调用
 	// 获取活跃的 API 配置
-	apiConfig, err := c.userRepo.GetActiveAPIConfig(ctx, userID)
-	if err != nil {
-		return err
-	}
+	apiConfig := c.apiKeyCache.Get(userID, user.Provider)
 	if apiConfig == nil {
-		return errs.NewStandard(connect.CodeFailedPrecondition, "请先配置并激活 API")
+		apiConfigs, err := c.userRepo.GetActiveAPIConfig(ctx, userID, user.Provider)
+		if err != nil {
+			return errs.NewStandardf(errs.Code(err), "获取API配置失败: %v", err)
+		}
+		if len(apiConfigs) == 0 {
+			return errs.Newf(pb.ErrCode_NoAPIKey, "供应商: %s没有有效的API Key", user.Provider.String())
+		}
+		c.apiKeyCache.Set(userID, user.Provider, apiConfigs)
+		apiConfig = apiConfigs[0]
 	}
 	llm := c.getLLM(apiConfig.Provider)
 

@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"connectrpc.com/connect"
+	pb "github.com/ling/muse/gen/muse"
 )
 
 const (
@@ -70,12 +71,12 @@ const (
 )
 
 // New 创建错误
-func New(code int32, msg string) error {
+func New(code pb.ErrCode, msg string) error {
 	return connect.NewError(connect.Code(code), fmt.Errorf(msg))
 }
 
 // Newf 格式化创建错误
-func Newf(code int32, format string, args ...any) error {
+func Newf(code pb.ErrCode, format string, args ...any) error {
 	return connect.NewError(connect.Code(code), fmt.Errorf(format, args...))
 }
 

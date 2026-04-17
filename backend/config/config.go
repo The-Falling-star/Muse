@@ -22,6 +22,7 @@ type Config struct {
 	LogLevel        string              `yaml:"log_level" env:"LOG_LEVEL"`
 	Chat            ChatConfig          `yaml:"chat"`
 	CandidateModels map[string][]string `yaml:"candidate_models"`
+	Cache           CacheConfig         `yaml:"cache"`
 }
 
 // ChatConfig 聊天配置
@@ -80,6 +81,12 @@ type FileConfig struct {
 	UploadPath     string `yaml:"upload_path" env:"FILE_UPLOAD_PATH"`           // 上传文件根目录
 	MaxUploadSize  int    `yaml:"max_upload_size" env:"FILE_MAX_UPLOAD_SIZE"`   // 最大上传文件大小（MB）
 	CacheExpireMin int    `yaml:"cache_expire_min" env:"FILE_CACHE_EXPIRE_MIN"` // 前端缓存过期时间（分钟）
+}
+
+// CacheConfig 缓存配置
+type CacheConfig struct {
+	LRUMaxSize int `yaml:"lru_max_size"` // LRU缓存的最大元素个数
+	LRUTTL     int `yaml:"lru_ttl"`      // LRU缓存的最大时间, 单位秒
 }
 
 // IsSQLite 判断是否使用SQLite
@@ -172,4 +179,8 @@ var defaultConfig = &Config{
 		CacheExpireMin: 1440,
 	},
 	LogLevel: "info",
+	Cache: CacheConfig{
+		LRUMaxSize: 100,
+		LRUTTL:     300,
+	},
 }

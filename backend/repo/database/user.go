@@ -7,6 +7,7 @@ import (
 	"connectrpc.com/connect"
 	"github.com/ling/muse/common/errs"
 	"github.com/ling/muse/entity"
+	pb "github.com/ling/muse/gen/muse"
 	"gorm.io/gorm"
 )
 
@@ -249,15 +250,15 @@ func (u *UserRepo) ActivateAPIConfig(ctx context.Context, id int, userID int) er
 }
 
 // GetActiveAPIConfig 获取用户当前活跃的API配置
-func (u *UserRepo) GetActiveAPIConfig(ctx context.Context, userID int) (*entity.APIConfig, error) {
+func (u *UserRepo) GetActiveAPIConfig(ctx context.Context, userID int, provider pb.APIProvider) ([]*entity.APIConfig, error) {
 	db := GetDB(ctx)
-	var apiConfig entity.APIConfig
-	result := db.Where("user_id = ? AND is_active = ?", userID, true).First(&apiConfig)
+	var apiConfig []*entity.APIConfig
+	result := db.Where("user_id = ? AND provider = ? AND is_active = ?", userID, provider, true).Find(&apiConfig)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return nil, nil
 		}
 		return nil, errs.NewStandardf(connect.CodeInternal, "获取活跃API配置失败: %v", result.Error)
 	}
-	return &apiConfig, nil
+	return apiConfig, nil
 }

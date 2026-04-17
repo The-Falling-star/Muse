@@ -55,6 +55,7 @@ type SessionCache struct {
 	UserID      int64             // 用户ID
 	CharacterID int64             // 角色ID
 	Character   *entity.Character // 角色卡数据
+	Persona     *entity.Persona   // 人设数据
 
 	// 世界书相关
 	WorldInfos       []*entity.WorldInfo      // 世界书列表

@@ -13,7 +13,6 @@ type APIConfig struct {
 	UserID    int            `gorm:"column:user_id;not null;index:idx_user_id" json:"userId"`                     // 所属用户ID
 	Provider  pb.APIProvider `gorm:"column:provider;type:tinyint unsigned;not null" json:"provider"`              // API提供商类型（OpenAI/Claude/Gemini）
 	APIKey    string         `gorm:"column:api_key;type:varchar(512);not null" json:"-"`                          // API密钥，不返回给前端
-	Model     string         `gorm:"column:model;type:varchar(128);not null;default:''" json:"model,omitempty"`   // 使用的模型名称，如gpt-4、claude-3等
 	IsActive  bool           `gorm:"column:is_active;not null;default:false;index:idx_is_active" json:"isActive"` // 是否为当前激活的配置
 	CreatedAt time.Time      `gorm:"column:created_at;autoCreateTime" json:"createdAt"`                           // 创建时间
 	UpdatedAt time.Time      `gorm:"column:updated_at;autoUpdateTime" json:"updatedAt"`                           // 更新时间

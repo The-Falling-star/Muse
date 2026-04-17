@@ -20,7 +20,7 @@ type User struct {
 	ShowTimestamps  bool           `gorm:"column:show_timestamps;not null;default:true" json:"showTimestamps"`                // 是否显示消息时间戳
 	Provider        pb.APIProvider `gorm:"column:provider;type:tinyint unsigned;not null;default:0" json:"provider"`          // API服务提供商
 	Model           string         `gorm:"column:model;type:varchar(128);not null;default:''" json:"model"`                   // 使用的模型名称
-	BaseURL         string         `gorm:"column:base_url;type:varchar(512);not null;default:''" json:"baseUrl"`              // API基础URL（用于代理或自定义端点）
+	ProxyUrl        string         `gorm:"column:proxy_url;type:varchar(512);not null;default:''" json:"proxyUrl"`            // API基础URL（用于代理或自定义端点）
 	CreatedAt       time.Time      `gorm:"column:created_at;autoCreateTime" json:"createdAt"`                                 // 创建时间
 	UpdatedAt       time.Time      `gorm:"column:updated_at;autoUpdateTime" json:"updatedAt"`                                 // 更新时间
 

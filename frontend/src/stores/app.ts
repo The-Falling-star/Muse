@@ -3,7 +3,7 @@ import { ref, computed, watch } from 'vue';
 import { useMediaQuery } from '@vueuse/core';
 
 // 右侧面板Tab类型
-export type RightPanelTab = 'model' | 'preset' | 'worldinfo' | 'regex';
+export type RightPanelTab = 'model' | 'preset' | 'worldinfo' | 'regex' | 'user';
 
 // 左侧边栏视图类型
 export type SidebarView = 'sessions' | 'characters';

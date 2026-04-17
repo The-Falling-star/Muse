@@ -74,18 +74,24 @@ type Macro string
 
 const (
 	// 基础/用户/角色宏
-	User1           = "{{user}}"
-	User2           = "<user>"
-	Char1           = "{{char}}"
-	Char2           = "<char>"
-	Char3           = "<bot>"
-	Char4           = "<BOT>"
-	LastMessage     = "{{lastMessage}}"
-	LastUserMessage = "{{lastUserMessage}}"
-	LastCharMessage = "{{lastCharMessage}}"
-	Time            = "{{time}}"
-	Date            = "{{date}}"
-	Input           = "{{input}}"
+	User1            = "{{user}}"
+	User2            = "<user>"
+	Char1            = "{{char}}"
+	Char2            = "<char>"
+	Char3            = "<bot>"
+	Char4            = "<BOT>"
+	LastMessage1     = "{{lastMessage}}"
+	LastMessage2     = "{{LastMessage}}"
+	LastMessage3     = "{{lastmessage}}"
+	LastUserMessage1 = "{{lastUserMessage}}"
+	LastUserMessage2 = "{{LastUserMessage}}"
+	LastUserMessage3 = "{{lastusermessage}}"
+	LastCharMessage1 = "{{lastCharMessage}}"
+	LastCharMessage2 = "{{LastCharMessage}}"
+	LastCharMessage3 = "{{lastcharmessage}}"
+	Time             = "{{time}}"
+	Date             = "{{date}}"
+	Input            = "{{input}}"
 
 	// 新增宏（按表格顺序）
 	Pipe               = "{{pipe}}"
@@ -169,7 +175,9 @@ const (
 func (m Macro) Value() []Macro {
 	return []Macro{
 		User1, User2, Char1, Char2, Char3, Char4,
-		LastMessage, LastUserMessage, LastCharMessage,
+		LastMessage1, LastCharMessage2, LastCharMessage3,
+		LastUserMessage1, LastUserMessage2, LastMessage3,
+		LastCharMessage1, LastCharMessage2, LastCharMessage3,
 		Time, Date, Input,
 		Pipe, Newline, Trim, Noop,
 		CharPrompt, CharJailbreak,
@@ -192,3 +200,8 @@ func (m Macro) Value() []Macro {
 		Summary,
 	}
 }
+
+const (
+	MinAPIKeyLen          = 3
+	ExplicitLastApiKeyLen = 4
+)

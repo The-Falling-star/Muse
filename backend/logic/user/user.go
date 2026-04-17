@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"connectrpc.com/connect"
+	"github.com/ling/muse/common/constant"
 	"github.com/ling/muse/common/convert"
 	"github.com/ling/muse/common/crypto"
 	"github.com/ling/muse/common/errs"
@@ -364,7 +365,7 @@ func (u *userImpl) UpdateUserInfo(ctx context.Context, req *pb.UpdateUserInfoReq
 	user.ShowTimestamps = req.GetShowTimestamps()
 	user.Provider = req.GetProvider()
 	user.Model = req.GetModel()
-	user.BaseURL = req.GetBaseUrl()
+	user.ProxyUrl = req.GetProxyUrl()
 
 	if err = u.userRepo.Update(ctx, user); err != nil {
 		return nil, err
@@ -388,8 +389,25 @@ func (u *userImpl) ListAPIConfigs(ctx context.Context, req *pb.ListAPIConfigsReq
 	pbConfigs := make([]*pb.APIConfig, 0, len(configs))
 	for _, apiConfig := range configs {
 		pbAPIConfig := convert.APIConfigEntityToPb(apiConfig)
+		aesgcm, err := crypto.NewAESGCMFromKey(config.Get().APIEncrypt.EncryptionKey)
+		if err != nil {
+			return nil, errs.NewStandardf(connect.CodeInternal, "初始化AES加密器失败: %v", err)
+		}
+		apiKey, err := aesgcm.Decrypt(pbAPIConfig.ApiKey)
+		if err != nil {
+			return nil, errs.NewStandardf(connect.CodeInternal, "解密密钥失败: %v", err)
+		}
+		pbAPIConfig.ApiKey = apiKey
 		if !config.Get().APIEncrypt.AllowGetKey {
-			pbAPIConfig.ApiKey = ""
+			if len(apiKey) <= constant.MinAPIKeyLen {
+				apiKey = "***"
+			}
+			// 字符串不可变，转换为 []rune 进行修改
+			keyRunes := []rune(apiKey)
+			for i := constant.MinAPIKeyLen; i < len(keyRunes)-constant.ExplicitLastApiKeyLen; i++ {
+				keyRunes[i] = '*'
+			}
+			pbAPIConfig.ApiKey = string(keyRunes)
 		}
 		pbConfigs = append(pbConfigs, pbAPIConfig)
 	}
@@ -429,7 +447,6 @@ func (u *userImpl) CreateAPIConfig(ctx context.Context, req *pb.CreateAPIConfigR
 		UserID:   userID,
 		Provider: req.GetProvider(),
 		APIKey:   encryptedAPIKey,
-		Model:    req.GetModel(),
 		IsActive: false, // 默认不激活
 	}
 
@@ -437,7 +454,9 @@ func (u *userImpl) CreateAPIConfig(ctx context.Context, req *pb.CreateAPIConfigR
 		return nil, err
 	}
 
-	return &pb.CreateAPIConfigResponse{}, nil
+	return &pb.CreateAPIConfigResponse{
+		ConfigId: int32(apiConfig.ID),
+	}, nil
 }
 
 func (u *userImpl) UpdateAPIConfig(ctx context.Context, req *pb.UpdateAPIConfigRequest) (*pb.UpdateAPIConfigResponse, error) {
@@ -475,10 +494,6 @@ func (u *userImpl) UpdateAPIConfig(ctx context.Context, req *pb.UpdateAPIConfigR
 		}
 		apiConfig.APIKey = encryptedAPIKey
 	}
-	if req.Model != nil {
-		apiConfig.Model = *req.Model
-	}
-
 	if err = u.userRepo.UpdateAPIConfig(ctx, apiConfig); err != nil {
 		return nil, err
 	}
@@ -547,7 +562,6 @@ func (u *userImpl) TestAPIConfig(ctx context.Context, req *pb.TestAPIConfigReque
 
 	// 模拟测试成功
 	return &pb.TestAPIConfigResponse{
-		Success:   true,
-		ModelInfo: &apiConfig.Model,
+		Success: true,
 	}, nil
 }

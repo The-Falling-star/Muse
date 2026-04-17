@@ -36,7 +36,7 @@ type SysUser struct {
 	UpdatedAt       int64                  `protobuf:"varint,10,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`                    // 最后更新时间（Unix时间戳）
 	Provider        APIProvider            `protobuf:"varint,11,opt,name=provider,proto3,enum=muse.APIProvider" json:"provider,omitempty"`                 // API服务提供商
 	Model           string                 `protobuf:"bytes,12,opt,name=model,proto3" json:"model,omitempty"`                                              // 使用的模型名称
-	BaseUrl         string                 `protobuf:"bytes,13,opt,name=base_url,json=baseUrl,proto3" json:"base_url,omitempty"`                           // API基础URL（用于代理或自定义端点）
+	ProxyUrl        string                 `protobuf:"bytes,13,opt,name=proxy_url,json=proxyUrl,proto3" json:"proxy_url,omitempty"`                        // API代理URL（用于代理或自定义端点）
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -155,9 +155,9 @@ func (x *SysUser) GetModel() string {
 	return ""
 }
 
-func (x *SysUser) GetBaseUrl() string {
+func (x *SysUser) GetProxyUrl() string {
 	if x != nil {
-		return x.BaseUrl
+		return x.ProxyUrl
 	}
 	return ""
 }
@@ -262,7 +262,6 @@ type APIConfig struct {
 	UserId        int32                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`             // 所属用户ID
 	Provider      APIProvider            `protobuf:"varint,4,opt,name=provider,proto3,enum=muse.APIProvider" json:"provider,omitempty"` // API服务提供商
 	ApiKey        string                 `protobuf:"bytes,5,opt,name=api_key,json=apiKey,proto3" json:"api_key,omitempty"`              // API密钥（创建/更新时使用，查询时不返回）
-	Model         string                 `protobuf:"bytes,7,opt,name=model,proto3" json:"model,omitempty"`                              // 使用的模型名称
 	IsActive      bool                   `protobuf:"varint,8,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`       // 是否为当前激活的配置
 	CreatedAt     int64                  `protobuf:"varint,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`    // 创建时间（Unix时间戳）
 	UpdatedAt     int64                  `protobuf:"varint,10,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`   // 最后更新时间（Unix时间戳）
@@ -324,13 +323,6 @@ func (x *APIConfig) GetProvider() APIProvider {
 func (x *APIConfig) GetApiKey() string {
 	if x != nil {
 		return x.ApiKey
-	}
-	return ""
-}
-
-func (x *APIConfig) GetModel() string {
-	if x != nil {
-		return x.Model
 	}
 	return ""
 }
@@ -1387,7 +1379,7 @@ type UpdateUserInfoRequest struct {
 	ShowTimestamps bool                   `protobuf:"varint,4,opt,name=show_timestamps,json=showTimestamps,proto3" json:"show_timestamps,omitempty"`
 	Provider       APIProvider            `protobuf:"varint,5,opt,name=provider,proto3,enum=muse.APIProvider" json:"provider,omitempty"`
 	Model          string                 `protobuf:"bytes,6,opt,name=model,proto3" json:"model,omitempty"`
-	BaseUrl        string                 `protobuf:"bytes,7,opt,name=base_url,json=baseUrl,proto3" json:"base_url,omitempty"`
+	ProxyUrl       string                 `protobuf:"bytes,7,opt,name=proxy_url,json=proxyUrl,proto3" json:"proxy_url,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -1464,9 +1456,9 @@ func (x *UpdateUserInfoRequest) GetModel() string {
 	return ""
 }
 
-func (x *UpdateUserInfoRequest) GetBaseUrl() string {
+func (x *UpdateUserInfoRequest) GetProxyUrl() string {
 	if x != nil {
-		return x.BaseUrl
+		return x.ProxyUrl
 	}
 	return ""
 }
@@ -1603,7 +1595,6 @@ type CreateAPIConfigRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Provider      APIProvider            `protobuf:"varint,2,opt,name=provider,proto3,enum=muse.APIProvider" json:"provider,omitempty"`
 	ApiKey        string                 `protobuf:"bytes,3,opt,name=api_key,json=apiKey,proto3" json:"api_key,omitempty"`
-	Model         *string                `protobuf:"bytes,5,opt,name=model,proto3,oneof" json:"model,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1652,16 +1643,10 @@ func (x *CreateAPIConfigRequest) GetApiKey() string {
 	return ""
 }
 
-func (x *CreateAPIConfigRequest) GetModel() string {
-	if x != nil && x.Model != nil {
-		return *x.Model
-	}
-	return ""
-}
-
 // 创建API配置响应
 type CreateAPIConfigResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	ConfigId      int32                  `protobuf:"varint,1,opt,name=config_id,json=configId,proto3" json:"config_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1696,13 +1681,19 @@ func (*CreateAPIConfigResponse) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{30}
 }
 
+func (x *CreateAPIConfigResponse) GetConfigId() int32 {
+	if x != nil {
+		return x.ConfigId
+	}
+	return 0
+}
+
 // 更新API配置请求
 type UpdateAPIConfigRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Provider      APIProvider            `protobuf:"varint,3,opt,name=provider,proto3,enum=muse.APIProvider" json:"provider,omitempty"`
 	ApiKey        *string                `protobuf:"bytes,4,opt,name=api_key,json=apiKey,proto3,oneof" json:"api_key,omitempty"` // 可选，不传则不更新
-	Model         *string                `protobuf:"bytes,6,opt,name=model,proto3,oneof" json:"model,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1754,13 +1745,6 @@ func (x *UpdateAPIConfigRequest) GetProvider() APIProvider {
 func (x *UpdateAPIConfigRequest) GetApiKey() string {
 	if x != nil && x.ApiKey != nil {
 		return *x.ApiKey
-	}
-	return ""
-}
-
-func (x *UpdateAPIConfigRequest) GetModel() string {
-	if x != nil && x.Model != nil {
-		return *x.Model
 	}
 	return ""
 }
@@ -2076,7 +2060,7 @@ var File_muse_user_proto protoreflect.FileDescriptor
 
 const file_muse_user_proto_rawDesc = "" +
 	"\n" +
-	"\x0fmuse/user.proto\x12\x04muse\x1a\x11muse/common.proto\"\xb5\x03\n" +
+	"\x0fmuse/user.proto\x12\x04muse\x1a\x11muse/common.proto\"\xb7\x03\n" +
 	"\aSysUser\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x1a\n" +
 	"\busername\x18\x02 \x01(\tR\busername\x12*\n" +
@@ -2092,8 +2076,8 @@ const file_muse_user_proto_rawDesc = "" +
 	"updated_at\x18\n" +
 	" \x01(\x03R\tupdatedAt\x12-\n" +
 	"\bprovider\x18\v \x01(\x0e2\x11.muse.APIProviderR\bprovider\x12\x14\n" +
-	"\x05model\x18\f \x01(\tR\x05model\x12\x19\n" +
-	"\bbase_url\x18\r \x01(\tR\abaseUrl\"\xbe\x01\n" +
+	"\x05model\x18\f \x01(\tR\x05model\x12\x1b\n" +
+	"\tproxy_url\x18\r \x01(\tR\bproxyUrl\"\xbe\x01\n" +
 	"\aPersona\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\x05R\x06userId\x12\x12\n" +
@@ -2103,13 +2087,12 @@ const file_muse_user_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\x06 \x01(\x03R\tcreatedAt\x12\x1d\n" +
 	"\n" +
-	"updated_at\x18\a \x01(\x03R\tupdatedAt\"\xed\x01\n" +
+	"updated_at\x18\a \x01(\x03R\tupdatedAt\"\xd7\x01\n" +
 	"\tAPIConfig\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\x05R\x06userId\x12-\n" +
 	"\bprovider\x18\x04 \x01(\x0e2\x11.muse.APIProviderR\bprovider\x12\x17\n" +
-	"\aapi_key\x18\x05 \x01(\tR\x06apiKey\x12\x14\n" +
-	"\x05model\x18\a \x01(\tR\x05model\x12\x1b\n" +
+	"\aapi_key\x18\x05 \x01(\tR\x06apiKey\x12\x1b\n" +
 	"\tis_active\x18\b \x01(\bR\bisActive\x12\x1d\n" +
 	"\n" +
 	"created_at\x18\t \x01(\x03R\tcreatedAt\x12\x1d\n" +
@@ -2168,34 +2151,31 @@ const file_muse_user_proto_rawDesc = "" +
 	"\x18SetActivePersonaResponse\"\x14\n" +
 	"\x12GetUserInfoRequest\"8\n" +
 	"\x13GetUserInfoResponse\x12!\n" +
-	"\x04user\x18\x01 \x01(\v2\r.muse.SysUserR\x04user\"\x83\x02\n" +
+	"\x04user\x18\x01 \x01(\v2\r.muse.SysUserR\x04user\"\x85\x02\n" +
 	"\x15UpdateUserInfoRequest\x12!\n" +
 	"\x05theme\x18\x01 \x01(\x0e2\v.muse.ThemeR\x05theme\x12\x1a\n" +
 	"\blanguage\x18\x02 \x01(\tR\blanguage\x12\"\n" +
 	"\rsend_on_enter\x18\x03 \x01(\bR\vsendOnEnter\x12'\n" +
 	"\x0fshow_timestamps\x18\x04 \x01(\bR\x0eshowTimestamps\x12-\n" +
 	"\bprovider\x18\x05 \x01(\x0e2\x11.muse.APIProviderR\bprovider\x12\x14\n" +
-	"\x05model\x18\x06 \x01(\tR\x05model\x12\x19\n" +
-	"\bbase_url\x18\a \x01(\tR\abaseUrl\"\x18\n" +
+	"\x05model\x18\x06 \x01(\tR\x05model\x12\x1b\n" +
+	"\tproxy_url\x18\a \x01(\tR\bproxyUrl\"\x18\n" +
 	"\x16UpdateUserInfoResponse\"F\n" +
 	"\x15ListAPIConfigsRequest\x12-\n" +
 	"\bprovider\x18\x01 \x01(\x0e2\x11.muse.APIProviderR\bprovider\"C\n" +
 	"\x16ListAPIConfigsResponse\x12)\n" +
-	"\aconfigs\x18\x01 \x03(\v2\x0f.muse.APIConfigR\aconfigs\"\x85\x01\n" +
+	"\aconfigs\x18\x01 \x03(\v2\x0f.muse.APIConfigR\aconfigs\"`\n" +
 	"\x16CreateAPIConfigRequest\x12-\n" +
 	"\bprovider\x18\x02 \x01(\x0e2\x11.muse.APIProviderR\bprovider\x12\x17\n" +
-	"\aapi_key\x18\x03 \x01(\tR\x06apiKey\x12\x19\n" +
-	"\x05model\x18\x05 \x01(\tH\x00R\x05model\x88\x01\x01B\b\n" +
-	"\x06_model\"\x19\n" +
-	"\x17CreateAPIConfigResponse\"\xa6\x01\n" +
+	"\aapi_key\x18\x03 \x01(\tR\x06apiKey\"6\n" +
+	"\x17CreateAPIConfigResponse\x12\x1b\n" +
+	"\tconfig_id\x18\x01 \x01(\x05R\bconfigId\"\x81\x01\n" +
 	"\x16UpdateAPIConfigRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12-\n" +
 	"\bprovider\x18\x03 \x01(\x0e2\x11.muse.APIProviderR\bprovider\x12\x1c\n" +
-	"\aapi_key\x18\x04 \x01(\tH\x00R\x06apiKey\x88\x01\x01\x12\x19\n" +
-	"\x05model\x18\x06 \x01(\tH\x01R\x05model\x88\x01\x01B\n" +
+	"\aapi_key\x18\x04 \x01(\tH\x00R\x06apiKey\x88\x01\x01B\n" +
 	"\n" +
-	"\b_api_keyB\b\n" +
-	"\x06_model\"\x19\n" +
+	"\b_api_key\"\x19\n" +
 	"\x17UpdateAPIConfigResponse\"(\n" +
 	"\x16DeleteAPIConfigRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\"\x19\n" +
@@ -2360,7 +2340,6 @@ func file_muse_user_proto_init() {
 	file_muse_common_proto_init()
 	file_muse_user_proto_msgTypes[15].OneofWrappers = []any{}
 	file_muse_user_proto_msgTypes[17].OneofWrappers = []any{}
-	file_muse_user_proto_msgTypes[29].OneofWrappers = []any{}
 	file_muse_user_proto_msgTypes[31].OneofWrappers = []any{}
 	file_muse_user_proto_msgTypes[38].OneofWrappers = []any{}
 	type x struct{}

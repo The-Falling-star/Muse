@@ -47,40 +47,6 @@
         <!-- API 连接 -->
         <div class="settings-group">
           <div class="group-title">API 连接</div>
-
-          <div class="api-config-list">
-            <div
-              v-for="config in apiConfigs"
-              :key="config.id"
-              class="api-config-item"
-              :class="{ active: config.isActive }"
-            >
-              <div class="config-info">
-                <div class="config-name">{{ APIProvider[config.provider] || '未命名配置' }}</div>
-                <div class="config-type">{{ config.provider || 'OpenAI' }}</div>
-              </div>
-              <n-switch
-                :value="config.isActive"
-                size="small"
-                @update:value="() => handleSetActiveConfig(config.id)"
-              />
-            </div>
-
-            <n-empty
-              v-if="apiConfigs.length === 0"
-              description="暂无API配置"
-              size="small"
-              class="empty-state"
-            />
-          </div>
-
-          <n-button size="small" dashed block @click="handleAddApiConfig">
-            <template #icon>
-              <n-icon><AddOutline /></n-icon>
-            </template>
-            添加API配置
-          </n-button>
-
           <div class="settings-item" style="margin-top: 12px">
             <div class="item-label">代理地址</div>
             <n-input
@@ -157,17 +123,12 @@ import {
   NInputNumber,
   NSwitch,
   NButton,
-  NIcon,
   NAvatar,
-  NEmpty,
   useDialog
 } from 'naive-ui';
-import { AddOutline } from '@vicons/ionicons5';
 import { useMediaQuery } from '@vueuse/core';
 import { useThemeStore } from '@/stores/theme';
 import { useUserStore } from '@/stores/user';
-import { userClient } from '@/api/client';
-import { APIProvider } from '@/gen/muse/common_pb';
 
 const props = defineProps<{
   visible: boolean;
@@ -214,23 +175,7 @@ const fontSizeOptions = [
 ];
 
 // ====== API 连接 ======
-const apiConfigs = computed(() => userStore.apiConfigs);
 const proxyUrl = ref('');
-
-const handleSetActiveConfig = async (configId: number) => {
-  try {
-    await userClient.setActiveAPIConfig({ configId });
-    userStore.setActiveApiConfigId(configId);
-  } catch (e) {
-    console.error('切换API配置失败:', e);
-  }
-};
-
-const handleAddApiConfig = () => {
-  emit('update:visible', false);
-  router.push('/settings');
-};
-
 // ====== 对话设置 ======
 const showGreeting = ref(true);
 const historyCount = ref(20);

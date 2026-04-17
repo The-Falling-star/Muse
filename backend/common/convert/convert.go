@@ -370,7 +370,7 @@ func UserEntityToPb(user *entity.User) *pb.SysUser {
 		ShowTimestamps:  user.ShowTimestamps,
 		Provider:        user.Provider,
 		Model:           user.Model,
-		BaseUrl:         user.BaseURL,
+		ProxyUrl:        user.ProxyUrl,
 		CreatedAt:       user.CreatedAt.Unix(),
 		UpdatedAt:       user.UpdatedAt.Unix(),
 	}
@@ -390,16 +390,15 @@ func PersonaEntityToPb(persona *entity.Persona) *pb.Persona {
 }
 
 // APIConfigEntityToPb 将API配置实体类转换为pb（不包含API Key）
-func APIConfigEntityToPb(config *entity.APIConfig) *pb.APIConfig {
+func APIConfigEntityToPb(apiConfig *entity.APIConfig) *pb.APIConfig {
 	return &pb.APIConfig{
-		Id:        int32(config.ID),
-		UserId:    int32(config.UserID),
-		Provider:  config.Provider,
-		ApiKey:    config.APIKey,
-		Model:     config.Model,
-		IsActive:  config.IsActive,
-		CreatedAt: config.CreatedAt.Unix(),
-		UpdatedAt: config.UpdatedAt.Unix(),
+		Id:        int32(apiConfig.ID),
+		UserId:    int32(apiConfig.UserID),
+		Provider:  apiConfig.Provider,
+		ApiKey:    apiConfig.APIKey,
+		IsActive:  apiConfig.IsActive,
+		CreatedAt: apiConfig.CreatedAt.Unix(),
+		UpdatedAt: apiConfig.UpdatedAt.Unix(),
 	}
 }
 
@@ -421,7 +420,6 @@ func APIConfigEntityToPbWithKey(apiConfig *entity.APIConfig) *pb.APIConfig {
 		UserId:    int32(apiConfig.UserID),
 		Provider:  apiConfig.Provider,
 		ApiKey:    apiKey,
-		Model:     apiConfig.Model,
 		IsActive:  apiConfig.IsActive,
 		CreatedAt: apiConfig.CreatedAt.Unix(),
 		UpdatedAt: apiConfig.UpdatedAt.Unix(),

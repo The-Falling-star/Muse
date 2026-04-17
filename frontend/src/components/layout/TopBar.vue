@@ -149,11 +149,11 @@ const viewTitle = computed(() => {
 
 // 当前模型名称
 const activeModelName = computed(() => {
-  const config = userStore.activeApiConfig;
-  if (!config) {
+  const user = userStore.currentUser;
+  if (!user?.model) {
     return '选择模型';
   }
-  return config.model || APIProvider[config.provider] || '选择模型';
+  return user.model || APIProvider[user.provider] || '选择模型';
 });
 
 // 点击Logo回到对话

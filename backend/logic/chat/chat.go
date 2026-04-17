@@ -249,6 +249,7 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 	var globalWorldInfos []*entity.WorldInfo
 	var charWorldInfo *entity.WorldInfo
 	var regexRules []*entity.RegexRule
+	var persona *entity.Persona
 
 	if cacheHit {
 		// 使用缓存数据
@@ -267,6 +268,7 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 		promptItems = sessionCache.PromptItems
 		regexRules = sessionCache.RegexRules
 		globalWorldInfos = sessionCache.WorldInfos
+		persona = sessionCache.Persona
 
 		// 角色卡世界书从世界书列表中查找
 		if sessionCache.Character != nil && sessionCache.Character.WorldInfoID > 0 {
@@ -280,7 +282,7 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 	} else {
 		// 缓存未命中，从数据库加载数据
 		session, preset, promptItems, globalWorldInfos,
-			charWorldInfo, regexRules, err = c.loadSessionDataFromDB(ctx, sessionID, userID, user)
+			charWorldInfo, regexRules, persona, err = c.loadSessionDataFromDB(ctx, sessionID, userID, user)
 		if err != nil {
 			return errs.NewStandardf(errs.Code(err), "从数据库加载会话数据失败: %v", err)
 		}
@@ -288,7 +290,8 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 		worldInfoByDepth := c.buildWorldInfoByDepth(globalWorldInfos, charWorldInfo)
 
 		// 构建缓存
-		sessionCache = c.buildSessionCache(session, preset, promptItems, globalWorldInfos, charWorldInfo, regexRules, worldInfoByDepth)
+		sessionCache = c.buildSessionCache(session, preset, promptItems, globalWorldInfos,
+			charWorldInfo, regexRules, worldInfoByDepth, persona)
 		c.cacheManager.Set(int64(userID), int64(sessionID), sessionCache)
 	}
 
@@ -303,7 +306,7 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 			},
 		},
 	})
-	messages, err := c.buildMessages(session, promptItems, worldBook, regexRules)
+	messages, err := c.buildMessages(session, promptItems, worldBook, regexRules, persona)
 	log.Debugf("构建的消息列表: %+v", messages)
 	if err != nil {
 		return err
@@ -370,7 +373,7 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 	llm := c.getLLM(apiConfig.Provider)
 
 	// 流式调用大模型
-	resultChan := llm.StreamGenerateContent(ctx, apiConfig.APIKey, apiConfig.Model, *preset, messages)
+	resultChan := llm.StreamGenerateContent(ctx, apiConfig.APIKey, user.Model, *preset, messages)
 
 	// 收集每个候选的内容
 	contents := make([]string, preset.CandidateCount)
@@ -484,6 +487,7 @@ func (c *chatImpl) loadSessionDataFromDB(ctx context.Context, sessionID, userID 
 	globalWorldInfos []*entity.WorldInfo,
 	charWorldInfo *entity.WorldInfo,
 	regexRules []*entity.RegexRule,
+	persona *entity.Persona,
 	err error,
 ) {
 	// 从数据库获取会话数据
@@ -506,6 +510,7 @@ func (c *chatImpl) loadSessionDataFromDB(ctx context.Context, sessionID, userID 
 			return
 		}
 	}
+	// TODO 有问题，没提示词项了
 	if preset == nil {
 		// 使用默认预设
 		preset = &entity.Preset{
@@ -546,6 +551,16 @@ func (c *chatImpl) loadSessionDataFromDB(ctx context.Context, sessionID, userID 
 		err = errs.NewStandardf(errs.Code(err), "用户: %d 获取正则规则数据失败: %v", userID, err)
 		return
 	}
+	persona, err = c.userRepo.GetPersonaByID(ctx, user.ActivePersonaID, userID)
+	if err != nil {
+		err = errs.NewStandardf(errs.Code(err), "用户: %d 获取人设数据失败: %v", userID, err)
+	}
+	if persona == nil {
+		persona = &entity.Persona{
+			UserID: userID,
+			Name:   "凌溸",
+		}
+	}
 	return
 }
 
@@ -583,12 +598,14 @@ func (c *chatImpl) buildSessionCache(
 	charWorldInfo *entity.WorldInfo,
 	regexRules []*entity.RegexRule,
 	worldInfoByDepth map[int][]string,
+	persona *entity.Persona,
 ) *cache.SessionCache {
 	sessionCache := &cache.SessionCache{
 		SessionID:         int64(session.ID),
 		UserID:            int64(session.UserID),
 		CharacterID:       int64(session.CharacterID),
 		Character:         session.Character,
+		Persona:           persona,
 		Preset:            preset,
 		PromptItems:       promptItems,
 		RegexRules:        regexRules,
@@ -820,6 +837,7 @@ func (c *chatImpl) buildMessages(
 	promptItems []*entity.PromptItem,
 	worldBook []*entity.WorldInfo,
 	regexRules []*entity.RegexRule,
+	persona *entity.Persona,
 ) ([]model.Message, error) {
 	var messages []model.Message
 	regexMap := make(map[string]*regexp2.Regexp, len(regexRules))
@@ -939,7 +957,7 @@ func (c *chatImpl) buildMessages(
 			messages = append(messages, msg)
 		}
 	}
-	return applyMacro(messages, session), nil
+	return applyMacro(messages, session, persona), nil
 }
 
 // PriorityMessage 继承model.Message并添加优先级字段
@@ -1156,7 +1174,7 @@ func applyRegex(regexsMap map[string]*regexp2.Regexp, regexs []*entity.RegexRule
 //   - {{lastUserMessage}}: 最后一条用户消息
 //   - {{lastCharMessage}}: 最后一条角色消息
 //   - {{lastMessageId}}: 最后一条消息ID
-func applyMacro(messages []model.Message, session *entity.ChatSession) []model.Message {
+func applyMacro(messages []model.Message, session *entity.ChatSession, persona *entity.Persona) []model.Message {
 	if session == nil || session.Character == nil {
 		return messages
 	}
@@ -1164,6 +1182,7 @@ func applyMacro(messages []model.Message, session *entity.ChatSession) []model.M
 	// 获取时间相关数据
 	now := time.Now()
 	charName := session.Character.Name
+	userName := persona.Name
 	description := session.Character.Description
 
 	// 处理示例对话
@@ -1211,6 +1230,9 @@ func applyMacro(messages []model.Message, session *entity.ChatSession) []model.M
 		constant.Char2, charName,
 		constant.Char3, charName,
 		constant.Char4, charName,
+		// 用户名称
+		constant.User1, userName,
+		constant.User2, userName,
 		// 基础宏
 		constant.Newline, "\n",
 		constant.Noop, "",
@@ -1224,9 +1246,15 @@ func applyMacro(messages []model.Message, session *entity.ChatSession) []model.M
 		constant.Description, description,
 		constant.MesExamples, mesExamples,
 		// 消息相关宏
-		constant.LastMessage, lastMessage,
-		constant.LastUserMessage, lastUserMessage,
-		constant.LastCharMessage, lastCharMessage,
+		constant.LastMessage1, lastMessage,
+		constant.LastMessage2, lastMessage,
+		constant.LastMessage3, lastMessage,
+		constant.LastUserMessage1, lastUserMessage,
+		constant.LastUserMessage2, lastUserMessage,
+		constant.LastUserMessage3, lastUserMessage,
+		constant.LastCharMessage1, lastCharMessage,
+		constant.LastCharMessage2, lastCharMessage,
+		constant.LastCharMessage3, lastCharMessage,
 		constant.LastMessageId, fmt.Sprintf("%d", lastMessageId),
 	)
 

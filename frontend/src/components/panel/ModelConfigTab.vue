@@ -234,7 +234,7 @@ const updateUserProvider = async (value: APIProvider) => {
     showTimestamps: updatedUser.showTimestamps,
     provider: updatedUser.provider,
     model: updatedUser.model,
-    baseUrl: updatedUser.baseUrl
+    proxyUrl: updatedUser.proxyUrl
   })
 };
 
@@ -274,7 +274,7 @@ const updateUserModel = (value: string) => {
       showTimestamps: updatedUser.showTimestamps,
       provider: updatedUser.provider,
       model: updatedUser.model,
-      baseUrl: updatedUser.baseUrl
+      proxyUrl: updatedUser.proxyUrl
     })
   }, 1000);
 };

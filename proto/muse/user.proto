@@ -24,7 +24,7 @@ message SysUser {
   int64 updated_at = 10;        // 最后更新时间（Unix时间戳）
   APIProvider provider = 11;    // API服务提供商
   string model = 12;            // 使用的模型名称
-  string base_url = 13;         // API基础URL（用于代理或自定义端点）
+  string proxy_url = 13;         // API代理URL（用于代理或自定义端点）
 }
 
 // Persona 用户人设，定义用户在对话中的身份
@@ -44,7 +44,6 @@ message APIConfig {
   int32 user_id = 2;       // 所属用户ID
   APIProvider provider = 4; // API服务提供商
   string api_key = 5;      // API密钥（创建/更新时使用，查询时不返回）
-  string model = 7;        // 使用的模型名称
   bool is_active = 8;      // 是否为当前激活的配置
   int64 created_at = 9;    // 创建时间（Unix时间戳）
   int64 updated_at = 10;   // 最后更新时间（Unix时间戳）
@@ -178,7 +177,7 @@ message UpdateUserInfoRequest {
   bool show_timestamps = 4;
   APIProvider provider = 5;
   string model = 6;
-  string base_url = 7;
+  string proxy_url = 7;
 }
 
 // 更新用户信息响应
@@ -202,18 +201,18 @@ message ListAPIConfigsResponse {
 message CreateAPIConfigRequest {
   APIProvider provider = 2;
   string api_key = 3;
-  optional string model = 5;
 }
 
 // 创建API配置响应
-message CreateAPIConfigResponse {}
+message CreateAPIConfigResponse {
+  int32 config_id = 1;
+}
 
 // 更新API配置请求
 message UpdateAPIConfigRequest {
   int32 id = 1;
   APIProvider provider = 3;
   optional string api_key = 4;  // 可选，不传则不更新
-  optional string model = 6;
 }
 
 // 更新API配置响应

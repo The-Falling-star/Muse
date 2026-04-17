@@ -49,6 +49,11 @@
       <div v-else-if="appStore.rightPanelActiveTab === 'regex'" class="tab-content">
         <RegexListTab />
       </div>
+
+      <!-- 用户设置 Tab -->
+      <div v-else-if="appStore.rightPanelActiveTab === 'user'" class="tab-content">
+        <UserConfigTab/>
+      </div>
     </div>
   </aside>
 </template>
@@ -62,12 +67,16 @@ import {
   SettingsOutline,
   DocumentTextOutline,
   BookOutline,
-  CodeSlashOutline
+  CodeSlashOutline,
 } from '@vicons/ionicons5';
+import {
+  Bot20Regular,
+} from '@vicons/fluent'
 import ModelConfigTab from '@/components/panel/ModelConfigTab.vue';
 import PresetListTab from '@/components/panel/PresetListTab.vue';
 import WorldInfoListTab from '@/components/panel/WorldInfoListTab.vue';
 import RegexListTab from '@/components/panel/RegexListTab.vue';
+import UserConfigTab from "@/components/panel/UserConfigTab.vue";
 
 const appStore = useAppStore();
 
@@ -78,10 +87,11 @@ interface TabItem {
 }
 
 const tabs: TabItem[] = [
-  { key: 'model', label: '模型', icon: SettingsOutline },
+  { key: 'model', label: '模型', icon:  Bot20Regular},
   { key: 'preset', label: '预设', icon: DocumentTextOutline },
   { key: 'worldinfo', label: '世界书', icon: BookOutline },
-  { key: 'regex', label: '正则', icon: CodeSlashOutline }
+  { key: 'regex', label: '正则', icon: CodeSlashOutline },
+  {key: 'user', label: '用户', icon: SettingsOutline},
 ];
 </script>
 

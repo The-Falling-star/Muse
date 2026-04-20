@@ -848,7 +848,9 @@ type SendMessageResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Index         int32                  `protobuf:"varint,1,opt,name=index,proto3" json:"index,omitempty"` // 多个候选回复时，候选回复的下标
 	Content       string                 `protobuf:"bytes,2,opt,name=content,proto3" json:"content,omitempty"`
-	IsComplete    bool                   `protobuf:"varint,3,opt,name=is_complete,json=isComplete,proto3" json:"is_complete,omitempty"` // 是否完成
+	Done          bool                   `protobuf:"varint,3,opt,name=done,proto3" json:"done,omitempty"`                                        // 是否完成
+	ErrCode       ErrCode                `protobuf:"varint,4,opt,name=err_code,json=errCode,proto3,enum=muse.ErrCode" json:"err_code,omitempty"` // 错误码
+	ErrMessage    string                 `protobuf:"bytes,5,opt,name=err_message,json=errMessage,proto3" json:"err_message,omitempty"`           // 错误原因
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -897,11 +899,25 @@ func (x *SendMessageResponse) GetContent() string {
 	return ""
 }
 
-func (x *SendMessageResponse) GetIsComplete() bool {
+func (x *SendMessageResponse) GetDone() bool {
 	if x != nil {
-		return x.IsComplete
+		return x.Done
 	}
 	return false
+}
+
+func (x *SendMessageResponse) GetErrCode() ErrCode {
+	if x != nil {
+		return x.ErrCode
+	}
+	return ErrCode_Success
+}
+
+func (x *SendMessageResponse) GetErrMessage() string {
+	if x != nil {
+		return x.ErrMessage
+	}
+	return ""
 }
 
 // 重新生成消息请求
@@ -952,9 +968,11 @@ func (x *RegenerateMessageRequest) GetMessageId() int32 {
 // 重新生成消息响应（流式）
 type RegenerateMessageResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	NewSwipe      *MessageSwipe          `protobuf:"bytes,1,opt,name=new_swipe,json=newSwipe,proto3" json:"new_swipe,omitempty"`             // 新的swipe
-	ContentDelta  string                 `protobuf:"bytes,2,opt,name=content_delta,json=contentDelta,proto3" json:"content_delta,omitempty"` // 内容增量
-	IsComplete    bool                   `protobuf:"varint,3,opt,name=is_complete,json=isComplete,proto3" json:"is_complete,omitempty"`      // 是否完成
+	NewSwipe      *MessageSwipe          `protobuf:"bytes,1,opt,name=new_swipe,json=newSwipe,proto3" json:"new_swipe,omitempty"`                 // 新的swipe
+	ContentDelta  string                 `protobuf:"bytes,2,opt,name=content_delta,json=contentDelta,proto3" json:"content_delta,omitempty"`     // 内容增量
+	Done          bool                   `protobuf:"varint,3,opt,name=done,proto3" json:"done,omitempty"`                                        // 是否完成
+	ErrCode       ErrCode                `protobuf:"varint,4,opt,name=err_code,json=errCode,proto3,enum=muse.ErrCode" json:"err_code,omitempty"` // 错误码
+	ErrMessage    string                 `protobuf:"bytes,5,opt,name=err_message,json=errMessage,proto3" json:"err_message,omitempty"`           // 错误原因
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1003,11 +1021,25 @@ func (x *RegenerateMessageResponse) GetContentDelta() string {
 	return ""
 }
 
-func (x *RegenerateMessageResponse) GetIsComplete() bool {
+func (x *RegenerateMessageResponse) GetDone() bool {
 	if x != nil {
-		return x.IsComplete
+		return x.Done
 	}
 	return false
+}
+
+func (x *RegenerateMessageResponse) GetErrCode() ErrCode {
+	if x != nil {
+		return x.ErrCode
+	}
+	return ErrCode_Success
+}
+
+func (x *RegenerateMessageResponse) GetErrMessage() string {
+	if x != nil {
+		return x.ErrMessage
+	}
+	return ""
 }
 
 // 编辑消息请求
@@ -1540,20 +1572,24 @@ const file_muse_chat_proto_rawDesc = "" +
 	"\x12SendMessageRequest\x12\x1d\n" +
 	"\n" +
 	"session_id\x18\x01 \x01(\x05R\tsessionId\x12\x18\n" +
-	"\acontent\x18\x02 \x01(\tR\acontent\"f\n" +
+	"\acontent\x18\x02 \x01(\tR\acontent\"\xa4\x01\n" +
 	"\x13SendMessageResponse\x12\x14\n" +
 	"\x05index\x18\x01 \x01(\x05R\x05index\x12\x18\n" +
-	"\acontent\x18\x02 \x01(\tR\acontent\x12\x1f\n" +
-	"\vis_complete\x18\x03 \x01(\bR\n" +
-	"isComplete\"9\n" +
+	"\acontent\x18\x02 \x01(\tR\acontent\x12\x12\n" +
+	"\x04done\x18\x03 \x01(\bR\x04done\x12(\n" +
+	"\berr_code\x18\x04 \x01(\x0e2\r.muse.ErrCodeR\aerrCode\x12\x1f\n" +
+	"\verr_message\x18\x05 \x01(\tR\n" +
+	"errMessage\"9\n" +
 	"\x18RegenerateMessageRequest\x12\x1d\n" +
 	"\n" +
-	"message_id\x18\x01 \x01(\x05R\tmessageId\"\x92\x01\n" +
+	"message_id\x18\x01 \x01(\x05R\tmessageId\"\xd0\x01\n" +
 	"\x19RegenerateMessageResponse\x12/\n" +
 	"\tnew_swipe\x18\x01 \x01(\v2\x12.muse.MessageSwipeR\bnewSwipe\x12#\n" +
-	"\rcontent_delta\x18\x02 \x01(\tR\fcontentDelta\x12\x1f\n" +
-	"\vis_complete\x18\x03 \x01(\bR\n" +
-	"isComplete\"h\n" +
+	"\rcontent_delta\x18\x02 \x01(\tR\fcontentDelta\x12\x12\n" +
+	"\x04done\x18\x03 \x01(\bR\x04done\x12(\n" +
+	"\berr_code\x18\x04 \x01(\x0e2\r.muse.ErrCodeR\aerrCode\x12\x1f\n" +
+	"\verr_message\x18\x05 \x01(\tR\n" +
+	"errMessage\"h\n" +
 	"\x12EditMessageRequest\x12\x1d\n" +
 	"\n" +
 	"message_id\x18\x01 \x01(\x05R\tmessageId\x12\x19\n" +
@@ -1638,6 +1674,7 @@ var file_muse_chat_proto_goTypes = []any{
 	(*UpdateSessionTimeResponse)(nil),    // 26: muse.UpdateSessionTimeResponse
 	(*Character)(nil),                    // 27: muse.Character
 	(Role)(0),                            // 28: muse.Role
+	(ErrCode)(0),                         // 29: muse.ErrCode
 }
 var file_muse_chat_proto_depIdxs = []int32{
 	27, // 0: muse.ChatSession.character:type_name -> muse.Character
@@ -1648,39 +1685,41 @@ var file_muse_chat_proto_depIdxs = []int32{
 	0,  // 5: muse.GetChatSessionResponse.session:type_name -> muse.ChatSession
 	0,  // 6: muse.CreateChatSessionResponse.session:type_name -> muse.ChatSession
 	0,  // 7: muse.UpdateChatSessionResponse.session:type_name -> muse.ChatSession
-	2,  // 8: muse.RegenerateMessageResponse.new_swipe:type_name -> muse.MessageSwipe
-	2,  // 9: muse.EditMessageResponse.swipe:type_name -> muse.MessageSwipe
-	1,  // 10: muse.SwitchSwipeResponse.message:type_name -> muse.Message
-	0,  // 11: muse.GetCharLatestSessionResponse.session:type_name -> muse.ChatSession
-	3,  // 12: muse.ChatService.ListChatSessions:input_type -> muse.ListChatSessionsRequest
-	5,  // 13: muse.ChatService.GetChatSession:input_type -> muse.GetChatSessionRequest
-	7,  // 14: muse.ChatService.CreateChatSession:input_type -> muse.CreateChatSessionRequest
-	9,  // 15: muse.ChatService.UpdateChatSession:input_type -> muse.UpdateChatSessionRequest
-	11, // 16: muse.ChatService.DeleteChatSession:input_type -> muse.DeleteChatSessionRequest
-	13, // 17: muse.ChatService.SendMessage:input_type -> muse.SendMessageRequest
-	15, // 18: muse.ChatService.RegenerateMessage:input_type -> muse.RegenerateMessageRequest
-	17, // 19: muse.ChatService.EditMessage:input_type -> muse.EditMessageRequest
-	19, // 20: muse.ChatService.DeleteMessage:input_type -> muse.DeleteMessageRequest
-	21, // 21: muse.ChatService.SwitchSwipe:input_type -> muse.SwitchSwipeRequest
-	23, // 22: muse.ChatService.GetCharLatestSession:input_type -> muse.GetCharLatestSessionRequest
-	25, // 23: muse.ChatService.UpdateSessionTime:input_type -> muse.UpdateSessionTimeRequest
-	4,  // 24: muse.ChatService.ListChatSessions:output_type -> muse.ListChatSessionsResponse
-	6,  // 25: muse.ChatService.GetChatSession:output_type -> muse.GetChatSessionResponse
-	8,  // 26: muse.ChatService.CreateChatSession:output_type -> muse.CreateChatSessionResponse
-	10, // 27: muse.ChatService.UpdateChatSession:output_type -> muse.UpdateChatSessionResponse
-	12, // 28: muse.ChatService.DeleteChatSession:output_type -> muse.DeleteChatSessionResponse
-	14, // 29: muse.ChatService.SendMessage:output_type -> muse.SendMessageResponse
-	16, // 30: muse.ChatService.RegenerateMessage:output_type -> muse.RegenerateMessageResponse
-	18, // 31: muse.ChatService.EditMessage:output_type -> muse.EditMessageResponse
-	20, // 32: muse.ChatService.DeleteMessage:output_type -> muse.DeleteMessageResponse
-	22, // 33: muse.ChatService.SwitchSwipe:output_type -> muse.SwitchSwipeResponse
-	24, // 34: muse.ChatService.GetCharLatestSession:output_type -> muse.GetCharLatestSessionResponse
-	26, // 35: muse.ChatService.UpdateSessionTime:output_type -> muse.UpdateSessionTimeResponse
-	24, // [24:36] is the sub-list for method output_type
-	12, // [12:24] is the sub-list for method input_type
-	12, // [12:12] is the sub-list for extension type_name
-	12, // [12:12] is the sub-list for extension extendee
-	0,  // [0:12] is the sub-list for field type_name
+	29, // 8: muse.SendMessageResponse.err_code:type_name -> muse.ErrCode
+	2,  // 9: muse.RegenerateMessageResponse.new_swipe:type_name -> muse.MessageSwipe
+	29, // 10: muse.RegenerateMessageResponse.err_code:type_name -> muse.ErrCode
+	2,  // 11: muse.EditMessageResponse.swipe:type_name -> muse.MessageSwipe
+	1,  // 12: muse.SwitchSwipeResponse.message:type_name -> muse.Message
+	0,  // 13: muse.GetCharLatestSessionResponse.session:type_name -> muse.ChatSession
+	3,  // 14: muse.ChatService.ListChatSessions:input_type -> muse.ListChatSessionsRequest
+	5,  // 15: muse.ChatService.GetChatSession:input_type -> muse.GetChatSessionRequest
+	7,  // 16: muse.ChatService.CreateChatSession:input_type -> muse.CreateChatSessionRequest
+	9,  // 17: muse.ChatService.UpdateChatSession:input_type -> muse.UpdateChatSessionRequest
+	11, // 18: muse.ChatService.DeleteChatSession:input_type -> muse.DeleteChatSessionRequest
+	13, // 19: muse.ChatService.SendMessage:input_type -> muse.SendMessageRequest
+	15, // 20: muse.ChatService.RegenerateMessage:input_type -> muse.RegenerateMessageRequest
+	17, // 21: muse.ChatService.EditMessage:input_type -> muse.EditMessageRequest
+	19, // 22: muse.ChatService.DeleteMessage:input_type -> muse.DeleteMessageRequest
+	21, // 23: muse.ChatService.SwitchSwipe:input_type -> muse.SwitchSwipeRequest
+	23, // 24: muse.ChatService.GetCharLatestSession:input_type -> muse.GetCharLatestSessionRequest
+	25, // 25: muse.ChatService.UpdateSessionTime:input_type -> muse.UpdateSessionTimeRequest
+	4,  // 26: muse.ChatService.ListChatSessions:output_type -> muse.ListChatSessionsResponse
+	6,  // 27: muse.ChatService.GetChatSession:output_type -> muse.GetChatSessionResponse
+	8,  // 28: muse.ChatService.CreateChatSession:output_type -> muse.CreateChatSessionResponse
+	10, // 29: muse.ChatService.UpdateChatSession:output_type -> muse.UpdateChatSessionResponse
+	12, // 30: muse.ChatService.DeleteChatSession:output_type -> muse.DeleteChatSessionResponse
+	14, // 31: muse.ChatService.SendMessage:output_type -> muse.SendMessageResponse
+	16, // 32: muse.ChatService.RegenerateMessage:output_type -> muse.RegenerateMessageResponse
+	18, // 33: muse.ChatService.EditMessage:output_type -> muse.EditMessageResponse
+	20, // 34: muse.ChatService.DeleteMessage:output_type -> muse.DeleteMessageResponse
+	22, // 35: muse.ChatService.SwitchSwipe:output_type -> muse.SwitchSwipeResponse
+	24, // 36: muse.ChatService.GetCharLatestSession:output_type -> muse.GetCharLatestSessionResponse
+	26, // 37: muse.ChatService.UpdateSessionTime:output_type -> muse.UpdateSessionTimeResponse
+	26, // [26:38] is the sub-list for method output_type
+	14, // [14:26] is the sub-list for method input_type
+	14, // [14:14] is the sub-list for extension type_name
+	14, // [14:14] is the sub-list for extension extendee
+	0,  // [0:14] is the sub-list for field type_name
 }
 
 func init() { file_muse_chat_proto_init() }

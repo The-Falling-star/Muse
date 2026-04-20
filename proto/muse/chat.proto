@@ -112,7 +112,9 @@ message SendMessageRequest {
 message SendMessageResponse {
   int32 index = 1; // 多个候选回复时，候选回复的下标
   string content = 2;
-  bool is_complete = 3;           // 是否完成
+  bool done = 3;           // 是否完成
+  ErrCode err_code = 4;   // 错误码
+  string err_message = 5; // 错误原因
 }
 
 // 重新生成消息请求
@@ -124,7 +126,9 @@ message RegenerateMessageRequest {
 message RegenerateMessageResponse {
   MessageSwipe new_swipe = 1;  // 新的swipe
   string content_delta = 2;    // 内容增量
-  bool is_complete = 3;        // 是否完成
+  bool done = 3;        // 是否完成
+  ErrCode err_code = 4;   // 错误码
+  string err_message = 5; // 错误原因
 }
 
 // 编辑消息请求

@@ -11,6 +11,7 @@ option go_package = "github.com/ling/muse/gen/muse;muse";
 enum ErrCode {
   Success = 0; // 成功
   NoAPIKey = 1000; // 缺少API密钥
+  AIExceptionOutput = 1001; // AI非正常输出
 }
 
 // Role 消息角色类型

@@ -9,8 +9,8 @@ import (
 )
 
 type LLMModel interface {
-	GenerateContent(ctx context.Context, apiKey string, model string, preset entity.Preset, input []Message) ([]string, error)
-	StreamGenerateContent(ctx context.Context, apiKey, model string, preset entity.Preset, input []Message) <-chan StreamStruct
+	GenerateContent(ctx context.Context, apiKey, model, proxyUrl string, preset entity.Preset, input []Message) ([]string, error)
+	StreamGenerateContent(ctx context.Context, apiKey, model, proxyUrl string, preset entity.Preset, input []Message) <-chan StreamStruct
 }
 
 type StreamStruct struct {

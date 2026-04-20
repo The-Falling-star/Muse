@@ -24,8 +24,9 @@ const (
 type ErrCode int32
 
 const (
-	ErrCode_Success  ErrCode = 0    // 成功
-	ErrCode_NoAPIKey ErrCode = 1000 // 缺少API密钥
+	ErrCode_Success           ErrCode = 0    // 成功
+	ErrCode_NoAPIKey          ErrCode = 1000 // 缺少API密钥
+	ErrCode_AIExceptionOutput ErrCode = 1001 // AI非正常输出
 )
 
 // Enum value maps for ErrCode.
@@ -33,10 +34,12 @@ var (
 	ErrCode_name = map[int32]string{
 		0:    "Success",
 		1000: "NoAPIKey",
+		1001: "AIExceptionOutput",
 	}
 	ErrCode_value = map[string]int32{
-		"Success":  0,
-		"NoAPIKey": 1000,
+		"Success":           0,
+		"NoAPIKey":          1000,
+		"AIExceptionOutput": 1001,
 	}
 )
 
@@ -613,10 +616,11 @@ const file_muse_common_proto_rawDesc = "" +
 	"\x16GetPublicConfigRequest\"x\n" +
 	"\x17GetPublicConfigResponse\x12\x1b\n" +
 	"\tskip_auth\x18\x01 \x01(\bR\bskipAuth\x12@\n" +
-	"\x10candidate_models\x18\x02 \x03(\v2\x15.muse.CandidateModelsR\x0fcandidateModels*%\n" +
+	"\x10candidate_models\x18\x02 \x03(\v2\x15.muse.CandidateModelsR\x0fcandidateModels*=\n" +
 	"\aErrCode\x12\v\n" +
 	"\aSuccess\x10\x00\x12\r\n" +
-	"\bNoAPIKey\x10\xe8\a*@\n" +
+	"\bNoAPIKey\x10\xe8\a\x12\x16\n" +
+	"\x11AIExceptionOutput\x10\xe9\a*@\n" +
 	"\x04Role\x12\x13\n" +
 	"\x0fRoleUnspecified\x10\x00\x12\n" +
 	"\n" +

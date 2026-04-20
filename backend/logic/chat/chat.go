@@ -2,6 +2,7 @@ package chat
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"regexp"
 	"slices"
@@ -309,7 +310,7 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 		},
 	})
 	messages, err := c.buildMessages(session, promptItems, worldBook, regexRules, persona)
-	log.Debugf("构建的消息列表: %+v", messages)
+	//log.Debugf("构建的消息列表: %+v", messages)
 	if err != nil {
 		return err
 	}
@@ -367,44 +368,64 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 	// 获取活跃的 API 配置
 	apiConfig := c.apiKeyCache.Get(userID, user.Provider)
 	if apiConfig == nil {
+		apiConfig = &entity.APIConfig{
+			UserID:   userID,
+			Provider: user.Provider,
+			APIKey:   "",
+			IsActive: true,
+		}
 		apiConfigs, err := c.userRepo.GetActiveAPIConfig(ctx, userID, user.Provider)
 		if err != nil {
 			return errs.NewStandardf(errs.Code(err), "获取API配置失败: %v", err)
 		}
-		if len(apiConfigs) == 0 {
-			return errs.Newf(pb.ErrCode_NoAPIKey, "供应商: %s没有有效的API Key", user.Provider.String())
+		if len(apiConfigs) != 0 {
+			c.apiKeyCache.Set(userID, user.Provider, apiConfigs)
+			apiConfig = apiConfigs[0]
 		}
-		c.apiKeyCache.Set(userID, user.Provider, apiConfigs)
-		apiConfig = apiConfigs[0]
 	}
 	llm := c.getLLM(apiConfig.Provider)
 
 	// 流式调用大模型
-	resultChan := llm.StreamGenerateContent(ctx, apiConfig.APIKey, user.Model, *preset, messages)
+	resultChan := llm.StreamGenerateContent(ctx, apiConfig.APIKey, user.Model, user.ProxyUrl, *preset, messages)
 
 	// 收集每个候选的内容
 	contents := make([]string, preset.CandidateCount)
 
 	// 处理流式响应
 	for result := range resultChan {
+		errCode := pb.ErrCode_Success
+		errMsg := ""
 		if result.Error != nil {
-			return result.Error
+			log.Errorf("大模型输出失败: %v", result.Error)
+			errCode = pb.ErrCode(connect.CodeInternal)
+			errMsg = "大模型输出异常"
+
+			var resultErr *connect.Error
+			ok := errors.As(result.Error, &resultErr)
+			if ok {
+				errCode = pb.ErrCode(resultErr.Code())
+				errMsg = resultErr.Message()
+			}
 		}
 
 		if result.Index < len(contents) {
 			contents[result.Index] += result.Content
 		}
+		//log.Debugf("大模型输出下标: %d, 内容: %s", result.Index, result.Content)
 
 		// 发送流式响应给前端
 		if sendErr := stream.Send(&pb.SendMessageResponse{
 			Index:      int32(result.Index),
 			Content:    result.Content,
-			IsComplete: result.Done,
+			Done:       result.Done,
+			ErrCode:    errCode,
+			ErrMessage: errMsg,
 		}); sendErr != nil {
 			return errs.NewStandardf(connect.CodeInternal, "发送响应失败: %v", sendErr)
 		}
 
 		if result.Done {
+			log.Info("大模型输出完成")
 			break
 		}
 	}
@@ -803,12 +824,12 @@ func (c *chatImpl) getLLM(provider pb.APIProvider) model.LLMModel {
 		return model.NewGemini()
 	case pb.APIProvider_OpenAI:
 		// TODO: 实现 OpenAI 模型
-		return model.NewGemini() // 暂时返回 Gemini
+		return model.NewMockModel() // 暂时返回 Gemini
 	case pb.APIProvider_Claude:
 		// TODO: 实现 Claude 模型
-		return model.NewGemini() // 暂时返回 Gemini
+		return model.NewMockModel() // 暂时返回 Gemini
 	default:
-		return model.NewGemini()
+		return model.NewMockModel()
 	}
 }
 
@@ -964,7 +985,17 @@ func (c *chatImpl) buildMessages(
 			messages = append(messages, msg)
 		}
 	}
-	return applyMacro(messages, session, persona), nil
+	messages = applyMacro(messages, session, persona)
+
+	// 去除空内容
+	n := 0
+	for _, m := range messages {
+		if m.Content != "" {
+			messages[n] = m
+			n++
+		}
+	}
+	return messages[:n], nil
 }
 
 // PriorityMessage 继承model.Message并添加优先级字段
@@ -1127,9 +1158,6 @@ func applyRegex(regexsMap map[string]*regexp2.Regexp, regexs []*entity.RegexRule
 			message.Module != constant.UserInput && !regex.AffectFlagsUserInput ||
 			message.Module != constant.AIOutput && !regex.AffectFlagsAIOutput ||
 			message.Module != constant.WorldInfo && !regex.AffectFlagsWorldInfo {
-			log.Debugf("正则: %s生效范围: prompt: %v, user_input: %v, ai_output: %v, world_info: %v",
-				regex.FindPattern, regex.AffectFlagsPrompt, regex.AffectFlagsUserInput, regex.AffectFlagsAIOutput, regex.AffectFlagsWorldInfo)
-			log.Debugf("正则: %s规则不影响模块: %d", regex.FindPattern, message.Module)
 			continue
 		}
 		// 检查消息深度是否在允许范围内, 且只有聊天记录才检查深度

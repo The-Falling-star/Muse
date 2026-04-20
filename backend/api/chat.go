@@ -2,10 +2,12 @@ package api
 
 import (
 	"context"
+	"time"
 
 	"connectrpc.com/connect"
 	pb "github.com/ling/muse/gen/muse"
 	"github.com/ling/muse/logic/chat"
+	log "github.com/sirupsen/logrus"
 )
 
 // ChatServer 聊天服务
@@ -94,6 +96,7 @@ func (c *ChatServer) DeleteChatSession(ctx context.Context, req *connect.Request
 // SendMessage 发送消息（流式响应）
 func (c *ChatServer) SendMessage(ctx context.Context, req *connect.Request[pb.SendMessageRequest],
 	stream *connect.ServerStream[pb.SendMessageResponse]) error {
+	startTime := time.Now().UnixMilli()
 	// 开启事务
 	var (
 		err error                   = nil
@@ -110,6 +113,7 @@ func (c *ChatServer) SendMessage(ctx context.Context, req *connect.Request[pb.Se
 		return err
 	}
 	_, _ = doResponse(ctx, "SendMessage", req.Msg, rsp)
+	log.Infof("调用耗时: %d ms", time.Now().UnixMilli()-startTime)
 	return nil
 }
 

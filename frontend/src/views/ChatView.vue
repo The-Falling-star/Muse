@@ -119,10 +119,7 @@ import {computed, nextTick, onBeforeUnmount, onMounted, ref, watch} from 'vue';
 import {useRoute} from 'vue-router';
 import type {UploadFileInfo, VirtualListInst} from 'naive-ui';
 import {NAvatar, NButton, NIcon, NUpload, NVirtualList, useDialog, useMessage} from 'naive-ui';
-import {
-  ChevronDownOutline,
-  SparklesOutline
-} from '@vicons/ionicons5';
+import {ChevronDownOutline, SparklesOutline} from '@vicons/ionicons5';
 
 import MessageItem from '@/components/chat/MessageItem.vue';
 import MessageInput from '@/components/chat/MessageInput.vue';
@@ -132,6 +129,8 @@ import {chatClient} from '@/api/client';
 import type {Character} from '@/gen/muse/character_pb';
 import type {Persona} from '@/gen/muse/user_pb';
 import {useAvatar} from '@/composables/useAvatar';
+import {ErrCode} from "@/gen/muse/common_pb.ts";
+import {ConnectError} from "@connectrpc/connect";
 
 // 本地Message类型适配
 interface LocalMessage {
@@ -342,6 +341,10 @@ const handleSendMessage = async (content: string) => {
     const swipeContents: Map<number, string> = new Map();
 
     for await (const response of stream) {
+      if (response.errCode != ErrCode.Success) {
+        messageApi.error("第" + response.index + "个swipe生成失败, 原因为: " + response.errMessage)
+        continue
+      }
       const index = response.index;
       const currentContent = swipeContents.get(index) || '';
       const newContent = currentContent + response.content;
@@ -367,14 +370,10 @@ const handleSendMessage = async (content: string) => {
       }
     }
 
-    await loadSession(chatStore.activeSessionId);
+    // await loadSession(chatStore.activeSessionId);
   } catch (error) {
-    if ((error as Error).name === 'AbortError') {
-      messageApi.info('消息生成已取消');
-    } else {
-      messageApi.error('发送消息失败');
-      console.error('发送消息失败:', error);
-    }
+    const err = ConnectError.from(error);
+    messageApi.error('生成消息失败, 错误码: ' + err.code + ",错误原因: " + err.message)
   } finally {
     chatStore.stopStreaming();
     await nextTick();

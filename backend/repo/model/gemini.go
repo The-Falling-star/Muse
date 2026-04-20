@@ -2,7 +2,9 @@ package model
 
 import (
 	"context"
+	"encoding/json"
 	"sync"
+	"time"
 
 	"connectrpc.com/connect"
 	"github.com/ling/muse/common/errs"
@@ -53,11 +55,11 @@ func (g *Gemini) getClient(ctx context.Context, apiKey string) *genai.Client {
 	return client
 }
 
-func (g *Gemini) GenerateContent(ctx context.Context, apiKey string, model string, preset entity.Preset, input []Message) ([]string, error) {
+func (g *Gemini) GenerateContent(ctx context.Context, apiKey, model, proxyUrl string, preset entity.Preset, input []Message) ([]string, error) {
 	if apiKey == "" {
 		return nil, errs.NewStandardf(connect.CodeInvalidArgument, "API Key不能为空")
 	}
-	histories, genConfig := g.buildReq(apiKey, preset, input)
+	histories, genConfig := g.buildReq(preset, input, proxyUrl)
 	client := g.getClient(ctx, apiKey)
 	rsp, err := client.Models.GenerateContent(ctx, model, histories, genConfig)
 	if err != nil {
@@ -77,11 +79,9 @@ func (g *Gemini) GenerateContent(ctx context.Context, apiKey string, model strin
 	return result, nil
 }
 
-func (g *Gemini) StreamGenerateContent(ctx context.Context, apiKey, model string, preset entity.Preset,
-	input []Message) <-chan StreamStruct {
+func (g *Gemini) StreamGenerateContent(ctx context.Context, apiKey, model, proxyUrl string, preset entity.Preset, input []Message) <-chan StreamStruct {
 
 	resultChan := make(chan StreamStruct)
-	log.Debugf("APIKey: %s", apiKey)
 	if apiKey == "" {
 		go func() {
 			resultChan <- StreamStruct{
@@ -93,41 +93,95 @@ func (g *Gemini) StreamGenerateContent(ctx context.Context, apiKey, model string
 	}
 
 	go func() {
-		histories, genConfig := g.buildReq(apiKey, preset, input)
+		histories, genConfig := g.buildReq(preset, input, proxyUrl)
 		client := g.getClient(ctx, apiKey)
-		for content, err := range client.Models.GenerateContentStream(ctx, model, histories, genConfig) {
+		var globalErr error
+		for rsp, err := range client.Models.GenerateContentStream(ctx, model, histories, genConfig) {
 			if err != nil {
-				resultChan <- StreamStruct{
+				log.Errorf("gemini输出失败: %v", err)
+				select {
+				case resultChan <- StreamStruct{
 					Done:  true,
-					Error: errs.NewStandardf(connect.CodeInvalidArgument, "API Key不能为空"),
+					Error: errs.NewStandardf(connect.CodeInternal, "发送消息失败: %v", err),
+				}:
+				case <-ctx.Done():
+					log.Warn("ctx的时间已到!")
 				}
 			}
-			for i, candidate := range content.Candidates {
+			if rsp == nil {
+				log.Warn("Gemini回复的消息为空")
+				continue
+			}
+			rspJson, err := json.Marshal(rsp)
+			if err != nil {
+				log.Warn("序列化gemini 回复失败")
+			}
+			log.Debugf("gemini回复: %s", string(rspJson))
+			for i, candidate := range rsp.Candidates {
+				if candidate == nil {
+					log.Warn("Gemini回复的候选词为空")
+					continue
+				}
+				if candidate.FinishReason != "" && candidate.FinishReason != genai.FinishReasonStop {
+					log.Errorf("Gemini非正常输出: %s", candidate.FinishReason)
+					globalErr = errs.Newf(pb.ErrCode_AIExceptionOutput,
+						"Gemini非正常输出: %s", candidate.FinishReason)
+					break
+				}
 				for _, part := range candidate.Content.Parts {
+					if part == nil {
+						log.Warn("Gemini的candidate.Content.Parts为空")
+						continue
+					}
 					if part.Text != "" {
 						if part.Thought {
 							continue
 						}
-						resultChan <- StreamStruct{
+						select {
+						case resultChan <- StreamStruct{
 							Content: part.Text,
 							Index:   i,
+						}:
+						case <-ctx.Done():
+							log.Warn("ctx的时间已到!")
+							return
 						}
 					}
 				}
 			}
-			resultChan <- StreamStruct{
-				Done: true,
+		}
+		log.Info("gemini输出完毕!")
+
+		// 检测是否是由于上下文取消导致的结束
+		if err := ctx.Err(); err != nil {
+			log.Warnf("gemini输出中断: %v", err)
+			select {
+			case resultChan <- StreamStruct{
+				Done:  true,
+				Error: err,
+			}:
+			case <-time.After(time.Second): // 防止阻塞
 			}
+			return
+		}
+
+		select {
+		case resultChan <- StreamStruct{
+			Done:  true,
+			Error: globalErr,
+		}:
+		case <-ctx.Done():
+			log.Warn("ctx的时间已到!")
 		}
 	}()
 
 	return resultChan
 }
 
-func (g *Gemini) buildReq(apiKey string, preset entity.Preset, input []Message) (
+func (g *Gemini) buildReq(preset entity.Preset, input []Message, proxyUrl string) (
 	histories []*genai.Content, genConfig *genai.GenerateContentConfig) {
 
-	histories = make([]*genai.Content, len(input))
+	histories = make([]*genai.Content, 0, len(input))
 	for _, message := range input {
 		role := genai.RoleUser
 		if message.Role == pb.Role_Assistant {
@@ -138,13 +192,14 @@ func (g *Gemini) buildReq(apiKey string, preset entity.Preset, input []Message) 
 
 	topK := float32(preset.TopK)
 	genConfig = &genai.GenerateContentConfig{
-		Temperature:      &preset.Temperature,
-		TopP:             &preset.TopP,
-		TopK:             &topK,
-		CandidateCount:   int32(preset.CandidateCount),
-		PresencePenalty:  &preset.PresencePenalty,
-		FrequencyPenalty: &preset.FrequencyPenalty,
-		SafetySettings:   DefaultSafeSetting,
+		Temperature:    &preset.Temperature,
+		TopP:           &preset.TopP,
+		TopK:           &topK,
+		CandidateCount: int32(preset.CandidateCount),
+		//PresencePenalty:  &preset.PresencePenalty,
+		//FrequencyPenalty: &preset.FrequencyPenalty,
+		SafetySettings: DefaultSafeSetting,
+		HTTPOptions:    &genai.HTTPOptions{BaseURL: proxyUrl},
 	}
 	return
 }

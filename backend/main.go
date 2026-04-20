@@ -29,7 +29,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("加载配置失败: %v", err)
 	}
-	setLogLevel(cfg.LogLevel)
+	initLogger(cfg.LogLevel)
 
 	// 初始化数据库连接
 	if err = config.InitDatabase(&cfg.Database); err != nil {
@@ -99,8 +99,8 @@ func main() {
 	server := &http.Server{
 		Addr:         cfg.Server.Address(),
 		Handler:      handler,
-		ReadTimeout:  30 * time.Second,
-		WriteTimeout: 30 * time.Second,
+		ReadTimeout:  120 * time.Second, // 流式接口需要关闭或调大超时
+		WriteTimeout: 120 * time.Second,
 		IdleTimeout:  120 * time.Second,
 	}
 
@@ -130,21 +130,16 @@ func main() {
 	log.Info("服务器已关闭")
 }
 
-func setLogLevel(level string) {
-	switch level {
-	case "debug":
-		log.SetLevel(log.DebugLevel)
-	case "info":
+func initLogger(levelString string) {
+	log.SetFormatter(&log.TextFormatter{
+		FullTimestamp:   true,
+		TimestampFormat: "2006-01-02 15:04:05",
+		ForceColors:     true, // 强制开启颜色显示
+	})
+	level, err := log.ParseLevel(levelString)
+	if err != nil {
 		log.SetLevel(log.InfoLevel)
-	case "warn":
-		log.SetLevel(log.WarnLevel)
-	case "error":
-		log.SetLevel(log.ErrorLevel)
-	case "fatal":
-		log.SetLevel(log.FatalLevel)
-	case "panic":
-		log.SetLevel(log.PanicLevel)
-	default:
-		log.SetLevel(log.InfoLevel)
+		return
 	}
+	log.SetLevel(level)
 }

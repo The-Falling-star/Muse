@@ -92,6 +92,42 @@ const handleDeleteApiConfig = async (config: APIConfigWithEdit) => {
   }
 }
 
+const proxyUrl = ref<string|undefined>(userStore.currentUser?.proxyUrl)
+let proxyUrlUpdateTimer: ReturnType<typeof setTimeout> | null = null;
+const isProxyUrlValid = ref<boolean>(true)
+const updateProxyUrl = (proxyUrl: string) => {
+  isProxyUrlValid.value = checkProxyUrl(proxyUrl)
+  if (!isProxyUrlValid.value) {
+    console.info("proxyUrl的检验结果: ", isProxyUrlValid.value)
+    return
+  }
+  if (proxyUrlUpdateTimer) {
+    clearTimeout(proxyUrlUpdateTimer)
+  }
+  proxyUrlUpdateTimer = setTimeout(async () => {
+    const curUser = userStore.currentUser;
+    if (!curUser) {
+      console.warn("用户未登录, 请先登录")
+      return
+    }
+    await userClient.updateUserInfo({
+      proxyUrl: proxyUrl
+    })
+    console.info("更新代理Url成功")
+  }, 1000)
+}
+
+const checkProxyUrl = (proxyUrl: string): boolean => {
+  try {
+    const url = new URL(proxyUrl);
+    return url.protocol === 'http:' || url.protocol === 'https:'
+  } catch (err) {
+    console.warn("proxyUrl非法")
+    return false
+  }
+}
+
+
 </script>
 
 <template>
@@ -210,6 +246,19 @@ const handleDeleteApiConfig = async (config: APIConfigWithEdit) => {
         </div>
       </n-tab-pane>
     </n-tabs>
+    <br>
+    <div class="section-label">API 连接</div>
+    <div class="settings-item" style="margin-top: 12px">
+      <div class="item-label">代理地址</div>
+      <n-input
+          v-model:value="proxyUrl"
+          placeholder="https://proxy.example.com"
+          size="small"
+          class="item-control"
+          @input="updateProxyUrl"
+          :status="isProxyUrlValid ? 'success':'error'"
+      />
+    </div>
   </div>
 </template>
 
@@ -257,11 +306,20 @@ const handleDeleteApiConfig = async (config: APIConfigWithEdit) => {
   margin-top: 4px;
 }
 
-:deep(.n-list-item) {
-  padding: 4px 0;
+.settings-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-:deep(.n-list) {
-  background-color: transparent;
+.item-label {
+  font-size: 14px;
+  color: var(--text-primary);
+  white-space: nowrap;
 }
+
+.item-control {
+  flex: 1;
+}
+
 </style>

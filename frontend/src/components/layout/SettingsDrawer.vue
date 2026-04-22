@@ -44,20 +44,6 @@
           </div>
         </div>
 
-        <!-- API 连接 -->
-        <div class="settings-group">
-          <div class="group-title">API 连接</div>
-          <div class="settings-item" style="margin-top: 12px">
-            <div class="item-label">代理地址</div>
-            <n-input
-              v-model:value="proxyUrl"
-              placeholder="https://proxy.example.com"
-              size="small"
-              class="item-control"
-            />
-          </div>
-        </div>
-
         <!-- 对话设置 -->
         <div class="settings-group">
           <div class="group-title">对话设置</div>
@@ -119,7 +105,6 @@ import {
   NDrawer,
   NDrawerContent,
   NSelect,
-  NInput,
   NInputNumber,
   NSwitch,
   NButton,
@@ -174,8 +159,6 @@ const fontSizeOptions = [
   { label: '特大 (18px)', value: '18' }
 ];
 
-// ====== API 连接 ======
-const proxyUrl = ref('');
 // ====== 对话设置 ======
 const showGreeting = ref(true);
 const historyCount = ref(20);
@@ -252,55 +235,6 @@ const handleLogout = () => {
   flex-shrink: 0;
 }
 
-/* ====== API 配置列表 ====== */
-.api-config-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.api-config-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
-  transition: background-color 150ms;
-}
-
-.api-config-item:hover {
-  background: var(--bg-hover);
-}
-
-.api-config-item.active {
-  background: var(--bg-active);
-  border-color: var(--color-primary);
-}
-
-.config-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.config-name {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.config-type {
-  font-size: 11px;
-  color: var(--text-tertiary);
-  margin-top: 2px;
-}
-
-.empty-state {
-  padding: 16px 0;
-}
 
 /* ====== 账号管理 ====== */
 .user-info {

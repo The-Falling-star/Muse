@@ -1372,16 +1372,14 @@ func (x *GetUserInfoResponse) GetUser() *SysUser {
 
 // 更新用户信息请求
 type UpdateUserInfoRequest struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	Theme          Theme                  `protobuf:"varint,1,opt,name=theme,proto3,enum=muse.Theme" json:"theme,omitempty"`
-	Language       string                 `protobuf:"bytes,2,opt,name=language,proto3" json:"language,omitempty"`
-	SendOnEnter    bool                   `protobuf:"varint,3,opt,name=send_on_enter,json=sendOnEnter,proto3" json:"send_on_enter,omitempty"`
-	ShowTimestamps bool                   `protobuf:"varint,4,opt,name=show_timestamps,json=showTimestamps,proto3" json:"show_timestamps,omitempty"`
-	Provider       APIProvider            `protobuf:"varint,5,opt,name=provider,proto3,enum=muse.APIProvider" json:"provider,omitempty"`
-	Model          string                 `protobuf:"bytes,6,opt,name=model,proto3" json:"model,omitempty"`
-	ProxyUrl       string                 `protobuf:"bytes,7,opt,name=proxy_url,json=proxyUrl,proto3" json:"proxy_url,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Theme         *Theme                 `protobuf:"varint,1,opt,name=theme,proto3,enum=muse.Theme,oneof" json:"theme,omitempty"`
+	Language      *string                `protobuf:"bytes,2,opt,name=language,proto3,oneof" json:"language,omitempty"`
+	Provider      *APIProvider           `protobuf:"varint,5,opt,name=provider,proto3,enum=muse.APIProvider,oneof" json:"provider,omitempty"`
+	Model         *string                `protobuf:"bytes,6,opt,name=model,proto3,oneof" json:"model,omitempty"`
+	ProxyUrl      *string                `protobuf:"bytes,7,opt,name=proxy_url,json=proxyUrl,proto3,oneof" json:"proxy_url,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *UpdateUserInfoRequest) Reset() {
@@ -1415,50 +1413,36 @@ func (*UpdateUserInfoRequest) Descriptor() ([]byte, []int) {
 }
 
 func (x *UpdateUserInfoRequest) GetTheme() Theme {
-	if x != nil {
-		return x.Theme
+	if x != nil && x.Theme != nil {
+		return *x.Theme
 	}
 	return Theme_Auto
 }
 
 func (x *UpdateUserInfoRequest) GetLanguage() string {
-	if x != nil {
-		return x.Language
+	if x != nil && x.Language != nil {
+		return *x.Language
 	}
 	return ""
 }
 
-func (x *UpdateUserInfoRequest) GetSendOnEnter() bool {
-	if x != nil {
-		return x.SendOnEnter
-	}
-	return false
-}
-
-func (x *UpdateUserInfoRequest) GetShowTimestamps() bool {
-	if x != nil {
-		return x.ShowTimestamps
-	}
-	return false
-}
-
 func (x *UpdateUserInfoRequest) GetProvider() APIProvider {
-	if x != nil {
-		return x.Provider
+	if x != nil && x.Provider != nil {
+		return *x.Provider
 	}
 	return APIProvider_APIProviderUnspecified
 }
 
 func (x *UpdateUserInfoRequest) GetModel() string {
-	if x != nil {
-		return x.Model
+	if x != nil && x.Model != nil {
+		return *x.Model
 	}
 	return ""
 }
 
 func (x *UpdateUserInfoRequest) GetProxyUrl() string {
-	if x != nil {
-		return x.ProxyUrl
+	if x != nil && x.ProxyUrl != nil {
+		return *x.ProxyUrl
 	}
 	return ""
 }
@@ -2151,15 +2135,19 @@ const file_muse_user_proto_rawDesc = "" +
 	"\x18SetActivePersonaResponse\"\x14\n" +
 	"\x12GetUserInfoRequest\"8\n" +
 	"\x13GetUserInfoResponse\x12!\n" +
-	"\x04user\x18\x01 \x01(\v2\r.muse.SysUserR\x04user\"\x85\x02\n" +
-	"\x15UpdateUserInfoRequest\x12!\n" +
-	"\x05theme\x18\x01 \x01(\x0e2\v.muse.ThemeR\x05theme\x12\x1a\n" +
-	"\blanguage\x18\x02 \x01(\tR\blanguage\x12\"\n" +
-	"\rsend_on_enter\x18\x03 \x01(\bR\vsendOnEnter\x12'\n" +
-	"\x0fshow_timestamps\x18\x04 \x01(\bR\x0eshowTimestamps\x12-\n" +
-	"\bprovider\x18\x05 \x01(\x0e2\x11.muse.APIProviderR\bprovider\x12\x14\n" +
-	"\x05model\x18\x06 \x01(\tR\x05model\x12\x1b\n" +
-	"\tproxy_url\x18\a \x01(\tR\bproxyUrl\"\x18\n" +
+	"\x04user\x18\x01 \x01(\v2\r.muse.SysUserR\x04user\"\x8d\x02\n" +
+	"\x15UpdateUserInfoRequest\x12&\n" +
+	"\x05theme\x18\x01 \x01(\x0e2\v.muse.ThemeH\x00R\x05theme\x88\x01\x01\x12\x1f\n" +
+	"\blanguage\x18\x02 \x01(\tH\x01R\blanguage\x88\x01\x01\x122\n" +
+	"\bprovider\x18\x05 \x01(\x0e2\x11.muse.APIProviderH\x02R\bprovider\x88\x01\x01\x12\x19\n" +
+	"\x05model\x18\x06 \x01(\tH\x03R\x05model\x88\x01\x01\x12 \n" +
+	"\tproxy_url\x18\a \x01(\tH\x04R\bproxyUrl\x88\x01\x01B\b\n" +
+	"\x06_themeB\v\n" +
+	"\t_languageB\v\n" +
+	"\t_providerB\b\n" +
+	"\x06_modelB\f\n" +
+	"\n" +
+	"_proxy_url\"\x18\n" +
 	"\x16UpdateUserInfoResponse\"F\n" +
 	"\x15ListAPIConfigsRequest\x12-\n" +
 	"\bprovider\x18\x01 \x01(\x0e2\x11.muse.APIProviderR\bprovider\"C\n" +
@@ -2340,6 +2328,7 @@ func file_muse_user_proto_init() {
 	file_muse_common_proto_init()
 	file_muse_user_proto_msgTypes[15].OneofWrappers = []any{}
 	file_muse_user_proto_msgTypes[17].OneofWrappers = []any{}
+	file_muse_user_proto_msgTypes[25].OneofWrappers = []any{}
 	file_muse_user_proto_msgTypes[31].OneofWrappers = []any{}
 	file_muse_user_proto_msgTypes[38].OneofWrappers = []any{}
 	type x struct{}

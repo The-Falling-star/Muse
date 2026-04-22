@@ -228,13 +228,7 @@ const updateUserProvider = async (value: APIProvider) => {
   const updatedUser = { ...curUser, provider: value, model: '' };
   userStore.setCurrentUser(updatedUser);
   await userClient.updateUserInfo({
-    theme: updatedUser.theme,
-    language: updatedUser.language,
-    sendOnEnter: updatedUser.sendOnEnter,
-    showTimestamps: updatedUser.showTimestamps,
     provider: updatedUser.provider,
-    model: updatedUser.model,
-    proxyUrl: updatedUser.proxyUrl
   })
 };
 
@@ -268,13 +262,7 @@ const updateUserModel = (value: string) => {
     const updatedUser = { ...curUser, model: curModel.value };
     userStore.setCurrentUser(updatedUser);
     await userClient.updateUserInfo({
-      theme: updatedUser.theme,
-      language: updatedUser.language,
-      sendOnEnter: updatedUser.sendOnEnter,
-      showTimestamps: updatedUser.showTimestamps,
-      provider: updatedUser.provider,
       model: updatedUser.model,
-      proxyUrl: updatedUser.proxyUrl
     })
   }, 1000);
 };

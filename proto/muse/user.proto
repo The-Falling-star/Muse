@@ -171,13 +171,11 @@ message GetUserInfoResponse {
 
 // 更新用户信息请求
 message UpdateUserInfoRequest {
-  Theme theme = 1;
-  string language = 2;
-  bool send_on_enter = 3;
-  bool show_timestamps = 4;
-  APIProvider provider = 5;
-  string model = 6;
-  string proxy_url = 7;
+  optional Theme theme = 1;
+  optional string language = 2;
+  optional APIProvider provider = 5;
+  optional string model = 6;
+  optional string proxy_url = 7;
 }
 
 // 更新用户信息响应

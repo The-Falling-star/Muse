@@ -359,13 +359,21 @@ func (u *userImpl) UpdateUserInfo(ctx context.Context, req *pb.UpdateUserInfoReq
 	}
 
 	// 更新用户信息字段
-	user.Theme = req.GetTheme()
-	user.Language = req.GetLanguage()
-	user.SendOnEnter = req.GetSendOnEnter()
-	user.ShowTimestamps = req.GetShowTimestamps()
-	user.Provider = req.GetProvider()
-	user.Model = req.GetModel()
-	user.ProxyUrl = req.GetProxyUrl()
+	if req.Theme != nil {
+		user.Theme = req.GetTheme()
+	}
+	if req.Language != nil {
+		user.Language = req.GetLanguage()
+	}
+	if req.Provider != nil {
+		user.Provider = req.GetProvider()
+	}
+	if req.Model != nil {
+		user.Model = req.GetModel()
+	}
+	if req.ProxyUrl != nil {
+		user.ProxyUrl = req.GetProxyUrl()
+	}
 
 	if err = u.userRepo.Update(ctx, user); err != nil {
 		return nil, err

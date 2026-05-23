@@ -19,6 +19,8 @@ require (
 	gorm.io/gorm v1.31.1
 )
 
+require github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da
+
 require (
 	cloud.google.com/go v0.116.0 // indirect
 	cloud.google.com/go/auth v0.9.3 // indirect
@@ -32,7 +34,6 @@ require (
 	github.com/go-errors/errors v1.1.1 // indirect
 	github.com/go-sql-driver/mysql v1.8.1 // indirect
 	github.com/golang/geo v0.0.0-20200319012246-673a6f80352d // indirect
-	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/google/s2a-go v0.1.8 // indirect
 	github.com/google/uuid v1.6.0 // indirect

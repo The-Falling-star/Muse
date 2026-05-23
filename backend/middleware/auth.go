@@ -98,7 +98,6 @@ func Auth(ctx context.Context, accessToken string) (context.Context, error) {
 
 	// 将用户ID存入 context
 	ctx = context.WithValue(ctx, constant.UserIDKey, claims.UserID)
-	log.Debugf("user id: %d", claims.UserID)
 
 	return ctx, nil
 }

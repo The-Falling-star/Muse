@@ -24,9 +24,9 @@ const (
 // UploadFileRequest 上传文件请求
 type UploadFileRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	FileContent   []byte                 `protobuf:"bytes,1,opt,name=file_content,json=fileContent,proto3" json:"file_content,omitempty"` // 文件内容
-	FileName      string                 `protobuf:"bytes,2,opt,name=file_name,json=fileName,proto3" json:"file_name,omitempty"`          // 文件名
-	FileType      string                 `protobuf:"bytes,3,opt,name=file_type,json=fileType,proto3" json:"file_type,omitempty"`          // 文件类型（如 "avatar"）
+	FileContent   []byte                 `protobuf:"bytes,1,opt,name=file_content,json=fileContent,proto3" json:"file_content,omitempty"`            // 文件内容
+	FileName      string                 `protobuf:"bytes,2,opt,name=file_name,json=fileName,proto3" json:"file_name,omitempty"`                     // 文件名
+	FileType      FileType               `protobuf:"varint,3,opt,name=file_type,json=fileType,proto3,enum=muse.FileType" json:"file_type,omitempty"` // 文件类型
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -75,11 +75,11 @@ func (x *UploadFileRequest) GetFileName() string {
 	return ""
 }
 
-func (x *UploadFileRequest) GetFileType() string {
+func (x *UploadFileRequest) GetFileType() FileType {
 	if x != nil {
 		return x.FileType
 	}
-	return ""
+	return FileType_UploadFileTypeUnspecified
 }
 
 // UploadFileResponse 上传文件响应
@@ -237,11 +237,11 @@ var File_muse_file_proto protoreflect.FileDescriptor
 
 const file_muse_file_proto_rawDesc = "" +
 	"\n" +
-	"\x0fmuse/file.proto\x12\x04muse\"p\n" +
+	"\x0fmuse/file.proto\x12\x04muse\x1a\x11muse/common.proto\"\x80\x01\n" +
 	"\x11UploadFileRequest\x12!\n" +
 	"\ffile_content\x18\x01 \x01(\fR\vfileContent\x12\x1b\n" +
-	"\tfile_name\x18\x02 \x01(\tR\bfileName\x12\x1b\n" +
-	"\tfile_type\x18\x03 \x01(\tR\bfileType\"1\n" +
+	"\tfile_name\x18\x02 \x01(\tR\bfileName\x12+\n" +
+	"\tfile_type\x18\x03 \x01(\x0e2\x0e.muse.FileTypeR\bfileType\"1\n" +
 	"\x12UploadFileResponse\x12\x1b\n" +
 	"\tfile_path\x18\x01 \x01(\tR\bfilePath\"2\n" +
 	"\x13DownloadFileRequest\x12\x1b\n" +
@@ -274,17 +274,19 @@ var file_muse_file_proto_goTypes = []any{
 	(*UploadFileResponse)(nil),   // 1: muse.UploadFileResponse
 	(*DownloadFileRequest)(nil),  // 2: muse.DownloadFileRequest
 	(*DownloadFileResponse)(nil), // 3: muse.DownloadFileResponse
+	(FileType)(0),                // 4: muse.FileType
 }
 var file_muse_file_proto_depIdxs = []int32{
-	0, // 0: muse.FileService.UploadFile:input_type -> muse.UploadFileRequest
-	2, // 1: muse.FileService.DownloadFile:input_type -> muse.DownloadFileRequest
-	1, // 2: muse.FileService.UploadFile:output_type -> muse.UploadFileResponse
-	3, // 3: muse.FileService.DownloadFile:output_type -> muse.DownloadFileResponse
-	2, // [2:4] is the sub-list for method output_type
-	0, // [0:2] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	4, // 0: muse.UploadFileRequest.file_type:type_name -> muse.FileType
+	0, // 1: muse.FileService.UploadFile:input_type -> muse.UploadFileRequest
+	2, // 2: muse.FileService.DownloadFile:input_type -> muse.DownloadFileRequest
+	1, // 3: muse.FileService.UploadFile:output_type -> muse.UploadFileResponse
+	3, // 4: muse.FileService.DownloadFile:output_type -> muse.DownloadFileResponse
+	3, // [3:5] is the sub-list for method output_type
+	1, // [1:3] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_muse_file_proto_init() }
@@ -292,6 +294,7 @@ func file_muse_file_proto_init() {
 	if File_muse_file_proto != nil {
 		return
 	}
+	file_muse_common_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

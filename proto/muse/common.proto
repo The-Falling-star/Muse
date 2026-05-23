@@ -77,6 +77,13 @@ enum SortOperation {
     Next = 2; //后
 }
 
+// FileType 文件类型枚举
+enum FileType {
+  UploadFileTypeUnspecified = 0;
+  CharAvatar = 1;
+  PersonaAvatar = 2;
+}
+
 // ================================
 // 公共配置（无需认证）
 // ================================

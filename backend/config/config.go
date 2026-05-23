@@ -18,7 +18,7 @@ type Config struct {
 	Auth            AuthConfig          `yaml:"auth"`
 	APIEncrypt      APIEncryptConfig    `yaml:"api_encrypt"`
 	StaticFile      StaticFileConfig    `yaml:"static_file"`
-	File            FileConfig          `yaml:"file"`
+	File            FileConfig          `yaml:"files"`
 	LogLevel        string              `yaml:"log_level" env:"LOG_LEVEL"`
 	Chat            ChatConfig          `yaml:"chat"`
 	CandidateModels map[string][]string `yaml:"candidate_models"`

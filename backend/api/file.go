@@ -24,10 +24,11 @@ func NewFileServer() *FileServer {
 func (f *FileServer) UploadFile(ctx context.Context, req *connect.Request[pb.UploadFileRequest]) (
 	*connect.Response[pb.UploadFileResponse], error) {
 	resp, err := f.file.UploadFile(ctx, req.Msg)
+	req.Msg.FileContent = nil
 	if err != nil {
-		return doResponseExp(ctx, "UploadFile", &req.Msg.FileName, resp, err)
+		return doResponseExp(ctx, "UploadFile", req, resp, err)
 	}
-	return doResponse(ctx, "UploadFile", req.Msg, resp)
+	return doResponse(ctx, "UploadFile", req, resp)
 }
 
 // DownloadFile 下载文件

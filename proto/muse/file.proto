@@ -4,6 +4,8 @@ package muse;
 
 option go_package = "github.com/ling/muse/gen/muse;muse";
 
+import "muse/common.proto";
+
 // ================================
 // 文件服务相关消息
 // ================================
@@ -12,7 +14,7 @@ option go_package = "github.com/ling/muse/gen/muse;muse";
 message UploadFileRequest {
   bytes file_content = 1;     // 文件内容
   string file_name = 2;       // 文件名
-  string file_type = 3;       // 文件类型（如 "avatar"）
+  FileType file_type = 3; // 文件类型
 }
 
 // UploadFileResponse 上传文件响应

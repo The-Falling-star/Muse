@@ -202,6 +202,9 @@ import sql from 'highlight.js/lib/languages/sql';
 import DOMPurify from 'dompurify';
 
 import type { Character } from '@/gen/muse/character_pb';
+import {MACRO_CHAR, MACRO_USER} from "@/utils/constants.ts";
+import {useUserStore} from "@/stores/user.ts";
+import {useCharacterStore} from "@/stores/character.ts";
 
 // 消息 Swipe 类型
 interface MessageSwipe {
@@ -317,6 +320,8 @@ const editContent = ref('');
 // 动画状态
 const swipeDirection = ref<'left' | 'right' | null>(null);
 const isAnimating = ref(false);
+const userStore = useUserStore();
+const charStore = useCharacterStore();
 
 // 监听 swipe 变化，触发动画
 watch(() => props.message.currentSwipeIndex, (newIndex, oldIndex) => {
@@ -436,9 +441,29 @@ const formatTime = (timestamp: number) => {
 };
 
 // 使用 marked + DOMPurify 安全渲染 Markdown
-const formattedContent = computed(() => {
-  const raw = currentContent.value;
+const formattedContent = computed( () => {
+  let raw = currentContent.value;
   if (!raw) return '';
+  // 替换宏
+  MACRO_USER.forEach(macro => {
+    const userName = userStore.personas.find(persona => persona.id === userStore.currentUser?.activePersonaId)?.name;
+    if (userName) {
+      raw = raw.replaceAll(macro, userName);
+    }
+  });
+
+  MACRO_CHAR.forEach(async macro => {
+    const curCharId = charStore.curCharId;
+    if (!curCharId) {
+      return;
+    }
+    const curChar = await charStore.getCharDetail(curCharId);
+    const charName = curChar?.name;
+    if (charName) {
+      raw = raw.replaceAll(macro, charName!);
+    }
+  })
+
   // 使用 marked 解析 markdown，然后用 DOMPurify 清理 XSS
   const html = marked.parse(raw) as string;
   return DOMPurify.sanitize(html);

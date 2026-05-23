@@ -91,11 +91,6 @@ export const useUserStore = defineStore('user', () => {
   // 人设状态管理
   // =====================
 
-  // 设置人设列表
-  const setPersonas = (list: Persona[]) => {
-    personas.value = list;
-  };
-
   // 添加人设
   const addPersona = (persona: Persona) => {
     personas.value.push(persona);
@@ -196,7 +191,6 @@ export const useUserStore = defineStore('user', () => {
     logout,
 
     // 人设方法
-    setPersonas,
     addPersona,
     updatePersonaInList,
     removePersona,

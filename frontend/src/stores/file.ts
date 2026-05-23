@@ -1,6 +1,7 @@
 import {defineStore} from 'pinia';
 import {computed, ref} from 'vue';
 import {fileClient} from '@/api/client';
+import type {FileType} from "@/gen/muse/common_pb.ts";
 
 /**
  * 文件 Store
@@ -83,7 +84,7 @@ export const useFileStore = defineStore('file', () => {
   const uploadFile = async (
     file: File | Blob,
     fileName: string,
-    fileType: string = 'general'
+    fileType: FileType
   ): Promise<string> => {
     const fileContent = file instanceof File
       ? await file.arrayBuffer()
@@ -105,7 +106,7 @@ export const useFileStore = defineStore('file', () => {
   const uploadAndGetUrl = async (
     file: File | Blob,
     fileName: string,
-    fileType: string = 'general'
+    fileType: FileType
   ): Promise<string> => {
     const filePath = await uploadFile(file, fileName, fileType);
     return getFileUrl(filePath);

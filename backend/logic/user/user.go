@@ -2,6 +2,8 @@ package user
 
 import (
 	"context"
+	"fmt"
+	"path/filepath"
 	"strings"
 
 	"connectrpc.com/connect"
@@ -9,11 +11,13 @@ import (
 	"github.com/ling/muse/common/convert"
 	"github.com/ling/muse/common/crypto"
 	"github.com/ling/muse/common/errs"
+	"github.com/ling/muse/common/fileutil"
 	"github.com/ling/muse/common/jwt"
 	"github.com/ling/muse/config"
 	"github.com/ling/muse/entity"
 	pb "github.com/ling/muse/gen/muse"
 	"github.com/ling/muse/repo/database"
+	log "github.com/sirupsen/logrus"
 )
 
 type userImpl struct {
@@ -268,6 +272,12 @@ func (u *userImpl) UpdatePersona(ctx context.Context, req *pb.UpdatePersonaReque
 	// 更新人设字段
 	persona.Name = name
 	if req.Avatar != nil {
+		if persona.Avatar != *req.Avatar {
+			avatarPath := filepath.Join(config.Get().File.UploadPath, fmt.Sprintf("%d", userID), persona.Avatar)
+			if err = fileutil.DeleteAvatarFile(avatarPath); err != nil {
+				log.Warnf("删除用户头像文件失败: %v", err)
+			}
+		}
 		persona.Avatar = *req.Avatar
 	}
 	if req.Description != nil {

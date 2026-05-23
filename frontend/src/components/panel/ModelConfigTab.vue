@@ -15,7 +15,12 @@
       </div>
       <div class="config-section">
         <div class="section-label">模型供应商: </div>
-        <n-select v-model:value="curProvider" :options="providers" @update:value="updateUserProvider" clearable/>
+        <n-select
+            v-model:value="curProvider"
+            :options="providers"
+            @update:value="updateUserProvider"
+            placeholder="选择供应商"
+            clearable/>
         <div class="section-label">模型: </div>
         <n-auto-complete v-model:value="curModel"
                          size="small"
@@ -291,7 +296,7 @@ const syncFromPreset = (preset: PresetWithAll) => {
 // 加载活跃预设
 const loadActivePreset = async () => {
   const activePresetId = userStore.currentUser?.activePresetId;
-  console.log('activePresetId:', activePresetId)
+  console.debug('activePresetId:', activePresetId)
   if (!activePresetId) {
     activePreset.value = null;
     return;

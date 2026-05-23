@@ -250,7 +250,7 @@ import {DEFAULT_PAGE_NUM, DEFAULT_PAGE_SIZE} from '@/utils/constants.ts';
 const router = useRouter();
 const appStore = useAppStore();
 const chatStore = useChatStore();
-const characterStore = useCharacterStore();
+const charStore = useCharacterStore();
 const fileStore = useFileStore();
 const message = useMessage();
 const dialog = useDialog();
@@ -287,11 +287,11 @@ const loadSessions = async () => {
 };
 
 const loadCharacters = async () => {
-  if (characterStore.hasCached) {
+  if (charStore.hasCached) {
     return;
   }
     const response = await characterClient.listCharacters({page: DEFAULT_PAGE_NUM, pageSize: DEFAULT_PAGE_SIZE});
-    characterStore.setCharacters(response.characters, response.total);
+    charStore.setCharacters(response.characters, response.total);
     
     // 预加载角色头像
     const avatarPaths = response.characters
@@ -360,7 +360,7 @@ const filteredGroupedSessions = computed(() => {
 });
 
 const filteredCharacters = computed(() => {
-  let chars = characterStore.characters;
+  let chars = charStore.characters;
   if (characterSearchQuery.value) {
     const query = characterSearchQuery.value.toLowerCase();
     chars = chars.filter(c =>
@@ -390,6 +390,7 @@ const handleSelectSession = async (session: ChatSession) => {
     }
   }
   chatStore.setActiveSession(session);
+  charStore.setCurCharId(session.characterId)
   // 更新会话访问时间
   try {
     await chatClient.updateSessionTime({sessionId: session.id})
@@ -487,6 +488,7 @@ const handleSelectCharacter = async (char: Character) => {
   if (response.session) {
     chatStore.addSession(response.session);
     chatStore.setActiveSession(response.session);
+    charStore.setCurCharId(char.id)
     try {
       await chatClient.updateSessionTime({sessionId: response.session.id})
     } catch (e) {
@@ -523,7 +525,7 @@ const handleImportCharacter = () => {
           fileName: file.name
         });
         if (response.character) {
-          characterStore.addCharacter(response.character);
+          charStore.addCharacter(response.character);
           fileStore.preloadFile(response.character.avatar)
           successCount++;
         } else {
@@ -581,7 +583,7 @@ const handleCharacterMenuSelect = (key: string) => {
         onPositiveClick: async () => {
           try {
             await characterClient.deleteCharacter({id: char.id});
-            characterStore.removeCharacter(char.id);
+            charStore.removeCharacter(char.id);
             chatStore.removeCharSession(char.id)
             message.success('角色已删除');
           } catch {

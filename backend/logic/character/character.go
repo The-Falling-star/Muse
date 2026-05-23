@@ -15,6 +15,7 @@ import (
 	"github.com/ling/muse/common/constant"
 	"github.com/ling/muse/common/convert"
 	"github.com/ling/muse/common/errs"
+	"github.com/ling/muse/common/fileutil"
 	"github.com/ling/muse/common/jwt"
 	"github.com/ling/muse/config"
 	"github.com/ling/muse/entity"
@@ -281,15 +282,15 @@ func (c *characterImpl) ImportCharacter(ctx context.Context, req *pb.ImportChara
 
 	// 保存头像到文件系统
 	if len(avatarData) > 0 {
-		avatarPath, saveErr := file.SaveAvatarFile(ctx, userId, character.ID, character.Name, avatarData)
+		avatarPath, saveErr := fileutil.SaveAvatarFile(ctx, userId, character.ID, character.Name, avatarData, pb.FileType_CharAvatar)
 		if saveErr != nil {
 			return nil, errs.NewStandardf(connect.CodeInternal, "保存头像文件失败: %v", saveErr)
 		}
 		// 更新角色的Avatar字段
 		character.Avatar = avatarPath
 		if updateErr := c.charRepo.Update(ctx, character); updateErr != nil {
-			if err = file.DeleteAvatarFile(file.BuildAvatarURL(config.Get().File.UploadPath,
-				userId, character.ID, character.Name)); err != nil {
+			if err = fileutil.DeleteAvatarFile(fileutil.BuildAvatarURL(config.Get().File.UploadPath,
+				userId, character.ID, character.Name, pb.FileType_CharAvatar)); err != nil {
 				log.Warnf("删除头像文件失败: %v", err)
 			}
 			return nil, errs.NewStandardf(connect.CodeInternal, "更新角色头像路径失败: %v", err)
@@ -358,13 +359,13 @@ func readFromPNG(data []byte) (*sillytavern.CharacterCard, []byte, error) {
 	pmp := png.NewPngMediaParser()
 	mc, err := pmp.ParseBytes(data)
 	if err != nil {
-		return nil, nil, fmt.Errorf("invalid PNG file: signature mismatch: %v", err)
+		return nil, nil, fmt.Errorf("invalid PNG files: signature mismatch: %v", err)
 	}
 
 	// 类型断言为ChunkSlice
 	cs, ok := mc.(*png.ChunkSlice)
 	if !ok {
-		return nil, nil, fmt.Errorf("invalid PNG file: not a chunk slice")
+		return nil, nil, fmt.Errorf("invalid PNG files: not a chunk slice")
 	}
 
 	// 获取所有Chunk
@@ -448,13 +449,13 @@ func WriteToPNG(originalPNG []byte, card *sillytavern.CharacterCard) ([]byte, er
 	pmp := png.NewPngMediaParser()
 	mc, err := pmp.ParseBytes(originalPNG)
 	if err != nil {
-		return nil, fmt.Errorf("invalid PNG file: signature mismatch: %v", err)
+		return nil, fmt.Errorf("invalid PNG files: signature mismatch: %v", err)
 	}
 
 	// 类型断言为ChunkSlice
 	cs, ok := mc.(*png.ChunkSlice)
 	if !ok {
-		return nil, fmt.Errorf("invalid PNG file: not a chunk slice")
+		return nil, fmt.Errorf("invalid PNG files: not a chunk slice")
 	}
 
 	// 获取所有Chunk并过滤掉旧的角色卡数据

@@ -103,7 +103,7 @@ const fileInputRef = ref<HTMLInputElement | null>(null);
 const presets = computed(() => presetStore.presets);
 
 // 当前活跃预设ID
-const currentPresetId = computed(() => userStore.currentUser?.activePresetId ?? null);
+const currentPresetId = computed(() => userStore.currentUser?.activePresetId || null);
 
 // 下拉选项
 const presetOptions = computed(() =>

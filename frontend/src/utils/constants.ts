@@ -7,3 +7,6 @@ export const MAX_PAGE_SIZE = 100;
 
 // 获取所有数据时的分页大小
 export const FETCH_ALL_PAGE_SIZE = 1000;
+
+export const MACRO_USER = ['{{user}}', '{{User}}', '<user>']
+export const MACRO_CHAR = ['{{char}}', '{{Char}}', '<char>', '<BOT>']

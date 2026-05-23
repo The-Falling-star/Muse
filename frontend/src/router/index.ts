@@ -38,7 +38,7 @@ const routes = [
         name: 'RegexEditor',
         component: () => import('../views/RegexEditorView.vue'),
         meta: { title: '正则编辑' }
-      }
+      },
     ]
   }
 ];

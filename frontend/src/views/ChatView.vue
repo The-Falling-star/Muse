@@ -131,6 +131,7 @@ import type {Persona} from '@/gen/muse/user_pb';
 import {useAvatar} from '@/composables/useAvatar';
 import {ErrCode} from "@/gen/muse/common_pb.ts";
 import {ConnectError} from "@connectrpc/connect";
+import {useCharacterStore} from "@/stores/character.ts";
 
 // 本地Message类型适配
 interface LocalMessage {
@@ -148,6 +149,7 @@ const route = useRoute();
 const messageApi = useMessage();
 const dialog = useDialog();
 const chatStore = useChatStore();
+const charStore = useCharacterStore();
 const userStore = useUserStore();
 
 // 响应式状态
@@ -166,9 +168,14 @@ const inputPlaceholder = computed(() => {
 });
 
 // 当前角色
-const currentCharacter = computed<Character | null>(() => {
-  return chatStore.activeCharacter ?? null;
-});
+const currentCharacter = ref<Character | null>(null);
+watch(() => charStore.curCharId, async (newId) => {
+  if (!newId) {
+    currentCharacter.value = null;
+    return;
+  }
+  currentCharacter.value = await charStore.getCharDetail(newId);
+}, { immediate: true });
 
 // 角色头像URL
 const { avatarUrl: characterAvatarUrl } = useAvatar(computed(() => currentCharacter.value?.avatar));

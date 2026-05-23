@@ -310,7 +310,7 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 		},
 	})
 	messages, err := c.buildMessages(session, promptItems, worldBook, regexRules, persona)
-	//log.Debugf("构建的消息列表: %+v", messages)
+	log.Debugf("构建的消息列表: %+v", messages)
 	if err != nil {
 		return err
 	}

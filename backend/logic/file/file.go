@@ -1,14 +1,12 @@
-// Package file 提供文件服务功能
+// Package files 提供文件服务功能
 package file
 
 import (
-	"bytes"
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
 	"errors"
 	"fmt"
-	"image/png"
 	"mime"
 	"net/http"
 	"os"
@@ -16,23 +14,11 @@ import (
 	"strings"
 
 	"connectrpc.com/connect"
-	"github.com/disintegration/imaging"
 	"github.com/ling/muse/common/errs"
 	"github.com/ling/muse/common/jwt"
 	"github.com/ling/muse/config"
 	pb "github.com/ling/muse/gen/muse"
 	log "github.com/sirupsen/logrus"
-)
-
-// 文件类型目录常量
-const (
-	FileTypeAvatar = "avatar" // 头像文件目录名
-)
-
-// 头像压缩配置
-const (
-	avatarMaxWidth  = 512 // 头像最大宽度
-	avatarMaxHeight = 512 // 头像最大高度
 )
 
 // File 定义了文件服务的接口
@@ -78,7 +64,7 @@ func (f *fileImpl) UploadFile(ctx context.Context, req *pb.UploadFileRequest) (*
 		return nil, errs.NewStandardf(connect.CodeInternal, "保存文件失败: %v", err)
 	}
 
-	relativePath := filepath.Join(fileType, fileName)
+	relativePath := filepath.Join(fileType.String(), fileName)
 	log.Infof("文件上传成功: userId=%d, path=%s", userId, relativePath)
 
 	return &pb.UploadFileResponse{
@@ -94,7 +80,7 @@ func (f *fileImpl) DownloadFile(ctx context.Context, req *pb.DownloadFileRequest
 	}
 
 	userId := jwt.GetUserId(ctx)
-	userDir := getUserDir(userId, "")
+	userDir := getUserDir(userId, pb.FileType_UploadFileTypeUnspecified)
 
 	// 安全校验：确保文件路径在用户目录下
 	absUserDir, err := filepath.Abs(userDir)
@@ -138,11 +124,11 @@ func (f *fileImpl) DownloadFile(ctx context.Context, req *pb.DownloadFileRequest
 }
 
 // getUserDir 获取用户的文件目录
-func getUserDir(userId int, fileType string) string {
+func getUserDir(userId int, fileType pb.FileType) string {
 	cfg := config.Get()
 	basePath := cfg.File.UploadPath
-	if fileType != "" {
-		return filepath.Join(basePath, fmt.Sprintf("%d", userId), fileType)
+	if fileType != pb.FileType_UploadFileTypeUnspecified {
+		return filepath.Join(basePath, fmt.Sprintf("%d", userId), fileType.String())
 	}
 	return filepath.Join(basePath, fmt.Sprintf("%d", userId))
 }
@@ -180,37 +166,6 @@ func ComputeFileHash(data []byte) string {
 	return hex.EncodeToString(hash[:])
 }
 
-// SaveAvatarFile 保存头像文件（自动压缩为PNG格式）
-func SaveAvatarFile(ctx context.Context, userId int, characterId int, characterName string, imageData []byte) (string, error) {
-	cfg := config.Get()
-	avatarDir := filepath.Join(cfg.File.UploadPath, fmt.Sprintf("%d", userId), FileTypeAvatar)
-
-	if err := os.MkdirAll(avatarDir, 0755); err != nil {
-		return "", fmt.Errorf("创建头像目录失败: %w", err)
-	}
-
-	// 压缩图片
-	compressedData, err := compressImage(imageData, avatarMaxWidth, avatarMaxHeight)
-	if err != nil {
-		return "", fmt.Errorf("压缩图片失败: %w", err)
-	}
-
-	// 文件名格式: {character_id}_{character_name}.png
-	fileName := fmt.Sprintf("%d_%s.png", characterId, sanitizeFileName(characterName))
-	filePath := filepath.Join(avatarDir, fileName)
-
-	if err = os.WriteFile(filePath, compressedData, 0644); err != nil {
-		return "", fmt.Errorf("保存头像文件失败: %w", err)
-	}
-
-	// 返回相对路径
-	relativePath := filepath.Join(FileTypeAvatar, fileName)
-	log.Infof("头像保存成功: userId=%d, characterId=%d, path=%s, originalSize=%d, compressedSize=%d",
-		userId, characterId, relativePath, len(imageData), len(compressedData))
-
-	return relativePath, nil
-}
-
 // ReadAvatarFile 读取头像文件
 func ReadAvatarFile(ctx context.Context, userId int, avatarPath string) ([]byte, error) {
 	if avatarPath == "" {
@@ -242,73 +197,4 @@ func ReadAvatarFile(ctx context.Context, userId int, avatarPath string) ([]byte,
 	}
 
 	return data, nil
-}
-
-// DeleteAvatarFile 删除头像文件
-func DeleteAvatarFile(avatarPath string) error {
-	if avatarPath == "" {
-		return nil
-	}
-	if err := os.Remove(avatarPath); err != nil {
-		return fmt.Errorf("删除头像文件失败: %w", err)
-	}
-	return nil
-}
-
-// sanitizeFileName 清理文件名，移除不安全字符
-func sanitizeFileName(name string) string {
-	// 移除路径分隔符和其他不安全字符
-	replacer := strings.NewReplacer(
-		"/", "_",
-		"\\", "_",
-		":", "_",
-		"*", "_",
-		"?", "_",
-		"\"", "_",
-		"<", "_",
-		">", "_",
-		"|", "_",
-		" ", "_",
-	)
-	result := replacer.Replace(name)
-	// 限制长度
-	if len(result) > 50 {
-		result = result[:50]
-	}
-	return result
-}
-
-// compressImage 压缩图片为PNG格式，限制最大尺寸
-func compressImage(data []byte, maxWidth, maxHeight int) ([]byte, error) {
-	// 解码图片
-	img, err := imaging.Decode(bytes.NewReader(data))
-	if err != nil {
-		return nil, fmt.Errorf("解码图片失败: %w", err)
-	}
-
-	// 获取原始尺寸
-	bounds := img.Bounds()
-	origWidth := bounds.Dx()
-	origHeight := bounds.Dy()
-
-	// 如果图片尺寸超过限制，则缩放
-	if origWidth > maxWidth || origHeight > maxHeight {
-		img = imaging.Resize(img, maxWidth, maxHeight, imaging.Lanczos)
-		log.Debugf("图片缩放: %dx%d -> %dx%d", origWidth, origHeight,
-			img.Bounds().Dx(), img.Bounds().Dy())
-	}
-
-	// 编码为PNG
-	var buf bytes.Buffer
-	if err = png.Encode(&buf, img); err != nil {
-		return nil, fmt.Errorf("编码PNG失败: %w", err)
-	}
-
-	return buf.Bytes(), nil
-}
-
-// BuildAvatarURL 构建头像URL
-func BuildAvatarURL(baseUrl string, userId int, characterId int, characterName string) string {
-	return fmt.Sprintf("%s/%d/%s/%d_%s.png", baseUrl, userId, FileTypeAvatar, characterId,
-		sanitizeFileName(characterName))
 }

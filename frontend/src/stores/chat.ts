@@ -30,9 +30,6 @@ export const useChatStore = defineStore('chat', () => {
   // 当前会话ID
   const activeSessionId = computed(() => activeSession.value?.id ?? null);
 
-  // 当前会话的角色信息
-  const activeCharacter = computed(() => activeSession.value?.character ?? null);
-
   // =====================
   // 会话状态管理
   // =====================
@@ -223,7 +220,6 @@ export const useChatStore = defineStore('chat', () => {
     sessions,
     activeSession,
     activeSessionId,
-    activeCharacter,
     messages,
     isStreaming,
 

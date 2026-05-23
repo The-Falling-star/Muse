@@ -462,6 +462,56 @@ func (SortOperation) EnumDescriptor() ([]byte, []int) {
 	return file_muse_common_proto_rawDescGZIP(), []int{7}
 }
 
+// FileType 文件类型枚举
+type FileType int32
+
+const (
+	FileType_UploadFileTypeUnspecified FileType = 0
+	FileType_CharAvatar                FileType = 1
+	FileType_PersonaAvatar             FileType = 2
+)
+
+// Enum value maps for FileType.
+var (
+	FileType_name = map[int32]string{
+		0: "UploadFileTypeUnspecified",
+		1: "CharAvatar",
+		2: "PersonaAvatar",
+	}
+	FileType_value = map[string]int32{
+		"UploadFileTypeUnspecified": 0,
+		"CharAvatar":                1,
+		"PersonaAvatar":             2,
+	}
+)
+
+func (x FileType) Enum() *FileType {
+	p := new(FileType)
+	*p = x
+	return p
+}
+
+func (x FileType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (FileType) Descriptor() protoreflect.EnumDescriptor {
+	return file_muse_common_proto_enumTypes[8].Descriptor()
+}
+
+func (FileType) Type() protoreflect.EnumType {
+	return &file_muse_common_proto_enumTypes[8]
+}
+
+func (x FileType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use FileType.Descriptor instead.
+func (FileType) EnumDescriptor() ([]byte, []int) {
+	return file_muse_common_proto_rawDescGZIP(), []int{8}
+}
+
 // 候选模型列表
 type CandidateModels struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -668,7 +718,12 @@ const file_muse_common_proto_rawDesc = "" +
 	"\rSortOperation\x12\x1d\n" +
 	"\x19OrderOperationUnspecified\x10\x00\x12\a\n" +
 	"\x03Pre\x10\x01\x12\b\n" +
-	"\x04Next\x10\x022_\n" +
+	"\x04Next\x10\x02*L\n" +
+	"\bFileType\x12\x1d\n" +
+	"\x19UploadFileTypeUnspecified\x10\x00\x12\x0e\n" +
+	"\n" +
+	"CharAvatar\x10\x01\x12\x11\n" +
+	"\rPersonaAvatar\x10\x022_\n" +
 	"\rCommonService\x12N\n" +
 	"\x0fGetPublicConfig\x12\x1c.muse.GetPublicConfigRequest\x1a\x1d.muse.GetPublicConfigResponseBf\n" +
 	"\bcom.museB\vCommonProtoP\x01Z\x1dgithub.com/ling/muse/gen/muse\xa2\x02\x03MXX\xaa\x02\x04Muse\xca\x02\x04Muse\xe2\x02\x10Muse\\GPBMetadata\xea\x02\x04Museb\x06proto3"
@@ -685,7 +740,7 @@ func file_muse_common_proto_rawDescGZIP() []byte {
 	return file_muse_common_proto_rawDescData
 }
 
-var file_muse_common_proto_enumTypes = make([]protoimpl.EnumInfo, 8)
+var file_muse_common_proto_enumTypes = make([]protoimpl.EnumInfo, 9)
 var file_muse_common_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_muse_common_proto_goTypes = []any{
 	(ErrCode)(0),                    // 0: muse.ErrCode
@@ -696,15 +751,16 @@ var file_muse_common_proto_goTypes = []any{
 	(Theme)(0),                      // 5: muse.Theme
 	(PromptItemIdentifier)(0),       // 6: muse.PromptItemIdentifier
 	(SortOperation)(0),              // 7: muse.SortOperation
-	(*CandidateModels)(nil),         // 8: muse.CandidateModels
-	(*GetPublicConfigRequest)(nil),  // 9: muse.GetPublicConfigRequest
-	(*GetPublicConfigResponse)(nil), // 10: muse.GetPublicConfigResponse
+	(FileType)(0),                   // 8: muse.FileType
+	(*CandidateModels)(nil),         // 9: muse.CandidateModels
+	(*GetPublicConfigRequest)(nil),  // 10: muse.GetPublicConfigRequest
+	(*GetPublicConfigResponse)(nil), // 11: muse.GetPublicConfigResponse
 }
 var file_muse_common_proto_depIdxs = []int32{
 	4,  // 0: muse.CandidateModels.provider:type_name -> muse.APIProvider
-	8,  // 1: muse.GetPublicConfigResponse.candidate_models:type_name -> muse.CandidateModels
-	9,  // 2: muse.CommonService.GetPublicConfig:input_type -> muse.GetPublicConfigRequest
-	10, // 3: muse.CommonService.GetPublicConfig:output_type -> muse.GetPublicConfigResponse
+	9,  // 1: muse.GetPublicConfigResponse.candidate_models:type_name -> muse.CandidateModels
+	10, // 2: muse.CommonService.GetPublicConfig:input_type -> muse.GetPublicConfigRequest
+	11, // 3: muse.CommonService.GetPublicConfig:output_type -> muse.GetPublicConfigResponse
 	3,  // [3:4] is the sub-list for method output_type
 	2,  // [2:3] is the sub-list for method input_type
 	2,  // [2:2] is the sub-list for extension type_name
@@ -722,7 +778,7 @@ func file_muse_common_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_muse_common_proto_rawDesc), len(file_muse_common_proto_rawDesc)),
-			NumEnums:      8,
+			NumEnums:      9,
 			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   1,

@@ -18,7 +18,7 @@
 
     <!-- 正则列表 -->
     <n-spin :show="loading" description="加载中..." style="min-height: 60px;">
-      <div class="list-container">
+      <n-infinite-scroll class="list-container" @load="loadMore" :distance="100">
         <div
           v-for="rule in regexRuleStore.sortedRules"
           :key="rule.id"
@@ -53,17 +53,23 @@
           </n-dropdown>
         </div>
 
+        <!-- 加载更多指示 -->
+        <div v-if="loadingMore" class="loading-more">
+          <n-spin size="small" />
+        </div>
+
         <!-- 空状态 -->
         <n-empty v-if="regexRuleStore.rules.length === 0 && !loading" description="暂无正则规则" size="small" class="empty-state" />
-      </div>
+      </n-infinite-scroll>
     </n-spin>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { onMounted, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { NButton, NIcon, NCheckbox, NDropdown, NEmpty, NSpin, useDialog, useMessage } from 'naive-ui';
+import { NInfiniteScroll } from 'naive-ui/es/infinite-scroll';
 import { CloudUploadOutline, AddOutline, EllipsisHorizontal } from '@vicons/ionicons5';
 import { useRegexRuleStore } from '@/stores/regexRule';
 
@@ -72,7 +78,15 @@ const route = useRoute();
 const dialog = useDialog();
 const message = useMessage();
 const regexRuleStore = useRegexRuleStore();
-const loading = ref(false);
+
+const loading = computed(() => regexRuleStore.loading);
+const loadingMore = computed(() => regexRuleStore.loadingMore);
+const hasMore = computed(() => regexRuleStore.hasMore);
+
+const loadMore = () => {
+  if (!hasMore.value || loadingMore.value) return Promise.resolve();
+  return regexRuleStore.loadMore();
+};
 
 // 菜单选项
 const itemMenuOptions = [
@@ -84,13 +98,10 @@ const itemMenuOptions = [
 
 // 加载正则规则列表
 const loadRules = async () => {
-  loading.value = true;
   try {
     await regexRuleStore.fetchRules();
   } catch (e) {
     console.error('加载正则规则列表失败:', e);
-  } finally {
-    loading.value = false;
   }
 };
 
@@ -249,6 +260,8 @@ const handleDelete = (ruleId: number) => {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  height: 100%;
+  min-height: 0;
 }
 
 .action-row {
@@ -257,9 +270,24 @@ const handleDelete = (ruleId: number) => {
 }
 
 .list-container {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+/* 穿透 n-spin 内部结构，保证 flex 布局链条完整 */
+.regex-list-tab :deep(.n-spin-container),
+.regex-list-tab :deep(.n-spin-content) {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  flex: 1;
+  min-height: 0;
+}
+
+.loading-more {
+  display: flex;
+  justify-content: center;
+  padding: 12px 0;
 }
 
 .list-item {

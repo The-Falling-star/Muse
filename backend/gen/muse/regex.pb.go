@@ -258,6 +258,8 @@ func (x *RegexRule) GetUpdatedAt() int64 {
 // 获取全局正则规则列表请求（preset_id = 0）
 type ListRegexRulesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Page          int32                  `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`                         // 页码，从1开始，默认为1
+	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"` // 每页数量，默认为20，最大100
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -292,10 +294,27 @@ func (*ListRegexRulesRequest) Descriptor() ([]byte, []int) {
 	return file_muse_regex_proto_rawDescGZIP(), []int{2}
 }
 
+func (x *ListRegexRulesRequest) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *ListRegexRulesRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
 // 获取全局正则规则列表响应
 type ListRegexRulesResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Rules         []*RegexRule           `protobuf:"bytes,1,rep,name=rules,proto3" json:"rules,omitempty"`
+	Total         int64                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`                       // 总数
+	Page          int32                  `protobuf:"varint,3,opt,name=page,proto3" json:"page,omitempty"`                         // 当前页码
+	PageSize      int32                  `protobuf:"varint,4,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"` // 每页数量
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -335,6 +354,27 @@ func (x *ListRegexRulesResponse) GetRules() []*RegexRule {
 		return x.Rules
 	}
 	return nil
+}
+
+func (x *ListRegexRulesResponse) GetTotal() int64 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *ListRegexRulesResponse) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *ListRegexRulesResponse) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
 }
 
 // 获取预设的正则规则列表请求
@@ -1161,10 +1201,15 @@ const file_muse_regex_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\r \x01(\x03R\tcreatedAt\x12\x1d\n" +
 	"\n" +
-	"updated_at\x18\x0e \x01(\x03R\tupdatedAt\"\x17\n" +
-	"\x15ListRegexRulesRequest\"?\n" +
+	"updated_at\x18\x0e \x01(\x03R\tupdatedAt\"H\n" +
+	"\x15ListRegexRulesRequest\x12\x12\n" +
+	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\"\x86\x01\n" +
 	"\x16ListRegexRulesResponse\x12%\n" +
-	"\x05rules\x18\x01 \x03(\v2\x0f.muse.RegexRuleR\x05rules\":\n" +
+	"\x05rules\x18\x01 \x03(\v2\x0f.muse.RegexRuleR\x05rules\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x03R\x05total\x12\x12\n" +
+	"\x04page\x18\x03 \x01(\x05R\x04page\x12\x1b\n" +
+	"\tpage_size\x18\x04 \x01(\x05R\bpageSize\":\n" +
 	"\x1bListPresetRegexRulesRequest\x12\x1b\n" +
 	"\tpreset_id\x18\x01 \x01(\x05R\bpresetId\"E\n" +
 	"\x1cListPresetRegexRulesResponse\x12%\n" +

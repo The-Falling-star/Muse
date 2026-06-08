@@ -44,14 +44,14 @@ func (w *WorldInfoRepo) GetByID(ctx context.Context, id int, userID int) (*entit
 }
 
 // List 获取世界书列表
-func (w *WorldInfoRepo) List(ctx context.Context, userID, page, pageSize int) ([]*entity.WorldInfo, int64, error) {
+func (w *WorldInfoRepo) List(ctx context.Context, userID, page, pageSize int) ([]*entity.WorldInfo, []int, int64, error) {
 	db := GetDB(ctx)
 	var worldInfos []*entity.WorldInfo
 	var total int64
 
 	// 计算总数
 	if err := db.Model(&entity.WorldInfo{}).Where("user_id = ?", userID).Count(&total).Error; err != nil {
-		return nil, 0, errs.NewStandardf(connect.CodeInternal, "查询世界书总数失败: %v", err)
+		return nil, nil, 0, errs.NewStandardf(connect.CodeInternal, "查询世界书总数失败: %v", err)
 	}
 
 	// 分页查询 - 只查询列表展示需要的字段，不加载关联的Entries
@@ -64,10 +64,36 @@ func (w *WorldInfoRepo) List(ctx context.Context, userID, page, pageSize int) ([
 		Limit(pageSize).
 		Find(&worldInfos)
 	if result.Error != nil {
-		return nil, 0, errs.NewStandardf(connect.CodeInternal, "查询世界书列表失败: %v", result.Error)
+		return nil, nil, 0, errs.NewStandardf(connect.CodeInternal, "查询世界书列表失败: %v", result.Error)
 	}
 
-	return worldInfos, total, nil
+	// 查询条目数量
+	worldInfoIds := make([]int, 0, len(worldInfos))
+	for _, worldInfo := range worldInfos {
+		worldInfoIds = append(worldInfoIds, worldInfo.ID)
+	}
+	entryCounter := make([]struct {
+		WorldInfoId int
+		ItemCount   int
+	}, 0, len(worldInfos))
+	if err := db.Model(&entity.WorldInfoEntry{}).
+		Select("world_info_id", "COUNT(*) AS item_count").
+		Where("world_info_id IN (?)", worldInfoIds).
+		Group("world_info_id").
+		Find(&entryCounter).Error; err != nil {
+		return nil, nil, 0, errs.NewStandardf(connect.CodeInternal, "查询世界书条目数量失败: %v", err)
+	}
+
+	// 填充条目数量
+	entryMap := make(map[int]int)
+	for _, counter := range entryCounter {
+		entryMap[counter.WorldInfoId] = counter.ItemCount
+	}
+	entryLen := make([]int, len(worldInfos))
+	for i, worldInfo := range worldInfos {
+		entryLen[i] = entryMap[worldInfo.ID]
+	}
+	return worldInfos, entryLen, total, nil
 }
 
 // Update 更新世界书

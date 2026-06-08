@@ -69,6 +69,8 @@ type ChatRepository interface {
 	UpdateSessionTime(ctx context.Context, sessionID int, updateTime time.Time) error
 	// SwitchSwipe 切换消息的swipe
 	SwitchSwipe(ctx context.Context, messageID, index int) error
+	// DeleteSwipe 删除消息的swipe
+	DeleteSwipe(ctx context.Context, msgID int, swipeID int) error
 }
 
 // PresetRepository 预设数据仓库接口
@@ -111,8 +113,10 @@ type RegexRuleRepository interface {
 	Create(ctx context.Context, rule *entity.RegexRule) error
 	// GetByID 根据ID获取正则规则
 	GetByID(ctx context.Context, id int) (*entity.RegexRule, error)
-	// List 获取预设的正则规则列表
+	// List 获取预设的正则规则列表（全量）
 	List(ctx context.Context, presetID int) ([]*entity.RegexRule, error)
+	// ListPaginated 获取预设的正则规则列表（分页）
+	ListPaginated(ctx context.Context, presetID, page, pageSize int) ([]*entity.RegexRule, int64, error)
 	// Update 更新正则规则
 	Update(ctx context.Context, rule *entity.RegexRule) error
 	// Delete 删除正则规则
@@ -136,7 +140,7 @@ type WorldInfoRepository interface {
 	// GetByID 根据ID获取世界书
 	GetByID(ctx context.Context, id int, userID int) (*entity.WorldInfo, error)
 	// List 获取世界书列表
-	List(ctx context.Context, userID, page, pageSize int) ([]*entity.WorldInfo, int64, error)
+	List(ctx context.Context, userID, page, pageSize int) ([]*entity.WorldInfo, []int, int64, error)
 	// Update 更新世界书
 	Update(ctx context.Context, worldInfo *entity.WorldInfo) error
 	// Delete 删除世界书

@@ -39,11 +39,17 @@ message RegexRule {
 // ================================
 
 // 获取全局正则规则列表请求（preset_id = 0）
-message ListRegexRulesRequest {}
+message ListRegexRulesRequest {
+  int32 page = 1;      // 页码，从1开始，默认为1
+  int32 page_size = 2; // 每页数量，默认为20，最大100
+}
 
 // 获取全局正则规则列表响应
 message ListRegexRulesResponse {
   repeated RegexRule rules = 1;
+  int64 total = 2;    // 总数
+  int32 page = 3;     // 当前页码
+  int32 page_size = 4; // 每页数量
 }
 
 // 获取预设的正则规则列表请求

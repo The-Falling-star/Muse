@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"connectrpc.com/connect"
+	"github.com/ling/muse/common/constant"
 	"github.com/ling/muse/common/convert"
 	"github.com/ling/muse/common/errs"
 	"github.com/ling/muse/common/jwt"
@@ -28,8 +29,11 @@ func newRegexRule() *regexRuleImpl {
 }
 
 func (r *regexRuleImpl) ListRegexRules(ctx context.Context, req *pb.ListRegexRulesRequest) (*pb.ListRegexRulesResponse, error) {
+	// 获取分页参数
+	page, pageSize := constant.NormalizePagination(int(req.GetPage()), int(req.GetPageSize()))
+
 	// 获取全局正则规则列表（preset_id = 0）
-	rules, err := r.regexRuleRepo.List(ctx, 0)
+	rules, total, err := r.regexRuleRepo.ListPaginated(ctx, 0, page, pageSize)
 	if err != nil {
 		return nil, err
 	}
@@ -41,7 +45,10 @@ func (r *regexRuleImpl) ListRegexRules(ctx context.Context, req *pb.ListRegexRul
 	}
 
 	return &pb.ListRegexRulesResponse{
-		Rules: pbRules,
+		Rules:    pbRules,
+		Total:    total,
+		Page:     int32(page),
+		PageSize: int32(pageSize),
 	}, nil
 }
 

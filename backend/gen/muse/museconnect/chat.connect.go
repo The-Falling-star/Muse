@@ -66,6 +66,8 @@ const (
 	// ChatServiceUpdateSessionTimeProcedure is the fully-qualified name of the ChatService's
 	// UpdateSessionTime RPC.
 	ChatServiceUpdateSessionTimeProcedure = "/muse.ChatService/UpdateSessionTime"
+	// ChatServiceDeleteSwipeProcedure is the fully-qualified name of the ChatService's DeleteSwipe RPC.
+	ChatServiceDeleteSwipeProcedure = "/muse.ChatService/DeleteSwipe"
 )
 
 // ChatServiceClient is a client for the muse.ChatService service.
@@ -94,6 +96,8 @@ type ChatServiceClient interface {
 	GetCharLatestSession(context.Context, *connect.Request[muse.GetCharLatestSessionRequest]) (*connect.Response[muse.GetCharLatestSessionResponse], error)
 	// 更新会话时间戳
 	UpdateSessionTime(context.Context, *connect.Request[muse.UpdateSessionTimeRequest]) (*connect.Response[muse.UpdateSessionTimeResponse], error)
+	// 删除swipe
+	DeleteSwipe(context.Context, *connect.Request[muse.DeleteSwipeRequest]) (*connect.Response[muse.DeleteSwipeResponse], error)
 }
 
 // NewChatServiceClient constructs a client for the muse.ChatService service. By default, it uses
@@ -179,6 +183,12 @@ func NewChatServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(chatServiceMethods.ByName("UpdateSessionTime")),
 			connect.WithClientOptions(opts...),
 		),
+		deleteSwipe: connect.NewClient[muse.DeleteSwipeRequest, muse.DeleteSwipeResponse](
+			httpClient,
+			baseURL+ChatServiceDeleteSwipeProcedure,
+			connect.WithSchema(chatServiceMethods.ByName("DeleteSwipe")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -196,6 +206,7 @@ type chatServiceClient struct {
 	switchSwipe          *connect.Client[muse.SwitchSwipeRequest, muse.SwitchSwipeResponse]
 	getCharLatestSession *connect.Client[muse.GetCharLatestSessionRequest, muse.GetCharLatestSessionResponse]
 	updateSessionTime    *connect.Client[muse.UpdateSessionTimeRequest, muse.UpdateSessionTimeResponse]
+	deleteSwipe          *connect.Client[muse.DeleteSwipeRequest, muse.DeleteSwipeResponse]
 }
 
 // ListChatSessions calls muse.ChatService.ListChatSessions.
@@ -258,6 +269,11 @@ func (c *chatServiceClient) UpdateSessionTime(ctx context.Context, req *connect.
 	return c.updateSessionTime.CallUnary(ctx, req)
 }
 
+// DeleteSwipe calls muse.ChatService.DeleteSwipe.
+func (c *chatServiceClient) DeleteSwipe(ctx context.Context, req *connect.Request[muse.DeleteSwipeRequest]) (*connect.Response[muse.DeleteSwipeResponse], error) {
+	return c.deleteSwipe.CallUnary(ctx, req)
+}
+
 // ChatServiceHandler is an implementation of the muse.ChatService service.
 type ChatServiceHandler interface {
 	// 获取会话列表
@@ -284,6 +300,8 @@ type ChatServiceHandler interface {
 	GetCharLatestSession(context.Context, *connect.Request[muse.GetCharLatestSessionRequest]) (*connect.Response[muse.GetCharLatestSessionResponse], error)
 	// 更新会话时间戳
 	UpdateSessionTime(context.Context, *connect.Request[muse.UpdateSessionTimeRequest]) (*connect.Response[muse.UpdateSessionTimeResponse], error)
+	// 删除swipe
+	DeleteSwipe(context.Context, *connect.Request[muse.DeleteSwipeRequest]) (*connect.Response[muse.DeleteSwipeResponse], error)
 }
 
 // NewChatServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -365,6 +383,12 @@ func NewChatServiceHandler(svc ChatServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(chatServiceMethods.ByName("UpdateSessionTime")),
 		connect.WithHandlerOptions(opts...),
 	)
+	chatServiceDeleteSwipeHandler := connect.NewUnaryHandler(
+		ChatServiceDeleteSwipeProcedure,
+		svc.DeleteSwipe,
+		connect.WithSchema(chatServiceMethods.ByName("DeleteSwipe")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/muse.ChatService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ChatServiceListChatSessionsProcedure:
@@ -391,6 +415,8 @@ func NewChatServiceHandler(svc ChatServiceHandler, opts ...connect.HandlerOption
 			chatServiceGetCharLatestSessionHandler.ServeHTTP(w, r)
 		case ChatServiceUpdateSessionTimeProcedure:
 			chatServiceUpdateSessionTimeHandler.ServeHTTP(w, r)
+		case ChatServiceDeleteSwipeProcedure:
+			chatServiceDeleteSwipeHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -446,4 +472,8 @@ func (UnimplementedChatServiceHandler) GetCharLatestSession(context.Context, *co
 
 func (UnimplementedChatServiceHandler) UpdateSessionTime(context.Context, *connect.Request[muse.UpdateSessionTimeRequest]) (*connect.Response[muse.UpdateSessionTimeResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.ChatService.UpdateSessionTime is not implemented"))
+}
+
+func (UnimplementedChatServiceHandler) DeleteSwipe(context.Context, *connect.Request[muse.DeleteSwipeRequest]) (*connect.Response[muse.DeleteSwipeResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.ChatService.DeleteSwipe is not implemented"))
 }

@@ -31,7 +31,7 @@
 
     <!-- 预设列表 -->
     <n-spin :show="loading" size="small">
-      <div class="list-container">
+      <n-infinite-scroll class="list-container" @load="loadMore" :distance="100">
         <div
           v-for="preset in presets"
           :key="preset.preset?.id"
@@ -62,9 +62,14 @@
           </n-dropdown>
         </div>
 
+        <!-- 加载更多指示 -->
+        <div v-if="loadingMore" class="loading-more">
+          <n-spin size="small" />
+        </div>
+
         <!-- 空状态 -->
         <n-empty v-if="!loading && presets.length === 0" description="暂无预设" size="small" class="empty-state" />
-      </div>
+      </n-infinite-scroll>
     </n-spin>
 
     <!-- 隐藏的文件选择器 -->
@@ -82,6 +87,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { NSelect, NButton, NIcon, NDropdown, NEmpty, NSpin, useMessage, useDialog } from 'naive-ui';
+import { NInfiniteScroll } from 'naive-ui/es/infinite-scroll';
 import { CloudUploadOutline, AddOutline, EllipsisHorizontal } from '@vicons/ionicons5';
 import { usePresetStore } from '@/stores/preset';
 import { useUserStore } from '@/stores/user';
@@ -99,11 +105,15 @@ const loading = ref(false);
 const settingActive = ref(false);
 const fileInputRef = ref<HTMLInputElement | null>(null);
 
-// 从 store 获取预设列表
 const presets = computed(() => presetStore.presets);
-
-// 当前活跃预设ID
 const currentPresetId = computed(() => userStore.currentUser?.activePresetId || null);
+const hasMore = computed(() => presetStore.hasMore);
+const loadingMore = computed(() => presetStore.loadingMore);
+
+const loadMore = () => {
+  if (!hasMore.value || loadingMore.value) return Promise.resolve();
+  return presetStore.loadMore();
+};
 
 // 下拉选项
 const presetOptions = computed(() =>
@@ -126,7 +136,7 @@ const itemMenuOptions = [
 const loadPresets = async () => {
   loading.value = true;
   try {
-    await presetStore.fetchAllPresets();
+    await presetStore.fetchPresets();
   } catch (error) {
     console.error('加载预设列表失败:', error);
   } finally {
@@ -205,8 +215,6 @@ const handleCreate = async () => {
       presencePenalty: 0,
     });
     message.success('预设创建成功');
-    // 重新加载列表并跳转到第一个预设
-    await loadPresets();
     if (presets.value.length > 0 && presets.value[0]?.preset) {
       router.push(`/preset/${presets.value[0].preset.id}`);
     }
@@ -327,6 +335,8 @@ const handleDelete = (preset: PresetWithPromptLen) => {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  height: 100%;
+  min-height: 0;
 }
 
 .section-label {
@@ -342,9 +352,24 @@ const handleDelete = (preset: PresetWithPromptLen) => {
 }
 
 .list-container {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+/* 穿透 n-spin 内部结构，保证 flex 布局链条完整 */
+.preset-list-tab :deep(.n-spin-container),
+.preset-list-tab :deep(.n-spin-content) {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  flex: 1;
+  min-height: 0;
+}
+
+.loading-more {
+  display: flex;
+  justify-content: center;
+  padding: 12px 0;
 }
 
 .list-item {

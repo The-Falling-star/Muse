@@ -7,6 +7,7 @@ import (
 
 	"connectrpc.com/connect"
 	"github.com/ling/muse/common/errs"
+	"github.com/ling/muse/common/jwt"
 	"github.com/ling/muse/entity"
 	"gorm.io/gorm"
 )
@@ -310,6 +311,40 @@ func (c *ChatRepo) SwitchSwipe(ctx context.Context, messageID, index int) error 
 		Update("ActiveSwipeIndex", index).
 		Error; err != nil {
 		return errs.NewStandardf(connect.CodeInternal, "切换消息swipe时更新message失败: %v", err)
+	}
+	return nil
+}
+
+func (c *ChatRepo) DeleteSwipe(ctx context.Context, msgID int, swipeID int) error {
+	db := GetDB(ctx)
+	msg := &entity.Message{}
+	if err := db.Where("id = ?", msgID).First(msg).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return errs.NewStandard(connect.CodeNotFound, "消息不存在")
+		}
+		return errs.NewStandardf(connect.CodeInternal, "删除swipe时查询message失败: %v", err)
+	}
+	userId := jwt.GetUserId(ctx)
+	session := &entity.ChatSession{}
+	if err := db.Where("id = ? AND user_id = ?", msg.SessionID, userId).First(session).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return errs.NewStandard(connect.CodeNotFound, "会话不存在")
+		}
+		return errs.NewStandardf(connect.CodeInternal, "删除swipe时查询session失败: %v", err)
+	}
+	if err := db.Where("id = ? AND message_id = ?", swipeID, msgID).Delete(&entity.MessageSwipe{}).Error; err != nil {
+		return errs.NewStandardf(connect.CodeInternal, "删除swipe失败: %v", err)
+	}
+
+	var count int64
+	if err := db.Model(&entity.MessageSwipe{}).Where("message_id = ?", msg.ID).Count(&count).Error; err != nil {
+		return errs.NewStandardf(connect.CodeInternal, "删除swipe时查询swipe数量失败: %v", err)
+	}
+	if count != 0 {
+		return nil
+	}
+	if err := db.Where("id = ?", msg.ID).Delete(&entity.MessageSwipe{}).Error; err != nil {
+		return errs.NewStandardf(connect.CodeInternal, "删除swipe时更新message失败: %v", err)
 	}
 	return nil
 }

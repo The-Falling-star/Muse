@@ -42,7 +42,7 @@ func (r *RegexRuleRepo) GetByID(ctx context.Context, id int) (*entity.RegexRule,
 	return &rule, nil
 }
 
-// List 获取预设的正则规则列表
+// List 获取预设的正则规则列表（全量，不分页，用于导出等功能）
 func (r *RegexRuleRepo) List(ctx context.Context, presetID int) ([]*entity.RegexRule, error) {
 	db := GetDB(ctx)
 	var rules []*entity.RegexRule
@@ -53,6 +53,32 @@ func (r *RegexRuleRepo) List(ctx context.Context, presetID int) ([]*entity.Regex
 		return nil, errs.NewStandardf(connect.CodeInternal, "获取正则规则列表失败: %v", result.Error)
 	}
 	return rules, nil
+}
+
+// ListPaginated 获取预设的正则规则列表（分页）
+func (r *RegexRuleRepo) ListPaginated(ctx context.Context, presetID, page, pageSize int) ([]*entity.RegexRule, int64, error) {
+	db := GetDB(ctx)
+	var rules []*entity.RegexRule
+	var total int64
+
+	// 计算总数
+	query := db.Model(&entity.RegexRule{}).Where("preset_id = ?", presetID)
+	if err := query.Count(&total).Error; err != nil {
+		return nil, 0, errs.NewStandardf(connect.CodeInternal, "查询正则规则总数失败: %v", err)
+	}
+
+	// 分页查询
+	offset := (page - 1) * pageSize
+	result := db.Where("preset_id = ?", presetID).
+		Order("sort_order ASC").
+		Offset(offset).
+		Limit(pageSize).
+		Find(&rules)
+	if result.Error != nil {
+		return nil, 0, errs.NewStandardf(connect.CodeInternal, "查询正则规则列表失败: %v", result.Error)
+	}
+
+	return rules, total, nil
 }
 
 // Update 更新正则规则

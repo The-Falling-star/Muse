@@ -43,6 +43,11 @@ message WorldInfoEntry {
   Role role = 17;             // 消息角色类型，用于区分该条目的作用角色
 }
 
+message WorldInfoWithLen {
+  WorldInfo world_info = 1;
+  int32 entry_length = 2;
+}
+
 // ================================
 // 世界书服务
 // ================================
@@ -56,7 +61,7 @@ message ListWorldInfosRequest {
 
 // 获取世界书列表响应
 message ListWorldInfosResponse {
-  repeated WorldInfo world_infos = 1;
+  repeated WorldInfoWithLen world_infos = 1;
   int64 total = 2;  // 总数
   int32 page = 3;   // 当前页码
   int32 page_size = 4; // 每页数量

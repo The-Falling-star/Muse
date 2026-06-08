@@ -180,6 +180,15 @@ message UpdateSessionTimeRequest {
 // 更新会话时间戳响应
 message UpdateSessionTimeResponse {}
 
+// 删除Swipe请求
+message DeleteSwipeRequest {
+  int32 message_id = 1;
+  int32 swipe_id = 2;
+}
+
+// 删除Swipe响应
+message DeleteSwipeResponse {}
+
 // 聊天服务
 service ChatService {
   // 获取会话列表
@@ -206,4 +215,6 @@ service ChatService {
   rpc GetCharLatestSession(GetCharLatestSessionRequest) returns (GetCharLatestSessionResponse);
   // 更新会话时间戳
   rpc UpdateSessionTime(UpdateSessionTimeRequest) returns (UpdateSessionTimeResponse);
+  // 删除swipe
+  rpc DeleteSwipe(DeleteSwipeRequest) returns (DeleteSwipeResponse);
 }

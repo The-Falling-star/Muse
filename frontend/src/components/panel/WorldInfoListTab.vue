@@ -19,30 +19,30 @@
     <!-- 加载状态 -->
     <n-spin :show="loading" description="加载中..." style="min-height: 60px;">
       <!-- 世界书列表 -->
-      <div class="list-container">
+      <n-infinite-scroll class="list-container" @load="loadMore" :distance="100">
         <div
           v-for="wi in worldInfoStore.worldInfos"
-          :key="wi.id"
+          :key="wi.worldInfo?.id"
           class="list-item"
-          :class="{ active: isEditing(wi.id) }"
-          @click="openWorldInfoEditor(wi.id)"
+          :class="{ active: isEditing(wi.worldInfo!.id) }"
+          @click="openWorldInfoEditor(wi.worldInfo!.id)"
         >
           <n-checkbox
-            :checked="wi.isGlobal"
-            @update:checked="(val: boolean) => toggleGlobal(wi, val)"
+            :checked="wi.worldInfo?.isGlobal"
+            @update:checked="(val: boolean) => toggleGlobal(wi.worldInfo!, val)"
             @click.stop
           />
           <div class="item-info">
-            <div class="item-name">{{ wi.name }}</div>
+            <div class="item-name">{{ wi.worldInfo?.name }}</div>
             <div class="item-desc">
-              {{ wi.entries.length }}个词条
-              <n-tag v-if="wi.isGlobal" size="tiny" type="info" :bordered="false" style="margin-left: 4px;">全局</n-tag>
+              {{ wi.entryLength }}个词条
+              <n-tag v-if="wi.worldInfo?.isGlobal" size="tiny" type="info" :bordered="false" style="margin-left: 4px;">全局</n-tag>
             </div>
           </div>
           <n-dropdown
             trigger="click"
             :options="itemMenuOptions"
-            @select="(key: string) => handleMenuSelect(key, wi)"
+            @select="(key: string) => handleMenuSelect(key, wi.worldInfo!)"
             @click.stop
           >
             <n-button quaternary circle size="tiny" @click.stop>
@@ -53,9 +53,14 @@
           </n-dropdown>
         </div>
 
+        <!-- 加载更多指示 -->
+        <div v-if="loadingMore" class="loading-more">
+          <n-spin size="small" />
+        </div>
+
         <!-- 空状态 -->
         <n-empty v-if="worldInfoStore.worldInfos.length === 0 && !loading" description="暂无世界书" size="small" class="empty-state" />
-      </div>
+      </n-infinite-scroll>
     </n-spin>
 
     <!-- 隐藏的文件输入 -->
@@ -70,9 +75,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { NButton, NIcon, NCheckbox, NDropdown, NEmpty, NTag, NSpin, useDialog } from 'naive-ui';
+import { NInfiniteScroll } from 'naive-ui/es/infinite-scroll';
 import { CloudUploadOutline, AddOutline, EllipsisHorizontal } from '@vicons/ionicons5';
 import { worldInfoClient } from '@/api/client';
 import { useWorldInfoStore } from '@/stores/worldInfo';
@@ -84,10 +90,22 @@ const route = useRoute();
 const dialog = useDialog();
 const worldInfoStore = useWorldInfoStore();
 
-const loading = ref(false);
+const loading = computed(() => worldInfoStore.loading);
+const loadingMore = computed(() => worldInfoStore.loadingMore);
+const hasMore = computed(() => worldInfoStore.hasMore);
 const importing = ref(false);
 const creating = ref(false);
 const fileInputRef = ref<HTMLInputElement | null>(null);
+
+const loadMore = () => {
+  if (!hasMore.value || loadingMore.value) return Promise.resolve();
+  return worldInfoStore.loadMore();
+};
+
+// 挂载时加载世界书列表
+onMounted(async () => {
+  await worldInfoStore.loadWorldInfos();
+});
 
 const itemMenuOptions = [
   { label: '复制', key: 'copy' },
@@ -96,25 +114,8 @@ const itemMenuOptions = [
   { label: '删除', key: 'delete' }
 ];
 
-// 加载世界书列表
-const loadWorldInfos = async () => {
-  loading.value = true;
-  try {
-    const resp = await worldInfoClient.listWorldInfos({ pageSize: 100 });
-    worldInfoStore.setWorldInfos(resp.worldInfos);
-  } catch (e) {
-    console.error('加载世界书列表失败:', e);
-  } finally {
-    loading.value = false;
-  }
-};
-
-onMounted(() => {
-  loadWorldInfos();
-});
-
 // 判断是否正在编辑
-const isEditing = (wiId: number): boolean => {
+const isEditing = (wiId: number | undefined): boolean => {
   return route.name === 'WorldInfoEditor' && Number(route.params.id) === wiId;
 };
 
@@ -271,6 +272,8 @@ const handleDelete = (wi: WorldInfo) => {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  height: 100%;
+  min-height: 0;
 }
 
 .action-row {
@@ -279,9 +282,24 @@ const handleDelete = (wi: WorldInfo) => {
 }
 
 .list-container {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+/* 穿透 n-spin 内部结构，保证 flex 布局链条完整 */
+.worldinfo-list-tab :deep(.n-spin-container),
+.worldinfo-list-tab :deep(.n-spin-content) {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  flex: 1;
+  min-height: 0;
+}
+
+.loading-more {
+  display: flex;
+  justify-content: center;
+  padding: 12px 0;
 }
 
 .list-item {

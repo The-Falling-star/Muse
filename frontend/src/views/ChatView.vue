@@ -429,6 +429,7 @@ const handleDeleteMessage = async (id: number) => {
 // 删除单条消息（swipe）
 const handleDeleteSwipe = async (messageId: number, swipeId: number) => {
   const msg = chatStore.messages.find(m => m.id === messageId);
+  await chatClient.deleteSwipe({messageId: messageId, swipeId: swipeId});
   if (!msg || msg.swipes.length <= 1) {
     messageApi.warning('无法删除最后一条回复');
     return;

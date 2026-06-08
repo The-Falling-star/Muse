@@ -1300,3 +1300,11 @@ func applyMacro(messages []model.Message, session *entity.ChatSession, persona *
 
 	return messages
 }
+
+func (c *chatImpl) DeleteSwipe(ctx context.Context, req *pb.DeleteSwipeRequest) (*pb.DeleteSwipeResponse, error) {
+
+	if err := c.chatRepo.DeleteSwipe(ctx, int(req.MessageId), int(req.SwipeId)); err != nil {
+		return nil, err
+	}
+	return &pb.DeleteSwipeResponse{}, nil
+}

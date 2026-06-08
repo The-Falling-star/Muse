@@ -54,3 +54,5 @@ lerna-debug.log*
 /.codebuddy/
 backend/data/*
 backend/muse
+
+docs

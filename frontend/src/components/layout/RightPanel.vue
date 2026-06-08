@@ -32,7 +32,9 @@
     <div class="panel-content">
       <!-- 模型配置 Tab -->
       <div v-if="appStore.rightPanelActiveTab === 'model'" class="tab-content">
-        <ModelConfigTab />
+        <div class="tab-scroll">
+          <ModelConfigTab />
+        </div>
       </div>
 
       <!-- 预设列表 Tab -->
@@ -52,7 +54,9 @@
 
       <!-- 用户设置 Tab -->
       <div v-else-if="appStore.rightPanelActiveTab === 'user'" class="tab-content">
-        <UserConfigTab/>
+        <div class="tab-scroll">
+          <UserConfigTab/>
+        </div>
       </div>
     </div>
   </aside>
@@ -196,12 +200,17 @@ const tabs: TabItem[] = [
 /* 选项卡内容区域 */
 .panel-content {
   flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .tab-content {
   height: 100%;
+  overflow: hidden;
+}
+
+.tab-scroll {
+  height: 100%;
+  overflow-y: auto;
 }
 
 /* 自定义滚动条 */

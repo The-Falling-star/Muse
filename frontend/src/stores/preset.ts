@@ -18,13 +18,21 @@ export const usePresetStore = defineStore('preset', () => {
   const promptItems = ref<PromptItem[]>([]);
   // 加载状态
   const loading = ref(false);
+  const loadingMore = ref(false);
   // 搜索关键词
   const searchQuery = ref('');
   // 分页状态
   const pagination = ref({
     page: DEFAULT_PAGE_NUM,
     pageSize: DEFAULT_PAGE_SIZE,
-    total: 0
+    total: 0,
+  });
+
+  // 是否还有更多数据
+  const hasMore = computed(() => {
+    const total = presets.value.length;
+    const totalAll = Number(pagination.value.total);
+    return totalAll > 0 && total < totalAll;
   });
 
   // =====================
@@ -47,23 +55,23 @@ export const usePresetStore = defineStore('preset', () => {
   // 预设相关方法
   // =====================
 
-  // 获取预设列表
+  // 获取预设列表（替换）
   const fetchPresets = async (page?: number, pageSize?: number) => {
     const requestPage = page ?? pagination.value.page;
     const requestPageSize = pageSize ?? pagination.value.pageSize;
-    
+
     const response = await presetClient.listPresets({
       page: requestPage,
-      pageSize: requestPageSize
+      pageSize: requestPageSize,
     });
-    
+
     presets.value = response.presets;
     pagination.value = {
       page: response.page,
       pageSize: response.pageSize,
-      total: Number(response.total)
+      total: Number(response.total),
     };
-    
+
     return response.presets;
   };
 
@@ -71,15 +79,44 @@ export const usePresetStore = defineStore('preset', () => {
   const fetchAllPresets = async () => {
     const response = await presetClient.listPresets({
       page: DEFAULT_PAGE_NUM,
-      pageSize: FETCH_ALL_PAGE_SIZE
+      pageSize: FETCH_ALL_PAGE_SIZE,
     });
     presets.value = response.presets;
     pagination.value = {
       page: DEFAULT_PAGE_NUM,
       pageSize: response.presets.length,
-      total: Number(response.total)
+      total: Number(response.total),
     };
     return response.presets;
+  };
+
+  // 加载更多（无限滚动用）
+  const loadMore = async () => {
+    if (loadingMore.value || !hasMore.value) return;
+    loadingMore.value = true;
+    try {
+      const nextPage = pagination.value.page + 1;
+      const response = await presetClient.listPresets({
+        page: nextPage,
+        pageSize: pagination.value.pageSize,
+      });
+      presets.value.push(...response.presets);
+      pagination.value = {
+        page: response.page,
+        pageSize: response.pageSize,
+        total: Number(response.total),
+      };
+    } catch (error) {
+      console.error('加载更多预设失败:', error);
+    } finally {
+      loadingMore.value = false;
+    }
+  };
+
+  // 重置分页（重新从第一页加载）
+  const resetPagination = async () => {
+    pagination.value.page = DEFAULT_PAGE_NUM;
+    await fetchPresets(DEFAULT_PAGE_NUM, pagination.value.pageSize);
   };
 
   // 获取单个预设
@@ -125,8 +162,9 @@ export const usePresetStore = defineStore('preset', () => {
     }>;
   }) => {
     await presetClient.createPreset(data);
-    // 创建成功后重新获取列表
-    await fetchPresets();
+    // 创建成功后重新获取第一页列表
+    pagination.value.page = DEFAULT_PAGE_NUM;
+    await fetchPresets(DEFAULT_PAGE_NUM, pagination.value.pageSize);
   };
 
   // 更新预设
@@ -301,13 +339,16 @@ export const usePresetStore = defineStore('preset', () => {
     promptItems,
     sortedPromptItems,
     loading,
+    loadingMore,
     searchQuery,
     filteredPresets,
-    pagination,
+    hasMore,
 
     // 预设方法
     fetchPresets,
     fetchAllPresets,
+    loadMore,
+    resetPagination,
     fetchPreset,
     createPreset,
     updatePreset,

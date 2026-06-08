@@ -33,15 +33,19 @@ func (w *worldInfoImpl) ListWorldInfos(ctx context.Context, req *pb.ListWorldInf
 	page, pageSize := constant.NormalizePagination(int(req.GetPage()), int(req.GetPageSize()))
 
 	// 从数据库获取世界书列表（支持分页）
-	worldInfos, total, err := w.worldInfoRepo.List(ctx, userId, page, pageSize)
+	worldInfos, entryLen, total, err := w.worldInfoRepo.List(ctx, userId, page, pageSize)
 	if err != nil {
 		return nil, err
 	}
 
 	// 转换为pb格式
-	pbWorldInfos := make([]*pb.WorldInfo, 0, len(worldInfos))
-	for _, worldInfo := range worldInfos {
-		pbWorldInfos = append(pbWorldInfos, convert.WorldInfoEntityToPb(worldInfo))
+	pbWorldInfos := make([]*pb.WorldInfoWithLen, 0, len(worldInfos))
+	for i, worldInfo := range worldInfos {
+		worldInfoWithLen := &pb.WorldInfoWithLen{
+			WorldInfo:   convert.WorldInfoEntityToPb(worldInfo),
+			EntryLength: int32(entryLen[i]),
+		}
+		pbWorldInfos = append(pbWorldInfos, worldInfoWithLen)
 	}
 
 	return &pb.ListWorldInfosResponse{

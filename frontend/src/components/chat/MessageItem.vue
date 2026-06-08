@@ -542,10 +542,12 @@ const confirmDelete = () => {
     if (swipe) {
       emit('deleteSwipe', props.message.id, swipe.id);
     }
-  } else {
-    emit('delete', props.message.id);
+    showDeleteModal.value = false;
+    return
   }
+  emit('delete', props.message.id);
   showDeleteModal.value = false;
+
 };
 </script>
 

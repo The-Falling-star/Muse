@@ -213,3 +213,17 @@ func (c *ChatServer) UpdateSessionTime(ctx context.Context, req *connect.Request
 	}
 	return doResponse(ctx, "UpdateSessionTime", req.Msg, resp)
 }
+
+func (c *ChatServer) DeleteSwipe(ctx context.Context, req *connect.Request[pb.DeleteSwipeRequest]) (
+	*connect.Response[pb.DeleteSwipeResponse], error) {
+	var err error
+	ctx, err = beginTransaction(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	resp, err := c.chat.DeleteSwipe(ctx, req.Msg)
+	if err != nil {
+		return doResponseExp(ctx, "DeleteSwipe", req.Msg, resp, err)
+	}
+	return doResponse(ctx, "DeleteSwipe", req.Msg, resp)
+}

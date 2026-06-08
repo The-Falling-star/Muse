@@ -42,6 +42,8 @@ type Chat interface {
 	GetCharLatestSession(ctx context.Context, req *pb.GetCharLatestSessionRequest) (*pb.GetCharLatestSessionResponse, error)
 	// UpdateSessionTime 更新会话时间
 	UpdateSessionTime(ctx context.Context, req *pb.UpdateSessionTimeRequest) (*pb.UpdateSessionTimeResponse, error)
+	// DeleteSwipe 删除消息swipe
+	DeleteSwipe(ctx context.Context, req *pb.DeleteSwipeRequest) (*pb.DeleteSwipeResponse, error)
 }
 
 // NewChat 创建一个新的Chat实例

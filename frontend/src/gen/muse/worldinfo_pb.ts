@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file muse/worldinfo.proto.
  */
 export const file_muse_worldinfo: GenFile = /*@__PURE__*/
-  fileDesc("ChRtdXNlL3dvcmxkaW5mby5wcm90bxIEbXVzZSKtAQoJV29ybGRJbmZvEgoKAmlkGAEgASgFEg8KB3VzZXJfaWQYAiABKAUSDAoEbmFtZRgDIAEoCRITCgtkZXNjcmlwdGlvbhgEIAEoCRIRCglpc19nbG9iYWwYBSABKAgSEgoKY3JlYXRlZF9hdBgGIAEoAxISCgp1cGRhdGVkX2F0GAcgASgDEiUKB2VudHJpZXMYCCADKAsyFC5tdXNlLldvcmxkSW5mb0VudHJ5IusCCg5Xb3JsZEluZm9FbnRyeRIKCgJpZBgBIAEoBRIVCg13b3JsZF9pbmZvX2lkGAIgASgFEgsKA3VpZBgDIAEoCRIRCglrZXlzX2xpc3QYBCADKAkSFgoOc2Vjb25kYXJ5X2tleXMYBSADKAkSDwoHY29udGVudBgGIAEoCRIPCgdjb21tZW50GAcgASgJEhIKCmlzX2VuYWJsZWQYCCABKAgSEAoIY29uc3RhbnQYCSABKAgSEQoJc2VsZWN0aXZlGAogASgIEhcKD2luc2VydGlvbl9vcmRlchgLIAEoBRIlCghwb3NpdGlvbhgMIAEoDjITLm11c2UuRW50cnlQb3NpdGlvbhINCgVkZXB0aBgNIAEoBRISCgpzb3J0X29yZGVyGA4gASgFEhIKCmNyZWF0ZWRfYXQYDyABKAMSEgoKdXBkYXRlZF9hdBgQIAEoAxIYCgRyb2xlGBEgASgOMgoubXVzZS5Sb2xlIn8KFUxpc3RXb3JsZEluZm9zUmVxdWVzdBIWCglpc19nbG9iYWwYASABKAhIAIgBARIRCgRwYWdlGAIgASgFSAGIAQESFgoJcGFnZV9zaXplGAMgASgFSAKIAQFCDAoKX2lzX2dsb2JhbEIHCgVfcGFnZUIMCgpfcGFnZV9zaXplIm4KFkxpc3RXb3JsZEluZm9zUmVzcG9uc2USJAoLd29ybGRfaW5mb3MYASADKAsyDy5tdXNlLldvcmxkSW5mbxINCgV0b3RhbBgCIAEoAxIMCgRwYWdlGAMgASgFEhEKCXBhZ2Vfc2l6ZRgEIAEoBSIhChNHZXRXb3JsZEluZm9SZXF1ZXN0EgoKAmlkGAEgASgFIjsKFEdldFdvcmxkSW5mb1Jlc3BvbnNlEiMKCndvcmxkX2luZm8YASABKAsyDy5tdXNlLldvcmxkSW5mbyJjChZDcmVhdGVXb3JsZEluZm9SZXF1ZXN0EgwKBG5hbWUYASABKAkSGAoLZGVzY3JpcHRpb24YAiABKAlIAIgBARIRCglpc19nbG9iYWwYAyABKAhCDgoMX2Rlc2NyaXB0aW9uIj4KF0NyZWF0ZVdvcmxkSW5mb1Jlc3BvbnNlEiMKCndvcmxkX2luZm8YASABKAsyDy5tdXNlLldvcmxkSW5mbyJvChZVcGRhdGVXb3JsZEluZm9SZXF1ZXN0EgoKAmlkGAEgASgFEgwKBG5hbWUYAiABKAkSGAoLZGVzY3JpcHRpb24YAyABKAlIAIgBARIRCglpc19nbG9iYWwYBCABKAhCDgoMX2Rlc2NyaXB0aW9uIj4KF1VwZGF0ZVdvcmxkSW5mb1Jlc3BvbnNlEiMKCndvcmxkX2luZm8YASABKAsyDy5tdXNlLldvcmxkSW5mbyIkChZEZWxldGVXb3JsZEluZm9SZXF1ZXN0EgoKAmlkGAEgASgFIhkKF0RlbGV0ZVdvcmxkSW5mb1Jlc3BvbnNlIkEKFkltcG9ydFdvcmxkSW5mb1JlcXVlc3QSFAoMZmlsZV9jb250ZW50GAEgASgMEhEKCWZpbGVfbmFtZRgCIAEoCSI+ChdJbXBvcnRXb3JsZEluZm9SZXNwb25zZRIjCgp3b3JsZF9pbmZvGAEgASgLMg8ubXVzZS5Xb3JsZEluZm8iJAoWRXhwb3J0V29ybGRJbmZvUmVxdWVzdBIKCgJpZBgBIAEoBSJCChdFeHBvcnRXb3JsZEluZm9SZXNwb25zZRIUCgxmaWxlX2NvbnRlbnQYASABKAwSEQoJZmlsZV9uYW1lGAIgASgJIjQKG0xpc3RXb3JsZEluZm9FbnRyaWVzUmVxdWVzdBIVCg13b3JsZF9pbmZvX2lkGAEgASgFIkUKHExpc3RXb3JsZEluZm9FbnRyaWVzUmVzcG9uc2USJQoHZW50cmllcxgBIAMoCzIULm11c2UuV29ybGRJbmZvRW50cnki3wIKGEFkZFdvcmxkSW5mb0VudHJ5UmVxdWVzdBIVCg13b3JsZF9pbmZvX2lkGAEgASgFEhAKA3VpZBgCIAEoCUgAiAEBEhEKCWtleXNfbGlzdBgDIAMoCRIWCg5zZWNvbmRhcnlfa2V5cxgEIAMoCRIPCgdjb250ZW50GAUgASgJEhQKB2NvbW1lbnQYBiABKAlIAYgBARISCgppc19lbmFibGVkGAcgASgIEhAKCGNvbnN0YW50GAggASgIEhEKCXNlbGVjdGl2ZRgJIAEoCBIXCg9pbnNlcnRpb25fb3JkZXIYCiABKAUSJQoIcG9zaXRpb24YCyABKA4yEy5tdXNlLkVudHJ5UG9zaXRpb24SDQoFZGVwdGgYDCABKAUSGAoEcm9sZRgOIAEoDjIKLm11c2UuUm9sZRISCgpzb3J0X29yZGVyGA0gASgFQgYKBF91aWRCCgoIX2NvbW1lbnQiQAoZQWRkV29ybGRJbmZvRW50cnlSZXNwb25zZRIjCgVlbnRyeRgBIAEoCzIULm11c2UuV29ybGRJbmZvRW50cnki1wIKG1VwZGF0ZVdvcmxkSW5mb0VudHJ5UmVxdWVzdBIKCgJpZBgBIAEoBRIQCgN1aWQYAiABKAlIAIgBARIRCglrZXlzX2xpc3QYAyADKAkSFgoOc2Vjb25kYXJ5X2tleXMYBCADKAkSDwoHY29udGVudBgFIAEoCRIUCgdjb21tZW50GAYgASgJSAGIAQESEgoKaXNfZW5hYmxlZBgHIAEoCBIQCghjb25zdGFudBgIIAEoCBIRCglzZWxlY3RpdmUYCSABKAgSFwoPaW5zZXJ0aW9uX29yZGVyGAogASgFEiUKCHBvc2l0aW9uGAsgASgOMhMubXVzZS5FbnRyeVBvc2l0aW9uEg0KBWRlcHRoGAwgASgFEhgKBHJvbGUYDiABKA4yCi5tdXNlLlJvbGUSEgoKc29ydF9vcmRlchgNIAEoBUIGCgRfdWlkQgoKCF9jb21tZW50IkMKHFVwZGF0ZVdvcmxkSW5mb0VudHJ5UmVzcG9uc2USIwoFZW50cnkYASABKAsyFC5tdXNlLldvcmxkSW5mb0VudHJ5IikKG0RlbGV0ZVdvcmxkSW5mb0VudHJ5UmVxdWVzdBIKCgJpZBgBIAEoBSIeChxEZWxldGVXb3JsZEluZm9FbnRyeVJlc3BvbnNlIk4KIlVwZGF0ZVdvcmxkSW5mb0VudHJpZXNPcmRlclJlcXVlc3QSFQoNd29ybGRfaW5mb19pZBgBIAEoBRIRCgllbnRyeV9pZHMYAiADKAUiJQojVXBkYXRlV29ybGRJbmZvRW50cmllc09yZGVyUmVzcG9uc2UynQgKEFdvcmxkSW5mb1NlcnZpY2USSwoOTGlzdFdvcmxkSW5mb3MSGy5tdXNlLkxpc3RXb3JsZEluZm9zUmVxdWVzdBocLm11c2UuTGlzdFdvcmxkSW5mb3NSZXNwb25zZRJFCgxHZXRXb3JsZEluZm8SGS5tdXNlLkdldFdvcmxkSW5mb1JlcXVlc3QaGi5tdXNlLkdldFdvcmxkSW5mb1Jlc3BvbnNlEk4KD0NyZWF0ZVdvcmxkSW5mbxIcLm11c2UuQ3JlYXRlV29ybGRJbmZvUmVxdWVzdBodLm11c2UuQ3JlYXRlV29ybGRJbmZvUmVzcG9uc2USTgoPVXBkYXRlV29ybGRJbmZvEhwubXVzZS5VcGRhdGVXb3JsZEluZm9SZXF1ZXN0Gh0ubXVzZS5VcGRhdGVXb3JsZEluZm9SZXNwb25zZRJOCg9EZWxldGVXb3JsZEluZm8SHC5tdXNlLkRlbGV0ZVdvcmxkSW5mb1JlcXVlc3QaHS5tdXNlLkRlbGV0ZVdvcmxkSW5mb1Jlc3BvbnNlEk4KD0ltcG9ydFdvcmxkSW5mbxIcLm11c2UuSW1wb3J0V29ybGRJbmZvUmVxdWVzdBodLm11c2UuSW1wb3J0V29ybGRJbmZvUmVzcG9uc2USTgoPRXhwb3J0V29ybGRJbmZvEhwubXVzZS5FeHBvcnRXb3JsZEluZm9SZXF1ZXN0Gh0ubXVzZS5FeHBvcnRXb3JsZEluZm9SZXNwb25zZRJdChRMaXN0V29ybGRJbmZvRW50cmllcxIhLm11c2UuTGlzdFdvcmxkSW5mb0VudHJpZXNSZXF1ZXN0GiIubXVzZS5MaXN0V29ybGRJbmZvRW50cmllc1Jlc3BvbnNlElQKEUFkZFdvcmxkSW5mb0VudHJ5Eh4ubXVzZS5BZGRXb3JsZEluZm9FbnRyeVJlcXVlc3QaHy5tdXNlLkFkZFdvcmxkSW5mb0VudHJ5UmVzcG9uc2USXQoUVXBkYXRlV29ybGRJbmZvRW50cnkSIS5tdXNlLlVwZGF0ZVdvcmxkSW5mb0VudHJ5UmVxdWVzdBoiLm11c2UuVXBkYXRlV29ybGRJbmZvRW50cnlSZXNwb25zZRJdChREZWxldGVXb3JsZEluZm9FbnRyeRIhLm11c2UuRGVsZXRlV29ybGRJbmZvRW50cnlSZXF1ZXN0GiIubXVzZS5EZWxldGVXb3JsZEluZm9FbnRyeVJlc3BvbnNlEnIKG1VwZGF0ZVdvcmxkSW5mb0VudHJpZXNPcmRlchIoLm11c2UuVXBkYXRlV29ybGRJbmZvRW50cmllc09yZGVyUmVxdWVzdBopLm11c2UuVXBkYXRlV29ybGRJbmZvRW50cmllc09yZGVyUmVzcG9uc2VCaQoIY29tLm11c2VCDldvcmxkaW5mb1Byb3RvUAFaHWdpdGh1Yi5jb20vbGluZy9tdXNlL2dlbi9tdXNlogIDTVhYqgIETXVzZcoCBE11c2XiAhBNdXNlXEdQQk1ldGFkYXRh6gIETXVzZWIGcHJvdG8z", [file_muse_common]);
+  fileDesc("ChRtdXNlL3dvcmxkaW5mby5wcm90bxIEbXVzZSKtAQoJV29ybGRJbmZvEgoKAmlkGAEgASgFEg8KB3VzZXJfaWQYAiABKAUSDAoEbmFtZRgDIAEoCRITCgtkZXNjcmlwdGlvbhgEIAEoCRIRCglpc19nbG9iYWwYBSABKAgSEgoKY3JlYXRlZF9hdBgGIAEoAxISCgp1cGRhdGVkX2F0GAcgASgDEiUKB2VudHJpZXMYCCADKAsyFC5tdXNlLldvcmxkSW5mb0VudHJ5IusCCg5Xb3JsZEluZm9FbnRyeRIKCgJpZBgBIAEoBRIVCg13b3JsZF9pbmZvX2lkGAIgASgFEgsKA3VpZBgDIAEoCRIRCglrZXlzX2xpc3QYBCADKAkSFgoOc2Vjb25kYXJ5X2tleXMYBSADKAkSDwoHY29udGVudBgGIAEoCRIPCgdjb21tZW50GAcgASgJEhIKCmlzX2VuYWJsZWQYCCABKAgSEAoIY29uc3RhbnQYCSABKAgSEQoJc2VsZWN0aXZlGAogASgIEhcKD2luc2VydGlvbl9vcmRlchgLIAEoBRIlCghwb3NpdGlvbhgMIAEoDjITLm11c2UuRW50cnlQb3NpdGlvbhINCgVkZXB0aBgNIAEoBRISCgpzb3J0X29yZGVyGA4gASgFEhIKCmNyZWF0ZWRfYXQYDyABKAMSEgoKdXBkYXRlZF9hdBgQIAEoAxIYCgRyb2xlGBEgASgOMgoubXVzZS5Sb2xlIk0KEFdvcmxkSW5mb1dpdGhMZW4SIwoKd29ybGRfaW5mbxgBIAEoCzIPLm11c2UuV29ybGRJbmZvEhQKDGVudHJ5X2xlbmd0aBgCIAEoBSJ/ChVMaXN0V29ybGRJbmZvc1JlcXVlc3QSFgoJaXNfZ2xvYmFsGAEgASgISACIAQESEQoEcGFnZRgCIAEoBUgBiAEBEhYKCXBhZ2Vfc2l6ZRgDIAEoBUgCiAEBQgwKCl9pc19nbG9iYWxCBwoFX3BhZ2VCDAoKX3BhZ2Vfc2l6ZSJ1ChZMaXN0V29ybGRJbmZvc1Jlc3BvbnNlEisKC3dvcmxkX2luZm9zGAEgAygLMhYubXVzZS5Xb3JsZEluZm9XaXRoTGVuEg0KBXRvdGFsGAIgASgDEgwKBHBhZ2UYAyABKAUSEQoJcGFnZV9zaXplGAQgASgFIiEKE0dldFdvcmxkSW5mb1JlcXVlc3QSCgoCaWQYASABKAUiOwoUR2V0V29ybGRJbmZvUmVzcG9uc2USIwoKd29ybGRfaW5mbxgBIAEoCzIPLm11c2UuV29ybGRJbmZvImMKFkNyZWF0ZVdvcmxkSW5mb1JlcXVlc3QSDAoEbmFtZRgBIAEoCRIYCgtkZXNjcmlwdGlvbhgCIAEoCUgAiAEBEhEKCWlzX2dsb2JhbBgDIAEoCEIOCgxfZGVzY3JpcHRpb24iPgoXQ3JlYXRlV29ybGRJbmZvUmVzcG9uc2USIwoKd29ybGRfaW5mbxgBIAEoCzIPLm11c2UuV29ybGRJbmZvIm8KFlVwZGF0ZVdvcmxkSW5mb1JlcXVlc3QSCgoCaWQYASABKAUSDAoEbmFtZRgCIAEoCRIYCgtkZXNjcmlwdGlvbhgDIAEoCUgAiAEBEhEKCWlzX2dsb2JhbBgEIAEoCEIOCgxfZGVzY3JpcHRpb24iPgoXVXBkYXRlV29ybGRJbmZvUmVzcG9uc2USIwoKd29ybGRfaW5mbxgBIAEoCzIPLm11c2UuV29ybGRJbmZvIiQKFkRlbGV0ZVdvcmxkSW5mb1JlcXVlc3QSCgoCaWQYASABKAUiGQoXRGVsZXRlV29ybGRJbmZvUmVzcG9uc2UiQQoWSW1wb3J0V29ybGRJbmZvUmVxdWVzdBIUCgxmaWxlX2NvbnRlbnQYASABKAwSEQoJZmlsZV9uYW1lGAIgASgJIj4KF0ltcG9ydFdvcmxkSW5mb1Jlc3BvbnNlEiMKCndvcmxkX2luZm8YASABKAsyDy5tdXNlLldvcmxkSW5mbyIkChZFeHBvcnRXb3JsZEluZm9SZXF1ZXN0EgoKAmlkGAEgASgFIkIKF0V4cG9ydFdvcmxkSW5mb1Jlc3BvbnNlEhQKDGZpbGVfY29udGVudBgBIAEoDBIRCglmaWxlX25hbWUYAiABKAkiNAobTGlzdFdvcmxkSW5mb0VudHJpZXNSZXF1ZXN0EhUKDXdvcmxkX2luZm9faWQYASABKAUiRQocTGlzdFdvcmxkSW5mb0VudHJpZXNSZXNwb25zZRIlCgdlbnRyaWVzGAEgAygLMhQubXVzZS5Xb3JsZEluZm9FbnRyeSLfAgoYQWRkV29ybGRJbmZvRW50cnlSZXF1ZXN0EhUKDXdvcmxkX2luZm9faWQYASABKAUSEAoDdWlkGAIgASgJSACIAQESEQoJa2V5c19saXN0GAMgAygJEhYKDnNlY29uZGFyeV9rZXlzGAQgAygJEg8KB2NvbnRlbnQYBSABKAkSFAoHY29tbWVudBgGIAEoCUgBiAEBEhIKCmlzX2VuYWJsZWQYByABKAgSEAoIY29uc3RhbnQYCCABKAgSEQoJc2VsZWN0aXZlGAkgASgIEhcKD2luc2VydGlvbl9vcmRlchgKIAEoBRIlCghwb3NpdGlvbhgLIAEoDjITLm11c2UuRW50cnlQb3NpdGlvbhINCgVkZXB0aBgMIAEoBRIYCgRyb2xlGA4gASgOMgoubXVzZS5Sb2xlEhIKCnNvcnRfb3JkZXIYDSABKAVCBgoEX3VpZEIKCghfY29tbWVudCJAChlBZGRXb3JsZEluZm9FbnRyeVJlc3BvbnNlEiMKBWVudHJ5GAEgASgLMhQubXVzZS5Xb3JsZEluZm9FbnRyeSLXAgobVXBkYXRlV29ybGRJbmZvRW50cnlSZXF1ZXN0EgoKAmlkGAEgASgFEhAKA3VpZBgCIAEoCUgAiAEBEhEKCWtleXNfbGlzdBgDIAMoCRIWCg5zZWNvbmRhcnlfa2V5cxgEIAMoCRIPCgdjb250ZW50GAUgASgJEhQKB2NvbW1lbnQYBiABKAlIAYgBARISCgppc19lbmFibGVkGAcgASgIEhAKCGNvbnN0YW50GAggASgIEhEKCXNlbGVjdGl2ZRgJIAEoCBIXCg9pbnNlcnRpb25fb3JkZXIYCiABKAUSJQoIcG9zaXRpb24YCyABKA4yEy5tdXNlLkVudHJ5UG9zaXRpb24SDQoFZGVwdGgYDCABKAUSGAoEcm9sZRgOIAEoDjIKLm11c2UuUm9sZRISCgpzb3J0X29yZGVyGA0gASgFQgYKBF91aWRCCgoIX2NvbW1lbnQiQwocVXBkYXRlV29ybGRJbmZvRW50cnlSZXNwb25zZRIjCgVlbnRyeRgBIAEoCzIULm11c2UuV29ybGRJbmZvRW50cnkiKQobRGVsZXRlV29ybGRJbmZvRW50cnlSZXF1ZXN0EgoKAmlkGAEgASgFIh4KHERlbGV0ZVdvcmxkSW5mb0VudHJ5UmVzcG9uc2UiTgoiVXBkYXRlV29ybGRJbmZvRW50cmllc09yZGVyUmVxdWVzdBIVCg13b3JsZF9pbmZvX2lkGAEgASgFEhEKCWVudHJ5X2lkcxgCIAMoBSIlCiNVcGRhdGVXb3JsZEluZm9FbnRyaWVzT3JkZXJSZXNwb25zZTKdCAoQV29ybGRJbmZvU2VydmljZRJLCg5MaXN0V29ybGRJbmZvcxIbLm11c2UuTGlzdFdvcmxkSW5mb3NSZXF1ZXN0GhwubXVzZS5MaXN0V29ybGRJbmZvc1Jlc3BvbnNlEkUKDEdldFdvcmxkSW5mbxIZLm11c2UuR2V0V29ybGRJbmZvUmVxdWVzdBoaLm11c2UuR2V0V29ybGRJbmZvUmVzcG9uc2USTgoPQ3JlYXRlV29ybGRJbmZvEhwubXVzZS5DcmVhdGVXb3JsZEluZm9SZXF1ZXN0Gh0ubXVzZS5DcmVhdGVXb3JsZEluZm9SZXNwb25zZRJOCg9VcGRhdGVXb3JsZEluZm8SHC5tdXNlLlVwZGF0ZVdvcmxkSW5mb1JlcXVlc3QaHS5tdXNlLlVwZGF0ZVdvcmxkSW5mb1Jlc3BvbnNlEk4KD0RlbGV0ZVdvcmxkSW5mbxIcLm11c2UuRGVsZXRlV29ybGRJbmZvUmVxdWVzdBodLm11c2UuRGVsZXRlV29ybGRJbmZvUmVzcG9uc2USTgoPSW1wb3J0V29ybGRJbmZvEhwubXVzZS5JbXBvcnRXb3JsZEluZm9SZXF1ZXN0Gh0ubXVzZS5JbXBvcnRXb3JsZEluZm9SZXNwb25zZRJOCg9FeHBvcnRXb3JsZEluZm8SHC5tdXNlLkV4cG9ydFdvcmxkSW5mb1JlcXVlc3QaHS5tdXNlLkV4cG9ydFdvcmxkSW5mb1Jlc3BvbnNlEl0KFExpc3RXb3JsZEluZm9FbnRyaWVzEiEubXVzZS5MaXN0V29ybGRJbmZvRW50cmllc1JlcXVlc3QaIi5tdXNlLkxpc3RXb3JsZEluZm9FbnRyaWVzUmVzcG9uc2USVAoRQWRkV29ybGRJbmZvRW50cnkSHi5tdXNlLkFkZFdvcmxkSW5mb0VudHJ5UmVxdWVzdBofLm11c2UuQWRkV29ybGRJbmZvRW50cnlSZXNwb25zZRJdChRVcGRhdGVXb3JsZEluZm9FbnRyeRIhLm11c2UuVXBkYXRlV29ybGRJbmZvRW50cnlSZXF1ZXN0GiIubXVzZS5VcGRhdGVXb3JsZEluZm9FbnRyeVJlc3BvbnNlEl0KFERlbGV0ZVdvcmxkSW5mb0VudHJ5EiEubXVzZS5EZWxldGVXb3JsZEluZm9FbnRyeVJlcXVlc3QaIi5tdXNlLkRlbGV0ZVdvcmxkSW5mb0VudHJ5UmVzcG9uc2UScgobVXBkYXRlV29ybGRJbmZvRW50cmllc09yZGVyEigubXVzZS5VcGRhdGVXb3JsZEluZm9FbnRyaWVzT3JkZXJSZXF1ZXN0GikubXVzZS5VcGRhdGVXb3JsZEluZm9FbnRyaWVzT3JkZXJSZXNwb25zZUJpCghjb20ubXVzZUIOV29ybGRpbmZvUHJvdG9QAVodZ2l0aHViLmNvbS9saW5nL211c2UvZ2VuL211c2WiAgNNWFiqAgRNdXNlygIETXVzZeICEE11c2VcR1BCTWV0YWRhdGHqAgRNdXNlYgZwcm90bzM", [file_muse_common]);
 
 /**
  * WorldInfo 世界书，存储角色相关的背景知识
@@ -218,6 +218,28 @@ export const WorldInfoEntrySchema: GenMessage<WorldInfoEntry> = /*@__PURE__*/
   messageDesc(file_muse_worldinfo, 1);
 
 /**
+ * @generated from message muse.WorldInfoWithLen
+ */
+export type WorldInfoWithLen = Message<"muse.WorldInfoWithLen"> & {
+  /**
+   * @generated from field: muse.WorldInfo world_info = 1;
+   */
+  worldInfo?: WorldInfo | undefined;
+
+  /**
+   * @generated from field: int32 entry_length = 2;
+   */
+  entryLength: number;
+};
+
+/**
+ * Describes the message muse.WorldInfoWithLen.
+ * Use `create(WorldInfoWithLenSchema)` to create a new message.
+ */
+export const WorldInfoWithLenSchema: GenMessage<WorldInfoWithLen> = /*@__PURE__*/
+  messageDesc(file_muse_worldinfo, 2);
+
+/**
  * 获取世界书列表请求
  *
  * @generated from message muse.ListWorldInfosRequest
@@ -250,7 +272,7 @@ export type ListWorldInfosRequest = Message<"muse.ListWorldInfosRequest"> & {
  * Use `create(ListWorldInfosRequestSchema)` to create a new message.
  */
 export const ListWorldInfosRequestSchema: GenMessage<ListWorldInfosRequest> = /*@__PURE__*/
-  messageDesc(file_muse_worldinfo, 2);
+  messageDesc(file_muse_worldinfo, 3);
 
 /**
  * 获取世界书列表响应
@@ -259,9 +281,9 @@ export const ListWorldInfosRequestSchema: GenMessage<ListWorldInfosRequest> = /*
  */
 export type ListWorldInfosResponse = Message<"muse.ListWorldInfosResponse"> & {
   /**
-   * @generated from field: repeated muse.WorldInfo world_infos = 1;
+   * @generated from field: repeated muse.WorldInfoWithLen world_infos = 1;
    */
-  worldInfos: WorldInfo[];
+  worldInfos: WorldInfoWithLen[];
 
   /**
    * 总数
@@ -290,7 +312,7 @@ export type ListWorldInfosResponse = Message<"muse.ListWorldInfosResponse"> & {
  * Use `create(ListWorldInfosResponseSchema)` to create a new message.
  */
 export const ListWorldInfosResponseSchema: GenMessage<ListWorldInfosResponse> = /*@__PURE__*/
-  messageDesc(file_muse_worldinfo, 3);
+  messageDesc(file_muse_worldinfo, 4);
 
 /**
  * 获取单个世界书请求
@@ -309,7 +331,7 @@ export type GetWorldInfoRequest = Message<"muse.GetWorldInfoRequest"> & {
  * Use `create(GetWorldInfoRequestSchema)` to create a new message.
  */
 export const GetWorldInfoRequestSchema: GenMessage<GetWorldInfoRequest> = /*@__PURE__*/
-  messageDesc(file_muse_worldinfo, 4);
+  messageDesc(file_muse_worldinfo, 5);
 
 /**
  * 获取单个世界书响应
@@ -328,7 +350,7 @@ export type GetWorldInfoResponse = Message<"muse.GetWorldInfoResponse"> & {
  * Use `create(GetWorldInfoResponseSchema)` to create a new message.
  */
 export const GetWorldInfoResponseSchema: GenMessage<GetWorldInfoResponse> = /*@__PURE__*/
-  messageDesc(file_muse_worldinfo, 5);
+  messageDesc(file_muse_worldinfo, 6);
 
 /**
  * 创建世界书请求
@@ -357,7 +379,7 @@ export type CreateWorldInfoRequest = Message<"muse.CreateWorldInfoRequest"> & {
  * Use `create(CreateWorldInfoRequestSchema)` to create a new message.
  */
 export const CreateWorldInfoRequestSchema: GenMessage<CreateWorldInfoRequest> = /*@__PURE__*/
-  messageDesc(file_muse_worldinfo, 6);
+  messageDesc(file_muse_worldinfo, 7);
 
 /**
  * 创建世界书响应
@@ -376,7 +398,7 @@ export type CreateWorldInfoResponse = Message<"muse.CreateWorldInfoResponse"> & 
  * Use `create(CreateWorldInfoResponseSchema)` to create a new message.
  */
 export const CreateWorldInfoResponseSchema: GenMessage<CreateWorldInfoResponse> = /*@__PURE__*/
-  messageDesc(file_muse_worldinfo, 7);
+  messageDesc(file_muse_worldinfo, 8);
 
 /**
  * 更新世界书请求
@@ -410,7 +432,7 @@ export type UpdateWorldInfoRequest = Message<"muse.UpdateWorldInfoRequest"> & {
  * Use `create(UpdateWorldInfoRequestSchema)` to create a new message.
  */
 export const UpdateWorldInfoRequestSchema: GenMessage<UpdateWorldInfoRequest> = /*@__PURE__*/
-  messageDesc(file_muse_worldinfo, 8);
+  messageDesc(file_muse_worldinfo, 9);
 
 /**
  * 更新世界书响应
@@ -429,7 +451,7 @@ export type UpdateWorldInfoResponse = Message<"muse.UpdateWorldInfoResponse"> & 
  * Use `create(UpdateWorldInfoResponseSchema)` to create a new message.
  */
 export const UpdateWorldInfoResponseSchema: GenMessage<UpdateWorldInfoResponse> = /*@__PURE__*/
-  messageDesc(file_muse_worldinfo, 9);
+  messageDesc(file_muse_worldinfo, 10);
 
 /**
  * 删除世界书请求
@@ -448,7 +470,7 @@ export type DeleteWorldInfoRequest = Message<"muse.DeleteWorldInfoRequest"> & {
  * Use `create(DeleteWorldInfoRequestSchema)` to create a new message.
  */
 export const DeleteWorldInfoRequestSchema: GenMessage<DeleteWorldInfoRequest> = /*@__PURE__*/
-  messageDesc(file_muse_worldinfo, 10);
+  messageDesc(file_muse_worldinfo, 11);
 
 /**
  * 删除世界书响应
@@ -463,7 +485,7 @@ export type DeleteWorldInfoResponse = Message<"muse.DeleteWorldInfoResponse"> & 
  * Use `create(DeleteWorldInfoResponseSchema)` to create a new message.
  */
 export const DeleteWorldInfoResponseSchema: GenMessage<DeleteWorldInfoResponse> = /*@__PURE__*/
-  messageDesc(file_muse_worldinfo, 11);
+  messageDesc(file_muse_worldinfo, 12);
 
 /**
  * 导入世界书请求
@@ -489,7 +511,7 @@ export type ImportWorldInfoRequest = Message<"muse.ImportWorldInfoRequest"> & {
  * Use `create(ImportWorldInfoRequestSchema)` to create a new message.
  */
 export const ImportWorldInfoRequestSchema: GenMessage<ImportWorldInfoRequest> = /*@__PURE__*/
-  messageDesc(file_muse_worldinfo, 12);
+  messageDesc(file_muse_worldinfo, 13);
 
 /**
  * 导入世界书响应
@@ -508,7 +530,7 @@ export type ImportWorldInfoResponse = Message<"muse.ImportWorldInfoResponse"> & 
  * Use `create(ImportWorldInfoResponseSchema)` to create a new message.
  */
 export const ImportWorldInfoResponseSchema: GenMessage<ImportWorldInfoResponse> = /*@__PURE__*/
-  messageDesc(file_muse_worldinfo, 13);
+  messageDesc(file_muse_worldinfo, 14);
 
 /**
  * 导出世界书请求
@@ -527,7 +549,7 @@ export type ExportWorldInfoRequest = Message<"muse.ExportWorldInfoRequest"> & {
  * Use `create(ExportWorldInfoRequestSchema)` to create a new message.
  */
 export const ExportWorldInfoRequestSchema: GenMessage<ExportWorldInfoRequest> = /*@__PURE__*/
-  messageDesc(file_muse_worldinfo, 14);
+  messageDesc(file_muse_worldinfo, 15);
 
 /**
  * 导出世界书响应
@@ -551,7 +573,7 @@ export type ExportWorldInfoResponse = Message<"muse.ExportWorldInfoResponse"> & 
  * Use `create(ExportWorldInfoResponseSchema)` to create a new message.
  */
 export const ExportWorldInfoResponseSchema: GenMessage<ExportWorldInfoResponse> = /*@__PURE__*/
-  messageDesc(file_muse_worldinfo, 15);
+  messageDesc(file_muse_worldinfo, 16);
 
 /**
  * 获取世界书条目列表请求
@@ -570,7 +592,7 @@ export type ListWorldInfoEntriesRequest = Message<"muse.ListWorldInfoEntriesRequ
  * Use `create(ListWorldInfoEntriesRequestSchema)` to create a new message.
  */
 export const ListWorldInfoEntriesRequestSchema: GenMessage<ListWorldInfoEntriesRequest> = /*@__PURE__*/
-  messageDesc(file_muse_worldinfo, 16);
+  messageDesc(file_muse_worldinfo, 17);
 
 /**
  * 获取世界书条目列表响应
@@ -589,7 +611,7 @@ export type ListWorldInfoEntriesResponse = Message<"muse.ListWorldInfoEntriesRes
  * Use `create(ListWorldInfoEntriesResponseSchema)` to create a new message.
  */
 export const ListWorldInfoEntriesResponseSchema: GenMessage<ListWorldInfoEntriesResponse> = /*@__PURE__*/
-  messageDesc(file_muse_worldinfo, 17);
+  messageDesc(file_muse_worldinfo, 18);
 
 /**
  * 添加世界书条目请求
@@ -675,7 +697,7 @@ export type AddWorldInfoEntryRequest = Message<"muse.AddWorldInfoEntryRequest"> 
  * Use `create(AddWorldInfoEntryRequestSchema)` to create a new message.
  */
 export const AddWorldInfoEntryRequestSchema: GenMessage<AddWorldInfoEntryRequest> = /*@__PURE__*/
-  messageDesc(file_muse_worldinfo, 18);
+  messageDesc(file_muse_worldinfo, 19);
 
 /**
  * 添加世界书条目响应
@@ -694,7 +716,7 @@ export type AddWorldInfoEntryResponse = Message<"muse.AddWorldInfoEntryResponse"
  * Use `create(AddWorldInfoEntryResponseSchema)` to create a new message.
  */
 export const AddWorldInfoEntryResponseSchema: GenMessage<AddWorldInfoEntryResponse> = /*@__PURE__*/
-  messageDesc(file_muse_worldinfo, 19);
+  messageDesc(file_muse_worldinfo, 20);
 
 /**
  * 更新世界书条目请求
@@ -780,7 +802,7 @@ export type UpdateWorldInfoEntryRequest = Message<"muse.UpdateWorldInfoEntryRequ
  * Use `create(UpdateWorldInfoEntryRequestSchema)` to create a new message.
  */
 export const UpdateWorldInfoEntryRequestSchema: GenMessage<UpdateWorldInfoEntryRequest> = /*@__PURE__*/
-  messageDesc(file_muse_worldinfo, 20);
+  messageDesc(file_muse_worldinfo, 21);
 
 /**
  * 更新世界书条目响应
@@ -799,7 +821,7 @@ export type UpdateWorldInfoEntryResponse = Message<"muse.UpdateWorldInfoEntryRes
  * Use `create(UpdateWorldInfoEntryResponseSchema)` to create a new message.
  */
 export const UpdateWorldInfoEntryResponseSchema: GenMessage<UpdateWorldInfoEntryResponse> = /*@__PURE__*/
-  messageDesc(file_muse_worldinfo, 21);
+  messageDesc(file_muse_worldinfo, 22);
 
 /**
  * 删除世界书条目请求
@@ -818,7 +840,7 @@ export type DeleteWorldInfoEntryRequest = Message<"muse.DeleteWorldInfoEntryRequ
  * Use `create(DeleteWorldInfoEntryRequestSchema)` to create a new message.
  */
 export const DeleteWorldInfoEntryRequestSchema: GenMessage<DeleteWorldInfoEntryRequest> = /*@__PURE__*/
-  messageDesc(file_muse_worldinfo, 22);
+  messageDesc(file_muse_worldinfo, 23);
 
 /**
  * 删除世界书条目响应
@@ -833,7 +855,7 @@ export type DeleteWorldInfoEntryResponse = Message<"muse.DeleteWorldInfoEntryRes
  * Use `create(DeleteWorldInfoEntryResponseSchema)` to create a new message.
  */
 export const DeleteWorldInfoEntryResponseSchema: GenMessage<DeleteWorldInfoEntryResponse> = /*@__PURE__*/
-  messageDesc(file_muse_worldinfo, 23);
+  messageDesc(file_muse_worldinfo, 24);
 
 /**
  * 批量更新世界书条目排序请求
@@ -859,7 +881,7 @@ export type UpdateWorldInfoEntriesOrderRequest = Message<"muse.UpdateWorldInfoEn
  * Use `create(UpdateWorldInfoEntriesOrderRequestSchema)` to create a new message.
  */
 export const UpdateWorldInfoEntriesOrderRequestSchema: GenMessage<UpdateWorldInfoEntriesOrderRequest> = /*@__PURE__*/
-  messageDesc(file_muse_worldinfo, 24);
+  messageDesc(file_muse_worldinfo, 25);
 
 /**
  * 批量更新世界书条目排序响应
@@ -874,7 +896,7 @@ export type UpdateWorldInfoEntriesOrderResponse = Message<"muse.UpdateWorldInfoE
  * Use `create(UpdateWorldInfoEntriesOrderResponseSchema)` to create a new message.
  */
 export const UpdateWorldInfoEntriesOrderResponseSchema: GenMessage<UpdateWorldInfoEntriesOrderResponse> = /*@__PURE__*/
-  messageDesc(file_muse_worldinfo, 25);
+  messageDesc(file_muse_worldinfo, 26);
 
 /**
  * 世界书服务（包含世界书和世界书条目的管理）

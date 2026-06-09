@@ -17,7 +17,19 @@
     <div v-else class="messages-area">
       <!-- 角色信息条（当有角色时显示） -->
       <div v-if="currentCharacter" class="character-banner">
-        <n-avatar :size="28" round :src="characterAvatarUrl" class="character-avatar">
+        <n-avatar
+          v-if="characterAvatarUrl"
+          :size="28"
+          round
+          :src="characterAvatarUrl"
+          class="character-avatar"
+        />
+        <n-avatar
+          v-else
+          :size="28"
+          round
+          class="character-avatar"
+        >
           {{ currentCharacter.name?.charAt(0) }}
         </n-avatar>
         <span class="character-name">{{ currentCharacter.name }}</span>
@@ -40,7 +52,17 @@
             <!-- 正在输入指示器 -->
             <div v-if="item.id === -1" class="typing-indicator">
               <div class="typing-avatar">
-                <n-avatar :size="32" round :src="characterAvatarUrl">
+                <n-avatar
+                  v-if="characterAvatarUrl"
+                  :size="32"
+                  round
+                  :src="characterAvatarUrl"
+                />
+                <n-avatar
+                  v-else
+                  :size="32"
+                  round
+                >
                   {{ currentCharacter?.name?.charAt(0) || '?' }}
                 </n-avatar>
               </div>
@@ -58,6 +80,8 @@
                 :message="item"
                 :character="currentCharacter"
                 :persona="currentPersona"
+                :character-avatar-url="characterAvatarUrl"
+                :persona-avatar-url="personaAvatarUrl"
                 @edit="handleEditMessage"
                 @delete="handleDeleteMessage"
                 @delete-swipe="handleDeleteSwipe"
@@ -128,10 +152,10 @@ import {useUserStore} from '@/stores/user';
 import {chatClient} from '@/api/client';
 import type {Character} from '@/gen/muse/character_pb';
 import type {Persona} from '@/gen/muse/user_pb';
-import {useAvatar} from '@/composables/useAvatar';
 import {ErrCode} from "@/gen/muse/common_pb.ts";
 import {ConnectError} from "@connectrpc/connect";
 import {useCharacterStore} from "@/stores/character.ts";
+import {useFileStore} from "@/stores/file.ts";
 
 // 本地Message类型适配
 interface LocalMessage {
@@ -151,6 +175,7 @@ const dialog = useDialog();
 const chatStore = useChatStore();
 const charStore = useCharacterStore();
 const userStore = useUserStore();
+const fileStore = useFileStore();
 
 // 响应式状态
 const inputMessage = ref('');
@@ -174,15 +199,35 @@ watch(() => charStore.curCharId, async (newId) => {
     currentCharacter.value = null;
     return;
   }
-  currentCharacter.value = await charStore.getCharDetail(newId);
+  const char = await charStore.getCharDetail(newId);
+  const avatarPath = char?.avatar;
+  // 先等预加载完成，再设置角色，确保 computed 求值时缓存已就绪
+  if (avatarPath && !avatarPath.startsWith('http') && !avatarPath.startsWith('data:')) {
+    await fileStore.preloadFile(avatarPath);
+  }
+  currentCharacter.value = char;
 }, { immediate: true });
 
-// 角色头像URL
-const { avatarUrl: characterAvatarUrl } = useAvatar(computed(() => currentCharacter.value?.avatar));
+// 角色头像URL（从预加载缓存同步读取）
+const characterAvatarUrl = computed(() => {
+  return fileStore.getCachedUrl(currentCharacter.value?.avatar) || '';
+});
 
 // 当前人设
 const currentPersona = computed<Persona | null>(() => {
   return userStore.activePersona ?? null;
+});
+
+// 预加载当前人设头像
+watch(() => currentPersona.value?.avatar, async (avatarPath) => {
+  if (avatarPath && !avatarPath.startsWith('http') && !avatarPath.startsWith('data:')) {
+    await fileStore.preloadFile(avatarPath);
+  }
+}, { immediate: true });
+
+// 人设头像URL（从预加载缓存同步读取）
+const personaAvatarUrl = computed(() => {
+  return fileStore.getCachedUrl(currentPersona.value?.avatar) || '';
 });
 
 // 将PbMessage转换为本地格式

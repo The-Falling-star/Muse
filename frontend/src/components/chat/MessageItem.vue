@@ -9,21 +9,34 @@
     <!-- 头像 -->
     <div class="message-avatar">
       <n-avatar
-        v-if="message.role === 'assistant'"
+        v-if="message.role === 'assistant' && characterAvatarUrl"
         :size="36"
         round
-        :src="character?.avatar"
+        :src="characterAvatarUrl"
+        class="avatar"
+      />
+      <n-avatar
+        v-else-if="message.role === 'assistant'"
+        :size="36"
+        round
         class="avatar"
       >
         {{ character?.name?.charAt(0) || 'A' }}
       </n-avatar>
+      <n-avatar
+        v-else-if="message.role === 'user' && personaAvatarUrl"
+        :size="36"
+        round
+        :src="personaAvatarUrl"
+        class="avatar user-avatar"
+      />
       <n-avatar
         v-else-if="message.role === 'user'"
         :size="36"
         round
         class="avatar user-avatar"
       >
-        <n-icon><PersonOutline /></n-icon>
+        {{ persona?.name?.charAt(0) || '我' }}
       </n-avatar>
       <div v-else class="system-icon">
         <n-icon><InformationCircleOutline /></n-icon>
@@ -268,6 +281,8 @@ const props = defineProps<{
   message: Message;
   character?: Character | null;
   persona?: Persona | null;
+  characterAvatarUrl?: string;
+  personaAvatarUrl?: string;
 }>();
 
 const emit = defineEmits<{

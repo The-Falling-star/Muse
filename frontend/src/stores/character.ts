@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-import {computed, ref} from 'vue';
+import {ref} from 'vue';
 import type {Character} from '@/gen/muse/character_pb';
 import {characterClient} from "@/api/client.ts";
 
@@ -21,13 +21,6 @@ export const useCharacterStore = defineStore('character', () => {
     const total = ref(0);
     // 角色详情缓存（key: characterId, value: 完整的角色信息）
     const characterDetailsCache = ref<Map<number, Character>>(new Map());
-
-    // =====================
-    // 计算属性
-    // =====================
-
-    // 是否有缓存数据
-    const hasCached = computed(() => characters.value.length > 0);
 
     // =====================
     // 状态管理方法
@@ -104,7 +97,6 @@ export const useCharacterStore = defineStore('character', () => {
         characters,
         curCharId,
         total,
-        hasCached,
 
         // 方法
         setCharacters,

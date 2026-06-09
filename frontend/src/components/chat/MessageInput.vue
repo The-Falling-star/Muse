@@ -22,13 +22,20 @@
     <!-- 输入区域 -->
     <div class="input-wrapper">
       <!-- Persona 选择器 -->
-      <n-popover trigger="click" placement="top-start" :show-arrow="false">
+      <n-popover v-model:show="personaPopoverShow" trigger="click" placement="top-start" :show-arrow="false">
         <template #trigger>
           <div class="persona-selector" :title="currentPersona.name">
             <n-avatar
+              v-if="getPersonaAvatarSrc(currentPersona.avatar)"
               :size="36"
               round
-              :src="currentPersona.avatar"
+              :src="getPersonaAvatarSrc(currentPersona.avatar)"
+              class="persona-avatar"
+            />
+            <n-avatar
+              v-else
+              :size="36"
+              round
               class="persona-avatar"
             >
               {{ currentPersona.name.charAt(0) }}
@@ -57,7 +64,19 @@
               :class="{ 'active': persona.id === currentPersona.id }"
               @click="selectPersona(persona)"
             >
-              <n-avatar :size="32" round :src="persona.avatar" class="persona-option-avatar">
+              <n-avatar
+                v-if="getPersonaAvatarSrc(persona.avatar)"
+                :size="32"
+                round
+                :src="getPersonaAvatarSrc(persona.avatar)"
+                class="persona-option-avatar"
+              />
+              <n-avatar
+                v-else
+                :size="32"
+                round
+                class="persona-option-avatar"
+              >
                 {{ persona.name.charAt(0) }}
               </n-avatar>
               <span class="persona-option-name">{{ persona.name }}</span>
@@ -156,7 +175,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { NInput, NButton, NIcon, NTooltip, NDropdown, NAvatar, NPopover, NScrollbar } from 'naive-ui';
 import {
@@ -171,6 +190,8 @@ import {
   AddOutline
 } from '@vicons/ionicons5';
 import { useUserStore } from '@/stores/user';
+import { useFileStore } from '@/stores/file';
+import { useAppStore } from '@/stores/app';
 import { userClient } from '@/api/client';
 import type { Persona } from '@/gen/muse/user_pb';
 
@@ -202,10 +223,13 @@ const emit = defineEmits<{
 
 const router = useRouter();
 const userStore = useUserStore();
+const fileStore = useFileStore();
+const appStore = useAppStore();
 
 const inputRef = ref<InstanceType<typeof NInput> | null>(null);
 const fileInputRef = ref<HTMLInputElement | null>(null);
 const attachments = ref<AttachmentFile[]>([]);
+const personaPopoverShow = ref(false);
 
 // 从 userStore 获取真实 personas 数据
 const personas = computed(() => userStore.personas);
@@ -214,6 +238,21 @@ const personas = computed(() => userStore.personas);
 const currentPersona = computed(() => {
   return userStore.activePersona ?? { id: 0, name: '默认用户', avatar: '' } as Persona;
 });
+
+// 预加载所有人设头像
+watch(() => userStore.personas.map(p => p.avatar), async (paths) => {
+  const validPaths = paths.filter((p): p is string =>
+    !!p && !p.startsWith('http') && !p.startsWith('data:')
+  );
+  if (validPaths.length > 0) {
+    await fileStore.preloadFiles(validPaths);
+  }
+}, { immediate: true });
+
+// 头像URL获取函数（与 LeftSidebar 保持一致）
+const getPersonaAvatarSrc = (path: string | undefined): string => {
+  return fileStore.getCachedUrl(path) || '';
+};
 
 // 选择 Persona，调用后端 API 设置活跃人设
 const selectPersona = async (persona: Persona) => {
@@ -226,9 +265,10 @@ const selectPersona = async (persona: Persona) => {
   }
 };
 
-// 打开人设管理 - 导航到设置页
+// 打开人设管理 - 关闭弹出框，打开右侧配置面板的用户Tab
 const openPersonaManager = () => {
-  router.push('/settings');
+  personaPopoverShow.value = false;
+  appStore.openRightPanel('user');
 };
 
 // 本地值

@@ -3,15 +3,15 @@ import { ref, computed } from 'vue';
 import { presetClient } from '@/api/client';
 import type { PromptItem, PresetWithAll, PresetWithPromptLen } from '@/gen/muse/preset_pb';
 import type { Role, InjectionPosition, PromptItemIdentifier } from '@/gen/muse/common_pb';
-import { DEFAULT_PAGE_NUM, DEFAULT_PAGE_SIZE, FETCH_ALL_PAGE_SIZE } from '@/utils/constants';
+import { DEFAULT_PAGE_NUM, DEFAULT_PAGE_SIZE } from '@/utils/constants';
 
 export const usePresetStore = defineStore('preset', () => {
   // =====================
   // 状态
   // =====================
 
-  // 预设列表
-  const presets = ref<PresetWithPromptLen[]>([]);
+  // 预设列表(缓存)
+  const presets = ref<PresetWithPromptLen[] | null>(null);
   // 当前选中的预设
   const selectedPreset = ref<PresetWithAll | null>(null);
   // 当前预设的提示项列表
@@ -30,6 +30,9 @@ export const usePresetStore = defineStore('preset', () => {
 
   // 是否还有更多数据
   const hasMore = computed(() => {
+    if (!presets.value) {
+      return true;
+    }
     const total = presets.value.length;
     const totalAll = Number(pagination.value.total);
     return totalAll > 0 && total < totalAll;
@@ -43,7 +46,7 @@ export const usePresetStore = defineStore('preset', () => {
   const filteredPresets = computed(() => {
     if (!searchQuery.value) return presets.value;
     const query = searchQuery.value.toLowerCase();
-    return presets.value.filter(p => p.preset?.name.toLowerCase().includes(query));
+    return presets.value!.filter(p => p.preset?.name.toLowerCase().includes(query));
   });
 
   // 按排序顺序排列的提示项（后端已按顺序返回）
@@ -56,38 +59,27 @@ export const usePresetStore = defineStore('preset', () => {
   // =====================
 
   // 获取预设列表（替换）
-  const fetchPresets = async (page?: number, pageSize?: number) => {
-    const requestPage = page ?? pagination.value.page;
-    const requestPageSize = pageSize ?? pagination.value.pageSize;
-
-    const response = await presetClient.listPresets({
-      page: requestPage,
-      pageSize: requestPageSize,
-    });
-
-    presets.value = response.presets;
-    pagination.value = {
-      page: response.page,
-      pageSize: response.pageSize,
-      total: Number(response.total),
-    };
-
-    return response.presets;
-  };
-
-  // 获取所有预设（不分页，用于需要全部数据的场景）
-  const fetchAllPresets = async () => {
-    const response = await presetClient.listPresets({
-      page: DEFAULT_PAGE_NUM,
-      pageSize: FETCH_ALL_PAGE_SIZE,
-    });
-    presets.value = response.presets;
-    pagination.value = {
-      page: DEFAULT_PAGE_NUM,
-      pageSize: response.presets.length,
-      total: Number(response.total),
-    };
-    return response.presets;
+  const loadPresets = async () => {
+    if (!presets.value) {
+      loading.value = true;
+      try {
+        const rsp = await presetClient.listPresets({
+          page: DEFAULT_PAGE_NUM,
+          pageSize: DEFAULT_PAGE_SIZE,
+        });
+        presets.value = rsp.presets;
+        pagination.value = {
+          page: rsp.page,
+          pageSize: rsp.pageSize,
+          total: Number(rsp.total),
+        };
+      } catch (error) {
+        console.error('加载更多预设失败:', error);
+      } finally {
+        loading.value = false;
+      }
+    }
+    return presets.value;
   };
 
   // 加载更多（无限滚动用）
@@ -100,7 +92,7 @@ export const usePresetStore = defineStore('preset', () => {
         page: nextPage,
         pageSize: pagination.value.pageSize,
       });
-      presets.value.push(...response.presets);
+      presets.value!.push(...response.presets);
       pagination.value = {
         page: response.page,
         pageSize: response.pageSize,
@@ -116,28 +108,37 @@ export const usePresetStore = defineStore('preset', () => {
   // 重置分页（重新从第一页加载）
   const resetPagination = async () => {
     pagination.value.page = DEFAULT_PAGE_NUM;
-    await fetchPresets(DEFAULT_PAGE_NUM, pagination.value.pageSize);
+    await loadPresets();
   };
 
   // 获取单个预设
   const fetchPreset = async (id: number) => {
-    const response = await presetClient.getPreset({ id });
-    if (response.preset) {
-      const index = presets.value.findIndex(p => p.preset?.id === id);
+    if (!presets.value) {
+      await loadPresets();
+    }
+    const rsp = await presetClient.getPreset({ id });
+    if (rsp.preset) {
+      // 同步更新提示项
+      if (rsp.preset.promptItems) {
+        promptItems.value = rsp.preset.promptItems;
+      }
+      const index = presets.value!.findIndex(p => p.preset?.id === id);
       if (index >= 0) {
         // 更新列表中的预设信息（保持prompt_len）
-        presets.value[index] = {
+        presets.value![index] = {
           $typeName: 'muse.PresetWithPromptLen',
-          preset: response.preset.preset,
-          promptLen: response.preset.promptItems?.length || 0
+          preset: rsp.preset.preset,
+          promptLen: rsp.preset.promptItems?.length || 0
         };
-      }
-      // 同步更新提示项
-      if (response.preset.promptItems) {
-        promptItems.value = response.preset.promptItems;
+      } else {
+        presets.value!.push({
+          $typeName: 'muse.PresetWithPromptLen',
+          preset: rsp.preset.preset,
+          promptLen: rsp.preset.promptItems?.length || 0
+        });
       }
     }
-    return response.preset;
+    return rsp.preset;
   };
 
   // 创建预设
@@ -164,7 +165,7 @@ export const usePresetStore = defineStore('preset', () => {
     await presetClient.createPreset(data);
     // 创建成功后重新获取第一页列表
     pagination.value.page = DEFAULT_PAGE_NUM;
-    await fetchPresets(DEFAULT_PAGE_NUM, pagination.value.pageSize);
+    await loadPresets();
   };
 
   // 更新预设
@@ -190,7 +191,7 @@ export const usePresetStore = defineStore('preset', () => {
   // 删除预设
   const deletePreset = async (id: number) => {
     await presetClient.deletePreset({ id });
-    presets.value = presets.value.filter(p => p.preset?.id !== id);
+    presets.value = presets.value!.filter(p => p.preset?.id !== id);
     if (selectedPreset.value?.preset?.id === id) {
       selectedPreset.value = null;
       promptItems.value = [];
@@ -207,7 +208,7 @@ export const usePresetStore = defineStore('preset', () => {
     const response = await presetClient.importPreset({ fileContent, fileName });
     if (response.preset) {
       // 添加到列表
-      presets.value.push({
+      presets.value!.push({
         $typeName: 'muse.PresetWithPromptLen',
         preset: response.preset.preset,
         promptLen: response.preset.promptItems?.length || 0
@@ -345,8 +346,7 @@ export const usePresetStore = defineStore('preset', () => {
     hasMore,
 
     // 预设方法
-    fetchPresets,
-    fetchAllPresets,
+    loadPresets,
     loadMore,
     resetPagination,
     fetchPreset,

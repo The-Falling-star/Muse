@@ -59,7 +59,7 @@
         </div>
 
         <!-- 空状态 -->
-        <n-empty v-if="worldInfoStore.worldInfos.length === 0 && !loading" description="暂无世界书" size="small" class="empty-state" />
+        <n-empty v-if="worldInfos.length === 0 && !loading" description="暂无世界书" size="small" class="empty-state" />
       </n-infinite-scroll>
     </n-spin>
 
@@ -93,6 +93,7 @@ const worldInfoStore = useWorldInfoStore();
 const loading = computed(() => worldInfoStore.loading);
 const loadingMore = computed(() => worldInfoStore.loadingMore);
 const hasMore = computed(() => worldInfoStore.hasMore);
+const worldInfos = computed(() => worldInfoStore.worldInfos || []);
 const importing = ref(false);
 const creating = ref(false);
 const fileInputRef = ref<HTMLInputElement | null>(null);

@@ -15,7 +15,7 @@ export const useWorldInfoStore = defineStore('worldInfo', () => {
   // =====================
 
   // 世界书列表（缓存）
-  const worldInfos = ref<WorldInfoWithLen[]>([]);
+  const worldInfos = ref<WorldInfoWithLen[] | null>(null);
   // 当前选中的世界书
   const selectedWorldInfo = ref<WorldInfo | null>(null);
   // 当前世界书的条目列表
@@ -32,6 +32,9 @@ export const useWorldInfoStore = defineStore('worldInfo', () => {
 
   // 是否还有更多数据
   const hasMore = computed(() => {
+    if (!worldInfos.value) {
+      return true;
+    }
     const total = worldInfos.value.length;
     const totalAll = Number(pagination.value.total);
     return totalAll > 0 && total < totalAll;
@@ -43,12 +46,12 @@ export const useWorldInfoStore = defineStore('worldInfo', () => {
 
   // 全局世界书
   const globalWorldInfos = computed(() => {
-    return worldInfos.value.filter(w => w.worldInfo?.isGlobal);
+    return worldInfos.value!.filter(w => w.worldInfo?.isGlobal);
   });
 
   // 非全局世界书
   const nonGlobalWorldInfos = computed(() => {
-    return worldInfos.value.filter(w => !w.worldInfo?.isGlobal);
+    return worldInfos.value!.filter(w => !w.worldInfo?.isGlobal);
   });
 
   // 按排序顺序排列的条目
@@ -60,20 +63,22 @@ export const useWorldInfoStore = defineStore('worldInfo', () => {
   // 世界书状态管理
   // =====================
   const loadWorldInfos = async () => {
-    loading.value = true;
-    try {
-      const rsp = await worldInfoClient.listWorldInfos({
-        page: DEFAULT_PAGE_NUM,
-        pageSize: DEFAULT_PAGE_SIZE,
-      });
-      worldInfos.value = rsp.worldInfos;
-      pagination.value = {
-        page: rsp.page,
-        pageSize: rsp.pageSize,
-        total: Number(rsp.total),
-      };
-    } finally {
-      loading.value = false;
+    if (!worldInfos.value) {
+      loading.value = true;
+      try {
+        const rsp = await worldInfoClient.listWorldInfos({
+          page: DEFAULT_PAGE_NUM,
+          pageSize: DEFAULT_PAGE_SIZE,
+        });
+        worldInfos.value = rsp.worldInfos;
+        pagination.value = {
+          page: rsp.page,
+          pageSize: rsp.pageSize,
+          total: Number(rsp.total),
+        };
+      } finally {
+        loading.value = false;
+      }
     }
     return worldInfos.value;
   };
@@ -88,7 +93,7 @@ export const useWorldInfoStore = defineStore('worldInfo', () => {
         page: nextPage,
         pageSize: pagination.value.pageSize,
       });
-      worldInfos.value.push(...rsp.worldInfos);
+      worldInfos.value!.push(...rsp.worldInfos);
       pagination.value = {
         page: rsp.page,
         pageSize: rsp.pageSize,
@@ -124,7 +129,7 @@ export const useWorldInfoStore = defineStore('worldInfo', () => {
 
   // 添加世界书
   const addWorldInfo = (worldInfo: WorldInfo) => {
-    worldInfos.value.unshift({
+    worldInfos.value!.unshift({
       $typeName: 'muse.WorldInfoWithLen',
       worldInfo: worldInfo,
       entryLength: 0,
@@ -134,9 +139,9 @@ export const useWorldInfoStore = defineStore('worldInfo', () => {
 
   // 更新世界书
   const updateWorldInfoInList = (worldInfo: WorldInfo) => {
-    const index = worldInfos.value.findIndex(w => w.worldInfo?.id === worldInfo.id);
-    if (index >= 0 && worldInfos.value[index]) {
-      worldInfos.value[index].worldInfo = worldInfo;
+    const index = worldInfos.value!.findIndex(w => w.worldInfo?.id === worldInfo.id);
+    if (index >= 0 && worldInfos.value![index]) {
+      worldInfos.value![index].worldInfo = worldInfo;
     }
     if (selectedWorldInfo.value?.id === worldInfo.id) {
       selectedWorldInfo.value = worldInfo;
@@ -145,7 +150,7 @@ export const useWorldInfoStore = defineStore('worldInfo', () => {
 
   // 移除世界书
   const removeWorldInfo = (id: number) => {
-    worldInfos.value = worldInfos.value.filter(w => w.worldInfo?.id !== id);
+    worldInfos.value = worldInfos.value!.filter(w => w.worldInfo?.id !== id);
     if (selectedWorldInfo.value?.id === id) {
       selectedWorldInfo.value = null;
       entries.value = [];

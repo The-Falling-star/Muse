@@ -20,7 +20,7 @@
     <n-spin :show="loading" description="加载中..." style="min-height: 60px;">
       <n-infinite-scroll class="list-container" @load="loadMore" :distance="100">
         <div
-          v-for="rule in regexRuleStore.sortedRules"
+          v-for="rule in sortedRules"
           :key="rule.id"
           class="list-item"
           :class="{ active: isEditing(rule.id) }"
@@ -59,7 +59,7 @@
         </div>
 
         <!-- 空状态 -->
-        <n-empty v-if="regexRuleStore.rules.length === 0 && !loading" description="暂无正则规则" size="small" class="empty-state" />
+        <n-empty v-if="rules.length === 0 && !loading" description="暂无正则规则" size="small" class="empty-state" />
       </n-infinite-scroll>
     </n-spin>
   </div>
@@ -79,6 +79,8 @@ const dialog = useDialog();
 const message = useMessage();
 const regexRuleStore = useRegexRuleStore();
 
+const rules = computed(() => regexRuleStore.rules || []);
+const sortedRules = computed(() => regexRuleStore.sortedRules || []);
 const loading = computed(() => regexRuleStore.loading);
 const loadingMore = computed(() => regexRuleStore.loadingMore);
 const hasMore = computed(() => regexRuleStore.hasMore);
@@ -96,17 +98,8 @@ const itemMenuOptions = [
   { label: '删除', key: 'delete' }
 ];
 
-// 加载正则规则列表
-const loadRules = async () => {
-  try {
-    await regexRuleStore.fetchRules();
-  } catch (e) {
-    console.error('加载正则规则列表失败:', e);
-  }
-};
-
-onMounted(() => {
-  loadRules();
+onMounted(async () => {
+  await regexRuleStore.loadRules();
 });
 
 // 判断是否正在编辑
@@ -160,7 +153,7 @@ const handleCreate = async () => {
       runOnEdit: false,
       substituteRegex: false,
       affectFlags: defaultFlags,
-      sortOrder: regexRuleStore.rules.length
+      sortOrder: regexRuleStore.rules!.length
     });
     if (newRule) {
       message.success('规则已创建');
@@ -188,7 +181,7 @@ const handleMenuSelect = (key: string, ruleId: number) => {
 
 // 复制规则
 const handleCopy = async (ruleId: number) => {
-  const rule = regexRuleStore.rules.find(r => r.id === ruleId);
+  const rule = regexRuleStore.rules!.find(r => r.id === ruleId);
   if (!rule) return;
   try {
     const newRule = await regexRuleStore.addRule({
@@ -202,7 +195,7 @@ const handleCopy = async (ruleId: number) => {
       minDepth: rule.minDepth,
       maxDepth: rule.maxDepth,
       affectFlags: rule.affectFlags,
-      sortOrder: regexRuleStore.rules.length
+      sortOrder: regexRuleStore.rules!.length
     });
     if (newRule) {
       message.success('规则已复制');
@@ -231,7 +224,7 @@ const handleExport = async () => {
 
 // 删除规则
 const handleDelete = (ruleId: number) => {
-  const rule = regexRuleStore.rules.find(r => r.id === ruleId);
+  const rule = regexRuleStore.rules!.find(r => r.id === ruleId);
   if (!rule) return;
   dialog.warning({
     title: '确认删除',

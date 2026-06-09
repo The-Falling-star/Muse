@@ -561,10 +561,10 @@ const loadRule = async (id: number) => {
   pageLoading.value = true;
   try {
     // 先确保已加载规则列表
-    if (regexRuleStore.rules.length === 0) {
-      await regexRuleStore.fetchRules();
+    if (regexRuleStore.rules) {
+      await regexRuleStore.loadRules();
     }
-    const rule = regexRuleStore.rules.find(r => r.id === id);
+    const rule = regexRuleStore.rules!.find(r => r.id === id);
     if (!rule) {
       message.error('规则不存在');
       router.push('/');

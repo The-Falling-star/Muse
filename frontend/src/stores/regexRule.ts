@@ -9,8 +9,8 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
   // 状态
   // =====================
 
-  // 正则规则列表
-  const rules = ref<RegexRule[]>([]);
+  // 正则规则列表(缓存) TODO  需要区分不同类型的正则
+  const rules = ref<RegexRule[] | null>(null);
   // 加载状态
   const loading = ref(false);
   const loadingMore = ref(false);
@@ -27,6 +27,9 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
 
   // 是否还有更多数据
   const hasMore = computed(() => {
+    if (!rules.value) {
+      return true
+    }
     const total = rules.value.length;
     const totalAll = Number(pagination.value.total);
     return totalAll > 0 && total < totalAll;
@@ -38,6 +41,7 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
 
   // 过滤后的规则列表
   const filteredRules = computed(() => {
+    if (!rules.value) return [];
     if (!searchQuery.value) return rules.value;
     const query = searchQuery.value.toLowerCase();
     return rules.value.filter(r =>
@@ -48,6 +52,7 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
 
   // 按排序顺序排列的规则
   const sortedRules = computed(() => {
+    if (!rules.value) return [];
     return [...rules.value].sort((a, b) => a.sortOrder - b.sortOrder);
   });
 
@@ -56,22 +61,25 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
   // =====================
 
   // 获取正则规则列表（初始加载，从第一页开始）
-  const fetchRules = async (presetId: number = 0) => {
-    currentPresetId.value = presetId;
-    loading.value = true;
-    try {
-      const response = await regexRuleClient.listRegexRules({
-        page: DEFAULT_PAGE_NUM,
-        pageSize: DEFAULT_PAGE_SIZE,
-      });
-      rules.value = response.rules;
-      pagination.value = {
-        page: response.page,
-        pageSize: response.pageSize,
-        total: Number(response.total),
-      };
-    } finally {
-      loading.value = false;
+  const loadRules = async (presetId: number = 0) => {
+    if (!rules.value) {
+      // TODO 这个presetID会有问题
+      currentPresetId.value = presetId;
+      loading.value = true;
+      try {
+        const rsp = await regexRuleClient.listRegexRules({
+          page: DEFAULT_PAGE_NUM,
+          pageSize: DEFAULT_PAGE_SIZE,
+        });
+        rules.value = rsp.rules;
+        pagination.value = {
+          page: rsp.page,
+          pageSize: rsp.pageSize,
+          total: Number(rsp.total),
+        };
+      } finally {
+        loading.value = false;
+      }
     }
     return rules.value;
   };
@@ -86,7 +94,7 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
         page: nextPage,
         pageSize: pagination.value.pageSize,
       });
-      rules.value.push(...response.rules);
+      rules.value!.push(...response.rules);
       pagination.value = {
         page: response.page,
         pageSize: response.pageSize,
@@ -102,7 +110,7 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
   // 重置分页（重新从第一页加载）
   const resetPagination = async () => {
     pagination.value.page = DEFAULT_PAGE_NUM;
-    await fetchRules(currentPresetId.value);
+    await loadRules(currentPresetId.value);
   };
 
   // 添加正则规则
@@ -121,7 +129,7 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
   }) => {
     const response = await regexRuleClient.addRegexRule(data);
     if (response.rule) {
-      rules.value.push(response.rule);
+      rules.value!.push(response.rule);
     }
     return response.rule;
   };
@@ -144,9 +152,9 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
   ) => {
     const response = await regexRuleClient.updateRegexRule({ id, ...data });
     if (response.rule) {
-      const index = rules.value.findIndex(r => r.id === id);
+      const index = rules.value!.findIndex(r => r.id === id);
       if (index >= 0) {
-        rules.value[index] = response.rule;
+        rules.value![index] = response.rule;
       }
     }
     return response.rule;
@@ -155,7 +163,7 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
   // 删除正则规则
   const deleteRule = async (id: number) => {
     await regexRuleClient.deleteRegexRule({ id });
-    rules.value = rules.value.filter(r => r.id !== id);
+    rules.value = rules.value!.filter(r => r.id !== id);
   };
 
   // 更新正则规则排序
@@ -163,7 +171,7 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
     await regexRuleClient.updateRegexRulesOrder({ presetId, ruleIds });
     // 更新本地排序
     const newOrder = new Map(ruleIds.map((id, index) => [id, index]));
-    rules.value.forEach(rule => {
+    rules.value!.forEach(rule => {
       const newSortOrder = newOrder.get(rule.id);
       if (newSortOrder !== undefined) {
         rule.sortOrder = newSortOrder;
@@ -176,7 +184,7 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
     await regexRuleClient.importRegexRules({ fileContent, fileName });
     // 重新加载第一页
     pagination.value.page = DEFAULT_PAGE_NUM;
-    await fetchRules(currentPresetId.value);
+    await loadRules(currentPresetId.value);
   };
 
   // 导出正则规则
@@ -190,7 +198,7 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
 
   // 切换规则启用状态
   const toggleRuleEnabled = async (id: number) => {
-    const rule = rules.value.find(r => r.id === id);
+    const rule = rules.value!.find(r => r.id === id);
     if (!rule) return;
 
     return updateRule(id, {
@@ -245,7 +253,7 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
     hasMore,
 
     // 方法
-    fetchRules,
+    loadRules,
     loadMore,
     resetPagination,
     addRule,

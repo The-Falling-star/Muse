@@ -101,11 +101,11 @@ const presetStore = usePresetStore();
 const userStore = useUserStore();
 
 // 状态
-const loading = ref(false);
+const loading = computed(() => presetStore.loading)
 const settingActive = ref(false);
 const fileInputRef = ref<HTMLInputElement | null>(null);
 
-const presets = computed(() => presetStore.presets);
+const presets = computed(() => presetStore.presets || []);
 const currentPresetId = computed(() => userStore.currentUser?.activePresetId || null);
 const hasMore = computed(() => presetStore.hasMore);
 const loadingMore = computed(() => presetStore.loadingMore);
@@ -117,7 +117,7 @@ const loadMore = () => {
 
 // 下拉选项
 const presetOptions = computed(() =>
-  presets.value.map((p) => ({ label: p.preset?.name ?? '', value: p.preset?.id ?? 0 }))
+  presets.value!.map((p) => ({ label: p.preset?.name ?? '', value: p.preset?.id ?? 0 }))
 );
 
 // 右键菜单选项
@@ -132,20 +132,8 @@ const itemMenuOptions = [
 // =====================
 // 加载数据
 // =====================
-
-const loadPresets = async () => {
-  loading.value = true;
-  try {
-    await presetStore.fetchPresets();
-  } catch (error) {
-    console.error('加载预设列表失败:', error);
-  } finally {
-    loading.value = false;
-  }
-};
-
-onMounted(() => {
-  loadPresets();
+onMounted(async () => {
+  await presetStore.loadPresets();
 });
 
 // =====================
@@ -215,8 +203,8 @@ const handleCreate = async () => {
       presencePenalty: 0,
     });
     message.success('预设创建成功');
-    if (presets.value.length > 0 && presets.value[0]?.preset) {
-      router.push(`/preset/${presets.value[0].preset.id}`);
+    if (presets.value!.length > 0 && presets.value![0]?.preset) {
+      router.push(`/preset/${presets.value![0].preset.id}`);
     }
   } catch (error) {
     console.error('创建预设失败:', error);

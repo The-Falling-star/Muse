@@ -765,8 +765,8 @@ const handleSaveAs = () => {
         });
 
         // 重新加载列表获取新创建的预设
-        await presetStore.fetchAllPresets();
-        const newPreset = presetStore.presets.find(p => p.preset?.name === newName.value);
+        await presetStore.loadPresets();
+        const newPreset = presetStore.presets!.find(p => p.preset?.name === newName.value);
         
         if (newPreset && newPreset.preset) {
           // 为新预设创建关联的正则规则

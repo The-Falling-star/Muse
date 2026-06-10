@@ -8,7 +8,7 @@
         </template>
         返回对话
       </n-button>
-      <span class="editor-title">编辑正则: {{ ruleName }}</span>
+      <span class="editor-title">{{ isCreateMode ? '新建正则' : `编辑正则: ${ruleName}` }}</span>
       <div class="editor-actions">
         <n-button size="small" @click="scrollToTest">
           <template #icon>
@@ -277,7 +277,7 @@
 
 <script setup lang="ts">
 import { h, ref, computed, onMounted, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router';
 import {
   NButton,
   NIcon,
@@ -296,6 +296,10 @@ import {
   FlaskOutline
 } from '@vicons/ionicons5';
 import { useRegexRuleStore } from '@/stores/regexRule';
+import { useCharacterStore } from '@/stores/character';
+import { useUserStore } from '@/stores/user';
+import { REGEX_RULE_TYPE } from '@/utils/constants';
+import type { RegexRuleType } from '@/utils/constants';
 import type { RegexRule } from '@/gen/muse/regex_pb';
 
 const route = useRoute();
@@ -303,9 +307,17 @@ const router = useRouter();
 const message = useMessage();
 const dialog = useDialog();
 const regexRuleStore = useRegexRuleStore();
+const characterStore = useCharacterStore();
+const userStore = useUserStore();
+
+// ====== 模式判断 ======
+const isCreateMode = computed(() => route.name === 'RegexCreator');
 
 // ====== 路由参数 ======
-const regexId = computed(() => Number(route.params.id));
+const regexId = computed(() => {
+  if (isCreateMode.value) return 0;
+  return Number(route.params.id);
+});
 const pageLoading = ref(true);
 
 // ====== 基本信息 ======
@@ -472,21 +484,50 @@ const handleSave = async () => {
       worldInfo: false
     };
 
-    await regexRuleStore.updateRule(regexId.value, {
-      name: ruleName.value,
-      findPattern: findPattern.value,
-      replacePattern: replacePattern.value,
-      isEnabled: ruleEnabled.value,
-      runOnEdit: runTiming.value === 'after',
-      substituteRegex: true,
-      minDepth: minTarget.value ?? 0,
-      maxDepth: maxTarget.value ?? 0,
-      affectFlags,
-      sortOrder: originalRule?.sortOrder ?? 0
-    });
+    if (isCreateMode.value) {
+      // 创建模式：调用 addRule
+      const type = route.query.tab as RegexRuleType;
+      const presetId = type === REGEX_RULE_TYPE.PRESET ? (userStore.currentUser?.activePresetId ?? 0) : 0;
+      const characterId = type === REGEX_RULE_TYPE.CHARACTER ? (characterStore.curCharId ?? 0) : 0;
 
-    isDirty.value = false;
-    message.success('规则保存成功');
+      const newRule = await regexRuleStore.addRule({
+        presetId,
+        characterId,
+        name: ruleName.value,
+        findPattern: findPattern.value,
+        replacePattern: replacePattern.value,
+        isEnabled: ruleEnabled.value,
+        runOnEdit: runTiming.value === 'after',
+        substituteRegex: true,
+        minDepth: minTarget.value ?? 0,
+        maxDepth: maxTarget.value ?? 0,
+        affectFlags,
+        sortOrder: regexRuleStore.globalRules.length
+      });
+
+      if (newRule) {
+        isDirty.value = false;
+        message.success('规则创建成功');
+        router.replace({ name: 'RegexEditor', params: { id: newRule.id } });
+      }
+    } else {
+      // 编辑模式：调用 updateRule
+      await regexRuleStore.updateRule(regexId.value, {
+        name: ruleName.value,
+        findPattern: findPattern.value,
+        replacePattern: replacePattern.value,
+        isEnabled: ruleEnabled.value,
+        runOnEdit: runTiming.value === 'after',
+        substituteRegex: true,
+        minDepth: minTarget.value ?? 0,
+        maxDepth: maxTarget.value ?? 0,
+        affectFlags,
+        sortOrder: originalRule?.sortOrder ?? 0
+      });
+
+      isDirty.value = false;
+      message.success('规则保存成功');
+    }
   } catch {
     message.error('保存失败，请重试');
   } finally {
@@ -557,14 +598,25 @@ const clearTestInput = () => {
 
 // ====== 加载数据 ======
 const loadRule = async (id: number) => {
+  // 创建模式：使用默认值，无需加载
+  if (isCreateMode.value) {
+    pageLoading.value = false;
+    return;
+  }
+
   if (!id || id <= 0) return;
   pageLoading.value = true;
   try {
     // 先确保已加载规则列表
-    if (regexRuleStore.rules) {
+    if (!regexRuleStore.loaded) {
       await regexRuleStore.loadRules();
     }
-    const rule = regexRuleStore.rules!.find(r => r.id === id);
+    const allRules = [
+      ...regexRuleStore.globalRules,
+      ...regexRuleStore.presetRules,
+      ...regexRuleStore.characterRules
+    ];
+    const rule = allRules.find(r => r.id === id);
     if (!rule) {
       message.error('规则不存在');
       router.push('/');
@@ -602,6 +654,27 @@ watch(regexId, (newId) => {
   if (newId && newId > 0) {
     loadRule(newId);
   }
+});
+
+// 离开页面时检查未保存的更改
+onBeforeRouteLeave((_to, _from, next) => {
+  if (!isDirty.value) {
+    next();
+    return;
+  }
+  dialog.warning({
+    title: '未保存的更改',
+    content: '你有未保存的更改，确定要离开吗？',
+    positiveText: '离开',
+    negativeText: '留下',
+    onPositiveClick: () => {
+      isDirty.value = false;
+      next();
+    },
+    onNegativeClick: () => {
+      next(false);
+    }
+  });
 });
 </script>
 

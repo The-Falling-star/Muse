@@ -180,6 +180,21 @@ func (r *RegexRuleRepo) ListEnabledRules(ctx context.Context, presetID int, char
 	return rules, nil
 }
 
+// ListAllByScope 获取用户的全量正则规则（全局+指定预设+指定角色）
+// 不区分启用状态，用于管理面板展示
+func (r *RegexRuleRepo) ListAllByScope(ctx context.Context, userID, presetID, characterID int) ([]*entity.RegexRule, error) {
+	db := GetDB(ctx)
+	var rules []*entity.RegexRule
+	result := db.Where("user_id = ? AND (preset_id = ? OR preset_id = ? OR character_id = ?)",
+		userID, 0, presetID, characterID).
+		Order("sort_order ASC").
+		Find(&rules)
+	if result.Error != nil {
+		return nil, errs.NewStandardf(connect.CodeInternal, "获取正则规则列表失败: %v", result.Error)
+	}
+	return rules, nil
+}
+
 // GetEnabledRuleVersions 批量获取启用的正则规则的版本号
 // 用于缓存版本校验，只查询版本字段以减少数据传输
 func (r *RegexRuleRepo) GetEnabledRuleVersions(ctx context.Context, presetID int, characterID int) (map[int64]int, error) {

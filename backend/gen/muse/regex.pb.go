@@ -255,11 +255,11 @@ func (x *RegexRule) GetUpdatedAt() int64 {
 	return 0
 }
 
-// 获取全局正则规则列表请求（preset_id = 0）
+// 获取正则规则列表请求（全量拉取全局+预设+角色正则）
 type ListRegexRulesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Page          int32                  `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`                         // 页码，从1开始，默认为1
-	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"` // 每页数量，默认为20，最大100
+	PresetId      int32                  `protobuf:"varint,1,opt,name=preset_id,json=presetId,proto3" json:"preset_id,omitempty"`          // 预设ID（0表示仅拉取全局正则）
+	CharacterId   int32                  `protobuf:"varint,2,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"` // 角色ID（0表示仅拉取角色正则）
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -294,27 +294,24 @@ func (*ListRegexRulesRequest) Descriptor() ([]byte, []int) {
 	return file_muse_regex_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *ListRegexRulesRequest) GetPage() int32 {
+func (x *ListRegexRulesRequest) GetPresetId() int32 {
 	if x != nil {
-		return x.Page
+		return x.PresetId
 	}
 	return 0
 }
 
-func (x *ListRegexRulesRequest) GetPageSize() int32 {
+func (x *ListRegexRulesRequest) GetCharacterId() int32 {
 	if x != nil {
-		return x.PageSize
+		return x.CharacterId
 	}
 	return 0
 }
 
-// 获取全局正则规则列表响应
+// 获取正则规则列表响应（全量，不分页）
 type ListRegexRulesResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Rules         []*RegexRule           `protobuf:"bytes,1,rep,name=rules,proto3" json:"rules,omitempty"`
-	Total         int64                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`                       // 总数
-	Page          int32                  `protobuf:"varint,3,opt,name=page,proto3" json:"page,omitempty"`                         // 当前页码
-	PageSize      int32                  `protobuf:"varint,4,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"` // 每页数量
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -354,27 +351,6 @@ func (x *ListRegexRulesResponse) GetRules() []*RegexRule {
 		return x.Rules
 	}
 	return nil
-}
-
-func (x *ListRegexRulesResponse) GetTotal() int64 {
-	if x != nil {
-		return x.Total
-	}
-	return 0
-}
-
-func (x *ListRegexRulesResponse) GetPage() int32 {
-	if x != nil {
-		return x.Page
-	}
-	return 0
-}
-
-func (x *ListRegexRulesResponse) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
 }
 
 // 获取预设的正则规则列表请求
@@ -471,6 +447,7 @@ func (x *ListPresetRegexRulesResponse) GetRules() []*RegexRule {
 type AddRegexRuleRequest struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
 	PresetId        int32                  `protobuf:"varint,1,opt,name=preset_id,json=presetId,proto3" json:"preset_id,omitempty"`
+	CharacterId     int32                  `protobuf:"varint,16,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"`
 	Name            string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	FindPattern     string                 `protobuf:"bytes,3,opt,name=find_pattern,json=findPattern,proto3" json:"find_pattern,omitempty"`
 	ReplacePattern  *string                `protobuf:"bytes,4,opt,name=replace_pattern,json=replacePattern,proto3,oneof" json:"replace_pattern,omitempty"`
@@ -518,6 +495,13 @@ func (*AddRegexRuleRequest) Descriptor() ([]byte, []int) {
 func (x *AddRegexRuleRequest) GetPresetId() int32 {
 	if x != nil {
 		return x.PresetId
+	}
+	return 0
+}
+
+func (x *AddRegexRuleRequest) GetCharacterId() int32 {
+	if x != nil {
+		return x.CharacterId
 	}
 	return 0
 }
@@ -1201,21 +1185,19 @@ const file_muse_regex_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\r \x01(\x03R\tcreatedAt\x12\x1d\n" +
 	"\n" +
-	"updated_at\x18\x0e \x01(\x03R\tupdatedAt\"H\n" +
-	"\x15ListRegexRulesRequest\x12\x12\n" +
-	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
-	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\"\x86\x01\n" +
+	"updated_at\x18\x0e \x01(\x03R\tupdatedAt\"W\n" +
+	"\x15ListRegexRulesRequest\x12\x1b\n" +
+	"\tpreset_id\x18\x01 \x01(\x05R\bpresetId\x12!\n" +
+	"\fcharacter_id\x18\x02 \x01(\x05R\vcharacterId\"?\n" +
 	"\x16ListRegexRulesResponse\x12%\n" +
-	"\x05rules\x18\x01 \x03(\v2\x0f.muse.RegexRuleR\x05rules\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x03R\x05total\x12\x12\n" +
-	"\x04page\x18\x03 \x01(\x05R\x04page\x12\x1b\n" +
-	"\tpage_size\x18\x04 \x01(\x05R\bpageSize\":\n" +
+	"\x05rules\x18\x01 \x03(\v2\x0f.muse.RegexRuleR\x05rules\":\n" +
 	"\x1bListPresetRegexRulesRequest\x12\x1b\n" +
 	"\tpreset_id\x18\x01 \x01(\x05R\bpresetId\"E\n" +
 	"\x1cListPresetRegexRulesResponse\x12%\n" +
-	"\x05rules\x18\x01 \x03(\v2\x0f.muse.RegexRuleR\x05rules\"\xcf\x03\n" +
+	"\x05rules\x18\x01 \x03(\v2\x0f.muse.RegexRuleR\x05rules\"\xf2\x03\n" +
 	"\x13AddRegexRuleRequest\x12\x1b\n" +
-	"\tpreset_id\x18\x01 \x01(\x05R\bpresetId\x12\x12\n" +
+	"\tpreset_id\x18\x01 \x01(\x05R\bpresetId\x12!\n" +
+	"\fcharacter_id\x18\x10 \x01(\x05R\vcharacterId\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12!\n" +
 	"\ffind_pattern\x18\x03 \x01(\tR\vfindPattern\x12,\n" +
 	"\x0freplace_pattern\x18\x04 \x01(\tH\x00R\x0ereplacePattern\x88\x01\x01\x12\x1d\n" +

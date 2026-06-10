@@ -131,6 +131,8 @@ type RegexRuleRepository interface {
 	ListEnabledRules(ctx context.Context, presetID int, characterID int) ([]*entity.RegexRule, error)
 	// GetEnabledRuleVersions 批量获取启用的正则规则的版本号
 	GetEnabledRuleVersions(ctx context.Context, presetID int, characterID int) (map[int64]int, error)
+	// ListAllByScope 获取用户的全量正则规则（全局+指定预设+指定角色）
+	ListAllByScope(ctx context.Context, userID, presetID, characterID int) ([]*entity.RegexRule, error)
 }
 
 // WorldInfoRepository 世界书数据仓库接口

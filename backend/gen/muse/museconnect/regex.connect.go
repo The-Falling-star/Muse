@@ -61,7 +61,7 @@ const (
 
 // RegexRuleServiceClient is a client for the muse.RegexRuleService service.
 type RegexRuleServiceClient interface {
-	// 获取全局正则规则列表
+	// 获取正则规则列表（全量拉取全局+预设+角色正则）
 	ListRegexRules(context.Context, *connect.Request[muse.ListRegexRulesRequest]) (*connect.Response[muse.ListRegexRulesResponse], error)
 	// 获取预设的正则规则列表
 	ListPresetRegexRules(context.Context, *connect.Request[muse.ListPresetRegexRulesRequest]) (*connect.Response[muse.ListPresetRegexRulesResponse], error)
@@ -195,7 +195,7 @@ func (c *regexRuleServiceClient) ExportRegexRules(ctx context.Context, req *conn
 
 // RegexRuleServiceHandler is an implementation of the muse.RegexRuleService service.
 type RegexRuleServiceHandler interface {
-	// 获取全局正则规则列表
+	// 获取正则规则列表（全量拉取全局+预设+角色正则）
 	ListRegexRules(context.Context, *connect.Request[muse.ListRegexRulesRequest]) (*connect.Response[muse.ListRegexRulesResponse], error)
 	// 获取预设的正则规则列表
 	ListPresetRegexRules(context.Context, *connect.Request[muse.ListPresetRegexRulesRequest]) (*connect.Response[muse.ListPresetRegexRulesResponse], error)

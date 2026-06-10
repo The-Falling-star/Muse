@@ -34,6 +34,12 @@ const routes = [
         meta: { title: '世界书编辑' }
       },
       {
+        path: 'regex/new',
+        name: 'RegexCreator',
+        component: () => import('../views/RegexEditorView.vue'),
+        meta: { title: '新建正则' }
+      },
+      {
         path: 'regex/:id',
         name: 'RegexEditor',
         component: () => import('../views/RegexEditorView.vue'),

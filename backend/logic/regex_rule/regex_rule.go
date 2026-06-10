@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"connectrpc.com/connect"
-	"github.com/ling/muse/common/constant"
 	"github.com/ling/muse/common/convert"
 	"github.com/ling/muse/common/errs"
 	"github.com/ling/muse/common/jwt"
@@ -29,11 +28,12 @@ func newRegexRule() *regexRuleImpl {
 }
 
 func (r *regexRuleImpl) ListRegexRules(ctx context.Context, req *pb.ListRegexRulesRequest) (*pb.ListRegexRulesResponse, error) {
-	// 获取分页参数
-	page, pageSize := constant.NormalizePagination(int(req.GetPage()), int(req.GetPageSize()))
+	presetID := int(req.GetPresetId())
+	characterID := int(req.GetCharacterId())
+	userID := jwt.GetUserId(ctx)
 
-	// 获取全局正则规则列表（preset_id = 0）
-	rules, total, err := r.regexRuleRepo.ListPaginated(ctx, 0, page, pageSize)
+	// 全量拉取用户的正则规则（全局 + 指定预设 + 指定角色）
+	rules, err := r.regexRuleRepo.ListAllByScope(ctx, userID, presetID, characterID)
 	if err != nil {
 		return nil, err
 	}
@@ -45,10 +45,7 @@ func (r *regexRuleImpl) ListRegexRules(ctx context.Context, req *pb.ListRegexRul
 	}
 
 	return &pb.ListRegexRulesResponse{
-		Rules:    pbRules,
-		Total:    total,
-		Page:     int32(page),
-		PageSize: int32(pageSize),
+		Rules: pbRules,
 	}, nil
 }
 
@@ -96,6 +93,7 @@ func (r *regexRuleImpl) AddRegexRule(ctx context.Context, req *pb.AddRegexRuleRe
 	// 构建正则规则实体
 	rule := &entity.RegexRule{
 		PresetID:                int(req.GetPresetId()),
+		CharacterID:             int(req.GetCharacterId()),
 		UserID:                  userId,
 		Name:                    name,
 		FindPattern:             findPattern,

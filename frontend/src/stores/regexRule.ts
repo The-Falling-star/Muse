@@ -1,121 +1,83 @@
 import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { regexRuleClient } from '@/api/client';
+import { REGEX_RULE_TYPE } from '@/utils/constants';
+import type { RegexRuleType } from '@/utils/constants';
 import type { RegexRule, RegexAffectFlags } from '@/gen/muse/regex_pb';
-import { DEFAULT_PAGE_NUM, DEFAULT_PAGE_SIZE } from '@/utils/constants';
+
+// 根据规则字段分类到对应类型
+const classifyRule = (rule: RegexRule): RegexRuleType => {
+  if (rule.characterId > 0) return REGEX_RULE_TYPE.CHARACTER;
+  if (rule.presetId > 0) return REGEX_RULE_TYPE.PRESET;
+  return REGEX_RULE_TYPE.GLOBAL;
+};
+
+// 将规则列表分发到三个分类数组
+const distributeRules = (rules: RegexRule[]) => {
+  const global: RegexRule[] = [];
+  const preset: RegexRule[] = [];
+  const character: RegexRule[] = [];
+  for (const rule of rules) {
+    switch (classifyRule(rule)) {
+      case REGEX_RULE_TYPE.GLOBAL:
+        global.push(rule);
+        break;
+      case REGEX_RULE_TYPE.PRESET:
+        preset.push(rule);
+        break;
+      case REGEX_RULE_TYPE.CHARACTER:
+        character.push(rule);
+        break;
+    }
+  }
+  return { global, preset, character };
+};
+
+// 在三个列表中查找规则（用于更新/删除/切换）
+const findRuleInLists = (id: number, lists: RegexRule[][]): RegexRule | null => {
+  for (const list of lists) {
+    const found = list.find(r => r.id === id);
+    if (found) return found;
+  }
+  return null;
+};
 
 export const useRegexRuleStore = defineStore('regexRule', () => {
   // =====================
-  // 状态
+  // 状态：三种类型的正则规则
   // =====================
-
-  // 正则规则列表(缓存) TODO  需要区分不同类型的正则
-  const rules = ref<RegexRule[] | null>(null);
-  // 加载状态
+  const globalRules = ref<RegexRule[]>([]);
+  const presetRules = ref<RegexRule[]>([]);
+  const characterRules = ref<RegexRule[]>([]);
   const loading = ref(false);
-  const loadingMore = ref(false);
-  // 搜索关键词
-  const searchQuery = ref('');
-  // 当前关联的预设ID（0表示全局规则）
-  const currentPresetId = ref(0);
-  // 分页状态
-  const pagination = ref({
-    page: DEFAULT_PAGE_NUM,
-    pageSize: DEFAULT_PAGE_SIZE,
-    total: 0,
-  });
-
-  // 是否还有更多数据
-  const hasMore = computed(() => {
-    if (!rules.value) {
-      return true
-    }
-    const total = rules.value.length;
-    const totalAll = Number(pagination.value.total);
-    return totalAll > 0 && total < totalAll;
-  });
-
-  // =====================
-  // 计算属性
-  // =====================
-
-  // 过滤后的规则列表
-  const filteredRules = computed(() => {
-    if (!rules.value) return [];
-    if (!searchQuery.value) return rules.value;
-    const query = searchQuery.value.toLowerCase();
-    return rules.value.filter(r =>
-      r.name.toLowerCase().includes(query) ||
-      r.findPattern.toLowerCase().includes(query)
-    );
-  });
-
-  // 按排序顺序排列的规则
-  const sortedRules = computed(() => {
-    if (!rules.value) return [];
-    return [...rules.value].sort((a, b) => a.sortOrder - b.sortOrder);
-  });
+  const loaded = ref(false);
 
   // =====================
   // 方法
   // =====================
 
-  // 获取正则规则列表（初始加载，从第一页开始）
-  const loadRules = async (presetId: number = 0) => {
-    if (!rules.value) {
-      // TODO 这个presetID会有问题
-      currentPresetId.value = presetId;
-      loading.value = true;
-      try {
-        const rsp = await regexRuleClient.listRegexRules({
-          page: DEFAULT_PAGE_NUM,
-          pageSize: DEFAULT_PAGE_SIZE,
-        });
-        rules.value = rsp.rules;
-        pagination.value = {
-          page: rsp.page,
-          pageSize: rsp.pageSize,
-          total: Number(rsp.total),
-        };
-      } finally {
-        loading.value = false;
-      }
+  // 全量拉取正则规则（全局 + 指定预设 + 指定角色）
+  const loadRules = async (presetId: number = 0, characterId: number = 0) => {
+    if (loaded.value) {
+      return;
     }
-    return rules.value;
-  };
-
-  // 加载更多（无限滚动）
-  const loadMore = async () => {
-    if (loadingMore.value || !hasMore.value) return;
-    loadingMore.value = true;
+    loading.value = true;
     try {
-      const nextPage = pagination.value.page + 1;
-      const response = await regexRuleClient.listRegexRules({
-        page: nextPage,
-        pageSize: pagination.value.pageSize,
-      });
-      rules.value!.push(...response.rules);
-      pagination.value = {
-        page: response.page,
-        pageSize: response.pageSize,
-        total: Number(response.total),
-      };
-    } catch (error) {
-      console.error('加载更多正则规则失败:', error);
+      const rsp = await regexRuleClient.listRegexRules({ presetId, characterId });
+      const { global, preset, character } = distributeRules(rsp.rules);
+      globalRules.value = global;
+      presetRules.value = preset;
+      characterRules.value = character;
+      loaded.value = true;
     } finally {
-      loadingMore.value = false;
+      loading.value = false;
     }
-  };
-
-  // 重置分页（重新从第一页加载）
-  const resetPagination = async () => {
-    pagination.value.page = DEFAULT_PAGE_NUM;
-    await loadRules(currentPresetId.value);
   };
 
   // 添加正则规则
   const addRule = async (data: {
     presetId: number;
+    characterId?: number;
     name: string;
     findPattern: string;
     replacePattern?: string;
@@ -127,9 +89,25 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
     affectFlags?: RegexAffectFlags;
     sortOrder: number;
   }) => {
-    const response = await regexRuleClient.addRegexRule(data);
+    const response = await regexRuleClient.addRegexRule({
+      presetId: data.presetId,
+      characterId: data.characterId ?? 0,
+      name: data.name,
+      findPattern: data.findPattern,
+      replacePattern: data.replacePattern,
+      isEnabled: data.isEnabled,
+      runOnEdit: data.runOnEdit,
+      substituteRegex: data.substituteRegex,
+      minDepth: data.minDepth,
+      maxDepth: data.maxDepth,
+      affectFlags: data.affectFlags,
+      sortOrder: data.sortOrder,
+    });
     if (response.rule) {
-      rules.value!.push(response.rule);
+      const type = classifyRule(response.rule);
+      if (type === REGEX_RULE_TYPE.GLOBAL) globalRules.value.push(response.rule);
+      else if (type === REGEX_RULE_TYPE.PRESET) presetRules.value.push(response.rule);
+      else characterRules.value.push(response.rule);
     }
     return response.rule;
   };
@@ -152,10 +130,19 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
   ) => {
     const response = await regexRuleClient.updateRegexRule({ id, ...data });
     if (response.rule) {
-      const index = rules.value!.findIndex(r => r.id === id);
-      if (index >= 0) {
-        rules.value![index] = response.rule;
+      // 先从所有列表中移除旧项，再按新类型添加
+      const lists = [globalRules.value, presetRules.value, characterRules.value];
+      for (const list of lists) {
+        const index = list.findIndex(r => r.id === id);
+        if (index >= 0) {
+          list.splice(index, 1);
+          break;
+        }
       }
+      const type = classifyRule(response.rule);
+      if (type === REGEX_RULE_TYPE.GLOBAL) globalRules.value.push(response.rule);
+      else if (type === REGEX_RULE_TYPE.PRESET) presetRules.value.push(response.rule);
+      else characterRules.value.push(response.rule);
     }
     return response.rule;
   };
@@ -163,28 +150,35 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
   // 删除正则规则
   const deleteRule = async (id: number) => {
     await regexRuleClient.deleteRegexRule({ id });
-    rules.value = rules.value!.filter(r => r.id !== id);
+    const lists = [globalRules.value, presetRules.value, characterRules.value];
+    for (const list of lists) {
+      const index = list.findIndex(r => r.id === id);
+      if (index >= 0) {
+        list.splice(index, 1);
+        return;
+      }
+    }
   };
 
   // 更新正则规则排序
   const updateRulesOrder = async (presetId: number, ruleIds: number[]) => {
     await regexRuleClient.updateRegexRulesOrder({ presetId, ruleIds });
-    // 更新本地排序
     const newOrder = new Map(ruleIds.map((id, index) => [id, index]));
-    rules.value!.forEach(rule => {
-      const newSortOrder = newOrder.get(rule.id);
-      if (newSortOrder !== undefined) {
-        rule.sortOrder = newSortOrder;
+    const lists = [globalRules.value, presetRules.value, characterRules.value];
+    for (const list of lists) {
+      for (const rule of list) {
+        const newSortOrder = newOrder.get(rule.id);
+        if (newSortOrder !== undefined) {
+          rule.sortOrder = newSortOrder;
+        }
       }
-    });
+    }
   };
 
   // 导入正则规则（全局规则）
   const importRules = async (fileContent: Uint8Array, fileName: string) => {
     await regexRuleClient.importRegexRules({ fileContent, fileName });
-    // 重新加载第一页
-    pagination.value.page = DEFAULT_PAGE_NUM;
-    await loadRules(currentPresetId.value);
+    await loadRules();
   };
 
   // 导出正则规则
@@ -198,7 +192,7 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
 
   // 切换规则启用状态
   const toggleRuleEnabled = async (id: number) => {
-    const rule = rules.value!.find(r => r.id === id);
+    const rule = findRuleInLists(id, [globalRules.value, presetRules.value, characterRules.value]);
     if (!rule) return;
 
     return updateRule(id, {
@@ -215,20 +209,12 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
     });
   };
 
-  // =====================
-  // 辅助方法
-  // =====================
-
-  // 设置搜索关键词
-  const setSearchQuery = (query: string) => {
-    searchQuery.value = query;
-  };
-
   // 重置状态
   const reset = () => {
-    rules.value = [];
-    searchQuery.value = '';
-    currentPresetId.value = 0;
+    globalRules.value = [];
+    presetRules.value = [];
+    characterRules.value = [];
+    loaded.value = false;
   };
 
   // 创建默认的AffectFlags
@@ -243,19 +229,14 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
 
   return {
     // 状态
-    rules,
+    globalRules,
+    presetRules,
+    characterRules,
     loading,
-    loadingMore,
-    searchQuery,
-    currentPresetId,
-    filteredRules,
-    sortedRules,
-    hasMore,
+    loaded,
 
     // 方法
     loadRules,
-    loadMore,
-    resetPagination,
     addRule,
     updateRule,
     deleteRule,
@@ -264,8 +245,7 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
     exportRules,
     toggleRuleEnabled,
 
-    // 辅助方法
-    setSearchQuery,
+    // 辅助
     reset,
     createDefaultAffectFlags
   };

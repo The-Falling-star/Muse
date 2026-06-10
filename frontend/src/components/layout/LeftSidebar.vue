@@ -274,32 +274,31 @@ const contextCharacter = ref<Character | null>(null);
 
 // ====== 加载数据 ======
 const loadSessions = async () => {
-    const response = await chatClient.listChatSessions({page: DEFAULT_PAGE_NUM, pageSize: DEFAULT_PAGE_SIZE});
-    chatStore.setSessions(response.sessions);
-    
-    // 预加载会话中角色的头像
-    const avatarPaths = response.sessions
+  const response = await chatClient.listChatSessions({page: DEFAULT_PAGE_NUM, pageSize: DEFAULT_PAGE_SIZE});
+  chatStore.setSessions(response.sessions);
+
+  // 预加载会话中角色的头像
+  const avatarPaths = response.sessions
       .map(s => s.character?.avatar)
       .filter((path): path is string => !!path && !path.startsWith('http') && !path.startsWith('data:'));
-    if (avatarPaths.length > 0) {
-      fileStore.preloadFiles(avatarPaths);
-    }
+  if (avatarPaths.length > 0) {
+    fileStore.preloadFiles(avatarPaths);
+  }
 };
 
 const loadCharacters = async () => {
-  if (charStore.hasCached) {
+  if (charStore.loaded) {
     return;
   }
-    const response = await characterClient.listCharacters({page: DEFAULT_PAGE_NUM, pageSize: DEFAULT_PAGE_SIZE});
-    charStore.setCharacters(response.characters, response.total);
-    
-    // 预加载角色头像
-    const avatarPaths = response.characters
+  await charStore.loadCharacters()
+
+  // 预加载角色头像
+  const avatarPaths = charStore.characters
       .map(c => c.avatar)
       .filter((path): path is string => !!path && !path.startsWith('http') && !path.startsWith('data:'));
-    if (avatarPaths.length > 0) {
-      fileStore.preloadFiles(avatarPaths);
-    }
+  if (avatarPaths.length > 0) {
+    await fileStore.preloadFiles(avatarPaths);
+  }
 };
 
 onMounted(() => {

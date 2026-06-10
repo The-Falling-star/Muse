@@ -63,7 +63,6 @@ import { useRegexRuleStore } from '@/stores/regexRule';
 import { useCharacterStore } from '@/stores/character';
 import { useUserStore } from '@/stores/user';
 import RuleListSection from './RuleListSection.vue';
-import type { RegexRule } from '@/gen/muse/regex_pb';
 
 const router = useRouter();
 const route = useRoute();

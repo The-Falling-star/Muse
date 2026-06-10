@@ -2,6 +2,7 @@ import {defineStore} from 'pinia';
 import {ref} from 'vue';
 import type {Character} from '@/gen/muse/character_pb';
 import {characterClient} from "@/api/client.ts";
+import {DEFAULT_PAGE_NUM, DEFAULT_PAGE_SIZE} from "@/utils/constants.ts";
 
 /**
  * 角色 Store
@@ -15,6 +16,7 @@ export const useCharacterStore = defineStore('character', () => {
 
     // 角色列表（缓存）
     const characters = ref<Character[]>([]);
+    const loaded = ref(false);
     // 当前选中的角色（用于聊天页面等跨页面共享）
     const curCharId = ref<number | null>(null);
     // 总数
@@ -25,6 +27,16 @@ export const useCharacterStore = defineStore('character', () => {
     // =====================
     // 状态管理方法
     // =====================
+
+    const loadCharacters = async () => {
+        if (loaded.value) {
+            return;
+        }
+        const rsp = await characterClient.listCharacters({page: DEFAULT_PAGE_NUM, pageSize: DEFAULT_PAGE_SIZE});
+        characters.value = rsp.characters;
+        total.value = rsp.total;
+        loaded.value = true;
+    };
 
     // 设置角色列表（由View调用API后更新）
     const setCharacters = (list: Character[], totalCount: number) => {
@@ -97,8 +109,10 @@ export const useCharacterStore = defineStore('character', () => {
         characters,
         curCharId,
         total,
+        loaded,
 
         // 方法
+        loadCharacters,
         setCharacters,
         addCharacter,
         updateCharacterInList,

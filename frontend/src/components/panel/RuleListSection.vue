@@ -73,7 +73,7 @@ const itemMenuOptions = [
   { label: '导出', key: 'export' },
   { type: 'divider', key: 'd1' },
   { label: '删除', key: 'delete' }
-] as const;
+];
 
 const isEditing = (ruleId: number): boolean =>
   route.name === 'RegexEditor' && Number(route.params.id) === ruleId;

@@ -176,7 +176,6 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { useRouter } from 'vue-router';
 import { NInput, NButton, NIcon, NTooltip, NDropdown, NAvatar, NPopover, NScrollbar } from 'naive-ui';
 import {
   FlashOutline,
@@ -221,7 +220,6 @@ const emit = defineEmits<{
   'persona-change': [persona: Persona];
 }>();
 
-const router = useRouter();
 const userStore = useUserStore();
 const fileStore = useFileStore();
 const appStore = useAppStore();

@@ -186,7 +186,6 @@ import {
   useMessage
 } from 'naive-ui';
 import {
-  PersonOutline,
   InformationCircleOutline,
   CopyOutline,
   PencilOutline,
@@ -216,8 +215,6 @@ import DOMPurify from 'dompurify';
 
 import type { Character } from '@/gen/muse/character_pb';
 import {MACRO_CHAR, MACRO_USER} from "@/utils/constants.ts";
-import {useUserStore} from "@/stores/user.ts";
-import {useCharacterStore} from "@/stores/character.ts";
 
 // 消息 Swipe 类型
 interface MessageSwipe {
@@ -335,8 +332,6 @@ const editContent = ref('');
 // 动画状态
 const swipeDirection = ref<'left' | 'right' | null>(null);
 const isAnimating = ref(false);
-const userStore = useUserStore();
-const charStore = useCharacterStore();
 
 // 监听 swipe 变化，触发动画
 watch(() => props.message.currentSwipeIndex, (newIndex, oldIndex) => {
@@ -461,21 +456,14 @@ const formattedContent = computed( () => {
   if (!raw) return '';
   // 替换宏
   MACRO_USER.forEach(macro => {
-    const userName = userStore.personas.find(persona => persona.id === userStore.currentUser?.activePersonaId)?.name;
-    if (userName) {
-      raw = raw.replaceAll(macro, userName);
+    if (props.persona?.name) {
+      raw = raw.replaceAll(macro, props.persona?.name);
     }
   });
 
   MACRO_CHAR.forEach(async macro => {
-    const curCharId = charStore.curCharId;
-    if (!curCharId) {
-      return;
-    }
-    const curChar = await charStore.getCharDetail(curCharId);
-    const charName = curChar?.name;
-    if (charName) {
-      raw = raw.replaceAll(macro, charName!);
+    if (props.character?.name) {
+      raw = raw.replaceAll(macro, props.character.name);
     }
   })
 

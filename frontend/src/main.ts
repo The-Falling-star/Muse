@@ -16,14 +16,10 @@ const pinia = createPinia();
 app.use(pinia);
 app.use(router);
 
-console.log('[Main] App mounting...');
 app.mount('#app');
-console.log('[Main] App mounted!');
 
 // 初始化全局消息实例（必须在 app.mount() 之后）
-console.log('[Main] Calling initGlobalMessage...');
 initGlobalMessage();
-console.log('[Main] initGlobalMessage returned');
 
 // 初始化公共配置
 const commonStore = useCommonStore();

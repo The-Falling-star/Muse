@@ -154,6 +154,11 @@ func (c *CharacterRepo) Delete(ctx context.Context, id, userID int) error {
 	if err := db.Where("id IN ?", sessionIDs).Delete(&entity.ChatSession{}).Error; err != nil {
 		return errs.NewStandardf(connect.CodeInternal, "根据角色ID删除会话时删除会话失败: %v", err)
 	}
+
+	// 删除正则
+	if err := db.Where("character_id = ? AND user_id = ?", id, userID).Delete(&entity.RegexRule{}).Error; err != nil {
+		return errs.NewStandardf(connect.CodeInternal, "根据角色ID删除会话时删除正则失败: %v", err)
+	}
 	return nil
 }
 

@@ -42,8 +42,8 @@ func (r *RegexRuleRepo) GetByID(ctx context.Context, id int) (*entity.RegexRule,
 	return &rule, nil
 }
 
-// List 获取预设的正则规则列表（全量，不分页，用于导出等功能）
-func (r *RegexRuleRepo) List(ctx context.Context, presetID int) ([]*entity.RegexRule, error) {
+// ListPresetRegex 获取预设的正则规则列表（全量，不分页，用于导出等功能）
+func (r *RegexRuleRepo) ListPresetRegex(ctx context.Context, presetID int) ([]*entity.RegexRule, error) {
 	db := GetDB(ctx)
 	var rules []*entity.RegexRule
 	result := db.Where("preset_id = ?", presetID).
@@ -185,8 +185,8 @@ func (r *RegexRuleRepo) ListEnabledRules(ctx context.Context, presetID int, char
 func (r *RegexRuleRepo) ListAllByScope(ctx context.Context, userID, presetID, characterID int) ([]*entity.RegexRule, error) {
 	db := GetDB(ctx)
 	var rules []*entity.RegexRule
-	result := db.Where("user_id = ? AND (preset_id = ? OR preset_id = ? OR character_id = ?)",
-		userID, 0, presetID, characterID).
+	result := db.Where("user_id = ? AND (preset_id = ? OR character_id = ? OR (preset_id = ? AND character_id = ?))",
+		userID, presetID, characterID, 0, 0).
 		Order("sort_order ASC").
 		Find(&rules)
 	if result.Error != nil {

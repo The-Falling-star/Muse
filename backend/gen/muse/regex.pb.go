@@ -353,96 +353,6 @@ func (x *ListRegexRulesResponse) GetRules() []*RegexRule {
 	return nil
 }
 
-// 获取预设的正则规则列表请求
-type ListPresetRegexRulesRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	PresetId      int32                  `protobuf:"varint,1,opt,name=preset_id,json=presetId,proto3" json:"preset_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListPresetRegexRulesRequest) Reset() {
-	*x = ListPresetRegexRulesRequest{}
-	mi := &file_muse_regex_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListPresetRegexRulesRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListPresetRegexRulesRequest) ProtoMessage() {}
-
-func (x *ListPresetRegexRulesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_regex_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListPresetRegexRulesRequest.ProtoReflect.Descriptor instead.
-func (*ListPresetRegexRulesRequest) Descriptor() ([]byte, []int) {
-	return file_muse_regex_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *ListPresetRegexRulesRequest) GetPresetId() int32 {
-	if x != nil {
-		return x.PresetId
-	}
-	return 0
-}
-
-// 获取预设的正则规则列表响应
-type ListPresetRegexRulesResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Rules         []*RegexRule           `protobuf:"bytes,1,rep,name=rules,proto3" json:"rules,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListPresetRegexRulesResponse) Reset() {
-	*x = ListPresetRegexRulesResponse{}
-	mi := &file_muse_regex_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListPresetRegexRulesResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListPresetRegexRulesResponse) ProtoMessage() {}
-
-func (x *ListPresetRegexRulesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_regex_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListPresetRegexRulesResponse.ProtoReflect.Descriptor instead.
-func (*ListPresetRegexRulesResponse) Descriptor() ([]byte, []int) {
-	return file_muse_regex_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *ListPresetRegexRulesResponse) GetRules() []*RegexRule {
-	if x != nil {
-		return x.Rules
-	}
-	return nil
-}
-
 // 添加正则规则请求
 type AddRegexRuleRequest struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
@@ -464,7 +374,7 @@ type AddRegexRuleRequest struct {
 
 func (x *AddRegexRuleRequest) Reset() {
 	*x = AddRegexRuleRequest{}
-	mi := &file_muse_regex_proto_msgTypes[6]
+	mi := &file_muse_regex_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -476,7 +386,7 @@ func (x *AddRegexRuleRequest) String() string {
 func (*AddRegexRuleRequest) ProtoMessage() {}
 
 func (x *AddRegexRuleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_regex_proto_msgTypes[6]
+	mi := &file_muse_regex_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -489,7 +399,7 @@ func (x *AddRegexRuleRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddRegexRuleRequest.ProtoReflect.Descriptor instead.
 func (*AddRegexRuleRequest) Descriptor() ([]byte, []int) {
-	return file_muse_regex_proto_rawDescGZIP(), []int{6}
+	return file_muse_regex_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *AddRegexRuleRequest) GetPresetId() int32 {
@@ -586,7 +496,7 @@ type AddRegexRuleResponse struct {
 
 func (x *AddRegexRuleResponse) Reset() {
 	*x = AddRegexRuleResponse{}
-	mi := &file_muse_regex_proto_msgTypes[7]
+	mi := &file_muse_regex_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -598,7 +508,7 @@ func (x *AddRegexRuleResponse) String() string {
 func (*AddRegexRuleResponse) ProtoMessage() {}
 
 func (x *AddRegexRuleResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_regex_proto_msgTypes[7]
+	mi := &file_muse_regex_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -611,7 +521,7 @@ func (x *AddRegexRuleResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddRegexRuleResponse.ProtoReflect.Descriptor instead.
 func (*AddRegexRuleResponse) Descriptor() ([]byte, []int) {
-	return file_muse_regex_proto_rawDescGZIP(), []int{7}
+	return file_muse_regex_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *AddRegexRuleResponse) GetRule() *RegexRule {
@@ -641,7 +551,7 @@ type UpdateRegexRuleRequest struct {
 
 func (x *UpdateRegexRuleRequest) Reset() {
 	*x = UpdateRegexRuleRequest{}
-	mi := &file_muse_regex_proto_msgTypes[8]
+	mi := &file_muse_regex_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -653,7 +563,7 @@ func (x *UpdateRegexRuleRequest) String() string {
 func (*UpdateRegexRuleRequest) ProtoMessage() {}
 
 func (x *UpdateRegexRuleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_regex_proto_msgTypes[8]
+	mi := &file_muse_regex_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -666,7 +576,7 @@ func (x *UpdateRegexRuleRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateRegexRuleRequest.ProtoReflect.Descriptor instead.
 func (*UpdateRegexRuleRequest) Descriptor() ([]byte, []int) {
-	return file_muse_regex_proto_rawDescGZIP(), []int{8}
+	return file_muse_regex_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *UpdateRegexRuleRequest) GetId() int32 {
@@ -756,7 +666,7 @@ type UpdateRegexRuleResponse struct {
 
 func (x *UpdateRegexRuleResponse) Reset() {
 	*x = UpdateRegexRuleResponse{}
-	mi := &file_muse_regex_proto_msgTypes[9]
+	mi := &file_muse_regex_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -768,7 +678,7 @@ func (x *UpdateRegexRuleResponse) String() string {
 func (*UpdateRegexRuleResponse) ProtoMessage() {}
 
 func (x *UpdateRegexRuleResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_regex_proto_msgTypes[9]
+	mi := &file_muse_regex_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -781,7 +691,7 @@ func (x *UpdateRegexRuleResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateRegexRuleResponse.ProtoReflect.Descriptor instead.
 func (*UpdateRegexRuleResponse) Descriptor() ([]byte, []int) {
-	return file_muse_regex_proto_rawDescGZIP(), []int{9}
+	return file_muse_regex_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *UpdateRegexRuleResponse) GetRule() *RegexRule {
@@ -801,7 +711,7 @@ type DeleteRegexRuleRequest struct {
 
 func (x *DeleteRegexRuleRequest) Reset() {
 	*x = DeleteRegexRuleRequest{}
-	mi := &file_muse_regex_proto_msgTypes[10]
+	mi := &file_muse_regex_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -813,7 +723,7 @@ func (x *DeleteRegexRuleRequest) String() string {
 func (*DeleteRegexRuleRequest) ProtoMessage() {}
 
 func (x *DeleteRegexRuleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_regex_proto_msgTypes[10]
+	mi := &file_muse_regex_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -826,7 +736,7 @@ func (x *DeleteRegexRuleRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteRegexRuleRequest.ProtoReflect.Descriptor instead.
 func (*DeleteRegexRuleRequest) Descriptor() ([]byte, []int) {
-	return file_muse_regex_proto_rawDescGZIP(), []int{10}
+	return file_muse_regex_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *DeleteRegexRuleRequest) GetId() int32 {
@@ -845,7 +755,7 @@ type DeleteRegexRuleResponse struct {
 
 func (x *DeleteRegexRuleResponse) Reset() {
 	*x = DeleteRegexRuleResponse{}
-	mi := &file_muse_regex_proto_msgTypes[11]
+	mi := &file_muse_regex_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -857,7 +767,7 @@ func (x *DeleteRegexRuleResponse) String() string {
 func (*DeleteRegexRuleResponse) ProtoMessage() {}
 
 func (x *DeleteRegexRuleResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_regex_proto_msgTypes[11]
+	mi := &file_muse_regex_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -870,7 +780,7 @@ func (x *DeleteRegexRuleResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteRegexRuleResponse.ProtoReflect.Descriptor instead.
 func (*DeleteRegexRuleResponse) Descriptor() ([]byte, []int) {
-	return file_muse_regex_proto_rawDescGZIP(), []int{11}
+	return file_muse_regex_proto_rawDescGZIP(), []int{9}
 }
 
 // 批量更新正则规则排序请求
@@ -884,7 +794,7 @@ type UpdateRegexRulesOrderRequest struct {
 
 func (x *UpdateRegexRulesOrderRequest) Reset() {
 	*x = UpdateRegexRulesOrderRequest{}
-	mi := &file_muse_regex_proto_msgTypes[12]
+	mi := &file_muse_regex_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -896,7 +806,7 @@ func (x *UpdateRegexRulesOrderRequest) String() string {
 func (*UpdateRegexRulesOrderRequest) ProtoMessage() {}
 
 func (x *UpdateRegexRulesOrderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_regex_proto_msgTypes[12]
+	mi := &file_muse_regex_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -909,7 +819,7 @@ func (x *UpdateRegexRulesOrderRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateRegexRulesOrderRequest.ProtoReflect.Descriptor instead.
 func (*UpdateRegexRulesOrderRequest) Descriptor() ([]byte, []int) {
-	return file_muse_regex_proto_rawDescGZIP(), []int{12}
+	return file_muse_regex_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *UpdateRegexRulesOrderRequest) GetPresetId() int32 {
@@ -935,7 +845,7 @@ type UpdateRegexRulesOrderResponse struct {
 
 func (x *UpdateRegexRulesOrderResponse) Reset() {
 	*x = UpdateRegexRulesOrderResponse{}
-	mi := &file_muse_regex_proto_msgTypes[13]
+	mi := &file_muse_regex_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -947,7 +857,7 @@ func (x *UpdateRegexRulesOrderResponse) String() string {
 func (*UpdateRegexRulesOrderResponse) ProtoMessage() {}
 
 func (x *UpdateRegexRulesOrderResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_regex_proto_msgTypes[13]
+	mi := &file_muse_regex_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -960,7 +870,7 @@ func (x *UpdateRegexRulesOrderResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateRegexRulesOrderResponse.ProtoReflect.Descriptor instead.
 func (*UpdateRegexRulesOrderResponse) Descriptor() ([]byte, []int) {
-	return file_muse_regex_proto_rawDescGZIP(), []int{13}
+	return file_muse_regex_proto_rawDescGZIP(), []int{11}
 }
 
 // 导入正则规则请求
@@ -975,7 +885,7 @@ type ImportRegexRulesRequest struct {
 
 func (x *ImportRegexRulesRequest) Reset() {
 	*x = ImportRegexRulesRequest{}
-	mi := &file_muse_regex_proto_msgTypes[14]
+	mi := &file_muse_regex_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -987,7 +897,7 @@ func (x *ImportRegexRulesRequest) String() string {
 func (*ImportRegexRulesRequest) ProtoMessage() {}
 
 func (x *ImportRegexRulesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_regex_proto_msgTypes[14]
+	mi := &file_muse_regex_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1000,7 +910,7 @@ func (x *ImportRegexRulesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportRegexRulesRequest.ProtoReflect.Descriptor instead.
 func (*ImportRegexRulesRequest) Descriptor() ([]byte, []int) {
-	return file_muse_regex_proto_rawDescGZIP(), []int{14}
+	return file_muse_regex_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *ImportRegexRulesRequest) GetFileContent() []byte {
@@ -1026,7 +936,7 @@ type ImportRegexRulesResponse struct {
 
 func (x *ImportRegexRulesResponse) Reset() {
 	*x = ImportRegexRulesResponse{}
-	mi := &file_muse_regex_proto_msgTypes[15]
+	mi := &file_muse_regex_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1038,7 +948,7 @@ func (x *ImportRegexRulesResponse) String() string {
 func (*ImportRegexRulesResponse) ProtoMessage() {}
 
 func (x *ImportRegexRulesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_regex_proto_msgTypes[15]
+	mi := &file_muse_regex_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1051,7 +961,7 @@ func (x *ImportRegexRulesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportRegexRulesResponse.ProtoReflect.Descriptor instead.
 func (*ImportRegexRulesResponse) Descriptor() ([]byte, []int) {
-	return file_muse_regex_proto_rawDescGZIP(), []int{15}
+	return file_muse_regex_proto_rawDescGZIP(), []int{13}
 }
 
 // 导出正则规则请求
@@ -1064,7 +974,7 @@ type ExportRegexRulesRequest struct {
 
 func (x *ExportRegexRulesRequest) Reset() {
 	*x = ExportRegexRulesRequest{}
-	mi := &file_muse_regex_proto_msgTypes[16]
+	mi := &file_muse_regex_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1076,7 +986,7 @@ func (x *ExportRegexRulesRequest) String() string {
 func (*ExportRegexRulesRequest) ProtoMessage() {}
 
 func (x *ExportRegexRulesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_regex_proto_msgTypes[16]
+	mi := &file_muse_regex_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1089,7 +999,7 @@ func (x *ExportRegexRulesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportRegexRulesRequest.ProtoReflect.Descriptor instead.
 func (*ExportRegexRulesRequest) Descriptor() ([]byte, []int) {
-	return file_muse_regex_proto_rawDescGZIP(), []int{16}
+	return file_muse_regex_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *ExportRegexRulesRequest) GetPresetId() int32 {
@@ -1110,7 +1020,7 @@ type ExportRegexRulesResponse struct {
 
 func (x *ExportRegexRulesResponse) Reset() {
 	*x = ExportRegexRulesResponse{}
-	mi := &file_muse_regex_proto_msgTypes[17]
+	mi := &file_muse_regex_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1122,7 +1032,7 @@ func (x *ExportRegexRulesResponse) String() string {
 func (*ExportRegexRulesResponse) ProtoMessage() {}
 
 func (x *ExportRegexRulesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_muse_regex_proto_msgTypes[17]
+	mi := &file_muse_regex_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1135,7 +1045,7 @@ func (x *ExportRegexRulesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportRegexRulesResponse.ProtoReflect.Descriptor instead.
 func (*ExportRegexRulesResponse) Descriptor() ([]byte, []int) {
-	return file_muse_regex_proto_rawDescGZIP(), []int{17}
+	return file_muse_regex_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *ExportRegexRulesResponse) GetFileContent() []byte {
@@ -1190,10 +1100,6 @@ const file_muse_regex_proto_rawDesc = "" +
 	"\tpreset_id\x18\x01 \x01(\x05R\bpresetId\x12!\n" +
 	"\fcharacter_id\x18\x02 \x01(\x05R\vcharacterId\"?\n" +
 	"\x16ListRegexRulesResponse\x12%\n" +
-	"\x05rules\x18\x01 \x03(\v2\x0f.muse.RegexRuleR\x05rules\":\n" +
-	"\x1bListPresetRegexRulesRequest\x12\x1b\n" +
-	"\tpreset_id\x18\x01 \x01(\x05R\bpresetId\"E\n" +
-	"\x1cListPresetRegexRulesResponse\x12%\n" +
 	"\x05rules\x18\x01 \x03(\v2\x0f.muse.RegexRuleR\x05rules\"\xf2\x03\n" +
 	"\x13AddRegexRuleRequest\x12\x1b\n" +
 	"\tpreset_id\x18\x01 \x01(\x05R\bpresetId\x12!\n" +
@@ -1255,10 +1161,9 @@ const file_muse_regex_proto_rawDesc = "" +
 	"\tpreset_id\x18\x01 \x01(\x05R\bpresetId\"Z\n" +
 	"\x18ExportRegexRulesResponse\x12!\n" +
 	"\ffile_content\x18\x01 \x01(\fR\vfileContent\x12\x1b\n" +
-	"\tfile_name\x18\x02 \x01(\tR\bfileName2\xad\x05\n" +
+	"\tfile_name\x18\x02 \x01(\tR\bfileName2\xce\x04\n" +
 	"\x10RegexRuleService\x12K\n" +
-	"\x0eListRegexRules\x12\x1b.muse.ListRegexRulesRequest\x1a\x1c.muse.ListRegexRulesResponse\x12]\n" +
-	"\x14ListPresetRegexRules\x12!.muse.ListPresetRegexRulesRequest\x1a\".muse.ListPresetRegexRulesResponse\x12E\n" +
+	"\x0eListRegexRules\x12\x1b.muse.ListRegexRulesRequest\x1a\x1c.muse.ListRegexRulesResponse\x12E\n" +
 	"\fAddRegexRule\x12\x19.muse.AddRegexRuleRequest\x1a\x1a.muse.AddRegexRuleResponse\x12N\n" +
 	"\x0fUpdateRegexRule\x12\x1c.muse.UpdateRegexRuleRequest\x1a\x1d.muse.UpdateRegexRuleResponse\x12N\n" +
 	"\x0fDeleteRegexRule\x12\x1c.muse.DeleteRegexRuleRequest\x1a\x1d.muse.DeleteRegexRuleResponse\x12`\n" +
@@ -1280,56 +1185,51 @@ func file_muse_regex_proto_rawDescGZIP() []byte {
 	return file_muse_regex_proto_rawDescData
 }
 
-var file_muse_regex_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
+var file_muse_regex_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
 var file_muse_regex_proto_goTypes = []any{
 	(*RegexAffectFlags)(nil),              // 0: muse.RegexAffectFlags
 	(*RegexRule)(nil),                     // 1: muse.RegexRule
 	(*ListRegexRulesRequest)(nil),         // 2: muse.ListRegexRulesRequest
 	(*ListRegexRulesResponse)(nil),        // 3: muse.ListRegexRulesResponse
-	(*ListPresetRegexRulesRequest)(nil),   // 4: muse.ListPresetRegexRulesRequest
-	(*ListPresetRegexRulesResponse)(nil),  // 5: muse.ListPresetRegexRulesResponse
-	(*AddRegexRuleRequest)(nil),           // 6: muse.AddRegexRuleRequest
-	(*AddRegexRuleResponse)(nil),          // 7: muse.AddRegexRuleResponse
-	(*UpdateRegexRuleRequest)(nil),        // 8: muse.UpdateRegexRuleRequest
-	(*UpdateRegexRuleResponse)(nil),       // 9: muse.UpdateRegexRuleResponse
-	(*DeleteRegexRuleRequest)(nil),        // 10: muse.DeleteRegexRuleRequest
-	(*DeleteRegexRuleResponse)(nil),       // 11: muse.DeleteRegexRuleResponse
-	(*UpdateRegexRulesOrderRequest)(nil),  // 12: muse.UpdateRegexRulesOrderRequest
-	(*UpdateRegexRulesOrderResponse)(nil), // 13: muse.UpdateRegexRulesOrderResponse
-	(*ImportRegexRulesRequest)(nil),       // 14: muse.ImportRegexRulesRequest
-	(*ImportRegexRulesResponse)(nil),      // 15: muse.ImportRegexRulesResponse
-	(*ExportRegexRulesRequest)(nil),       // 16: muse.ExportRegexRulesRequest
-	(*ExportRegexRulesResponse)(nil),      // 17: muse.ExportRegexRulesResponse
+	(*AddRegexRuleRequest)(nil),           // 4: muse.AddRegexRuleRequest
+	(*AddRegexRuleResponse)(nil),          // 5: muse.AddRegexRuleResponse
+	(*UpdateRegexRuleRequest)(nil),        // 6: muse.UpdateRegexRuleRequest
+	(*UpdateRegexRuleResponse)(nil),       // 7: muse.UpdateRegexRuleResponse
+	(*DeleteRegexRuleRequest)(nil),        // 8: muse.DeleteRegexRuleRequest
+	(*DeleteRegexRuleResponse)(nil),       // 9: muse.DeleteRegexRuleResponse
+	(*UpdateRegexRulesOrderRequest)(nil),  // 10: muse.UpdateRegexRulesOrderRequest
+	(*UpdateRegexRulesOrderResponse)(nil), // 11: muse.UpdateRegexRulesOrderResponse
+	(*ImportRegexRulesRequest)(nil),       // 12: muse.ImportRegexRulesRequest
+	(*ImportRegexRulesResponse)(nil),      // 13: muse.ImportRegexRulesResponse
+	(*ExportRegexRulesRequest)(nil),       // 14: muse.ExportRegexRulesRequest
+	(*ExportRegexRulesResponse)(nil),      // 15: muse.ExportRegexRulesResponse
 }
 var file_muse_regex_proto_depIdxs = []int32{
 	0,  // 0: muse.RegexRule.affect_flags:type_name -> muse.RegexAffectFlags
 	1,  // 1: muse.ListRegexRulesResponse.rules:type_name -> muse.RegexRule
-	1,  // 2: muse.ListPresetRegexRulesResponse.rules:type_name -> muse.RegexRule
-	0,  // 3: muse.AddRegexRuleRequest.affect_flags:type_name -> muse.RegexAffectFlags
-	1,  // 4: muse.AddRegexRuleResponse.rule:type_name -> muse.RegexRule
-	0,  // 5: muse.UpdateRegexRuleRequest.affect_flags:type_name -> muse.RegexAffectFlags
-	1,  // 6: muse.UpdateRegexRuleResponse.rule:type_name -> muse.RegexRule
-	2,  // 7: muse.RegexRuleService.ListRegexRules:input_type -> muse.ListRegexRulesRequest
-	4,  // 8: muse.RegexRuleService.ListPresetRegexRules:input_type -> muse.ListPresetRegexRulesRequest
-	6,  // 9: muse.RegexRuleService.AddRegexRule:input_type -> muse.AddRegexRuleRequest
-	8,  // 10: muse.RegexRuleService.UpdateRegexRule:input_type -> muse.UpdateRegexRuleRequest
-	10, // 11: muse.RegexRuleService.DeleteRegexRule:input_type -> muse.DeleteRegexRuleRequest
-	12, // 12: muse.RegexRuleService.UpdateRegexRulesOrder:input_type -> muse.UpdateRegexRulesOrderRequest
-	14, // 13: muse.RegexRuleService.ImportRegexRules:input_type -> muse.ImportRegexRulesRequest
-	16, // 14: muse.RegexRuleService.ExportRegexRules:input_type -> muse.ExportRegexRulesRequest
-	3,  // 15: muse.RegexRuleService.ListRegexRules:output_type -> muse.ListRegexRulesResponse
-	5,  // 16: muse.RegexRuleService.ListPresetRegexRules:output_type -> muse.ListPresetRegexRulesResponse
-	7,  // 17: muse.RegexRuleService.AddRegexRule:output_type -> muse.AddRegexRuleResponse
-	9,  // 18: muse.RegexRuleService.UpdateRegexRule:output_type -> muse.UpdateRegexRuleResponse
-	11, // 19: muse.RegexRuleService.DeleteRegexRule:output_type -> muse.DeleteRegexRuleResponse
-	13, // 20: muse.RegexRuleService.UpdateRegexRulesOrder:output_type -> muse.UpdateRegexRulesOrderResponse
-	15, // 21: muse.RegexRuleService.ImportRegexRules:output_type -> muse.ImportRegexRulesResponse
-	17, // 22: muse.RegexRuleService.ExportRegexRules:output_type -> muse.ExportRegexRulesResponse
-	15, // [15:23] is the sub-list for method output_type
-	7,  // [7:15] is the sub-list for method input_type
-	7,  // [7:7] is the sub-list for extension type_name
-	7,  // [7:7] is the sub-list for extension extendee
-	0,  // [0:7] is the sub-list for field type_name
+	0,  // 2: muse.AddRegexRuleRequest.affect_flags:type_name -> muse.RegexAffectFlags
+	1,  // 3: muse.AddRegexRuleResponse.rule:type_name -> muse.RegexRule
+	0,  // 4: muse.UpdateRegexRuleRequest.affect_flags:type_name -> muse.RegexAffectFlags
+	1,  // 5: muse.UpdateRegexRuleResponse.rule:type_name -> muse.RegexRule
+	2,  // 6: muse.RegexRuleService.ListRegexRules:input_type -> muse.ListRegexRulesRequest
+	4,  // 7: muse.RegexRuleService.AddRegexRule:input_type -> muse.AddRegexRuleRequest
+	6,  // 8: muse.RegexRuleService.UpdateRegexRule:input_type -> muse.UpdateRegexRuleRequest
+	8,  // 9: muse.RegexRuleService.DeleteRegexRule:input_type -> muse.DeleteRegexRuleRequest
+	10, // 10: muse.RegexRuleService.UpdateRegexRulesOrder:input_type -> muse.UpdateRegexRulesOrderRequest
+	12, // 11: muse.RegexRuleService.ImportRegexRules:input_type -> muse.ImportRegexRulesRequest
+	14, // 12: muse.RegexRuleService.ExportRegexRules:input_type -> muse.ExportRegexRulesRequest
+	3,  // 13: muse.RegexRuleService.ListRegexRules:output_type -> muse.ListRegexRulesResponse
+	5,  // 14: muse.RegexRuleService.AddRegexRule:output_type -> muse.AddRegexRuleResponse
+	7,  // 15: muse.RegexRuleService.UpdateRegexRule:output_type -> muse.UpdateRegexRuleResponse
+	9,  // 16: muse.RegexRuleService.DeleteRegexRule:output_type -> muse.DeleteRegexRuleResponse
+	11, // 17: muse.RegexRuleService.UpdateRegexRulesOrder:output_type -> muse.UpdateRegexRulesOrderResponse
+	13, // 18: muse.RegexRuleService.ImportRegexRules:output_type -> muse.ImportRegexRulesResponse
+	15, // 19: muse.RegexRuleService.ExportRegexRules:output_type -> muse.ExportRegexRulesResponse
+	13, // [13:20] is the sub-list for method output_type
+	6,  // [6:13] is the sub-list for method input_type
+	6,  // [6:6] is the sub-list for extension type_name
+	6,  // [6:6] is the sub-list for extension extendee
+	0,  // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_muse_regex_proto_init() }
@@ -1338,15 +1238,15 @@ func file_muse_regex_proto_init() {
 		return
 	}
 	file_muse_common_proto_init()
+	file_muse_regex_proto_msgTypes[4].OneofWrappers = []any{}
 	file_muse_regex_proto_msgTypes[6].OneofWrappers = []any{}
-	file_muse_regex_proto_msgTypes[8].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_muse_regex_proto_rawDesc), len(file_muse_regex_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   18,
+			NumMessages:   16,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

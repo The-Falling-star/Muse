@@ -8,18 +8,14 @@ const messageQueue: Array<{ type: 'error' | 'warning' | 'info' | 'success'; cont
 
 // 初始化全局消息实例（必须在 NMessageProvider 的 setup 中调用）
 export function initGlobalMessage() {
-  console.log('[GlobalMessage] initGlobalMessage called, messageInstance:', messageInstance);
   if (!messageInstance) {
     try {
       messageInstance = useMessage();
-      console.log('[GlobalMessage] messageInstance created:', messageInstance);
 
       // 处理积压的消息队列
-      console.log('[GlobalMessage] Processing queue, size:', messageQueue.length);
       while (messageQueue.length > 0) {
         const msg = messageQueue.shift();
         if (msg) {
-          console.log('[GlobalMessage] Showing queued message:', msg);
           showDirectMessage(msg.type, msg.content);
         }
       }
@@ -31,13 +27,13 @@ export function initGlobalMessage() {
 
 // 直接显示消息（在消息实例初始化后）
 function showDirectMessage(type: 'error' | 'warning' | 'info' | 'success', content: string) {
-  console.log('[GlobalMessage] showDirectMessage called, type:', type, 'content:', content);
+  console.info('[GlobalMessage] showDirectMessage called, type:', type, 'content:', content);
   if (!messageInstance) {
     console.error('[GlobalMessage] messageInstance is null!');
     return;
   }
 
-  console.log('[GlobalMessage] Showing message with instance');
+  console.debug('[GlobalMessage] Showing message with instance');
   switch (type) {
     case 'error':
       messageInstance.error(content, { duration: 5000 });
@@ -57,11 +53,11 @@ function showDirectMessage(type: 'error' | 'warning' | 'info' | 'success', conte
 // 全局消息 API
 export const globalMessage = {
   error: (content: string) => {
-    console.log('[GlobalMessage] globalMessage.error called, content:', content);
-    console.log('[GlobalMessage] messageInstance exists:', !!messageInstance);
+    console.info('[GlobalMessage] globalMessage.error called, content:', content);
+    console.info('[GlobalMessage] messageInstance exists:', !!messageInstance);
     if (!messageInstance) {
       // 消息实例未初始化，加入队列
-      console.log('[GlobalMessage] Adding to queue');
+      console.info('[GlobalMessage] Adding to queue');
       messageQueue.push({ type: 'error', content });
     } else {
       showDirectMessage('error', content);

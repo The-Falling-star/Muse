@@ -10,8 +10,6 @@ import (
 type RegexRule interface {
 	// ListRegexRules 获取正则规则列表（全量拉取全局+预设+角色正则）
 	ListRegexRules(ctx context.Context, req *pb.ListRegexRulesRequest) (*pb.ListRegexRulesResponse, error)
-	// ListPresetRegexRules 获取预设的正则规则列表
-	ListPresetRegexRules(ctx context.Context, req *pb.ListPresetRegexRulesRequest) (*pb.ListPresetRegexRulesResponse, error)
 	// AddRegexRule 添加新的正则规则
 	AddRegexRule(ctx context.Context, req *pb.AddRegexRuleRequest) (*pb.AddRegexRuleResponse, error)
 	// UpdateRegexRule 更新指定正则规则

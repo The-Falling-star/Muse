@@ -49,16 +49,6 @@ message ListRegexRulesResponse {
   repeated RegexRule rules = 1;
 }
 
-// 获取预设的正则规则列表请求
-message ListPresetRegexRulesRequest {
-  int32 preset_id = 1;
-}
-
-// 获取预设的正则规则列表响应
-message ListPresetRegexRulesResponse {
-  repeated RegexRule rules = 1;
-}
-
 // 添加正则规则请求
 message AddRegexRuleRequest {
   int32 preset_id = 1;
@@ -142,8 +132,6 @@ message ExportRegexRulesResponse {
 service RegexRuleService {
   // 获取正则规则列表（全量拉取全局+预设+角色正则）
   rpc ListRegexRules(ListRegexRulesRequest) returns (ListRegexRulesResponse);
-  // 获取预设的正则规则列表
-  rpc ListPresetRegexRules(ListPresetRegexRulesRequest) returns (ListPresetRegexRulesResponse);
   // 添加正则规则
   rpc AddRegexRule(AddRegexRuleRequest) returns (AddRegexRuleResponse);
   // 更新正则规则

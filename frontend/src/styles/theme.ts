@@ -291,7 +291,14 @@ export const darkThemeOverrides: GlobalThemeOverrides = {
     tabBorderColor: museColors.dark.border,
     tabGapMediumLine: '24px',
     tabPaddingMediumLine: '12px 0',
-    tabFontWeightActive: '500'
+    tabFontWeightActive: '500',
+
+    // Segment 类型标签页
+    colorSegment: museColors.dark.bgSecondary,
+    tabColorSegment: museColors.dark.bgCardHover,
+    tabTextColorSegment: museColors.dark.textSecondary,
+    tabTextColorActiveSegment: museColors.dark.textPrimary,
+    tabTextColorHoverSegment: museColors.dark.textPrimary
   },
   Scrollbar: {
     color: 'rgba(77, 168, 255, 0.12)',
@@ -572,7 +579,14 @@ export const lightThemeOverrides: GlobalThemeOverrides = {
     tabBorderColor: museColors.light.border,
     tabGapMediumLine: '24px',
     tabPaddingMediumLine: '12px 0',
-    tabFontWeightActive: '500'
+    tabFontWeightActive: '500',
+
+    // Segment 类型标签页
+    colorSegment: museColors.light.bgTertiary,
+    tabColorSegment: museColors.light.bgCard,
+    tabTextColorSegment: museColors.light.textSecondary,
+    tabTextColorActiveSegment: museColors.light.textPrimary,
+    tabTextColorHoverSegment: museColors.light.textPrimary
   },
   Scrollbar: {
     color: 'rgba(0, 0, 0, 0.12)',

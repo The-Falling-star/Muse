@@ -490,7 +490,7 @@ const handleSave = async () => {
       const presetId = type === REGEX_RULE_TYPE.PRESET ? (userStore.currentUser?.activePresetId ?? 0) : 0;
       const characterId = type === REGEX_RULE_TYPE.CHARACTER ? (characterStore.curCharId ?? 0) : 0;
 
-      const newRule = await regexRuleStore.addRule({
+      const newRule = await regexRuleStore.addRegex({
         presetId,
         characterId,
         name: ruleName.value,
@@ -502,7 +502,7 @@ const handleSave = async () => {
         minDepth: minTarget.value ?? 0,
         maxDepth: maxTarget.value ?? 0,
         affectFlags,
-        sortOrder: regexRuleStore.globalRules.length
+        sortOrder: regexRuleStore.globalRegex.length
       });
 
       if (newRule) {
@@ -512,7 +512,7 @@ const handleSave = async () => {
       }
     } else {
       // 编辑模式：调用 updateRule
-      await regexRuleStore.updateRule(regexId.value, {
+      await regexRuleStore.updateRegex(regexId.value, {
         name: ruleName.value,
         findPattern: findPattern.value,
         replacePattern: replacePattern.value,
@@ -562,7 +562,7 @@ const handleSaveAs = () => {
           worldInfo: false
         };
 
-        const newRule = await regexRuleStore.addRule({
+        const newRule = await regexRuleStore.addRegex({
           presetId: originalRule?.presetId ?? 0,
           name: newName.value,
           findPattern: findPattern.value,
@@ -607,14 +607,11 @@ const loadRule = async (id: number) => {
   if (!id || id <= 0) return;
   pageLoading.value = true;
   try {
-    // 先确保已加载规则列表
-    if (!regexRuleStore.loaded) {
-      await regexRuleStore.loadRules();
-    }
+    await regexRuleStore.loadRegexs();
     const allRules = [
-      ...regexRuleStore.globalRules,
-      ...regexRuleStore.presetRules,
-      ...regexRuleStore.characterRules
+      ...regexRuleStore.globalRegex,
+      ...[...regexRuleStore.presetRegex.values()].flat(),
+      ...[...regexRuleStore.charRegex.values()].flat()
     ];
     const rule = allRules.find(r => r.id === id);
     if (!rule) {

@@ -11,7 +11,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file muse/regex.proto.
  */
 export const file_muse_regex: GenFile = /*@__PURE__*/
-  fileDesc("ChBtdXNlL3JlZ2V4LnByb3RvEgRtdXNlInQKEFJlZ2V4QWZmZWN0RmxhZ3MSEgoKdXNlcl9pbnB1dBgBIAEoCBIRCglhaV9vdXRwdXQYAiABKAgSFQoNc2xhc2hfY29tbWFuZBgDIAEoCBISCgp3b3JsZF9pbmZvGAQgASgIEg4KBnByb21wdBgFIAEoCCLQAgoJUmVnZXhSdWxlEgoKAmlkGAEgASgFEhEKCXByZXNldF9pZBgCIAEoBRIUCgxjaGFyYWN0ZXJfaWQYDyABKAUSDAoEbmFtZRgDIAEoCRIUCgxmaW5kX3BhdHRlcm4YBCABKAkSFwoPcmVwbGFjZV9wYXR0ZXJuGAUgASgJEhIKCmlzX2VuYWJsZWQYBiABKAgSEwoLcnVuX29uX2VkaXQYByABKAgSGAoQc3Vic3RpdHV0ZV9yZWdleBgIIAEoCBIRCgltaW5fZGVwdGgYCSABKAUSEQoJbWF4X2RlcHRoGAogASgFEiwKDGFmZmVjdF9mbGFncxgLIAEoCzIWLm11c2UuUmVnZXhBZmZlY3RGbGFncxISCgpzb3J0X29yZGVyGAwgASgFEhIKCmNyZWF0ZWRfYXQYDSABKAMSEgoKdXBkYXRlZF9hdBgOIAEoAyJAChVMaXN0UmVnZXhSdWxlc1JlcXVlc3QSEQoJcHJlc2V0X2lkGAEgASgFEhQKDGNoYXJhY3Rlcl9pZBgCIAEoBSI4ChZMaXN0UmVnZXhSdWxlc1Jlc3BvbnNlEh4KBXJ1bGVzGAEgAygLMg8ubXVzZS5SZWdleFJ1bGUiMAobTGlzdFByZXNldFJlZ2V4UnVsZXNSZXF1ZXN0EhEKCXByZXNldF9pZBgBIAEoBSI+ChxMaXN0UHJlc2V0UmVnZXhSdWxlc1Jlc3BvbnNlEh4KBXJ1bGVzGAEgAygLMg8ubXVzZS5SZWdleFJ1bGUi5QIKE0FkZFJlZ2V4UnVsZVJlcXVlc3QSEQoJcHJlc2V0X2lkGAEgASgFEhQKDGNoYXJhY3Rlcl9pZBgQIAEoBRIMCgRuYW1lGAIgASgJEhQKDGZpbmRfcGF0dGVybhgDIAEoCRIcCg9yZXBsYWNlX3BhdHRlcm4YBCABKAlIAIgBARISCgppc19lbmFibGVkGAUgASgIEhMKC3J1bl9vbl9lZGl0GAYgASgIEhgKEHN1YnN0aXR1dGVfcmVnZXgYByABKAgSFgoJbWluX2RlcHRoGAggASgFSAGIAQESFgoJbWF4X2RlcHRoGAkgASgFSAKIAQESLAoMYWZmZWN0X2ZsYWdzGAogASgLMhYubXVzZS5SZWdleEFmZmVjdEZsYWdzEhIKCnNvcnRfb3JkZXIYCyABKAVCEgoQX3JlcGxhY2VfcGF0dGVybkIMCgpfbWluX2RlcHRoQgwKCl9tYXhfZGVwdGgiNQoUQWRkUmVnZXhSdWxlUmVzcG9uc2USHQoEcnVsZRgBIAEoCzIPLm11c2UuUmVnZXhSdWxlIssCChZVcGRhdGVSZWdleFJ1bGVSZXF1ZXN0EgoKAmlkGAEgASgFEgwKBG5hbWUYAiABKAkSFAoMZmluZF9wYXR0ZXJuGAMgASgJEhwKD3JlcGxhY2VfcGF0dGVybhgEIAEoCUgAiAEBEhIKCmlzX2VuYWJsZWQYBSABKAgSEwoLcnVuX29uX2VkaXQYBiABKAgSGAoQc3Vic3RpdHV0ZV9yZWdleBgHIAEoCBIWCgltaW5fZGVwdGgYCCABKAVIAYgBARIWCgltYXhfZGVwdGgYCSABKAVIAogBARIsCgxhZmZlY3RfZmxhZ3MYCiABKAsyFi5tdXNlLlJlZ2V4QWZmZWN0RmxhZ3MSEgoKc29ydF9vcmRlchgLIAEoBUISChBfcmVwbGFjZV9wYXR0ZXJuQgwKCl9taW5fZGVwdGhCDAoKX21heF9kZXB0aCI4ChdVcGRhdGVSZWdleFJ1bGVSZXNwb25zZRIdCgRydWxlGAEgASgLMg8ubXVzZS5SZWdleFJ1bGUiJAoWRGVsZXRlUmVnZXhSdWxlUmVxdWVzdBIKCgJpZBgBIAEoBSIZChdEZWxldGVSZWdleFJ1bGVSZXNwb25zZSJDChxVcGRhdGVSZWdleFJ1bGVzT3JkZXJSZXF1ZXN0EhEKCXByZXNldF9pZBgBIAEoBRIQCghydWxlX2lkcxgCIAMoBSIfCh1VcGRhdGVSZWdleFJ1bGVzT3JkZXJSZXNwb25zZSJCChdJbXBvcnRSZWdleFJ1bGVzUmVxdWVzdBIUCgxmaWxlX2NvbnRlbnQYASABKAwSEQoJZmlsZV9uYW1lGAIgASgJIhoKGEltcG9ydFJlZ2V4UnVsZXNSZXNwb25zZSIsChdFeHBvcnRSZWdleFJ1bGVzUmVxdWVzdBIRCglwcmVzZXRfaWQYASABKAUiQwoYRXhwb3J0UmVnZXhSdWxlc1Jlc3BvbnNlEhQKDGZpbGVfY29udGVudBgBIAEoDBIRCglmaWxlX25hbWUYAiABKAkyrQUKEFJlZ2V4UnVsZVNlcnZpY2USSwoOTGlzdFJlZ2V4UnVsZXMSGy5tdXNlLkxpc3RSZWdleFJ1bGVzUmVxdWVzdBocLm11c2UuTGlzdFJlZ2V4UnVsZXNSZXNwb25zZRJdChRMaXN0UHJlc2V0UmVnZXhSdWxlcxIhLm11c2UuTGlzdFByZXNldFJlZ2V4UnVsZXNSZXF1ZXN0GiIubXVzZS5MaXN0UHJlc2V0UmVnZXhSdWxlc1Jlc3BvbnNlEkUKDEFkZFJlZ2V4UnVsZRIZLm11c2UuQWRkUmVnZXhSdWxlUmVxdWVzdBoaLm11c2UuQWRkUmVnZXhSdWxlUmVzcG9uc2USTgoPVXBkYXRlUmVnZXhSdWxlEhwubXVzZS5VcGRhdGVSZWdleFJ1bGVSZXF1ZXN0Gh0ubXVzZS5VcGRhdGVSZWdleFJ1bGVSZXNwb25zZRJOCg9EZWxldGVSZWdleFJ1bGUSHC5tdXNlLkRlbGV0ZVJlZ2V4UnVsZVJlcXVlc3QaHS5tdXNlLkRlbGV0ZVJlZ2V4UnVsZVJlc3BvbnNlEmAKFVVwZGF0ZVJlZ2V4UnVsZXNPcmRlchIiLm11c2UuVXBkYXRlUmVnZXhSdWxlc09yZGVyUmVxdWVzdBojLm11c2UuVXBkYXRlUmVnZXhSdWxlc09yZGVyUmVzcG9uc2USUQoQSW1wb3J0UmVnZXhSdWxlcxIdLm11c2UuSW1wb3J0UmVnZXhSdWxlc1JlcXVlc3QaHi5tdXNlLkltcG9ydFJlZ2V4UnVsZXNSZXNwb25zZRJRChBFeHBvcnRSZWdleFJ1bGVzEh0ubXVzZS5FeHBvcnRSZWdleFJ1bGVzUmVxdWVzdBoeLm11c2UuRXhwb3J0UmVnZXhSdWxlc1Jlc3BvbnNlQmUKCGNvbS5tdXNlQgpSZWdleFByb3RvUAFaHWdpdGh1Yi5jb20vbGluZy9tdXNlL2dlbi9tdXNlogIDTVhYqgIETXVzZcoCBE11c2XiAhBNdXNlXEdQQk1ldGFkYXRh6gIETXVzZWIGcHJvdG8z", [file_muse_common]);
+  fileDesc("ChBtdXNlL3JlZ2V4LnByb3RvEgRtdXNlInQKEFJlZ2V4QWZmZWN0RmxhZ3MSEgoKdXNlcl9pbnB1dBgBIAEoCBIRCglhaV9vdXRwdXQYAiABKAgSFQoNc2xhc2hfY29tbWFuZBgDIAEoCBISCgp3b3JsZF9pbmZvGAQgASgIEg4KBnByb21wdBgFIAEoCCLQAgoJUmVnZXhSdWxlEgoKAmlkGAEgASgFEhEKCXByZXNldF9pZBgCIAEoBRIUCgxjaGFyYWN0ZXJfaWQYDyABKAUSDAoEbmFtZRgDIAEoCRIUCgxmaW5kX3BhdHRlcm4YBCABKAkSFwoPcmVwbGFjZV9wYXR0ZXJuGAUgASgJEhIKCmlzX2VuYWJsZWQYBiABKAgSEwoLcnVuX29uX2VkaXQYByABKAgSGAoQc3Vic3RpdHV0ZV9yZWdleBgIIAEoCBIRCgltaW5fZGVwdGgYCSABKAUSEQoJbWF4X2RlcHRoGAogASgFEiwKDGFmZmVjdF9mbGFncxgLIAEoCzIWLm11c2UuUmVnZXhBZmZlY3RGbGFncxISCgpzb3J0X29yZGVyGAwgASgFEhIKCmNyZWF0ZWRfYXQYDSABKAMSEgoKdXBkYXRlZF9hdBgOIAEoAyJAChVMaXN0UmVnZXhSdWxlc1JlcXVlc3QSEQoJcHJlc2V0X2lkGAEgASgFEhQKDGNoYXJhY3Rlcl9pZBgCIAEoBSI4ChZMaXN0UmVnZXhSdWxlc1Jlc3BvbnNlEh4KBXJ1bGVzGAEgAygLMg8ubXVzZS5SZWdleFJ1bGUi5QIKE0FkZFJlZ2V4UnVsZVJlcXVlc3QSEQoJcHJlc2V0X2lkGAEgASgFEhQKDGNoYXJhY3Rlcl9pZBgQIAEoBRIMCgRuYW1lGAIgASgJEhQKDGZpbmRfcGF0dGVybhgDIAEoCRIcCg9yZXBsYWNlX3BhdHRlcm4YBCABKAlIAIgBARISCgppc19lbmFibGVkGAUgASgIEhMKC3J1bl9vbl9lZGl0GAYgASgIEhgKEHN1YnN0aXR1dGVfcmVnZXgYByABKAgSFgoJbWluX2RlcHRoGAggASgFSAGIAQESFgoJbWF4X2RlcHRoGAkgASgFSAKIAQESLAoMYWZmZWN0X2ZsYWdzGAogASgLMhYubXVzZS5SZWdleEFmZmVjdEZsYWdzEhIKCnNvcnRfb3JkZXIYCyABKAVCEgoQX3JlcGxhY2VfcGF0dGVybkIMCgpfbWluX2RlcHRoQgwKCl9tYXhfZGVwdGgiNQoUQWRkUmVnZXhSdWxlUmVzcG9uc2USHQoEcnVsZRgBIAEoCzIPLm11c2UuUmVnZXhSdWxlIssCChZVcGRhdGVSZWdleFJ1bGVSZXF1ZXN0EgoKAmlkGAEgASgFEgwKBG5hbWUYAiABKAkSFAoMZmluZF9wYXR0ZXJuGAMgASgJEhwKD3JlcGxhY2VfcGF0dGVybhgEIAEoCUgAiAEBEhIKCmlzX2VuYWJsZWQYBSABKAgSEwoLcnVuX29uX2VkaXQYBiABKAgSGAoQc3Vic3RpdHV0ZV9yZWdleBgHIAEoCBIWCgltaW5fZGVwdGgYCCABKAVIAYgBARIWCgltYXhfZGVwdGgYCSABKAVIAogBARIsCgxhZmZlY3RfZmxhZ3MYCiABKAsyFi5tdXNlLlJlZ2V4QWZmZWN0RmxhZ3MSEgoKc29ydF9vcmRlchgLIAEoBUISChBfcmVwbGFjZV9wYXR0ZXJuQgwKCl9taW5fZGVwdGhCDAoKX21heF9kZXB0aCI4ChdVcGRhdGVSZWdleFJ1bGVSZXNwb25zZRIdCgRydWxlGAEgASgLMg8ubXVzZS5SZWdleFJ1bGUiJAoWRGVsZXRlUmVnZXhSdWxlUmVxdWVzdBIKCgJpZBgBIAEoBSIZChdEZWxldGVSZWdleFJ1bGVSZXNwb25zZSJDChxVcGRhdGVSZWdleFJ1bGVzT3JkZXJSZXF1ZXN0EhEKCXByZXNldF9pZBgBIAEoBRIQCghydWxlX2lkcxgCIAMoBSIfCh1VcGRhdGVSZWdleFJ1bGVzT3JkZXJSZXNwb25zZSJCChdJbXBvcnRSZWdleFJ1bGVzUmVxdWVzdBIUCgxmaWxlX2NvbnRlbnQYASABKAwSEQoJZmlsZV9uYW1lGAIgASgJIhoKGEltcG9ydFJlZ2V4UnVsZXNSZXNwb25zZSIsChdFeHBvcnRSZWdleFJ1bGVzUmVxdWVzdBIRCglwcmVzZXRfaWQYASABKAUiQwoYRXhwb3J0UmVnZXhSdWxlc1Jlc3BvbnNlEhQKDGZpbGVfY29udGVudBgBIAEoDBIRCglmaWxlX25hbWUYAiABKAkyzgQKEFJlZ2V4UnVsZVNlcnZpY2USSwoOTGlzdFJlZ2V4UnVsZXMSGy5tdXNlLkxpc3RSZWdleFJ1bGVzUmVxdWVzdBocLm11c2UuTGlzdFJlZ2V4UnVsZXNSZXNwb25zZRJFCgxBZGRSZWdleFJ1bGUSGS5tdXNlLkFkZFJlZ2V4UnVsZVJlcXVlc3QaGi5tdXNlLkFkZFJlZ2V4UnVsZVJlc3BvbnNlEk4KD1VwZGF0ZVJlZ2V4UnVsZRIcLm11c2UuVXBkYXRlUmVnZXhSdWxlUmVxdWVzdBodLm11c2UuVXBkYXRlUmVnZXhSdWxlUmVzcG9uc2USTgoPRGVsZXRlUmVnZXhSdWxlEhwubXVzZS5EZWxldGVSZWdleFJ1bGVSZXF1ZXN0Gh0ubXVzZS5EZWxldGVSZWdleFJ1bGVSZXNwb25zZRJgChVVcGRhdGVSZWdleFJ1bGVzT3JkZXISIi5tdXNlLlVwZGF0ZVJlZ2V4UnVsZXNPcmRlclJlcXVlc3QaIy5tdXNlLlVwZGF0ZVJlZ2V4UnVsZXNPcmRlclJlc3BvbnNlElEKEEltcG9ydFJlZ2V4UnVsZXMSHS5tdXNlLkltcG9ydFJlZ2V4UnVsZXNSZXF1ZXN0Gh4ubXVzZS5JbXBvcnRSZWdleFJ1bGVzUmVzcG9uc2USUQoQRXhwb3J0UmVnZXhSdWxlcxIdLm11c2UuRXhwb3J0UmVnZXhSdWxlc1JlcXVlc3QaHi5tdXNlLkV4cG9ydFJlZ2V4UnVsZXNSZXNwb25zZUJlCghjb20ubXVzZUIKUmVnZXhQcm90b1ABWh1naXRodWIuY29tL2xpbmcvbXVzZS9nZW4vbXVzZaICA01YWKoCBE11c2XKAgRNdXNl4gIQTXVzZVxHUEJNZXRhZGF0YeoCBE11c2ViBnByb3RvMw", [file_muse_common]);
 
 /**
  * RegexAffectFlags 正则规则作用范围标志
@@ -229,44 +229,6 @@ export const ListRegexRulesResponseSchema: GenMessage<ListRegexRulesResponse> = 
   messageDesc(file_muse_regex, 3);
 
 /**
- * 获取预设的正则规则列表请求
- *
- * @generated from message muse.ListPresetRegexRulesRequest
- */
-export type ListPresetRegexRulesRequest = Message<"muse.ListPresetRegexRulesRequest"> & {
-  /**
-   * @generated from field: int32 preset_id = 1;
-   */
-  presetId: number;
-};
-
-/**
- * Describes the message muse.ListPresetRegexRulesRequest.
- * Use `create(ListPresetRegexRulesRequestSchema)` to create a new message.
- */
-export const ListPresetRegexRulesRequestSchema: GenMessage<ListPresetRegexRulesRequest> = /*@__PURE__*/
-  messageDesc(file_muse_regex, 4);
-
-/**
- * 获取预设的正则规则列表响应
- *
- * @generated from message muse.ListPresetRegexRulesResponse
- */
-export type ListPresetRegexRulesResponse = Message<"muse.ListPresetRegexRulesResponse"> & {
-  /**
-   * @generated from field: repeated muse.RegexRule rules = 1;
-   */
-  rules: RegexRule[];
-};
-
-/**
- * Describes the message muse.ListPresetRegexRulesResponse.
- * Use `create(ListPresetRegexRulesResponseSchema)` to create a new message.
- */
-export const ListPresetRegexRulesResponseSchema: GenMessage<ListPresetRegexRulesResponse> = /*@__PURE__*/
-  messageDesc(file_muse_regex, 5);
-
-/**
  * 添加正则规则请求
  *
  * @generated from message muse.AddRegexRuleRequest
@@ -338,7 +300,7 @@ export type AddRegexRuleRequest = Message<"muse.AddRegexRuleRequest"> & {
  * Use `create(AddRegexRuleRequestSchema)` to create a new message.
  */
 export const AddRegexRuleRequestSchema: GenMessage<AddRegexRuleRequest> = /*@__PURE__*/
-  messageDesc(file_muse_regex, 6);
+  messageDesc(file_muse_regex, 4);
 
 /**
  * 添加正则规则响应
@@ -357,7 +319,7 @@ export type AddRegexRuleResponse = Message<"muse.AddRegexRuleResponse"> & {
  * Use `create(AddRegexRuleResponseSchema)` to create a new message.
  */
 export const AddRegexRuleResponseSchema: GenMessage<AddRegexRuleResponse> = /*@__PURE__*/
-  messageDesc(file_muse_regex, 7);
+  messageDesc(file_muse_regex, 5);
 
 /**
  * 更新正则规则请求
@@ -426,7 +388,7 @@ export type UpdateRegexRuleRequest = Message<"muse.UpdateRegexRuleRequest"> & {
  * Use `create(UpdateRegexRuleRequestSchema)` to create a new message.
  */
 export const UpdateRegexRuleRequestSchema: GenMessage<UpdateRegexRuleRequest> = /*@__PURE__*/
-  messageDesc(file_muse_regex, 8);
+  messageDesc(file_muse_regex, 6);
 
 /**
  * 更新正则规则响应
@@ -445,7 +407,7 @@ export type UpdateRegexRuleResponse = Message<"muse.UpdateRegexRuleResponse"> & 
  * Use `create(UpdateRegexRuleResponseSchema)` to create a new message.
  */
 export const UpdateRegexRuleResponseSchema: GenMessage<UpdateRegexRuleResponse> = /*@__PURE__*/
-  messageDesc(file_muse_regex, 9);
+  messageDesc(file_muse_regex, 7);
 
 /**
  * 删除正则规则请求
@@ -464,7 +426,7 @@ export type DeleteRegexRuleRequest = Message<"muse.DeleteRegexRuleRequest"> & {
  * Use `create(DeleteRegexRuleRequestSchema)` to create a new message.
  */
 export const DeleteRegexRuleRequestSchema: GenMessage<DeleteRegexRuleRequest> = /*@__PURE__*/
-  messageDesc(file_muse_regex, 10);
+  messageDesc(file_muse_regex, 8);
 
 /**
  * 删除正则规则响应
@@ -479,7 +441,7 @@ export type DeleteRegexRuleResponse = Message<"muse.DeleteRegexRuleResponse"> & 
  * Use `create(DeleteRegexRuleResponseSchema)` to create a new message.
  */
 export const DeleteRegexRuleResponseSchema: GenMessage<DeleteRegexRuleResponse> = /*@__PURE__*/
-  messageDesc(file_muse_regex, 11);
+  messageDesc(file_muse_regex, 9);
 
 /**
  * 批量更新正则规则排序请求
@@ -505,7 +467,7 @@ export type UpdateRegexRulesOrderRequest = Message<"muse.UpdateRegexRulesOrderRe
  * Use `create(UpdateRegexRulesOrderRequestSchema)` to create a new message.
  */
 export const UpdateRegexRulesOrderRequestSchema: GenMessage<UpdateRegexRulesOrderRequest> = /*@__PURE__*/
-  messageDesc(file_muse_regex, 12);
+  messageDesc(file_muse_regex, 10);
 
 /**
  * 批量更新正则规则排序响应
@@ -520,7 +482,7 @@ export type UpdateRegexRulesOrderResponse = Message<"muse.UpdateRegexRulesOrderR
  * Use `create(UpdateRegexRulesOrderResponseSchema)` to create a new message.
  */
 export const UpdateRegexRulesOrderResponseSchema: GenMessage<UpdateRegexRulesOrderResponse> = /*@__PURE__*/
-  messageDesc(file_muse_regex, 13);
+  messageDesc(file_muse_regex, 11);
 
 /**
  * 导入正则规则请求
@@ -547,7 +509,7 @@ export type ImportRegexRulesRequest = Message<"muse.ImportRegexRulesRequest"> & 
  * Use `create(ImportRegexRulesRequestSchema)` to create a new message.
  */
 export const ImportRegexRulesRequestSchema: GenMessage<ImportRegexRulesRequest> = /*@__PURE__*/
-  messageDesc(file_muse_regex, 14);
+  messageDesc(file_muse_regex, 12);
 
 /**
  * 导入正则规则响应
@@ -562,7 +524,7 @@ export type ImportRegexRulesResponse = Message<"muse.ImportRegexRulesResponse"> 
  * Use `create(ImportRegexRulesResponseSchema)` to create a new message.
  */
 export const ImportRegexRulesResponseSchema: GenMessage<ImportRegexRulesResponse> = /*@__PURE__*/
-  messageDesc(file_muse_regex, 15);
+  messageDesc(file_muse_regex, 13);
 
 /**
  * 导出正则规则请求
@@ -581,7 +543,7 @@ export type ExportRegexRulesRequest = Message<"muse.ExportRegexRulesRequest"> & 
  * Use `create(ExportRegexRulesRequestSchema)` to create a new message.
  */
 export const ExportRegexRulesRequestSchema: GenMessage<ExportRegexRulesRequest> = /*@__PURE__*/
-  messageDesc(file_muse_regex, 16);
+  messageDesc(file_muse_regex, 14);
 
 /**
  * 导出正则规则响应
@@ -605,7 +567,7 @@ export type ExportRegexRulesResponse = Message<"muse.ExportRegexRulesResponse"> 
  * Use `create(ExportRegexRulesResponseSchema)` to create a new message.
  */
 export const ExportRegexRulesResponseSchema: GenMessage<ExportRegexRulesResponse> = /*@__PURE__*/
-  messageDesc(file_muse_regex, 17);
+  messageDesc(file_muse_regex, 15);
 
 /**
  * 正则规则服务
@@ -622,16 +584,6 @@ export const RegexRuleService: GenService<{
     methodKind: "unary";
     input: typeof ListRegexRulesRequestSchema;
     output: typeof ListRegexRulesResponseSchema;
-  },
-  /**
-   * 获取预设的正则规则列表
-   *
-   * @generated from rpc muse.RegexRuleService.ListPresetRegexRules
-   */
-  listPresetRegexRules: {
-    methodKind: "unary";
-    input: typeof ListPresetRegexRulesRequestSchema;
-    output: typeof ListPresetRegexRulesResponseSchema;
   },
   /**
    * 添加正则规则

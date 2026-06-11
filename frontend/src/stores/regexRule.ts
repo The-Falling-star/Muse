@@ -30,15 +30,24 @@ const distributeRules = (rules: RegexRule[]) => {
         break;
     }
   }
-  return { global, preset, character };
+  return { global: global, preset, character };
 };
 
-// 在三个列表中查找规则（用于更新/删除/切换）
-const findRuleInLists = (id: number, lists: RegexRule[][]): RegexRule | null => {
-  for (const list of lists) {
-    const found = list.find(r => r.id === id);
+// 在所有存储中查找规则（用于更新/删除/切换）
+const findRuleInLists = (id: number, global: RegexRule[], preset: Map<number, RegexRule[]>, character: Map<number, RegexRule[]>): RegexRule | null => {
+  const inGlobal = global.find(r => r.id === id);
+  if (inGlobal) return inGlobal;
+
+  for (const [, rules] of preset) {
+    const found = rules.find(r => r.id === id);
     if (found) return found;
   }
+
+  for (const [, rules] of character) {
+    const found = rules.find(r => r.id === id);
+    if (found) return found;
+  }
+
   return null;
 };
 
@@ -46,36 +55,57 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
   // =====================
   // 状态：三种类型的正则规则
   // =====================
-  const globalRules = ref<RegexRule[]>([]);
-  const presetRules = ref<RegexRule[]>([]);
-  const characterRules = ref<RegexRule[]>([]);
+  const globalRegex = ref<RegexRule[]>([]);
+  const presetRegex = ref<Map<number, RegexRule[]>>(new Map());
+  const charRegex = ref<Map<number, RegexRule[]>>(new Map());
   const loading = ref(false);
-  const loaded = ref(false);
 
   // =====================
   // 方法
   // =====================
 
   // 全量拉取正则规则（全局 + 指定预设 + 指定角色）
-  const loadRules = async (presetId: number = 0, characterId: number = 0) => {
-    if (loaded.value) {
+  const loadRegexs = async (presetId: number = 0, characterId: number = 0) => {
+    if (presetRegex.value.has(presetId)) {
+      console.info("已存在全局正则: ", presetId)
+      presetId = 0;
+    }
+    if (charRegex.value.has(characterId)) {
+      console.info("已存在角色正则: ", characterId)
+      characterId = 0;
+    }
+    if (presetId === 0 && characterId === 0) {
       return;
     }
+    console.info("拉取预设正则: ", presetId, "角色正则: ", characterId)
     loading.value = true;
     try {
       const rsp = await regexRuleClient.listRegexRules({ presetId, characterId });
       const { global, preset, character } = distributeRules(rsp.rules);
-      globalRules.value = global;
-      presetRules.value = preset;
-      characterRules.value = character;
-      loaded.value = true;
+      globalRegex.value = global;
+      if (presetId !== 0) {
+        presetRegex.value.set(presetId, preset);
+      }
+      if (characterId !== 0) {
+        charRegex.value.set(characterId, character);
+      }
     } finally {
       loading.value = false;
     }
   };
 
+  // 设置预设的正则规则
+  const setPresetRegex = (presetId: number, regex: RegexRule[]) => {
+    presetRegex.value.set(presetId, regex)
+  };
+
+  // 设置角色的正则规则
+  const setCharRegex = (characterId: number, regex: RegexRule[]) => {
+    charRegex.value.set(characterId, regex)
+  };
+
   // 添加正则规则
-  const addRule = async (data: {
+  const addRegex = async (data: {
     presetId: number;
     characterId?: number;
     name: string;
@@ -105,15 +135,23 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
     });
     if (response.rule) {
       const type = classifyRule(response.rule);
-      if (type === REGEX_RULE_TYPE.GLOBAL) globalRules.value.push(response.rule);
-      else if (type === REGEX_RULE_TYPE.PRESET) presetRules.value.push(response.rule);
-      else characterRules.value.push(response.rule);
+      if (type === REGEX_RULE_TYPE.GLOBAL) {
+        globalRegex.value.push(response.rule);
+      } else if (type === REGEX_RULE_TYPE.PRESET) {
+        const key = response.rule.presetId;
+        if (!presetRegex.value.has(key)) presetRegex.value.set(key, []);
+        presetRegex.value.get(key)!.push(response.rule);
+      } else {
+        const key = response.rule.characterId;
+        if (!charRegex.value.has(key)) charRegex.value.set(key, []);
+        charRegex.value.get(key)!.push(response.rule);
+      }
     }
     return response.rule;
   };
 
   // 更新正则规则
-  const updateRule = async (
+  const updateRegex = async (
     id: number,
     data: {
       name: string;
@@ -131,42 +169,81 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
     const response = await regexRuleClient.updateRegexRule({ id, ...data });
     if (response.rule) {
       // 先从所有列表中移除旧项，再按新类型添加
-      const lists = [globalRules.value, presetRules.value, characterRules.value];
-      for (const list of lists) {
-        const index = list.findIndex(r => r.id === id);
-        if (index >= 0) {
-          list.splice(index, 1);
-          break;
+      let idx = globalRegex.value.findIndex(r => r.id === id);
+      if (idx >= 0) {
+        globalRegex.value.splice(idx, 1);
+      } else {
+        for (const [, rules] of presetRegex.value) {
+          idx = rules.findIndex(r => r.id === id);
+          if (idx >= 0) { rules.splice(idx, 1); break; }
+        }
+        if (idx < 0) {
+          for (const [, rules] of charRegex.value) {
+            idx = rules.findIndex(r => r.id === id);
+            if (idx >= 0) { rules.splice(idx, 1); break; }
+          }
         }
       }
       const type = classifyRule(response.rule);
-      if (type === REGEX_RULE_TYPE.GLOBAL) globalRules.value.push(response.rule);
-      else if (type === REGEX_RULE_TYPE.PRESET) presetRules.value.push(response.rule);
-      else characterRules.value.push(response.rule);
+      if (type === REGEX_RULE_TYPE.GLOBAL) {
+        globalRegex.value.push(response.rule);
+      } else if (type === REGEX_RULE_TYPE.PRESET) {
+        const key = response.rule.presetId;
+        if (!presetRegex.value.has(key)) presetRegex.value.set(key, []);
+        presetRegex.value.get(key)!.push(response.rule);
+      } else {
+        const key = response.rule.characterId;
+        if (!charRegex.value.has(key)) charRegex.value.set(key, []);
+        charRegex.value.get(key)!.push(response.rule);
+      }
     }
     return response.rule;
   };
 
   // 删除正则规则
-  const deleteRule = async (id: number) => {
+  const deleteRegex = async (id: number) => {
     await regexRuleClient.deleteRegexRule({ id });
-    const lists = [globalRules.value, presetRules.value, characterRules.value];
-    for (const list of lists) {
-      const index = list.findIndex(r => r.id === id);
-      if (index >= 0) {
-        list.splice(index, 1);
-        return;
-      }
+    let idx = globalRegex.value.findIndex(r => r.id === id);
+    if (idx >= 0) {
+      globalRegex.value.splice(idx, 1);
+      return;
+    }
+    for (const [, rules] of presetRegex.value) {
+      idx = rules.findIndex(r => r.id === id);
+      if (idx >= 0) { rules.splice(idx, 1); return; }
+    }
+    for (const [, rules] of charRegex.value) {
+      idx = rules.findIndex(r => r.id === id);
+      if (idx >= 0) { rules.splice(idx, 1); return; }
     }
   };
 
   // 更新正则规则排序
-  const updateRulesOrder = async (presetId: number, ruleIds: number[]) => {
+  const updateRegexOrder = async (presetId: number, ruleIds: number[]) => {
     await regexRuleClient.updateRegexRulesOrder({ presetId, ruleIds });
     const newOrder = new Map(ruleIds.map((id, index) => [id, index]));
-    const lists = [globalRules.value, presetRules.value, characterRules.value];
-    for (const list of lists) {
-      for (const rule of list) {
+
+    // 更新全局规则排序
+    for (const rule of globalRegex.value) {
+      const newSortOrder = newOrder.get(rule.id);
+      if (newSortOrder !== undefined) {
+        rule.sortOrder = newSortOrder;
+      }
+    }
+
+    // 更新预设规则排序
+    for (const rules of presetRegex.value.values()) {
+      for (const rule of rules) {
+        const newSortOrder = newOrder.get(rule.id);
+        if (newSortOrder !== undefined) {
+          rule.sortOrder = newSortOrder;
+        }
+      }
+    }
+
+    // 更新角色规则排序
+    for (const rules of charRegex.value.values()) {
+      for (const rule of rules) {
         const newSortOrder = newOrder.get(rule.id);
         if (newSortOrder !== undefined) {
           rule.sortOrder = newSortOrder;
@@ -176,13 +253,13 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
   };
 
   // 导入正则规则（全局规则）
-  const importRules = async (fileContent: Uint8Array, fileName: string) => {
+  const importRegex = async (fileContent: Uint8Array, fileName: string) => {
     await regexRuleClient.importRegexRules({ fileContent, fileName });
-    await loadRules();
+    await loadRegexs();
   };
 
   // 导出正则规则
-  const exportRules = async (presetId: number) => {
+  const exportRegex = async (presetId: number) => {
     const response = await regexRuleClient.exportRegexRules({ presetId });
     return {
       fileContent: response.fileContent,
@@ -191,11 +268,11 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
   };
 
   // 切换规则启用状态
-  const toggleRuleEnabled = async (id: number) => {
-    const rule = findRuleInLists(id, [globalRules.value, presetRules.value, characterRules.value]);
+  const toggleRegexEnabled = async (id: number) => {
+    const rule = findRuleInLists(id, globalRegex.value, presetRegex.value, charRegex.value);
     if (!rule) return;
 
-    return updateRule(id, {
+    return updateRegex(id, {
       name: rule.name,
       findPattern: rule.findPattern,
       replacePattern: rule.replacePattern,
@@ -211,10 +288,9 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
 
   // 重置状态
   const reset = () => {
-    globalRules.value = [];
-    presetRules.value = [];
-    characterRules.value = [];
-    loaded.value = false;
+    globalRegex.value = [];
+    presetRegex.value = new Map();
+    charRegex.value = new Map();
   };
 
   // 创建默认的AffectFlags
@@ -229,21 +305,22 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
 
   return {
     // 状态
-    globalRules,
-    presetRules,
-    characterRules,
+    globalRegex,
+    presetRegex,
+    charRegex,
     loading,
-    loaded,
 
     // 方法
-    loadRules,
-    addRule,
-    updateRule,
-    deleteRule,
-    updateRulesOrder,
-    importRules,
-    exportRules,
-    toggleRuleEnabled,
+    loadRegexs,
+    setPresetRegex,
+    setCharRegex,
+    addRegex,
+    updateRegex,
+    deleteRegex,
+    updateRegexOrder,
+    importRegex,
+    exportRegex,
+    toggleRegexEnabled,
 
     // 辅助
     reset,

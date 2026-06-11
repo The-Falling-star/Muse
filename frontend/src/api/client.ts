@@ -24,9 +24,9 @@ const errorHandlerInterceptor: Interceptor = (next) => async (req) => {
   try {
     return await next(req);
   } catch (error) {
-    console.log('[Error Interceptor] Caught error:', error);
-    console.log('[Error Interceptor] Error type:', error?.constructor?.name);
-    console.log('[Error Interceptor] Is ConnectError?', error instanceof ConnectError);
+    console.error('[Error Interceptor] Caught error:', error);
+    console.error('[Error Interceptor] Error type:', error?.constructor?.name);
+    console.error('[Error Interceptor] Is ConnectError?', error instanceof ConnectError);
 
     if (error instanceof ConnectError) {
       const errorMessage = error.message;
@@ -41,10 +41,10 @@ const errorHandlerInterceptor: Interceptor = (next) => async (req) => {
 
       // 显示错误消息（除了未认证错误，因为会自动跳转）
       if (errorCode !== Code.Unauthenticated) {
-        console.log('[Error Interceptor] Showing error message:', errorMessage);
+        console.error('[Error Interceptor] Showing error message:', errorMessage);
         globalMessage.error(errorMessage);
       } else {
-        console.log('[Error Interceptor] Skipping error message (Unauthenticated)');
+        console.error('[Error Interceptor] Skipping error message (Unauthenticated)');
       }
 
       // 特殊处理：未认证时跳转登录页

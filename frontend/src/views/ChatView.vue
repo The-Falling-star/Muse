@@ -18,17 +18,17 @@
       <!-- 角色信息条（当有角色时显示） -->
       <div v-if="currentCharacter" class="character-banner">
         <n-avatar
-          v-if="characterAvatarUrl"
-          :size="28"
-          round
-          :src="characterAvatarUrl"
-          class="character-avatar"
+            v-if="characterAvatarUrl"
+            :size="28"
+            round
+            :src="characterAvatarUrl"
+            class="character-avatar"
         />
         <n-avatar
-          v-else
-          :size="28"
-          round
-          class="character-avatar"
+            v-else
+            :size="28"
+            round
+            class="character-avatar"
         >
           {{ currentCharacter.name?.charAt(0) }}
         </n-avatar>
@@ -53,15 +53,15 @@
             <div v-if="item.id === -1" class="typing-indicator">
               <div class="typing-avatar">
                 <n-avatar
-                  v-if="characterAvatarUrl"
-                  :size="32"
-                  round
-                  :src="characterAvatarUrl"
+                    v-if="characterAvatarUrl"
+                    :size="32"
+                    round
+                    :src="characterAvatarUrl"
                 />
                 <n-avatar
-                  v-else
-                  :size="32"
-                  round
+                    v-else
+                    :size="32"
+                    round
                 >
                   {{ currentCharacter?.name?.charAt(0) || '?' }}
                 </n-avatar>
@@ -82,6 +82,7 @@
                 :persona="currentPersona"
                 :character-avatar-url="characterAvatarUrl"
                 :persona-avatar-url="personaAvatarUrl"
+                :regex="regexs"
                 @edit="handleEditMessage"
                 @delete="handleDeleteMessage"
                 @delete-swipe="handleDeleteSwipe"
@@ -156,6 +157,7 @@ import {ErrCode} from "@/gen/muse/common_pb.ts";
 import {ConnectError} from "@connectrpc/connect";
 import {useCharacterStore} from "@/stores/character.ts";
 import {useFileStore} from "@/stores/file.ts";
+import {useRegexRuleStore} from "@/stores/regexRule.ts";
 
 // 本地Message类型适配
 interface LocalMessage {
@@ -176,6 +178,7 @@ const chatStore = useChatStore();
 const charStore = useCharacterStore();
 const userStore = useUserStore();
 const fileStore = useFileStore();
+const regexStore = useRegexRuleStore();
 
 // 响应式状态
 const inputMessage = ref('');
@@ -206,7 +209,7 @@ watch(() => charStore.curCharId, async (newId) => {
     await fileStore.preloadFile(avatarPath);
   }
   currentCharacter.value = char;
-}, { immediate: true });
+}, {immediate: true});
 
 // 角色头像URL（从预加载缓存同步读取）
 const characterAvatarUrl = computed(() => {
@@ -216,6 +219,7 @@ const characterAvatarUrl = computed(() => {
 // 当前人设
 const currentPersona = computed<Persona | null>(() => {
   return userStore.activePersona ?? null;
+  regexs
 });
 
 // 预加载当前人设头像
@@ -223,7 +227,14 @@ watch(() => currentPersona.value?.avatar, async (avatarPath) => {
   if (avatarPath && !avatarPath.startsWith('http') && !avatarPath.startsWith('data:')) {
     await fileStore.preloadFile(avatarPath);
   }
-}, { immediate: true });
+}, {immediate: true});
+
+const regexs = computed(() => {
+  const presetRegexs = regexStore.presetRegex.get(userStore.currentUser?.activePresetId || 0)?.filter(r => r.isEnabled);
+  const charRegexs = regexStore.charRegex.get(charStore.curCharId || 0)?.filter(r => r.isEnabled);
+  const globalRegexs = regexStore.globalRegex.filter(r => r.isEnabled);
+  return [...(presetRegexs || []), ...(charRegexs || []), ...(globalRegexs || [])];
+});
 
 // 人设头像URL（从预加载缓存同步读取）
 const personaAvatarUrl = computed(() => {
@@ -306,9 +317,9 @@ const setupNativeScroll = () => {
   // 在vvl的父元素(n-scrollbar-container)上capture阶段拦截
   const scrollbarEl = vvl.parentElement;
   if (scrollbarEl) {
-    scrollbarEl.addEventListener('wheel', handler, { capture: true, passive: true });
+    scrollbarEl.addEventListener('wheel', handler, {capture: true, passive: true});
     wheelCleanup = () => {
-      scrollbarEl.removeEventListener('wheel', handler, { capture: true } as EventListenerOptions);
+      scrollbarEl.removeEventListener('wheel', handler, {capture: true} as EventListenerOptions);
     };
   }
 };

@@ -113,8 +113,8 @@ type RegexRuleRepository interface {
 	Create(ctx context.Context, rule *entity.RegexRule) error
 	// GetByID 根据ID获取正则规则
 	GetByID(ctx context.Context, id int) (*entity.RegexRule, error)
-	// List 获取预设的正则规则列表（全量）
-	List(ctx context.Context, presetID int) ([]*entity.RegexRule, error)
+	// ListPresetRegex 获取预设的正则规则列表（全量）
+	ListPresetRegex(ctx context.Context, presetID int) ([]*entity.RegexRule, error)
 	// ListPaginated 获取预设的正则规则列表（分页）
 	ListPaginated(ctx context.Context, presetID, page, pageSize int) ([]*entity.RegexRule, int64, error)
 	// Update 更新正则规则

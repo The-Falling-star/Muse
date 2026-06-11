@@ -295,12 +295,14 @@ import {presetClient, regexRuleClient} from '@/api/client';
 import { Role, InjectionPosition, PromptItemIdentifier } from '@/gen/muse/common_pb';
 import type { PromptItem } from '@/gen/muse/preset_pb';
 import type { RegexRule, RegexAffectFlags } from '@/gen/muse/regex_pb';
+import {useRegexRuleStore} from "@/stores/regexRule.ts";
 
 const route = useRoute();
 const router = useRouter();
 const message = useMessage();
 const dialog = useDialog();
 const presetStore = usePresetStore();
+const regexStore = useRegexRuleStore();
 
 const presetId = computed(() => Number(route.params.id));
 const pageLoading = ref(true);
@@ -323,7 +325,9 @@ interface PromptItemUI extends PromptItem {
 }
 
 const prompts = ref<PromptItemUI[]>([]);
-const regexRules = ref<RegexRule[]>([]);
+const regexRules = computed(() => {
+  return regexStore.presetRegex.get(presetId.value) || []
+});
 // 记录加载时的原始正则规则ID，用于保存时对比差异
 const originalRegexRuleIds = ref<Set<number>>(new Set());
 
@@ -346,11 +350,7 @@ const loadPreset = async () => {
       ...item,
       expanded: false
     }));
-
-    // 通过后端接口获取预设关联的正则规则
-    const regexResp = await regexRuleClient.listPresetRegexRules({ presetId: presetId.value });
-    regexRules.value = regexResp.rules;
-    originalRegexRuleIds.value = new Set(regexResp.rules.filter(r => r.id > 0).map(r => r.id));
+    regexStore.setPresetRegex(presetId.value, preset.regexRules);
   } catch {
     message.error('加载预设失败');
   } finally {

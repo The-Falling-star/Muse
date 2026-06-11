@@ -30,17 +30,6 @@ func (r *RegexRuleServer) ListRegexRules(ctx context.Context, req *connect.Reque
 	return doResponse(ctx, "ListRegexRules", req.Msg, resp)
 }
 
-// ListPresetRegexRules 获取预设的正则规则列表
-func (r *RegexRuleServer) ListPresetRegexRules(
-	ctx context.Context, req *connect.Request[pb.ListPresetRegexRulesRequest]) (
-	*connect.Response[pb.ListPresetRegexRulesResponse], error) {
-	resp, err := r.regexRule.ListPresetRegexRules(ctx, req.Msg)
-	if err != nil {
-		return doResponseExp(ctx, "ListPresetRegexRules", req.Msg, resp, err)
-	}
-	return doResponse(ctx, "ListPresetRegexRules", req.Msg, resp)
-}
-
 // AddRegexRule 添加新的正则规则
 func (r *RegexRuleServer) AddRegexRule(ctx context.Context, req *connect.Request[pb.AddRegexRuleRequest]) (
 	*connect.Response[pb.AddRegexRuleResponse], error) {

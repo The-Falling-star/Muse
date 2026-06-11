@@ -36,9 +36,6 @@ const (
 	// RegexRuleServiceListRegexRulesProcedure is the fully-qualified name of the RegexRuleService's
 	// ListRegexRules RPC.
 	RegexRuleServiceListRegexRulesProcedure = "/muse.RegexRuleService/ListRegexRules"
-	// RegexRuleServiceListPresetRegexRulesProcedure is the fully-qualified name of the
-	// RegexRuleService's ListPresetRegexRules RPC.
-	RegexRuleServiceListPresetRegexRulesProcedure = "/muse.RegexRuleService/ListPresetRegexRules"
 	// RegexRuleServiceAddRegexRuleProcedure is the fully-qualified name of the RegexRuleService's
 	// AddRegexRule RPC.
 	RegexRuleServiceAddRegexRuleProcedure = "/muse.RegexRuleService/AddRegexRule"
@@ -63,8 +60,6 @@ const (
 type RegexRuleServiceClient interface {
 	// 获取正则规则列表（全量拉取全局+预设+角色正则）
 	ListRegexRules(context.Context, *connect.Request[muse.ListRegexRulesRequest]) (*connect.Response[muse.ListRegexRulesResponse], error)
-	// 获取预设的正则规则列表
-	ListPresetRegexRules(context.Context, *connect.Request[muse.ListPresetRegexRulesRequest]) (*connect.Response[muse.ListPresetRegexRulesResponse], error)
 	// 添加正则规则
 	AddRegexRule(context.Context, *connect.Request[muse.AddRegexRuleRequest]) (*connect.Response[muse.AddRegexRuleResponse], error)
 	// 更新正则规则
@@ -94,12 +89,6 @@ func NewRegexRuleServiceClient(httpClient connect.HTTPClient, baseURL string, op
 			httpClient,
 			baseURL+RegexRuleServiceListRegexRulesProcedure,
 			connect.WithSchema(regexRuleServiceMethods.ByName("ListRegexRules")),
-			connect.WithClientOptions(opts...),
-		),
-		listPresetRegexRules: connect.NewClient[muse.ListPresetRegexRulesRequest, muse.ListPresetRegexRulesResponse](
-			httpClient,
-			baseURL+RegexRuleServiceListPresetRegexRulesProcedure,
-			connect.WithSchema(regexRuleServiceMethods.ByName("ListPresetRegexRules")),
 			connect.WithClientOptions(opts...),
 		),
 		addRegexRule: connect.NewClient[muse.AddRegexRuleRequest, muse.AddRegexRuleResponse](
@@ -144,7 +133,6 @@ func NewRegexRuleServiceClient(httpClient connect.HTTPClient, baseURL string, op
 // regexRuleServiceClient implements RegexRuleServiceClient.
 type regexRuleServiceClient struct {
 	listRegexRules        *connect.Client[muse.ListRegexRulesRequest, muse.ListRegexRulesResponse]
-	listPresetRegexRules  *connect.Client[muse.ListPresetRegexRulesRequest, muse.ListPresetRegexRulesResponse]
 	addRegexRule          *connect.Client[muse.AddRegexRuleRequest, muse.AddRegexRuleResponse]
 	updateRegexRule       *connect.Client[muse.UpdateRegexRuleRequest, muse.UpdateRegexRuleResponse]
 	deleteRegexRule       *connect.Client[muse.DeleteRegexRuleRequest, muse.DeleteRegexRuleResponse]
@@ -156,11 +144,6 @@ type regexRuleServiceClient struct {
 // ListRegexRules calls muse.RegexRuleService.ListRegexRules.
 func (c *regexRuleServiceClient) ListRegexRules(ctx context.Context, req *connect.Request[muse.ListRegexRulesRequest]) (*connect.Response[muse.ListRegexRulesResponse], error) {
 	return c.listRegexRules.CallUnary(ctx, req)
-}
-
-// ListPresetRegexRules calls muse.RegexRuleService.ListPresetRegexRules.
-func (c *regexRuleServiceClient) ListPresetRegexRules(ctx context.Context, req *connect.Request[muse.ListPresetRegexRulesRequest]) (*connect.Response[muse.ListPresetRegexRulesResponse], error) {
-	return c.listPresetRegexRules.CallUnary(ctx, req)
 }
 
 // AddRegexRule calls muse.RegexRuleService.AddRegexRule.
@@ -197,8 +180,6 @@ func (c *regexRuleServiceClient) ExportRegexRules(ctx context.Context, req *conn
 type RegexRuleServiceHandler interface {
 	// 获取正则规则列表（全量拉取全局+预设+角色正则）
 	ListRegexRules(context.Context, *connect.Request[muse.ListRegexRulesRequest]) (*connect.Response[muse.ListRegexRulesResponse], error)
-	// 获取预设的正则规则列表
-	ListPresetRegexRules(context.Context, *connect.Request[muse.ListPresetRegexRulesRequest]) (*connect.Response[muse.ListPresetRegexRulesResponse], error)
 	// 添加正则规则
 	AddRegexRule(context.Context, *connect.Request[muse.AddRegexRuleRequest]) (*connect.Response[muse.AddRegexRuleResponse], error)
 	// 更新正则规则
@@ -224,12 +205,6 @@ func NewRegexRuleServiceHandler(svc RegexRuleServiceHandler, opts ...connect.Han
 		RegexRuleServiceListRegexRulesProcedure,
 		svc.ListRegexRules,
 		connect.WithSchema(regexRuleServiceMethods.ByName("ListRegexRules")),
-		connect.WithHandlerOptions(opts...),
-	)
-	regexRuleServiceListPresetRegexRulesHandler := connect.NewUnaryHandler(
-		RegexRuleServiceListPresetRegexRulesProcedure,
-		svc.ListPresetRegexRules,
-		connect.WithSchema(regexRuleServiceMethods.ByName("ListPresetRegexRules")),
 		connect.WithHandlerOptions(opts...),
 	)
 	regexRuleServiceAddRegexRuleHandler := connect.NewUnaryHandler(
@@ -272,8 +247,6 @@ func NewRegexRuleServiceHandler(svc RegexRuleServiceHandler, opts ...connect.Han
 		switch r.URL.Path {
 		case RegexRuleServiceListRegexRulesProcedure:
 			regexRuleServiceListRegexRulesHandler.ServeHTTP(w, r)
-		case RegexRuleServiceListPresetRegexRulesProcedure:
-			regexRuleServiceListPresetRegexRulesHandler.ServeHTTP(w, r)
 		case RegexRuleServiceAddRegexRuleProcedure:
 			regexRuleServiceAddRegexRuleHandler.ServeHTTP(w, r)
 		case RegexRuleServiceUpdateRegexRuleProcedure:
@@ -297,10 +270,6 @@ type UnimplementedRegexRuleServiceHandler struct{}
 
 func (UnimplementedRegexRuleServiceHandler) ListRegexRules(context.Context, *connect.Request[muse.ListRegexRulesRequest]) (*connect.Response[muse.ListRegexRulesResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.RegexRuleService.ListRegexRules is not implemented"))
-}
-
-func (UnimplementedRegexRuleServiceHandler) ListPresetRegexRules(context.Context, *connect.Request[muse.ListPresetRegexRulesRequest]) (*connect.Response[muse.ListPresetRegexRulesResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.RegexRuleService.ListPresetRegexRules is not implemented"))
 }
 
 func (UnimplementedRegexRuleServiceHandler) AddRegexRule(context.Context, *connect.Request[muse.AddRegexRuleRequest]) (*connect.Response[muse.AddRegexRuleResponse], error) {

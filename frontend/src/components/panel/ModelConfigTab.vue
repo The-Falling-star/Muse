@@ -239,11 +239,7 @@ const updateUserProvider = async (value: APIProvider) => {
 
 // 匹配候选模型
 const matchCandidateModel = computed(() => {
-  console.log('matchCandidateModel:', curProvider.value)
-  console.log('curModel:', curModel.value)
   const candidateModel = common.candidateModels.get(curProvider.value);
-  console.log('candidateModel:', candidateModel)
-  console.log("common: ", common.candidateModels)
   if (!candidateModel) {
     return [];
   }

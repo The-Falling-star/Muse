@@ -215,6 +215,7 @@ import DOMPurify from 'dompurify';
 
 import type { Character } from '@/gen/muse/character_pb';
 import {MACRO_CHAR, MACRO_USER} from "@/utils/constants.ts";
+import type {RegexRule} from "@/gen/muse/regex_pb.ts";
 
 // 消息 Swipe 类型
 interface MessageSwipe {
@@ -278,6 +279,7 @@ const props = defineProps<{
   message: Message;
   character?: Character | null;
   persona?: Persona | null;
+  regex: RegexRule[]
   characterAvatarUrl?: string;
   personaAvatarUrl?: string;
 }>();
@@ -461,10 +463,19 @@ const formattedContent = computed( () => {
     }
   });
 
-  MACRO_CHAR.forEach(async macro => {
+  MACRO_CHAR.forEach(macro => {
     if (props.character?.name) {
       raw = raw.replaceAll(macro, props.character.name);
     }
+  })
+
+  props.regex.forEach(regex => {
+    console.log("应用正则: ", regex.findPattern, " 替换为: ", regex.replacePattern)
+    if (!regex.findPattern || regex.replacePattern == null) {
+      return;
+    }
+    const regExp = new RegExp(regex.findPattern);
+    raw = raw.replace(regExp, regex.replacePattern);
   })
 
   // 使用 marked 解析 markdown，然后用 DOMPurify 清理 XSS

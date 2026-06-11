@@ -88,41 +88,41 @@ const (
 // UserServiceClient is a client for the muse.UserService service.
 type UserServiceClient interface {
 	// 用户注册
-	Register(context.Context, *connect.Request[muse.RegisterRequest]) (*connect.Response[muse.RegisterResponse], error)
+	Register(context.Context, *connect.Request[muse.RegisterReq]) (*connect.Response[muse.RegisterRsp], error)
 	// 用户登录
-	Login(context.Context, *connect.Request[muse.LoginRequest]) (*connect.Response[muse.LoginResponse], error)
+	Login(context.Context, *connect.Request[muse.LoginReq]) (*connect.Response[muse.LoginRsp], error)
 	// 获取当前用户信息
-	GetCurrentUser(context.Context, *connect.Request[muse.GetCurrentUserRequest]) (*connect.Response[muse.GetCurrentUserResponse], error)
+	GetCurrentUser(context.Context, *connect.Request[muse.GetCurrentUserReq]) (*connect.Response[muse.GetCurrentUserRsp], error)
 	// 修改密码
-	ChangePassword(context.Context, *connect.Request[muse.ChangePasswordRequest]) (*connect.Response[muse.ChangePasswordResponse], error)
+	ChangePassword(context.Context, *connect.Request[muse.ChangePasswordReq]) (*connect.Response[muse.ChangePasswordRsp], error)
 	// 获取人设列表
-	ListPersonas(context.Context, *connect.Request[muse.ListPersonasRequest]) (*connect.Response[muse.ListPersonasResponse], error)
+	ListPersonas(context.Context, *connect.Request[muse.ListPersonasReq]) (*connect.Response[muse.ListPersonasRsp], error)
 	// 获取单个人设
-	GetPersona(context.Context, *connect.Request[muse.GetPersonaRequest]) (*connect.Response[muse.GetPersonaResponse], error)
+	GetPersona(context.Context, *connect.Request[muse.GetPersonaReq]) (*connect.Response[muse.GetPersonaRsp], error)
 	// 创建人设
-	CreatePersona(context.Context, *connect.Request[muse.CreatePersonaRequest]) (*connect.Response[muse.CreatePersonaResponse], error)
+	CreatePersona(context.Context, *connect.Request[muse.CreatePersonaReq]) (*connect.Response[muse.CreatePersonaRsp], error)
 	// 更新人设
-	UpdatePersona(context.Context, *connect.Request[muse.UpdatePersonaRequest]) (*connect.Response[muse.UpdatePersonaResponse], error)
+	UpdatePersona(context.Context, *connect.Request[muse.UpdatePersonaReq]) (*connect.Response[muse.UpdatePersonaRsp], error)
 	// 删除人设
-	DeletePersona(context.Context, *connect.Request[muse.DeletePersonaRequest]) (*connect.Response[muse.DeletePersonaResponse], error)
+	DeletePersona(context.Context, *connect.Request[muse.DeletePersonaReq]) (*connect.Response[muse.DeletePersonaRsp], error)
 	// 设置活跃人设
-	SetActivePersona(context.Context, *connect.Request[muse.SetActivePersonaRequest]) (*connect.Response[muse.SetActivePersonaResponse], error)
+	SetActivePersona(context.Context, *connect.Request[muse.SetActivePersonaReq]) (*connect.Response[muse.SetActivePersonaRsp], error)
 	// 获取用户信息
-	GetUserInfo(context.Context, *connect.Request[muse.GetUserInfoRequest]) (*connect.Response[muse.GetUserInfoResponse], error)
+	GetUserInfo(context.Context, *connect.Request[muse.GetUserInfoReq]) (*connect.Response[muse.GetUserInfoRsp], error)
 	// 更新用户信息
-	UpdateUserInfo(context.Context, *connect.Request[muse.UpdateUserInfoRequest]) (*connect.Response[muse.UpdateUserInfoResponse], error)
+	UpdateUserInfo(context.Context, *connect.Request[muse.UpdateUserInfoReq]) (*connect.Response[muse.UpdateUserInfoRsp], error)
 	// 获取API配置列表
-	ListAPIConfigs(context.Context, *connect.Request[muse.ListAPIConfigsRequest]) (*connect.Response[muse.ListAPIConfigsResponse], error)
+	ListAPIConfigs(context.Context, *connect.Request[muse.ListAPIConfigsReq]) (*connect.Response[muse.ListAPIConfigsRsp], error)
 	// 创建API配置
-	CreateAPIConfig(context.Context, *connect.Request[muse.CreateAPIConfigRequest]) (*connect.Response[muse.CreateAPIConfigResponse], error)
+	CreateAPIConfig(context.Context, *connect.Request[muse.CreateAPIConfigReq]) (*connect.Response[muse.CreateAPIConfigRsp], error)
 	// 更新API配置
-	UpdateAPIConfig(context.Context, *connect.Request[muse.UpdateAPIConfigRequest]) (*connect.Response[muse.UpdateAPIConfigResponse], error)
+	UpdateAPIConfig(context.Context, *connect.Request[muse.UpdateAPIConfigReq]) (*connect.Response[muse.UpdateAPIConfigRsp], error)
 	// 删除API配置
-	DeleteAPIConfig(context.Context, *connect.Request[muse.DeleteAPIConfigRequest]) (*connect.Response[muse.DeleteAPIConfigResponse], error)
+	DeleteAPIConfig(context.Context, *connect.Request[muse.DeleteAPIConfigReq]) (*connect.Response[muse.DeleteAPIConfigRsp], error)
 	// 设置活跃API配置
-	SetActiveAPIConfig(context.Context, *connect.Request[muse.SetActiveAPIConfigRequest]) (*connect.Response[muse.SetActiveAPIConfigResponse], error)
+	SetActiveAPIConfig(context.Context, *connect.Request[muse.SetActiveAPIConfigReq]) (*connect.Response[muse.SetActiveAPIConfigRsp], error)
 	// 测试API配置连接
-	TestAPIConfig(context.Context, *connect.Request[muse.TestAPIConfigRequest]) (*connect.Response[muse.TestAPIConfigResponse], error)
+	TestAPIConfig(context.Context, *connect.Request[muse.TestAPIConfigReq]) (*connect.Response[muse.TestAPIConfigRsp], error)
 }
 
 // NewUserServiceClient constructs a client for the muse.UserService service. By default, it uses
@@ -136,109 +136,109 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 	baseURL = strings.TrimRight(baseURL, "/")
 	userServiceMethods := muse.File_muse_user_proto.Services().ByName("UserService").Methods()
 	return &userServiceClient{
-		register: connect.NewClient[muse.RegisterRequest, muse.RegisterResponse](
+		register: connect.NewClient[muse.RegisterReq, muse.RegisterRsp](
 			httpClient,
 			baseURL+UserServiceRegisterProcedure,
 			connect.WithSchema(userServiceMethods.ByName("Register")),
 			connect.WithClientOptions(opts...),
 		),
-		login: connect.NewClient[muse.LoginRequest, muse.LoginResponse](
+		login: connect.NewClient[muse.LoginReq, muse.LoginRsp](
 			httpClient,
 			baseURL+UserServiceLoginProcedure,
 			connect.WithSchema(userServiceMethods.ByName("Login")),
 			connect.WithClientOptions(opts...),
 		),
-		getCurrentUser: connect.NewClient[muse.GetCurrentUserRequest, muse.GetCurrentUserResponse](
+		getCurrentUser: connect.NewClient[muse.GetCurrentUserReq, muse.GetCurrentUserRsp](
 			httpClient,
 			baseURL+UserServiceGetCurrentUserProcedure,
 			connect.WithSchema(userServiceMethods.ByName("GetCurrentUser")),
 			connect.WithClientOptions(opts...),
 		),
-		changePassword: connect.NewClient[muse.ChangePasswordRequest, muse.ChangePasswordResponse](
+		changePassword: connect.NewClient[muse.ChangePasswordReq, muse.ChangePasswordRsp](
 			httpClient,
 			baseURL+UserServiceChangePasswordProcedure,
 			connect.WithSchema(userServiceMethods.ByName("ChangePassword")),
 			connect.WithClientOptions(opts...),
 		),
-		listPersonas: connect.NewClient[muse.ListPersonasRequest, muse.ListPersonasResponse](
+		listPersonas: connect.NewClient[muse.ListPersonasReq, muse.ListPersonasRsp](
 			httpClient,
 			baseURL+UserServiceListPersonasProcedure,
 			connect.WithSchema(userServiceMethods.ByName("ListPersonas")),
 			connect.WithClientOptions(opts...),
 		),
-		getPersona: connect.NewClient[muse.GetPersonaRequest, muse.GetPersonaResponse](
+		getPersona: connect.NewClient[muse.GetPersonaReq, muse.GetPersonaRsp](
 			httpClient,
 			baseURL+UserServiceGetPersonaProcedure,
 			connect.WithSchema(userServiceMethods.ByName("GetPersona")),
 			connect.WithClientOptions(opts...),
 		),
-		createPersona: connect.NewClient[muse.CreatePersonaRequest, muse.CreatePersonaResponse](
+		createPersona: connect.NewClient[muse.CreatePersonaReq, muse.CreatePersonaRsp](
 			httpClient,
 			baseURL+UserServiceCreatePersonaProcedure,
 			connect.WithSchema(userServiceMethods.ByName("CreatePersona")),
 			connect.WithClientOptions(opts...),
 		),
-		updatePersona: connect.NewClient[muse.UpdatePersonaRequest, muse.UpdatePersonaResponse](
+		updatePersona: connect.NewClient[muse.UpdatePersonaReq, muse.UpdatePersonaRsp](
 			httpClient,
 			baseURL+UserServiceUpdatePersonaProcedure,
 			connect.WithSchema(userServiceMethods.ByName("UpdatePersona")),
 			connect.WithClientOptions(opts...),
 		),
-		deletePersona: connect.NewClient[muse.DeletePersonaRequest, muse.DeletePersonaResponse](
+		deletePersona: connect.NewClient[muse.DeletePersonaReq, muse.DeletePersonaRsp](
 			httpClient,
 			baseURL+UserServiceDeletePersonaProcedure,
 			connect.WithSchema(userServiceMethods.ByName("DeletePersona")),
 			connect.WithClientOptions(opts...),
 		),
-		setActivePersona: connect.NewClient[muse.SetActivePersonaRequest, muse.SetActivePersonaResponse](
+		setActivePersona: connect.NewClient[muse.SetActivePersonaReq, muse.SetActivePersonaRsp](
 			httpClient,
 			baseURL+UserServiceSetActivePersonaProcedure,
 			connect.WithSchema(userServiceMethods.ByName("SetActivePersona")),
 			connect.WithClientOptions(opts...),
 		),
-		getUserInfo: connect.NewClient[muse.GetUserInfoRequest, muse.GetUserInfoResponse](
+		getUserInfo: connect.NewClient[muse.GetUserInfoReq, muse.GetUserInfoRsp](
 			httpClient,
 			baseURL+UserServiceGetUserInfoProcedure,
 			connect.WithSchema(userServiceMethods.ByName("GetUserInfo")),
 			connect.WithClientOptions(opts...),
 		),
-		updateUserInfo: connect.NewClient[muse.UpdateUserInfoRequest, muse.UpdateUserInfoResponse](
+		updateUserInfo: connect.NewClient[muse.UpdateUserInfoReq, muse.UpdateUserInfoRsp](
 			httpClient,
 			baseURL+UserServiceUpdateUserInfoProcedure,
 			connect.WithSchema(userServiceMethods.ByName("UpdateUserInfo")),
 			connect.WithClientOptions(opts...),
 		),
-		listAPIConfigs: connect.NewClient[muse.ListAPIConfigsRequest, muse.ListAPIConfigsResponse](
+		listAPIConfigs: connect.NewClient[muse.ListAPIConfigsReq, muse.ListAPIConfigsRsp](
 			httpClient,
 			baseURL+UserServiceListAPIConfigsProcedure,
 			connect.WithSchema(userServiceMethods.ByName("ListAPIConfigs")),
 			connect.WithClientOptions(opts...),
 		),
-		createAPIConfig: connect.NewClient[muse.CreateAPIConfigRequest, muse.CreateAPIConfigResponse](
+		createAPIConfig: connect.NewClient[muse.CreateAPIConfigReq, muse.CreateAPIConfigRsp](
 			httpClient,
 			baseURL+UserServiceCreateAPIConfigProcedure,
 			connect.WithSchema(userServiceMethods.ByName("CreateAPIConfig")),
 			connect.WithClientOptions(opts...),
 		),
-		updateAPIConfig: connect.NewClient[muse.UpdateAPIConfigRequest, muse.UpdateAPIConfigResponse](
+		updateAPIConfig: connect.NewClient[muse.UpdateAPIConfigReq, muse.UpdateAPIConfigRsp](
 			httpClient,
 			baseURL+UserServiceUpdateAPIConfigProcedure,
 			connect.WithSchema(userServiceMethods.ByName("UpdateAPIConfig")),
 			connect.WithClientOptions(opts...),
 		),
-		deleteAPIConfig: connect.NewClient[muse.DeleteAPIConfigRequest, muse.DeleteAPIConfigResponse](
+		deleteAPIConfig: connect.NewClient[muse.DeleteAPIConfigReq, muse.DeleteAPIConfigRsp](
 			httpClient,
 			baseURL+UserServiceDeleteAPIConfigProcedure,
 			connect.WithSchema(userServiceMethods.ByName("DeleteAPIConfig")),
 			connect.WithClientOptions(opts...),
 		),
-		setActiveAPIConfig: connect.NewClient[muse.SetActiveAPIConfigRequest, muse.SetActiveAPIConfigResponse](
+		setActiveAPIConfig: connect.NewClient[muse.SetActiveAPIConfigReq, muse.SetActiveAPIConfigRsp](
 			httpClient,
 			baseURL+UserServiceSetActiveAPIConfigProcedure,
 			connect.WithSchema(userServiceMethods.ByName("SetActiveAPIConfig")),
 			connect.WithClientOptions(opts...),
 		),
-		testAPIConfig: connect.NewClient[muse.TestAPIConfigRequest, muse.TestAPIConfigResponse](
+		testAPIConfig: connect.NewClient[muse.TestAPIConfigReq, muse.TestAPIConfigRsp](
 			httpClient,
 			baseURL+UserServiceTestAPIConfigProcedure,
 			connect.WithSchema(userServiceMethods.ByName("TestAPIConfig")),
@@ -249,154 +249,154 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 
 // userServiceClient implements UserServiceClient.
 type userServiceClient struct {
-	register           *connect.Client[muse.RegisterRequest, muse.RegisterResponse]
-	login              *connect.Client[muse.LoginRequest, muse.LoginResponse]
-	getCurrentUser     *connect.Client[muse.GetCurrentUserRequest, muse.GetCurrentUserResponse]
-	changePassword     *connect.Client[muse.ChangePasswordRequest, muse.ChangePasswordResponse]
-	listPersonas       *connect.Client[muse.ListPersonasRequest, muse.ListPersonasResponse]
-	getPersona         *connect.Client[muse.GetPersonaRequest, muse.GetPersonaResponse]
-	createPersona      *connect.Client[muse.CreatePersonaRequest, muse.CreatePersonaResponse]
-	updatePersona      *connect.Client[muse.UpdatePersonaRequest, muse.UpdatePersonaResponse]
-	deletePersona      *connect.Client[muse.DeletePersonaRequest, muse.DeletePersonaResponse]
-	setActivePersona   *connect.Client[muse.SetActivePersonaRequest, muse.SetActivePersonaResponse]
-	getUserInfo        *connect.Client[muse.GetUserInfoRequest, muse.GetUserInfoResponse]
-	updateUserInfo     *connect.Client[muse.UpdateUserInfoRequest, muse.UpdateUserInfoResponse]
-	listAPIConfigs     *connect.Client[muse.ListAPIConfigsRequest, muse.ListAPIConfigsResponse]
-	createAPIConfig    *connect.Client[muse.CreateAPIConfigRequest, muse.CreateAPIConfigResponse]
-	updateAPIConfig    *connect.Client[muse.UpdateAPIConfigRequest, muse.UpdateAPIConfigResponse]
-	deleteAPIConfig    *connect.Client[muse.DeleteAPIConfigRequest, muse.DeleteAPIConfigResponse]
-	setActiveAPIConfig *connect.Client[muse.SetActiveAPIConfigRequest, muse.SetActiveAPIConfigResponse]
-	testAPIConfig      *connect.Client[muse.TestAPIConfigRequest, muse.TestAPIConfigResponse]
+	register           *connect.Client[muse.RegisterReq, muse.RegisterRsp]
+	login              *connect.Client[muse.LoginReq, muse.LoginRsp]
+	getCurrentUser     *connect.Client[muse.GetCurrentUserReq, muse.GetCurrentUserRsp]
+	changePassword     *connect.Client[muse.ChangePasswordReq, muse.ChangePasswordRsp]
+	listPersonas       *connect.Client[muse.ListPersonasReq, muse.ListPersonasRsp]
+	getPersona         *connect.Client[muse.GetPersonaReq, muse.GetPersonaRsp]
+	createPersona      *connect.Client[muse.CreatePersonaReq, muse.CreatePersonaRsp]
+	updatePersona      *connect.Client[muse.UpdatePersonaReq, muse.UpdatePersonaRsp]
+	deletePersona      *connect.Client[muse.DeletePersonaReq, muse.DeletePersonaRsp]
+	setActivePersona   *connect.Client[muse.SetActivePersonaReq, muse.SetActivePersonaRsp]
+	getUserInfo        *connect.Client[muse.GetUserInfoReq, muse.GetUserInfoRsp]
+	updateUserInfo     *connect.Client[muse.UpdateUserInfoReq, muse.UpdateUserInfoRsp]
+	listAPIConfigs     *connect.Client[muse.ListAPIConfigsReq, muse.ListAPIConfigsRsp]
+	createAPIConfig    *connect.Client[muse.CreateAPIConfigReq, muse.CreateAPIConfigRsp]
+	updateAPIConfig    *connect.Client[muse.UpdateAPIConfigReq, muse.UpdateAPIConfigRsp]
+	deleteAPIConfig    *connect.Client[muse.DeleteAPIConfigReq, muse.DeleteAPIConfigRsp]
+	setActiveAPIConfig *connect.Client[muse.SetActiveAPIConfigReq, muse.SetActiveAPIConfigRsp]
+	testAPIConfig      *connect.Client[muse.TestAPIConfigReq, muse.TestAPIConfigRsp]
 }
 
 // Register calls muse.UserService.Register.
-func (c *userServiceClient) Register(ctx context.Context, req *connect.Request[muse.RegisterRequest]) (*connect.Response[muse.RegisterResponse], error) {
+func (c *userServiceClient) Register(ctx context.Context, req *connect.Request[muse.RegisterReq]) (*connect.Response[muse.RegisterRsp], error) {
 	return c.register.CallUnary(ctx, req)
 }
 
 // Login calls muse.UserService.Login.
-func (c *userServiceClient) Login(ctx context.Context, req *connect.Request[muse.LoginRequest]) (*connect.Response[muse.LoginResponse], error) {
+func (c *userServiceClient) Login(ctx context.Context, req *connect.Request[muse.LoginReq]) (*connect.Response[muse.LoginRsp], error) {
 	return c.login.CallUnary(ctx, req)
 }
 
 // GetCurrentUser calls muse.UserService.GetCurrentUser.
-func (c *userServiceClient) GetCurrentUser(ctx context.Context, req *connect.Request[muse.GetCurrentUserRequest]) (*connect.Response[muse.GetCurrentUserResponse], error) {
+func (c *userServiceClient) GetCurrentUser(ctx context.Context, req *connect.Request[muse.GetCurrentUserReq]) (*connect.Response[muse.GetCurrentUserRsp], error) {
 	return c.getCurrentUser.CallUnary(ctx, req)
 }
 
 // ChangePassword calls muse.UserService.ChangePassword.
-func (c *userServiceClient) ChangePassword(ctx context.Context, req *connect.Request[muse.ChangePasswordRequest]) (*connect.Response[muse.ChangePasswordResponse], error) {
+func (c *userServiceClient) ChangePassword(ctx context.Context, req *connect.Request[muse.ChangePasswordReq]) (*connect.Response[muse.ChangePasswordRsp], error) {
 	return c.changePassword.CallUnary(ctx, req)
 }
 
 // ListPersonas calls muse.UserService.ListPersonas.
-func (c *userServiceClient) ListPersonas(ctx context.Context, req *connect.Request[muse.ListPersonasRequest]) (*connect.Response[muse.ListPersonasResponse], error) {
+func (c *userServiceClient) ListPersonas(ctx context.Context, req *connect.Request[muse.ListPersonasReq]) (*connect.Response[muse.ListPersonasRsp], error) {
 	return c.listPersonas.CallUnary(ctx, req)
 }
 
 // GetPersona calls muse.UserService.GetPersona.
-func (c *userServiceClient) GetPersona(ctx context.Context, req *connect.Request[muse.GetPersonaRequest]) (*connect.Response[muse.GetPersonaResponse], error) {
+func (c *userServiceClient) GetPersona(ctx context.Context, req *connect.Request[muse.GetPersonaReq]) (*connect.Response[muse.GetPersonaRsp], error) {
 	return c.getPersona.CallUnary(ctx, req)
 }
 
 // CreatePersona calls muse.UserService.CreatePersona.
-func (c *userServiceClient) CreatePersona(ctx context.Context, req *connect.Request[muse.CreatePersonaRequest]) (*connect.Response[muse.CreatePersonaResponse], error) {
+func (c *userServiceClient) CreatePersona(ctx context.Context, req *connect.Request[muse.CreatePersonaReq]) (*connect.Response[muse.CreatePersonaRsp], error) {
 	return c.createPersona.CallUnary(ctx, req)
 }
 
 // UpdatePersona calls muse.UserService.UpdatePersona.
-func (c *userServiceClient) UpdatePersona(ctx context.Context, req *connect.Request[muse.UpdatePersonaRequest]) (*connect.Response[muse.UpdatePersonaResponse], error) {
+func (c *userServiceClient) UpdatePersona(ctx context.Context, req *connect.Request[muse.UpdatePersonaReq]) (*connect.Response[muse.UpdatePersonaRsp], error) {
 	return c.updatePersona.CallUnary(ctx, req)
 }
 
 // DeletePersona calls muse.UserService.DeletePersona.
-func (c *userServiceClient) DeletePersona(ctx context.Context, req *connect.Request[muse.DeletePersonaRequest]) (*connect.Response[muse.DeletePersonaResponse], error) {
+func (c *userServiceClient) DeletePersona(ctx context.Context, req *connect.Request[muse.DeletePersonaReq]) (*connect.Response[muse.DeletePersonaRsp], error) {
 	return c.deletePersona.CallUnary(ctx, req)
 }
 
 // SetActivePersona calls muse.UserService.SetActivePersona.
-func (c *userServiceClient) SetActivePersona(ctx context.Context, req *connect.Request[muse.SetActivePersonaRequest]) (*connect.Response[muse.SetActivePersonaResponse], error) {
+func (c *userServiceClient) SetActivePersona(ctx context.Context, req *connect.Request[muse.SetActivePersonaReq]) (*connect.Response[muse.SetActivePersonaRsp], error) {
 	return c.setActivePersona.CallUnary(ctx, req)
 }
 
 // GetUserInfo calls muse.UserService.GetUserInfo.
-func (c *userServiceClient) GetUserInfo(ctx context.Context, req *connect.Request[muse.GetUserInfoRequest]) (*connect.Response[muse.GetUserInfoResponse], error) {
+func (c *userServiceClient) GetUserInfo(ctx context.Context, req *connect.Request[muse.GetUserInfoReq]) (*connect.Response[muse.GetUserInfoRsp], error) {
 	return c.getUserInfo.CallUnary(ctx, req)
 }
 
 // UpdateUserInfo calls muse.UserService.UpdateUserInfo.
-func (c *userServiceClient) UpdateUserInfo(ctx context.Context, req *connect.Request[muse.UpdateUserInfoRequest]) (*connect.Response[muse.UpdateUserInfoResponse], error) {
+func (c *userServiceClient) UpdateUserInfo(ctx context.Context, req *connect.Request[muse.UpdateUserInfoReq]) (*connect.Response[muse.UpdateUserInfoRsp], error) {
 	return c.updateUserInfo.CallUnary(ctx, req)
 }
 
 // ListAPIConfigs calls muse.UserService.ListAPIConfigs.
-func (c *userServiceClient) ListAPIConfigs(ctx context.Context, req *connect.Request[muse.ListAPIConfigsRequest]) (*connect.Response[muse.ListAPIConfigsResponse], error) {
+func (c *userServiceClient) ListAPIConfigs(ctx context.Context, req *connect.Request[muse.ListAPIConfigsReq]) (*connect.Response[muse.ListAPIConfigsRsp], error) {
 	return c.listAPIConfigs.CallUnary(ctx, req)
 }
 
 // CreateAPIConfig calls muse.UserService.CreateAPIConfig.
-func (c *userServiceClient) CreateAPIConfig(ctx context.Context, req *connect.Request[muse.CreateAPIConfigRequest]) (*connect.Response[muse.CreateAPIConfigResponse], error) {
+func (c *userServiceClient) CreateAPIConfig(ctx context.Context, req *connect.Request[muse.CreateAPIConfigReq]) (*connect.Response[muse.CreateAPIConfigRsp], error) {
 	return c.createAPIConfig.CallUnary(ctx, req)
 }
 
 // UpdateAPIConfig calls muse.UserService.UpdateAPIConfig.
-func (c *userServiceClient) UpdateAPIConfig(ctx context.Context, req *connect.Request[muse.UpdateAPIConfigRequest]) (*connect.Response[muse.UpdateAPIConfigResponse], error) {
+func (c *userServiceClient) UpdateAPIConfig(ctx context.Context, req *connect.Request[muse.UpdateAPIConfigReq]) (*connect.Response[muse.UpdateAPIConfigRsp], error) {
 	return c.updateAPIConfig.CallUnary(ctx, req)
 }
 
 // DeleteAPIConfig calls muse.UserService.DeleteAPIConfig.
-func (c *userServiceClient) DeleteAPIConfig(ctx context.Context, req *connect.Request[muse.DeleteAPIConfigRequest]) (*connect.Response[muse.DeleteAPIConfigResponse], error) {
+func (c *userServiceClient) DeleteAPIConfig(ctx context.Context, req *connect.Request[muse.DeleteAPIConfigReq]) (*connect.Response[muse.DeleteAPIConfigRsp], error) {
 	return c.deleteAPIConfig.CallUnary(ctx, req)
 }
 
 // SetActiveAPIConfig calls muse.UserService.SetActiveAPIConfig.
-func (c *userServiceClient) SetActiveAPIConfig(ctx context.Context, req *connect.Request[muse.SetActiveAPIConfigRequest]) (*connect.Response[muse.SetActiveAPIConfigResponse], error) {
+func (c *userServiceClient) SetActiveAPIConfig(ctx context.Context, req *connect.Request[muse.SetActiveAPIConfigReq]) (*connect.Response[muse.SetActiveAPIConfigRsp], error) {
 	return c.setActiveAPIConfig.CallUnary(ctx, req)
 }
 
 // TestAPIConfig calls muse.UserService.TestAPIConfig.
-func (c *userServiceClient) TestAPIConfig(ctx context.Context, req *connect.Request[muse.TestAPIConfigRequest]) (*connect.Response[muse.TestAPIConfigResponse], error) {
+func (c *userServiceClient) TestAPIConfig(ctx context.Context, req *connect.Request[muse.TestAPIConfigReq]) (*connect.Response[muse.TestAPIConfigRsp], error) {
 	return c.testAPIConfig.CallUnary(ctx, req)
 }
 
 // UserServiceHandler is an implementation of the muse.UserService service.
 type UserServiceHandler interface {
 	// 用户注册
-	Register(context.Context, *connect.Request[muse.RegisterRequest]) (*connect.Response[muse.RegisterResponse], error)
+	Register(context.Context, *connect.Request[muse.RegisterReq]) (*connect.Response[muse.RegisterRsp], error)
 	// 用户登录
-	Login(context.Context, *connect.Request[muse.LoginRequest]) (*connect.Response[muse.LoginResponse], error)
+	Login(context.Context, *connect.Request[muse.LoginReq]) (*connect.Response[muse.LoginRsp], error)
 	// 获取当前用户信息
-	GetCurrentUser(context.Context, *connect.Request[muse.GetCurrentUserRequest]) (*connect.Response[muse.GetCurrentUserResponse], error)
+	GetCurrentUser(context.Context, *connect.Request[muse.GetCurrentUserReq]) (*connect.Response[muse.GetCurrentUserRsp], error)
 	// 修改密码
-	ChangePassword(context.Context, *connect.Request[muse.ChangePasswordRequest]) (*connect.Response[muse.ChangePasswordResponse], error)
+	ChangePassword(context.Context, *connect.Request[muse.ChangePasswordReq]) (*connect.Response[muse.ChangePasswordRsp], error)
 	// 获取人设列表
-	ListPersonas(context.Context, *connect.Request[muse.ListPersonasRequest]) (*connect.Response[muse.ListPersonasResponse], error)
+	ListPersonas(context.Context, *connect.Request[muse.ListPersonasReq]) (*connect.Response[muse.ListPersonasRsp], error)
 	// 获取单个人设
-	GetPersona(context.Context, *connect.Request[muse.GetPersonaRequest]) (*connect.Response[muse.GetPersonaResponse], error)
+	GetPersona(context.Context, *connect.Request[muse.GetPersonaReq]) (*connect.Response[muse.GetPersonaRsp], error)
 	// 创建人设
-	CreatePersona(context.Context, *connect.Request[muse.CreatePersonaRequest]) (*connect.Response[muse.CreatePersonaResponse], error)
+	CreatePersona(context.Context, *connect.Request[muse.CreatePersonaReq]) (*connect.Response[muse.CreatePersonaRsp], error)
 	// 更新人设
-	UpdatePersona(context.Context, *connect.Request[muse.UpdatePersonaRequest]) (*connect.Response[muse.UpdatePersonaResponse], error)
+	UpdatePersona(context.Context, *connect.Request[muse.UpdatePersonaReq]) (*connect.Response[muse.UpdatePersonaRsp], error)
 	// 删除人设
-	DeletePersona(context.Context, *connect.Request[muse.DeletePersonaRequest]) (*connect.Response[muse.DeletePersonaResponse], error)
+	DeletePersona(context.Context, *connect.Request[muse.DeletePersonaReq]) (*connect.Response[muse.DeletePersonaRsp], error)
 	// 设置活跃人设
-	SetActivePersona(context.Context, *connect.Request[muse.SetActivePersonaRequest]) (*connect.Response[muse.SetActivePersonaResponse], error)
+	SetActivePersona(context.Context, *connect.Request[muse.SetActivePersonaReq]) (*connect.Response[muse.SetActivePersonaRsp], error)
 	// 获取用户信息
-	GetUserInfo(context.Context, *connect.Request[muse.GetUserInfoRequest]) (*connect.Response[muse.GetUserInfoResponse], error)
+	GetUserInfo(context.Context, *connect.Request[muse.GetUserInfoReq]) (*connect.Response[muse.GetUserInfoRsp], error)
 	// 更新用户信息
-	UpdateUserInfo(context.Context, *connect.Request[muse.UpdateUserInfoRequest]) (*connect.Response[muse.UpdateUserInfoResponse], error)
+	UpdateUserInfo(context.Context, *connect.Request[muse.UpdateUserInfoReq]) (*connect.Response[muse.UpdateUserInfoRsp], error)
 	// 获取API配置列表
-	ListAPIConfigs(context.Context, *connect.Request[muse.ListAPIConfigsRequest]) (*connect.Response[muse.ListAPIConfigsResponse], error)
+	ListAPIConfigs(context.Context, *connect.Request[muse.ListAPIConfigsReq]) (*connect.Response[muse.ListAPIConfigsRsp], error)
 	// 创建API配置
-	CreateAPIConfig(context.Context, *connect.Request[muse.CreateAPIConfigRequest]) (*connect.Response[muse.CreateAPIConfigResponse], error)
+	CreateAPIConfig(context.Context, *connect.Request[muse.CreateAPIConfigReq]) (*connect.Response[muse.CreateAPIConfigRsp], error)
 	// 更新API配置
-	UpdateAPIConfig(context.Context, *connect.Request[muse.UpdateAPIConfigRequest]) (*connect.Response[muse.UpdateAPIConfigResponse], error)
+	UpdateAPIConfig(context.Context, *connect.Request[muse.UpdateAPIConfigReq]) (*connect.Response[muse.UpdateAPIConfigRsp], error)
 	// 删除API配置
-	DeleteAPIConfig(context.Context, *connect.Request[muse.DeleteAPIConfigRequest]) (*connect.Response[muse.DeleteAPIConfigResponse], error)
+	DeleteAPIConfig(context.Context, *connect.Request[muse.DeleteAPIConfigReq]) (*connect.Response[muse.DeleteAPIConfigRsp], error)
 	// 设置活跃API配置
-	SetActiveAPIConfig(context.Context, *connect.Request[muse.SetActiveAPIConfigRequest]) (*connect.Response[muse.SetActiveAPIConfigResponse], error)
+	SetActiveAPIConfig(context.Context, *connect.Request[muse.SetActiveAPIConfigReq]) (*connect.Response[muse.SetActiveAPIConfigRsp], error)
 	// 测试API配置连接
-	TestAPIConfig(context.Context, *connect.Request[muse.TestAPIConfigRequest]) (*connect.Response[muse.TestAPIConfigResponse], error)
+	TestAPIConfig(context.Context, *connect.Request[muse.TestAPIConfigReq]) (*connect.Response[muse.TestAPIConfigRsp], error)
 }
 
 // NewUserServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -561,74 +561,74 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 // UnimplementedUserServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedUserServiceHandler struct{}
 
-func (UnimplementedUserServiceHandler) Register(context.Context, *connect.Request[muse.RegisterRequest]) (*connect.Response[muse.RegisterResponse], error) {
+func (UnimplementedUserServiceHandler) Register(context.Context, *connect.Request[muse.RegisterReq]) (*connect.Response[muse.RegisterRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.Register is not implemented"))
 }
 
-func (UnimplementedUserServiceHandler) Login(context.Context, *connect.Request[muse.LoginRequest]) (*connect.Response[muse.LoginResponse], error) {
+func (UnimplementedUserServiceHandler) Login(context.Context, *connect.Request[muse.LoginReq]) (*connect.Response[muse.LoginRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.Login is not implemented"))
 }
 
-func (UnimplementedUserServiceHandler) GetCurrentUser(context.Context, *connect.Request[muse.GetCurrentUserRequest]) (*connect.Response[muse.GetCurrentUserResponse], error) {
+func (UnimplementedUserServiceHandler) GetCurrentUser(context.Context, *connect.Request[muse.GetCurrentUserReq]) (*connect.Response[muse.GetCurrentUserRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.GetCurrentUser is not implemented"))
 }
 
-func (UnimplementedUserServiceHandler) ChangePassword(context.Context, *connect.Request[muse.ChangePasswordRequest]) (*connect.Response[muse.ChangePasswordResponse], error) {
+func (UnimplementedUserServiceHandler) ChangePassword(context.Context, *connect.Request[muse.ChangePasswordReq]) (*connect.Response[muse.ChangePasswordRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.ChangePassword is not implemented"))
 }
 
-func (UnimplementedUserServiceHandler) ListPersonas(context.Context, *connect.Request[muse.ListPersonasRequest]) (*connect.Response[muse.ListPersonasResponse], error) {
+func (UnimplementedUserServiceHandler) ListPersonas(context.Context, *connect.Request[muse.ListPersonasReq]) (*connect.Response[muse.ListPersonasRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.ListPersonas is not implemented"))
 }
 
-func (UnimplementedUserServiceHandler) GetPersona(context.Context, *connect.Request[muse.GetPersonaRequest]) (*connect.Response[muse.GetPersonaResponse], error) {
+func (UnimplementedUserServiceHandler) GetPersona(context.Context, *connect.Request[muse.GetPersonaReq]) (*connect.Response[muse.GetPersonaRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.GetPersona is not implemented"))
 }
 
-func (UnimplementedUserServiceHandler) CreatePersona(context.Context, *connect.Request[muse.CreatePersonaRequest]) (*connect.Response[muse.CreatePersonaResponse], error) {
+func (UnimplementedUserServiceHandler) CreatePersona(context.Context, *connect.Request[muse.CreatePersonaReq]) (*connect.Response[muse.CreatePersonaRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.CreatePersona is not implemented"))
 }
 
-func (UnimplementedUserServiceHandler) UpdatePersona(context.Context, *connect.Request[muse.UpdatePersonaRequest]) (*connect.Response[muse.UpdatePersonaResponse], error) {
+func (UnimplementedUserServiceHandler) UpdatePersona(context.Context, *connect.Request[muse.UpdatePersonaReq]) (*connect.Response[muse.UpdatePersonaRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.UpdatePersona is not implemented"))
 }
 
-func (UnimplementedUserServiceHandler) DeletePersona(context.Context, *connect.Request[muse.DeletePersonaRequest]) (*connect.Response[muse.DeletePersonaResponse], error) {
+func (UnimplementedUserServiceHandler) DeletePersona(context.Context, *connect.Request[muse.DeletePersonaReq]) (*connect.Response[muse.DeletePersonaRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.DeletePersona is not implemented"))
 }
 
-func (UnimplementedUserServiceHandler) SetActivePersona(context.Context, *connect.Request[muse.SetActivePersonaRequest]) (*connect.Response[muse.SetActivePersonaResponse], error) {
+func (UnimplementedUserServiceHandler) SetActivePersona(context.Context, *connect.Request[muse.SetActivePersonaReq]) (*connect.Response[muse.SetActivePersonaRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.SetActivePersona is not implemented"))
 }
 
-func (UnimplementedUserServiceHandler) GetUserInfo(context.Context, *connect.Request[muse.GetUserInfoRequest]) (*connect.Response[muse.GetUserInfoResponse], error) {
+func (UnimplementedUserServiceHandler) GetUserInfo(context.Context, *connect.Request[muse.GetUserInfoReq]) (*connect.Response[muse.GetUserInfoRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.GetUserInfo is not implemented"))
 }
 
-func (UnimplementedUserServiceHandler) UpdateUserInfo(context.Context, *connect.Request[muse.UpdateUserInfoRequest]) (*connect.Response[muse.UpdateUserInfoResponse], error) {
+func (UnimplementedUserServiceHandler) UpdateUserInfo(context.Context, *connect.Request[muse.UpdateUserInfoReq]) (*connect.Response[muse.UpdateUserInfoRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.UpdateUserInfo is not implemented"))
 }
 
-func (UnimplementedUserServiceHandler) ListAPIConfigs(context.Context, *connect.Request[muse.ListAPIConfigsRequest]) (*connect.Response[muse.ListAPIConfigsResponse], error) {
+func (UnimplementedUserServiceHandler) ListAPIConfigs(context.Context, *connect.Request[muse.ListAPIConfigsReq]) (*connect.Response[muse.ListAPIConfigsRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.ListAPIConfigs is not implemented"))
 }
 
-func (UnimplementedUserServiceHandler) CreateAPIConfig(context.Context, *connect.Request[muse.CreateAPIConfigRequest]) (*connect.Response[muse.CreateAPIConfigResponse], error) {
+func (UnimplementedUserServiceHandler) CreateAPIConfig(context.Context, *connect.Request[muse.CreateAPIConfigReq]) (*connect.Response[muse.CreateAPIConfigRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.CreateAPIConfig is not implemented"))
 }
 
-func (UnimplementedUserServiceHandler) UpdateAPIConfig(context.Context, *connect.Request[muse.UpdateAPIConfigRequest]) (*connect.Response[muse.UpdateAPIConfigResponse], error) {
+func (UnimplementedUserServiceHandler) UpdateAPIConfig(context.Context, *connect.Request[muse.UpdateAPIConfigReq]) (*connect.Response[muse.UpdateAPIConfigRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.UpdateAPIConfig is not implemented"))
 }
 
-func (UnimplementedUserServiceHandler) DeleteAPIConfig(context.Context, *connect.Request[muse.DeleteAPIConfigRequest]) (*connect.Response[muse.DeleteAPIConfigResponse], error) {
+func (UnimplementedUserServiceHandler) DeleteAPIConfig(context.Context, *connect.Request[muse.DeleteAPIConfigReq]) (*connect.Response[muse.DeleteAPIConfigRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.DeleteAPIConfig is not implemented"))
 }
 
-func (UnimplementedUserServiceHandler) SetActiveAPIConfig(context.Context, *connect.Request[muse.SetActiveAPIConfigRequest]) (*connect.Response[muse.SetActiveAPIConfigResponse], error) {
+func (UnimplementedUserServiceHandler) SetActiveAPIConfig(context.Context, *connect.Request[muse.SetActiveAPIConfigReq]) (*connect.Response[muse.SetActiveAPIConfigRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.SetActiveAPIConfig is not implemented"))
 }
 
-func (UnimplementedUserServiceHandler) TestAPIConfig(context.Context, *connect.Request[muse.TestAPIConfigRequest]) (*connect.Response[muse.TestAPIConfigResponse], error) {
+func (UnimplementedUserServiceHandler) TestAPIConfig(context.Context, *connect.Request[muse.TestAPIConfigReq]) (*connect.Response[muse.TestAPIConfigRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.UserService.TestAPIConfig is not implemented"))
 }

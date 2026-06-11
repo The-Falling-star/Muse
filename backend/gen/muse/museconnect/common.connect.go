@@ -41,7 +41,7 @@ const (
 // CommonServiceClient is a client for the muse.CommonService service.
 type CommonServiceClient interface {
 	// 获取公共配置（无需认证）
-	GetPublicConfig(context.Context, *connect.Request[muse.GetPublicConfigRequest]) (*connect.Response[muse.GetPublicConfigResponse], error)
+	GetPublicConfig(context.Context, *connect.Request[muse.GetPublicConfigReq]) (*connect.Response[muse.GetPublicConfigRsp], error)
 }
 
 // NewCommonServiceClient constructs a client for the muse.CommonService service. By default, it
@@ -55,7 +55,7 @@ func NewCommonServiceClient(httpClient connect.HTTPClient, baseURL string, opts 
 	baseURL = strings.TrimRight(baseURL, "/")
 	commonServiceMethods := muse.File_muse_common_proto.Services().ByName("CommonService").Methods()
 	return &commonServiceClient{
-		getPublicConfig: connect.NewClient[muse.GetPublicConfigRequest, muse.GetPublicConfigResponse](
+		getPublicConfig: connect.NewClient[muse.GetPublicConfigReq, muse.GetPublicConfigRsp](
 			httpClient,
 			baseURL+CommonServiceGetPublicConfigProcedure,
 			connect.WithSchema(commonServiceMethods.ByName("GetPublicConfig")),
@@ -66,18 +66,18 @@ func NewCommonServiceClient(httpClient connect.HTTPClient, baseURL string, opts 
 
 // commonServiceClient implements CommonServiceClient.
 type commonServiceClient struct {
-	getPublicConfig *connect.Client[muse.GetPublicConfigRequest, muse.GetPublicConfigResponse]
+	getPublicConfig *connect.Client[muse.GetPublicConfigReq, muse.GetPublicConfigRsp]
 }
 
 // GetPublicConfig calls muse.CommonService.GetPublicConfig.
-func (c *commonServiceClient) GetPublicConfig(ctx context.Context, req *connect.Request[muse.GetPublicConfigRequest]) (*connect.Response[muse.GetPublicConfigResponse], error) {
+func (c *commonServiceClient) GetPublicConfig(ctx context.Context, req *connect.Request[muse.GetPublicConfigReq]) (*connect.Response[muse.GetPublicConfigRsp], error) {
 	return c.getPublicConfig.CallUnary(ctx, req)
 }
 
 // CommonServiceHandler is an implementation of the muse.CommonService service.
 type CommonServiceHandler interface {
 	// 获取公共配置（无需认证）
-	GetPublicConfig(context.Context, *connect.Request[muse.GetPublicConfigRequest]) (*connect.Response[muse.GetPublicConfigResponse], error)
+	GetPublicConfig(context.Context, *connect.Request[muse.GetPublicConfigReq]) (*connect.Response[muse.GetPublicConfigRsp], error)
 }
 
 // NewCommonServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -106,6 +106,6 @@ func NewCommonServiceHandler(svc CommonServiceHandler, opts ...connect.HandlerOp
 // UnimplementedCommonServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedCommonServiceHandler struct{}
 
-func (UnimplementedCommonServiceHandler) GetPublicConfig(context.Context, *connect.Request[muse.GetPublicConfigRequest]) (*connect.Response[muse.GetPublicConfigResponse], error) {
+func (UnimplementedCommonServiceHandler) GetPublicConfig(context.Context, *connect.Request[muse.GetPublicConfigReq]) (*connect.Response[muse.GetPublicConfigRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.CommonService.GetPublicConfig is not implemented"))
 }

@@ -566,26 +566,26 @@ func (x *CandidateModels) GetModels() []string {
 }
 
 // 获取公共配置请求
-type GetPublicConfigRequest struct {
+type GetPublicConfigReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetPublicConfigRequest) Reset() {
-	*x = GetPublicConfigRequest{}
+func (x *GetPublicConfigReq) Reset() {
+	*x = GetPublicConfigReq{}
 	mi := &file_muse_common_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetPublicConfigRequest) String() string {
+func (x *GetPublicConfigReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetPublicConfigRequest) ProtoMessage() {}
+func (*GetPublicConfigReq) ProtoMessage() {}
 
-func (x *GetPublicConfigRequest) ProtoReflect() protoreflect.Message {
+func (x *GetPublicConfigReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_common_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -597,13 +597,13 @@ func (x *GetPublicConfigRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetPublicConfigRequest.ProtoReflect.Descriptor instead.
-func (*GetPublicConfigRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetPublicConfigReq.ProtoReflect.Descriptor instead.
+func (*GetPublicConfigReq) Descriptor() ([]byte, []int) {
 	return file_muse_common_proto_rawDescGZIP(), []int{1}
 }
 
 // 获取公共配置响应
-type GetPublicConfigResponse struct {
+type GetPublicConfigRsp struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
 	SkipAuth        bool                   `protobuf:"varint,1,opt,name=skip_auth,json=skipAuth,proto3" json:"skip_auth,omitempty"`                     // 是否跳过认证
 	CandidateModels []*CandidateModels     `protobuf:"bytes,2,rep,name=candidate_models,json=candidateModels,proto3" json:"candidate_models,omitempty"` // 候选模型列表
@@ -611,20 +611,20 @@ type GetPublicConfigResponse struct {
 	sizeCache       protoimpl.SizeCache
 }
 
-func (x *GetPublicConfigResponse) Reset() {
-	*x = GetPublicConfigResponse{}
+func (x *GetPublicConfigRsp) Reset() {
+	*x = GetPublicConfigRsp{}
 	mi := &file_muse_common_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetPublicConfigResponse) String() string {
+func (x *GetPublicConfigRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetPublicConfigResponse) ProtoMessage() {}
+func (*GetPublicConfigRsp) ProtoMessage() {}
 
-func (x *GetPublicConfigResponse) ProtoReflect() protoreflect.Message {
+func (x *GetPublicConfigRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_common_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -636,19 +636,19 @@ func (x *GetPublicConfigResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetPublicConfigResponse.ProtoReflect.Descriptor instead.
-func (*GetPublicConfigResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetPublicConfigRsp.ProtoReflect.Descriptor instead.
+func (*GetPublicConfigRsp) Descriptor() ([]byte, []int) {
 	return file_muse_common_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *GetPublicConfigResponse) GetSkipAuth() bool {
+func (x *GetPublicConfigRsp) GetSkipAuth() bool {
 	if x != nil {
 		return x.SkipAuth
 	}
 	return false
 }
 
-func (x *GetPublicConfigResponse) GetCandidateModels() []*CandidateModels {
+func (x *GetPublicConfigRsp) GetCandidateModels() []*CandidateModels {
 	if x != nil {
 		return x.CandidateModels
 	}
@@ -662,9 +662,9 @@ const file_muse_common_proto_rawDesc = "" +
 	"\x11muse/common.proto\x12\x04muse\"X\n" +
 	"\x0fCandidateModels\x12-\n" +
 	"\bprovider\x18\x01 \x01(\x0e2\x11.muse.APIProviderR\bprovider\x12\x16\n" +
-	"\x06models\x18\x02 \x03(\tR\x06models\"\x18\n" +
-	"\x16GetPublicConfigRequest\"x\n" +
-	"\x17GetPublicConfigResponse\x12\x1b\n" +
+	"\x06models\x18\x02 \x03(\tR\x06models\"\x14\n" +
+	"\x12GetPublicConfigReq\"s\n" +
+	"\x12GetPublicConfigRsp\x12\x1b\n" +
 	"\tskip_auth\x18\x01 \x01(\bR\bskipAuth\x12@\n" +
 	"\x10candidate_models\x18\x02 \x03(\v2\x15.muse.CandidateModelsR\x0fcandidateModels*=\n" +
 	"\aErrCode\x12\v\n" +
@@ -723,9 +723,9 @@ const file_muse_common_proto_rawDesc = "" +
 	"\x19UploadFileTypeUnspecified\x10\x00\x12\x0e\n" +
 	"\n" +
 	"CharAvatar\x10\x01\x12\x11\n" +
-	"\rPersonaAvatar\x10\x022_\n" +
-	"\rCommonService\x12N\n" +
-	"\x0fGetPublicConfig\x12\x1c.muse.GetPublicConfigRequest\x1a\x1d.muse.GetPublicConfigResponseBf\n" +
+	"\rPersonaAvatar\x10\x022V\n" +
+	"\rCommonService\x12E\n" +
+	"\x0fGetPublicConfig\x12\x18.muse.GetPublicConfigReq\x1a\x18.muse.GetPublicConfigRspBf\n" +
 	"\bcom.museB\vCommonProtoP\x01Z\x1dgithub.com/ling/muse/gen/muse\xa2\x02\x03MXX\xaa\x02\x04Muse\xca\x02\x04Muse\xe2\x02\x10Muse\\GPBMetadata\xea\x02\x04Museb\x06proto3"
 
 var (
@@ -743,24 +743,24 @@ func file_muse_common_proto_rawDescGZIP() []byte {
 var file_muse_common_proto_enumTypes = make([]protoimpl.EnumInfo, 9)
 var file_muse_common_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_muse_common_proto_goTypes = []any{
-	(ErrCode)(0),                    // 0: muse.ErrCode
-	(Role)(0),                       // 1: muse.Role
-	(InjectionPosition)(0),          // 2: muse.InjectionPosition
-	(EntryPosition)(0),              // 3: muse.EntryPosition
-	(APIProvider)(0),                // 4: muse.APIProvider
-	(Theme)(0),                      // 5: muse.Theme
-	(PromptItemIdentifier)(0),       // 6: muse.PromptItemIdentifier
-	(SortOperation)(0),              // 7: muse.SortOperation
-	(FileType)(0),                   // 8: muse.FileType
-	(*CandidateModels)(nil),         // 9: muse.CandidateModels
-	(*GetPublicConfigRequest)(nil),  // 10: muse.GetPublicConfigRequest
-	(*GetPublicConfigResponse)(nil), // 11: muse.GetPublicConfigResponse
+	(ErrCode)(0),               // 0: muse.ErrCode
+	(Role)(0),                  // 1: muse.Role
+	(InjectionPosition)(0),     // 2: muse.InjectionPosition
+	(EntryPosition)(0),         // 3: muse.EntryPosition
+	(APIProvider)(0),           // 4: muse.APIProvider
+	(Theme)(0),                 // 5: muse.Theme
+	(PromptItemIdentifier)(0),  // 6: muse.PromptItemIdentifier
+	(SortOperation)(0),         // 7: muse.SortOperation
+	(FileType)(0),              // 8: muse.FileType
+	(*CandidateModels)(nil),    // 9: muse.CandidateModels
+	(*GetPublicConfigReq)(nil), // 10: muse.GetPublicConfigReq
+	(*GetPublicConfigRsp)(nil), // 11: muse.GetPublicConfigRsp
 }
 var file_muse_common_proto_depIdxs = []int32{
 	4,  // 0: muse.CandidateModels.provider:type_name -> muse.APIProvider
-	9,  // 1: muse.GetPublicConfigResponse.candidate_models:type_name -> muse.CandidateModels
-	10, // 2: muse.CommonService.GetPublicConfig:input_type -> muse.GetPublicConfigRequest
-	11, // 3: muse.CommonService.GetPublicConfig:output_type -> muse.GetPublicConfigResponse
+	9,  // 1: muse.GetPublicConfigRsp.candidate_models:type_name -> muse.CandidateModels
+	10, // 2: muse.CommonService.GetPublicConfig:input_type -> muse.GetPublicConfigReq
+	11, // 3: muse.CommonService.GetPublicConfig:output_type -> muse.GetPublicConfigRsp
 	3,  // [3:4] is the sub-list for method output_type
 	2,  // [2:3] is the sub-list for method input_type
 	2,  // [2:2] is the sub-list for extension type_name

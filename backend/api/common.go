@@ -21,8 +21,8 @@ func NewCommonServer() *CommonServer {
 }
 
 // GetPublicConfig 获取公共配置（无需认证）
-func (c *CommonServer) GetPublicConfig(ctx context.Context, req *connect.Request[pb.GetPublicConfigRequest]) (
-	*connect.Response[pb.GetPublicConfigResponse], error) {
+func (c *CommonServer) GetPublicConfig(ctx context.Context, req *connect.Request[pb.GetPublicConfigReq]) (
+	*connect.Response[pb.GetPublicConfigRsp], error) {
 	resp, err := c.common.GetPublicConfig(ctx, req.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "GetPublicConfig", req.Msg, resp, err)

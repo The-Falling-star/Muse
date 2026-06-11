@@ -27,7 +27,7 @@ func newRegexRule() *regexRuleImpl {
 	}
 }
 
-func (r *regexRuleImpl) ListRegexRules(ctx context.Context, req *pb.ListRegexRulesRequest) (*pb.ListRegexRulesResponse, error) {
+func (r *regexRuleImpl) ListRegexRules(ctx context.Context, req *pb.ListRegexRulesReq) (*pb.ListRegexRulesRsp, error) {
 	presetID := int(req.GetPresetId())
 	characterID := int(req.GetCharacterId())
 	userID := jwt.GetUserId(ctx)
@@ -44,12 +44,12 @@ func (r *regexRuleImpl) ListRegexRules(ctx context.Context, req *pb.ListRegexRul
 		pbRules = append(pbRules, convert.RegexRuleEntityToPb(rule))
 	}
 
-	return &pb.ListRegexRulesResponse{
+	return &pb.ListRegexRulesRsp{
 		Rules: pbRules,
 	}, nil
 }
 
-func (r *regexRuleImpl) AddRegexRule(ctx context.Context, req *pb.AddRegexRuleRequest) (*pb.AddRegexRuleResponse, error) {
+func (r *regexRuleImpl) AddRegexRule(ctx context.Context, req *pb.AddRegexRuleReq) (*pb.AddRegexRuleRsp, error) {
 	// 参数校验
 	name := strings.TrimSpace(req.GetName())
 	if name == "" {
@@ -99,12 +99,12 @@ func (r *regexRuleImpl) AddRegexRule(ctx context.Context, req *pb.AddRegexRuleRe
 		return nil, err
 	}
 
-	return &pb.AddRegexRuleResponse{
+	return &pb.AddRegexRuleRsp{
 		Rule: convert.RegexRuleEntityToPb(fullRule),
 	}, nil
 }
 
-func (r *regexRuleImpl) UpdateRegexRule(ctx context.Context, req *pb.UpdateRegexRuleRequest) (*pb.UpdateRegexRuleResponse, error) {
+func (r *regexRuleImpl) UpdateRegexRule(ctx context.Context, req *pb.UpdateRegexRuleReq) (*pb.UpdateRegexRuleRsp, error) {
 	id := int(req.GetId())
 	if id <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidRegexRuleID)
@@ -165,12 +165,12 @@ func (r *regexRuleImpl) UpdateRegexRule(ctx context.Context, req *pb.UpdateRegex
 		return nil, err
 	}
 
-	return &pb.UpdateRegexRuleResponse{
+	return &pb.UpdateRegexRuleRsp{
 		Rule: convert.RegexRuleEntityToPb(updatedRule),
 	}, nil
 }
 
-func (r *regexRuleImpl) DeleteRegexRule(ctx context.Context, req *pb.DeleteRegexRuleRequest) (*pb.DeleteRegexRuleResponse, error) {
+func (r *regexRuleImpl) DeleteRegexRule(ctx context.Context, req *pb.DeleteRegexRuleReq) (*pb.DeleteRegexRuleRsp, error) {
 	id := int(req.GetId())
 	if id <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidRegexRuleID)
@@ -184,10 +184,10 @@ func (r *regexRuleImpl) DeleteRegexRule(ctx context.Context, req *pb.DeleteRegex
 		return nil, err
 	}
 
-	return &pb.DeleteRegexRuleResponse{}, nil
+	return &pb.DeleteRegexRuleRsp{}, nil
 }
 
-func (r *regexRuleImpl) UpdateRegexRulesOrder(ctx context.Context, req *pb.UpdateRegexRulesOrderRequest) (*pb.UpdateRegexRulesOrderResponse, error) {
+func (r *regexRuleImpl) UpdateRegexRulesOrder(ctx context.Context, req *pb.UpdateRegexRulesOrderReq) (*pb.UpdateRegexRulesOrderRsp, error) {
 	presetID := int(req.GetPresetId())
 	if presetID <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidPresetID)
@@ -208,10 +208,10 @@ func (r *regexRuleImpl) UpdateRegexRulesOrder(ctx context.Context, req *pb.Updat
 		return nil, err
 	}
 
-	return &pb.UpdateRegexRulesOrderResponse{}, nil
+	return &pb.UpdateRegexRulesOrderRsp{}, nil
 }
 
-func (r *regexRuleImpl) ImportRegexRules(ctx context.Context, req *pb.ImportRegexRulesRequest) (*pb.ImportRegexRulesResponse, error) {
+func (r *regexRuleImpl) ImportRegexRules(ctx context.Context, req *pb.ImportRegexRulesReq) (*pb.ImportRegexRulesRsp, error) {
 	fileContent := req.GetFileContent()
 
 	// 移除 UTF-8 BOM（如果存在）
@@ -266,10 +266,10 @@ func (r *regexRuleImpl) ImportRegexRules(ctx context.Context, req *pb.ImportRege
 		return nil, err
 	}
 
-	return &pb.ImportRegexRulesResponse{}, nil
+	return &pb.ImportRegexRulesRsp{}, nil
 }
 
-func (r *regexRuleImpl) ExportRegexRules(ctx context.Context, req *pb.ExportRegexRulesRequest) (*pb.ExportRegexRulesResponse, error) {
+func (r *regexRuleImpl) ExportRegexRules(ctx context.Context, req *pb.ExportRegexRulesReq) (*pb.ExportRegexRulesRsp, error) {
 	presetID := int(req.GetPresetId()) // 0 表示全局正则
 
 	// 获取正则规则列表
@@ -302,7 +302,7 @@ func (r *regexRuleImpl) ExportRegexRules(ctx context.Context, req *pb.ExportRege
 		fileName = "regex-rules-global.json"
 	}
 
-	return &pb.ExportRegexRulesResponse{
+	return &pb.ExportRegexRulesRsp{
 		FileContent: fileContent,
 		FileName:    fileName,
 	}, nil

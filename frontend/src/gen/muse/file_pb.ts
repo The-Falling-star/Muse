@@ -12,14 +12,14 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file muse/file.proto.
  */
 export const file_muse_file: GenFile = /*@__PURE__*/
-  fileDesc("Cg9tdXNlL2ZpbGUucHJvdG8SBG11c2UiXwoRVXBsb2FkRmlsZVJlcXVlc3QSFAoMZmlsZV9jb250ZW50GAEgASgMEhEKCWZpbGVfbmFtZRgCIAEoCRIhCglmaWxlX3R5cGUYAyABKA4yDi5tdXNlLkZpbGVUeXBlIicKElVwbG9hZEZpbGVSZXNwb25zZRIRCglmaWxlX3BhdGgYASABKAkiKAoTRG93bmxvYWRGaWxlUmVxdWVzdBIRCglmaWxlX3BhdGgYASABKAkiVQoURG93bmxvYWRGaWxlUmVzcG9uc2USFAoMZmlsZV9jb250ZW50GAEgASgMEhQKDGNvbnRlbnRfdHlwZRgCIAEoCRIRCglmaWxlX25hbWUYAyABKAkylQEKC0ZpbGVTZXJ2aWNlEj8KClVwbG9hZEZpbGUSFy5tdXNlLlVwbG9hZEZpbGVSZXF1ZXN0GhgubXVzZS5VcGxvYWRGaWxlUmVzcG9uc2USRQoMRG93bmxvYWRGaWxlEhkubXVzZS5Eb3dubG9hZEZpbGVSZXF1ZXN0GhoubXVzZS5Eb3dubG9hZEZpbGVSZXNwb25zZUJkCghjb20ubXVzZUIJRmlsZVByb3RvUAFaHWdpdGh1Yi5jb20vbGluZy9tdXNlL2dlbi9tdXNlogIDTVhYqgIETXVzZcoCBE11c2XiAhBNdXNlXEdQQk1ldGFkYXRh6gIETXVzZWIGcHJvdG8z", [file_muse_common]);
+  fileDesc("Cg9tdXNlL2ZpbGUucHJvdG8SBG11c2UiWwoNVXBsb2FkRmlsZVJlcRIUCgxmaWxlX2NvbnRlbnQYASABKAwSEQoJZmlsZV9uYW1lGAIgASgJEiEKCWZpbGVfdHlwZRgDIAEoDjIOLm11c2UuRmlsZVR5cGUiIgoNVXBsb2FkRmlsZVJzcBIRCglmaWxlX3BhdGgYASABKAkiJAoPRG93bmxvYWRGaWxlUmVxEhEKCWZpbGVfcGF0aBgBIAEoCSJQCg9Eb3dubG9hZEZpbGVSc3ASFAoMZmlsZV9jb250ZW50GAEgASgMEhQKDGNvbnRlbnRfdHlwZRgCIAEoCRIRCglmaWxlX25hbWUYAyABKAkygwEKC0ZpbGVTZXJ2aWNlEjYKClVwbG9hZEZpbGUSEy5tdXNlLlVwbG9hZEZpbGVSZXEaEy5tdXNlLlVwbG9hZEZpbGVSc3ASPAoMRG93bmxvYWRGaWxlEhUubXVzZS5Eb3dubG9hZEZpbGVSZXEaFS5tdXNlLkRvd25sb2FkRmlsZVJzcEJkCghjb20ubXVzZUIJRmlsZVByb3RvUAFaHWdpdGh1Yi5jb20vbGluZy9tdXNlL2dlbi9tdXNlogIDTVhYqgIETXVzZcoCBE11c2XiAhBNdXNlXEdQQk1ldGFkYXRh6gIETXVzZWIGcHJvdG8z", [file_muse_common]);
 
 /**
- * UploadFileRequest 上传文件请求
+ * UploadFileReq 上传文件请求
  *
- * @generated from message muse.UploadFileRequest
+ * @generated from message muse.UploadFileReq
  */
-export type UploadFileRequest = Message<"muse.UploadFileRequest"> & {
+export type UploadFileReq = Message<"muse.UploadFileReq"> & {
   /**
    * 文件内容
    *
@@ -43,18 +43,18 @@ export type UploadFileRequest = Message<"muse.UploadFileRequest"> & {
 };
 
 /**
- * Describes the message muse.UploadFileRequest.
- * Use `create(UploadFileRequestSchema)` to create a new message.
+ * Describes the message muse.UploadFileReq.
+ * Use `create(UploadFileReqSchema)` to create a new message.
  */
-export const UploadFileRequestSchema: GenMessage<UploadFileRequest> = /*@__PURE__*/
+export const UploadFileReqSchema: GenMessage<UploadFileReq> = /*@__PURE__*/
   messageDesc(file_muse_file, 0);
 
 /**
- * UploadFileResponse 上传文件响应
+ * UploadFileRsp 上传文件响应
  *
- * @generated from message muse.UploadFileResponse
+ * @generated from message muse.UploadFileRsp
  */
-export type UploadFileResponse = Message<"muse.UploadFileResponse"> & {
+export type UploadFileRsp = Message<"muse.UploadFileRsp"> & {
   /**
    * 文件相对路径（相对于用户目录）
    *
@@ -64,18 +64,18 @@ export type UploadFileResponse = Message<"muse.UploadFileResponse"> & {
 };
 
 /**
- * Describes the message muse.UploadFileResponse.
- * Use `create(UploadFileResponseSchema)` to create a new message.
+ * Describes the message muse.UploadFileRsp.
+ * Use `create(UploadFileRspSchema)` to create a new message.
  */
-export const UploadFileResponseSchema: GenMessage<UploadFileResponse> = /*@__PURE__*/
+export const UploadFileRspSchema: GenMessage<UploadFileRsp> = /*@__PURE__*/
   messageDesc(file_muse_file, 1);
 
 /**
- * DownloadFileRequest 下载文件请求
+ * DownloadFileReq 下载文件请求
  *
- * @generated from message muse.DownloadFileRequest
+ * @generated from message muse.DownloadFileReq
  */
-export type DownloadFileRequest = Message<"muse.DownloadFileRequest"> & {
+export type DownloadFileReq = Message<"muse.DownloadFileReq"> & {
   /**
    * 文件相对路径（相对于用户目录）
    *
@@ -85,18 +85,18 @@ export type DownloadFileRequest = Message<"muse.DownloadFileRequest"> & {
 };
 
 /**
- * Describes the message muse.DownloadFileRequest.
- * Use `create(DownloadFileRequestSchema)` to create a new message.
+ * Describes the message muse.DownloadFileReq.
+ * Use `create(DownloadFileReqSchema)` to create a new message.
  */
-export const DownloadFileRequestSchema: GenMessage<DownloadFileRequest> = /*@__PURE__*/
+export const DownloadFileReqSchema: GenMessage<DownloadFileReq> = /*@__PURE__*/
   messageDesc(file_muse_file, 2);
 
 /**
- * DownloadFileResponse 下载文件响应
+ * DownloadFileRsp 下载文件响应
  *
- * @generated from message muse.DownloadFileResponse
+ * @generated from message muse.DownloadFileRsp
  */
-export type DownloadFileResponse = Message<"muse.DownloadFileResponse"> & {
+export type DownloadFileRsp = Message<"muse.DownloadFileRsp"> & {
   /**
    * 文件内容
    *
@@ -120,10 +120,10 @@ export type DownloadFileResponse = Message<"muse.DownloadFileResponse"> & {
 };
 
 /**
- * Describes the message muse.DownloadFileResponse.
- * Use `create(DownloadFileResponseSchema)` to create a new message.
+ * Describes the message muse.DownloadFileRsp.
+ * Use `create(DownloadFileRspSchema)` to create a new message.
  */
-export const DownloadFileResponseSchema: GenMessage<DownloadFileResponse> = /*@__PURE__*/
+export const DownloadFileRspSchema: GenMessage<DownloadFileRsp> = /*@__PURE__*/
   messageDesc(file_muse_file, 3);
 
 /**
@@ -139,8 +139,8 @@ export const FileService: GenService<{
    */
   uploadFile: {
     methodKind: "unary";
-    input: typeof UploadFileRequestSchema;
-    output: typeof UploadFileResponseSchema;
+    input: typeof UploadFileReqSchema;
+    output: typeof UploadFileRspSchema;
   },
   /**
    * 下载文件
@@ -149,8 +149,8 @@ export const FileService: GenService<{
    */
   downloadFile: {
     methodKind: "unary";
-    input: typeof DownloadFileRequestSchema;
-    output: typeof DownloadFileResponseSchema;
+    input: typeof DownloadFileReqSchema;
+    output: typeof DownloadFileRspSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_muse_file, 0);

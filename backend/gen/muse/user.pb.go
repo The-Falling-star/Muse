@@ -349,7 +349,7 @@ func (x *APIConfig) GetUpdatedAt() int64 {
 }
 
 // 注册请求
-type RegisterRequest struct {
+type RegisterReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Username      string                 `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
 	Password      string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
@@ -357,20 +357,20 @@ type RegisterRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *RegisterRequest) Reset() {
-	*x = RegisterRequest{}
+func (x *RegisterReq) Reset() {
+	*x = RegisterReq{}
 	mi := &file_muse_user_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *RegisterRequest) String() string {
+func (x *RegisterReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RegisterRequest) ProtoMessage() {}
+func (*RegisterReq) ProtoMessage() {}
 
-func (x *RegisterRequest) ProtoReflect() protoreflect.Message {
+func (x *RegisterReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -382,19 +382,19 @@ func (x *RegisterRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use RegisterRequest.ProtoReflect.Descriptor instead.
-func (*RegisterRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use RegisterReq.ProtoReflect.Descriptor instead.
+func (*RegisterReq) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *RegisterRequest) GetUsername() string {
+func (x *RegisterReq) GetUsername() string {
 	if x != nil {
 		return x.Username
 	}
 	return ""
 }
 
-func (x *RegisterRequest) GetPassword() string {
+func (x *RegisterReq) GetPassword() string {
 	if x != nil {
 		return x.Password
 	}
@@ -402,7 +402,7 @@ func (x *RegisterRequest) GetPassword() string {
 }
 
 // 注册响应
-type RegisterResponse struct {
+type RegisterRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	User          *SysUser               `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
 	Token         string                 `protobuf:"bytes,2,opt,name=token,proto3" json:"token,omitempty"`
@@ -410,20 +410,20 @@ type RegisterResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *RegisterResponse) Reset() {
-	*x = RegisterResponse{}
+func (x *RegisterRsp) Reset() {
+	*x = RegisterRsp{}
 	mi := &file_muse_user_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *RegisterResponse) String() string {
+func (x *RegisterRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RegisterResponse) ProtoMessage() {}
+func (*RegisterRsp) ProtoMessage() {}
 
-func (x *RegisterResponse) ProtoReflect() protoreflect.Message {
+func (x *RegisterRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -435,19 +435,19 @@ func (x *RegisterResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use RegisterResponse.ProtoReflect.Descriptor instead.
-func (*RegisterResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use RegisterRsp.ProtoReflect.Descriptor instead.
+func (*RegisterRsp) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *RegisterResponse) GetUser() *SysUser {
+func (x *RegisterRsp) GetUser() *SysUser {
 	if x != nil {
 		return x.User
 	}
 	return nil
 }
 
-func (x *RegisterResponse) GetToken() string {
+func (x *RegisterRsp) GetToken() string {
 	if x != nil {
 		return x.Token
 	}
@@ -455,7 +455,7 @@ func (x *RegisterResponse) GetToken() string {
 }
 
 // 登录请求
-type LoginRequest struct {
+type LoginReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Username      string                 `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
 	Password      string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
@@ -463,20 +463,20 @@ type LoginRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *LoginRequest) Reset() {
-	*x = LoginRequest{}
+func (x *LoginReq) Reset() {
+	*x = LoginReq{}
 	mi := &file_muse_user_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *LoginRequest) String() string {
+func (x *LoginReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*LoginRequest) ProtoMessage() {}
+func (*LoginReq) ProtoMessage() {}
 
-func (x *LoginRequest) ProtoReflect() protoreflect.Message {
+func (x *LoginReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -488,19 +488,19 @@ func (x *LoginRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use LoginRequest.ProtoReflect.Descriptor instead.
-func (*LoginRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use LoginReq.ProtoReflect.Descriptor instead.
+func (*LoginReq) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *LoginRequest) GetUsername() string {
+func (x *LoginReq) GetUsername() string {
 	if x != nil {
 		return x.Username
 	}
 	return ""
 }
 
-func (x *LoginRequest) GetPassword() string {
+func (x *LoginReq) GetPassword() string {
 	if x != nil {
 		return x.Password
 	}
@@ -508,7 +508,7 @@ func (x *LoginRequest) GetPassword() string {
 }
 
 // 登录响应
-type LoginResponse struct {
+type LoginRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	User          *SysUser               `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
 	Token         string                 `protobuf:"bytes,2,opt,name=token,proto3" json:"token,omitempty"`
@@ -516,20 +516,20 @@ type LoginResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *LoginResponse) Reset() {
-	*x = LoginResponse{}
+func (x *LoginRsp) Reset() {
+	*x = LoginRsp{}
 	mi := &file_muse_user_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *LoginResponse) String() string {
+func (x *LoginRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*LoginResponse) ProtoMessage() {}
+func (*LoginRsp) ProtoMessage() {}
 
-func (x *LoginResponse) ProtoReflect() protoreflect.Message {
+func (x *LoginRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -541,19 +541,19 @@ func (x *LoginResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use LoginResponse.ProtoReflect.Descriptor instead.
-func (*LoginResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use LoginRsp.ProtoReflect.Descriptor instead.
+func (*LoginRsp) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *LoginResponse) GetUser() *SysUser {
+func (x *LoginRsp) GetUser() *SysUser {
 	if x != nil {
 		return x.User
 	}
 	return nil
 }
 
-func (x *LoginResponse) GetToken() string {
+func (x *LoginRsp) GetToken() string {
 	if x != nil {
 		return x.Token
 	}
@@ -561,26 +561,26 @@ func (x *LoginResponse) GetToken() string {
 }
 
 // 获取当前用户请求
-type GetCurrentUserRequest struct {
+type GetCurrentUserReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetCurrentUserRequest) Reset() {
-	*x = GetCurrentUserRequest{}
+func (x *GetCurrentUserReq) Reset() {
+	*x = GetCurrentUserReq{}
 	mi := &file_muse_user_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetCurrentUserRequest) String() string {
+func (x *GetCurrentUserReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetCurrentUserRequest) ProtoMessage() {}
+func (*GetCurrentUserReq) ProtoMessage() {}
 
-func (x *GetCurrentUserRequest) ProtoReflect() protoreflect.Message {
+func (x *GetCurrentUserReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -592,33 +592,33 @@ func (x *GetCurrentUserRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetCurrentUserRequest.ProtoReflect.Descriptor instead.
-func (*GetCurrentUserRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetCurrentUserReq.ProtoReflect.Descriptor instead.
+func (*GetCurrentUserReq) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{7}
 }
 
 // 获取当前用户响应
-type GetCurrentUserResponse struct {
+type GetCurrentUserRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	User          *SysUser               `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetCurrentUserResponse) Reset() {
-	*x = GetCurrentUserResponse{}
+func (x *GetCurrentUserRsp) Reset() {
+	*x = GetCurrentUserRsp{}
 	mi := &file_muse_user_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetCurrentUserResponse) String() string {
+func (x *GetCurrentUserRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetCurrentUserResponse) ProtoMessage() {}
+func (*GetCurrentUserRsp) ProtoMessage() {}
 
-func (x *GetCurrentUserResponse) ProtoReflect() protoreflect.Message {
+func (x *GetCurrentUserRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -630,12 +630,12 @@ func (x *GetCurrentUserResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetCurrentUserResponse.ProtoReflect.Descriptor instead.
-func (*GetCurrentUserResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetCurrentUserRsp.ProtoReflect.Descriptor instead.
+func (*GetCurrentUserRsp) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *GetCurrentUserResponse) GetUser() *SysUser {
+func (x *GetCurrentUserRsp) GetUser() *SysUser {
 	if x != nil {
 		return x.User
 	}
@@ -643,7 +643,7 @@ func (x *GetCurrentUserResponse) GetUser() *SysUser {
 }
 
 // 修改密码请求
-type ChangePasswordRequest struct {
+type ChangePasswordReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	OldPassword   string                 `protobuf:"bytes,1,opt,name=old_password,json=oldPassword,proto3" json:"old_password,omitempty"`
 	NewPassword   string                 `protobuf:"bytes,2,opt,name=new_password,json=newPassword,proto3" json:"new_password,omitempty"`
@@ -651,20 +651,20 @@ type ChangePasswordRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ChangePasswordRequest) Reset() {
-	*x = ChangePasswordRequest{}
+func (x *ChangePasswordReq) Reset() {
+	*x = ChangePasswordReq{}
 	mi := &file_muse_user_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ChangePasswordRequest) String() string {
+func (x *ChangePasswordReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ChangePasswordRequest) ProtoMessage() {}
+func (*ChangePasswordReq) ProtoMessage() {}
 
-func (x *ChangePasswordRequest) ProtoReflect() protoreflect.Message {
+func (x *ChangePasswordReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -676,19 +676,19 @@ func (x *ChangePasswordRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ChangePasswordRequest.ProtoReflect.Descriptor instead.
-func (*ChangePasswordRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ChangePasswordReq.ProtoReflect.Descriptor instead.
+func (*ChangePasswordReq) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *ChangePasswordRequest) GetOldPassword() string {
+func (x *ChangePasswordReq) GetOldPassword() string {
 	if x != nil {
 		return x.OldPassword
 	}
 	return ""
 }
 
-func (x *ChangePasswordRequest) GetNewPassword() string {
+func (x *ChangePasswordReq) GetNewPassword() string {
 	if x != nil {
 		return x.NewPassword
 	}
@@ -696,26 +696,26 @@ func (x *ChangePasswordRequest) GetNewPassword() string {
 }
 
 // 修改密码响应
-type ChangePasswordResponse struct {
+type ChangePasswordRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ChangePasswordResponse) Reset() {
-	*x = ChangePasswordResponse{}
+func (x *ChangePasswordRsp) Reset() {
+	*x = ChangePasswordRsp{}
 	mi := &file_muse_user_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ChangePasswordResponse) String() string {
+func (x *ChangePasswordRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ChangePasswordResponse) ProtoMessage() {}
+func (*ChangePasswordRsp) ProtoMessage() {}
 
-func (x *ChangePasswordResponse) ProtoReflect() protoreflect.Message {
+func (x *ChangePasswordRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -727,32 +727,32 @@ func (x *ChangePasswordResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ChangePasswordResponse.ProtoReflect.Descriptor instead.
-func (*ChangePasswordResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ChangePasswordRsp.ProtoReflect.Descriptor instead.
+func (*ChangePasswordRsp) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{10}
 }
 
 // 获取人设列表请求
-type ListPersonasRequest struct {
+type ListPersonasReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListPersonasRequest) Reset() {
-	*x = ListPersonasRequest{}
+func (x *ListPersonasReq) Reset() {
+	*x = ListPersonasReq{}
 	mi := &file_muse_user_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListPersonasRequest) String() string {
+func (x *ListPersonasReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListPersonasRequest) ProtoMessage() {}
+func (*ListPersonasReq) ProtoMessage() {}
 
-func (x *ListPersonasRequest) ProtoReflect() protoreflect.Message {
+func (x *ListPersonasReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -764,33 +764,33 @@ func (x *ListPersonasRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListPersonasRequest.ProtoReflect.Descriptor instead.
-func (*ListPersonasRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListPersonasReq.ProtoReflect.Descriptor instead.
+func (*ListPersonasReq) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{11}
 }
 
 // 获取人设列表响应
-type ListPersonasResponse struct {
+type ListPersonasRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Personas      []*Persona             `protobuf:"bytes,1,rep,name=personas,proto3" json:"personas,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListPersonasResponse) Reset() {
-	*x = ListPersonasResponse{}
+func (x *ListPersonasRsp) Reset() {
+	*x = ListPersonasRsp{}
 	mi := &file_muse_user_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListPersonasResponse) String() string {
+func (x *ListPersonasRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListPersonasResponse) ProtoMessage() {}
+func (*ListPersonasRsp) ProtoMessage() {}
 
-func (x *ListPersonasResponse) ProtoReflect() protoreflect.Message {
+func (x *ListPersonasRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -802,12 +802,12 @@ func (x *ListPersonasResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListPersonasResponse.ProtoReflect.Descriptor instead.
-func (*ListPersonasResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListPersonasRsp.ProtoReflect.Descriptor instead.
+func (*ListPersonasRsp) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{12}
 }
 
-func (x *ListPersonasResponse) GetPersonas() []*Persona {
+func (x *ListPersonasRsp) GetPersonas() []*Persona {
 	if x != nil {
 		return x.Personas
 	}
@@ -815,27 +815,27 @@ func (x *ListPersonasResponse) GetPersonas() []*Persona {
 }
 
 // 获取单个人设请求
-type GetPersonaRequest struct {
+type GetPersonaReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetPersonaRequest) Reset() {
-	*x = GetPersonaRequest{}
+func (x *GetPersonaReq) Reset() {
+	*x = GetPersonaReq{}
 	mi := &file_muse_user_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetPersonaRequest) String() string {
+func (x *GetPersonaReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetPersonaRequest) ProtoMessage() {}
+func (*GetPersonaReq) ProtoMessage() {}
 
-func (x *GetPersonaRequest) ProtoReflect() protoreflect.Message {
+func (x *GetPersonaReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -847,12 +847,12 @@ func (x *GetPersonaRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetPersonaRequest.ProtoReflect.Descriptor instead.
-func (*GetPersonaRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetPersonaReq.ProtoReflect.Descriptor instead.
+func (*GetPersonaReq) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{13}
 }
 
-func (x *GetPersonaRequest) GetId() int32 {
+func (x *GetPersonaReq) GetId() int32 {
 	if x != nil {
 		return x.Id
 	}
@@ -860,27 +860,27 @@ func (x *GetPersonaRequest) GetId() int32 {
 }
 
 // 获取单个人设响应
-type GetPersonaResponse struct {
+type GetPersonaRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Persona       *Persona               `protobuf:"bytes,1,opt,name=persona,proto3" json:"persona,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetPersonaResponse) Reset() {
-	*x = GetPersonaResponse{}
+func (x *GetPersonaRsp) Reset() {
+	*x = GetPersonaRsp{}
 	mi := &file_muse_user_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetPersonaResponse) String() string {
+func (x *GetPersonaRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetPersonaResponse) ProtoMessage() {}
+func (*GetPersonaRsp) ProtoMessage() {}
 
-func (x *GetPersonaResponse) ProtoReflect() protoreflect.Message {
+func (x *GetPersonaRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -892,12 +892,12 @@ func (x *GetPersonaResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetPersonaResponse.ProtoReflect.Descriptor instead.
-func (*GetPersonaResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetPersonaRsp.ProtoReflect.Descriptor instead.
+func (*GetPersonaRsp) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{14}
 }
 
-func (x *GetPersonaResponse) GetPersona() *Persona {
+func (x *GetPersonaRsp) GetPersona() *Persona {
 	if x != nil {
 		return x.Persona
 	}
@@ -905,7 +905,7 @@ func (x *GetPersonaResponse) GetPersona() *Persona {
 }
 
 // 创建人设请求
-type CreatePersonaRequest struct {
+type CreatePersonaReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	Avatar        *string                `protobuf:"bytes,2,opt,name=avatar,proto3,oneof" json:"avatar,omitempty"`
@@ -914,20 +914,20 @@ type CreatePersonaRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreatePersonaRequest) Reset() {
-	*x = CreatePersonaRequest{}
+func (x *CreatePersonaReq) Reset() {
+	*x = CreatePersonaReq{}
 	mi := &file_muse_user_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreatePersonaRequest) String() string {
+func (x *CreatePersonaReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreatePersonaRequest) ProtoMessage() {}
+func (*CreatePersonaReq) ProtoMessage() {}
 
-func (x *CreatePersonaRequest) ProtoReflect() protoreflect.Message {
+func (x *CreatePersonaReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -939,26 +939,26 @@ func (x *CreatePersonaRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreatePersonaRequest.ProtoReflect.Descriptor instead.
-func (*CreatePersonaRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreatePersonaReq.ProtoReflect.Descriptor instead.
+func (*CreatePersonaReq) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{15}
 }
 
-func (x *CreatePersonaRequest) GetName() string {
+func (x *CreatePersonaReq) GetName() string {
 	if x != nil {
 		return x.Name
 	}
 	return ""
 }
 
-func (x *CreatePersonaRequest) GetAvatar() string {
+func (x *CreatePersonaReq) GetAvatar() string {
 	if x != nil && x.Avatar != nil {
 		return *x.Avatar
 	}
 	return ""
 }
 
-func (x *CreatePersonaRequest) GetDescription() string {
+func (x *CreatePersonaReq) GetDescription() string {
 	if x != nil && x.Description != nil {
 		return *x.Description
 	}
@@ -966,27 +966,27 @@ func (x *CreatePersonaRequest) GetDescription() string {
 }
 
 // 创建人设响应
-type CreatePersonaResponse struct {
+type CreatePersonaRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Persona       *Persona               `protobuf:"bytes,1,opt,name=persona,proto3" json:"persona,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreatePersonaResponse) Reset() {
-	*x = CreatePersonaResponse{}
+func (x *CreatePersonaRsp) Reset() {
+	*x = CreatePersonaRsp{}
 	mi := &file_muse_user_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreatePersonaResponse) String() string {
+func (x *CreatePersonaRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreatePersonaResponse) ProtoMessage() {}
+func (*CreatePersonaRsp) ProtoMessage() {}
 
-func (x *CreatePersonaResponse) ProtoReflect() protoreflect.Message {
+func (x *CreatePersonaRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -998,12 +998,12 @@ func (x *CreatePersonaResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreatePersonaResponse.ProtoReflect.Descriptor instead.
-func (*CreatePersonaResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreatePersonaRsp.ProtoReflect.Descriptor instead.
+func (*CreatePersonaRsp) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{16}
 }
 
-func (x *CreatePersonaResponse) GetPersona() *Persona {
+func (x *CreatePersonaRsp) GetPersona() *Persona {
 	if x != nil {
 		return x.Persona
 	}
@@ -1011,7 +1011,7 @@ func (x *CreatePersonaResponse) GetPersona() *Persona {
 }
 
 // 更新人设请求
-type UpdatePersonaRequest struct {
+type UpdatePersonaReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
@@ -1021,20 +1021,20 @@ type UpdatePersonaRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdatePersonaRequest) Reset() {
-	*x = UpdatePersonaRequest{}
+func (x *UpdatePersonaReq) Reset() {
+	*x = UpdatePersonaReq{}
 	mi := &file_muse_user_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdatePersonaRequest) String() string {
+func (x *UpdatePersonaReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdatePersonaRequest) ProtoMessage() {}
+func (*UpdatePersonaReq) ProtoMessage() {}
 
-func (x *UpdatePersonaRequest) ProtoReflect() protoreflect.Message {
+func (x *UpdatePersonaReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1046,33 +1046,33 @@ func (x *UpdatePersonaRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdatePersonaRequest.ProtoReflect.Descriptor instead.
-func (*UpdatePersonaRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdatePersonaReq.ProtoReflect.Descriptor instead.
+func (*UpdatePersonaReq) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{17}
 }
 
-func (x *UpdatePersonaRequest) GetId() int32 {
+func (x *UpdatePersonaReq) GetId() int32 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-func (x *UpdatePersonaRequest) GetName() string {
+func (x *UpdatePersonaReq) GetName() string {
 	if x != nil {
 		return x.Name
 	}
 	return ""
 }
 
-func (x *UpdatePersonaRequest) GetAvatar() string {
+func (x *UpdatePersonaReq) GetAvatar() string {
 	if x != nil && x.Avatar != nil {
 		return *x.Avatar
 	}
 	return ""
 }
 
-func (x *UpdatePersonaRequest) GetDescription() string {
+func (x *UpdatePersonaReq) GetDescription() string {
 	if x != nil && x.Description != nil {
 		return *x.Description
 	}
@@ -1080,27 +1080,27 @@ func (x *UpdatePersonaRequest) GetDescription() string {
 }
 
 // 更新人设响应
-type UpdatePersonaResponse struct {
+type UpdatePersonaRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Persona       *Persona               `protobuf:"bytes,1,opt,name=persona,proto3" json:"persona,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdatePersonaResponse) Reset() {
-	*x = UpdatePersonaResponse{}
+func (x *UpdatePersonaRsp) Reset() {
+	*x = UpdatePersonaRsp{}
 	mi := &file_muse_user_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdatePersonaResponse) String() string {
+func (x *UpdatePersonaRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdatePersonaResponse) ProtoMessage() {}
+func (*UpdatePersonaRsp) ProtoMessage() {}
 
-func (x *UpdatePersonaResponse) ProtoReflect() protoreflect.Message {
+func (x *UpdatePersonaRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1112,12 +1112,12 @@ func (x *UpdatePersonaResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdatePersonaResponse.ProtoReflect.Descriptor instead.
-func (*UpdatePersonaResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdatePersonaRsp.ProtoReflect.Descriptor instead.
+func (*UpdatePersonaRsp) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{18}
 }
 
-func (x *UpdatePersonaResponse) GetPersona() *Persona {
+func (x *UpdatePersonaRsp) GetPersona() *Persona {
 	if x != nil {
 		return x.Persona
 	}
@@ -1125,27 +1125,27 @@ func (x *UpdatePersonaResponse) GetPersona() *Persona {
 }
 
 // 删除人设请求
-type DeletePersonaRequest struct {
+type DeletePersonaReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeletePersonaRequest) Reset() {
-	*x = DeletePersonaRequest{}
+func (x *DeletePersonaReq) Reset() {
+	*x = DeletePersonaReq{}
 	mi := &file_muse_user_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeletePersonaRequest) String() string {
+func (x *DeletePersonaReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeletePersonaRequest) ProtoMessage() {}
+func (*DeletePersonaReq) ProtoMessage() {}
 
-func (x *DeletePersonaRequest) ProtoReflect() protoreflect.Message {
+func (x *DeletePersonaReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1157,12 +1157,12 @@ func (x *DeletePersonaRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeletePersonaRequest.ProtoReflect.Descriptor instead.
-func (*DeletePersonaRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeletePersonaReq.ProtoReflect.Descriptor instead.
+func (*DeletePersonaReq) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{19}
 }
 
-func (x *DeletePersonaRequest) GetId() int32 {
+func (x *DeletePersonaReq) GetId() int32 {
 	if x != nil {
 		return x.Id
 	}
@@ -1170,26 +1170,26 @@ func (x *DeletePersonaRequest) GetId() int32 {
 }
 
 // 删除人设响应
-type DeletePersonaResponse struct {
+type DeletePersonaRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeletePersonaResponse) Reset() {
-	*x = DeletePersonaResponse{}
+func (x *DeletePersonaRsp) Reset() {
+	*x = DeletePersonaRsp{}
 	mi := &file_muse_user_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeletePersonaResponse) String() string {
+func (x *DeletePersonaRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeletePersonaResponse) ProtoMessage() {}
+func (*DeletePersonaRsp) ProtoMessage() {}
 
-func (x *DeletePersonaResponse) ProtoReflect() protoreflect.Message {
+func (x *DeletePersonaRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1201,33 +1201,33 @@ func (x *DeletePersonaResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeletePersonaResponse.ProtoReflect.Descriptor instead.
-func (*DeletePersonaResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeletePersonaRsp.ProtoReflect.Descriptor instead.
+func (*DeletePersonaRsp) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{20}
 }
 
 // 设置活跃人设请求
-type SetActivePersonaRequest struct {
+type SetActivePersonaReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	PersonaId     int32                  `protobuf:"varint,1,opt,name=persona_id,json=personaId,proto3" json:"persona_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SetActivePersonaRequest) Reset() {
-	*x = SetActivePersonaRequest{}
+func (x *SetActivePersonaReq) Reset() {
+	*x = SetActivePersonaReq{}
 	mi := &file_muse_user_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SetActivePersonaRequest) String() string {
+func (x *SetActivePersonaReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SetActivePersonaRequest) ProtoMessage() {}
+func (*SetActivePersonaReq) ProtoMessage() {}
 
-func (x *SetActivePersonaRequest) ProtoReflect() protoreflect.Message {
+func (x *SetActivePersonaReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1239,12 +1239,12 @@ func (x *SetActivePersonaRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SetActivePersonaRequest.ProtoReflect.Descriptor instead.
-func (*SetActivePersonaRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use SetActivePersonaReq.ProtoReflect.Descriptor instead.
+func (*SetActivePersonaReq) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{21}
 }
 
-func (x *SetActivePersonaRequest) GetPersonaId() int32 {
+func (x *SetActivePersonaReq) GetPersonaId() int32 {
 	if x != nil {
 		return x.PersonaId
 	}
@@ -1252,26 +1252,26 @@ func (x *SetActivePersonaRequest) GetPersonaId() int32 {
 }
 
 // 设置活跃人设响应
-type SetActivePersonaResponse struct {
+type SetActivePersonaRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SetActivePersonaResponse) Reset() {
-	*x = SetActivePersonaResponse{}
+func (x *SetActivePersonaRsp) Reset() {
+	*x = SetActivePersonaRsp{}
 	mi := &file_muse_user_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SetActivePersonaResponse) String() string {
+func (x *SetActivePersonaRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SetActivePersonaResponse) ProtoMessage() {}
+func (*SetActivePersonaRsp) ProtoMessage() {}
 
-func (x *SetActivePersonaResponse) ProtoReflect() protoreflect.Message {
+func (x *SetActivePersonaRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1283,32 +1283,32 @@ func (x *SetActivePersonaResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SetActivePersonaResponse.ProtoReflect.Descriptor instead.
-func (*SetActivePersonaResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use SetActivePersonaRsp.ProtoReflect.Descriptor instead.
+func (*SetActivePersonaRsp) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{22}
 }
 
 // 获取用户设置请求
-type GetUserInfoRequest struct {
+type GetUserInfoReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetUserInfoRequest) Reset() {
-	*x = GetUserInfoRequest{}
+func (x *GetUserInfoReq) Reset() {
+	*x = GetUserInfoReq{}
 	mi := &file_muse_user_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetUserInfoRequest) String() string {
+func (x *GetUserInfoReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetUserInfoRequest) ProtoMessage() {}
+func (*GetUserInfoReq) ProtoMessage() {}
 
-func (x *GetUserInfoRequest) ProtoReflect() protoreflect.Message {
+func (x *GetUserInfoReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1320,33 +1320,33 @@ func (x *GetUserInfoRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetUserInfoRequest.ProtoReflect.Descriptor instead.
-func (*GetUserInfoRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetUserInfoReq.ProtoReflect.Descriptor instead.
+func (*GetUserInfoReq) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{23}
 }
 
 // 获取用户信息响应
-type GetUserInfoResponse struct {
+type GetUserInfoRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	User          *SysUser               `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetUserInfoResponse) Reset() {
-	*x = GetUserInfoResponse{}
+func (x *GetUserInfoRsp) Reset() {
+	*x = GetUserInfoRsp{}
 	mi := &file_muse_user_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetUserInfoResponse) String() string {
+func (x *GetUserInfoRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetUserInfoResponse) ProtoMessage() {}
+func (*GetUserInfoRsp) ProtoMessage() {}
 
-func (x *GetUserInfoResponse) ProtoReflect() protoreflect.Message {
+func (x *GetUserInfoRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1358,12 +1358,12 @@ func (x *GetUserInfoResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetUserInfoResponse.ProtoReflect.Descriptor instead.
-func (*GetUserInfoResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetUserInfoRsp.ProtoReflect.Descriptor instead.
+func (*GetUserInfoRsp) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{24}
 }
 
-func (x *GetUserInfoResponse) GetUser() *SysUser {
+func (x *GetUserInfoRsp) GetUser() *SysUser {
 	if x != nil {
 		return x.User
 	}
@@ -1371,7 +1371,7 @@ func (x *GetUserInfoResponse) GetUser() *SysUser {
 }
 
 // 更新用户信息请求
-type UpdateUserInfoRequest struct {
+type UpdateUserInfoReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Theme         *Theme                 `protobuf:"varint,1,opt,name=theme,proto3,enum=muse.Theme,oneof" json:"theme,omitempty"`
 	Language      *string                `protobuf:"bytes,2,opt,name=language,proto3,oneof" json:"language,omitempty"`
@@ -1382,20 +1382,20 @@ type UpdateUserInfoRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateUserInfoRequest) Reset() {
-	*x = UpdateUserInfoRequest{}
+func (x *UpdateUserInfoReq) Reset() {
+	*x = UpdateUserInfoReq{}
 	mi := &file_muse_user_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateUserInfoRequest) String() string {
+func (x *UpdateUserInfoReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateUserInfoRequest) ProtoMessage() {}
+func (*UpdateUserInfoReq) ProtoMessage() {}
 
-func (x *UpdateUserInfoRequest) ProtoReflect() protoreflect.Message {
+func (x *UpdateUserInfoReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1407,40 +1407,40 @@ func (x *UpdateUserInfoRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateUserInfoRequest.ProtoReflect.Descriptor instead.
-func (*UpdateUserInfoRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateUserInfoReq.ProtoReflect.Descriptor instead.
+func (*UpdateUserInfoReq) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{25}
 }
 
-func (x *UpdateUserInfoRequest) GetTheme() Theme {
+func (x *UpdateUserInfoReq) GetTheme() Theme {
 	if x != nil && x.Theme != nil {
 		return *x.Theme
 	}
 	return Theme_Auto
 }
 
-func (x *UpdateUserInfoRequest) GetLanguage() string {
+func (x *UpdateUserInfoReq) GetLanguage() string {
 	if x != nil && x.Language != nil {
 		return *x.Language
 	}
 	return ""
 }
 
-func (x *UpdateUserInfoRequest) GetProvider() APIProvider {
+func (x *UpdateUserInfoReq) GetProvider() APIProvider {
 	if x != nil && x.Provider != nil {
 		return *x.Provider
 	}
 	return APIProvider_APIProviderUnspecified
 }
 
-func (x *UpdateUserInfoRequest) GetModel() string {
+func (x *UpdateUserInfoReq) GetModel() string {
 	if x != nil && x.Model != nil {
 		return *x.Model
 	}
 	return ""
 }
 
-func (x *UpdateUserInfoRequest) GetProxyUrl() string {
+func (x *UpdateUserInfoReq) GetProxyUrl() string {
 	if x != nil && x.ProxyUrl != nil {
 		return *x.ProxyUrl
 	}
@@ -1448,26 +1448,26 @@ func (x *UpdateUserInfoRequest) GetProxyUrl() string {
 }
 
 // 更新用户信息响应
-type UpdateUserInfoResponse struct {
+type UpdateUserInfoRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateUserInfoResponse) Reset() {
-	*x = UpdateUserInfoResponse{}
+func (x *UpdateUserInfoRsp) Reset() {
+	*x = UpdateUserInfoRsp{}
 	mi := &file_muse_user_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateUserInfoResponse) String() string {
+func (x *UpdateUserInfoRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateUserInfoResponse) ProtoMessage() {}
+func (*UpdateUserInfoRsp) ProtoMessage() {}
 
-func (x *UpdateUserInfoResponse) ProtoReflect() protoreflect.Message {
+func (x *UpdateUserInfoRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1479,33 +1479,33 @@ func (x *UpdateUserInfoResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateUserInfoResponse.ProtoReflect.Descriptor instead.
-func (*UpdateUserInfoResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateUserInfoRsp.ProtoReflect.Descriptor instead.
+func (*UpdateUserInfoRsp) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{26}
 }
 
 // 获取API配置列表请求
-type ListAPIConfigsRequest struct {
+type ListAPIConfigsReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Provider      APIProvider            `protobuf:"varint,1,opt,name=provider,proto3,enum=muse.APIProvider" json:"provider,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListAPIConfigsRequest) Reset() {
-	*x = ListAPIConfigsRequest{}
+func (x *ListAPIConfigsReq) Reset() {
+	*x = ListAPIConfigsReq{}
 	mi := &file_muse_user_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListAPIConfigsRequest) String() string {
+func (x *ListAPIConfigsReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListAPIConfigsRequest) ProtoMessage() {}
+func (*ListAPIConfigsReq) ProtoMessage() {}
 
-func (x *ListAPIConfigsRequest) ProtoReflect() protoreflect.Message {
+func (x *ListAPIConfigsReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1517,12 +1517,12 @@ func (x *ListAPIConfigsRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListAPIConfigsRequest.ProtoReflect.Descriptor instead.
-func (*ListAPIConfigsRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListAPIConfigsReq.ProtoReflect.Descriptor instead.
+func (*ListAPIConfigsReq) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{27}
 }
 
-func (x *ListAPIConfigsRequest) GetProvider() APIProvider {
+func (x *ListAPIConfigsReq) GetProvider() APIProvider {
 	if x != nil {
 		return x.Provider
 	}
@@ -1530,27 +1530,27 @@ func (x *ListAPIConfigsRequest) GetProvider() APIProvider {
 }
 
 // 获取API配置列表响应
-type ListAPIConfigsResponse struct {
+type ListAPIConfigsRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Configs       []*APIConfig           `protobuf:"bytes,1,rep,name=configs,proto3" json:"configs,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListAPIConfigsResponse) Reset() {
-	*x = ListAPIConfigsResponse{}
+func (x *ListAPIConfigsRsp) Reset() {
+	*x = ListAPIConfigsRsp{}
 	mi := &file_muse_user_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListAPIConfigsResponse) String() string {
+func (x *ListAPIConfigsRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListAPIConfigsResponse) ProtoMessage() {}
+func (*ListAPIConfigsRsp) ProtoMessage() {}
 
-func (x *ListAPIConfigsResponse) ProtoReflect() protoreflect.Message {
+func (x *ListAPIConfigsRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1562,12 +1562,12 @@ func (x *ListAPIConfigsResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListAPIConfigsResponse.ProtoReflect.Descriptor instead.
-func (*ListAPIConfigsResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListAPIConfigsRsp.ProtoReflect.Descriptor instead.
+func (*ListAPIConfigsRsp) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{28}
 }
 
-func (x *ListAPIConfigsResponse) GetConfigs() []*APIConfig {
+func (x *ListAPIConfigsRsp) GetConfigs() []*APIConfig {
 	if x != nil {
 		return x.Configs
 	}
@@ -1575,7 +1575,7 @@ func (x *ListAPIConfigsResponse) GetConfigs() []*APIConfig {
 }
 
 // 创建API配置请求
-type CreateAPIConfigRequest struct {
+type CreateAPIConfigReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Provider      APIProvider            `protobuf:"varint,2,opt,name=provider,proto3,enum=muse.APIProvider" json:"provider,omitempty"`
 	ApiKey        string                 `protobuf:"bytes,3,opt,name=api_key,json=apiKey,proto3" json:"api_key,omitempty"`
@@ -1583,20 +1583,20 @@ type CreateAPIConfigRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreateAPIConfigRequest) Reset() {
-	*x = CreateAPIConfigRequest{}
+func (x *CreateAPIConfigReq) Reset() {
+	*x = CreateAPIConfigReq{}
 	mi := &file_muse_user_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreateAPIConfigRequest) String() string {
+func (x *CreateAPIConfigReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateAPIConfigRequest) ProtoMessage() {}
+func (*CreateAPIConfigReq) ProtoMessage() {}
 
-func (x *CreateAPIConfigRequest) ProtoReflect() protoreflect.Message {
+func (x *CreateAPIConfigReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1608,19 +1608,19 @@ func (x *CreateAPIConfigRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreateAPIConfigRequest.ProtoReflect.Descriptor instead.
-func (*CreateAPIConfigRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateAPIConfigReq.ProtoReflect.Descriptor instead.
+func (*CreateAPIConfigReq) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{29}
 }
 
-func (x *CreateAPIConfigRequest) GetProvider() APIProvider {
+func (x *CreateAPIConfigReq) GetProvider() APIProvider {
 	if x != nil {
 		return x.Provider
 	}
 	return APIProvider_APIProviderUnspecified
 }
 
-func (x *CreateAPIConfigRequest) GetApiKey() string {
+func (x *CreateAPIConfigReq) GetApiKey() string {
 	if x != nil {
 		return x.ApiKey
 	}
@@ -1628,27 +1628,27 @@ func (x *CreateAPIConfigRequest) GetApiKey() string {
 }
 
 // 创建API配置响应
-type CreateAPIConfigResponse struct {
+type CreateAPIConfigRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ConfigId      int32                  `protobuf:"varint,1,opt,name=config_id,json=configId,proto3" json:"config_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreateAPIConfigResponse) Reset() {
-	*x = CreateAPIConfigResponse{}
+func (x *CreateAPIConfigRsp) Reset() {
+	*x = CreateAPIConfigRsp{}
 	mi := &file_muse_user_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreateAPIConfigResponse) String() string {
+func (x *CreateAPIConfigRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateAPIConfigResponse) ProtoMessage() {}
+func (*CreateAPIConfigRsp) ProtoMessage() {}
 
-func (x *CreateAPIConfigResponse) ProtoReflect() protoreflect.Message {
+func (x *CreateAPIConfigRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1660,12 +1660,12 @@ func (x *CreateAPIConfigResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreateAPIConfigResponse.ProtoReflect.Descriptor instead.
-func (*CreateAPIConfigResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateAPIConfigRsp.ProtoReflect.Descriptor instead.
+func (*CreateAPIConfigRsp) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{30}
 }
 
-func (x *CreateAPIConfigResponse) GetConfigId() int32 {
+func (x *CreateAPIConfigRsp) GetConfigId() int32 {
 	if x != nil {
 		return x.ConfigId
 	}
@@ -1673,7 +1673,7 @@ func (x *CreateAPIConfigResponse) GetConfigId() int32 {
 }
 
 // 更新API配置请求
-type UpdateAPIConfigRequest struct {
+type UpdateAPIConfigReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Provider      APIProvider            `protobuf:"varint,3,opt,name=provider,proto3,enum=muse.APIProvider" json:"provider,omitempty"`
@@ -1682,20 +1682,20 @@ type UpdateAPIConfigRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateAPIConfigRequest) Reset() {
-	*x = UpdateAPIConfigRequest{}
+func (x *UpdateAPIConfigReq) Reset() {
+	*x = UpdateAPIConfigReq{}
 	mi := &file_muse_user_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateAPIConfigRequest) String() string {
+func (x *UpdateAPIConfigReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateAPIConfigRequest) ProtoMessage() {}
+func (*UpdateAPIConfigReq) ProtoMessage() {}
 
-func (x *UpdateAPIConfigRequest) ProtoReflect() protoreflect.Message {
+func (x *UpdateAPIConfigReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1707,26 +1707,26 @@ func (x *UpdateAPIConfigRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateAPIConfigRequest.ProtoReflect.Descriptor instead.
-func (*UpdateAPIConfigRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateAPIConfigReq.ProtoReflect.Descriptor instead.
+func (*UpdateAPIConfigReq) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{31}
 }
 
-func (x *UpdateAPIConfigRequest) GetId() int32 {
+func (x *UpdateAPIConfigReq) GetId() int32 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-func (x *UpdateAPIConfigRequest) GetProvider() APIProvider {
+func (x *UpdateAPIConfigReq) GetProvider() APIProvider {
 	if x != nil {
 		return x.Provider
 	}
 	return APIProvider_APIProviderUnspecified
 }
 
-func (x *UpdateAPIConfigRequest) GetApiKey() string {
+func (x *UpdateAPIConfigReq) GetApiKey() string {
 	if x != nil && x.ApiKey != nil {
 		return *x.ApiKey
 	}
@@ -1734,26 +1734,26 @@ func (x *UpdateAPIConfigRequest) GetApiKey() string {
 }
 
 // 更新API配置响应
-type UpdateAPIConfigResponse struct {
+type UpdateAPIConfigRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateAPIConfigResponse) Reset() {
-	*x = UpdateAPIConfigResponse{}
+func (x *UpdateAPIConfigRsp) Reset() {
+	*x = UpdateAPIConfigRsp{}
 	mi := &file_muse_user_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateAPIConfigResponse) String() string {
+func (x *UpdateAPIConfigRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateAPIConfigResponse) ProtoMessage() {}
+func (*UpdateAPIConfigRsp) ProtoMessage() {}
 
-func (x *UpdateAPIConfigResponse) ProtoReflect() protoreflect.Message {
+func (x *UpdateAPIConfigRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1765,33 +1765,33 @@ func (x *UpdateAPIConfigResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateAPIConfigResponse.ProtoReflect.Descriptor instead.
-func (*UpdateAPIConfigResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateAPIConfigRsp.ProtoReflect.Descriptor instead.
+func (*UpdateAPIConfigRsp) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{32}
 }
 
 // 删除API配置请求
-type DeleteAPIConfigRequest struct {
+type DeleteAPIConfigReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeleteAPIConfigRequest) Reset() {
-	*x = DeleteAPIConfigRequest{}
+func (x *DeleteAPIConfigReq) Reset() {
+	*x = DeleteAPIConfigReq{}
 	mi := &file_muse_user_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeleteAPIConfigRequest) String() string {
+func (x *DeleteAPIConfigReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeleteAPIConfigRequest) ProtoMessage() {}
+func (*DeleteAPIConfigReq) ProtoMessage() {}
 
-func (x *DeleteAPIConfigRequest) ProtoReflect() protoreflect.Message {
+func (x *DeleteAPIConfigReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1803,12 +1803,12 @@ func (x *DeleteAPIConfigRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeleteAPIConfigRequest.ProtoReflect.Descriptor instead.
-func (*DeleteAPIConfigRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeleteAPIConfigReq.ProtoReflect.Descriptor instead.
+func (*DeleteAPIConfigReq) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{33}
 }
 
-func (x *DeleteAPIConfigRequest) GetId() int32 {
+func (x *DeleteAPIConfigReq) GetId() int32 {
 	if x != nil {
 		return x.Id
 	}
@@ -1816,26 +1816,26 @@ func (x *DeleteAPIConfigRequest) GetId() int32 {
 }
 
 // 删除API配置响应
-type DeleteAPIConfigResponse struct {
+type DeleteAPIConfigRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeleteAPIConfigResponse) Reset() {
-	*x = DeleteAPIConfigResponse{}
+func (x *DeleteAPIConfigRsp) Reset() {
+	*x = DeleteAPIConfigRsp{}
 	mi := &file_muse_user_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeleteAPIConfigResponse) String() string {
+func (x *DeleteAPIConfigRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeleteAPIConfigResponse) ProtoMessage() {}
+func (*DeleteAPIConfigRsp) ProtoMessage() {}
 
-func (x *DeleteAPIConfigResponse) ProtoReflect() protoreflect.Message {
+func (x *DeleteAPIConfigRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1847,33 +1847,33 @@ func (x *DeleteAPIConfigResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeleteAPIConfigResponse.ProtoReflect.Descriptor instead.
-func (*DeleteAPIConfigResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeleteAPIConfigRsp.ProtoReflect.Descriptor instead.
+func (*DeleteAPIConfigRsp) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{34}
 }
 
 // 设置活跃API配置请求
-type SetActiveAPIConfigRequest struct {
+type SetActiveAPIConfigReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ConfigId      int32                  `protobuf:"varint,1,opt,name=config_id,json=configId,proto3" json:"config_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SetActiveAPIConfigRequest) Reset() {
-	*x = SetActiveAPIConfigRequest{}
+func (x *SetActiveAPIConfigReq) Reset() {
+	*x = SetActiveAPIConfigReq{}
 	mi := &file_muse_user_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SetActiveAPIConfigRequest) String() string {
+func (x *SetActiveAPIConfigReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SetActiveAPIConfigRequest) ProtoMessage() {}
+func (*SetActiveAPIConfigReq) ProtoMessage() {}
 
-func (x *SetActiveAPIConfigRequest) ProtoReflect() protoreflect.Message {
+func (x *SetActiveAPIConfigReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1885,12 +1885,12 @@ func (x *SetActiveAPIConfigRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SetActiveAPIConfigRequest.ProtoReflect.Descriptor instead.
-func (*SetActiveAPIConfigRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use SetActiveAPIConfigReq.ProtoReflect.Descriptor instead.
+func (*SetActiveAPIConfigReq) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{35}
 }
 
-func (x *SetActiveAPIConfigRequest) GetConfigId() int32 {
+func (x *SetActiveAPIConfigReq) GetConfigId() int32 {
 	if x != nil {
 		return x.ConfigId
 	}
@@ -1898,26 +1898,26 @@ func (x *SetActiveAPIConfigRequest) GetConfigId() int32 {
 }
 
 // 设置活跃API配置响应
-type SetActiveAPIConfigResponse struct {
+type SetActiveAPIConfigRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SetActiveAPIConfigResponse) Reset() {
-	*x = SetActiveAPIConfigResponse{}
+func (x *SetActiveAPIConfigRsp) Reset() {
+	*x = SetActiveAPIConfigRsp{}
 	mi := &file_muse_user_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SetActiveAPIConfigResponse) String() string {
+func (x *SetActiveAPIConfigRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SetActiveAPIConfigResponse) ProtoMessage() {}
+func (*SetActiveAPIConfigRsp) ProtoMessage() {}
 
-func (x *SetActiveAPIConfigResponse) ProtoReflect() protoreflect.Message {
+func (x *SetActiveAPIConfigRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1929,33 +1929,33 @@ func (x *SetActiveAPIConfigResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SetActiveAPIConfigResponse.ProtoReflect.Descriptor instead.
-func (*SetActiveAPIConfigResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use SetActiveAPIConfigRsp.ProtoReflect.Descriptor instead.
+func (*SetActiveAPIConfigRsp) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{36}
 }
 
 // 测试API配置请求
-type TestAPIConfigRequest struct {
+type TestAPIConfigReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *TestAPIConfigRequest) Reset() {
-	*x = TestAPIConfigRequest{}
+func (x *TestAPIConfigReq) Reset() {
+	*x = TestAPIConfigReq{}
 	mi := &file_muse_user_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *TestAPIConfigRequest) String() string {
+func (x *TestAPIConfigReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*TestAPIConfigRequest) ProtoMessage() {}
+func (*TestAPIConfigReq) ProtoMessage() {}
 
-func (x *TestAPIConfigRequest) ProtoReflect() protoreflect.Message {
+func (x *TestAPIConfigReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1967,12 +1967,12 @@ func (x *TestAPIConfigRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use TestAPIConfigRequest.ProtoReflect.Descriptor instead.
-func (*TestAPIConfigRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use TestAPIConfigReq.ProtoReflect.Descriptor instead.
+func (*TestAPIConfigReq) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{37}
 }
 
-func (x *TestAPIConfigRequest) GetId() int32 {
+func (x *TestAPIConfigReq) GetId() int32 {
 	if x != nil {
 		return x.Id
 	}
@@ -1980,7 +1980,7 @@ func (x *TestAPIConfigRequest) GetId() int32 {
 }
 
 // 测试API配置响应
-type TestAPIConfigResponse struct {
+type TestAPIConfigRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
 	ErrorMessage  *string                `protobuf:"bytes,2,opt,name=error_message,json=errorMessage,proto3,oneof" json:"error_message,omitempty"`
@@ -1989,20 +1989,20 @@ type TestAPIConfigResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *TestAPIConfigResponse) Reset() {
-	*x = TestAPIConfigResponse{}
+func (x *TestAPIConfigRsp) Reset() {
+	*x = TestAPIConfigRsp{}
 	mi := &file_muse_user_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *TestAPIConfigResponse) String() string {
+func (x *TestAPIConfigRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*TestAPIConfigResponse) ProtoMessage() {}
+func (*TestAPIConfigRsp) ProtoMessage() {}
 
-func (x *TestAPIConfigResponse) ProtoReflect() protoreflect.Message {
+func (x *TestAPIConfigRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_user_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2014,26 +2014,26 @@ func (x *TestAPIConfigResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use TestAPIConfigResponse.ProtoReflect.Descriptor instead.
-func (*TestAPIConfigResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use TestAPIConfigRsp.ProtoReflect.Descriptor instead.
+func (*TestAPIConfigRsp) Descriptor() ([]byte, []int) {
 	return file_muse_user_proto_rawDescGZIP(), []int{38}
 }
 
-func (x *TestAPIConfigResponse) GetSuccess() bool {
+func (x *TestAPIConfigRsp) GetSuccess() bool {
 	if x != nil {
 		return x.Success
 	}
 	return false
 }
 
-func (x *TestAPIConfigResponse) GetErrorMessage() string {
+func (x *TestAPIConfigRsp) GetErrorMessage() string {
 	if x != nil && x.ErrorMessage != nil {
 		return *x.ErrorMessage
 	}
 	return ""
 }
 
-func (x *TestAPIConfigResponse) GetModelInfo() string {
+func (x *TestAPIConfigRsp) GetModelInfo() string {
 	if x != nil && x.ModelInfo != nil {
 		return *x.ModelInfo
 	}
@@ -2082,61 +2082,61 @@ const file_muse_user_proto_rawDesc = "" +
 	"created_at\x18\t \x01(\x03R\tcreatedAt\x12\x1d\n" +
 	"\n" +
 	"updated_at\x18\n" +
-	" \x01(\x03R\tupdatedAt\"I\n" +
-	"\x0fRegisterRequest\x12\x1a\n" +
+	" \x01(\x03R\tupdatedAt\"E\n" +
+	"\vRegisterReq\x12\x1a\n" +
 	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
-	"\bpassword\x18\x02 \x01(\tR\bpassword\"K\n" +
-	"\x10RegisterResponse\x12!\n" +
+	"\bpassword\x18\x02 \x01(\tR\bpassword\"F\n" +
+	"\vRegisterRsp\x12!\n" +
 	"\x04user\x18\x01 \x01(\v2\r.muse.SysUserR\x04user\x12\x14\n" +
-	"\x05token\x18\x02 \x01(\tR\x05token\"F\n" +
-	"\fLoginRequest\x12\x1a\n" +
+	"\x05token\x18\x02 \x01(\tR\x05token\"B\n" +
+	"\bLoginReq\x12\x1a\n" +
 	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
-	"\bpassword\x18\x02 \x01(\tR\bpassword\"H\n" +
-	"\rLoginResponse\x12!\n" +
+	"\bpassword\x18\x02 \x01(\tR\bpassword\"C\n" +
+	"\bLoginRsp\x12!\n" +
 	"\x04user\x18\x01 \x01(\v2\r.muse.SysUserR\x04user\x12\x14\n" +
-	"\x05token\x18\x02 \x01(\tR\x05token\"\x17\n" +
-	"\x15GetCurrentUserRequest\";\n" +
-	"\x16GetCurrentUserResponse\x12!\n" +
-	"\x04user\x18\x01 \x01(\v2\r.muse.SysUserR\x04user\"]\n" +
-	"\x15ChangePasswordRequest\x12!\n" +
+	"\x05token\x18\x02 \x01(\tR\x05token\"\x13\n" +
+	"\x11GetCurrentUserReq\"6\n" +
+	"\x11GetCurrentUserRsp\x12!\n" +
+	"\x04user\x18\x01 \x01(\v2\r.muse.SysUserR\x04user\"Y\n" +
+	"\x11ChangePasswordReq\x12!\n" +
 	"\fold_password\x18\x01 \x01(\tR\voldPassword\x12!\n" +
-	"\fnew_password\x18\x02 \x01(\tR\vnewPassword\"\x18\n" +
-	"\x16ChangePasswordResponse\"\x15\n" +
-	"\x13ListPersonasRequest\"A\n" +
-	"\x14ListPersonasResponse\x12)\n" +
-	"\bpersonas\x18\x01 \x03(\v2\r.muse.PersonaR\bpersonas\"#\n" +
-	"\x11GetPersonaRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\"=\n" +
-	"\x12GetPersonaResponse\x12'\n" +
-	"\apersona\x18\x01 \x01(\v2\r.muse.PersonaR\apersona\"\x89\x01\n" +
-	"\x14CreatePersonaRequest\x12\x12\n" +
+	"\fnew_password\x18\x02 \x01(\tR\vnewPassword\"\x13\n" +
+	"\x11ChangePasswordRsp\"\x11\n" +
+	"\x0fListPersonasReq\"<\n" +
+	"\x0fListPersonasRsp\x12)\n" +
+	"\bpersonas\x18\x01 \x03(\v2\r.muse.PersonaR\bpersonas\"\x1f\n" +
+	"\rGetPersonaReq\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\"8\n" +
+	"\rGetPersonaRsp\x12'\n" +
+	"\apersona\x18\x01 \x01(\v2\r.muse.PersonaR\apersona\"\x85\x01\n" +
+	"\x10CreatePersonaReq\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1b\n" +
 	"\x06avatar\x18\x02 \x01(\tH\x00R\x06avatar\x88\x01\x01\x12%\n" +
 	"\vdescription\x18\x03 \x01(\tH\x01R\vdescription\x88\x01\x01B\t\n" +
 	"\a_avatarB\x0e\n" +
-	"\f_description\"@\n" +
-	"\x15CreatePersonaResponse\x12'\n" +
-	"\apersona\x18\x01 \x01(\v2\r.muse.PersonaR\apersona\"\x99\x01\n" +
-	"\x14UpdatePersonaRequest\x12\x0e\n" +
+	"\f_description\";\n" +
+	"\x10CreatePersonaRsp\x12'\n" +
+	"\apersona\x18\x01 \x01(\v2\r.muse.PersonaR\apersona\"\x95\x01\n" +
+	"\x10UpdatePersonaReq\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1b\n" +
 	"\x06avatar\x18\x03 \x01(\tH\x00R\x06avatar\x88\x01\x01\x12%\n" +
 	"\vdescription\x18\x04 \x01(\tH\x01R\vdescription\x88\x01\x01B\t\n" +
 	"\a_avatarB\x0e\n" +
-	"\f_description\"@\n" +
-	"\x15UpdatePersonaResponse\x12'\n" +
-	"\apersona\x18\x01 \x01(\v2\r.muse.PersonaR\apersona\"&\n" +
-	"\x14DeletePersonaRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\"\x17\n" +
-	"\x15DeletePersonaResponse\"8\n" +
-	"\x17SetActivePersonaRequest\x12\x1d\n" +
+	"\f_description\";\n" +
+	"\x10UpdatePersonaRsp\x12'\n" +
+	"\apersona\x18\x01 \x01(\v2\r.muse.PersonaR\apersona\"\"\n" +
+	"\x10DeletePersonaReq\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\"\x12\n" +
+	"\x10DeletePersonaRsp\"4\n" +
+	"\x13SetActivePersonaReq\x12\x1d\n" +
 	"\n" +
-	"persona_id\x18\x01 \x01(\x05R\tpersonaId\"\x1a\n" +
-	"\x18SetActivePersonaResponse\"\x14\n" +
-	"\x12GetUserInfoRequest\"8\n" +
-	"\x13GetUserInfoResponse\x12!\n" +
-	"\x04user\x18\x01 \x01(\v2\r.muse.SysUserR\x04user\"\x8d\x02\n" +
-	"\x15UpdateUserInfoRequest\x12&\n" +
+	"persona_id\x18\x01 \x01(\x05R\tpersonaId\"\x15\n" +
+	"\x13SetActivePersonaRsp\"\x10\n" +
+	"\x0eGetUserInfoReq\"3\n" +
+	"\x0eGetUserInfoRsp\x12!\n" +
+	"\x04user\x18\x01 \x01(\v2\r.muse.SysUserR\x04user\"\x89\x02\n" +
+	"\x11UpdateUserInfoReq\x12&\n" +
 	"\x05theme\x18\x01 \x01(\x0e2\v.muse.ThemeH\x00R\x05theme\x88\x01\x01\x12\x1f\n" +
 	"\blanguage\x18\x02 \x01(\tH\x01R\blanguage\x88\x01\x01\x122\n" +
 	"\bprovider\x18\x05 \x01(\x0e2\x11.muse.APIProviderH\x02R\bprovider\x88\x01\x01\x12\x19\n" +
@@ -2147,60 +2147,59 @@ const file_muse_user_proto_rawDesc = "" +
 	"\t_providerB\b\n" +
 	"\x06_modelB\f\n" +
 	"\n" +
-	"_proxy_url\"\x18\n" +
-	"\x16UpdateUserInfoResponse\"F\n" +
-	"\x15ListAPIConfigsRequest\x12-\n" +
-	"\bprovider\x18\x01 \x01(\x0e2\x11.muse.APIProviderR\bprovider\"C\n" +
-	"\x16ListAPIConfigsResponse\x12)\n" +
-	"\aconfigs\x18\x01 \x03(\v2\x0f.muse.APIConfigR\aconfigs\"`\n" +
-	"\x16CreateAPIConfigRequest\x12-\n" +
+	"_proxy_url\"\x13\n" +
+	"\x11UpdateUserInfoRsp\"B\n" +
+	"\x11ListAPIConfigsReq\x12-\n" +
+	"\bprovider\x18\x01 \x01(\x0e2\x11.muse.APIProviderR\bprovider\">\n" +
+	"\x11ListAPIConfigsRsp\x12)\n" +
+	"\aconfigs\x18\x01 \x03(\v2\x0f.muse.APIConfigR\aconfigs\"\\\n" +
+	"\x12CreateAPIConfigReq\x12-\n" +
 	"\bprovider\x18\x02 \x01(\x0e2\x11.muse.APIProviderR\bprovider\x12\x17\n" +
-	"\aapi_key\x18\x03 \x01(\tR\x06apiKey\"6\n" +
-	"\x17CreateAPIConfigResponse\x12\x1b\n" +
-	"\tconfig_id\x18\x01 \x01(\x05R\bconfigId\"\x81\x01\n" +
-	"\x16UpdateAPIConfigRequest\x12\x0e\n" +
+	"\aapi_key\x18\x03 \x01(\tR\x06apiKey\"1\n" +
+	"\x12CreateAPIConfigRsp\x12\x1b\n" +
+	"\tconfig_id\x18\x01 \x01(\x05R\bconfigId\"}\n" +
+	"\x12UpdateAPIConfigReq\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12-\n" +
 	"\bprovider\x18\x03 \x01(\x0e2\x11.muse.APIProviderR\bprovider\x12\x1c\n" +
 	"\aapi_key\x18\x04 \x01(\tH\x00R\x06apiKey\x88\x01\x01B\n" +
 	"\n" +
-	"\b_api_key\"\x19\n" +
-	"\x17UpdateAPIConfigResponse\"(\n" +
-	"\x16DeleteAPIConfigRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\"\x19\n" +
-	"\x17DeleteAPIConfigResponse\"8\n" +
-	"\x19SetActiveAPIConfigRequest\x12\x1b\n" +
-	"\tconfig_id\x18\x01 \x01(\x05R\bconfigId\"\x1c\n" +
-	"\x1aSetActiveAPIConfigResponse\"&\n" +
-	"\x14TestAPIConfigRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\"\xa0\x01\n" +
-	"\x15TestAPIConfigResponse\x12\x18\n" +
+	"\b_api_key\"\x14\n" +
+	"\x12UpdateAPIConfigRsp\"$\n" +
+	"\x12DeleteAPIConfigReq\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\"\x14\n" +
+	"\x12DeleteAPIConfigRsp\"4\n" +
+	"\x15SetActiveAPIConfigReq\x12\x1b\n" +
+	"\tconfig_id\x18\x01 \x01(\x05R\bconfigId\"\x17\n" +
+	"\x15SetActiveAPIConfigRsp\"\"\n" +
+	"\x10TestAPIConfigReq\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\"\x9b\x01\n" +
+	"\x10TestAPIConfigRsp\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12(\n" +
 	"\rerror_message\x18\x02 \x01(\tH\x00R\ferrorMessage\x88\x01\x01\x12\"\n" +
 	"\n" +
 	"model_info\x18\x03 \x01(\tH\x01R\tmodelInfo\x88\x01\x01B\x10\n" +
 	"\x0e_error_messageB\r\n" +
-	"\v_model_info2\xbe\n" +
+	"\v_model_info2\x9c\t\n" +
+	"\vUserService\x120\n" +
+	"\bRegister\x12\x11.muse.RegisterReq\x1a\x11.muse.RegisterRsp\x12'\n" +
+	"\x05Login\x12\x0e.muse.LoginReq\x1a\x0e.muse.LoginRsp\x12B\n" +
+	"\x0eGetCurrentUser\x12\x17.muse.GetCurrentUserReq\x1a\x17.muse.GetCurrentUserRsp\x12B\n" +
+	"\x0eChangePassword\x12\x17.muse.ChangePasswordReq\x1a\x17.muse.ChangePasswordRsp\x12<\n" +
+	"\fListPersonas\x12\x15.muse.ListPersonasReq\x1a\x15.muse.ListPersonasRsp\x126\n" +
 	"\n" +
-	"\vUserService\x129\n" +
-	"\bRegister\x12\x15.muse.RegisterRequest\x1a\x16.muse.RegisterResponse\x120\n" +
-	"\x05Login\x12\x12.muse.LoginRequest\x1a\x13.muse.LoginResponse\x12K\n" +
-	"\x0eGetCurrentUser\x12\x1b.muse.GetCurrentUserRequest\x1a\x1c.muse.GetCurrentUserResponse\x12K\n" +
-	"\x0eChangePassword\x12\x1b.muse.ChangePasswordRequest\x1a\x1c.muse.ChangePasswordResponse\x12E\n" +
-	"\fListPersonas\x12\x19.muse.ListPersonasRequest\x1a\x1a.muse.ListPersonasResponse\x12?\n" +
-	"\n" +
-	"GetPersona\x12\x17.muse.GetPersonaRequest\x1a\x18.muse.GetPersonaResponse\x12H\n" +
-	"\rCreatePersona\x12\x1a.muse.CreatePersonaRequest\x1a\x1b.muse.CreatePersonaResponse\x12H\n" +
-	"\rUpdatePersona\x12\x1a.muse.UpdatePersonaRequest\x1a\x1b.muse.UpdatePersonaResponse\x12H\n" +
-	"\rDeletePersona\x12\x1a.muse.DeletePersonaRequest\x1a\x1b.muse.DeletePersonaResponse\x12Q\n" +
-	"\x10SetActivePersona\x12\x1d.muse.SetActivePersonaRequest\x1a\x1e.muse.SetActivePersonaResponse\x12B\n" +
-	"\vGetUserInfo\x12\x18.muse.GetUserInfoRequest\x1a\x19.muse.GetUserInfoResponse\x12K\n" +
-	"\x0eUpdateUserInfo\x12\x1b.muse.UpdateUserInfoRequest\x1a\x1c.muse.UpdateUserInfoResponse\x12K\n" +
-	"\x0eListAPIConfigs\x12\x1b.muse.ListAPIConfigsRequest\x1a\x1c.muse.ListAPIConfigsResponse\x12N\n" +
-	"\x0fCreateAPIConfig\x12\x1c.muse.CreateAPIConfigRequest\x1a\x1d.muse.CreateAPIConfigResponse\x12N\n" +
-	"\x0fUpdateAPIConfig\x12\x1c.muse.UpdateAPIConfigRequest\x1a\x1d.muse.UpdateAPIConfigResponse\x12N\n" +
-	"\x0fDeleteAPIConfig\x12\x1c.muse.DeleteAPIConfigRequest\x1a\x1d.muse.DeleteAPIConfigResponse\x12W\n" +
-	"\x12SetActiveAPIConfig\x12\x1f.muse.SetActiveAPIConfigRequest\x1a .muse.SetActiveAPIConfigResponse\x12H\n" +
-	"\rTestAPIConfig\x12\x1a.muse.TestAPIConfigRequest\x1a\x1b.muse.TestAPIConfigResponseBd\n" +
+	"GetPersona\x12\x13.muse.GetPersonaReq\x1a\x13.muse.GetPersonaRsp\x12?\n" +
+	"\rCreatePersona\x12\x16.muse.CreatePersonaReq\x1a\x16.muse.CreatePersonaRsp\x12?\n" +
+	"\rUpdatePersona\x12\x16.muse.UpdatePersonaReq\x1a\x16.muse.UpdatePersonaRsp\x12?\n" +
+	"\rDeletePersona\x12\x16.muse.DeletePersonaReq\x1a\x16.muse.DeletePersonaRsp\x12H\n" +
+	"\x10SetActivePersona\x12\x19.muse.SetActivePersonaReq\x1a\x19.muse.SetActivePersonaRsp\x129\n" +
+	"\vGetUserInfo\x12\x14.muse.GetUserInfoReq\x1a\x14.muse.GetUserInfoRsp\x12B\n" +
+	"\x0eUpdateUserInfo\x12\x17.muse.UpdateUserInfoReq\x1a\x17.muse.UpdateUserInfoRsp\x12B\n" +
+	"\x0eListAPIConfigs\x12\x17.muse.ListAPIConfigsReq\x1a\x17.muse.ListAPIConfigsRsp\x12E\n" +
+	"\x0fCreateAPIConfig\x12\x18.muse.CreateAPIConfigReq\x1a\x18.muse.CreateAPIConfigRsp\x12E\n" +
+	"\x0fUpdateAPIConfig\x12\x18.muse.UpdateAPIConfigReq\x1a\x18.muse.UpdateAPIConfigRsp\x12E\n" +
+	"\x0fDeleteAPIConfig\x12\x18.muse.DeleteAPIConfigReq\x1a\x18.muse.DeleteAPIConfigRsp\x12N\n" +
+	"\x12SetActiveAPIConfig\x12\x1b.muse.SetActiveAPIConfigReq\x1a\x1b.muse.SetActiveAPIConfigRsp\x12?\n" +
+	"\rTestAPIConfig\x12\x16.muse.TestAPIConfigReq\x1a\x16.muse.TestAPIConfigRspBd\n" +
 	"\bcom.museB\tUserProtoP\x01Z\x1dgithub.com/ling/muse/gen/muse\xa2\x02\x03MXX\xaa\x02\x04Muse\xca\x02\x04Muse\xe2\x02\x10Muse\\GPBMetadata\xea\x02\x04Museb\x06proto3"
 
 var (
@@ -2217,102 +2216,102 @@ func file_muse_user_proto_rawDescGZIP() []byte {
 
 var file_muse_user_proto_msgTypes = make([]protoimpl.MessageInfo, 39)
 var file_muse_user_proto_goTypes = []any{
-	(*SysUser)(nil),                    // 0: muse.SysUser
-	(*Persona)(nil),                    // 1: muse.Persona
-	(*APIConfig)(nil),                  // 2: muse.APIConfig
-	(*RegisterRequest)(nil),            // 3: muse.RegisterRequest
-	(*RegisterResponse)(nil),           // 4: muse.RegisterResponse
-	(*LoginRequest)(nil),               // 5: muse.LoginRequest
-	(*LoginResponse)(nil),              // 6: muse.LoginResponse
-	(*GetCurrentUserRequest)(nil),      // 7: muse.GetCurrentUserRequest
-	(*GetCurrentUserResponse)(nil),     // 8: muse.GetCurrentUserResponse
-	(*ChangePasswordRequest)(nil),      // 9: muse.ChangePasswordRequest
-	(*ChangePasswordResponse)(nil),     // 10: muse.ChangePasswordResponse
-	(*ListPersonasRequest)(nil),        // 11: muse.ListPersonasRequest
-	(*ListPersonasResponse)(nil),       // 12: muse.ListPersonasResponse
-	(*GetPersonaRequest)(nil),          // 13: muse.GetPersonaRequest
-	(*GetPersonaResponse)(nil),         // 14: muse.GetPersonaResponse
-	(*CreatePersonaRequest)(nil),       // 15: muse.CreatePersonaRequest
-	(*CreatePersonaResponse)(nil),      // 16: muse.CreatePersonaResponse
-	(*UpdatePersonaRequest)(nil),       // 17: muse.UpdatePersonaRequest
-	(*UpdatePersonaResponse)(nil),      // 18: muse.UpdatePersonaResponse
-	(*DeletePersonaRequest)(nil),       // 19: muse.DeletePersonaRequest
-	(*DeletePersonaResponse)(nil),      // 20: muse.DeletePersonaResponse
-	(*SetActivePersonaRequest)(nil),    // 21: muse.SetActivePersonaRequest
-	(*SetActivePersonaResponse)(nil),   // 22: muse.SetActivePersonaResponse
-	(*GetUserInfoRequest)(nil),         // 23: muse.GetUserInfoRequest
-	(*GetUserInfoResponse)(nil),        // 24: muse.GetUserInfoResponse
-	(*UpdateUserInfoRequest)(nil),      // 25: muse.UpdateUserInfoRequest
-	(*UpdateUserInfoResponse)(nil),     // 26: muse.UpdateUserInfoResponse
-	(*ListAPIConfigsRequest)(nil),      // 27: muse.ListAPIConfigsRequest
-	(*ListAPIConfigsResponse)(nil),     // 28: muse.ListAPIConfigsResponse
-	(*CreateAPIConfigRequest)(nil),     // 29: muse.CreateAPIConfigRequest
-	(*CreateAPIConfigResponse)(nil),    // 30: muse.CreateAPIConfigResponse
-	(*UpdateAPIConfigRequest)(nil),     // 31: muse.UpdateAPIConfigRequest
-	(*UpdateAPIConfigResponse)(nil),    // 32: muse.UpdateAPIConfigResponse
-	(*DeleteAPIConfigRequest)(nil),     // 33: muse.DeleteAPIConfigRequest
-	(*DeleteAPIConfigResponse)(nil),    // 34: muse.DeleteAPIConfigResponse
-	(*SetActiveAPIConfigRequest)(nil),  // 35: muse.SetActiveAPIConfigRequest
-	(*SetActiveAPIConfigResponse)(nil), // 36: muse.SetActiveAPIConfigResponse
-	(*TestAPIConfigRequest)(nil),       // 37: muse.TestAPIConfigRequest
-	(*TestAPIConfigResponse)(nil),      // 38: muse.TestAPIConfigResponse
-	(Theme)(0),                         // 39: muse.Theme
-	(APIProvider)(0),                   // 40: muse.APIProvider
+	(*SysUser)(nil),               // 0: muse.SysUser
+	(*Persona)(nil),               // 1: muse.Persona
+	(*APIConfig)(nil),             // 2: muse.APIConfig
+	(*RegisterReq)(nil),           // 3: muse.RegisterReq
+	(*RegisterRsp)(nil),           // 4: muse.RegisterRsp
+	(*LoginReq)(nil),              // 5: muse.LoginReq
+	(*LoginRsp)(nil),              // 6: muse.LoginRsp
+	(*GetCurrentUserReq)(nil),     // 7: muse.GetCurrentUserReq
+	(*GetCurrentUserRsp)(nil),     // 8: muse.GetCurrentUserRsp
+	(*ChangePasswordReq)(nil),     // 9: muse.ChangePasswordReq
+	(*ChangePasswordRsp)(nil),     // 10: muse.ChangePasswordRsp
+	(*ListPersonasReq)(nil),       // 11: muse.ListPersonasReq
+	(*ListPersonasRsp)(nil),       // 12: muse.ListPersonasRsp
+	(*GetPersonaReq)(nil),         // 13: muse.GetPersonaReq
+	(*GetPersonaRsp)(nil),         // 14: muse.GetPersonaRsp
+	(*CreatePersonaReq)(nil),      // 15: muse.CreatePersonaReq
+	(*CreatePersonaRsp)(nil),      // 16: muse.CreatePersonaRsp
+	(*UpdatePersonaReq)(nil),      // 17: muse.UpdatePersonaReq
+	(*UpdatePersonaRsp)(nil),      // 18: muse.UpdatePersonaRsp
+	(*DeletePersonaReq)(nil),      // 19: muse.DeletePersonaReq
+	(*DeletePersonaRsp)(nil),      // 20: muse.DeletePersonaRsp
+	(*SetActivePersonaReq)(nil),   // 21: muse.SetActivePersonaReq
+	(*SetActivePersonaRsp)(nil),   // 22: muse.SetActivePersonaRsp
+	(*GetUserInfoReq)(nil),        // 23: muse.GetUserInfoReq
+	(*GetUserInfoRsp)(nil),        // 24: muse.GetUserInfoRsp
+	(*UpdateUserInfoReq)(nil),     // 25: muse.UpdateUserInfoReq
+	(*UpdateUserInfoRsp)(nil),     // 26: muse.UpdateUserInfoRsp
+	(*ListAPIConfigsReq)(nil),     // 27: muse.ListAPIConfigsReq
+	(*ListAPIConfigsRsp)(nil),     // 28: muse.ListAPIConfigsRsp
+	(*CreateAPIConfigReq)(nil),    // 29: muse.CreateAPIConfigReq
+	(*CreateAPIConfigRsp)(nil),    // 30: muse.CreateAPIConfigRsp
+	(*UpdateAPIConfigReq)(nil),    // 31: muse.UpdateAPIConfigReq
+	(*UpdateAPIConfigRsp)(nil),    // 32: muse.UpdateAPIConfigRsp
+	(*DeleteAPIConfigReq)(nil),    // 33: muse.DeleteAPIConfigReq
+	(*DeleteAPIConfigRsp)(nil),    // 34: muse.DeleteAPIConfigRsp
+	(*SetActiveAPIConfigReq)(nil), // 35: muse.SetActiveAPIConfigReq
+	(*SetActiveAPIConfigRsp)(nil), // 36: muse.SetActiveAPIConfigRsp
+	(*TestAPIConfigReq)(nil),      // 37: muse.TestAPIConfigReq
+	(*TestAPIConfigRsp)(nil),      // 38: muse.TestAPIConfigRsp
+	(Theme)(0),                    // 39: muse.Theme
+	(APIProvider)(0),              // 40: muse.APIProvider
 }
 var file_muse_user_proto_depIdxs = []int32{
 	39, // 0: muse.SysUser.theme:type_name -> muse.Theme
 	40, // 1: muse.SysUser.provider:type_name -> muse.APIProvider
 	40, // 2: muse.APIConfig.provider:type_name -> muse.APIProvider
-	0,  // 3: muse.RegisterResponse.user:type_name -> muse.SysUser
-	0,  // 4: muse.LoginResponse.user:type_name -> muse.SysUser
-	0,  // 5: muse.GetCurrentUserResponse.user:type_name -> muse.SysUser
-	1,  // 6: muse.ListPersonasResponse.personas:type_name -> muse.Persona
-	1,  // 7: muse.GetPersonaResponse.persona:type_name -> muse.Persona
-	1,  // 8: muse.CreatePersonaResponse.persona:type_name -> muse.Persona
-	1,  // 9: muse.UpdatePersonaResponse.persona:type_name -> muse.Persona
-	0,  // 10: muse.GetUserInfoResponse.user:type_name -> muse.SysUser
-	39, // 11: muse.UpdateUserInfoRequest.theme:type_name -> muse.Theme
-	40, // 12: muse.UpdateUserInfoRequest.provider:type_name -> muse.APIProvider
-	40, // 13: muse.ListAPIConfigsRequest.provider:type_name -> muse.APIProvider
-	2,  // 14: muse.ListAPIConfigsResponse.configs:type_name -> muse.APIConfig
-	40, // 15: muse.CreateAPIConfigRequest.provider:type_name -> muse.APIProvider
-	40, // 16: muse.UpdateAPIConfigRequest.provider:type_name -> muse.APIProvider
-	3,  // 17: muse.UserService.Register:input_type -> muse.RegisterRequest
-	5,  // 18: muse.UserService.Login:input_type -> muse.LoginRequest
-	7,  // 19: muse.UserService.GetCurrentUser:input_type -> muse.GetCurrentUserRequest
-	9,  // 20: muse.UserService.ChangePassword:input_type -> muse.ChangePasswordRequest
-	11, // 21: muse.UserService.ListPersonas:input_type -> muse.ListPersonasRequest
-	13, // 22: muse.UserService.GetPersona:input_type -> muse.GetPersonaRequest
-	15, // 23: muse.UserService.CreatePersona:input_type -> muse.CreatePersonaRequest
-	17, // 24: muse.UserService.UpdatePersona:input_type -> muse.UpdatePersonaRequest
-	19, // 25: muse.UserService.DeletePersona:input_type -> muse.DeletePersonaRequest
-	21, // 26: muse.UserService.SetActivePersona:input_type -> muse.SetActivePersonaRequest
-	23, // 27: muse.UserService.GetUserInfo:input_type -> muse.GetUserInfoRequest
-	25, // 28: muse.UserService.UpdateUserInfo:input_type -> muse.UpdateUserInfoRequest
-	27, // 29: muse.UserService.ListAPIConfigs:input_type -> muse.ListAPIConfigsRequest
-	29, // 30: muse.UserService.CreateAPIConfig:input_type -> muse.CreateAPIConfigRequest
-	31, // 31: muse.UserService.UpdateAPIConfig:input_type -> muse.UpdateAPIConfigRequest
-	33, // 32: muse.UserService.DeleteAPIConfig:input_type -> muse.DeleteAPIConfigRequest
-	35, // 33: muse.UserService.SetActiveAPIConfig:input_type -> muse.SetActiveAPIConfigRequest
-	37, // 34: muse.UserService.TestAPIConfig:input_type -> muse.TestAPIConfigRequest
-	4,  // 35: muse.UserService.Register:output_type -> muse.RegisterResponse
-	6,  // 36: muse.UserService.Login:output_type -> muse.LoginResponse
-	8,  // 37: muse.UserService.GetCurrentUser:output_type -> muse.GetCurrentUserResponse
-	10, // 38: muse.UserService.ChangePassword:output_type -> muse.ChangePasswordResponse
-	12, // 39: muse.UserService.ListPersonas:output_type -> muse.ListPersonasResponse
-	14, // 40: muse.UserService.GetPersona:output_type -> muse.GetPersonaResponse
-	16, // 41: muse.UserService.CreatePersona:output_type -> muse.CreatePersonaResponse
-	18, // 42: muse.UserService.UpdatePersona:output_type -> muse.UpdatePersonaResponse
-	20, // 43: muse.UserService.DeletePersona:output_type -> muse.DeletePersonaResponse
-	22, // 44: muse.UserService.SetActivePersona:output_type -> muse.SetActivePersonaResponse
-	24, // 45: muse.UserService.GetUserInfo:output_type -> muse.GetUserInfoResponse
-	26, // 46: muse.UserService.UpdateUserInfo:output_type -> muse.UpdateUserInfoResponse
-	28, // 47: muse.UserService.ListAPIConfigs:output_type -> muse.ListAPIConfigsResponse
-	30, // 48: muse.UserService.CreateAPIConfig:output_type -> muse.CreateAPIConfigResponse
-	32, // 49: muse.UserService.UpdateAPIConfig:output_type -> muse.UpdateAPIConfigResponse
-	34, // 50: muse.UserService.DeleteAPIConfig:output_type -> muse.DeleteAPIConfigResponse
-	36, // 51: muse.UserService.SetActiveAPIConfig:output_type -> muse.SetActiveAPIConfigResponse
-	38, // 52: muse.UserService.TestAPIConfig:output_type -> muse.TestAPIConfigResponse
+	0,  // 3: muse.RegisterRsp.user:type_name -> muse.SysUser
+	0,  // 4: muse.LoginRsp.user:type_name -> muse.SysUser
+	0,  // 5: muse.GetCurrentUserRsp.user:type_name -> muse.SysUser
+	1,  // 6: muse.ListPersonasRsp.personas:type_name -> muse.Persona
+	1,  // 7: muse.GetPersonaRsp.persona:type_name -> muse.Persona
+	1,  // 8: muse.CreatePersonaRsp.persona:type_name -> muse.Persona
+	1,  // 9: muse.UpdatePersonaRsp.persona:type_name -> muse.Persona
+	0,  // 10: muse.GetUserInfoRsp.user:type_name -> muse.SysUser
+	39, // 11: muse.UpdateUserInfoReq.theme:type_name -> muse.Theme
+	40, // 12: muse.UpdateUserInfoReq.provider:type_name -> muse.APIProvider
+	40, // 13: muse.ListAPIConfigsReq.provider:type_name -> muse.APIProvider
+	2,  // 14: muse.ListAPIConfigsRsp.configs:type_name -> muse.APIConfig
+	40, // 15: muse.CreateAPIConfigReq.provider:type_name -> muse.APIProvider
+	40, // 16: muse.UpdateAPIConfigReq.provider:type_name -> muse.APIProvider
+	3,  // 17: muse.UserService.Register:input_type -> muse.RegisterReq
+	5,  // 18: muse.UserService.Login:input_type -> muse.LoginReq
+	7,  // 19: muse.UserService.GetCurrentUser:input_type -> muse.GetCurrentUserReq
+	9,  // 20: muse.UserService.ChangePassword:input_type -> muse.ChangePasswordReq
+	11, // 21: muse.UserService.ListPersonas:input_type -> muse.ListPersonasReq
+	13, // 22: muse.UserService.GetPersona:input_type -> muse.GetPersonaReq
+	15, // 23: muse.UserService.CreatePersona:input_type -> muse.CreatePersonaReq
+	17, // 24: muse.UserService.UpdatePersona:input_type -> muse.UpdatePersonaReq
+	19, // 25: muse.UserService.DeletePersona:input_type -> muse.DeletePersonaReq
+	21, // 26: muse.UserService.SetActivePersona:input_type -> muse.SetActivePersonaReq
+	23, // 27: muse.UserService.GetUserInfo:input_type -> muse.GetUserInfoReq
+	25, // 28: muse.UserService.UpdateUserInfo:input_type -> muse.UpdateUserInfoReq
+	27, // 29: muse.UserService.ListAPIConfigs:input_type -> muse.ListAPIConfigsReq
+	29, // 30: muse.UserService.CreateAPIConfig:input_type -> muse.CreateAPIConfigReq
+	31, // 31: muse.UserService.UpdateAPIConfig:input_type -> muse.UpdateAPIConfigReq
+	33, // 32: muse.UserService.DeleteAPIConfig:input_type -> muse.DeleteAPIConfigReq
+	35, // 33: muse.UserService.SetActiveAPIConfig:input_type -> muse.SetActiveAPIConfigReq
+	37, // 34: muse.UserService.TestAPIConfig:input_type -> muse.TestAPIConfigReq
+	4,  // 35: muse.UserService.Register:output_type -> muse.RegisterRsp
+	6,  // 36: muse.UserService.Login:output_type -> muse.LoginRsp
+	8,  // 37: muse.UserService.GetCurrentUser:output_type -> muse.GetCurrentUserRsp
+	10, // 38: muse.UserService.ChangePassword:output_type -> muse.ChangePasswordRsp
+	12, // 39: muse.UserService.ListPersonas:output_type -> muse.ListPersonasRsp
+	14, // 40: muse.UserService.GetPersona:output_type -> muse.GetPersonaRsp
+	16, // 41: muse.UserService.CreatePersona:output_type -> muse.CreatePersonaRsp
+	18, // 42: muse.UserService.UpdatePersona:output_type -> muse.UpdatePersonaRsp
+	20, // 43: muse.UserService.DeletePersona:output_type -> muse.DeletePersonaRsp
+	22, // 44: muse.UserService.SetActivePersona:output_type -> muse.SetActivePersonaRsp
+	24, // 45: muse.UserService.GetUserInfo:output_type -> muse.GetUserInfoRsp
+	26, // 46: muse.UserService.UpdateUserInfo:output_type -> muse.UpdateUserInfoRsp
+	28, // 47: muse.UserService.ListAPIConfigs:output_type -> muse.ListAPIConfigsRsp
+	30, // 48: muse.UserService.CreateAPIConfig:output_type -> muse.CreateAPIConfigRsp
+	32, // 49: muse.UserService.UpdateAPIConfig:output_type -> muse.UpdateAPIConfigRsp
+	34, // 50: muse.UserService.DeleteAPIConfig:output_type -> muse.DeleteAPIConfigRsp
+	36, // 51: muse.UserService.SetActiveAPIConfig:output_type -> muse.SetActiveAPIConfigRsp
+	38, // 52: muse.UserService.TestAPIConfig:output_type -> muse.TestAPIConfigRsp
 	35, // [35:53] is the sub-list for method output_type
 	17, // [17:35] is the sub-list for method input_type
 	17, // [17:17] is the sub-list for extension type_name

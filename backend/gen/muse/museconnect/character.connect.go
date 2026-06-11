@@ -62,21 +62,21 @@ const (
 // CharacterServiceClient is a client for the muse.CharacterService service.
 type CharacterServiceClient interface {
 	// 获取角色卡列表
-	ListCharacters(context.Context, *connect.Request[muse.ListCharactersRequest]) (*connect.Response[muse.ListCharactersResponse], error)
+	ListCharacters(context.Context, *connect.Request[muse.ListCharactersReq]) (*connect.Response[muse.ListCharactersRsp], error)
 	// 获取单个角色卡
-	GetCharacter(context.Context, *connect.Request[muse.GetCharacterRequest]) (*connect.Response[muse.GetCharacterResponse], error)
+	GetCharacter(context.Context, *connect.Request[muse.GetCharacterReq]) (*connect.Response[muse.GetCharacterRsp], error)
 	// 创建角色卡
-	CreateCharacter(context.Context, *connect.Request[muse.CreateCharacterRequest]) (*connect.Response[muse.CreateCharacterResponse], error)
+	CreateCharacter(context.Context, *connect.Request[muse.CreateCharacterReq]) (*connect.Response[muse.CreateCharacterRsp], error)
 	// 更新角色卡
-	UpdateCharacter(context.Context, *connect.Request[muse.UpdateCharacterRequest]) (*connect.Response[muse.UpdateCharacterResponse], error)
+	UpdateCharacter(context.Context, *connect.Request[muse.UpdateCharacterReq]) (*connect.Response[muse.UpdateCharacterRsp], error)
 	// 删除角色卡
-	DeleteCharacter(context.Context, *connect.Request[muse.DeleteCharacterRequest]) (*connect.Response[muse.DeleteCharacterResponse], error)
+	DeleteCharacter(context.Context, *connect.Request[muse.DeleteCharacterReq]) (*connect.Response[muse.DeleteCharacterRsp], error)
 	// 导入角色卡（支持SillyTavern格式）
-	ImportCharacter(context.Context, *connect.Request[muse.ImportCharacterRequest]) (*connect.Response[muse.ImportCharacterResponse], error)
+	ImportCharacter(context.Context, *connect.Request[muse.ImportCharacterReq]) (*connect.Response[muse.ImportCharacterRsp], error)
 	// 导出角色卡
-	ExportCharacter(context.Context, *connect.Request[muse.ExportCharacterRequest]) (*connect.Response[muse.ExportCharacterResponse], error)
+	ExportCharacter(context.Context, *connect.Request[muse.ExportCharacterReq]) (*connect.Response[muse.ExportCharacterRsp], error)
 	// 恢复角色卡的世界书（从备份恢复）
-	RestoreCharacterWorldInfo(context.Context, *connect.Request[muse.RestoreCharacterWorldInfoRequest]) (*connect.Response[muse.RestoreCharacterWorldInfoResponse], error)
+	RestoreCharacterWorldInfo(context.Context, *connect.Request[muse.RestoreCharacterWorldInfoReq]) (*connect.Response[muse.RestoreCharacterWorldInfoRsp], error)
 }
 
 // NewCharacterServiceClient constructs a client for the muse.CharacterService service. By default,
@@ -90,49 +90,49 @@ func NewCharacterServiceClient(httpClient connect.HTTPClient, baseURL string, op
 	baseURL = strings.TrimRight(baseURL, "/")
 	characterServiceMethods := muse.File_muse_character_proto.Services().ByName("CharacterService").Methods()
 	return &characterServiceClient{
-		listCharacters: connect.NewClient[muse.ListCharactersRequest, muse.ListCharactersResponse](
+		listCharacters: connect.NewClient[muse.ListCharactersReq, muse.ListCharactersRsp](
 			httpClient,
 			baseURL+CharacterServiceListCharactersProcedure,
 			connect.WithSchema(characterServiceMethods.ByName("ListCharacters")),
 			connect.WithClientOptions(opts...),
 		),
-		getCharacter: connect.NewClient[muse.GetCharacterRequest, muse.GetCharacterResponse](
+		getCharacter: connect.NewClient[muse.GetCharacterReq, muse.GetCharacterRsp](
 			httpClient,
 			baseURL+CharacterServiceGetCharacterProcedure,
 			connect.WithSchema(characterServiceMethods.ByName("GetCharacter")),
 			connect.WithClientOptions(opts...),
 		),
-		createCharacter: connect.NewClient[muse.CreateCharacterRequest, muse.CreateCharacterResponse](
+		createCharacter: connect.NewClient[muse.CreateCharacterReq, muse.CreateCharacterRsp](
 			httpClient,
 			baseURL+CharacterServiceCreateCharacterProcedure,
 			connect.WithSchema(characterServiceMethods.ByName("CreateCharacter")),
 			connect.WithClientOptions(opts...),
 		),
-		updateCharacter: connect.NewClient[muse.UpdateCharacterRequest, muse.UpdateCharacterResponse](
+		updateCharacter: connect.NewClient[muse.UpdateCharacterReq, muse.UpdateCharacterRsp](
 			httpClient,
 			baseURL+CharacterServiceUpdateCharacterProcedure,
 			connect.WithSchema(characterServiceMethods.ByName("UpdateCharacter")),
 			connect.WithClientOptions(opts...),
 		),
-		deleteCharacter: connect.NewClient[muse.DeleteCharacterRequest, muse.DeleteCharacterResponse](
+		deleteCharacter: connect.NewClient[muse.DeleteCharacterReq, muse.DeleteCharacterRsp](
 			httpClient,
 			baseURL+CharacterServiceDeleteCharacterProcedure,
 			connect.WithSchema(characterServiceMethods.ByName("DeleteCharacter")),
 			connect.WithClientOptions(opts...),
 		),
-		importCharacter: connect.NewClient[muse.ImportCharacterRequest, muse.ImportCharacterResponse](
+		importCharacter: connect.NewClient[muse.ImportCharacterReq, muse.ImportCharacterRsp](
 			httpClient,
 			baseURL+CharacterServiceImportCharacterProcedure,
 			connect.WithSchema(characterServiceMethods.ByName("ImportCharacter")),
 			connect.WithClientOptions(opts...),
 		),
-		exportCharacter: connect.NewClient[muse.ExportCharacterRequest, muse.ExportCharacterResponse](
+		exportCharacter: connect.NewClient[muse.ExportCharacterReq, muse.ExportCharacterRsp](
 			httpClient,
 			baseURL+CharacterServiceExportCharacterProcedure,
 			connect.WithSchema(characterServiceMethods.ByName("ExportCharacter")),
 			connect.WithClientOptions(opts...),
 		),
-		restoreCharacterWorldInfo: connect.NewClient[muse.RestoreCharacterWorldInfoRequest, muse.RestoreCharacterWorldInfoResponse](
+		restoreCharacterWorldInfo: connect.NewClient[muse.RestoreCharacterWorldInfoReq, muse.RestoreCharacterWorldInfoRsp](
 			httpClient,
 			baseURL+CharacterServiceRestoreCharacterWorldInfoProcedure,
 			connect.WithSchema(characterServiceMethods.ByName("RestoreCharacterWorldInfo")),
@@ -143,74 +143,74 @@ func NewCharacterServiceClient(httpClient connect.HTTPClient, baseURL string, op
 
 // characterServiceClient implements CharacterServiceClient.
 type characterServiceClient struct {
-	listCharacters            *connect.Client[muse.ListCharactersRequest, muse.ListCharactersResponse]
-	getCharacter              *connect.Client[muse.GetCharacterRequest, muse.GetCharacterResponse]
-	createCharacter           *connect.Client[muse.CreateCharacterRequest, muse.CreateCharacterResponse]
-	updateCharacter           *connect.Client[muse.UpdateCharacterRequest, muse.UpdateCharacterResponse]
-	deleteCharacter           *connect.Client[muse.DeleteCharacterRequest, muse.DeleteCharacterResponse]
-	importCharacter           *connect.Client[muse.ImportCharacterRequest, muse.ImportCharacterResponse]
-	exportCharacter           *connect.Client[muse.ExportCharacterRequest, muse.ExportCharacterResponse]
-	restoreCharacterWorldInfo *connect.Client[muse.RestoreCharacterWorldInfoRequest, muse.RestoreCharacterWorldInfoResponse]
+	listCharacters            *connect.Client[muse.ListCharactersReq, muse.ListCharactersRsp]
+	getCharacter              *connect.Client[muse.GetCharacterReq, muse.GetCharacterRsp]
+	createCharacter           *connect.Client[muse.CreateCharacterReq, muse.CreateCharacterRsp]
+	updateCharacter           *connect.Client[muse.UpdateCharacterReq, muse.UpdateCharacterRsp]
+	deleteCharacter           *connect.Client[muse.DeleteCharacterReq, muse.DeleteCharacterRsp]
+	importCharacter           *connect.Client[muse.ImportCharacterReq, muse.ImportCharacterRsp]
+	exportCharacter           *connect.Client[muse.ExportCharacterReq, muse.ExportCharacterRsp]
+	restoreCharacterWorldInfo *connect.Client[muse.RestoreCharacterWorldInfoReq, muse.RestoreCharacterWorldInfoRsp]
 }
 
 // ListCharacters calls muse.CharacterService.ListCharacters.
-func (c *characterServiceClient) ListCharacters(ctx context.Context, req *connect.Request[muse.ListCharactersRequest]) (*connect.Response[muse.ListCharactersResponse], error) {
+func (c *characterServiceClient) ListCharacters(ctx context.Context, req *connect.Request[muse.ListCharactersReq]) (*connect.Response[muse.ListCharactersRsp], error) {
 	return c.listCharacters.CallUnary(ctx, req)
 }
 
 // GetCharacter calls muse.CharacterService.GetCharacter.
-func (c *characterServiceClient) GetCharacter(ctx context.Context, req *connect.Request[muse.GetCharacterRequest]) (*connect.Response[muse.GetCharacterResponse], error) {
+func (c *characterServiceClient) GetCharacter(ctx context.Context, req *connect.Request[muse.GetCharacterReq]) (*connect.Response[muse.GetCharacterRsp], error) {
 	return c.getCharacter.CallUnary(ctx, req)
 }
 
 // CreateCharacter calls muse.CharacterService.CreateCharacter.
-func (c *characterServiceClient) CreateCharacter(ctx context.Context, req *connect.Request[muse.CreateCharacterRequest]) (*connect.Response[muse.CreateCharacterResponse], error) {
+func (c *characterServiceClient) CreateCharacter(ctx context.Context, req *connect.Request[muse.CreateCharacterReq]) (*connect.Response[muse.CreateCharacterRsp], error) {
 	return c.createCharacter.CallUnary(ctx, req)
 }
 
 // UpdateCharacter calls muse.CharacterService.UpdateCharacter.
-func (c *characterServiceClient) UpdateCharacter(ctx context.Context, req *connect.Request[muse.UpdateCharacterRequest]) (*connect.Response[muse.UpdateCharacterResponse], error) {
+func (c *characterServiceClient) UpdateCharacter(ctx context.Context, req *connect.Request[muse.UpdateCharacterReq]) (*connect.Response[muse.UpdateCharacterRsp], error) {
 	return c.updateCharacter.CallUnary(ctx, req)
 }
 
 // DeleteCharacter calls muse.CharacterService.DeleteCharacter.
-func (c *characterServiceClient) DeleteCharacter(ctx context.Context, req *connect.Request[muse.DeleteCharacterRequest]) (*connect.Response[muse.DeleteCharacterResponse], error) {
+func (c *characterServiceClient) DeleteCharacter(ctx context.Context, req *connect.Request[muse.DeleteCharacterReq]) (*connect.Response[muse.DeleteCharacterRsp], error) {
 	return c.deleteCharacter.CallUnary(ctx, req)
 }
 
 // ImportCharacter calls muse.CharacterService.ImportCharacter.
-func (c *characterServiceClient) ImportCharacter(ctx context.Context, req *connect.Request[muse.ImportCharacterRequest]) (*connect.Response[muse.ImportCharacterResponse], error) {
+func (c *characterServiceClient) ImportCharacter(ctx context.Context, req *connect.Request[muse.ImportCharacterReq]) (*connect.Response[muse.ImportCharacterRsp], error) {
 	return c.importCharacter.CallUnary(ctx, req)
 }
 
 // ExportCharacter calls muse.CharacterService.ExportCharacter.
-func (c *characterServiceClient) ExportCharacter(ctx context.Context, req *connect.Request[muse.ExportCharacterRequest]) (*connect.Response[muse.ExportCharacterResponse], error) {
+func (c *characterServiceClient) ExportCharacter(ctx context.Context, req *connect.Request[muse.ExportCharacterReq]) (*connect.Response[muse.ExportCharacterRsp], error) {
 	return c.exportCharacter.CallUnary(ctx, req)
 }
 
 // RestoreCharacterWorldInfo calls muse.CharacterService.RestoreCharacterWorldInfo.
-func (c *characterServiceClient) RestoreCharacterWorldInfo(ctx context.Context, req *connect.Request[muse.RestoreCharacterWorldInfoRequest]) (*connect.Response[muse.RestoreCharacterWorldInfoResponse], error) {
+func (c *characterServiceClient) RestoreCharacterWorldInfo(ctx context.Context, req *connect.Request[muse.RestoreCharacterWorldInfoReq]) (*connect.Response[muse.RestoreCharacterWorldInfoRsp], error) {
 	return c.restoreCharacterWorldInfo.CallUnary(ctx, req)
 }
 
 // CharacterServiceHandler is an implementation of the muse.CharacterService service.
 type CharacterServiceHandler interface {
 	// 获取角色卡列表
-	ListCharacters(context.Context, *connect.Request[muse.ListCharactersRequest]) (*connect.Response[muse.ListCharactersResponse], error)
+	ListCharacters(context.Context, *connect.Request[muse.ListCharactersReq]) (*connect.Response[muse.ListCharactersRsp], error)
 	// 获取单个角色卡
-	GetCharacter(context.Context, *connect.Request[muse.GetCharacterRequest]) (*connect.Response[muse.GetCharacterResponse], error)
+	GetCharacter(context.Context, *connect.Request[muse.GetCharacterReq]) (*connect.Response[muse.GetCharacterRsp], error)
 	// 创建角色卡
-	CreateCharacter(context.Context, *connect.Request[muse.CreateCharacterRequest]) (*connect.Response[muse.CreateCharacterResponse], error)
+	CreateCharacter(context.Context, *connect.Request[muse.CreateCharacterReq]) (*connect.Response[muse.CreateCharacterRsp], error)
 	// 更新角色卡
-	UpdateCharacter(context.Context, *connect.Request[muse.UpdateCharacterRequest]) (*connect.Response[muse.UpdateCharacterResponse], error)
+	UpdateCharacter(context.Context, *connect.Request[muse.UpdateCharacterReq]) (*connect.Response[muse.UpdateCharacterRsp], error)
 	// 删除角色卡
-	DeleteCharacter(context.Context, *connect.Request[muse.DeleteCharacterRequest]) (*connect.Response[muse.DeleteCharacterResponse], error)
+	DeleteCharacter(context.Context, *connect.Request[muse.DeleteCharacterReq]) (*connect.Response[muse.DeleteCharacterRsp], error)
 	// 导入角色卡（支持SillyTavern格式）
-	ImportCharacter(context.Context, *connect.Request[muse.ImportCharacterRequest]) (*connect.Response[muse.ImportCharacterResponse], error)
+	ImportCharacter(context.Context, *connect.Request[muse.ImportCharacterReq]) (*connect.Response[muse.ImportCharacterRsp], error)
 	// 导出角色卡
-	ExportCharacter(context.Context, *connect.Request[muse.ExportCharacterRequest]) (*connect.Response[muse.ExportCharacterResponse], error)
+	ExportCharacter(context.Context, *connect.Request[muse.ExportCharacterReq]) (*connect.Response[muse.ExportCharacterRsp], error)
 	// 恢复角色卡的世界书（从备份恢复）
-	RestoreCharacterWorldInfo(context.Context, *connect.Request[muse.RestoreCharacterWorldInfoRequest]) (*connect.Response[muse.RestoreCharacterWorldInfoResponse], error)
+	RestoreCharacterWorldInfo(context.Context, *connect.Request[muse.RestoreCharacterWorldInfoReq]) (*connect.Response[muse.RestoreCharacterWorldInfoRsp], error)
 }
 
 // NewCharacterServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -295,34 +295,34 @@ func NewCharacterServiceHandler(svc CharacterServiceHandler, opts ...connect.Han
 // UnimplementedCharacterServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedCharacterServiceHandler struct{}
 
-func (UnimplementedCharacterServiceHandler) ListCharacters(context.Context, *connect.Request[muse.ListCharactersRequest]) (*connect.Response[muse.ListCharactersResponse], error) {
+func (UnimplementedCharacterServiceHandler) ListCharacters(context.Context, *connect.Request[muse.ListCharactersReq]) (*connect.Response[muse.ListCharactersRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.CharacterService.ListCharacters is not implemented"))
 }
 
-func (UnimplementedCharacterServiceHandler) GetCharacter(context.Context, *connect.Request[muse.GetCharacterRequest]) (*connect.Response[muse.GetCharacterResponse], error) {
+func (UnimplementedCharacterServiceHandler) GetCharacter(context.Context, *connect.Request[muse.GetCharacterReq]) (*connect.Response[muse.GetCharacterRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.CharacterService.GetCharacter is not implemented"))
 }
 
-func (UnimplementedCharacterServiceHandler) CreateCharacter(context.Context, *connect.Request[muse.CreateCharacterRequest]) (*connect.Response[muse.CreateCharacterResponse], error) {
+func (UnimplementedCharacterServiceHandler) CreateCharacter(context.Context, *connect.Request[muse.CreateCharacterReq]) (*connect.Response[muse.CreateCharacterRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.CharacterService.CreateCharacter is not implemented"))
 }
 
-func (UnimplementedCharacterServiceHandler) UpdateCharacter(context.Context, *connect.Request[muse.UpdateCharacterRequest]) (*connect.Response[muse.UpdateCharacterResponse], error) {
+func (UnimplementedCharacterServiceHandler) UpdateCharacter(context.Context, *connect.Request[muse.UpdateCharacterReq]) (*connect.Response[muse.UpdateCharacterRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.CharacterService.UpdateCharacter is not implemented"))
 }
 
-func (UnimplementedCharacterServiceHandler) DeleteCharacter(context.Context, *connect.Request[muse.DeleteCharacterRequest]) (*connect.Response[muse.DeleteCharacterResponse], error) {
+func (UnimplementedCharacterServiceHandler) DeleteCharacter(context.Context, *connect.Request[muse.DeleteCharacterReq]) (*connect.Response[muse.DeleteCharacterRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.CharacterService.DeleteCharacter is not implemented"))
 }
 
-func (UnimplementedCharacterServiceHandler) ImportCharacter(context.Context, *connect.Request[muse.ImportCharacterRequest]) (*connect.Response[muse.ImportCharacterResponse], error) {
+func (UnimplementedCharacterServiceHandler) ImportCharacter(context.Context, *connect.Request[muse.ImportCharacterReq]) (*connect.Response[muse.ImportCharacterRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.CharacterService.ImportCharacter is not implemented"))
 }
 
-func (UnimplementedCharacterServiceHandler) ExportCharacter(context.Context, *connect.Request[muse.ExportCharacterRequest]) (*connect.Response[muse.ExportCharacterResponse], error) {
+func (UnimplementedCharacterServiceHandler) ExportCharacter(context.Context, *connect.Request[muse.ExportCharacterReq]) (*connect.Response[muse.ExportCharacterRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.CharacterService.ExportCharacter is not implemented"))
 }
 
-func (UnimplementedCharacterServiceHandler) RestoreCharacterWorldInfo(context.Context, *connect.Request[muse.RestoreCharacterWorldInfoRequest]) (*connect.Response[muse.RestoreCharacterWorldInfoResponse], error) {
+func (UnimplementedCharacterServiceHandler) RestoreCharacterWorldInfo(context.Context, *connect.Request[muse.RestoreCharacterWorldInfoReq]) (*connect.Response[muse.RestoreCharacterWorldInfoRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.CharacterService.RestoreCharacterWorldInfo is not implemented"))
 }

@@ -21,8 +21,8 @@ func NewPresetServer() *PresetServer {
 }
 
 // ListPresets 获取预设列表
-func (p *PresetServer) ListPresets(ctx context.Context, req *connect.Request[pb.ListPresetsRequest]) (
-	*connect.Response[pb.ListPresetsResponse], error) {
+func (p *PresetServer) ListPresets(ctx context.Context, req *connect.Request[pb.ListPresetsReq]) (
+	*connect.Response[pb.ListPresetsRsp], error) {
 	resp, err := p.preset.ListPresets(ctx, req.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "ListPresets", req.Msg, resp, err)
@@ -31,8 +31,8 @@ func (p *PresetServer) ListPresets(ctx context.Context, req *connect.Request[pb.
 }
 
 // GetPreset 获取指定预设详情
-func (p *PresetServer) GetPreset(ctx context.Context, req *connect.Request[pb.GetPresetRequest]) (
-	*connect.Response[pb.GetPresetResponse], error) {
+func (p *PresetServer) GetPreset(ctx context.Context, req *connect.Request[pb.GetPresetReq]) (
+	*connect.Response[pb.GetPresetRsp], error) {
 	resp, err := p.preset.GetPreset(ctx, req.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "GetPreset", req.Msg, resp, err)
@@ -41,13 +41,13 @@ func (p *PresetServer) GetPreset(ctx context.Context, req *connect.Request[pb.Ge
 }
 
 // CreatePreset 创建新预设
-func (p *PresetServer) CreatePreset(ctx context.Context, req *connect.Request[pb.CreatePresetRequest]) (
-	*connect.Response[pb.CreatePresetResponse], error) {
+func (p *PresetServer) CreatePreset(ctx context.Context, req *connect.Request[pb.CreatePresetReq]) (
+	*connect.Response[pb.CreatePresetRsp], error) {
 	// 开启事务
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return doResponseExp(ctx, "CreatePreset", req.Msg, (*pb.CreatePresetResponse)(nil), err)
+		return doResponseExp(ctx, "CreatePreset", req.Msg, (*pb.CreatePresetRsp)(nil), err)
 	}
 
 	resp, err := p.preset.CreatePreset(ctx, req.Msg)
@@ -58,13 +58,13 @@ func (p *PresetServer) CreatePreset(ctx context.Context, req *connect.Request[pb
 }
 
 // UpdatePreset 更新指定预设
-func (p *PresetServer) UpdatePreset(ctx context.Context, req *connect.Request[pb.UpdatePresetRequest]) (
-	*connect.Response[pb.UpdatePresetResponse], error) {
+func (p *PresetServer) UpdatePreset(ctx context.Context, req *connect.Request[pb.UpdatePresetReq]) (
+	*connect.Response[pb.UpdatePresetRsp], error) {
 	// 开启事务
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return doResponseExp(ctx, "UpdatePreset", req.Msg, (*pb.UpdatePresetResponse)(nil), err)
+		return doResponseExp(ctx, "UpdatePreset", req.Msg, (*pb.UpdatePresetRsp)(nil), err)
 	}
 
 	resp, err := p.preset.UpdatePreset(ctx, req.Msg)
@@ -75,13 +75,13 @@ func (p *PresetServer) UpdatePreset(ctx context.Context, req *connect.Request[pb
 }
 
 // DeletePreset 删除指定预设
-func (p *PresetServer) DeletePreset(ctx context.Context, req *connect.Request[pb.DeletePresetRequest]) (
-	*connect.Response[pb.DeletePresetResponse], error) {
+func (p *PresetServer) DeletePreset(ctx context.Context, req *connect.Request[pb.DeletePresetReq]) (
+	*connect.Response[pb.DeletePresetRsp], error) {
 	// 开启事务
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return doResponseExp(ctx, "DeletePreset", req.Msg, (*pb.DeletePresetResponse)(nil), err)
+		return doResponseExp(ctx, "DeletePreset", req.Msg, (*pb.DeletePresetRsp)(nil), err)
 	}
 
 	resp, err := p.preset.DeletePreset(ctx, req.Msg)
@@ -92,13 +92,13 @@ func (p *PresetServer) DeletePreset(ctx context.Context, req *connect.Request[pb
 }
 
 // SetActivePreset 设置当前激活的预设
-func (p *PresetServer) SetActivePreset(ctx context.Context, req *connect.Request[pb.SetActivePresetRequest]) (
-	*connect.Response[pb.SetActivePresetResponse], error) {
+func (p *PresetServer) SetActivePreset(ctx context.Context, req *connect.Request[pb.SetActivePresetReq]) (
+	*connect.Response[pb.SetActivePresetRsp], error) {
 	// 开启事务
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return doResponseExp(ctx, "SetActivePreset", req.Msg, (*pb.SetActivePresetResponse)(nil), err)
+		return doResponseExp(ctx, "SetActivePreset", req.Msg, (*pb.SetActivePresetRsp)(nil), err)
 	}
 
 	resp, err := p.preset.SetActivePreset(ctx, req.Msg)
@@ -109,13 +109,13 @@ func (p *PresetServer) SetActivePreset(ctx context.Context, req *connect.Request
 }
 
 // ImportPreset 导入预设
-func (p *PresetServer) ImportPreset(ctx context.Context, req *connect.Request[pb.ImportPresetRequest]) (
-	*connect.Response[pb.ImportPresetResponse], error) {
+func (p *PresetServer) ImportPreset(ctx context.Context, req *connect.Request[pb.ImportPresetReq]) (
+	*connect.Response[pb.ImportPresetRsp], error) {
 	// 开启事务
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return doResponseExp(ctx, "ImportPreset", req.Msg, (*pb.ImportPresetResponse)(nil), err)
+		return doResponseExp(ctx, "ImportPreset", req.Msg, (*pb.ImportPresetRsp)(nil), err)
 	}
 
 	resp, err := p.preset.ImportPreset(ctx, req.Msg)
@@ -126,8 +126,8 @@ func (p *PresetServer) ImportPreset(ctx context.Context, req *connect.Request[pb
 }
 
 // ExportPreset 导出预设
-func (p *PresetServer) ExportPreset(ctx context.Context, req *connect.Request[pb.ExportPresetRequest]) (
-	*connect.Response[pb.ExportPresetResponse], error) {
+func (p *PresetServer) ExportPreset(ctx context.Context, req *connect.Request[pb.ExportPresetReq]) (
+	*connect.Response[pb.ExportPresetRsp], error) {
 	resp, err := p.preset.ExportPreset(ctx, req.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "ExportPreset", req.Msg, resp, err)
@@ -136,8 +136,8 @@ func (p *PresetServer) ExportPreset(ctx context.Context, req *connect.Request[pb
 }
 
 // ListPromptItems 获取提示项列表
-func (p *PresetServer) ListPromptItems(ctx context.Context, req *connect.Request[pb.ListPromptItemsRequest]) (
-	*connect.Response[pb.ListPromptItemsResponse], error) {
+func (p *PresetServer) ListPromptItems(ctx context.Context, req *connect.Request[pb.ListPromptItemsReq]) (
+	*connect.Response[pb.ListPromptItemsRsp], error) {
 	resp, err := p.preset.ListPromptItems(ctx, req.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "ListPromptItems", req.Msg, resp, err)
@@ -146,13 +146,13 @@ func (p *PresetServer) ListPromptItems(ctx context.Context, req *connect.Request
 }
 
 // AddPromptItem 添加新的提示项
-func (p *PresetServer) AddPromptItem(ctx context.Context, req *connect.Request[pb.AddPromptItemRequest]) (
-	*connect.Response[pb.AddPromptItemResponse], error) {
+func (p *PresetServer) AddPromptItem(ctx context.Context, req *connect.Request[pb.AddPromptItemReq]) (
+	*connect.Response[pb.AddPromptItemRsp], error) {
 	// 开启事务
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return doResponseExp(ctx, "AddPromptItem", req.Msg, (*pb.AddPromptItemResponse)(nil), err)
+		return doResponseExp(ctx, "AddPromptItem", req.Msg, (*pb.AddPromptItemRsp)(nil), err)
 	}
 
 	resp, err := p.preset.AddPromptItem(ctx, req.Msg)
@@ -163,13 +163,13 @@ func (p *PresetServer) AddPromptItem(ctx context.Context, req *connect.Request[p
 }
 
 // UpdatePromptItem 更新指定提示项
-func (p *PresetServer) UpdatePromptItem(ctx context.Context, req *connect.Request[pb.UpdatePromptItemRequest]) (
-	*connect.Response[pb.UpdatePromptItemResponse], error) {
+func (p *PresetServer) UpdatePromptItem(ctx context.Context, req *connect.Request[pb.UpdatePromptItemReq]) (
+	*connect.Response[pb.UpdatePromptItemRsp], error) {
 	// 开启事务
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return doResponseExp(ctx, "UpdatePromptItem", req.Msg, (*pb.UpdatePromptItemResponse)(nil), err)
+		return doResponseExp(ctx, "UpdatePromptItem", req.Msg, (*pb.UpdatePromptItemRsp)(nil), err)
 	}
 
 	resp, err := p.preset.UpdatePromptItem(ctx, req.Msg)
@@ -180,13 +180,13 @@ func (p *PresetServer) UpdatePromptItem(ctx context.Context, req *connect.Reques
 }
 
 // DeletePromptItem 删除指定提示项
-func (p *PresetServer) DeletePromptItem(ctx context.Context, req *connect.Request[pb.DeletePromptItemRequest]) (
-	*connect.Response[pb.DeletePromptItemResponse], error) {
+func (p *PresetServer) DeletePromptItem(ctx context.Context, req *connect.Request[pb.DeletePromptItemReq]) (
+	*connect.Response[pb.DeletePromptItemRsp], error) {
 	// 开启事务
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return doResponseExp(ctx, "DeletePromptItem", req.Msg, (*pb.DeletePromptItemResponse)(nil), err)
+		return doResponseExp(ctx, "DeletePromptItem", req.Msg, (*pb.DeletePromptItemRsp)(nil), err)
 	}
 
 	resp, err := p.preset.DeletePromptItem(ctx, req.Msg)
@@ -198,13 +198,13 @@ func (p *PresetServer) DeletePromptItem(ctx context.Context, req *connect.Reques
 
 // UpdatePromptItemsOrder 更新提示项的排序
 func (p *PresetServer) UpdatePromptItemsOrder(ctx context.Context,
-	req *connect.Request[pb.UpdatePromptItemsOrderRequest]) (
-	*connect.Response[pb.UpdatePromptItemsOrderResponse], error) {
+	req *connect.Request[pb.UpdatePromptItemsOrderReq]) (
+	*connect.Response[pb.UpdatePromptItemsOrderRsp], error) {
 	// 开启事务
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return doResponseExp(ctx, "UpdatePromptItemsOrder", req.Msg, (*pb.UpdatePromptItemsOrderResponse)(nil), err)
+		return doResponseExp(ctx, "UpdatePromptItemsOrder", req.Msg, (*pb.UpdatePromptItemsOrderRsp)(nil), err)
 	}
 
 	resp, err := p.preset.UpdatePromptItemsOrder(ctx, req.Msg)

@@ -76,31 +76,31 @@ const (
 // PresetServiceClient is a client for the muse.PresetService service.
 type PresetServiceClient interface {
 	// 获取预设列表
-	ListPresets(context.Context, *connect.Request[muse.ListPresetsRequest]) (*connect.Response[muse.ListPresetsResponse], error)
+	ListPresets(context.Context, *connect.Request[muse.ListPresetsReq]) (*connect.Response[muse.ListPresetsRsp], error)
 	// 获取单个预设
-	GetPreset(context.Context, *connect.Request[muse.GetPresetRequest]) (*connect.Response[muse.GetPresetResponse], error)
+	GetPreset(context.Context, *connect.Request[muse.GetPresetReq]) (*connect.Response[muse.GetPresetRsp], error)
 	// 创建预设
-	CreatePreset(context.Context, *connect.Request[muse.CreatePresetRequest]) (*connect.Response[muse.CreatePresetResponse], error)
+	CreatePreset(context.Context, *connect.Request[muse.CreatePresetReq]) (*connect.Response[muse.CreatePresetRsp], error)
 	// 更新预设
-	UpdatePreset(context.Context, *connect.Request[muse.UpdatePresetRequest]) (*connect.Response[muse.UpdatePresetResponse], error)
+	UpdatePreset(context.Context, *connect.Request[muse.UpdatePresetReq]) (*connect.Response[muse.UpdatePresetRsp], error)
 	// 删除预设
-	DeletePreset(context.Context, *connect.Request[muse.DeletePresetRequest]) (*connect.Response[muse.DeletePresetResponse], error)
+	DeletePreset(context.Context, *connect.Request[muse.DeletePresetReq]) (*connect.Response[muse.DeletePresetRsp], error)
 	// 设置活跃预设
-	SetActivePreset(context.Context, *connect.Request[muse.SetActivePresetRequest]) (*connect.Response[muse.SetActivePresetResponse], error)
+	SetActivePreset(context.Context, *connect.Request[muse.SetActivePresetReq]) (*connect.Response[muse.SetActivePresetRsp], error)
 	// 导入预设（支持SillyTavern格式）
-	ImportPreset(context.Context, *connect.Request[muse.ImportPresetRequest]) (*connect.Response[muse.ImportPresetResponse], error)
+	ImportPreset(context.Context, *connect.Request[muse.ImportPresetReq]) (*connect.Response[muse.ImportPresetRsp], error)
 	// 导出预设
-	ExportPreset(context.Context, *connect.Request[muse.ExportPresetRequest]) (*connect.Response[muse.ExportPresetResponse], error)
+	ExportPreset(context.Context, *connect.Request[muse.ExportPresetReq]) (*connect.Response[muse.ExportPresetRsp], error)
 	// 获取预设的提示项列表
-	ListPromptItems(context.Context, *connect.Request[muse.ListPromptItemsRequest]) (*connect.Response[muse.ListPromptItemsResponse], error)
+	ListPromptItems(context.Context, *connect.Request[muse.ListPromptItemsReq]) (*connect.Response[muse.ListPromptItemsRsp], error)
 	// 添加提示项
-	AddPromptItem(context.Context, *connect.Request[muse.AddPromptItemRequest]) (*connect.Response[muse.AddPromptItemResponse], error)
+	AddPromptItem(context.Context, *connect.Request[muse.AddPromptItemReq]) (*connect.Response[muse.AddPromptItemRsp], error)
 	// 更新提示项
-	UpdatePromptItem(context.Context, *connect.Request[muse.UpdatePromptItemRequest]) (*connect.Response[muse.UpdatePromptItemResponse], error)
+	UpdatePromptItem(context.Context, *connect.Request[muse.UpdatePromptItemReq]) (*connect.Response[muse.UpdatePromptItemRsp], error)
 	// 删除提示项
-	DeletePromptItem(context.Context, *connect.Request[muse.DeletePromptItemRequest]) (*connect.Response[muse.DeletePromptItemResponse], error)
+	DeletePromptItem(context.Context, *connect.Request[muse.DeletePromptItemReq]) (*connect.Response[muse.DeletePromptItemRsp], error)
 	// 批量更新提示项排序
-	UpdatePromptItemsOrder(context.Context, *connect.Request[muse.UpdatePromptItemsOrderRequest]) (*connect.Response[muse.UpdatePromptItemsOrderResponse], error)
+	UpdatePromptItemsOrder(context.Context, *connect.Request[muse.UpdatePromptItemsOrderReq]) (*connect.Response[muse.UpdatePromptItemsOrderRsp], error)
 }
 
 // NewPresetServiceClient constructs a client for the muse.PresetService service. By default, it
@@ -114,79 +114,79 @@ func NewPresetServiceClient(httpClient connect.HTTPClient, baseURL string, opts 
 	baseURL = strings.TrimRight(baseURL, "/")
 	presetServiceMethods := muse.File_muse_preset_proto.Services().ByName("PresetService").Methods()
 	return &presetServiceClient{
-		listPresets: connect.NewClient[muse.ListPresetsRequest, muse.ListPresetsResponse](
+		listPresets: connect.NewClient[muse.ListPresetsReq, muse.ListPresetsRsp](
 			httpClient,
 			baseURL+PresetServiceListPresetsProcedure,
 			connect.WithSchema(presetServiceMethods.ByName("ListPresets")),
 			connect.WithClientOptions(opts...),
 		),
-		getPreset: connect.NewClient[muse.GetPresetRequest, muse.GetPresetResponse](
+		getPreset: connect.NewClient[muse.GetPresetReq, muse.GetPresetRsp](
 			httpClient,
 			baseURL+PresetServiceGetPresetProcedure,
 			connect.WithSchema(presetServiceMethods.ByName("GetPreset")),
 			connect.WithClientOptions(opts...),
 		),
-		createPreset: connect.NewClient[muse.CreatePresetRequest, muse.CreatePresetResponse](
+		createPreset: connect.NewClient[muse.CreatePresetReq, muse.CreatePresetRsp](
 			httpClient,
 			baseURL+PresetServiceCreatePresetProcedure,
 			connect.WithSchema(presetServiceMethods.ByName("CreatePreset")),
 			connect.WithClientOptions(opts...),
 		),
-		updatePreset: connect.NewClient[muse.UpdatePresetRequest, muse.UpdatePresetResponse](
+		updatePreset: connect.NewClient[muse.UpdatePresetReq, muse.UpdatePresetRsp](
 			httpClient,
 			baseURL+PresetServiceUpdatePresetProcedure,
 			connect.WithSchema(presetServiceMethods.ByName("UpdatePreset")),
 			connect.WithClientOptions(opts...),
 		),
-		deletePreset: connect.NewClient[muse.DeletePresetRequest, muse.DeletePresetResponse](
+		deletePreset: connect.NewClient[muse.DeletePresetReq, muse.DeletePresetRsp](
 			httpClient,
 			baseURL+PresetServiceDeletePresetProcedure,
 			connect.WithSchema(presetServiceMethods.ByName("DeletePreset")),
 			connect.WithClientOptions(opts...),
 		),
-		setActivePreset: connect.NewClient[muse.SetActivePresetRequest, muse.SetActivePresetResponse](
+		setActivePreset: connect.NewClient[muse.SetActivePresetReq, muse.SetActivePresetRsp](
 			httpClient,
 			baseURL+PresetServiceSetActivePresetProcedure,
 			connect.WithSchema(presetServiceMethods.ByName("SetActivePreset")),
 			connect.WithClientOptions(opts...),
 		),
-		importPreset: connect.NewClient[muse.ImportPresetRequest, muse.ImportPresetResponse](
+		importPreset: connect.NewClient[muse.ImportPresetReq, muse.ImportPresetRsp](
 			httpClient,
 			baseURL+PresetServiceImportPresetProcedure,
 			connect.WithSchema(presetServiceMethods.ByName("ImportPreset")),
 			connect.WithClientOptions(opts...),
 		),
-		exportPreset: connect.NewClient[muse.ExportPresetRequest, muse.ExportPresetResponse](
+		exportPreset: connect.NewClient[muse.ExportPresetReq, muse.ExportPresetRsp](
 			httpClient,
 			baseURL+PresetServiceExportPresetProcedure,
 			connect.WithSchema(presetServiceMethods.ByName("ExportPreset")),
 			connect.WithClientOptions(opts...),
 		),
-		listPromptItems: connect.NewClient[muse.ListPromptItemsRequest, muse.ListPromptItemsResponse](
+		listPromptItems: connect.NewClient[muse.ListPromptItemsReq, muse.ListPromptItemsRsp](
 			httpClient,
 			baseURL+PresetServiceListPromptItemsProcedure,
 			connect.WithSchema(presetServiceMethods.ByName("ListPromptItems")),
 			connect.WithClientOptions(opts...),
 		),
-		addPromptItem: connect.NewClient[muse.AddPromptItemRequest, muse.AddPromptItemResponse](
+		addPromptItem: connect.NewClient[muse.AddPromptItemReq, muse.AddPromptItemRsp](
 			httpClient,
 			baseURL+PresetServiceAddPromptItemProcedure,
 			connect.WithSchema(presetServiceMethods.ByName("AddPromptItem")),
 			connect.WithClientOptions(opts...),
 		),
-		updatePromptItem: connect.NewClient[muse.UpdatePromptItemRequest, muse.UpdatePromptItemResponse](
+		updatePromptItem: connect.NewClient[muse.UpdatePromptItemReq, muse.UpdatePromptItemRsp](
 			httpClient,
 			baseURL+PresetServiceUpdatePromptItemProcedure,
 			connect.WithSchema(presetServiceMethods.ByName("UpdatePromptItem")),
 			connect.WithClientOptions(opts...),
 		),
-		deletePromptItem: connect.NewClient[muse.DeletePromptItemRequest, muse.DeletePromptItemResponse](
+		deletePromptItem: connect.NewClient[muse.DeletePromptItemReq, muse.DeletePromptItemRsp](
 			httpClient,
 			baseURL+PresetServiceDeletePromptItemProcedure,
 			connect.WithSchema(presetServiceMethods.ByName("DeletePromptItem")),
 			connect.WithClientOptions(opts...),
 		),
-		updatePromptItemsOrder: connect.NewClient[muse.UpdatePromptItemsOrderRequest, muse.UpdatePromptItemsOrderResponse](
+		updatePromptItemsOrder: connect.NewClient[muse.UpdatePromptItemsOrderReq, muse.UpdatePromptItemsOrderRsp](
 			httpClient,
 			baseURL+PresetServiceUpdatePromptItemsOrderProcedure,
 			connect.WithSchema(presetServiceMethods.ByName("UpdatePromptItemsOrder")),
@@ -197,114 +197,114 @@ func NewPresetServiceClient(httpClient connect.HTTPClient, baseURL string, opts 
 
 // presetServiceClient implements PresetServiceClient.
 type presetServiceClient struct {
-	listPresets            *connect.Client[muse.ListPresetsRequest, muse.ListPresetsResponse]
-	getPreset              *connect.Client[muse.GetPresetRequest, muse.GetPresetResponse]
-	createPreset           *connect.Client[muse.CreatePresetRequest, muse.CreatePresetResponse]
-	updatePreset           *connect.Client[muse.UpdatePresetRequest, muse.UpdatePresetResponse]
-	deletePreset           *connect.Client[muse.DeletePresetRequest, muse.DeletePresetResponse]
-	setActivePreset        *connect.Client[muse.SetActivePresetRequest, muse.SetActivePresetResponse]
-	importPreset           *connect.Client[muse.ImportPresetRequest, muse.ImportPresetResponse]
-	exportPreset           *connect.Client[muse.ExportPresetRequest, muse.ExportPresetResponse]
-	listPromptItems        *connect.Client[muse.ListPromptItemsRequest, muse.ListPromptItemsResponse]
-	addPromptItem          *connect.Client[muse.AddPromptItemRequest, muse.AddPromptItemResponse]
-	updatePromptItem       *connect.Client[muse.UpdatePromptItemRequest, muse.UpdatePromptItemResponse]
-	deletePromptItem       *connect.Client[muse.DeletePromptItemRequest, muse.DeletePromptItemResponse]
-	updatePromptItemsOrder *connect.Client[muse.UpdatePromptItemsOrderRequest, muse.UpdatePromptItemsOrderResponse]
+	listPresets            *connect.Client[muse.ListPresetsReq, muse.ListPresetsRsp]
+	getPreset              *connect.Client[muse.GetPresetReq, muse.GetPresetRsp]
+	createPreset           *connect.Client[muse.CreatePresetReq, muse.CreatePresetRsp]
+	updatePreset           *connect.Client[muse.UpdatePresetReq, muse.UpdatePresetRsp]
+	deletePreset           *connect.Client[muse.DeletePresetReq, muse.DeletePresetRsp]
+	setActivePreset        *connect.Client[muse.SetActivePresetReq, muse.SetActivePresetRsp]
+	importPreset           *connect.Client[muse.ImportPresetReq, muse.ImportPresetRsp]
+	exportPreset           *connect.Client[muse.ExportPresetReq, muse.ExportPresetRsp]
+	listPromptItems        *connect.Client[muse.ListPromptItemsReq, muse.ListPromptItemsRsp]
+	addPromptItem          *connect.Client[muse.AddPromptItemReq, muse.AddPromptItemRsp]
+	updatePromptItem       *connect.Client[muse.UpdatePromptItemReq, muse.UpdatePromptItemRsp]
+	deletePromptItem       *connect.Client[muse.DeletePromptItemReq, muse.DeletePromptItemRsp]
+	updatePromptItemsOrder *connect.Client[muse.UpdatePromptItemsOrderReq, muse.UpdatePromptItemsOrderRsp]
 }
 
 // ListPresets calls muse.PresetService.ListPresets.
-func (c *presetServiceClient) ListPresets(ctx context.Context, req *connect.Request[muse.ListPresetsRequest]) (*connect.Response[muse.ListPresetsResponse], error) {
+func (c *presetServiceClient) ListPresets(ctx context.Context, req *connect.Request[muse.ListPresetsReq]) (*connect.Response[muse.ListPresetsRsp], error) {
 	return c.listPresets.CallUnary(ctx, req)
 }
 
 // GetPreset calls muse.PresetService.GetPreset.
-func (c *presetServiceClient) GetPreset(ctx context.Context, req *connect.Request[muse.GetPresetRequest]) (*connect.Response[muse.GetPresetResponse], error) {
+func (c *presetServiceClient) GetPreset(ctx context.Context, req *connect.Request[muse.GetPresetReq]) (*connect.Response[muse.GetPresetRsp], error) {
 	return c.getPreset.CallUnary(ctx, req)
 }
 
 // CreatePreset calls muse.PresetService.CreatePreset.
-func (c *presetServiceClient) CreatePreset(ctx context.Context, req *connect.Request[muse.CreatePresetRequest]) (*connect.Response[muse.CreatePresetResponse], error) {
+func (c *presetServiceClient) CreatePreset(ctx context.Context, req *connect.Request[muse.CreatePresetReq]) (*connect.Response[muse.CreatePresetRsp], error) {
 	return c.createPreset.CallUnary(ctx, req)
 }
 
 // UpdatePreset calls muse.PresetService.UpdatePreset.
-func (c *presetServiceClient) UpdatePreset(ctx context.Context, req *connect.Request[muse.UpdatePresetRequest]) (*connect.Response[muse.UpdatePresetResponse], error) {
+func (c *presetServiceClient) UpdatePreset(ctx context.Context, req *connect.Request[muse.UpdatePresetReq]) (*connect.Response[muse.UpdatePresetRsp], error) {
 	return c.updatePreset.CallUnary(ctx, req)
 }
 
 // DeletePreset calls muse.PresetService.DeletePreset.
-func (c *presetServiceClient) DeletePreset(ctx context.Context, req *connect.Request[muse.DeletePresetRequest]) (*connect.Response[muse.DeletePresetResponse], error) {
+func (c *presetServiceClient) DeletePreset(ctx context.Context, req *connect.Request[muse.DeletePresetReq]) (*connect.Response[muse.DeletePresetRsp], error) {
 	return c.deletePreset.CallUnary(ctx, req)
 }
 
 // SetActivePreset calls muse.PresetService.SetActivePreset.
-func (c *presetServiceClient) SetActivePreset(ctx context.Context, req *connect.Request[muse.SetActivePresetRequest]) (*connect.Response[muse.SetActivePresetResponse], error) {
+func (c *presetServiceClient) SetActivePreset(ctx context.Context, req *connect.Request[muse.SetActivePresetReq]) (*connect.Response[muse.SetActivePresetRsp], error) {
 	return c.setActivePreset.CallUnary(ctx, req)
 }
 
 // ImportPreset calls muse.PresetService.ImportPreset.
-func (c *presetServiceClient) ImportPreset(ctx context.Context, req *connect.Request[muse.ImportPresetRequest]) (*connect.Response[muse.ImportPresetResponse], error) {
+func (c *presetServiceClient) ImportPreset(ctx context.Context, req *connect.Request[muse.ImportPresetReq]) (*connect.Response[muse.ImportPresetRsp], error) {
 	return c.importPreset.CallUnary(ctx, req)
 }
 
 // ExportPreset calls muse.PresetService.ExportPreset.
-func (c *presetServiceClient) ExportPreset(ctx context.Context, req *connect.Request[muse.ExportPresetRequest]) (*connect.Response[muse.ExportPresetResponse], error) {
+func (c *presetServiceClient) ExportPreset(ctx context.Context, req *connect.Request[muse.ExportPresetReq]) (*connect.Response[muse.ExportPresetRsp], error) {
 	return c.exportPreset.CallUnary(ctx, req)
 }
 
 // ListPromptItems calls muse.PresetService.ListPromptItems.
-func (c *presetServiceClient) ListPromptItems(ctx context.Context, req *connect.Request[muse.ListPromptItemsRequest]) (*connect.Response[muse.ListPromptItemsResponse], error) {
+func (c *presetServiceClient) ListPromptItems(ctx context.Context, req *connect.Request[muse.ListPromptItemsReq]) (*connect.Response[muse.ListPromptItemsRsp], error) {
 	return c.listPromptItems.CallUnary(ctx, req)
 }
 
 // AddPromptItem calls muse.PresetService.AddPromptItem.
-func (c *presetServiceClient) AddPromptItem(ctx context.Context, req *connect.Request[muse.AddPromptItemRequest]) (*connect.Response[muse.AddPromptItemResponse], error) {
+func (c *presetServiceClient) AddPromptItem(ctx context.Context, req *connect.Request[muse.AddPromptItemReq]) (*connect.Response[muse.AddPromptItemRsp], error) {
 	return c.addPromptItem.CallUnary(ctx, req)
 }
 
 // UpdatePromptItem calls muse.PresetService.UpdatePromptItem.
-func (c *presetServiceClient) UpdatePromptItem(ctx context.Context, req *connect.Request[muse.UpdatePromptItemRequest]) (*connect.Response[muse.UpdatePromptItemResponse], error) {
+func (c *presetServiceClient) UpdatePromptItem(ctx context.Context, req *connect.Request[muse.UpdatePromptItemReq]) (*connect.Response[muse.UpdatePromptItemRsp], error) {
 	return c.updatePromptItem.CallUnary(ctx, req)
 }
 
 // DeletePromptItem calls muse.PresetService.DeletePromptItem.
-func (c *presetServiceClient) DeletePromptItem(ctx context.Context, req *connect.Request[muse.DeletePromptItemRequest]) (*connect.Response[muse.DeletePromptItemResponse], error) {
+func (c *presetServiceClient) DeletePromptItem(ctx context.Context, req *connect.Request[muse.DeletePromptItemReq]) (*connect.Response[muse.DeletePromptItemRsp], error) {
 	return c.deletePromptItem.CallUnary(ctx, req)
 }
 
 // UpdatePromptItemsOrder calls muse.PresetService.UpdatePromptItemsOrder.
-func (c *presetServiceClient) UpdatePromptItemsOrder(ctx context.Context, req *connect.Request[muse.UpdatePromptItemsOrderRequest]) (*connect.Response[muse.UpdatePromptItemsOrderResponse], error) {
+func (c *presetServiceClient) UpdatePromptItemsOrder(ctx context.Context, req *connect.Request[muse.UpdatePromptItemsOrderReq]) (*connect.Response[muse.UpdatePromptItemsOrderRsp], error) {
 	return c.updatePromptItemsOrder.CallUnary(ctx, req)
 }
 
 // PresetServiceHandler is an implementation of the muse.PresetService service.
 type PresetServiceHandler interface {
 	// 获取预设列表
-	ListPresets(context.Context, *connect.Request[muse.ListPresetsRequest]) (*connect.Response[muse.ListPresetsResponse], error)
+	ListPresets(context.Context, *connect.Request[muse.ListPresetsReq]) (*connect.Response[muse.ListPresetsRsp], error)
 	// 获取单个预设
-	GetPreset(context.Context, *connect.Request[muse.GetPresetRequest]) (*connect.Response[muse.GetPresetResponse], error)
+	GetPreset(context.Context, *connect.Request[muse.GetPresetReq]) (*connect.Response[muse.GetPresetRsp], error)
 	// 创建预设
-	CreatePreset(context.Context, *connect.Request[muse.CreatePresetRequest]) (*connect.Response[muse.CreatePresetResponse], error)
+	CreatePreset(context.Context, *connect.Request[muse.CreatePresetReq]) (*connect.Response[muse.CreatePresetRsp], error)
 	// 更新预设
-	UpdatePreset(context.Context, *connect.Request[muse.UpdatePresetRequest]) (*connect.Response[muse.UpdatePresetResponse], error)
+	UpdatePreset(context.Context, *connect.Request[muse.UpdatePresetReq]) (*connect.Response[muse.UpdatePresetRsp], error)
 	// 删除预设
-	DeletePreset(context.Context, *connect.Request[muse.DeletePresetRequest]) (*connect.Response[muse.DeletePresetResponse], error)
+	DeletePreset(context.Context, *connect.Request[muse.DeletePresetReq]) (*connect.Response[muse.DeletePresetRsp], error)
 	// 设置活跃预设
-	SetActivePreset(context.Context, *connect.Request[muse.SetActivePresetRequest]) (*connect.Response[muse.SetActivePresetResponse], error)
+	SetActivePreset(context.Context, *connect.Request[muse.SetActivePresetReq]) (*connect.Response[muse.SetActivePresetRsp], error)
 	// 导入预设（支持SillyTavern格式）
-	ImportPreset(context.Context, *connect.Request[muse.ImportPresetRequest]) (*connect.Response[muse.ImportPresetResponse], error)
+	ImportPreset(context.Context, *connect.Request[muse.ImportPresetReq]) (*connect.Response[muse.ImportPresetRsp], error)
 	// 导出预设
-	ExportPreset(context.Context, *connect.Request[muse.ExportPresetRequest]) (*connect.Response[muse.ExportPresetResponse], error)
+	ExportPreset(context.Context, *connect.Request[muse.ExportPresetReq]) (*connect.Response[muse.ExportPresetRsp], error)
 	// 获取预设的提示项列表
-	ListPromptItems(context.Context, *connect.Request[muse.ListPromptItemsRequest]) (*connect.Response[muse.ListPromptItemsResponse], error)
+	ListPromptItems(context.Context, *connect.Request[muse.ListPromptItemsReq]) (*connect.Response[muse.ListPromptItemsRsp], error)
 	// 添加提示项
-	AddPromptItem(context.Context, *connect.Request[muse.AddPromptItemRequest]) (*connect.Response[muse.AddPromptItemResponse], error)
+	AddPromptItem(context.Context, *connect.Request[muse.AddPromptItemReq]) (*connect.Response[muse.AddPromptItemRsp], error)
 	// 更新提示项
-	UpdatePromptItem(context.Context, *connect.Request[muse.UpdatePromptItemRequest]) (*connect.Response[muse.UpdatePromptItemResponse], error)
+	UpdatePromptItem(context.Context, *connect.Request[muse.UpdatePromptItemReq]) (*connect.Response[muse.UpdatePromptItemRsp], error)
 	// 删除提示项
-	DeletePromptItem(context.Context, *connect.Request[muse.DeletePromptItemRequest]) (*connect.Response[muse.DeletePromptItemResponse], error)
+	DeletePromptItem(context.Context, *connect.Request[muse.DeletePromptItemReq]) (*connect.Response[muse.DeletePromptItemRsp], error)
 	// 批量更新提示项排序
-	UpdatePromptItemsOrder(context.Context, *connect.Request[muse.UpdatePromptItemsOrderRequest]) (*connect.Response[muse.UpdatePromptItemsOrderResponse], error)
+	UpdatePromptItemsOrder(context.Context, *connect.Request[muse.UpdatePromptItemsOrderReq]) (*connect.Response[muse.UpdatePromptItemsOrderRsp], error)
 }
 
 // NewPresetServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -429,54 +429,54 @@ func NewPresetServiceHandler(svc PresetServiceHandler, opts ...connect.HandlerOp
 // UnimplementedPresetServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedPresetServiceHandler struct{}
 
-func (UnimplementedPresetServiceHandler) ListPresets(context.Context, *connect.Request[muse.ListPresetsRequest]) (*connect.Response[muse.ListPresetsResponse], error) {
+func (UnimplementedPresetServiceHandler) ListPresets(context.Context, *connect.Request[muse.ListPresetsReq]) (*connect.Response[muse.ListPresetsRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PresetService.ListPresets is not implemented"))
 }
 
-func (UnimplementedPresetServiceHandler) GetPreset(context.Context, *connect.Request[muse.GetPresetRequest]) (*connect.Response[muse.GetPresetResponse], error) {
+func (UnimplementedPresetServiceHandler) GetPreset(context.Context, *connect.Request[muse.GetPresetReq]) (*connect.Response[muse.GetPresetRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PresetService.GetPreset is not implemented"))
 }
 
-func (UnimplementedPresetServiceHandler) CreatePreset(context.Context, *connect.Request[muse.CreatePresetRequest]) (*connect.Response[muse.CreatePresetResponse], error) {
+func (UnimplementedPresetServiceHandler) CreatePreset(context.Context, *connect.Request[muse.CreatePresetReq]) (*connect.Response[muse.CreatePresetRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PresetService.CreatePreset is not implemented"))
 }
 
-func (UnimplementedPresetServiceHandler) UpdatePreset(context.Context, *connect.Request[muse.UpdatePresetRequest]) (*connect.Response[muse.UpdatePresetResponse], error) {
+func (UnimplementedPresetServiceHandler) UpdatePreset(context.Context, *connect.Request[muse.UpdatePresetReq]) (*connect.Response[muse.UpdatePresetRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PresetService.UpdatePreset is not implemented"))
 }
 
-func (UnimplementedPresetServiceHandler) DeletePreset(context.Context, *connect.Request[muse.DeletePresetRequest]) (*connect.Response[muse.DeletePresetResponse], error) {
+func (UnimplementedPresetServiceHandler) DeletePreset(context.Context, *connect.Request[muse.DeletePresetReq]) (*connect.Response[muse.DeletePresetRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PresetService.DeletePreset is not implemented"))
 }
 
-func (UnimplementedPresetServiceHandler) SetActivePreset(context.Context, *connect.Request[muse.SetActivePresetRequest]) (*connect.Response[muse.SetActivePresetResponse], error) {
+func (UnimplementedPresetServiceHandler) SetActivePreset(context.Context, *connect.Request[muse.SetActivePresetReq]) (*connect.Response[muse.SetActivePresetRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PresetService.SetActivePreset is not implemented"))
 }
 
-func (UnimplementedPresetServiceHandler) ImportPreset(context.Context, *connect.Request[muse.ImportPresetRequest]) (*connect.Response[muse.ImportPresetResponse], error) {
+func (UnimplementedPresetServiceHandler) ImportPreset(context.Context, *connect.Request[muse.ImportPresetReq]) (*connect.Response[muse.ImportPresetRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PresetService.ImportPreset is not implemented"))
 }
 
-func (UnimplementedPresetServiceHandler) ExportPreset(context.Context, *connect.Request[muse.ExportPresetRequest]) (*connect.Response[muse.ExportPresetResponse], error) {
+func (UnimplementedPresetServiceHandler) ExportPreset(context.Context, *connect.Request[muse.ExportPresetReq]) (*connect.Response[muse.ExportPresetRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PresetService.ExportPreset is not implemented"))
 }
 
-func (UnimplementedPresetServiceHandler) ListPromptItems(context.Context, *connect.Request[muse.ListPromptItemsRequest]) (*connect.Response[muse.ListPromptItemsResponse], error) {
+func (UnimplementedPresetServiceHandler) ListPromptItems(context.Context, *connect.Request[muse.ListPromptItemsReq]) (*connect.Response[muse.ListPromptItemsRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PresetService.ListPromptItems is not implemented"))
 }
 
-func (UnimplementedPresetServiceHandler) AddPromptItem(context.Context, *connect.Request[muse.AddPromptItemRequest]) (*connect.Response[muse.AddPromptItemResponse], error) {
+func (UnimplementedPresetServiceHandler) AddPromptItem(context.Context, *connect.Request[muse.AddPromptItemReq]) (*connect.Response[muse.AddPromptItemRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PresetService.AddPromptItem is not implemented"))
 }
 
-func (UnimplementedPresetServiceHandler) UpdatePromptItem(context.Context, *connect.Request[muse.UpdatePromptItemRequest]) (*connect.Response[muse.UpdatePromptItemResponse], error) {
+func (UnimplementedPresetServiceHandler) UpdatePromptItem(context.Context, *connect.Request[muse.UpdatePromptItemReq]) (*connect.Response[muse.UpdatePromptItemRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PresetService.UpdatePromptItem is not implemented"))
 }
 
-func (UnimplementedPresetServiceHandler) DeletePromptItem(context.Context, *connect.Request[muse.DeletePromptItemRequest]) (*connect.Response[muse.DeletePromptItemResponse], error) {
+func (UnimplementedPresetServiceHandler) DeletePromptItem(context.Context, *connect.Request[muse.DeletePromptItemReq]) (*connect.Response[muse.DeletePromptItemRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PresetService.DeletePromptItem is not implemented"))
 }
 
-func (UnimplementedPresetServiceHandler) UpdatePromptItemsOrder(context.Context, *connect.Request[muse.UpdatePromptItemsOrderRequest]) (*connect.Response[muse.UpdatePromptItemsOrderResponse], error) {
+func (UnimplementedPresetServiceHandler) UpdatePromptItemsOrder(context.Context, *connect.Request[muse.UpdatePromptItemsOrderReq]) (*connect.Response[muse.UpdatePromptItemsOrderRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.PresetService.UpdatePromptItemsOrder is not implemented"))
 }

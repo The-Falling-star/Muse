@@ -21,8 +21,8 @@ func NewFileServer() *FileServer {
 }
 
 // UploadFile 上传文件
-func (f *FileServer) UploadFile(ctx context.Context, req *connect.Request[pb.UploadFileRequest]) (
-	*connect.Response[pb.UploadFileResponse], error) {
+func (f *FileServer) UploadFile(ctx context.Context, req *connect.Request[pb.UploadFileReq]) (
+	*connect.Response[pb.UploadFileRsp], error) {
 	resp, err := f.file.UploadFile(ctx, req.Msg)
 	req.Msg.FileContent = nil
 	if err != nil {
@@ -32,8 +32,8 @@ func (f *FileServer) UploadFile(ctx context.Context, req *connect.Request[pb.Upl
 }
 
 // DownloadFile 下载文件
-func (f *FileServer) DownloadFile(ctx context.Context, req *connect.Request[pb.DownloadFileRequest]) (
-	*connect.Response[pb.DownloadFileResponse], error) {
+func (f *FileServer) DownloadFile(ctx context.Context, req *connect.Request[pb.DownloadFileReq]) (
+	*connect.Response[pb.DownloadFileRsp], error) {
 	resp, err := f.file.DownloadFile(ctx, req.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "DownloadFile", req.Msg, resp, err)

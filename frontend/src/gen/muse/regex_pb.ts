@@ -11,7 +11,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file muse/regex.proto.
  */
 export const file_muse_regex: GenFile = /*@__PURE__*/
-  fileDesc("ChBtdXNlL3JlZ2V4LnByb3RvEgRtdXNlInQKEFJlZ2V4QWZmZWN0RmxhZ3MSEgoKdXNlcl9pbnB1dBgBIAEoCBIRCglhaV9vdXRwdXQYAiABKAgSFQoNc2xhc2hfY29tbWFuZBgDIAEoCBISCgp3b3JsZF9pbmZvGAQgASgIEg4KBnByb21wdBgFIAEoCCLQAgoJUmVnZXhSdWxlEgoKAmlkGAEgASgFEhEKCXByZXNldF9pZBgCIAEoBRIUCgxjaGFyYWN0ZXJfaWQYDyABKAUSDAoEbmFtZRgDIAEoCRIUCgxmaW5kX3BhdHRlcm4YBCABKAkSFwoPcmVwbGFjZV9wYXR0ZXJuGAUgASgJEhIKCmlzX2VuYWJsZWQYBiABKAgSEwoLcnVuX29uX2VkaXQYByABKAgSGAoQc3Vic3RpdHV0ZV9yZWdleBgIIAEoCBIRCgltaW5fZGVwdGgYCSABKAUSEQoJbWF4X2RlcHRoGAogASgFEiwKDGFmZmVjdF9mbGFncxgLIAEoCzIWLm11c2UuUmVnZXhBZmZlY3RGbGFncxISCgpzb3J0X29yZGVyGAwgASgFEhIKCmNyZWF0ZWRfYXQYDSABKAMSEgoKdXBkYXRlZF9hdBgOIAEoAyJAChVMaXN0UmVnZXhSdWxlc1JlcXVlc3QSEQoJcHJlc2V0X2lkGAEgASgFEhQKDGNoYXJhY3Rlcl9pZBgCIAEoBSI4ChZMaXN0UmVnZXhSdWxlc1Jlc3BvbnNlEh4KBXJ1bGVzGAEgAygLMg8ubXVzZS5SZWdleFJ1bGUi5QIKE0FkZFJlZ2V4UnVsZVJlcXVlc3QSEQoJcHJlc2V0X2lkGAEgASgFEhQKDGNoYXJhY3Rlcl9pZBgQIAEoBRIMCgRuYW1lGAIgASgJEhQKDGZpbmRfcGF0dGVybhgDIAEoCRIcCg9yZXBsYWNlX3BhdHRlcm4YBCABKAlIAIgBARISCgppc19lbmFibGVkGAUgASgIEhMKC3J1bl9vbl9lZGl0GAYgASgIEhgKEHN1YnN0aXR1dGVfcmVnZXgYByABKAgSFgoJbWluX2RlcHRoGAggASgFSAGIAQESFgoJbWF4X2RlcHRoGAkgASgFSAKIAQESLAoMYWZmZWN0X2ZsYWdzGAogASgLMhYubXVzZS5SZWdleEFmZmVjdEZsYWdzEhIKCnNvcnRfb3JkZXIYCyABKAVCEgoQX3JlcGxhY2VfcGF0dGVybkIMCgpfbWluX2RlcHRoQgwKCl9tYXhfZGVwdGgiNQoUQWRkUmVnZXhSdWxlUmVzcG9uc2USHQoEcnVsZRgBIAEoCzIPLm11c2UuUmVnZXhSdWxlIssCChZVcGRhdGVSZWdleFJ1bGVSZXF1ZXN0EgoKAmlkGAEgASgFEgwKBG5hbWUYAiABKAkSFAoMZmluZF9wYXR0ZXJuGAMgASgJEhwKD3JlcGxhY2VfcGF0dGVybhgEIAEoCUgAiAEBEhIKCmlzX2VuYWJsZWQYBSABKAgSEwoLcnVuX29uX2VkaXQYBiABKAgSGAoQc3Vic3RpdHV0ZV9yZWdleBgHIAEoCBIWCgltaW5fZGVwdGgYCCABKAVIAYgBARIWCgltYXhfZGVwdGgYCSABKAVIAogBARIsCgxhZmZlY3RfZmxhZ3MYCiABKAsyFi5tdXNlLlJlZ2V4QWZmZWN0RmxhZ3MSEgoKc29ydF9vcmRlchgLIAEoBUISChBfcmVwbGFjZV9wYXR0ZXJuQgwKCl9taW5fZGVwdGhCDAoKX21heF9kZXB0aCI4ChdVcGRhdGVSZWdleFJ1bGVSZXNwb25zZRIdCgRydWxlGAEgASgLMg8ubXVzZS5SZWdleFJ1bGUiJAoWRGVsZXRlUmVnZXhSdWxlUmVxdWVzdBIKCgJpZBgBIAEoBSIZChdEZWxldGVSZWdleFJ1bGVSZXNwb25zZSJDChxVcGRhdGVSZWdleFJ1bGVzT3JkZXJSZXF1ZXN0EhEKCXByZXNldF9pZBgBIAEoBRIQCghydWxlX2lkcxgCIAMoBSIfCh1VcGRhdGVSZWdleFJ1bGVzT3JkZXJSZXNwb25zZSJCChdJbXBvcnRSZWdleFJ1bGVzUmVxdWVzdBIUCgxmaWxlX2NvbnRlbnQYASABKAwSEQoJZmlsZV9uYW1lGAIgASgJIhoKGEltcG9ydFJlZ2V4UnVsZXNSZXNwb25zZSIsChdFeHBvcnRSZWdleFJ1bGVzUmVxdWVzdBIRCglwcmVzZXRfaWQYASABKAUiQwoYRXhwb3J0UmVnZXhSdWxlc1Jlc3BvbnNlEhQKDGZpbGVfY29udGVudBgBIAEoDBIRCglmaWxlX25hbWUYAiABKAkyzgQKEFJlZ2V4UnVsZVNlcnZpY2USSwoOTGlzdFJlZ2V4UnVsZXMSGy5tdXNlLkxpc3RSZWdleFJ1bGVzUmVxdWVzdBocLm11c2UuTGlzdFJlZ2V4UnVsZXNSZXNwb25zZRJFCgxBZGRSZWdleFJ1bGUSGS5tdXNlLkFkZFJlZ2V4UnVsZVJlcXVlc3QaGi5tdXNlLkFkZFJlZ2V4UnVsZVJlc3BvbnNlEk4KD1VwZGF0ZVJlZ2V4UnVsZRIcLm11c2UuVXBkYXRlUmVnZXhSdWxlUmVxdWVzdBodLm11c2UuVXBkYXRlUmVnZXhSdWxlUmVzcG9uc2USTgoPRGVsZXRlUmVnZXhSdWxlEhwubXVzZS5EZWxldGVSZWdleFJ1bGVSZXF1ZXN0Gh0ubXVzZS5EZWxldGVSZWdleFJ1bGVSZXNwb25zZRJgChVVcGRhdGVSZWdleFJ1bGVzT3JkZXISIi5tdXNlLlVwZGF0ZVJlZ2V4UnVsZXNPcmRlclJlcXVlc3QaIy5tdXNlLlVwZGF0ZVJlZ2V4UnVsZXNPcmRlclJlc3BvbnNlElEKEEltcG9ydFJlZ2V4UnVsZXMSHS5tdXNlLkltcG9ydFJlZ2V4UnVsZXNSZXF1ZXN0Gh4ubXVzZS5JbXBvcnRSZWdleFJ1bGVzUmVzcG9uc2USUQoQRXhwb3J0UmVnZXhSdWxlcxIdLm11c2UuRXhwb3J0UmVnZXhSdWxlc1JlcXVlc3QaHi5tdXNlLkV4cG9ydFJlZ2V4UnVsZXNSZXNwb25zZUJlCghjb20ubXVzZUIKUmVnZXhQcm90b1ABWh1naXRodWIuY29tL2xpbmcvbXVzZS9nZW4vbXVzZaICA01YWKoCBE11c2XKAgRNdXNl4gIQTXVzZVxHUEJNZXRhZGF0YeoCBE11c2ViBnByb3RvMw", [file_muse_common]);
+  fileDesc("ChBtdXNlL3JlZ2V4LnByb3RvEgRtdXNlInQKEFJlZ2V4QWZmZWN0RmxhZ3MSEgoKdXNlcl9pbnB1dBgBIAEoCBIRCglhaV9vdXRwdXQYAiABKAgSFQoNc2xhc2hfY29tbWFuZBgDIAEoCBISCgp3b3JsZF9pbmZvGAQgASgIEg4KBnByb21wdBgFIAEoCCLQAgoJUmVnZXhSdWxlEgoKAmlkGAEgASgFEhEKCXByZXNldF9pZBgCIAEoBRIUCgxjaGFyYWN0ZXJfaWQYDyABKAUSDAoEbmFtZRgDIAEoCRIUCgxmaW5kX3BhdHRlcm4YBCABKAkSFwoPcmVwbGFjZV9wYXR0ZXJuGAUgASgJEhIKCmlzX2VuYWJsZWQYBiABKAgSEwoLcnVuX29uX2VkaXQYByABKAgSGAoQc3Vic3RpdHV0ZV9yZWdleBgIIAEoCBIRCgltaW5fZGVwdGgYCSABKAUSEQoJbWF4X2RlcHRoGAogASgFEiwKDGFmZmVjdF9mbGFncxgLIAEoCzIWLm11c2UuUmVnZXhBZmZlY3RGbGFncxISCgpzb3J0X29yZGVyGAwgASgFEhIKCmNyZWF0ZWRfYXQYDSABKAMSEgoKdXBkYXRlZF9hdBgOIAEoAyI8ChFMaXN0UmVnZXhSdWxlc1JlcRIRCglwcmVzZXRfaWQYASABKAUSFAoMY2hhcmFjdGVyX2lkGAIgASgFIjMKEUxpc3RSZWdleFJ1bGVzUnNwEh4KBXJ1bGVzGAEgAygLMg8ubXVzZS5SZWdleFJ1bGUi4QIKD0FkZFJlZ2V4UnVsZVJlcRIRCglwcmVzZXRfaWQYASABKAUSFAoMY2hhcmFjdGVyX2lkGBAgASgFEgwKBG5hbWUYAiABKAkSFAoMZmluZF9wYXR0ZXJuGAMgASgJEhwKD3JlcGxhY2VfcGF0dGVybhgEIAEoCUgAiAEBEhIKCmlzX2VuYWJsZWQYBSABKAgSEwoLcnVuX29uX2VkaXQYBiABKAgSGAoQc3Vic3RpdHV0ZV9yZWdleBgHIAEoCBIWCgltaW5fZGVwdGgYCCABKAVIAYgBARIWCgltYXhfZGVwdGgYCSABKAVIAogBARIsCgxhZmZlY3RfZmxhZ3MYCiABKAsyFi5tdXNlLlJlZ2V4QWZmZWN0RmxhZ3MSEgoKc29ydF9vcmRlchgLIAEoBUISChBfcmVwbGFjZV9wYXR0ZXJuQgwKCl9taW5fZGVwdGhCDAoKX21heF9kZXB0aCIwCg9BZGRSZWdleFJ1bGVSc3ASHQoEcnVsZRgBIAEoCzIPLm11c2UuUmVnZXhSdWxlIscCChJVcGRhdGVSZWdleFJ1bGVSZXESCgoCaWQYASABKAUSDAoEbmFtZRgCIAEoCRIUCgxmaW5kX3BhdHRlcm4YAyABKAkSHAoPcmVwbGFjZV9wYXR0ZXJuGAQgASgJSACIAQESEgoKaXNfZW5hYmxlZBgFIAEoCBITCgtydW5fb25fZWRpdBgGIAEoCBIYChBzdWJzdGl0dXRlX3JlZ2V4GAcgASgIEhYKCW1pbl9kZXB0aBgIIAEoBUgBiAEBEhYKCW1heF9kZXB0aBgJIAEoBUgCiAEBEiwKDGFmZmVjdF9mbGFncxgKIAEoCzIWLm11c2UuUmVnZXhBZmZlY3RGbGFncxISCgpzb3J0X29yZGVyGAsgASgFQhIKEF9yZXBsYWNlX3BhdHRlcm5CDAoKX21pbl9kZXB0aEIMCgpfbWF4X2RlcHRoIjMKElVwZGF0ZVJlZ2V4UnVsZVJzcBIdCgRydWxlGAEgASgLMg8ubXVzZS5SZWdleFJ1bGUiIAoSRGVsZXRlUmVnZXhSdWxlUmVxEgoKAmlkGAEgASgFIhQKEkRlbGV0ZVJlZ2V4UnVsZVJzcCI/ChhVcGRhdGVSZWdleFJ1bGVzT3JkZXJSZXESEQoJcHJlc2V0X2lkGAEgASgFEhAKCHJ1bGVfaWRzGAIgAygFIhoKGFVwZGF0ZVJlZ2V4UnVsZXNPcmRlclJzcCI+ChNJbXBvcnRSZWdleFJ1bGVzUmVxEhQKDGZpbGVfY29udGVudBgBIAEoDBIRCglmaWxlX25hbWUYAiABKAkiFQoTSW1wb3J0UmVnZXhSdWxlc1JzcCIoChNFeHBvcnRSZWdleFJ1bGVzUmVxEhEKCXByZXNldF9pZBgBIAEoBSI+ChNFeHBvcnRSZWdleFJ1bGVzUnNwEhQKDGZpbGVfY29udGVudBgBIAEoDBIRCglmaWxlX25hbWUYAiABKAkyjwQKEFJlZ2V4UnVsZVNlcnZpY2USQgoOTGlzdFJlZ2V4UnVsZXMSFy5tdXNlLkxpc3RSZWdleFJ1bGVzUmVxGhcubXVzZS5MaXN0UmVnZXhSdWxlc1JzcBI8CgxBZGRSZWdleFJ1bGUSFS5tdXNlLkFkZFJlZ2V4UnVsZVJlcRoVLm11c2UuQWRkUmVnZXhSdWxlUnNwEkUKD1VwZGF0ZVJlZ2V4UnVsZRIYLm11c2UuVXBkYXRlUmVnZXhSdWxlUmVxGhgubXVzZS5VcGRhdGVSZWdleFJ1bGVSc3ASRQoPRGVsZXRlUmVnZXhSdWxlEhgubXVzZS5EZWxldGVSZWdleFJ1bGVSZXEaGC5tdXNlLkRlbGV0ZVJlZ2V4UnVsZVJzcBJXChVVcGRhdGVSZWdleFJ1bGVzT3JkZXISHi5tdXNlLlVwZGF0ZVJlZ2V4UnVsZXNPcmRlclJlcRoeLm11c2UuVXBkYXRlUmVnZXhSdWxlc09yZGVyUnNwEkgKEEltcG9ydFJlZ2V4UnVsZXMSGS5tdXNlLkltcG9ydFJlZ2V4UnVsZXNSZXEaGS5tdXNlLkltcG9ydFJlZ2V4UnVsZXNSc3ASSAoQRXhwb3J0UmVnZXhSdWxlcxIZLm11c2UuRXhwb3J0UmVnZXhSdWxlc1JlcRoZLm11c2UuRXhwb3J0UmVnZXhSdWxlc1JzcEJlCghjb20ubXVzZUIKUmVnZXhQcm90b1ABWh1naXRodWIuY29tL2xpbmcvbXVzZS9nZW4vbXVzZaICA01YWKoCBE11c2XKAgRNdXNl4gIQTXVzZVxHUEJNZXRhZGF0YeoCBE11c2ViBnByb3RvMw", [file_muse_common]);
 
 /**
  * RegexAffectFlags 正则规则作用范围标志
@@ -184,9 +184,9 @@ export const RegexRuleSchema: GenMessage<RegexRule> = /*@__PURE__*/
 /**
  * 获取正则规则列表请求（全量拉取全局+预设+角色正则）
  *
- * @generated from message muse.ListRegexRulesRequest
+ * @generated from message muse.ListRegexRulesReq
  */
-export type ListRegexRulesRequest = Message<"muse.ListRegexRulesRequest"> & {
+export type ListRegexRulesReq = Message<"muse.ListRegexRulesReq"> & {
   /**
    * 预设ID（0表示仅拉取全局正则）
    *
@@ -203,18 +203,18 @@ export type ListRegexRulesRequest = Message<"muse.ListRegexRulesRequest"> & {
 };
 
 /**
- * Describes the message muse.ListRegexRulesRequest.
- * Use `create(ListRegexRulesRequestSchema)` to create a new message.
+ * Describes the message muse.ListRegexRulesReq.
+ * Use `create(ListRegexRulesReqSchema)` to create a new message.
  */
-export const ListRegexRulesRequestSchema: GenMessage<ListRegexRulesRequest> = /*@__PURE__*/
+export const ListRegexRulesReqSchema: GenMessage<ListRegexRulesReq> = /*@__PURE__*/
   messageDesc(file_muse_regex, 2);
 
 /**
  * 获取正则规则列表响应（全量，不分页）
  *
- * @generated from message muse.ListRegexRulesResponse
+ * @generated from message muse.ListRegexRulesRsp
  */
-export type ListRegexRulesResponse = Message<"muse.ListRegexRulesResponse"> & {
+export type ListRegexRulesRsp = Message<"muse.ListRegexRulesRsp"> & {
   /**
    * @generated from field: repeated muse.RegexRule rules = 1;
    */
@@ -222,18 +222,18 @@ export type ListRegexRulesResponse = Message<"muse.ListRegexRulesResponse"> & {
 };
 
 /**
- * Describes the message muse.ListRegexRulesResponse.
- * Use `create(ListRegexRulesResponseSchema)` to create a new message.
+ * Describes the message muse.ListRegexRulesRsp.
+ * Use `create(ListRegexRulesRspSchema)` to create a new message.
  */
-export const ListRegexRulesResponseSchema: GenMessage<ListRegexRulesResponse> = /*@__PURE__*/
+export const ListRegexRulesRspSchema: GenMessage<ListRegexRulesRsp> = /*@__PURE__*/
   messageDesc(file_muse_regex, 3);
 
 /**
  * 添加正则规则请求
  *
- * @generated from message muse.AddRegexRuleRequest
+ * @generated from message muse.AddRegexRuleReq
  */
-export type AddRegexRuleRequest = Message<"muse.AddRegexRuleRequest"> & {
+export type AddRegexRuleReq = Message<"muse.AddRegexRuleReq"> & {
   /**
    * @generated from field: int32 preset_id = 1;
    */
@@ -296,18 +296,18 @@ export type AddRegexRuleRequest = Message<"muse.AddRegexRuleRequest"> & {
 };
 
 /**
- * Describes the message muse.AddRegexRuleRequest.
- * Use `create(AddRegexRuleRequestSchema)` to create a new message.
+ * Describes the message muse.AddRegexRuleReq.
+ * Use `create(AddRegexRuleReqSchema)` to create a new message.
  */
-export const AddRegexRuleRequestSchema: GenMessage<AddRegexRuleRequest> = /*@__PURE__*/
+export const AddRegexRuleReqSchema: GenMessage<AddRegexRuleReq> = /*@__PURE__*/
   messageDesc(file_muse_regex, 4);
 
 /**
  * 添加正则规则响应
  *
- * @generated from message muse.AddRegexRuleResponse
+ * @generated from message muse.AddRegexRuleRsp
  */
-export type AddRegexRuleResponse = Message<"muse.AddRegexRuleResponse"> & {
+export type AddRegexRuleRsp = Message<"muse.AddRegexRuleRsp"> & {
   /**
    * @generated from field: muse.RegexRule rule = 1;
    */
@@ -315,18 +315,18 @@ export type AddRegexRuleResponse = Message<"muse.AddRegexRuleResponse"> & {
 };
 
 /**
- * Describes the message muse.AddRegexRuleResponse.
- * Use `create(AddRegexRuleResponseSchema)` to create a new message.
+ * Describes the message muse.AddRegexRuleRsp.
+ * Use `create(AddRegexRuleRspSchema)` to create a new message.
  */
-export const AddRegexRuleResponseSchema: GenMessage<AddRegexRuleResponse> = /*@__PURE__*/
+export const AddRegexRuleRspSchema: GenMessage<AddRegexRuleRsp> = /*@__PURE__*/
   messageDesc(file_muse_regex, 5);
 
 /**
  * 更新正则规则请求
  *
- * @generated from message muse.UpdateRegexRuleRequest
+ * @generated from message muse.UpdateRegexRuleReq
  */
-export type UpdateRegexRuleRequest = Message<"muse.UpdateRegexRuleRequest"> & {
+export type UpdateRegexRuleReq = Message<"muse.UpdateRegexRuleReq"> & {
   /**
    * @generated from field: int32 id = 1;
    */
@@ -384,18 +384,18 @@ export type UpdateRegexRuleRequest = Message<"muse.UpdateRegexRuleRequest"> & {
 };
 
 /**
- * Describes the message muse.UpdateRegexRuleRequest.
- * Use `create(UpdateRegexRuleRequestSchema)` to create a new message.
+ * Describes the message muse.UpdateRegexRuleReq.
+ * Use `create(UpdateRegexRuleReqSchema)` to create a new message.
  */
-export const UpdateRegexRuleRequestSchema: GenMessage<UpdateRegexRuleRequest> = /*@__PURE__*/
+export const UpdateRegexRuleReqSchema: GenMessage<UpdateRegexRuleReq> = /*@__PURE__*/
   messageDesc(file_muse_regex, 6);
 
 /**
  * 更新正则规则响应
  *
- * @generated from message muse.UpdateRegexRuleResponse
+ * @generated from message muse.UpdateRegexRuleRsp
  */
-export type UpdateRegexRuleResponse = Message<"muse.UpdateRegexRuleResponse"> & {
+export type UpdateRegexRuleRsp = Message<"muse.UpdateRegexRuleRsp"> & {
   /**
    * @generated from field: muse.RegexRule rule = 1;
    */
@@ -403,18 +403,18 @@ export type UpdateRegexRuleResponse = Message<"muse.UpdateRegexRuleResponse"> & 
 };
 
 /**
- * Describes the message muse.UpdateRegexRuleResponse.
- * Use `create(UpdateRegexRuleResponseSchema)` to create a new message.
+ * Describes the message muse.UpdateRegexRuleRsp.
+ * Use `create(UpdateRegexRuleRspSchema)` to create a new message.
  */
-export const UpdateRegexRuleResponseSchema: GenMessage<UpdateRegexRuleResponse> = /*@__PURE__*/
+export const UpdateRegexRuleRspSchema: GenMessage<UpdateRegexRuleRsp> = /*@__PURE__*/
   messageDesc(file_muse_regex, 7);
 
 /**
  * 删除正则规则请求
  *
- * @generated from message muse.DeleteRegexRuleRequest
+ * @generated from message muse.DeleteRegexRuleReq
  */
-export type DeleteRegexRuleRequest = Message<"muse.DeleteRegexRuleRequest"> & {
+export type DeleteRegexRuleReq = Message<"muse.DeleteRegexRuleReq"> & {
   /**
    * @generated from field: int32 id = 1;
    */
@@ -422,33 +422,33 @@ export type DeleteRegexRuleRequest = Message<"muse.DeleteRegexRuleRequest"> & {
 };
 
 /**
- * Describes the message muse.DeleteRegexRuleRequest.
- * Use `create(DeleteRegexRuleRequestSchema)` to create a new message.
+ * Describes the message muse.DeleteRegexRuleReq.
+ * Use `create(DeleteRegexRuleReqSchema)` to create a new message.
  */
-export const DeleteRegexRuleRequestSchema: GenMessage<DeleteRegexRuleRequest> = /*@__PURE__*/
+export const DeleteRegexRuleReqSchema: GenMessage<DeleteRegexRuleReq> = /*@__PURE__*/
   messageDesc(file_muse_regex, 8);
 
 /**
  * 删除正则规则响应
  *
- * @generated from message muse.DeleteRegexRuleResponse
+ * @generated from message muse.DeleteRegexRuleRsp
  */
-export type DeleteRegexRuleResponse = Message<"muse.DeleteRegexRuleResponse"> & {
+export type DeleteRegexRuleRsp = Message<"muse.DeleteRegexRuleRsp"> & {
 };
 
 /**
- * Describes the message muse.DeleteRegexRuleResponse.
- * Use `create(DeleteRegexRuleResponseSchema)` to create a new message.
+ * Describes the message muse.DeleteRegexRuleRsp.
+ * Use `create(DeleteRegexRuleRspSchema)` to create a new message.
  */
-export const DeleteRegexRuleResponseSchema: GenMessage<DeleteRegexRuleResponse> = /*@__PURE__*/
+export const DeleteRegexRuleRspSchema: GenMessage<DeleteRegexRuleRsp> = /*@__PURE__*/
   messageDesc(file_muse_regex, 9);
 
 /**
  * 批量更新正则规则排序请求
  *
- * @generated from message muse.UpdateRegexRulesOrderRequest
+ * @generated from message muse.UpdateRegexRulesOrderReq
  */
-export type UpdateRegexRulesOrderRequest = Message<"muse.UpdateRegexRulesOrderRequest"> & {
+export type UpdateRegexRulesOrderReq = Message<"muse.UpdateRegexRulesOrderReq"> & {
   /**
    * @generated from field: int32 preset_id = 1;
    */
@@ -463,34 +463,34 @@ export type UpdateRegexRulesOrderRequest = Message<"muse.UpdateRegexRulesOrderRe
 };
 
 /**
- * Describes the message muse.UpdateRegexRulesOrderRequest.
- * Use `create(UpdateRegexRulesOrderRequestSchema)` to create a new message.
+ * Describes the message muse.UpdateRegexRulesOrderReq.
+ * Use `create(UpdateRegexRulesOrderReqSchema)` to create a new message.
  */
-export const UpdateRegexRulesOrderRequestSchema: GenMessage<UpdateRegexRulesOrderRequest> = /*@__PURE__*/
+export const UpdateRegexRulesOrderReqSchema: GenMessage<UpdateRegexRulesOrderReq> = /*@__PURE__*/
   messageDesc(file_muse_regex, 10);
 
 /**
  * 批量更新正则规则排序响应
  *
- * @generated from message muse.UpdateRegexRulesOrderResponse
+ * @generated from message muse.UpdateRegexRulesOrderRsp
  */
-export type UpdateRegexRulesOrderResponse = Message<"muse.UpdateRegexRulesOrderResponse"> & {
+export type UpdateRegexRulesOrderRsp = Message<"muse.UpdateRegexRulesOrderRsp"> & {
 };
 
 /**
- * Describes the message muse.UpdateRegexRulesOrderResponse.
- * Use `create(UpdateRegexRulesOrderResponseSchema)` to create a new message.
+ * Describes the message muse.UpdateRegexRulesOrderRsp.
+ * Use `create(UpdateRegexRulesOrderRspSchema)` to create a new message.
  */
-export const UpdateRegexRulesOrderResponseSchema: GenMessage<UpdateRegexRulesOrderResponse> = /*@__PURE__*/
+export const UpdateRegexRulesOrderRspSchema: GenMessage<UpdateRegexRulesOrderRsp> = /*@__PURE__*/
   messageDesc(file_muse_regex, 11);
 
 /**
  * 导入正则规则请求
  * 导入的都是全局正则（preset_id = 0）
  *
- * @generated from message muse.ImportRegexRulesRequest
+ * @generated from message muse.ImportRegexRulesReq
  */
-export type ImportRegexRulesRequest = Message<"muse.ImportRegexRulesRequest"> & {
+export type ImportRegexRulesReq = Message<"muse.ImportRegexRulesReq"> & {
   /**
    * JSON文件内容
    *
@@ -505,33 +505,33 @@ export type ImportRegexRulesRequest = Message<"muse.ImportRegexRulesRequest"> & 
 };
 
 /**
- * Describes the message muse.ImportRegexRulesRequest.
- * Use `create(ImportRegexRulesRequestSchema)` to create a new message.
+ * Describes the message muse.ImportRegexRulesReq.
+ * Use `create(ImportRegexRulesReqSchema)` to create a new message.
  */
-export const ImportRegexRulesRequestSchema: GenMessage<ImportRegexRulesRequest> = /*@__PURE__*/
+export const ImportRegexRulesReqSchema: GenMessage<ImportRegexRulesReq> = /*@__PURE__*/
   messageDesc(file_muse_regex, 12);
 
 /**
  * 导入正则规则响应
  *
- * @generated from message muse.ImportRegexRulesResponse
+ * @generated from message muse.ImportRegexRulesRsp
  */
-export type ImportRegexRulesResponse = Message<"muse.ImportRegexRulesResponse"> & {
+export type ImportRegexRulesRsp = Message<"muse.ImportRegexRulesRsp"> & {
 };
 
 /**
- * Describes the message muse.ImportRegexRulesResponse.
- * Use `create(ImportRegexRulesResponseSchema)` to create a new message.
+ * Describes the message muse.ImportRegexRulesRsp.
+ * Use `create(ImportRegexRulesRspSchema)` to create a new message.
  */
-export const ImportRegexRulesResponseSchema: GenMessage<ImportRegexRulesResponse> = /*@__PURE__*/
+export const ImportRegexRulesRspSchema: GenMessage<ImportRegexRulesRsp> = /*@__PURE__*/
   messageDesc(file_muse_regex, 13);
 
 /**
  * 导出正则规则请求
  *
- * @generated from message muse.ExportRegexRulesRequest
+ * @generated from message muse.ExportRegexRulesReq
  */
-export type ExportRegexRulesRequest = Message<"muse.ExportRegexRulesRequest"> & {
+export type ExportRegexRulesReq = Message<"muse.ExportRegexRulesReq"> & {
   /**
    * @generated from field: int32 preset_id = 1;
    */
@@ -539,18 +539,18 @@ export type ExportRegexRulesRequest = Message<"muse.ExportRegexRulesRequest"> & 
 };
 
 /**
- * Describes the message muse.ExportRegexRulesRequest.
- * Use `create(ExportRegexRulesRequestSchema)` to create a new message.
+ * Describes the message muse.ExportRegexRulesReq.
+ * Use `create(ExportRegexRulesReqSchema)` to create a new message.
  */
-export const ExportRegexRulesRequestSchema: GenMessage<ExportRegexRulesRequest> = /*@__PURE__*/
+export const ExportRegexRulesReqSchema: GenMessage<ExportRegexRulesReq> = /*@__PURE__*/
   messageDesc(file_muse_regex, 14);
 
 /**
  * 导出正则规则响应
  *
- * @generated from message muse.ExportRegexRulesResponse
+ * @generated from message muse.ExportRegexRulesRsp
  */
-export type ExportRegexRulesResponse = Message<"muse.ExportRegexRulesResponse"> & {
+export type ExportRegexRulesRsp = Message<"muse.ExportRegexRulesRsp"> & {
   /**
    * @generated from field: bytes file_content = 1;
    */
@@ -563,10 +563,10 @@ export type ExportRegexRulesResponse = Message<"muse.ExportRegexRulesResponse"> 
 };
 
 /**
- * Describes the message muse.ExportRegexRulesResponse.
- * Use `create(ExportRegexRulesResponseSchema)` to create a new message.
+ * Describes the message muse.ExportRegexRulesRsp.
+ * Use `create(ExportRegexRulesRspSchema)` to create a new message.
  */
-export const ExportRegexRulesResponseSchema: GenMessage<ExportRegexRulesResponse> = /*@__PURE__*/
+export const ExportRegexRulesRspSchema: GenMessage<ExportRegexRulesRsp> = /*@__PURE__*/
   messageDesc(file_muse_regex, 15);
 
 /**
@@ -582,8 +582,8 @@ export const RegexRuleService: GenService<{
    */
   listRegexRules: {
     methodKind: "unary";
-    input: typeof ListRegexRulesRequestSchema;
-    output: typeof ListRegexRulesResponseSchema;
+    input: typeof ListRegexRulesReqSchema;
+    output: typeof ListRegexRulesRspSchema;
   },
   /**
    * 添加正则规则
@@ -592,8 +592,8 @@ export const RegexRuleService: GenService<{
    */
   addRegexRule: {
     methodKind: "unary";
-    input: typeof AddRegexRuleRequestSchema;
-    output: typeof AddRegexRuleResponseSchema;
+    input: typeof AddRegexRuleReqSchema;
+    output: typeof AddRegexRuleRspSchema;
   },
   /**
    * 更新正则规则
@@ -602,8 +602,8 @@ export const RegexRuleService: GenService<{
    */
   updateRegexRule: {
     methodKind: "unary";
-    input: typeof UpdateRegexRuleRequestSchema;
-    output: typeof UpdateRegexRuleResponseSchema;
+    input: typeof UpdateRegexRuleReqSchema;
+    output: typeof UpdateRegexRuleRspSchema;
   },
   /**
    * 删除正则规则
@@ -612,8 +612,8 @@ export const RegexRuleService: GenService<{
    */
   deleteRegexRule: {
     methodKind: "unary";
-    input: typeof DeleteRegexRuleRequestSchema;
-    output: typeof DeleteRegexRuleResponseSchema;
+    input: typeof DeleteRegexRuleReqSchema;
+    output: typeof DeleteRegexRuleRspSchema;
   },
   /**
    * 批量更新正则规则排序
@@ -622,8 +622,8 @@ export const RegexRuleService: GenService<{
    */
   updateRegexRulesOrder: {
     methodKind: "unary";
-    input: typeof UpdateRegexRulesOrderRequestSchema;
-    output: typeof UpdateRegexRulesOrderResponseSchema;
+    input: typeof UpdateRegexRulesOrderReqSchema;
+    output: typeof UpdateRegexRulesOrderRspSchema;
   },
   /**
    * 导入正则规则
@@ -632,8 +632,8 @@ export const RegexRuleService: GenService<{
    */
   importRegexRules: {
     methodKind: "unary";
-    input: typeof ImportRegexRulesRequestSchema;
-    output: typeof ImportRegexRulesResponseSchema;
+    input: typeof ImportRegexRulesReqSchema;
+    output: typeof ImportRegexRulesRspSchema;
   },
   /**
    * 导出正则规则
@@ -642,8 +642,8 @@ export const RegexRuleService: GenService<{
    */
   exportRegexRules: {
     methodKind: "unary";
-    input: typeof ExportRegexRulesRequestSchema;
-    output: typeof ExportRegexRulesResponseSchema;
+    input: typeof ExportRegexRulesReqSchema;
+    output: typeof ExportRegexRulesRspSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_muse_regex, 0);

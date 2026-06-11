@@ -10,25 +10,25 @@ import "muse/common.proto";
 // 文件服务相关消息
 // ================================
 
-// UploadFileRequest 上传文件请求
-message UploadFileRequest {
+// UploadFileReq 上传文件请求
+message UploadFileReq {
   bytes file_content = 1;     // 文件内容
   string file_name = 2;       // 文件名
   FileType file_type = 3; // 文件类型
 }
 
-// UploadFileResponse 上传文件响应
-message UploadFileResponse {
+// UploadFileRsp 上传文件响应
+message UploadFileRsp {
   string file_path = 1;  // 文件相对路径（相对于用户目录）
 }
 
-// DownloadFileRequest 下载文件请求
-message DownloadFileRequest {
+// DownloadFileReq 下载文件请求
+message DownloadFileReq {
   string file_path = 1;  // 文件相对路径（相对于用户目录）
 }
 
-// DownloadFileResponse 下载文件响应
-message DownloadFileResponse {
+// DownloadFileRsp 下载文件响应
+message DownloadFileRsp {
   bytes file_content = 1;    // 文件内容
   string content_type = 2;   // 文件MIME类型
   string file_name = 3;      // 文件名
@@ -37,7 +37,7 @@ message DownloadFileResponse {
 // 文件服务
 service FileService {
   // 上传文件
-  rpc UploadFile(UploadFileRequest) returns (UploadFileResponse);
+  rpc UploadFile(UploadFileReq) returns (UploadFileRsp);
   // 下载文件
-  rpc DownloadFile(DownloadFileRequest) returns (DownloadFileResponse);
+  rpc DownloadFile(DownloadFileReq) returns (DownloadFileRsp);
 }

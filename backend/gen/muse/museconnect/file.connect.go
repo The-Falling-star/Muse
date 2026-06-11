@@ -43,9 +43,9 @@ const (
 // FileServiceClient is a client for the muse.FileService service.
 type FileServiceClient interface {
 	// 上传文件
-	UploadFile(context.Context, *connect.Request[muse.UploadFileRequest]) (*connect.Response[muse.UploadFileResponse], error)
+	UploadFile(context.Context, *connect.Request[muse.UploadFileReq]) (*connect.Response[muse.UploadFileRsp], error)
 	// 下载文件
-	DownloadFile(context.Context, *connect.Request[muse.DownloadFileRequest]) (*connect.Response[muse.DownloadFileResponse], error)
+	DownloadFile(context.Context, *connect.Request[muse.DownloadFileReq]) (*connect.Response[muse.DownloadFileRsp], error)
 }
 
 // NewFileServiceClient constructs a client for the muse.FileService service. By default, it uses
@@ -59,13 +59,13 @@ func NewFileServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 	baseURL = strings.TrimRight(baseURL, "/")
 	fileServiceMethods := muse.File_muse_file_proto.Services().ByName("FileService").Methods()
 	return &fileServiceClient{
-		uploadFile: connect.NewClient[muse.UploadFileRequest, muse.UploadFileResponse](
+		uploadFile: connect.NewClient[muse.UploadFileReq, muse.UploadFileRsp](
 			httpClient,
 			baseURL+FileServiceUploadFileProcedure,
 			connect.WithSchema(fileServiceMethods.ByName("UploadFile")),
 			connect.WithClientOptions(opts...),
 		),
-		downloadFile: connect.NewClient[muse.DownloadFileRequest, muse.DownloadFileResponse](
+		downloadFile: connect.NewClient[muse.DownloadFileReq, muse.DownloadFileRsp](
 			httpClient,
 			baseURL+FileServiceDownloadFileProcedure,
 			connect.WithSchema(fileServiceMethods.ByName("DownloadFile")),
@@ -76,26 +76,26 @@ func NewFileServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 
 // fileServiceClient implements FileServiceClient.
 type fileServiceClient struct {
-	uploadFile   *connect.Client[muse.UploadFileRequest, muse.UploadFileResponse]
-	downloadFile *connect.Client[muse.DownloadFileRequest, muse.DownloadFileResponse]
+	uploadFile   *connect.Client[muse.UploadFileReq, muse.UploadFileRsp]
+	downloadFile *connect.Client[muse.DownloadFileReq, muse.DownloadFileRsp]
 }
 
 // UploadFile calls muse.FileService.UploadFile.
-func (c *fileServiceClient) UploadFile(ctx context.Context, req *connect.Request[muse.UploadFileRequest]) (*connect.Response[muse.UploadFileResponse], error) {
+func (c *fileServiceClient) UploadFile(ctx context.Context, req *connect.Request[muse.UploadFileReq]) (*connect.Response[muse.UploadFileRsp], error) {
 	return c.uploadFile.CallUnary(ctx, req)
 }
 
 // DownloadFile calls muse.FileService.DownloadFile.
-func (c *fileServiceClient) DownloadFile(ctx context.Context, req *connect.Request[muse.DownloadFileRequest]) (*connect.Response[muse.DownloadFileResponse], error) {
+func (c *fileServiceClient) DownloadFile(ctx context.Context, req *connect.Request[muse.DownloadFileReq]) (*connect.Response[muse.DownloadFileRsp], error) {
 	return c.downloadFile.CallUnary(ctx, req)
 }
 
 // FileServiceHandler is an implementation of the muse.FileService service.
 type FileServiceHandler interface {
 	// 上传文件
-	UploadFile(context.Context, *connect.Request[muse.UploadFileRequest]) (*connect.Response[muse.UploadFileResponse], error)
+	UploadFile(context.Context, *connect.Request[muse.UploadFileReq]) (*connect.Response[muse.UploadFileRsp], error)
 	// 下载文件
-	DownloadFile(context.Context, *connect.Request[muse.DownloadFileRequest]) (*connect.Response[muse.DownloadFileResponse], error)
+	DownloadFile(context.Context, *connect.Request[muse.DownloadFileReq]) (*connect.Response[muse.DownloadFileRsp], error)
 }
 
 // NewFileServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -132,10 +132,10 @@ func NewFileServiceHandler(svc FileServiceHandler, opts ...connect.HandlerOption
 // UnimplementedFileServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedFileServiceHandler struct{}
 
-func (UnimplementedFileServiceHandler) UploadFile(context.Context, *connect.Request[muse.UploadFileRequest]) (*connect.Response[muse.UploadFileResponse], error) {
+func (UnimplementedFileServiceHandler) UploadFile(context.Context, *connect.Request[muse.UploadFileReq]) (*connect.Response[muse.UploadFileRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.FileService.UploadFile is not implemented"))
 }
 
-func (UnimplementedFileServiceHandler) DownloadFile(context.Context, *connect.Request[muse.DownloadFileRequest]) (*connect.Response[muse.DownloadFileResponse], error) {
+func (UnimplementedFileServiceHandler) DownloadFile(context.Context, *connect.Request[muse.DownloadFileReq]) (*connect.Response[muse.DownloadFileRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.FileService.DownloadFile is not implemented"))
 }

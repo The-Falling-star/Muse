@@ -59,19 +59,19 @@ const (
 // RegexRuleServiceClient is a client for the muse.RegexRuleService service.
 type RegexRuleServiceClient interface {
 	// 获取正则规则列表（全量拉取全局+预设+角色正则）
-	ListRegexRules(context.Context, *connect.Request[muse.ListRegexRulesRequest]) (*connect.Response[muse.ListRegexRulesResponse], error)
+	ListRegexRules(context.Context, *connect.Request[muse.ListRegexRulesReq]) (*connect.Response[muse.ListRegexRulesRsp], error)
 	// 添加正则规则
-	AddRegexRule(context.Context, *connect.Request[muse.AddRegexRuleRequest]) (*connect.Response[muse.AddRegexRuleResponse], error)
+	AddRegexRule(context.Context, *connect.Request[muse.AddRegexRuleReq]) (*connect.Response[muse.AddRegexRuleRsp], error)
 	// 更新正则规则
-	UpdateRegexRule(context.Context, *connect.Request[muse.UpdateRegexRuleRequest]) (*connect.Response[muse.UpdateRegexRuleResponse], error)
+	UpdateRegexRule(context.Context, *connect.Request[muse.UpdateRegexRuleReq]) (*connect.Response[muse.UpdateRegexRuleRsp], error)
 	// 删除正则规则
-	DeleteRegexRule(context.Context, *connect.Request[muse.DeleteRegexRuleRequest]) (*connect.Response[muse.DeleteRegexRuleResponse], error)
+	DeleteRegexRule(context.Context, *connect.Request[muse.DeleteRegexRuleReq]) (*connect.Response[muse.DeleteRegexRuleRsp], error)
 	// 批量更新正则规则排序
-	UpdateRegexRulesOrder(context.Context, *connect.Request[muse.UpdateRegexRulesOrderRequest]) (*connect.Response[muse.UpdateRegexRulesOrderResponse], error)
+	UpdateRegexRulesOrder(context.Context, *connect.Request[muse.UpdateRegexRulesOrderReq]) (*connect.Response[muse.UpdateRegexRulesOrderRsp], error)
 	// 导入正则规则
-	ImportRegexRules(context.Context, *connect.Request[muse.ImportRegexRulesRequest]) (*connect.Response[muse.ImportRegexRulesResponse], error)
+	ImportRegexRules(context.Context, *connect.Request[muse.ImportRegexRulesReq]) (*connect.Response[muse.ImportRegexRulesRsp], error)
 	// 导出正则规则
-	ExportRegexRules(context.Context, *connect.Request[muse.ExportRegexRulesRequest]) (*connect.Response[muse.ExportRegexRulesResponse], error)
+	ExportRegexRules(context.Context, *connect.Request[muse.ExportRegexRulesReq]) (*connect.Response[muse.ExportRegexRulesRsp], error)
 }
 
 // NewRegexRuleServiceClient constructs a client for the muse.RegexRuleService service. By default,
@@ -85,43 +85,43 @@ func NewRegexRuleServiceClient(httpClient connect.HTTPClient, baseURL string, op
 	baseURL = strings.TrimRight(baseURL, "/")
 	regexRuleServiceMethods := muse.File_muse_regex_proto.Services().ByName("RegexRuleService").Methods()
 	return &regexRuleServiceClient{
-		listRegexRules: connect.NewClient[muse.ListRegexRulesRequest, muse.ListRegexRulesResponse](
+		listRegexRules: connect.NewClient[muse.ListRegexRulesReq, muse.ListRegexRulesRsp](
 			httpClient,
 			baseURL+RegexRuleServiceListRegexRulesProcedure,
 			connect.WithSchema(regexRuleServiceMethods.ByName("ListRegexRules")),
 			connect.WithClientOptions(opts...),
 		),
-		addRegexRule: connect.NewClient[muse.AddRegexRuleRequest, muse.AddRegexRuleResponse](
+		addRegexRule: connect.NewClient[muse.AddRegexRuleReq, muse.AddRegexRuleRsp](
 			httpClient,
 			baseURL+RegexRuleServiceAddRegexRuleProcedure,
 			connect.WithSchema(regexRuleServiceMethods.ByName("AddRegexRule")),
 			connect.WithClientOptions(opts...),
 		),
-		updateRegexRule: connect.NewClient[muse.UpdateRegexRuleRequest, muse.UpdateRegexRuleResponse](
+		updateRegexRule: connect.NewClient[muse.UpdateRegexRuleReq, muse.UpdateRegexRuleRsp](
 			httpClient,
 			baseURL+RegexRuleServiceUpdateRegexRuleProcedure,
 			connect.WithSchema(regexRuleServiceMethods.ByName("UpdateRegexRule")),
 			connect.WithClientOptions(opts...),
 		),
-		deleteRegexRule: connect.NewClient[muse.DeleteRegexRuleRequest, muse.DeleteRegexRuleResponse](
+		deleteRegexRule: connect.NewClient[muse.DeleteRegexRuleReq, muse.DeleteRegexRuleRsp](
 			httpClient,
 			baseURL+RegexRuleServiceDeleteRegexRuleProcedure,
 			connect.WithSchema(regexRuleServiceMethods.ByName("DeleteRegexRule")),
 			connect.WithClientOptions(opts...),
 		),
-		updateRegexRulesOrder: connect.NewClient[muse.UpdateRegexRulesOrderRequest, muse.UpdateRegexRulesOrderResponse](
+		updateRegexRulesOrder: connect.NewClient[muse.UpdateRegexRulesOrderReq, muse.UpdateRegexRulesOrderRsp](
 			httpClient,
 			baseURL+RegexRuleServiceUpdateRegexRulesOrderProcedure,
 			connect.WithSchema(regexRuleServiceMethods.ByName("UpdateRegexRulesOrder")),
 			connect.WithClientOptions(opts...),
 		),
-		importRegexRules: connect.NewClient[muse.ImportRegexRulesRequest, muse.ImportRegexRulesResponse](
+		importRegexRules: connect.NewClient[muse.ImportRegexRulesReq, muse.ImportRegexRulesRsp](
 			httpClient,
 			baseURL+RegexRuleServiceImportRegexRulesProcedure,
 			connect.WithSchema(regexRuleServiceMethods.ByName("ImportRegexRules")),
 			connect.WithClientOptions(opts...),
 		),
-		exportRegexRules: connect.NewClient[muse.ExportRegexRulesRequest, muse.ExportRegexRulesResponse](
+		exportRegexRules: connect.NewClient[muse.ExportRegexRulesReq, muse.ExportRegexRulesRsp](
 			httpClient,
 			baseURL+RegexRuleServiceExportRegexRulesProcedure,
 			connect.WithSchema(regexRuleServiceMethods.ByName("ExportRegexRules")),
@@ -132,66 +132,66 @@ func NewRegexRuleServiceClient(httpClient connect.HTTPClient, baseURL string, op
 
 // regexRuleServiceClient implements RegexRuleServiceClient.
 type regexRuleServiceClient struct {
-	listRegexRules        *connect.Client[muse.ListRegexRulesRequest, muse.ListRegexRulesResponse]
-	addRegexRule          *connect.Client[muse.AddRegexRuleRequest, muse.AddRegexRuleResponse]
-	updateRegexRule       *connect.Client[muse.UpdateRegexRuleRequest, muse.UpdateRegexRuleResponse]
-	deleteRegexRule       *connect.Client[muse.DeleteRegexRuleRequest, muse.DeleteRegexRuleResponse]
-	updateRegexRulesOrder *connect.Client[muse.UpdateRegexRulesOrderRequest, muse.UpdateRegexRulesOrderResponse]
-	importRegexRules      *connect.Client[muse.ImportRegexRulesRequest, muse.ImportRegexRulesResponse]
-	exportRegexRules      *connect.Client[muse.ExportRegexRulesRequest, muse.ExportRegexRulesResponse]
+	listRegexRules        *connect.Client[muse.ListRegexRulesReq, muse.ListRegexRulesRsp]
+	addRegexRule          *connect.Client[muse.AddRegexRuleReq, muse.AddRegexRuleRsp]
+	updateRegexRule       *connect.Client[muse.UpdateRegexRuleReq, muse.UpdateRegexRuleRsp]
+	deleteRegexRule       *connect.Client[muse.DeleteRegexRuleReq, muse.DeleteRegexRuleRsp]
+	updateRegexRulesOrder *connect.Client[muse.UpdateRegexRulesOrderReq, muse.UpdateRegexRulesOrderRsp]
+	importRegexRules      *connect.Client[muse.ImportRegexRulesReq, muse.ImportRegexRulesRsp]
+	exportRegexRules      *connect.Client[muse.ExportRegexRulesReq, muse.ExportRegexRulesRsp]
 }
 
 // ListRegexRules calls muse.RegexRuleService.ListRegexRules.
-func (c *regexRuleServiceClient) ListRegexRules(ctx context.Context, req *connect.Request[muse.ListRegexRulesRequest]) (*connect.Response[muse.ListRegexRulesResponse], error) {
+func (c *regexRuleServiceClient) ListRegexRules(ctx context.Context, req *connect.Request[muse.ListRegexRulesReq]) (*connect.Response[muse.ListRegexRulesRsp], error) {
 	return c.listRegexRules.CallUnary(ctx, req)
 }
 
 // AddRegexRule calls muse.RegexRuleService.AddRegexRule.
-func (c *regexRuleServiceClient) AddRegexRule(ctx context.Context, req *connect.Request[muse.AddRegexRuleRequest]) (*connect.Response[muse.AddRegexRuleResponse], error) {
+func (c *regexRuleServiceClient) AddRegexRule(ctx context.Context, req *connect.Request[muse.AddRegexRuleReq]) (*connect.Response[muse.AddRegexRuleRsp], error) {
 	return c.addRegexRule.CallUnary(ctx, req)
 }
 
 // UpdateRegexRule calls muse.RegexRuleService.UpdateRegexRule.
-func (c *regexRuleServiceClient) UpdateRegexRule(ctx context.Context, req *connect.Request[muse.UpdateRegexRuleRequest]) (*connect.Response[muse.UpdateRegexRuleResponse], error) {
+func (c *regexRuleServiceClient) UpdateRegexRule(ctx context.Context, req *connect.Request[muse.UpdateRegexRuleReq]) (*connect.Response[muse.UpdateRegexRuleRsp], error) {
 	return c.updateRegexRule.CallUnary(ctx, req)
 }
 
 // DeleteRegexRule calls muse.RegexRuleService.DeleteRegexRule.
-func (c *regexRuleServiceClient) DeleteRegexRule(ctx context.Context, req *connect.Request[muse.DeleteRegexRuleRequest]) (*connect.Response[muse.DeleteRegexRuleResponse], error) {
+func (c *regexRuleServiceClient) DeleteRegexRule(ctx context.Context, req *connect.Request[muse.DeleteRegexRuleReq]) (*connect.Response[muse.DeleteRegexRuleRsp], error) {
 	return c.deleteRegexRule.CallUnary(ctx, req)
 }
 
 // UpdateRegexRulesOrder calls muse.RegexRuleService.UpdateRegexRulesOrder.
-func (c *regexRuleServiceClient) UpdateRegexRulesOrder(ctx context.Context, req *connect.Request[muse.UpdateRegexRulesOrderRequest]) (*connect.Response[muse.UpdateRegexRulesOrderResponse], error) {
+func (c *regexRuleServiceClient) UpdateRegexRulesOrder(ctx context.Context, req *connect.Request[muse.UpdateRegexRulesOrderReq]) (*connect.Response[muse.UpdateRegexRulesOrderRsp], error) {
 	return c.updateRegexRulesOrder.CallUnary(ctx, req)
 }
 
 // ImportRegexRules calls muse.RegexRuleService.ImportRegexRules.
-func (c *regexRuleServiceClient) ImportRegexRules(ctx context.Context, req *connect.Request[muse.ImportRegexRulesRequest]) (*connect.Response[muse.ImportRegexRulesResponse], error) {
+func (c *regexRuleServiceClient) ImportRegexRules(ctx context.Context, req *connect.Request[muse.ImportRegexRulesReq]) (*connect.Response[muse.ImportRegexRulesRsp], error) {
 	return c.importRegexRules.CallUnary(ctx, req)
 }
 
 // ExportRegexRules calls muse.RegexRuleService.ExportRegexRules.
-func (c *regexRuleServiceClient) ExportRegexRules(ctx context.Context, req *connect.Request[muse.ExportRegexRulesRequest]) (*connect.Response[muse.ExportRegexRulesResponse], error) {
+func (c *regexRuleServiceClient) ExportRegexRules(ctx context.Context, req *connect.Request[muse.ExportRegexRulesReq]) (*connect.Response[muse.ExportRegexRulesRsp], error) {
 	return c.exportRegexRules.CallUnary(ctx, req)
 }
 
 // RegexRuleServiceHandler is an implementation of the muse.RegexRuleService service.
 type RegexRuleServiceHandler interface {
 	// 获取正则规则列表（全量拉取全局+预设+角色正则）
-	ListRegexRules(context.Context, *connect.Request[muse.ListRegexRulesRequest]) (*connect.Response[muse.ListRegexRulesResponse], error)
+	ListRegexRules(context.Context, *connect.Request[muse.ListRegexRulesReq]) (*connect.Response[muse.ListRegexRulesRsp], error)
 	// 添加正则规则
-	AddRegexRule(context.Context, *connect.Request[muse.AddRegexRuleRequest]) (*connect.Response[muse.AddRegexRuleResponse], error)
+	AddRegexRule(context.Context, *connect.Request[muse.AddRegexRuleReq]) (*connect.Response[muse.AddRegexRuleRsp], error)
 	// 更新正则规则
-	UpdateRegexRule(context.Context, *connect.Request[muse.UpdateRegexRuleRequest]) (*connect.Response[muse.UpdateRegexRuleResponse], error)
+	UpdateRegexRule(context.Context, *connect.Request[muse.UpdateRegexRuleReq]) (*connect.Response[muse.UpdateRegexRuleRsp], error)
 	// 删除正则规则
-	DeleteRegexRule(context.Context, *connect.Request[muse.DeleteRegexRuleRequest]) (*connect.Response[muse.DeleteRegexRuleResponse], error)
+	DeleteRegexRule(context.Context, *connect.Request[muse.DeleteRegexRuleReq]) (*connect.Response[muse.DeleteRegexRuleRsp], error)
 	// 批量更新正则规则排序
-	UpdateRegexRulesOrder(context.Context, *connect.Request[muse.UpdateRegexRulesOrderRequest]) (*connect.Response[muse.UpdateRegexRulesOrderResponse], error)
+	UpdateRegexRulesOrder(context.Context, *connect.Request[muse.UpdateRegexRulesOrderReq]) (*connect.Response[muse.UpdateRegexRulesOrderRsp], error)
 	// 导入正则规则
-	ImportRegexRules(context.Context, *connect.Request[muse.ImportRegexRulesRequest]) (*connect.Response[muse.ImportRegexRulesResponse], error)
+	ImportRegexRules(context.Context, *connect.Request[muse.ImportRegexRulesReq]) (*connect.Response[muse.ImportRegexRulesRsp], error)
 	// 导出正则规则
-	ExportRegexRules(context.Context, *connect.Request[muse.ExportRegexRulesRequest]) (*connect.Response[muse.ExportRegexRulesResponse], error)
+	ExportRegexRules(context.Context, *connect.Request[muse.ExportRegexRulesReq]) (*connect.Response[muse.ExportRegexRulesRsp], error)
 }
 
 // NewRegexRuleServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -268,30 +268,30 @@ func NewRegexRuleServiceHandler(svc RegexRuleServiceHandler, opts ...connect.Han
 // UnimplementedRegexRuleServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedRegexRuleServiceHandler struct{}
 
-func (UnimplementedRegexRuleServiceHandler) ListRegexRules(context.Context, *connect.Request[muse.ListRegexRulesRequest]) (*connect.Response[muse.ListRegexRulesResponse], error) {
+func (UnimplementedRegexRuleServiceHandler) ListRegexRules(context.Context, *connect.Request[muse.ListRegexRulesReq]) (*connect.Response[muse.ListRegexRulesRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.RegexRuleService.ListRegexRules is not implemented"))
 }
 
-func (UnimplementedRegexRuleServiceHandler) AddRegexRule(context.Context, *connect.Request[muse.AddRegexRuleRequest]) (*connect.Response[muse.AddRegexRuleResponse], error) {
+func (UnimplementedRegexRuleServiceHandler) AddRegexRule(context.Context, *connect.Request[muse.AddRegexRuleReq]) (*connect.Response[muse.AddRegexRuleRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.RegexRuleService.AddRegexRule is not implemented"))
 }
 
-func (UnimplementedRegexRuleServiceHandler) UpdateRegexRule(context.Context, *connect.Request[muse.UpdateRegexRuleRequest]) (*connect.Response[muse.UpdateRegexRuleResponse], error) {
+func (UnimplementedRegexRuleServiceHandler) UpdateRegexRule(context.Context, *connect.Request[muse.UpdateRegexRuleReq]) (*connect.Response[muse.UpdateRegexRuleRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.RegexRuleService.UpdateRegexRule is not implemented"))
 }
 
-func (UnimplementedRegexRuleServiceHandler) DeleteRegexRule(context.Context, *connect.Request[muse.DeleteRegexRuleRequest]) (*connect.Response[muse.DeleteRegexRuleResponse], error) {
+func (UnimplementedRegexRuleServiceHandler) DeleteRegexRule(context.Context, *connect.Request[muse.DeleteRegexRuleReq]) (*connect.Response[muse.DeleteRegexRuleRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.RegexRuleService.DeleteRegexRule is not implemented"))
 }
 
-func (UnimplementedRegexRuleServiceHandler) UpdateRegexRulesOrder(context.Context, *connect.Request[muse.UpdateRegexRulesOrderRequest]) (*connect.Response[muse.UpdateRegexRulesOrderResponse], error) {
+func (UnimplementedRegexRuleServiceHandler) UpdateRegexRulesOrder(context.Context, *connect.Request[muse.UpdateRegexRulesOrderReq]) (*connect.Response[muse.UpdateRegexRulesOrderRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.RegexRuleService.UpdateRegexRulesOrder is not implemented"))
 }
 
-func (UnimplementedRegexRuleServiceHandler) ImportRegexRules(context.Context, *connect.Request[muse.ImportRegexRulesRequest]) (*connect.Response[muse.ImportRegexRulesResponse], error) {
+func (UnimplementedRegexRuleServiceHandler) ImportRegexRules(context.Context, *connect.Request[muse.ImportRegexRulesReq]) (*connect.Response[muse.ImportRegexRulesRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.RegexRuleService.ImportRegexRules is not implemented"))
 }
 
-func (UnimplementedRegexRuleServiceHandler) ExportRegexRules(context.Context, *connect.Request[muse.ExportRegexRulesRequest]) (*connect.Response[muse.ExportRegexRulesResponse], error) {
+func (UnimplementedRegexRuleServiceHandler) ExportRegexRules(context.Context, *connect.Request[muse.ExportRegexRulesReq]) (*connect.Response[muse.ExportRegexRulesRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.RegexRuleService.ExportRegexRules is not implemented"))
 }

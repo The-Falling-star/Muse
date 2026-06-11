@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file muse/worldinfo.proto.
  */
 export const file_muse_worldinfo: GenFile = /*@__PURE__*/
-  fileDesc("ChRtdXNlL3dvcmxkaW5mby5wcm90bxIEbXVzZSKtAQoJV29ybGRJbmZvEgoKAmlkGAEgASgFEg8KB3VzZXJfaWQYAiABKAUSDAoEbmFtZRgDIAEoCRITCgtkZXNjcmlwdGlvbhgEIAEoCRIRCglpc19nbG9iYWwYBSABKAgSEgoKY3JlYXRlZF9hdBgGIAEoAxISCgp1cGRhdGVkX2F0GAcgASgDEiUKB2VudHJpZXMYCCADKAsyFC5tdXNlLldvcmxkSW5mb0VudHJ5IusCCg5Xb3JsZEluZm9FbnRyeRIKCgJpZBgBIAEoBRIVCg13b3JsZF9pbmZvX2lkGAIgASgFEgsKA3VpZBgDIAEoCRIRCglrZXlzX2xpc3QYBCADKAkSFgoOc2Vjb25kYXJ5X2tleXMYBSADKAkSDwoHY29udGVudBgGIAEoCRIPCgdjb21tZW50GAcgASgJEhIKCmlzX2VuYWJsZWQYCCABKAgSEAoIY29uc3RhbnQYCSABKAgSEQoJc2VsZWN0aXZlGAogASgIEhcKD2luc2VydGlvbl9vcmRlchgLIAEoBRIlCghwb3NpdGlvbhgMIAEoDjITLm11c2UuRW50cnlQb3NpdGlvbhINCgVkZXB0aBgNIAEoBRISCgpzb3J0X29yZGVyGA4gASgFEhIKCmNyZWF0ZWRfYXQYDyABKAMSEgoKdXBkYXRlZF9hdBgQIAEoAxIYCgRyb2xlGBEgASgOMgoubXVzZS5Sb2xlIk0KEFdvcmxkSW5mb1dpdGhMZW4SIwoKd29ybGRfaW5mbxgBIAEoCzIPLm11c2UuV29ybGRJbmZvEhQKDGVudHJ5X2xlbmd0aBgCIAEoBSJ/ChVMaXN0V29ybGRJbmZvc1JlcXVlc3QSFgoJaXNfZ2xvYmFsGAEgASgISACIAQESEQoEcGFnZRgCIAEoBUgBiAEBEhYKCXBhZ2Vfc2l6ZRgDIAEoBUgCiAEBQgwKCl9pc19nbG9iYWxCBwoFX3BhZ2VCDAoKX3BhZ2Vfc2l6ZSJ1ChZMaXN0V29ybGRJbmZvc1Jlc3BvbnNlEisKC3dvcmxkX2luZm9zGAEgAygLMhYubXVzZS5Xb3JsZEluZm9XaXRoTGVuEg0KBXRvdGFsGAIgASgDEgwKBHBhZ2UYAyABKAUSEQoJcGFnZV9zaXplGAQgASgFIiEKE0dldFdvcmxkSW5mb1JlcXVlc3QSCgoCaWQYASABKAUiOwoUR2V0V29ybGRJbmZvUmVzcG9uc2USIwoKd29ybGRfaW5mbxgBIAEoCzIPLm11c2UuV29ybGRJbmZvImMKFkNyZWF0ZVdvcmxkSW5mb1JlcXVlc3QSDAoEbmFtZRgBIAEoCRIYCgtkZXNjcmlwdGlvbhgCIAEoCUgAiAEBEhEKCWlzX2dsb2JhbBgDIAEoCEIOCgxfZGVzY3JpcHRpb24iPgoXQ3JlYXRlV29ybGRJbmZvUmVzcG9uc2USIwoKd29ybGRfaW5mbxgBIAEoCzIPLm11c2UuV29ybGRJbmZvIm8KFlVwZGF0ZVdvcmxkSW5mb1JlcXVlc3QSCgoCaWQYASABKAUSDAoEbmFtZRgCIAEoCRIYCgtkZXNjcmlwdGlvbhgDIAEoCUgAiAEBEhEKCWlzX2dsb2JhbBgEIAEoCEIOCgxfZGVzY3JpcHRpb24iPgoXVXBkYXRlV29ybGRJbmZvUmVzcG9uc2USIwoKd29ybGRfaW5mbxgBIAEoCzIPLm11c2UuV29ybGRJbmZvIiQKFkRlbGV0ZVdvcmxkSW5mb1JlcXVlc3QSCgoCaWQYASABKAUiGQoXRGVsZXRlV29ybGRJbmZvUmVzcG9uc2UiQQoWSW1wb3J0V29ybGRJbmZvUmVxdWVzdBIUCgxmaWxlX2NvbnRlbnQYASABKAwSEQoJZmlsZV9uYW1lGAIgASgJIj4KF0ltcG9ydFdvcmxkSW5mb1Jlc3BvbnNlEiMKCndvcmxkX2luZm8YASABKAsyDy5tdXNlLldvcmxkSW5mbyIkChZFeHBvcnRXb3JsZEluZm9SZXF1ZXN0EgoKAmlkGAEgASgFIkIKF0V4cG9ydFdvcmxkSW5mb1Jlc3BvbnNlEhQKDGZpbGVfY29udGVudBgBIAEoDBIRCglmaWxlX25hbWUYAiABKAkiNAobTGlzdFdvcmxkSW5mb0VudHJpZXNSZXF1ZXN0EhUKDXdvcmxkX2luZm9faWQYASABKAUiRQocTGlzdFdvcmxkSW5mb0VudHJpZXNSZXNwb25zZRIlCgdlbnRyaWVzGAEgAygLMhQubXVzZS5Xb3JsZEluZm9FbnRyeSLfAgoYQWRkV29ybGRJbmZvRW50cnlSZXF1ZXN0EhUKDXdvcmxkX2luZm9faWQYASABKAUSEAoDdWlkGAIgASgJSACIAQESEQoJa2V5c19saXN0GAMgAygJEhYKDnNlY29uZGFyeV9rZXlzGAQgAygJEg8KB2NvbnRlbnQYBSABKAkSFAoHY29tbWVudBgGIAEoCUgBiAEBEhIKCmlzX2VuYWJsZWQYByABKAgSEAoIY29uc3RhbnQYCCABKAgSEQoJc2VsZWN0aXZlGAkgASgIEhcKD2luc2VydGlvbl9vcmRlchgKIAEoBRIlCghwb3NpdGlvbhgLIAEoDjITLm11c2UuRW50cnlQb3NpdGlvbhINCgVkZXB0aBgMIAEoBRIYCgRyb2xlGA4gASgOMgoubXVzZS5Sb2xlEhIKCnNvcnRfb3JkZXIYDSABKAVCBgoEX3VpZEIKCghfY29tbWVudCJAChlBZGRXb3JsZEluZm9FbnRyeVJlc3BvbnNlEiMKBWVudHJ5GAEgASgLMhQubXVzZS5Xb3JsZEluZm9FbnRyeSLXAgobVXBkYXRlV29ybGRJbmZvRW50cnlSZXF1ZXN0EgoKAmlkGAEgASgFEhAKA3VpZBgCIAEoCUgAiAEBEhEKCWtleXNfbGlzdBgDIAMoCRIWCg5zZWNvbmRhcnlfa2V5cxgEIAMoCRIPCgdjb250ZW50GAUgASgJEhQKB2NvbW1lbnQYBiABKAlIAYgBARISCgppc19lbmFibGVkGAcgASgIEhAKCGNvbnN0YW50GAggASgIEhEKCXNlbGVjdGl2ZRgJIAEoCBIXCg9pbnNlcnRpb25fb3JkZXIYCiABKAUSJQoIcG9zaXRpb24YCyABKA4yEy5tdXNlLkVudHJ5UG9zaXRpb24SDQoFZGVwdGgYDCABKAUSGAoEcm9sZRgOIAEoDjIKLm11c2UuUm9sZRISCgpzb3J0X29yZGVyGA0gASgFQgYKBF91aWRCCgoIX2NvbW1lbnQiQwocVXBkYXRlV29ybGRJbmZvRW50cnlSZXNwb25zZRIjCgVlbnRyeRgBIAEoCzIULm11c2UuV29ybGRJbmZvRW50cnkiKQobRGVsZXRlV29ybGRJbmZvRW50cnlSZXF1ZXN0EgoKAmlkGAEgASgFIh4KHERlbGV0ZVdvcmxkSW5mb0VudHJ5UmVzcG9uc2UiTgoiVXBkYXRlV29ybGRJbmZvRW50cmllc09yZGVyUmVxdWVzdBIVCg13b3JsZF9pbmZvX2lkGAEgASgFEhEKCWVudHJ5X2lkcxgCIAMoBSIlCiNVcGRhdGVXb3JsZEluZm9FbnRyaWVzT3JkZXJSZXNwb25zZTKdCAoQV29ybGRJbmZvU2VydmljZRJLCg5MaXN0V29ybGRJbmZvcxIbLm11c2UuTGlzdFdvcmxkSW5mb3NSZXF1ZXN0GhwubXVzZS5MaXN0V29ybGRJbmZvc1Jlc3BvbnNlEkUKDEdldFdvcmxkSW5mbxIZLm11c2UuR2V0V29ybGRJbmZvUmVxdWVzdBoaLm11c2UuR2V0V29ybGRJbmZvUmVzcG9uc2USTgoPQ3JlYXRlV29ybGRJbmZvEhwubXVzZS5DcmVhdGVXb3JsZEluZm9SZXF1ZXN0Gh0ubXVzZS5DcmVhdGVXb3JsZEluZm9SZXNwb25zZRJOCg9VcGRhdGVXb3JsZEluZm8SHC5tdXNlLlVwZGF0ZVdvcmxkSW5mb1JlcXVlc3QaHS5tdXNlLlVwZGF0ZVdvcmxkSW5mb1Jlc3BvbnNlEk4KD0RlbGV0ZVdvcmxkSW5mbxIcLm11c2UuRGVsZXRlV29ybGRJbmZvUmVxdWVzdBodLm11c2UuRGVsZXRlV29ybGRJbmZvUmVzcG9uc2USTgoPSW1wb3J0V29ybGRJbmZvEhwubXVzZS5JbXBvcnRXb3JsZEluZm9SZXF1ZXN0Gh0ubXVzZS5JbXBvcnRXb3JsZEluZm9SZXNwb25zZRJOCg9FeHBvcnRXb3JsZEluZm8SHC5tdXNlLkV4cG9ydFdvcmxkSW5mb1JlcXVlc3QaHS5tdXNlLkV4cG9ydFdvcmxkSW5mb1Jlc3BvbnNlEl0KFExpc3RXb3JsZEluZm9FbnRyaWVzEiEubXVzZS5MaXN0V29ybGRJbmZvRW50cmllc1JlcXVlc3QaIi5tdXNlLkxpc3RXb3JsZEluZm9FbnRyaWVzUmVzcG9uc2USVAoRQWRkV29ybGRJbmZvRW50cnkSHi5tdXNlLkFkZFdvcmxkSW5mb0VudHJ5UmVxdWVzdBofLm11c2UuQWRkV29ybGRJbmZvRW50cnlSZXNwb25zZRJdChRVcGRhdGVXb3JsZEluZm9FbnRyeRIhLm11c2UuVXBkYXRlV29ybGRJbmZvRW50cnlSZXF1ZXN0GiIubXVzZS5VcGRhdGVXb3JsZEluZm9FbnRyeVJlc3BvbnNlEl0KFERlbGV0ZVdvcmxkSW5mb0VudHJ5EiEubXVzZS5EZWxldGVXb3JsZEluZm9FbnRyeVJlcXVlc3QaIi5tdXNlLkRlbGV0ZVdvcmxkSW5mb0VudHJ5UmVzcG9uc2UScgobVXBkYXRlV29ybGRJbmZvRW50cmllc09yZGVyEigubXVzZS5VcGRhdGVXb3JsZEluZm9FbnRyaWVzT3JkZXJSZXF1ZXN0GikubXVzZS5VcGRhdGVXb3JsZEluZm9FbnRyaWVzT3JkZXJSZXNwb25zZUJpCghjb20ubXVzZUIOV29ybGRpbmZvUHJvdG9QAVodZ2l0aHViLmNvbS9saW5nL211c2UvZ2VuL211c2WiAgNNWFiqAgRNdXNlygIETXVzZeICEE11c2VcR1BCTWV0YWRhdGHqAgRNdXNlYgZwcm90bzM", [file_muse_common]);
+  fileDesc("ChRtdXNlL3dvcmxkaW5mby5wcm90bxIEbXVzZSKtAQoJV29ybGRJbmZvEgoKAmlkGAEgASgFEg8KB3VzZXJfaWQYAiABKAUSDAoEbmFtZRgDIAEoCRITCgtkZXNjcmlwdGlvbhgEIAEoCRIRCglpc19nbG9iYWwYBSABKAgSEgoKY3JlYXRlZF9hdBgGIAEoAxISCgp1cGRhdGVkX2F0GAcgASgDEiUKB2VudHJpZXMYCCADKAsyFC5tdXNlLldvcmxkSW5mb0VudHJ5IusCCg5Xb3JsZEluZm9FbnRyeRIKCgJpZBgBIAEoBRIVCg13b3JsZF9pbmZvX2lkGAIgASgFEgsKA3VpZBgDIAEoCRIRCglrZXlzX2xpc3QYBCADKAkSFgoOc2Vjb25kYXJ5X2tleXMYBSADKAkSDwoHY29udGVudBgGIAEoCRIPCgdjb21tZW50GAcgASgJEhIKCmlzX2VuYWJsZWQYCCABKAgSEAoIY29uc3RhbnQYCSABKAgSEQoJc2VsZWN0aXZlGAogASgIEhcKD2luc2VydGlvbl9vcmRlchgLIAEoBRIlCghwb3NpdGlvbhgMIAEoDjITLm11c2UuRW50cnlQb3NpdGlvbhINCgVkZXB0aBgNIAEoBRISCgpzb3J0X29yZGVyGA4gASgFEhIKCmNyZWF0ZWRfYXQYDyABKAMSEgoKdXBkYXRlZF9hdBgQIAEoAxIYCgRyb2xlGBEgASgOMgoubXVzZS5Sb2xlIk0KEFdvcmxkSW5mb1dpdGhMZW4SIwoKd29ybGRfaW5mbxgBIAEoCzIPLm11c2UuV29ybGRJbmZvEhQKDGVudHJ5X2xlbmd0aBgCIAEoBSJ7ChFMaXN0V29ybGRJbmZvc1JlcRIWCglpc19nbG9iYWwYASABKAhIAIgBARIRCgRwYWdlGAIgASgFSAGIAQESFgoJcGFnZV9zaXplGAMgASgFSAKIAQFCDAoKX2lzX2dsb2JhbEIHCgVfcGFnZUIMCgpfcGFnZV9zaXplInAKEUxpc3RXb3JsZEluZm9zUnNwEisKC3dvcmxkX2luZm9zGAEgAygLMhYubXVzZS5Xb3JsZEluZm9XaXRoTGVuEg0KBXRvdGFsGAIgASgDEgwKBHBhZ2UYAyABKAUSEQoJcGFnZV9zaXplGAQgASgFIh0KD0dldFdvcmxkSW5mb1JlcRIKCgJpZBgBIAEoBSI2Cg9HZXRXb3JsZEluZm9Sc3ASIwoKd29ybGRfaW5mbxgBIAEoCzIPLm11c2UuV29ybGRJbmZvIl8KEkNyZWF0ZVdvcmxkSW5mb1JlcRIMCgRuYW1lGAEgASgJEhgKC2Rlc2NyaXB0aW9uGAIgASgJSACIAQESEQoJaXNfZ2xvYmFsGAMgASgIQg4KDF9kZXNjcmlwdGlvbiI5ChJDcmVhdGVXb3JsZEluZm9Sc3ASIwoKd29ybGRfaW5mbxgBIAEoCzIPLm11c2UuV29ybGRJbmZvImsKElVwZGF0ZVdvcmxkSW5mb1JlcRIKCgJpZBgBIAEoBRIMCgRuYW1lGAIgASgJEhgKC2Rlc2NyaXB0aW9uGAMgASgJSACIAQESEQoJaXNfZ2xvYmFsGAQgASgIQg4KDF9kZXNjcmlwdGlvbiI5ChJVcGRhdGVXb3JsZEluZm9Sc3ASIwoKd29ybGRfaW5mbxgBIAEoCzIPLm11c2UuV29ybGRJbmZvIiAKEkRlbGV0ZVdvcmxkSW5mb1JlcRIKCgJpZBgBIAEoBSIUChJEZWxldGVXb3JsZEluZm9Sc3AiPQoSSW1wb3J0V29ybGRJbmZvUmVxEhQKDGZpbGVfY29udGVudBgBIAEoDBIRCglmaWxlX25hbWUYAiABKAkiOQoSSW1wb3J0V29ybGRJbmZvUnNwEiMKCndvcmxkX2luZm8YASABKAsyDy5tdXNlLldvcmxkSW5mbyIgChJFeHBvcnRXb3JsZEluZm9SZXESCgoCaWQYASABKAUiPQoSRXhwb3J0V29ybGRJbmZvUnNwEhQKDGZpbGVfY29udGVudBgBIAEoDBIRCglmaWxlX25hbWUYAiABKAkiMAoXTGlzdFdvcmxkSW5mb0VudHJpZXNSZXESFQoNd29ybGRfaW5mb19pZBgBIAEoBSJAChdMaXN0V29ybGRJbmZvRW50cmllc1JzcBIlCgdlbnRyaWVzGAEgAygLMhQubXVzZS5Xb3JsZEluZm9FbnRyeSLbAgoUQWRkV29ybGRJbmZvRW50cnlSZXESFQoNd29ybGRfaW5mb19pZBgBIAEoBRIQCgN1aWQYAiABKAlIAIgBARIRCglrZXlzX2xpc3QYAyADKAkSFgoOc2Vjb25kYXJ5X2tleXMYBCADKAkSDwoHY29udGVudBgFIAEoCRIUCgdjb21tZW50GAYgASgJSAGIAQESEgoKaXNfZW5hYmxlZBgHIAEoCBIQCghjb25zdGFudBgIIAEoCBIRCglzZWxlY3RpdmUYCSABKAgSFwoPaW5zZXJ0aW9uX29yZGVyGAogASgFEiUKCHBvc2l0aW9uGAsgASgOMhMubXVzZS5FbnRyeVBvc2l0aW9uEg0KBWRlcHRoGAwgASgFEhgKBHJvbGUYDiABKA4yCi5tdXNlLlJvbGUSEgoKc29ydF9vcmRlchgNIAEoBUIGCgRfdWlkQgoKCF9jb21tZW50IjsKFEFkZFdvcmxkSW5mb0VudHJ5UnNwEiMKBWVudHJ5GAEgASgLMhQubXVzZS5Xb3JsZEluZm9FbnRyeSLTAgoXVXBkYXRlV29ybGRJbmZvRW50cnlSZXESCgoCaWQYASABKAUSEAoDdWlkGAIgASgJSACIAQESEQoJa2V5c19saXN0GAMgAygJEhYKDnNlY29uZGFyeV9rZXlzGAQgAygJEg8KB2NvbnRlbnQYBSABKAkSFAoHY29tbWVudBgGIAEoCUgBiAEBEhIKCmlzX2VuYWJsZWQYByABKAgSEAoIY29uc3RhbnQYCCABKAgSEQoJc2VsZWN0aXZlGAkgASgIEhcKD2luc2VydGlvbl9vcmRlchgKIAEoBRIlCghwb3NpdGlvbhgLIAEoDjITLm11c2UuRW50cnlQb3NpdGlvbhINCgVkZXB0aBgMIAEoBRIYCgRyb2xlGA4gASgOMgoubXVzZS5Sb2xlEhIKCnNvcnRfb3JkZXIYDSABKAVCBgoEX3VpZEIKCghfY29tbWVudCI+ChdVcGRhdGVXb3JsZEluZm9FbnRyeVJzcBIjCgVlbnRyeRgBIAEoCzIULm11c2UuV29ybGRJbmZvRW50cnkiJQoXRGVsZXRlV29ybGRJbmZvRW50cnlSZXESCgoCaWQYASABKAUiGQoXRGVsZXRlV29ybGRJbmZvRW50cnlSc3AiSgoeVXBkYXRlV29ybGRJbmZvRW50cmllc09yZGVyUmVxEhUKDXdvcmxkX2luZm9faWQYASABKAUSEQoJZW50cnlfaWRzGAIgAygFIiAKHlVwZGF0ZVdvcmxkSW5mb0VudHJpZXNPcmRlclJzcDKxBwoQV29ybGRJbmZvU2VydmljZRJCCg5MaXN0V29ybGRJbmZvcxIXLm11c2UuTGlzdFdvcmxkSW5mb3NSZXEaFy5tdXNlLkxpc3RXb3JsZEluZm9zUnNwEjwKDEdldFdvcmxkSW5mbxIVLm11c2UuR2V0V29ybGRJbmZvUmVxGhUubXVzZS5HZXRXb3JsZEluZm9Sc3ASRQoPQ3JlYXRlV29ybGRJbmZvEhgubXVzZS5DcmVhdGVXb3JsZEluZm9SZXEaGC5tdXNlLkNyZWF0ZVdvcmxkSW5mb1JzcBJFCg9VcGRhdGVXb3JsZEluZm8SGC5tdXNlLlVwZGF0ZVdvcmxkSW5mb1JlcRoYLm11c2UuVXBkYXRlV29ybGRJbmZvUnNwEkUKD0RlbGV0ZVdvcmxkSW5mbxIYLm11c2UuRGVsZXRlV29ybGRJbmZvUmVxGhgubXVzZS5EZWxldGVXb3JsZEluZm9Sc3ASRQoPSW1wb3J0V29ybGRJbmZvEhgubXVzZS5JbXBvcnRXb3JsZEluZm9SZXEaGC5tdXNlLkltcG9ydFdvcmxkSW5mb1JzcBJFCg9FeHBvcnRXb3JsZEluZm8SGC5tdXNlLkV4cG9ydFdvcmxkSW5mb1JlcRoYLm11c2UuRXhwb3J0V29ybGRJbmZvUnNwElQKFExpc3RXb3JsZEluZm9FbnRyaWVzEh0ubXVzZS5MaXN0V29ybGRJbmZvRW50cmllc1JlcRodLm11c2UuTGlzdFdvcmxkSW5mb0VudHJpZXNSc3ASSwoRQWRkV29ybGRJbmZvRW50cnkSGi5tdXNlLkFkZFdvcmxkSW5mb0VudHJ5UmVxGhoubXVzZS5BZGRXb3JsZEluZm9FbnRyeVJzcBJUChRVcGRhdGVXb3JsZEluZm9FbnRyeRIdLm11c2UuVXBkYXRlV29ybGRJbmZvRW50cnlSZXEaHS5tdXNlLlVwZGF0ZVdvcmxkSW5mb0VudHJ5UnNwElQKFERlbGV0ZVdvcmxkSW5mb0VudHJ5Eh0ubXVzZS5EZWxldGVXb3JsZEluZm9FbnRyeVJlcRodLm11c2UuRGVsZXRlV29ybGRJbmZvRW50cnlSc3ASaQobVXBkYXRlV29ybGRJbmZvRW50cmllc09yZGVyEiQubXVzZS5VcGRhdGVXb3JsZEluZm9FbnRyaWVzT3JkZXJSZXEaJC5tdXNlLlVwZGF0ZVdvcmxkSW5mb0VudHJpZXNPcmRlclJzcEJpCghjb20ubXVzZUIOV29ybGRpbmZvUHJvdG9QAVodZ2l0aHViLmNvbS9saW5nL211c2UvZ2VuL211c2WiAgNNWFiqAgRNdXNlygIETXVzZeICEE11c2VcR1BCTWV0YWRhdGHqAgRNdXNlYgZwcm90bzM", [file_muse_common]);
 
 /**
  * WorldInfo 世界书，存储角色相关的背景知识
@@ -242,9 +242,9 @@ export const WorldInfoWithLenSchema: GenMessage<WorldInfoWithLen> = /*@__PURE__*
 /**
  * 获取世界书列表请求
  *
- * @generated from message muse.ListWorldInfosRequest
+ * @generated from message muse.ListWorldInfosReq
  */
-export type ListWorldInfosRequest = Message<"muse.ListWorldInfosRequest"> & {
+export type ListWorldInfosReq = Message<"muse.ListWorldInfosReq"> & {
   /**
    * 可选，筛选全局/非全局
    *
@@ -268,18 +268,18 @@ export type ListWorldInfosRequest = Message<"muse.ListWorldInfosRequest"> & {
 };
 
 /**
- * Describes the message muse.ListWorldInfosRequest.
- * Use `create(ListWorldInfosRequestSchema)` to create a new message.
+ * Describes the message muse.ListWorldInfosReq.
+ * Use `create(ListWorldInfosReqSchema)` to create a new message.
  */
-export const ListWorldInfosRequestSchema: GenMessage<ListWorldInfosRequest> = /*@__PURE__*/
+export const ListWorldInfosReqSchema: GenMessage<ListWorldInfosReq> = /*@__PURE__*/
   messageDesc(file_muse_worldinfo, 3);
 
 /**
  * 获取世界书列表响应
  *
- * @generated from message muse.ListWorldInfosResponse
+ * @generated from message muse.ListWorldInfosRsp
  */
-export type ListWorldInfosResponse = Message<"muse.ListWorldInfosResponse"> & {
+export type ListWorldInfosRsp = Message<"muse.ListWorldInfosRsp"> & {
   /**
    * @generated from field: repeated muse.WorldInfoWithLen world_infos = 1;
    */
@@ -308,18 +308,18 @@ export type ListWorldInfosResponse = Message<"muse.ListWorldInfosResponse"> & {
 };
 
 /**
- * Describes the message muse.ListWorldInfosResponse.
- * Use `create(ListWorldInfosResponseSchema)` to create a new message.
+ * Describes the message muse.ListWorldInfosRsp.
+ * Use `create(ListWorldInfosRspSchema)` to create a new message.
  */
-export const ListWorldInfosResponseSchema: GenMessage<ListWorldInfosResponse> = /*@__PURE__*/
+export const ListWorldInfosRspSchema: GenMessage<ListWorldInfosRsp> = /*@__PURE__*/
   messageDesc(file_muse_worldinfo, 4);
 
 /**
  * 获取单个世界书请求
  *
- * @generated from message muse.GetWorldInfoRequest
+ * @generated from message muse.GetWorldInfoReq
  */
-export type GetWorldInfoRequest = Message<"muse.GetWorldInfoRequest"> & {
+export type GetWorldInfoReq = Message<"muse.GetWorldInfoReq"> & {
   /**
    * @generated from field: int32 id = 1;
    */
@@ -327,18 +327,18 @@ export type GetWorldInfoRequest = Message<"muse.GetWorldInfoRequest"> & {
 };
 
 /**
- * Describes the message muse.GetWorldInfoRequest.
- * Use `create(GetWorldInfoRequestSchema)` to create a new message.
+ * Describes the message muse.GetWorldInfoReq.
+ * Use `create(GetWorldInfoReqSchema)` to create a new message.
  */
-export const GetWorldInfoRequestSchema: GenMessage<GetWorldInfoRequest> = /*@__PURE__*/
+export const GetWorldInfoReqSchema: GenMessage<GetWorldInfoReq> = /*@__PURE__*/
   messageDesc(file_muse_worldinfo, 5);
 
 /**
  * 获取单个世界书响应
  *
- * @generated from message muse.GetWorldInfoResponse
+ * @generated from message muse.GetWorldInfoRsp
  */
-export type GetWorldInfoResponse = Message<"muse.GetWorldInfoResponse"> & {
+export type GetWorldInfoRsp = Message<"muse.GetWorldInfoRsp"> & {
   /**
    * @generated from field: muse.WorldInfo world_info = 1;
    */
@@ -346,18 +346,18 @@ export type GetWorldInfoResponse = Message<"muse.GetWorldInfoResponse"> & {
 };
 
 /**
- * Describes the message muse.GetWorldInfoResponse.
- * Use `create(GetWorldInfoResponseSchema)` to create a new message.
+ * Describes the message muse.GetWorldInfoRsp.
+ * Use `create(GetWorldInfoRspSchema)` to create a new message.
  */
-export const GetWorldInfoResponseSchema: GenMessage<GetWorldInfoResponse> = /*@__PURE__*/
+export const GetWorldInfoRspSchema: GenMessage<GetWorldInfoRsp> = /*@__PURE__*/
   messageDesc(file_muse_worldinfo, 6);
 
 /**
  * 创建世界书请求
  *
- * @generated from message muse.CreateWorldInfoRequest
+ * @generated from message muse.CreateWorldInfoReq
  */
-export type CreateWorldInfoRequest = Message<"muse.CreateWorldInfoRequest"> & {
+export type CreateWorldInfoReq = Message<"muse.CreateWorldInfoReq"> & {
   /**
    * @generated from field: string name = 1;
    */
@@ -375,18 +375,18 @@ export type CreateWorldInfoRequest = Message<"muse.CreateWorldInfoRequest"> & {
 };
 
 /**
- * Describes the message muse.CreateWorldInfoRequest.
- * Use `create(CreateWorldInfoRequestSchema)` to create a new message.
+ * Describes the message muse.CreateWorldInfoReq.
+ * Use `create(CreateWorldInfoReqSchema)` to create a new message.
  */
-export const CreateWorldInfoRequestSchema: GenMessage<CreateWorldInfoRequest> = /*@__PURE__*/
+export const CreateWorldInfoReqSchema: GenMessage<CreateWorldInfoReq> = /*@__PURE__*/
   messageDesc(file_muse_worldinfo, 7);
 
 /**
  * 创建世界书响应
  *
- * @generated from message muse.CreateWorldInfoResponse
+ * @generated from message muse.CreateWorldInfoRsp
  */
-export type CreateWorldInfoResponse = Message<"muse.CreateWorldInfoResponse"> & {
+export type CreateWorldInfoRsp = Message<"muse.CreateWorldInfoRsp"> & {
   /**
    * @generated from field: muse.WorldInfo world_info = 1;
    */
@@ -394,18 +394,18 @@ export type CreateWorldInfoResponse = Message<"muse.CreateWorldInfoResponse"> & 
 };
 
 /**
- * Describes the message muse.CreateWorldInfoResponse.
- * Use `create(CreateWorldInfoResponseSchema)` to create a new message.
+ * Describes the message muse.CreateWorldInfoRsp.
+ * Use `create(CreateWorldInfoRspSchema)` to create a new message.
  */
-export const CreateWorldInfoResponseSchema: GenMessage<CreateWorldInfoResponse> = /*@__PURE__*/
+export const CreateWorldInfoRspSchema: GenMessage<CreateWorldInfoRsp> = /*@__PURE__*/
   messageDesc(file_muse_worldinfo, 8);
 
 /**
  * 更新世界书请求
  *
- * @generated from message muse.UpdateWorldInfoRequest
+ * @generated from message muse.UpdateWorldInfoReq
  */
-export type UpdateWorldInfoRequest = Message<"muse.UpdateWorldInfoRequest"> & {
+export type UpdateWorldInfoReq = Message<"muse.UpdateWorldInfoReq"> & {
   /**
    * @generated from field: int32 id = 1;
    */
@@ -428,18 +428,18 @@ export type UpdateWorldInfoRequest = Message<"muse.UpdateWorldInfoRequest"> & {
 };
 
 /**
- * Describes the message muse.UpdateWorldInfoRequest.
- * Use `create(UpdateWorldInfoRequestSchema)` to create a new message.
+ * Describes the message muse.UpdateWorldInfoReq.
+ * Use `create(UpdateWorldInfoReqSchema)` to create a new message.
  */
-export const UpdateWorldInfoRequestSchema: GenMessage<UpdateWorldInfoRequest> = /*@__PURE__*/
+export const UpdateWorldInfoReqSchema: GenMessage<UpdateWorldInfoReq> = /*@__PURE__*/
   messageDesc(file_muse_worldinfo, 9);
 
 /**
  * 更新世界书响应
  *
- * @generated from message muse.UpdateWorldInfoResponse
+ * @generated from message muse.UpdateWorldInfoRsp
  */
-export type UpdateWorldInfoResponse = Message<"muse.UpdateWorldInfoResponse"> & {
+export type UpdateWorldInfoRsp = Message<"muse.UpdateWorldInfoRsp"> & {
   /**
    * @generated from field: muse.WorldInfo world_info = 1;
    */
@@ -447,18 +447,18 @@ export type UpdateWorldInfoResponse = Message<"muse.UpdateWorldInfoResponse"> & 
 };
 
 /**
- * Describes the message muse.UpdateWorldInfoResponse.
- * Use `create(UpdateWorldInfoResponseSchema)` to create a new message.
+ * Describes the message muse.UpdateWorldInfoRsp.
+ * Use `create(UpdateWorldInfoRspSchema)` to create a new message.
  */
-export const UpdateWorldInfoResponseSchema: GenMessage<UpdateWorldInfoResponse> = /*@__PURE__*/
+export const UpdateWorldInfoRspSchema: GenMessage<UpdateWorldInfoRsp> = /*@__PURE__*/
   messageDesc(file_muse_worldinfo, 10);
 
 /**
  * 删除世界书请求
  *
- * @generated from message muse.DeleteWorldInfoRequest
+ * @generated from message muse.DeleteWorldInfoReq
  */
-export type DeleteWorldInfoRequest = Message<"muse.DeleteWorldInfoRequest"> & {
+export type DeleteWorldInfoReq = Message<"muse.DeleteWorldInfoReq"> & {
   /**
    * @generated from field: int32 id = 1;
    */
@@ -466,33 +466,33 @@ export type DeleteWorldInfoRequest = Message<"muse.DeleteWorldInfoRequest"> & {
 };
 
 /**
- * Describes the message muse.DeleteWorldInfoRequest.
- * Use `create(DeleteWorldInfoRequestSchema)` to create a new message.
+ * Describes the message muse.DeleteWorldInfoReq.
+ * Use `create(DeleteWorldInfoReqSchema)` to create a new message.
  */
-export const DeleteWorldInfoRequestSchema: GenMessage<DeleteWorldInfoRequest> = /*@__PURE__*/
+export const DeleteWorldInfoReqSchema: GenMessage<DeleteWorldInfoReq> = /*@__PURE__*/
   messageDesc(file_muse_worldinfo, 11);
 
 /**
  * 删除世界书响应
  *
- * @generated from message muse.DeleteWorldInfoResponse
+ * @generated from message muse.DeleteWorldInfoRsp
  */
-export type DeleteWorldInfoResponse = Message<"muse.DeleteWorldInfoResponse"> & {
+export type DeleteWorldInfoRsp = Message<"muse.DeleteWorldInfoRsp"> & {
 };
 
 /**
- * Describes the message muse.DeleteWorldInfoResponse.
- * Use `create(DeleteWorldInfoResponseSchema)` to create a new message.
+ * Describes the message muse.DeleteWorldInfoRsp.
+ * Use `create(DeleteWorldInfoRspSchema)` to create a new message.
  */
-export const DeleteWorldInfoResponseSchema: GenMessage<DeleteWorldInfoResponse> = /*@__PURE__*/
+export const DeleteWorldInfoRspSchema: GenMessage<DeleteWorldInfoRsp> = /*@__PURE__*/
   messageDesc(file_muse_worldinfo, 12);
 
 /**
  * 导入世界书请求
  *
- * @generated from message muse.ImportWorldInfoRequest
+ * @generated from message muse.ImportWorldInfoReq
  */
-export type ImportWorldInfoRequest = Message<"muse.ImportWorldInfoRequest"> & {
+export type ImportWorldInfoReq = Message<"muse.ImportWorldInfoReq"> & {
   /**
    * JSON文件内容
    *
@@ -507,18 +507,18 @@ export type ImportWorldInfoRequest = Message<"muse.ImportWorldInfoRequest"> & {
 };
 
 /**
- * Describes the message muse.ImportWorldInfoRequest.
- * Use `create(ImportWorldInfoRequestSchema)` to create a new message.
+ * Describes the message muse.ImportWorldInfoReq.
+ * Use `create(ImportWorldInfoReqSchema)` to create a new message.
  */
-export const ImportWorldInfoRequestSchema: GenMessage<ImportWorldInfoRequest> = /*@__PURE__*/
+export const ImportWorldInfoReqSchema: GenMessage<ImportWorldInfoReq> = /*@__PURE__*/
   messageDesc(file_muse_worldinfo, 13);
 
 /**
  * 导入世界书响应
  *
- * @generated from message muse.ImportWorldInfoResponse
+ * @generated from message muse.ImportWorldInfoRsp
  */
-export type ImportWorldInfoResponse = Message<"muse.ImportWorldInfoResponse"> & {
+export type ImportWorldInfoRsp = Message<"muse.ImportWorldInfoRsp"> & {
   /**
    * @generated from field: muse.WorldInfo world_info = 1;
    */
@@ -526,18 +526,18 @@ export type ImportWorldInfoResponse = Message<"muse.ImportWorldInfoResponse"> & 
 };
 
 /**
- * Describes the message muse.ImportWorldInfoResponse.
- * Use `create(ImportWorldInfoResponseSchema)` to create a new message.
+ * Describes the message muse.ImportWorldInfoRsp.
+ * Use `create(ImportWorldInfoRspSchema)` to create a new message.
  */
-export const ImportWorldInfoResponseSchema: GenMessage<ImportWorldInfoResponse> = /*@__PURE__*/
+export const ImportWorldInfoRspSchema: GenMessage<ImportWorldInfoRsp> = /*@__PURE__*/
   messageDesc(file_muse_worldinfo, 14);
 
 /**
  * 导出世界书请求
  *
- * @generated from message muse.ExportWorldInfoRequest
+ * @generated from message muse.ExportWorldInfoReq
  */
-export type ExportWorldInfoRequest = Message<"muse.ExportWorldInfoRequest"> & {
+export type ExportWorldInfoReq = Message<"muse.ExportWorldInfoReq"> & {
   /**
    * @generated from field: int32 id = 1;
    */
@@ -545,18 +545,18 @@ export type ExportWorldInfoRequest = Message<"muse.ExportWorldInfoRequest"> & {
 };
 
 /**
- * Describes the message muse.ExportWorldInfoRequest.
- * Use `create(ExportWorldInfoRequestSchema)` to create a new message.
+ * Describes the message muse.ExportWorldInfoReq.
+ * Use `create(ExportWorldInfoReqSchema)` to create a new message.
  */
-export const ExportWorldInfoRequestSchema: GenMessage<ExportWorldInfoRequest> = /*@__PURE__*/
+export const ExportWorldInfoReqSchema: GenMessage<ExportWorldInfoReq> = /*@__PURE__*/
   messageDesc(file_muse_worldinfo, 15);
 
 /**
  * 导出世界书响应
  *
- * @generated from message muse.ExportWorldInfoResponse
+ * @generated from message muse.ExportWorldInfoRsp
  */
-export type ExportWorldInfoResponse = Message<"muse.ExportWorldInfoResponse"> & {
+export type ExportWorldInfoRsp = Message<"muse.ExportWorldInfoRsp"> & {
   /**
    * @generated from field: bytes file_content = 1;
    */
@@ -569,18 +569,18 @@ export type ExportWorldInfoResponse = Message<"muse.ExportWorldInfoResponse"> & 
 };
 
 /**
- * Describes the message muse.ExportWorldInfoResponse.
- * Use `create(ExportWorldInfoResponseSchema)` to create a new message.
+ * Describes the message muse.ExportWorldInfoRsp.
+ * Use `create(ExportWorldInfoRspSchema)` to create a new message.
  */
-export const ExportWorldInfoResponseSchema: GenMessage<ExportWorldInfoResponse> = /*@__PURE__*/
+export const ExportWorldInfoRspSchema: GenMessage<ExportWorldInfoRsp> = /*@__PURE__*/
   messageDesc(file_muse_worldinfo, 16);
 
 /**
  * 获取世界书条目列表请求
  *
- * @generated from message muse.ListWorldInfoEntriesRequest
+ * @generated from message muse.ListWorldInfoEntriesReq
  */
-export type ListWorldInfoEntriesRequest = Message<"muse.ListWorldInfoEntriesRequest"> & {
+export type ListWorldInfoEntriesReq = Message<"muse.ListWorldInfoEntriesReq"> & {
   /**
    * @generated from field: int32 world_info_id = 1;
    */
@@ -588,18 +588,18 @@ export type ListWorldInfoEntriesRequest = Message<"muse.ListWorldInfoEntriesRequ
 };
 
 /**
- * Describes the message muse.ListWorldInfoEntriesRequest.
- * Use `create(ListWorldInfoEntriesRequestSchema)` to create a new message.
+ * Describes the message muse.ListWorldInfoEntriesReq.
+ * Use `create(ListWorldInfoEntriesReqSchema)` to create a new message.
  */
-export const ListWorldInfoEntriesRequestSchema: GenMessage<ListWorldInfoEntriesRequest> = /*@__PURE__*/
+export const ListWorldInfoEntriesReqSchema: GenMessage<ListWorldInfoEntriesReq> = /*@__PURE__*/
   messageDesc(file_muse_worldinfo, 17);
 
 /**
  * 获取世界书条目列表响应
  *
- * @generated from message muse.ListWorldInfoEntriesResponse
+ * @generated from message muse.ListWorldInfoEntriesRsp
  */
-export type ListWorldInfoEntriesResponse = Message<"muse.ListWorldInfoEntriesResponse"> & {
+export type ListWorldInfoEntriesRsp = Message<"muse.ListWorldInfoEntriesRsp"> & {
   /**
    * @generated from field: repeated muse.WorldInfoEntry entries = 1;
    */
@@ -607,18 +607,18 @@ export type ListWorldInfoEntriesResponse = Message<"muse.ListWorldInfoEntriesRes
 };
 
 /**
- * Describes the message muse.ListWorldInfoEntriesResponse.
- * Use `create(ListWorldInfoEntriesResponseSchema)` to create a new message.
+ * Describes the message muse.ListWorldInfoEntriesRsp.
+ * Use `create(ListWorldInfoEntriesRspSchema)` to create a new message.
  */
-export const ListWorldInfoEntriesResponseSchema: GenMessage<ListWorldInfoEntriesResponse> = /*@__PURE__*/
+export const ListWorldInfoEntriesRspSchema: GenMessage<ListWorldInfoEntriesRsp> = /*@__PURE__*/
   messageDesc(file_muse_worldinfo, 18);
 
 /**
  * 添加世界书条目请求
  *
- * @generated from message muse.AddWorldInfoEntryRequest
+ * @generated from message muse.AddWorldInfoEntryReq
  */
-export type AddWorldInfoEntryRequest = Message<"muse.AddWorldInfoEntryRequest"> & {
+export type AddWorldInfoEntryReq = Message<"muse.AddWorldInfoEntryReq"> & {
   /**
    * @generated from field: int32 world_info_id = 1;
    */
@@ -693,18 +693,18 @@ export type AddWorldInfoEntryRequest = Message<"muse.AddWorldInfoEntryRequest"> 
 };
 
 /**
- * Describes the message muse.AddWorldInfoEntryRequest.
- * Use `create(AddWorldInfoEntryRequestSchema)` to create a new message.
+ * Describes the message muse.AddWorldInfoEntryReq.
+ * Use `create(AddWorldInfoEntryReqSchema)` to create a new message.
  */
-export const AddWorldInfoEntryRequestSchema: GenMessage<AddWorldInfoEntryRequest> = /*@__PURE__*/
+export const AddWorldInfoEntryReqSchema: GenMessage<AddWorldInfoEntryReq> = /*@__PURE__*/
   messageDesc(file_muse_worldinfo, 19);
 
 /**
  * 添加世界书条目响应
  *
- * @generated from message muse.AddWorldInfoEntryResponse
+ * @generated from message muse.AddWorldInfoEntryRsp
  */
-export type AddWorldInfoEntryResponse = Message<"muse.AddWorldInfoEntryResponse"> & {
+export type AddWorldInfoEntryRsp = Message<"muse.AddWorldInfoEntryRsp"> & {
   /**
    * @generated from field: muse.WorldInfoEntry entry = 1;
    */
@@ -712,18 +712,18 @@ export type AddWorldInfoEntryResponse = Message<"muse.AddWorldInfoEntryResponse"
 };
 
 /**
- * Describes the message muse.AddWorldInfoEntryResponse.
- * Use `create(AddWorldInfoEntryResponseSchema)` to create a new message.
+ * Describes the message muse.AddWorldInfoEntryRsp.
+ * Use `create(AddWorldInfoEntryRspSchema)` to create a new message.
  */
-export const AddWorldInfoEntryResponseSchema: GenMessage<AddWorldInfoEntryResponse> = /*@__PURE__*/
+export const AddWorldInfoEntryRspSchema: GenMessage<AddWorldInfoEntryRsp> = /*@__PURE__*/
   messageDesc(file_muse_worldinfo, 20);
 
 /**
  * 更新世界书条目请求
  *
- * @generated from message muse.UpdateWorldInfoEntryRequest
+ * @generated from message muse.UpdateWorldInfoEntryReq
  */
-export type UpdateWorldInfoEntryRequest = Message<"muse.UpdateWorldInfoEntryRequest"> & {
+export type UpdateWorldInfoEntryReq = Message<"muse.UpdateWorldInfoEntryReq"> & {
   /**
    * @generated from field: int32 id = 1;
    */
@@ -798,18 +798,18 @@ export type UpdateWorldInfoEntryRequest = Message<"muse.UpdateWorldInfoEntryRequ
 };
 
 /**
- * Describes the message muse.UpdateWorldInfoEntryRequest.
- * Use `create(UpdateWorldInfoEntryRequestSchema)` to create a new message.
+ * Describes the message muse.UpdateWorldInfoEntryReq.
+ * Use `create(UpdateWorldInfoEntryReqSchema)` to create a new message.
  */
-export const UpdateWorldInfoEntryRequestSchema: GenMessage<UpdateWorldInfoEntryRequest> = /*@__PURE__*/
+export const UpdateWorldInfoEntryReqSchema: GenMessage<UpdateWorldInfoEntryReq> = /*@__PURE__*/
   messageDesc(file_muse_worldinfo, 21);
 
 /**
  * 更新世界书条目响应
  *
- * @generated from message muse.UpdateWorldInfoEntryResponse
+ * @generated from message muse.UpdateWorldInfoEntryRsp
  */
-export type UpdateWorldInfoEntryResponse = Message<"muse.UpdateWorldInfoEntryResponse"> & {
+export type UpdateWorldInfoEntryRsp = Message<"muse.UpdateWorldInfoEntryRsp"> & {
   /**
    * @generated from field: muse.WorldInfoEntry entry = 1;
    */
@@ -817,18 +817,18 @@ export type UpdateWorldInfoEntryResponse = Message<"muse.UpdateWorldInfoEntryRes
 };
 
 /**
- * Describes the message muse.UpdateWorldInfoEntryResponse.
- * Use `create(UpdateWorldInfoEntryResponseSchema)` to create a new message.
+ * Describes the message muse.UpdateWorldInfoEntryRsp.
+ * Use `create(UpdateWorldInfoEntryRspSchema)` to create a new message.
  */
-export const UpdateWorldInfoEntryResponseSchema: GenMessage<UpdateWorldInfoEntryResponse> = /*@__PURE__*/
+export const UpdateWorldInfoEntryRspSchema: GenMessage<UpdateWorldInfoEntryRsp> = /*@__PURE__*/
   messageDesc(file_muse_worldinfo, 22);
 
 /**
  * 删除世界书条目请求
  *
- * @generated from message muse.DeleteWorldInfoEntryRequest
+ * @generated from message muse.DeleteWorldInfoEntryReq
  */
-export type DeleteWorldInfoEntryRequest = Message<"muse.DeleteWorldInfoEntryRequest"> & {
+export type DeleteWorldInfoEntryReq = Message<"muse.DeleteWorldInfoEntryReq"> & {
   /**
    * @generated from field: int32 id = 1;
    */
@@ -836,33 +836,33 @@ export type DeleteWorldInfoEntryRequest = Message<"muse.DeleteWorldInfoEntryRequ
 };
 
 /**
- * Describes the message muse.DeleteWorldInfoEntryRequest.
- * Use `create(DeleteWorldInfoEntryRequestSchema)` to create a new message.
+ * Describes the message muse.DeleteWorldInfoEntryReq.
+ * Use `create(DeleteWorldInfoEntryReqSchema)` to create a new message.
  */
-export const DeleteWorldInfoEntryRequestSchema: GenMessage<DeleteWorldInfoEntryRequest> = /*@__PURE__*/
+export const DeleteWorldInfoEntryReqSchema: GenMessage<DeleteWorldInfoEntryReq> = /*@__PURE__*/
   messageDesc(file_muse_worldinfo, 23);
 
 /**
  * 删除世界书条目响应
  *
- * @generated from message muse.DeleteWorldInfoEntryResponse
+ * @generated from message muse.DeleteWorldInfoEntryRsp
  */
-export type DeleteWorldInfoEntryResponse = Message<"muse.DeleteWorldInfoEntryResponse"> & {
+export type DeleteWorldInfoEntryRsp = Message<"muse.DeleteWorldInfoEntryRsp"> & {
 };
 
 /**
- * Describes the message muse.DeleteWorldInfoEntryResponse.
- * Use `create(DeleteWorldInfoEntryResponseSchema)` to create a new message.
+ * Describes the message muse.DeleteWorldInfoEntryRsp.
+ * Use `create(DeleteWorldInfoEntryRspSchema)` to create a new message.
  */
-export const DeleteWorldInfoEntryResponseSchema: GenMessage<DeleteWorldInfoEntryResponse> = /*@__PURE__*/
+export const DeleteWorldInfoEntryRspSchema: GenMessage<DeleteWorldInfoEntryRsp> = /*@__PURE__*/
   messageDesc(file_muse_worldinfo, 24);
 
 /**
  * 批量更新世界书条目排序请求
  *
- * @generated from message muse.UpdateWorldInfoEntriesOrderRequest
+ * @generated from message muse.UpdateWorldInfoEntriesOrderReq
  */
-export type UpdateWorldInfoEntriesOrderRequest = Message<"muse.UpdateWorldInfoEntriesOrderRequest"> & {
+export type UpdateWorldInfoEntriesOrderReq = Message<"muse.UpdateWorldInfoEntriesOrderReq"> & {
   /**
    * @generated from field: int32 world_info_id = 1;
    */
@@ -877,25 +877,25 @@ export type UpdateWorldInfoEntriesOrderRequest = Message<"muse.UpdateWorldInfoEn
 };
 
 /**
- * Describes the message muse.UpdateWorldInfoEntriesOrderRequest.
- * Use `create(UpdateWorldInfoEntriesOrderRequestSchema)` to create a new message.
+ * Describes the message muse.UpdateWorldInfoEntriesOrderReq.
+ * Use `create(UpdateWorldInfoEntriesOrderReqSchema)` to create a new message.
  */
-export const UpdateWorldInfoEntriesOrderRequestSchema: GenMessage<UpdateWorldInfoEntriesOrderRequest> = /*@__PURE__*/
+export const UpdateWorldInfoEntriesOrderReqSchema: GenMessage<UpdateWorldInfoEntriesOrderReq> = /*@__PURE__*/
   messageDesc(file_muse_worldinfo, 25);
 
 /**
  * 批量更新世界书条目排序响应
  *
- * @generated from message muse.UpdateWorldInfoEntriesOrderResponse
+ * @generated from message muse.UpdateWorldInfoEntriesOrderRsp
  */
-export type UpdateWorldInfoEntriesOrderResponse = Message<"muse.UpdateWorldInfoEntriesOrderResponse"> & {
+export type UpdateWorldInfoEntriesOrderRsp = Message<"muse.UpdateWorldInfoEntriesOrderRsp"> & {
 };
 
 /**
- * Describes the message muse.UpdateWorldInfoEntriesOrderResponse.
- * Use `create(UpdateWorldInfoEntriesOrderResponseSchema)` to create a new message.
+ * Describes the message muse.UpdateWorldInfoEntriesOrderRsp.
+ * Use `create(UpdateWorldInfoEntriesOrderRspSchema)` to create a new message.
  */
-export const UpdateWorldInfoEntriesOrderResponseSchema: GenMessage<UpdateWorldInfoEntriesOrderResponse> = /*@__PURE__*/
+export const UpdateWorldInfoEntriesOrderRspSchema: GenMessage<UpdateWorldInfoEntriesOrderRsp> = /*@__PURE__*/
   messageDesc(file_muse_worldinfo, 26);
 
 /**
@@ -911,8 +911,8 @@ export const WorldInfoService: GenService<{
    */
   listWorldInfos: {
     methodKind: "unary";
-    input: typeof ListWorldInfosRequestSchema;
-    output: typeof ListWorldInfosResponseSchema;
+    input: typeof ListWorldInfosReqSchema;
+    output: typeof ListWorldInfosRspSchema;
   },
   /**
    * 获取单个世界书
@@ -921,8 +921,8 @@ export const WorldInfoService: GenService<{
    */
   getWorldInfo: {
     methodKind: "unary";
-    input: typeof GetWorldInfoRequestSchema;
-    output: typeof GetWorldInfoResponseSchema;
+    input: typeof GetWorldInfoReqSchema;
+    output: typeof GetWorldInfoRspSchema;
   },
   /**
    * 创建世界书
@@ -931,8 +931,8 @@ export const WorldInfoService: GenService<{
    */
   createWorldInfo: {
     methodKind: "unary";
-    input: typeof CreateWorldInfoRequestSchema;
-    output: typeof CreateWorldInfoResponseSchema;
+    input: typeof CreateWorldInfoReqSchema;
+    output: typeof CreateWorldInfoRspSchema;
   },
   /**
    * 更新世界书
@@ -941,8 +941,8 @@ export const WorldInfoService: GenService<{
    */
   updateWorldInfo: {
     methodKind: "unary";
-    input: typeof UpdateWorldInfoRequestSchema;
-    output: typeof UpdateWorldInfoResponseSchema;
+    input: typeof UpdateWorldInfoReqSchema;
+    output: typeof UpdateWorldInfoRspSchema;
   },
   /**
    * 删除世界书
@@ -951,8 +951,8 @@ export const WorldInfoService: GenService<{
    */
   deleteWorldInfo: {
     methodKind: "unary";
-    input: typeof DeleteWorldInfoRequestSchema;
-    output: typeof DeleteWorldInfoResponseSchema;
+    input: typeof DeleteWorldInfoReqSchema;
+    output: typeof DeleteWorldInfoRspSchema;
   },
   /**
    * 导入世界书（支持SillyTavern格式）
@@ -961,8 +961,8 @@ export const WorldInfoService: GenService<{
    */
   importWorldInfo: {
     methodKind: "unary";
-    input: typeof ImportWorldInfoRequestSchema;
-    output: typeof ImportWorldInfoResponseSchema;
+    input: typeof ImportWorldInfoReqSchema;
+    output: typeof ImportWorldInfoRspSchema;
   },
   /**
    * 导出世界书
@@ -971,8 +971,8 @@ export const WorldInfoService: GenService<{
    */
   exportWorldInfo: {
     methodKind: "unary";
-    input: typeof ExportWorldInfoRequestSchema;
-    output: typeof ExportWorldInfoResponseSchema;
+    input: typeof ExportWorldInfoReqSchema;
+    output: typeof ExportWorldInfoRspSchema;
   },
   /**
    * 获取世界书条目列表
@@ -981,8 +981,8 @@ export const WorldInfoService: GenService<{
    */
   listWorldInfoEntries: {
     methodKind: "unary";
-    input: typeof ListWorldInfoEntriesRequestSchema;
-    output: typeof ListWorldInfoEntriesResponseSchema;
+    input: typeof ListWorldInfoEntriesReqSchema;
+    output: typeof ListWorldInfoEntriesRspSchema;
   },
   /**
    * 添加世界书条目
@@ -991,8 +991,8 @@ export const WorldInfoService: GenService<{
    */
   addWorldInfoEntry: {
     methodKind: "unary";
-    input: typeof AddWorldInfoEntryRequestSchema;
-    output: typeof AddWorldInfoEntryResponseSchema;
+    input: typeof AddWorldInfoEntryReqSchema;
+    output: typeof AddWorldInfoEntryRspSchema;
   },
   /**
    * 更新世界书条目
@@ -1001,8 +1001,8 @@ export const WorldInfoService: GenService<{
    */
   updateWorldInfoEntry: {
     methodKind: "unary";
-    input: typeof UpdateWorldInfoEntryRequestSchema;
-    output: typeof UpdateWorldInfoEntryResponseSchema;
+    input: typeof UpdateWorldInfoEntryReqSchema;
+    output: typeof UpdateWorldInfoEntryRspSchema;
   },
   /**
    * 删除世界书条目
@@ -1011,8 +1011,8 @@ export const WorldInfoService: GenService<{
    */
   deleteWorldInfoEntry: {
     methodKind: "unary";
-    input: typeof DeleteWorldInfoEntryRequestSchema;
-    output: typeof DeleteWorldInfoEntryResponseSchema;
+    input: typeof DeleteWorldInfoEntryReqSchema;
+    output: typeof DeleteWorldInfoEntryRspSchema;
   },
   /**
    * 批量更新世界书条目排序
@@ -1021,8 +1021,8 @@ export const WorldInfoService: GenService<{
    */
   updateWorldInfoEntriesOrder: {
     methodKind: "unary";
-    input: typeof UpdateWorldInfoEntriesOrderRequestSchema;
-    output: typeof UpdateWorldInfoEntriesOrderResponseSchema;
+    input: typeof UpdateWorldInfoEntriesOrderReqSchema;
+    output: typeof UpdateWorldInfoEntriesOrderRspSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_muse_worldinfo, 0);

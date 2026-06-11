@@ -41,7 +41,7 @@ func newCharacter() *characterImpl {
 	}
 }
 
-func (c *characterImpl) ListCharacters(ctx context.Context, req *pb.ListCharactersRequest) (*pb.ListCharactersResponse, error) {
+func (c *characterImpl) ListCharacters(ctx context.Context, req *pb.ListCharactersReq) (*pb.ListCharactersRsp, error) {
 	// 获取并规范化分页参数
 	page, pageSize := constant.NormalizePagination(int(req.GetPage()), int(req.GetPageSize()))
 
@@ -58,13 +58,13 @@ func (c *characterImpl) ListCharacters(ctx context.Context, req *pb.ListCharacte
 		pbCharacters = append(pbCharacters, convert.CharaEntityToPb(character))
 	}
 
-	return &pb.ListCharactersResponse{
+	return &pb.ListCharactersRsp{
 		Characters: pbCharacters,
 		Total:      int32(total),
 	}, nil
 }
 
-func (c *characterImpl) GetCharacter(ctx context.Context, req *pb.GetCharacterRequest) (*pb.GetCharacterResponse, error) {
+func (c *characterImpl) GetCharacter(ctx context.Context, req *pb.GetCharacterReq) (*pb.GetCharacterRsp, error) {
 	id := int(req.GetId())
 	if id <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidCharacterID)
@@ -80,12 +80,12 @@ func (c *characterImpl) GetCharacter(ctx context.Context, req *pb.GetCharacterRe
 		return nil, errs.NewStandard(connect.CodeNotFound, errs.CharacterNotFound)
 	}
 
-	return &pb.GetCharacterResponse{
+	return &pb.GetCharacterRsp{
 		Character: convert.CharaEntityToPb(character),
 	}, nil
 }
 
-func (c *characterImpl) CreateCharacter(ctx context.Context, req *pb.CreateCharacterRequest) (*pb.CreateCharacterResponse, error) {
+func (c *characterImpl) CreateCharacter(ctx context.Context, req *pb.CreateCharacterReq) (*pb.CreateCharacterRsp, error) {
 	// 参数校验
 	name := strings.TrimSpace(req.GetName())
 	if name == "" {
@@ -115,12 +115,12 @@ func (c *characterImpl) CreateCharacter(ctx context.Context, req *pb.CreateChara
 		return nil, err
 	}
 
-	return &pb.CreateCharacterResponse{
+	return &pb.CreateCharacterRsp{
 		Character: convert.CharaEntityToPb(character),
 	}, nil
 }
 
-func (c *characterImpl) UpdateCharacter(ctx context.Context, req *pb.UpdateCharacterRequest) (*pb.UpdateCharacterResponse, error) {
+func (c *characterImpl) UpdateCharacter(ctx context.Context, req *pb.UpdateCharacterReq) (*pb.UpdateCharacterRsp, error) {
 	id := int(req.GetId())
 	if id <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidCharacterID)
@@ -182,12 +182,12 @@ func (c *characterImpl) UpdateCharacter(ctx context.Context, req *pb.UpdateChara
 		return nil, err
 	}
 
-	return &pb.UpdateCharacterResponse{
+	return &pb.UpdateCharacterRsp{
 		Character: convert.CharaEntityToPb(updatedCharacter),
 	}, nil
 }
 
-func (c *characterImpl) DeleteCharacter(ctx context.Context, req *pb.DeleteCharacterRequest) (*pb.DeleteCharacterResponse, error) {
+func (c *characterImpl) DeleteCharacter(ctx context.Context, req *pb.DeleteCharacterReq) (*pb.DeleteCharacterRsp, error) {
 	id := int(req.GetId())
 	if id <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidCharacterID)
@@ -201,10 +201,10 @@ func (c *characterImpl) DeleteCharacter(ctx context.Context, req *pb.DeleteChara
 	if err := c.charRepo.Delete(ctx, id, userId); err != nil {
 		return nil, err
 	}
-	return &pb.DeleteCharacterResponse{}, nil
+	return &pb.DeleteCharacterRsp{}, nil
 }
 
-func (c *characterImpl) ImportCharacter(ctx context.Context, req *pb.ImportCharacterRequest) (*pb.ImportCharacterResponse, error) {
+func (c *characterImpl) ImportCharacter(ctx context.Context, req *pb.ImportCharacterReq) (*pb.ImportCharacterRsp, error) {
 	fileContent := req.GetFileContent()
 	fileName := req.GetFileName()
 
@@ -299,13 +299,13 @@ func (c *characterImpl) ImportCharacter(ctx context.Context, req *pb.ImportChara
 
 	// 构建响应前先打印调试信息
 	pbChar := convert.CharaEntityToPb(character)
-	resp := &pb.ImportCharacterResponse{
+	resp := &pb.ImportCharacterRsp{
 		Character: pbChar,
 	}
 	return resp, nil
 }
 
-func (c *characterImpl) ExportCharacter(ctx context.Context, req *pb.ExportCharacterRequest) (*pb.ExportCharacterResponse, error) {
+func (c *characterImpl) ExportCharacter(ctx context.Context, req *pb.ExportCharacterReq) (*pb.ExportCharacterRsp, error) {
 	userId := jwt.GetUserId(ctx)
 	character, err := c.charRepo.GetByID(ctx, int(req.GetId()), userId)
 	if err != nil {
@@ -341,13 +341,13 @@ func (c *characterImpl) ExportCharacter(ctx context.Context, req *pb.ExportChara
 	}
 
 	fileName := fmt.Sprintf("%s.png", character.Name)
-	return &pb.ExportCharacterResponse{
+	return &pb.ExportCharacterRsp{
 		FileContent: pngData,
 		FileName:    fileName,
 	}, nil
 }
 
-func (c *characterImpl) RestoreCharacterWorldInfo(ctx context.Context, req *pb.RestoreCharacterWorldInfoRequest) (*pb.RestoreCharacterWorldInfoResponse, error) {
+func (c *characterImpl) RestoreCharacterWorldInfo(ctx context.Context, req *pb.RestoreCharacterWorldInfoReq) (*pb.RestoreCharacterWorldInfoRsp, error) {
 	//TODO implement me
 	panic("implement me")
 }

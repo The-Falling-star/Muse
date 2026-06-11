@@ -27,7 +27,7 @@ func newWorldInfo() *worldInfoImpl {
 	}
 }
 
-func (w *worldInfoImpl) ListWorldInfos(ctx context.Context, req *pb.ListWorldInfosRequest) (*pb.ListWorldInfosResponse, error) {
+func (w *worldInfoImpl) ListWorldInfos(ctx context.Context, req *pb.ListWorldInfosReq) (*pb.ListWorldInfosRsp, error) {
 	// 获取分页参数
 	userId := jwt.GetUserId(ctx)
 	page, pageSize := constant.NormalizePagination(int(req.GetPage()), int(req.GetPageSize()))
@@ -48,7 +48,7 @@ func (w *worldInfoImpl) ListWorldInfos(ctx context.Context, req *pb.ListWorldInf
 		pbWorldInfos = append(pbWorldInfos, worldInfoWithLen)
 	}
 
-	return &pb.ListWorldInfosResponse{
+	return &pb.ListWorldInfosRsp{
 		WorldInfos: pbWorldInfos,
 		Total:      total,
 		Page:       int32(page),
@@ -56,7 +56,7 @@ func (w *worldInfoImpl) ListWorldInfos(ctx context.Context, req *pb.ListWorldInf
 	}, nil
 }
 
-func (w *worldInfoImpl) GetWorldInfo(ctx context.Context, req *pb.GetWorldInfoRequest) (*pb.GetWorldInfoResponse, error) {
+func (w *worldInfoImpl) GetWorldInfo(ctx context.Context, req *pb.GetWorldInfoReq) (*pb.GetWorldInfoRsp, error) {
 	id := int(req.GetId())
 	if id <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidWorldInfoID)
@@ -72,12 +72,12 @@ func (w *worldInfoImpl) GetWorldInfo(ctx context.Context, req *pb.GetWorldInfoRe
 		return nil, errs.NewStandard(connect.CodeNotFound, errs.WorldInfoNotFound)
 	}
 
-	return &pb.GetWorldInfoResponse{
+	return &pb.GetWorldInfoRsp{
 		WorldInfo: convert.WorldInfoEntityToPb(worldInfo),
 	}, nil
 }
 
-func (w *worldInfoImpl) CreateWorldInfo(ctx context.Context, req *pb.CreateWorldInfoRequest) (*pb.CreateWorldInfoResponse, error) {
+func (w *worldInfoImpl) CreateWorldInfo(ctx context.Context, req *pb.CreateWorldInfoReq) (*pb.CreateWorldInfoRsp, error) {
 	// 参数校验
 	name := strings.TrimSpace(req.GetName())
 	if name == "" {
@@ -104,12 +104,12 @@ func (w *worldInfoImpl) CreateWorldInfo(ctx context.Context, req *pb.CreateWorld
 		return nil, err
 	}
 
-	return &pb.CreateWorldInfoResponse{
+	return &pb.CreateWorldInfoRsp{
 		WorldInfo: convert.WorldInfoEntityToPb(fullWorldInfo),
 	}, nil
 }
 
-func (w *worldInfoImpl) UpdateWorldInfo(ctx context.Context, req *pb.UpdateWorldInfoRequest) (*pb.UpdateWorldInfoResponse, error) {
+func (w *worldInfoImpl) UpdateWorldInfo(ctx context.Context, req *pb.UpdateWorldInfoReq) (*pb.UpdateWorldInfoRsp, error) {
 	id := int(req.GetId())
 	if id <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidWorldInfoID)
@@ -152,12 +152,12 @@ func (w *worldInfoImpl) UpdateWorldInfo(ctx context.Context, req *pb.UpdateWorld
 		return nil, err
 	}
 
-	return &pb.UpdateWorldInfoResponse{
+	return &pb.UpdateWorldInfoRsp{
 		WorldInfo: convert.WorldInfoEntityToPb(updatedWorldInfo),
 	}, nil
 }
 
-func (w *worldInfoImpl) DeleteWorldInfo(ctx context.Context, req *pb.DeleteWorldInfoRequest) (*pb.DeleteWorldInfoResponse, error) {
+func (w *worldInfoImpl) DeleteWorldInfo(ctx context.Context, req *pb.DeleteWorldInfoReq) (*pb.DeleteWorldInfoRsp, error) {
 	id := int(req.GetId())
 	if id <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidWorldInfoID)
@@ -172,10 +172,10 @@ func (w *worldInfoImpl) DeleteWorldInfo(ctx context.Context, req *pb.DeleteWorld
 		return nil, err
 	}
 
-	return &pb.DeleteWorldInfoResponse{}, nil
+	return &pb.DeleteWorldInfoRsp{}, nil
 }
 
-func (w *worldInfoImpl) ListWorldInfoEntries(ctx context.Context, req *pb.ListWorldInfoEntriesRequest) (*pb.ListWorldInfoEntriesResponse, error) {
+func (w *worldInfoImpl) ListWorldInfoEntries(ctx context.Context, req *pb.ListWorldInfoEntriesReq) (*pb.ListWorldInfoEntriesRsp, error) {
 	worldInfoID := int(req.GetWorldInfoId())
 	if worldInfoID <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidWorldInfoID)
@@ -193,12 +193,12 @@ func (w *worldInfoImpl) ListWorldInfoEntries(ctx context.Context, req *pb.ListWo
 		pbEntries = append(pbEntries, convert.WorldInfoEntryEntityToPb(entry))
 	}
 
-	return &pb.ListWorldInfoEntriesResponse{
+	return &pb.ListWorldInfoEntriesRsp{
 		Entries: pbEntries,
 	}, nil
 }
 
-func (w *worldInfoImpl) AddWorldInfoEntry(ctx context.Context, req *pb.AddWorldInfoEntryRequest) (*pb.AddWorldInfoEntryResponse, error) {
+func (w *worldInfoImpl) AddWorldInfoEntry(ctx context.Context, req *pb.AddWorldInfoEntryReq) (*pb.AddWorldInfoEntryRsp, error) {
 	// 参数校验
 	worldInfoID := int(req.GetWorldInfoId())
 	if worldInfoID <= 0 {
@@ -234,12 +234,12 @@ func (w *worldInfoImpl) AddWorldInfoEntry(ctx context.Context, req *pb.AddWorldI
 		return nil, err
 	}
 
-	return &pb.AddWorldInfoEntryResponse{
+	return &pb.AddWorldInfoEntryRsp{
 		Entry: convert.WorldInfoEntryEntityToPb(fullEntry),
 	}, nil
 }
 
-func (w *worldInfoImpl) UpdateWorldInfoEntry(ctx context.Context, req *pb.UpdateWorldInfoEntryRequest) (*pb.UpdateWorldInfoEntryResponse, error) {
+func (w *worldInfoImpl) UpdateWorldInfoEntry(ctx context.Context, req *pb.UpdateWorldInfoEntryReq) (*pb.UpdateWorldInfoEntryRsp, error) {
 	id := int(req.GetId())
 	if id <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidWorldInfoEntryID)
@@ -283,12 +283,12 @@ func (w *worldInfoImpl) UpdateWorldInfoEntry(ctx context.Context, req *pb.Update
 		return nil, err
 	}
 
-	return &pb.UpdateWorldInfoEntryResponse{
+	return &pb.UpdateWorldInfoEntryRsp{
 		Entry: convert.WorldInfoEntryEntityToPb(updatedEntry),
 	}, nil
 }
 
-func (w *worldInfoImpl) DeleteWorldInfoEntry(ctx context.Context, req *pb.DeleteWorldInfoEntryRequest) (*pb.DeleteWorldInfoEntryResponse, error) {
+func (w *worldInfoImpl) DeleteWorldInfoEntry(ctx context.Context, req *pb.DeleteWorldInfoEntryReq) (*pb.DeleteWorldInfoEntryRsp, error) {
 	id := int(req.GetId())
 	if id <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidWorldInfoEntryID)
@@ -299,10 +299,10 @@ func (w *worldInfoImpl) DeleteWorldInfoEntry(ctx context.Context, req *pb.Delete
 		return nil, err
 	}
 
-	return &pb.DeleteWorldInfoEntryResponse{}, nil
+	return &pb.DeleteWorldInfoEntryRsp{}, nil
 }
 
-func (w *worldInfoImpl) UpdateWorldInfoEntriesOrder(ctx context.Context, req *pb.UpdateWorldInfoEntriesOrderRequest) (*pb.UpdateWorldInfoEntriesOrderResponse, error) {
+func (w *worldInfoImpl) UpdateWorldInfoEntriesOrder(ctx context.Context, req *pb.UpdateWorldInfoEntriesOrderReq) (*pb.UpdateWorldInfoEntriesOrderRsp, error) {
 	worldInfoID := int(req.GetWorldInfoId())
 	if worldInfoID <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidWorldInfoID)
@@ -323,10 +323,10 @@ func (w *worldInfoImpl) UpdateWorldInfoEntriesOrder(ctx context.Context, req *pb
 		return nil, err
 	}
 
-	return &pb.UpdateWorldInfoEntriesOrderResponse{}, nil
+	return &pb.UpdateWorldInfoEntriesOrderRsp{}, nil
 }
 
-func (w *worldInfoImpl) ImportWorldInfo(ctx context.Context, req *pb.ImportWorldInfoRequest) (*pb.ImportWorldInfoResponse, error) {
+func (w *worldInfoImpl) ImportWorldInfo(ctx context.Context, req *pb.ImportWorldInfoReq) (*pb.ImportWorldInfoRsp, error) {
 	// 参数校验
 	if len(req.GetFileContent()) == 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.EmptyFileContent)
@@ -385,12 +385,12 @@ func (w *worldInfoImpl) ImportWorldInfo(ctx context.Context, req *pb.ImportWorld
 		return nil, err
 	}
 
-	return &pb.ImportWorldInfoResponse{
+	return &pb.ImportWorldInfoRsp{
 		WorldInfo: convert.WorldInfoEntityToPb(fullWorldInfo),
 	}, nil
 }
 
-func (w *worldInfoImpl) ExportWorldInfo(ctx context.Context, req *pb.ExportWorldInfoRequest) (*pb.ExportWorldInfoResponse, error) {
+func (w *worldInfoImpl) ExportWorldInfo(ctx context.Context, req *pb.ExportWorldInfoReq) (*pb.ExportWorldInfoRsp, error) {
 	id := int(req.GetId())
 	if id <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidWorldInfoID)
@@ -418,7 +418,7 @@ func (w *worldInfoImpl) ExportWorldInfo(ctx context.Context, req *pb.ExportWorld
 	// 生成文件名
 	fileName := worldInfo.Name + ".json"
 
-	return &pb.ExportWorldInfoResponse{
+	return &pb.ExportWorldInfoRsp{
 		FileContent: fileContent,
 		FileName:    fileName,
 	}, nil

@@ -30,7 +30,7 @@ func newUser() *userImpl {
 	}
 }
 
-func (u *userImpl) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.RegisterResponse, error) {
+func (u *userImpl) Register(ctx context.Context, req *pb.RegisterReq) (*pb.RegisterRsp, error) {
 	// 检查权限
 	if userId := jwt.GetUserId(ctx); userId != config.Get().Auth.AdminUserId {
 		return nil, errs.NewStandard(connect.CodePermissionDenied, "请使用管理员创建用户")
@@ -73,14 +73,14 @@ func (u *userImpl) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.R
 		return nil, errs.NewStandardf(connect.CodeInternal, "生成Token失败: %v", err)
 	}
 
-	return &pb.RegisterResponse{
+	return &pb.RegisterRsp{
 		User:  convert.UserEntityToPb(user),
 		Token: token,
 	}, nil
 }
 
 // Login 登录
-func (u *userImpl) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse, error) {
+func (u *userImpl) Login(ctx context.Context, req *pb.LoginReq) (*pb.LoginRsp, error) {
 	// 参数校验
 	username := strings.TrimSpace(req.GetUsername())
 	if username == "" {
@@ -109,13 +109,13 @@ func (u *userImpl) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginRe
 	if genErr != nil {
 		return nil, errs.NewStandardf(connect.CodeInternal, "生成Token失败: %v", genErr)
 	}
-	return &pb.LoginResponse{
+	return &pb.LoginRsp{
 		User:  convert.UserEntityToPb(user),
 		Token: token,
 	}, nil
 }
 
-func (u *userImpl) GetCurrentUser(ctx context.Context, req *pb.GetCurrentUserRequest) (*pb.GetCurrentUserResponse, error) {
+func (u *userImpl) GetCurrentUser(ctx context.Context, req *pb.GetCurrentUserReq) (*pb.GetCurrentUserRsp, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
 
@@ -128,12 +128,12 @@ func (u *userImpl) GetCurrentUser(ctx context.Context, req *pb.GetCurrentUserReq
 		return nil, errs.NewStandard(connect.CodeNotFound, errs.UserNotFound)
 	}
 
-	return &pb.GetCurrentUserResponse{
+	return &pb.GetCurrentUserRsp{
 		User: convert.UserEntityToPb(user),
 	}, nil
 }
 
-func (u *userImpl) ChangePassword(ctx context.Context, req *pb.ChangePasswordRequest) (*pb.ChangePasswordResponse, error) {
+func (u *userImpl) ChangePassword(ctx context.Context, req *pb.ChangePasswordReq) (*pb.ChangePasswordRsp, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
 
@@ -171,10 +171,10 @@ func (u *userImpl) ChangePassword(ctx context.Context, req *pb.ChangePasswordReq
 		return nil, err
 	}
 
-	return &pb.ChangePasswordResponse{}, nil
+	return &pb.ChangePasswordRsp{}, nil
 }
 
-func (u *userImpl) ListPersonas(ctx context.Context, req *pb.ListPersonasRequest) (*pb.ListPersonasResponse, error) {
+func (u *userImpl) ListPersonas(ctx context.Context, req *pb.ListPersonasReq) (*pb.ListPersonasRsp, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
 
@@ -190,12 +190,12 @@ func (u *userImpl) ListPersonas(ctx context.Context, req *pb.ListPersonasRequest
 		pbPersonas = append(pbPersonas, convert.PersonaEntityToPb(persona))
 	}
 
-	return &pb.ListPersonasResponse{
+	return &pb.ListPersonasRsp{
 		Personas: pbPersonas,
 	}, nil
 }
 
-func (u *userImpl) GetPersona(ctx context.Context, req *pb.GetPersonaRequest) (*pb.GetPersonaResponse, error) {
+func (u *userImpl) GetPersona(ctx context.Context, req *pb.GetPersonaReq) (*pb.GetPersonaRsp, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
 
@@ -214,12 +214,12 @@ func (u *userImpl) GetPersona(ctx context.Context, req *pb.GetPersonaRequest) (*
 		return nil, errs.NewStandard(connect.CodeNotFound, errs.PersonaNotFound)
 	}
 
-	return &pb.GetPersonaResponse{
+	return &pb.GetPersonaRsp{
 		Persona: convert.PersonaEntityToPb(persona),
 	}, nil
 }
 
-func (u *userImpl) CreatePersona(ctx context.Context, req *pb.CreatePersonaRequest) (*pb.CreatePersonaResponse, error) {
+func (u *userImpl) CreatePersona(ctx context.Context, req *pb.CreatePersonaReq) (*pb.CreatePersonaRsp, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
 
@@ -241,12 +241,12 @@ func (u *userImpl) CreatePersona(ctx context.Context, req *pb.CreatePersonaReque
 		return nil, err
 	}
 
-	return &pb.CreatePersonaResponse{
+	return &pb.CreatePersonaRsp{
 		Persona: convert.PersonaEntityToPb(persona),
 	}, nil
 }
 
-func (u *userImpl) UpdatePersona(ctx context.Context, req *pb.UpdatePersonaRequest) (*pb.UpdatePersonaResponse, error) {
+func (u *userImpl) UpdatePersona(ctx context.Context, req *pb.UpdatePersonaReq) (*pb.UpdatePersonaRsp, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
 
@@ -288,12 +288,12 @@ func (u *userImpl) UpdatePersona(ctx context.Context, req *pb.UpdatePersonaReque
 		return nil, err
 	}
 
-	return &pb.UpdatePersonaResponse{
+	return &pb.UpdatePersonaRsp{
 		Persona: convert.PersonaEntityToPb(persona),
 	}, nil
 }
 
-func (u *userImpl) DeletePersona(ctx context.Context, req *pb.DeletePersonaRequest) (*pb.DeletePersonaResponse, error) {
+func (u *userImpl) DeletePersona(ctx context.Context, req *pb.DeletePersonaReq) (*pb.DeletePersonaRsp, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
 
@@ -308,10 +308,10 @@ func (u *userImpl) DeletePersona(ctx context.Context, req *pb.DeletePersonaReque
 		return nil, err
 	}
 
-	return &pb.DeletePersonaResponse{}, nil
+	return &pb.DeletePersonaRsp{}, nil
 }
 
-func (u *userImpl) SetActivePersona(ctx context.Context, req *pb.SetActivePersonaRequest) (*pb.SetActivePersonaResponse, error) {
+func (u *userImpl) SetActivePersona(ctx context.Context, req *pb.SetActivePersonaReq) (*pb.SetActivePersonaRsp, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
 
@@ -332,11 +332,11 @@ func (u *userImpl) SetActivePersona(ctx context.Context, req *pb.SetActivePerson
 		return nil, err
 	}
 
-	return &pb.SetActivePersonaResponse{}, nil
+	return &pb.SetActivePersonaRsp{}, nil
 }
 
 // GetUserInfo 获取用户信息
-func (u *userImpl) GetUserInfo(ctx context.Context, req *pb.GetUserInfoRequest) (*pb.GetUserInfoResponse, error) {
+func (u *userImpl) GetUserInfo(ctx context.Context, req *pb.GetUserInfoReq) (*pb.GetUserInfoRsp, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
 
@@ -349,13 +349,13 @@ func (u *userImpl) GetUserInfo(ctx context.Context, req *pb.GetUserInfoRequest) 
 		return nil, errs.NewStandard(connect.CodeNotFound, errs.UserNotFound)
 	}
 
-	return &pb.GetUserInfoResponse{
+	return &pb.GetUserInfoRsp{
 		User: convert.UserEntityToPb(user),
 	}, nil
 }
 
 // UpdateUserInfo 更新用户信息
-func (u *userImpl) UpdateUserInfo(ctx context.Context, req *pb.UpdateUserInfoRequest) (*pb.UpdateUserInfoResponse, error) {
+func (u *userImpl) UpdateUserInfo(ctx context.Context, req *pb.UpdateUserInfoReq) (*pb.UpdateUserInfoRsp, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
 
@@ -389,10 +389,10 @@ func (u *userImpl) UpdateUserInfo(ctx context.Context, req *pb.UpdateUserInfoReq
 		return nil, err
 	}
 
-	return &pb.UpdateUserInfoResponse{}, nil
+	return &pb.UpdateUserInfoRsp{}, nil
 }
 
-func (u *userImpl) ListAPIConfigs(ctx context.Context, req *pb.ListAPIConfigsRequest) (*pb.ListAPIConfigsResponse, error) {
+func (u *userImpl) ListAPIConfigs(ctx context.Context, req *pb.ListAPIConfigsReq) (*pb.ListAPIConfigsRsp, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
 
@@ -430,12 +430,12 @@ func (u *userImpl) ListAPIConfigs(ctx context.Context, req *pb.ListAPIConfigsReq
 		pbConfigs = append(pbConfigs, pbAPIConfig)
 	}
 
-	return &pb.ListAPIConfigsResponse{
+	return &pb.ListAPIConfigsRsp{
 		Configs: pbConfigs,
 	}, nil
 }
 
-func (u *userImpl) CreateAPIConfig(ctx context.Context, req *pb.CreateAPIConfigRequest) (*pb.CreateAPIConfigResponse, error) {
+func (u *userImpl) CreateAPIConfig(ctx context.Context, req *pb.CreateAPIConfigReq) (*pb.CreateAPIConfigRsp, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
 
@@ -472,12 +472,12 @@ func (u *userImpl) CreateAPIConfig(ctx context.Context, req *pb.CreateAPIConfigR
 		return nil, err
 	}
 
-	return &pb.CreateAPIConfigResponse{
+	return &pb.CreateAPIConfigRsp{
 		ConfigId: int32(apiConfig.ID),
 	}, nil
 }
 
-func (u *userImpl) UpdateAPIConfig(ctx context.Context, req *pb.UpdateAPIConfigRequest) (*pb.UpdateAPIConfigResponse, error) {
+func (u *userImpl) UpdateAPIConfig(ctx context.Context, req *pb.UpdateAPIConfigReq) (*pb.UpdateAPIConfigRsp, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
 
@@ -516,10 +516,10 @@ func (u *userImpl) UpdateAPIConfig(ctx context.Context, req *pb.UpdateAPIConfigR
 		return nil, err
 	}
 
-	return &pb.UpdateAPIConfigResponse{}, nil
+	return &pb.UpdateAPIConfigRsp{}, nil
 }
 
-func (u *userImpl) DeleteAPIConfig(ctx context.Context, req *pb.DeleteAPIConfigRequest) (*pb.DeleteAPIConfigResponse, error) {
+func (u *userImpl) DeleteAPIConfig(ctx context.Context, req *pb.DeleteAPIConfigReq) (*pb.DeleteAPIConfigRsp, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
 
@@ -534,10 +534,10 @@ func (u *userImpl) DeleteAPIConfig(ctx context.Context, req *pb.DeleteAPIConfigR
 		return nil, err
 	}
 
-	return &pb.DeleteAPIConfigResponse{}, nil
+	return &pb.DeleteAPIConfigRsp{}, nil
 }
 
-func (u *userImpl) SetActiveAPIConfig(ctx context.Context, req *pb.SetActiveAPIConfigRequest) (*pb.SetActiveAPIConfigResponse, error) {
+func (u *userImpl) SetActiveAPIConfig(ctx context.Context, req *pb.SetActiveAPIConfigReq) (*pb.SetActiveAPIConfigRsp, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
 
@@ -552,10 +552,10 @@ func (u *userImpl) SetActiveAPIConfig(ctx context.Context, req *pb.SetActiveAPIC
 		return nil, err
 	}
 
-	return &pb.SetActiveAPIConfigResponse{}, nil
+	return &pb.SetActiveAPIConfigRsp{}, nil
 }
 
-func (u *userImpl) TestAPIConfig(ctx context.Context, req *pb.TestAPIConfigRequest) (*pb.TestAPIConfigResponse, error) {
+func (u *userImpl) TestAPIConfig(ctx context.Context, req *pb.TestAPIConfigReq) (*pb.TestAPIConfigRsp, error) {
 	// 获取当前用户ID
 	userID := jwt.GetUserId(ctx)
 
@@ -579,7 +579,7 @@ func (u *userImpl) TestAPIConfig(ctx context.Context, req *pb.TestAPIConfigReque
 	// 目前返回一个简单的测试结果
 
 	// 模拟测试成功
-	return &pb.TestAPIConfigResponse{
+	return &pb.TestAPIConfigRsp{
 		Success: true,
 	}, nil
 }

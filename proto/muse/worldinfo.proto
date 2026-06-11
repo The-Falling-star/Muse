@@ -53,14 +53,14 @@ message WorldInfoWithLen {
 // ================================
 
 // 获取世界书列表请求
-message ListWorldInfosRequest {
+message ListWorldInfosReq {
   optional bool is_global = 1;  // 可选，筛选全局/非全局
   optional int32 page = 2;      // 页码，从1开始，默认为1
   optional int32 page_size = 3; // 每页数量，默认为20，最大100
 }
 
 // 获取世界书列表响应
-message ListWorldInfosResponse {
+message ListWorldInfosRsp {
   repeated WorldInfoWithLen world_infos = 1;
   int64 total = 2;  // 总数
   int32 page = 3;   // 当前页码
@@ -68,29 +68,29 @@ message ListWorldInfosResponse {
 }
 
 // 获取单个世界书请求
-message GetWorldInfoRequest {
+message GetWorldInfoReq {
   int32 id = 1;
 }
 
 // 获取单个世界书响应
-message GetWorldInfoResponse {
+message GetWorldInfoRsp {
   WorldInfo world_info = 1;
 }
 
 // 创建世界书请求
-message CreateWorldInfoRequest {
+message CreateWorldInfoReq {
   string name = 1;
   optional string description = 2;
   bool is_global = 3;
 }
 
 // 创建世界书响应
-message CreateWorldInfoResponse {
+message CreateWorldInfoRsp {
   WorldInfo world_info = 1;
 }
 
 // 更新世界书请求
-message UpdateWorldInfoRequest {
+message UpdateWorldInfoReq {
   int32 id = 1;
   string name = 2;
   optional string description = 3;
@@ -98,52 +98,52 @@ message UpdateWorldInfoRequest {
 }
 
 // 更新世界书响应
-message UpdateWorldInfoResponse {
+message UpdateWorldInfoRsp {
   WorldInfo world_info = 1;
 }
 
 // 删除世界书请求
-message DeleteWorldInfoRequest {
+message DeleteWorldInfoReq {
   int32 id = 1;
 }
 
 // 删除世界书响应
-message DeleteWorldInfoResponse {}
+message DeleteWorldInfoRsp {}
 
 // 导入世界书请求
-message ImportWorldInfoRequest {
+message ImportWorldInfoReq {
   bytes file_content = 1;  // JSON文件内容
   string file_name = 2;
 }
 
 // 导入世界书响应
-message ImportWorldInfoResponse {
+message ImportWorldInfoRsp {
   WorldInfo world_info = 1;
 }
 
 // 导出世界书请求
-message ExportWorldInfoRequest {
+message ExportWorldInfoReq {
   int32 id = 1;
 }
 
 // 导出世界书响应
-message ExportWorldInfoResponse {
+message ExportWorldInfoRsp {
   bytes file_content = 1;
   string file_name = 2;
 }
 
 // 获取世界书条目列表请求
-message ListWorldInfoEntriesRequest {
+message ListWorldInfoEntriesReq {
   int32 world_info_id = 1;
 }
 
 // 获取世界书条目列表响应
-message ListWorldInfoEntriesResponse {
+message ListWorldInfoEntriesRsp {
   repeated WorldInfoEntry entries = 1;
 }
 
 // 添加世界书条目请求
-message AddWorldInfoEntryRequest {
+message AddWorldInfoEntryReq {
   int32 world_info_id = 1;
   optional string uid = 2;
   repeated string keys_list = 3;
@@ -161,12 +161,12 @@ message AddWorldInfoEntryRequest {
 }
 
 // 添加世界书条目响应
-message AddWorldInfoEntryResponse {
+message AddWorldInfoEntryRsp {
   WorldInfoEntry entry = 1;
 }
 
 // 更新世界书条目请求
-message UpdateWorldInfoEntryRequest {
+message UpdateWorldInfoEntryReq {
   int32 id = 1;
   optional string uid = 2;
   repeated string keys_list = 3;
@@ -184,52 +184,52 @@ message UpdateWorldInfoEntryRequest {
 }
 
 // 更新世界书条目响应
-message UpdateWorldInfoEntryResponse {
+message UpdateWorldInfoEntryRsp {
   WorldInfoEntry entry = 1;
 }
 
 // 删除世界书条目请求
-message DeleteWorldInfoEntryRequest {
+message DeleteWorldInfoEntryReq {
   int32 id = 1;
 }
 
 // 删除世界书条目响应
-message DeleteWorldInfoEntryResponse {}
+message DeleteWorldInfoEntryRsp {}
 
 // 批量更新世界书条目排序请求
-message UpdateWorldInfoEntriesOrderRequest {
+message UpdateWorldInfoEntriesOrderReq {
   int32 world_info_id = 1;
   repeated int32 entry_ids = 2;  // 按新顺序排列的ID列表
 }
 
 // 批量更新世界书条目排序响应
-message UpdateWorldInfoEntriesOrderResponse {}
+message UpdateWorldInfoEntriesOrderRsp {}
 
 // 世界书服务（包含世界书和世界书条目的管理）
 service WorldInfoService {
   // 获取世界书列表
-  rpc ListWorldInfos(ListWorldInfosRequest) returns (ListWorldInfosResponse);
+  rpc ListWorldInfos(ListWorldInfosReq) returns (ListWorldInfosRsp);
   // 获取单个世界书
-  rpc GetWorldInfo(GetWorldInfoRequest) returns (GetWorldInfoResponse);
+  rpc GetWorldInfo(GetWorldInfoReq) returns (GetWorldInfoRsp);
   // 创建世界书
-  rpc CreateWorldInfo(CreateWorldInfoRequest) returns (CreateWorldInfoResponse);
+  rpc CreateWorldInfo(CreateWorldInfoReq) returns (CreateWorldInfoRsp);
   // 更新世界书
-  rpc UpdateWorldInfo(UpdateWorldInfoRequest) returns (UpdateWorldInfoResponse);
+  rpc UpdateWorldInfo(UpdateWorldInfoReq) returns (UpdateWorldInfoRsp);
   // 删除世界书
-  rpc DeleteWorldInfo(DeleteWorldInfoRequest) returns (DeleteWorldInfoResponse);
+  rpc DeleteWorldInfo(DeleteWorldInfoReq) returns (DeleteWorldInfoRsp);
   // 导入世界书（支持SillyTavern格式）
-  rpc ImportWorldInfo(ImportWorldInfoRequest) returns (ImportWorldInfoResponse);
+  rpc ImportWorldInfo(ImportWorldInfoReq) returns (ImportWorldInfoRsp);
   // 导出世界书
-  rpc ExportWorldInfo(ExportWorldInfoRequest) returns (ExportWorldInfoResponse);
+  rpc ExportWorldInfo(ExportWorldInfoReq) returns (ExportWorldInfoRsp);
 
   // 获取世界书条目列表
-  rpc ListWorldInfoEntries(ListWorldInfoEntriesRequest) returns (ListWorldInfoEntriesResponse);
+  rpc ListWorldInfoEntries(ListWorldInfoEntriesReq) returns (ListWorldInfoEntriesRsp);
   // 添加世界书条目
-  rpc AddWorldInfoEntry(AddWorldInfoEntryRequest) returns (AddWorldInfoEntryResponse);
+  rpc AddWorldInfoEntry(AddWorldInfoEntryReq) returns (AddWorldInfoEntryRsp);
   // 更新世界书条目
-  rpc UpdateWorldInfoEntry(UpdateWorldInfoEntryRequest) returns (UpdateWorldInfoEntryResponse);
+  rpc UpdateWorldInfoEntry(UpdateWorldInfoEntryReq) returns (UpdateWorldInfoEntryRsp);
   // 删除世界书条目
-  rpc DeleteWorldInfoEntry(DeleteWorldInfoEntryRequest) returns (DeleteWorldInfoEntryResponse);
+  rpc DeleteWorldInfoEntry(DeleteWorldInfoEntryReq) returns (DeleteWorldInfoEntryRsp);
   // 批量更新世界书条目排序
-  rpc UpdateWorldInfoEntriesOrder(UpdateWorldInfoEntriesOrderRequest) returns (UpdateWorldInfoEntriesOrderResponse);
+  rpc UpdateWorldInfoEntriesOrder(UpdateWorldInfoEntriesOrderReq) returns (UpdateWorldInfoEntriesOrderRsp);
 }

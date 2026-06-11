@@ -73,31 +73,31 @@ const (
 // ChatServiceClient is a client for the muse.ChatService service.
 type ChatServiceClient interface {
 	// 获取会话列表
-	ListChatSessions(context.Context, *connect.Request[muse.ListChatSessionsRequest]) (*connect.Response[muse.ListChatSessionsResponse], error)
+	ListChatSessions(context.Context, *connect.Request[muse.ListChatSessionsReq]) (*connect.Response[muse.ListChatSessionsRsp], error)
 	// 获取单个会话
-	GetChatSession(context.Context, *connect.Request[muse.GetChatSessionRequest]) (*connect.Response[muse.GetChatSessionResponse], error)
+	GetChatSession(context.Context, *connect.Request[muse.GetChatSessionReq]) (*connect.Response[muse.GetChatSessionRsp], error)
 	// 创建会话
-	CreateChatSession(context.Context, *connect.Request[muse.CreateChatSessionRequest]) (*connect.Response[muse.CreateChatSessionResponse], error)
+	CreateChatSession(context.Context, *connect.Request[muse.CreateChatSessionReq]) (*connect.Response[muse.CreateChatSessionRsp], error)
 	// 更新会话
-	UpdateChatSession(context.Context, *connect.Request[muse.UpdateChatSessionRequest]) (*connect.Response[muse.UpdateChatSessionResponse], error)
+	UpdateChatSession(context.Context, *connect.Request[muse.UpdateChatSessionReq]) (*connect.Response[muse.UpdateChatSessionRsp], error)
 	// 删除会话
-	DeleteChatSession(context.Context, *connect.Request[muse.DeleteChatSessionRequest]) (*connect.Response[muse.DeleteChatSessionResponse], error)
+	DeleteChatSession(context.Context, *connect.Request[muse.DeleteChatSessionReq]) (*connect.Response[muse.DeleteChatSessionRsp], error)
 	// 发送消息（流式响应）
-	SendMessage(context.Context, *connect.Request[muse.SendMessageRequest]) (*connect.ServerStreamForClient[muse.SendMessageResponse], error)
+	SendMessage(context.Context, *connect.Request[muse.SendMessageReq]) (*connect.ServerStreamForClient[muse.SendMessageRsp], error)
 	// 重新生成消息（流式响应）
-	RegenerateMessage(context.Context, *connect.Request[muse.RegenerateMessageRequest]) (*connect.ServerStreamForClient[muse.RegenerateMessageResponse], error)
+	RegenerateMessage(context.Context, *connect.Request[muse.RegenerateMessageReq]) (*connect.ServerStreamForClient[muse.RegenerateMessageRsp], error)
 	// 编辑消息
-	EditMessage(context.Context, *connect.Request[muse.EditMessageRequest]) (*connect.Response[muse.EditMessageResponse], error)
+	EditMessage(context.Context, *connect.Request[muse.EditMessageReq]) (*connect.Response[muse.EditMessageRsp], error)
 	// 删除消息
-	DeleteMessage(context.Context, *connect.Request[muse.DeleteMessageRequest]) (*connect.Response[muse.DeleteMessageResponse], error)
+	DeleteMessage(context.Context, *connect.Request[muse.DeleteMessageReq]) (*connect.Response[muse.DeleteMessageRsp], error)
 	// 切换Swipe
-	SwitchSwipe(context.Context, *connect.Request[muse.SwitchSwipeRequest]) (*connect.Response[muse.SwitchSwipeResponse], error)
+	SwitchSwipe(context.Context, *connect.Request[muse.SwitchSwipeReq]) (*connect.Response[muse.SwitchSwipeRsp], error)
 	// 获取角色最新会话
-	GetCharLatestSession(context.Context, *connect.Request[muse.GetCharLatestSessionRequest]) (*connect.Response[muse.GetCharLatestSessionResponse], error)
+	GetCharLatestSession(context.Context, *connect.Request[muse.GetCharLatestSessionReq]) (*connect.Response[muse.GetCharLatestSessionRsp], error)
 	// 更新会话时间戳
-	UpdateSessionTime(context.Context, *connect.Request[muse.UpdateSessionTimeRequest]) (*connect.Response[muse.UpdateSessionTimeResponse], error)
+	UpdateSessionTime(context.Context, *connect.Request[muse.UpdateSessionTimeReq]) (*connect.Response[muse.UpdateSessionTimeRsp], error)
 	// 删除swipe
-	DeleteSwipe(context.Context, *connect.Request[muse.DeleteSwipeRequest]) (*connect.Response[muse.DeleteSwipeResponse], error)
+	DeleteSwipe(context.Context, *connect.Request[muse.DeleteSwipeReq]) (*connect.Response[muse.DeleteSwipeRsp], error)
 }
 
 // NewChatServiceClient constructs a client for the muse.ChatService service. By default, it uses
@@ -111,79 +111,79 @@ func NewChatServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 	baseURL = strings.TrimRight(baseURL, "/")
 	chatServiceMethods := muse.File_muse_chat_proto.Services().ByName("ChatService").Methods()
 	return &chatServiceClient{
-		listChatSessions: connect.NewClient[muse.ListChatSessionsRequest, muse.ListChatSessionsResponse](
+		listChatSessions: connect.NewClient[muse.ListChatSessionsReq, muse.ListChatSessionsRsp](
 			httpClient,
 			baseURL+ChatServiceListChatSessionsProcedure,
 			connect.WithSchema(chatServiceMethods.ByName("ListChatSessions")),
 			connect.WithClientOptions(opts...),
 		),
-		getChatSession: connect.NewClient[muse.GetChatSessionRequest, muse.GetChatSessionResponse](
+		getChatSession: connect.NewClient[muse.GetChatSessionReq, muse.GetChatSessionRsp](
 			httpClient,
 			baseURL+ChatServiceGetChatSessionProcedure,
 			connect.WithSchema(chatServiceMethods.ByName("GetChatSession")),
 			connect.WithClientOptions(opts...),
 		),
-		createChatSession: connect.NewClient[muse.CreateChatSessionRequest, muse.CreateChatSessionResponse](
+		createChatSession: connect.NewClient[muse.CreateChatSessionReq, muse.CreateChatSessionRsp](
 			httpClient,
 			baseURL+ChatServiceCreateChatSessionProcedure,
 			connect.WithSchema(chatServiceMethods.ByName("CreateChatSession")),
 			connect.WithClientOptions(opts...),
 		),
-		updateChatSession: connect.NewClient[muse.UpdateChatSessionRequest, muse.UpdateChatSessionResponse](
+		updateChatSession: connect.NewClient[muse.UpdateChatSessionReq, muse.UpdateChatSessionRsp](
 			httpClient,
 			baseURL+ChatServiceUpdateChatSessionProcedure,
 			connect.WithSchema(chatServiceMethods.ByName("UpdateChatSession")),
 			connect.WithClientOptions(opts...),
 		),
-		deleteChatSession: connect.NewClient[muse.DeleteChatSessionRequest, muse.DeleteChatSessionResponse](
+		deleteChatSession: connect.NewClient[muse.DeleteChatSessionReq, muse.DeleteChatSessionRsp](
 			httpClient,
 			baseURL+ChatServiceDeleteChatSessionProcedure,
 			connect.WithSchema(chatServiceMethods.ByName("DeleteChatSession")),
 			connect.WithClientOptions(opts...),
 		),
-		sendMessage: connect.NewClient[muse.SendMessageRequest, muse.SendMessageResponse](
+		sendMessage: connect.NewClient[muse.SendMessageReq, muse.SendMessageRsp](
 			httpClient,
 			baseURL+ChatServiceSendMessageProcedure,
 			connect.WithSchema(chatServiceMethods.ByName("SendMessage")),
 			connect.WithClientOptions(opts...),
 		),
-		regenerateMessage: connect.NewClient[muse.RegenerateMessageRequest, muse.RegenerateMessageResponse](
+		regenerateMessage: connect.NewClient[muse.RegenerateMessageReq, muse.RegenerateMessageRsp](
 			httpClient,
 			baseURL+ChatServiceRegenerateMessageProcedure,
 			connect.WithSchema(chatServiceMethods.ByName("RegenerateMessage")),
 			connect.WithClientOptions(opts...),
 		),
-		editMessage: connect.NewClient[muse.EditMessageRequest, muse.EditMessageResponse](
+		editMessage: connect.NewClient[muse.EditMessageReq, muse.EditMessageRsp](
 			httpClient,
 			baseURL+ChatServiceEditMessageProcedure,
 			connect.WithSchema(chatServiceMethods.ByName("EditMessage")),
 			connect.WithClientOptions(opts...),
 		),
-		deleteMessage: connect.NewClient[muse.DeleteMessageRequest, muse.DeleteMessageResponse](
+		deleteMessage: connect.NewClient[muse.DeleteMessageReq, muse.DeleteMessageRsp](
 			httpClient,
 			baseURL+ChatServiceDeleteMessageProcedure,
 			connect.WithSchema(chatServiceMethods.ByName("DeleteMessage")),
 			connect.WithClientOptions(opts...),
 		),
-		switchSwipe: connect.NewClient[muse.SwitchSwipeRequest, muse.SwitchSwipeResponse](
+		switchSwipe: connect.NewClient[muse.SwitchSwipeReq, muse.SwitchSwipeRsp](
 			httpClient,
 			baseURL+ChatServiceSwitchSwipeProcedure,
 			connect.WithSchema(chatServiceMethods.ByName("SwitchSwipe")),
 			connect.WithClientOptions(opts...),
 		),
-		getCharLatestSession: connect.NewClient[muse.GetCharLatestSessionRequest, muse.GetCharLatestSessionResponse](
+		getCharLatestSession: connect.NewClient[muse.GetCharLatestSessionReq, muse.GetCharLatestSessionRsp](
 			httpClient,
 			baseURL+ChatServiceGetCharLatestSessionProcedure,
 			connect.WithSchema(chatServiceMethods.ByName("GetCharLatestSession")),
 			connect.WithClientOptions(opts...),
 		),
-		updateSessionTime: connect.NewClient[muse.UpdateSessionTimeRequest, muse.UpdateSessionTimeResponse](
+		updateSessionTime: connect.NewClient[muse.UpdateSessionTimeReq, muse.UpdateSessionTimeRsp](
 			httpClient,
 			baseURL+ChatServiceUpdateSessionTimeProcedure,
 			connect.WithSchema(chatServiceMethods.ByName("UpdateSessionTime")),
 			connect.WithClientOptions(opts...),
 		),
-		deleteSwipe: connect.NewClient[muse.DeleteSwipeRequest, muse.DeleteSwipeResponse](
+		deleteSwipe: connect.NewClient[muse.DeleteSwipeReq, muse.DeleteSwipeRsp](
 			httpClient,
 			baseURL+ChatServiceDeleteSwipeProcedure,
 			connect.WithSchema(chatServiceMethods.ByName("DeleteSwipe")),
@@ -194,114 +194,114 @@ func NewChatServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 
 // chatServiceClient implements ChatServiceClient.
 type chatServiceClient struct {
-	listChatSessions     *connect.Client[muse.ListChatSessionsRequest, muse.ListChatSessionsResponse]
-	getChatSession       *connect.Client[muse.GetChatSessionRequest, muse.GetChatSessionResponse]
-	createChatSession    *connect.Client[muse.CreateChatSessionRequest, muse.CreateChatSessionResponse]
-	updateChatSession    *connect.Client[muse.UpdateChatSessionRequest, muse.UpdateChatSessionResponse]
-	deleteChatSession    *connect.Client[muse.DeleteChatSessionRequest, muse.DeleteChatSessionResponse]
-	sendMessage          *connect.Client[muse.SendMessageRequest, muse.SendMessageResponse]
-	regenerateMessage    *connect.Client[muse.RegenerateMessageRequest, muse.RegenerateMessageResponse]
-	editMessage          *connect.Client[muse.EditMessageRequest, muse.EditMessageResponse]
-	deleteMessage        *connect.Client[muse.DeleteMessageRequest, muse.DeleteMessageResponse]
-	switchSwipe          *connect.Client[muse.SwitchSwipeRequest, muse.SwitchSwipeResponse]
-	getCharLatestSession *connect.Client[muse.GetCharLatestSessionRequest, muse.GetCharLatestSessionResponse]
-	updateSessionTime    *connect.Client[muse.UpdateSessionTimeRequest, muse.UpdateSessionTimeResponse]
-	deleteSwipe          *connect.Client[muse.DeleteSwipeRequest, muse.DeleteSwipeResponse]
+	listChatSessions     *connect.Client[muse.ListChatSessionsReq, muse.ListChatSessionsRsp]
+	getChatSession       *connect.Client[muse.GetChatSessionReq, muse.GetChatSessionRsp]
+	createChatSession    *connect.Client[muse.CreateChatSessionReq, muse.CreateChatSessionRsp]
+	updateChatSession    *connect.Client[muse.UpdateChatSessionReq, muse.UpdateChatSessionRsp]
+	deleteChatSession    *connect.Client[muse.DeleteChatSessionReq, muse.DeleteChatSessionRsp]
+	sendMessage          *connect.Client[muse.SendMessageReq, muse.SendMessageRsp]
+	regenerateMessage    *connect.Client[muse.RegenerateMessageReq, muse.RegenerateMessageRsp]
+	editMessage          *connect.Client[muse.EditMessageReq, muse.EditMessageRsp]
+	deleteMessage        *connect.Client[muse.DeleteMessageReq, muse.DeleteMessageRsp]
+	switchSwipe          *connect.Client[muse.SwitchSwipeReq, muse.SwitchSwipeRsp]
+	getCharLatestSession *connect.Client[muse.GetCharLatestSessionReq, muse.GetCharLatestSessionRsp]
+	updateSessionTime    *connect.Client[muse.UpdateSessionTimeReq, muse.UpdateSessionTimeRsp]
+	deleteSwipe          *connect.Client[muse.DeleteSwipeReq, muse.DeleteSwipeRsp]
 }
 
 // ListChatSessions calls muse.ChatService.ListChatSessions.
-func (c *chatServiceClient) ListChatSessions(ctx context.Context, req *connect.Request[muse.ListChatSessionsRequest]) (*connect.Response[muse.ListChatSessionsResponse], error) {
+func (c *chatServiceClient) ListChatSessions(ctx context.Context, req *connect.Request[muse.ListChatSessionsReq]) (*connect.Response[muse.ListChatSessionsRsp], error) {
 	return c.listChatSessions.CallUnary(ctx, req)
 }
 
 // GetChatSession calls muse.ChatService.GetChatSession.
-func (c *chatServiceClient) GetChatSession(ctx context.Context, req *connect.Request[muse.GetChatSessionRequest]) (*connect.Response[muse.GetChatSessionResponse], error) {
+func (c *chatServiceClient) GetChatSession(ctx context.Context, req *connect.Request[muse.GetChatSessionReq]) (*connect.Response[muse.GetChatSessionRsp], error) {
 	return c.getChatSession.CallUnary(ctx, req)
 }
 
 // CreateChatSession calls muse.ChatService.CreateChatSession.
-func (c *chatServiceClient) CreateChatSession(ctx context.Context, req *connect.Request[muse.CreateChatSessionRequest]) (*connect.Response[muse.CreateChatSessionResponse], error) {
+func (c *chatServiceClient) CreateChatSession(ctx context.Context, req *connect.Request[muse.CreateChatSessionReq]) (*connect.Response[muse.CreateChatSessionRsp], error) {
 	return c.createChatSession.CallUnary(ctx, req)
 }
 
 // UpdateChatSession calls muse.ChatService.UpdateChatSession.
-func (c *chatServiceClient) UpdateChatSession(ctx context.Context, req *connect.Request[muse.UpdateChatSessionRequest]) (*connect.Response[muse.UpdateChatSessionResponse], error) {
+func (c *chatServiceClient) UpdateChatSession(ctx context.Context, req *connect.Request[muse.UpdateChatSessionReq]) (*connect.Response[muse.UpdateChatSessionRsp], error) {
 	return c.updateChatSession.CallUnary(ctx, req)
 }
 
 // DeleteChatSession calls muse.ChatService.DeleteChatSession.
-func (c *chatServiceClient) DeleteChatSession(ctx context.Context, req *connect.Request[muse.DeleteChatSessionRequest]) (*connect.Response[muse.DeleteChatSessionResponse], error) {
+func (c *chatServiceClient) DeleteChatSession(ctx context.Context, req *connect.Request[muse.DeleteChatSessionReq]) (*connect.Response[muse.DeleteChatSessionRsp], error) {
 	return c.deleteChatSession.CallUnary(ctx, req)
 }
 
 // SendMessage calls muse.ChatService.SendMessage.
-func (c *chatServiceClient) SendMessage(ctx context.Context, req *connect.Request[muse.SendMessageRequest]) (*connect.ServerStreamForClient[muse.SendMessageResponse], error) {
+func (c *chatServiceClient) SendMessage(ctx context.Context, req *connect.Request[muse.SendMessageReq]) (*connect.ServerStreamForClient[muse.SendMessageRsp], error) {
 	return c.sendMessage.CallServerStream(ctx, req)
 }
 
 // RegenerateMessage calls muse.ChatService.RegenerateMessage.
-func (c *chatServiceClient) RegenerateMessage(ctx context.Context, req *connect.Request[muse.RegenerateMessageRequest]) (*connect.ServerStreamForClient[muse.RegenerateMessageResponse], error) {
+func (c *chatServiceClient) RegenerateMessage(ctx context.Context, req *connect.Request[muse.RegenerateMessageReq]) (*connect.ServerStreamForClient[muse.RegenerateMessageRsp], error) {
 	return c.regenerateMessage.CallServerStream(ctx, req)
 }
 
 // EditMessage calls muse.ChatService.EditMessage.
-func (c *chatServiceClient) EditMessage(ctx context.Context, req *connect.Request[muse.EditMessageRequest]) (*connect.Response[muse.EditMessageResponse], error) {
+func (c *chatServiceClient) EditMessage(ctx context.Context, req *connect.Request[muse.EditMessageReq]) (*connect.Response[muse.EditMessageRsp], error) {
 	return c.editMessage.CallUnary(ctx, req)
 }
 
 // DeleteMessage calls muse.ChatService.DeleteMessage.
-func (c *chatServiceClient) DeleteMessage(ctx context.Context, req *connect.Request[muse.DeleteMessageRequest]) (*connect.Response[muse.DeleteMessageResponse], error) {
+func (c *chatServiceClient) DeleteMessage(ctx context.Context, req *connect.Request[muse.DeleteMessageReq]) (*connect.Response[muse.DeleteMessageRsp], error) {
 	return c.deleteMessage.CallUnary(ctx, req)
 }
 
 // SwitchSwipe calls muse.ChatService.SwitchSwipe.
-func (c *chatServiceClient) SwitchSwipe(ctx context.Context, req *connect.Request[muse.SwitchSwipeRequest]) (*connect.Response[muse.SwitchSwipeResponse], error) {
+func (c *chatServiceClient) SwitchSwipe(ctx context.Context, req *connect.Request[muse.SwitchSwipeReq]) (*connect.Response[muse.SwitchSwipeRsp], error) {
 	return c.switchSwipe.CallUnary(ctx, req)
 }
 
 // GetCharLatestSession calls muse.ChatService.GetCharLatestSession.
-func (c *chatServiceClient) GetCharLatestSession(ctx context.Context, req *connect.Request[muse.GetCharLatestSessionRequest]) (*connect.Response[muse.GetCharLatestSessionResponse], error) {
+func (c *chatServiceClient) GetCharLatestSession(ctx context.Context, req *connect.Request[muse.GetCharLatestSessionReq]) (*connect.Response[muse.GetCharLatestSessionRsp], error) {
 	return c.getCharLatestSession.CallUnary(ctx, req)
 }
 
 // UpdateSessionTime calls muse.ChatService.UpdateSessionTime.
-func (c *chatServiceClient) UpdateSessionTime(ctx context.Context, req *connect.Request[muse.UpdateSessionTimeRequest]) (*connect.Response[muse.UpdateSessionTimeResponse], error) {
+func (c *chatServiceClient) UpdateSessionTime(ctx context.Context, req *connect.Request[muse.UpdateSessionTimeReq]) (*connect.Response[muse.UpdateSessionTimeRsp], error) {
 	return c.updateSessionTime.CallUnary(ctx, req)
 }
 
 // DeleteSwipe calls muse.ChatService.DeleteSwipe.
-func (c *chatServiceClient) DeleteSwipe(ctx context.Context, req *connect.Request[muse.DeleteSwipeRequest]) (*connect.Response[muse.DeleteSwipeResponse], error) {
+func (c *chatServiceClient) DeleteSwipe(ctx context.Context, req *connect.Request[muse.DeleteSwipeReq]) (*connect.Response[muse.DeleteSwipeRsp], error) {
 	return c.deleteSwipe.CallUnary(ctx, req)
 }
 
 // ChatServiceHandler is an implementation of the muse.ChatService service.
 type ChatServiceHandler interface {
 	// 获取会话列表
-	ListChatSessions(context.Context, *connect.Request[muse.ListChatSessionsRequest]) (*connect.Response[muse.ListChatSessionsResponse], error)
+	ListChatSessions(context.Context, *connect.Request[muse.ListChatSessionsReq]) (*connect.Response[muse.ListChatSessionsRsp], error)
 	// 获取单个会话
-	GetChatSession(context.Context, *connect.Request[muse.GetChatSessionRequest]) (*connect.Response[muse.GetChatSessionResponse], error)
+	GetChatSession(context.Context, *connect.Request[muse.GetChatSessionReq]) (*connect.Response[muse.GetChatSessionRsp], error)
 	// 创建会话
-	CreateChatSession(context.Context, *connect.Request[muse.CreateChatSessionRequest]) (*connect.Response[muse.CreateChatSessionResponse], error)
+	CreateChatSession(context.Context, *connect.Request[muse.CreateChatSessionReq]) (*connect.Response[muse.CreateChatSessionRsp], error)
 	// 更新会话
-	UpdateChatSession(context.Context, *connect.Request[muse.UpdateChatSessionRequest]) (*connect.Response[muse.UpdateChatSessionResponse], error)
+	UpdateChatSession(context.Context, *connect.Request[muse.UpdateChatSessionReq]) (*connect.Response[muse.UpdateChatSessionRsp], error)
 	// 删除会话
-	DeleteChatSession(context.Context, *connect.Request[muse.DeleteChatSessionRequest]) (*connect.Response[muse.DeleteChatSessionResponse], error)
+	DeleteChatSession(context.Context, *connect.Request[muse.DeleteChatSessionReq]) (*connect.Response[muse.DeleteChatSessionRsp], error)
 	// 发送消息（流式响应）
-	SendMessage(context.Context, *connect.Request[muse.SendMessageRequest], *connect.ServerStream[muse.SendMessageResponse]) error
+	SendMessage(context.Context, *connect.Request[muse.SendMessageReq], *connect.ServerStream[muse.SendMessageRsp]) error
 	// 重新生成消息（流式响应）
-	RegenerateMessage(context.Context, *connect.Request[muse.RegenerateMessageRequest], *connect.ServerStream[muse.RegenerateMessageResponse]) error
+	RegenerateMessage(context.Context, *connect.Request[muse.RegenerateMessageReq], *connect.ServerStream[muse.RegenerateMessageRsp]) error
 	// 编辑消息
-	EditMessage(context.Context, *connect.Request[muse.EditMessageRequest]) (*connect.Response[muse.EditMessageResponse], error)
+	EditMessage(context.Context, *connect.Request[muse.EditMessageReq]) (*connect.Response[muse.EditMessageRsp], error)
 	// 删除消息
-	DeleteMessage(context.Context, *connect.Request[muse.DeleteMessageRequest]) (*connect.Response[muse.DeleteMessageResponse], error)
+	DeleteMessage(context.Context, *connect.Request[muse.DeleteMessageReq]) (*connect.Response[muse.DeleteMessageRsp], error)
 	// 切换Swipe
-	SwitchSwipe(context.Context, *connect.Request[muse.SwitchSwipeRequest]) (*connect.Response[muse.SwitchSwipeResponse], error)
+	SwitchSwipe(context.Context, *connect.Request[muse.SwitchSwipeReq]) (*connect.Response[muse.SwitchSwipeRsp], error)
 	// 获取角色最新会话
-	GetCharLatestSession(context.Context, *connect.Request[muse.GetCharLatestSessionRequest]) (*connect.Response[muse.GetCharLatestSessionResponse], error)
+	GetCharLatestSession(context.Context, *connect.Request[muse.GetCharLatestSessionReq]) (*connect.Response[muse.GetCharLatestSessionRsp], error)
 	// 更新会话时间戳
-	UpdateSessionTime(context.Context, *connect.Request[muse.UpdateSessionTimeRequest]) (*connect.Response[muse.UpdateSessionTimeResponse], error)
+	UpdateSessionTime(context.Context, *connect.Request[muse.UpdateSessionTimeReq]) (*connect.Response[muse.UpdateSessionTimeRsp], error)
 	// 删除swipe
-	DeleteSwipe(context.Context, *connect.Request[muse.DeleteSwipeRequest]) (*connect.Response[muse.DeleteSwipeResponse], error)
+	DeleteSwipe(context.Context, *connect.Request[muse.DeleteSwipeReq]) (*connect.Response[muse.DeleteSwipeRsp], error)
 }
 
 // NewChatServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -426,54 +426,54 @@ func NewChatServiceHandler(svc ChatServiceHandler, opts ...connect.HandlerOption
 // UnimplementedChatServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedChatServiceHandler struct{}
 
-func (UnimplementedChatServiceHandler) ListChatSessions(context.Context, *connect.Request[muse.ListChatSessionsRequest]) (*connect.Response[muse.ListChatSessionsResponse], error) {
+func (UnimplementedChatServiceHandler) ListChatSessions(context.Context, *connect.Request[muse.ListChatSessionsReq]) (*connect.Response[muse.ListChatSessionsRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.ChatService.ListChatSessions is not implemented"))
 }
 
-func (UnimplementedChatServiceHandler) GetChatSession(context.Context, *connect.Request[muse.GetChatSessionRequest]) (*connect.Response[muse.GetChatSessionResponse], error) {
+func (UnimplementedChatServiceHandler) GetChatSession(context.Context, *connect.Request[muse.GetChatSessionReq]) (*connect.Response[muse.GetChatSessionRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.ChatService.GetChatSession is not implemented"))
 }
 
-func (UnimplementedChatServiceHandler) CreateChatSession(context.Context, *connect.Request[muse.CreateChatSessionRequest]) (*connect.Response[muse.CreateChatSessionResponse], error) {
+func (UnimplementedChatServiceHandler) CreateChatSession(context.Context, *connect.Request[muse.CreateChatSessionReq]) (*connect.Response[muse.CreateChatSessionRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.ChatService.CreateChatSession is not implemented"))
 }
 
-func (UnimplementedChatServiceHandler) UpdateChatSession(context.Context, *connect.Request[muse.UpdateChatSessionRequest]) (*connect.Response[muse.UpdateChatSessionResponse], error) {
+func (UnimplementedChatServiceHandler) UpdateChatSession(context.Context, *connect.Request[muse.UpdateChatSessionReq]) (*connect.Response[muse.UpdateChatSessionRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.ChatService.UpdateChatSession is not implemented"))
 }
 
-func (UnimplementedChatServiceHandler) DeleteChatSession(context.Context, *connect.Request[muse.DeleteChatSessionRequest]) (*connect.Response[muse.DeleteChatSessionResponse], error) {
+func (UnimplementedChatServiceHandler) DeleteChatSession(context.Context, *connect.Request[muse.DeleteChatSessionReq]) (*connect.Response[muse.DeleteChatSessionRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.ChatService.DeleteChatSession is not implemented"))
 }
 
-func (UnimplementedChatServiceHandler) SendMessage(context.Context, *connect.Request[muse.SendMessageRequest], *connect.ServerStream[muse.SendMessageResponse]) error {
+func (UnimplementedChatServiceHandler) SendMessage(context.Context, *connect.Request[muse.SendMessageReq], *connect.ServerStream[muse.SendMessageRsp]) error {
 	return connect.NewError(connect.CodeUnimplemented, errors.New("muse.ChatService.SendMessage is not implemented"))
 }
 
-func (UnimplementedChatServiceHandler) RegenerateMessage(context.Context, *connect.Request[muse.RegenerateMessageRequest], *connect.ServerStream[muse.RegenerateMessageResponse]) error {
+func (UnimplementedChatServiceHandler) RegenerateMessage(context.Context, *connect.Request[muse.RegenerateMessageReq], *connect.ServerStream[muse.RegenerateMessageRsp]) error {
 	return connect.NewError(connect.CodeUnimplemented, errors.New("muse.ChatService.RegenerateMessage is not implemented"))
 }
 
-func (UnimplementedChatServiceHandler) EditMessage(context.Context, *connect.Request[muse.EditMessageRequest]) (*connect.Response[muse.EditMessageResponse], error) {
+func (UnimplementedChatServiceHandler) EditMessage(context.Context, *connect.Request[muse.EditMessageReq]) (*connect.Response[muse.EditMessageRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.ChatService.EditMessage is not implemented"))
 }
 
-func (UnimplementedChatServiceHandler) DeleteMessage(context.Context, *connect.Request[muse.DeleteMessageRequest]) (*connect.Response[muse.DeleteMessageResponse], error) {
+func (UnimplementedChatServiceHandler) DeleteMessage(context.Context, *connect.Request[muse.DeleteMessageReq]) (*connect.Response[muse.DeleteMessageRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.ChatService.DeleteMessage is not implemented"))
 }
 
-func (UnimplementedChatServiceHandler) SwitchSwipe(context.Context, *connect.Request[muse.SwitchSwipeRequest]) (*connect.Response[muse.SwitchSwipeResponse], error) {
+func (UnimplementedChatServiceHandler) SwitchSwipe(context.Context, *connect.Request[muse.SwitchSwipeReq]) (*connect.Response[muse.SwitchSwipeRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.ChatService.SwitchSwipe is not implemented"))
 }
 
-func (UnimplementedChatServiceHandler) GetCharLatestSession(context.Context, *connect.Request[muse.GetCharLatestSessionRequest]) (*connect.Response[muse.GetCharLatestSessionResponse], error) {
+func (UnimplementedChatServiceHandler) GetCharLatestSession(context.Context, *connect.Request[muse.GetCharLatestSessionReq]) (*connect.Response[muse.GetCharLatestSessionRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.ChatService.GetCharLatestSession is not implemented"))
 }
 
-func (UnimplementedChatServiceHandler) UpdateSessionTime(context.Context, *connect.Request[muse.UpdateSessionTimeRequest]) (*connect.Response[muse.UpdateSessionTimeResponse], error) {
+func (UnimplementedChatServiceHandler) UpdateSessionTime(context.Context, *connect.Request[muse.UpdateSessionTimeReq]) (*connect.Response[muse.UpdateSessionTimeRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.ChatService.UpdateSessionTime is not implemented"))
 }
 
-func (UnimplementedChatServiceHandler) DeleteSwipe(context.Context, *connect.Request[muse.DeleteSwipeRequest]) (*connect.Response[muse.DeleteSwipeResponse], error) {
+func (UnimplementedChatServiceHandler) DeleteSwipe(context.Context, *connect.Request[muse.DeleteSwipeReq]) (*connect.Response[muse.DeleteSwipeRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.ChatService.DeleteSwipe is not implemented"))
 }

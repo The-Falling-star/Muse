@@ -21,8 +21,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// UploadFileRequest 上传文件请求
-type UploadFileRequest struct {
+// UploadFileReq 上传文件请求
+type UploadFileReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	FileContent   []byte                 `protobuf:"bytes,1,opt,name=file_content,json=fileContent,proto3" json:"file_content,omitempty"`            // 文件内容
 	FileName      string                 `protobuf:"bytes,2,opt,name=file_name,json=fileName,proto3" json:"file_name,omitempty"`                     // 文件名
@@ -31,20 +31,20 @@ type UploadFileRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UploadFileRequest) Reset() {
-	*x = UploadFileRequest{}
+func (x *UploadFileReq) Reset() {
+	*x = UploadFileReq{}
 	mi := &file_muse_file_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UploadFileRequest) String() string {
+func (x *UploadFileReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UploadFileRequest) ProtoMessage() {}
+func (*UploadFileReq) ProtoMessage() {}
 
-func (x *UploadFileRequest) ProtoReflect() protoreflect.Message {
+func (x *UploadFileReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_file_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -56,54 +56,54 @@ func (x *UploadFileRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UploadFileRequest.ProtoReflect.Descriptor instead.
-func (*UploadFileRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use UploadFileReq.ProtoReflect.Descriptor instead.
+func (*UploadFileReq) Descriptor() ([]byte, []int) {
 	return file_muse_file_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *UploadFileRequest) GetFileContent() []byte {
+func (x *UploadFileReq) GetFileContent() []byte {
 	if x != nil {
 		return x.FileContent
 	}
 	return nil
 }
 
-func (x *UploadFileRequest) GetFileName() string {
+func (x *UploadFileReq) GetFileName() string {
 	if x != nil {
 		return x.FileName
 	}
 	return ""
 }
 
-func (x *UploadFileRequest) GetFileType() FileType {
+func (x *UploadFileReq) GetFileType() FileType {
 	if x != nil {
 		return x.FileType
 	}
 	return FileType_UploadFileTypeUnspecified
 }
 
-// UploadFileResponse 上传文件响应
-type UploadFileResponse struct {
+// UploadFileRsp 上传文件响应
+type UploadFileRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	FilePath      string                 `protobuf:"bytes,1,opt,name=file_path,json=filePath,proto3" json:"file_path,omitempty"` // 文件相对路径（相对于用户目录）
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UploadFileResponse) Reset() {
-	*x = UploadFileResponse{}
+func (x *UploadFileRsp) Reset() {
+	*x = UploadFileRsp{}
 	mi := &file_muse_file_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UploadFileResponse) String() string {
+func (x *UploadFileRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UploadFileResponse) ProtoMessage() {}
+func (*UploadFileRsp) ProtoMessage() {}
 
-func (x *UploadFileResponse) ProtoReflect() protoreflect.Message {
+func (x *UploadFileRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_file_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -115,40 +115,40 @@ func (x *UploadFileResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UploadFileResponse.ProtoReflect.Descriptor instead.
-func (*UploadFileResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use UploadFileRsp.ProtoReflect.Descriptor instead.
+func (*UploadFileRsp) Descriptor() ([]byte, []int) {
 	return file_muse_file_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *UploadFileResponse) GetFilePath() string {
+func (x *UploadFileRsp) GetFilePath() string {
 	if x != nil {
 		return x.FilePath
 	}
 	return ""
 }
 
-// DownloadFileRequest 下载文件请求
-type DownloadFileRequest struct {
+// DownloadFileReq 下载文件请求
+type DownloadFileReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	FilePath      string                 `protobuf:"bytes,1,opt,name=file_path,json=filePath,proto3" json:"file_path,omitempty"` // 文件相对路径（相对于用户目录）
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DownloadFileRequest) Reset() {
-	*x = DownloadFileRequest{}
+func (x *DownloadFileReq) Reset() {
+	*x = DownloadFileReq{}
 	mi := &file_muse_file_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DownloadFileRequest) String() string {
+func (x *DownloadFileReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DownloadFileRequest) ProtoMessage() {}
+func (*DownloadFileReq) ProtoMessage() {}
 
-func (x *DownloadFileRequest) ProtoReflect() protoreflect.Message {
+func (x *DownloadFileReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_file_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -160,20 +160,20 @@ func (x *DownloadFileRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DownloadFileRequest.ProtoReflect.Descriptor instead.
-func (*DownloadFileRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use DownloadFileReq.ProtoReflect.Descriptor instead.
+func (*DownloadFileReq) Descriptor() ([]byte, []int) {
 	return file_muse_file_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *DownloadFileRequest) GetFilePath() string {
+func (x *DownloadFileReq) GetFilePath() string {
 	if x != nil {
 		return x.FilePath
 	}
 	return ""
 }
 
-// DownloadFileResponse 下载文件响应
-type DownloadFileResponse struct {
+// DownloadFileRsp 下载文件响应
+type DownloadFileRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	FileContent   []byte                 `protobuf:"bytes,1,opt,name=file_content,json=fileContent,proto3" json:"file_content,omitempty"` // 文件内容
 	ContentType   string                 `protobuf:"bytes,2,opt,name=content_type,json=contentType,proto3" json:"content_type,omitempty"` // 文件MIME类型
@@ -182,20 +182,20 @@ type DownloadFileResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DownloadFileResponse) Reset() {
-	*x = DownloadFileResponse{}
+func (x *DownloadFileRsp) Reset() {
+	*x = DownloadFileRsp{}
 	mi := &file_muse_file_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DownloadFileResponse) String() string {
+func (x *DownloadFileRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DownloadFileResponse) ProtoMessage() {}
+func (*DownloadFileRsp) ProtoMessage() {}
 
-func (x *DownloadFileResponse) ProtoReflect() protoreflect.Message {
+func (x *DownloadFileRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_file_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -207,26 +207,26 @@ func (x *DownloadFileResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DownloadFileResponse.ProtoReflect.Descriptor instead.
-func (*DownloadFileResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use DownloadFileRsp.ProtoReflect.Descriptor instead.
+func (*DownloadFileRsp) Descriptor() ([]byte, []int) {
 	return file_muse_file_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *DownloadFileResponse) GetFileContent() []byte {
+func (x *DownloadFileRsp) GetFileContent() []byte {
 	if x != nil {
 		return x.FileContent
 	}
 	return nil
 }
 
-func (x *DownloadFileResponse) GetContentType() string {
+func (x *DownloadFileRsp) GetContentType() string {
 	if x != nil {
 		return x.ContentType
 	}
 	return ""
 }
 
-func (x *DownloadFileResponse) GetFileName() string {
+func (x *DownloadFileRsp) GetFileName() string {
 	if x != nil {
 		return x.FileName
 	}
@@ -237,23 +237,23 @@ var File_muse_file_proto protoreflect.FileDescriptor
 
 const file_muse_file_proto_rawDesc = "" +
 	"\n" +
-	"\x0fmuse/file.proto\x12\x04muse\x1a\x11muse/common.proto\"\x80\x01\n" +
-	"\x11UploadFileRequest\x12!\n" +
+	"\x0fmuse/file.proto\x12\x04muse\x1a\x11muse/common.proto\"|\n" +
+	"\rUploadFileReq\x12!\n" +
 	"\ffile_content\x18\x01 \x01(\fR\vfileContent\x12\x1b\n" +
 	"\tfile_name\x18\x02 \x01(\tR\bfileName\x12+\n" +
-	"\tfile_type\x18\x03 \x01(\x0e2\x0e.muse.FileTypeR\bfileType\"1\n" +
-	"\x12UploadFileResponse\x12\x1b\n" +
-	"\tfile_path\x18\x01 \x01(\tR\bfilePath\"2\n" +
-	"\x13DownloadFileRequest\x12\x1b\n" +
-	"\tfile_path\x18\x01 \x01(\tR\bfilePath\"y\n" +
-	"\x14DownloadFileResponse\x12!\n" +
+	"\tfile_type\x18\x03 \x01(\x0e2\x0e.muse.FileTypeR\bfileType\",\n" +
+	"\rUploadFileRsp\x12\x1b\n" +
+	"\tfile_path\x18\x01 \x01(\tR\bfilePath\".\n" +
+	"\x0fDownloadFileReq\x12\x1b\n" +
+	"\tfile_path\x18\x01 \x01(\tR\bfilePath\"t\n" +
+	"\x0fDownloadFileRsp\x12!\n" +
 	"\ffile_content\x18\x01 \x01(\fR\vfileContent\x12!\n" +
 	"\fcontent_type\x18\x02 \x01(\tR\vcontentType\x12\x1b\n" +
-	"\tfile_name\x18\x03 \x01(\tR\bfileName2\x95\x01\n" +
-	"\vFileService\x12?\n" +
+	"\tfile_name\x18\x03 \x01(\tR\bfileName2\x83\x01\n" +
+	"\vFileService\x126\n" +
 	"\n" +
-	"UploadFile\x12\x17.muse.UploadFileRequest\x1a\x18.muse.UploadFileResponse\x12E\n" +
-	"\fDownloadFile\x12\x19.muse.DownloadFileRequest\x1a\x1a.muse.DownloadFileResponseBd\n" +
+	"UploadFile\x12\x13.muse.UploadFileReq\x1a\x13.muse.UploadFileRsp\x12<\n" +
+	"\fDownloadFile\x12\x15.muse.DownloadFileReq\x1a\x15.muse.DownloadFileRspBd\n" +
 	"\bcom.museB\tFileProtoP\x01Z\x1dgithub.com/ling/muse/gen/muse\xa2\x02\x03MXX\xaa\x02\x04Muse\xca\x02\x04Muse\xe2\x02\x10Muse\\GPBMetadata\xea\x02\x04Museb\x06proto3"
 
 var (
@@ -270,18 +270,18 @@ func file_muse_file_proto_rawDescGZIP() []byte {
 
 var file_muse_file_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_muse_file_proto_goTypes = []any{
-	(*UploadFileRequest)(nil),    // 0: muse.UploadFileRequest
-	(*UploadFileResponse)(nil),   // 1: muse.UploadFileResponse
-	(*DownloadFileRequest)(nil),  // 2: muse.DownloadFileRequest
-	(*DownloadFileResponse)(nil), // 3: muse.DownloadFileResponse
-	(FileType)(0),                // 4: muse.FileType
+	(*UploadFileReq)(nil),   // 0: muse.UploadFileReq
+	(*UploadFileRsp)(nil),   // 1: muse.UploadFileRsp
+	(*DownloadFileReq)(nil), // 2: muse.DownloadFileReq
+	(*DownloadFileRsp)(nil), // 3: muse.DownloadFileRsp
+	(FileType)(0),           // 4: muse.FileType
 }
 var file_muse_file_proto_depIdxs = []int32{
-	4, // 0: muse.UploadFileRequest.file_type:type_name -> muse.FileType
-	0, // 1: muse.FileService.UploadFile:input_type -> muse.UploadFileRequest
-	2, // 2: muse.FileService.DownloadFile:input_type -> muse.DownloadFileRequest
-	1, // 3: muse.FileService.UploadFile:output_type -> muse.UploadFileResponse
-	3, // 4: muse.FileService.DownloadFile:output_type -> muse.DownloadFileResponse
+	4, // 0: muse.UploadFileReq.file_type:type_name -> muse.FileType
+	0, // 1: muse.FileService.UploadFile:input_type -> muse.UploadFileReq
+	2, // 2: muse.FileService.DownloadFile:input_type -> muse.DownloadFileReq
+	1, // 3: muse.FileService.UploadFile:output_type -> muse.UploadFileRsp
+	3, // 4: muse.FileService.DownloadFile:output_type -> muse.DownloadFileRsp
 	3, // [3:5] is the sub-list for method output_type
 	1, // [1:3] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name

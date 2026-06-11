@@ -50,7 +50,7 @@ func newChat() *chatImpl {
 	}
 }
 
-func (c *chatImpl) ListChatSessions(ctx context.Context, req *pb.ListChatSessionsRequest) (*pb.ListChatSessionsResponse, error) {
+func (c *chatImpl) ListChatSessions(ctx context.Context, req *pb.ListChatSessionsReq) (*pb.ListChatSessionsRsp, error) {
 	// 获取并规范化分页参数
 	page, pageSize := constant.NormalizePagination(int(req.GetPage()), int(req.GetPageSize()))
 	characterID := int(req.GetCharacterId())
@@ -68,14 +68,14 @@ func (c *chatImpl) ListChatSessions(ctx context.Context, req *pb.ListChatSession
 		pbSessions = append(pbSessions, convert.SessionEntityToPb(session))
 	}
 
-	return &pb.ListChatSessionsResponse{
+	return &pb.ListChatSessionsRsp{
 		Sessions: pbSessions,
 		Total:    int32(total),
 	}, nil
 }
 
-func (c *chatImpl) GetChatSession(ctx context.Context, req *pb.GetChatSessionRequest) (
-	*pb.GetChatSessionResponse, error) {
+func (c *chatImpl) GetChatSession(ctx context.Context, req *pb.GetChatSessionReq) (
+	*pb.GetChatSessionRsp, error) {
 	id := int(req.GetId())
 	if id <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidSessionID)
@@ -90,12 +90,12 @@ func (c *chatImpl) GetChatSession(ctx context.Context, req *pb.GetChatSessionReq
 		return nil, errs.NewStandard(connect.CodeNotFound, errs.SessionNotFound)
 	}
 
-	return &pb.GetChatSessionResponse{
+	return &pb.GetChatSessionRsp{
 		Session: convert.SessionEntityToPb(session),
 	}, nil
 }
 
-func (c *chatImpl) CreateChatSession(ctx context.Context, req *pb.CreateChatSessionRequest) (*pb.CreateChatSessionResponse, error) {
+func (c *chatImpl) CreateChatSession(ctx context.Context, req *pb.CreateChatSessionReq) (*pb.CreateChatSessionRsp, error) {
 	// 参数校验
 	characterID := int(req.GetCharacterId())
 	if characterID <= 0 {
@@ -107,7 +107,7 @@ func (c *chatImpl) CreateChatSession(ctx context.Context, req *pb.CreateChatSess
 		return nil, err
 	}
 
-	return &pb.CreateChatSessionResponse{
+	return &pb.CreateChatSessionRsp{
 		Session: convert.SessionEntityToPb(fullSession),
 	}, nil
 }
@@ -166,7 +166,7 @@ func (c *chatImpl) createSession(ctx context.Context, characterID int, name stri
 	return fullSession, nil
 }
 
-func (c *chatImpl) UpdateChatSession(ctx context.Context, req *pb.UpdateChatSessionRequest) (*pb.UpdateChatSessionResponse, error) {
+func (c *chatImpl) UpdateChatSession(ctx context.Context, req *pb.UpdateChatSessionReq) (*pb.UpdateChatSessionRsp, error) {
 	id := int(req.GetId())
 	if id <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidSessionID)
@@ -189,12 +189,12 @@ func (c *chatImpl) UpdateChatSession(ctx context.Context, req *pb.UpdateChatSess
 		return nil, err
 	}
 
-	return &pb.UpdateChatSessionResponse{
+	return &pb.UpdateChatSessionRsp{
 		Session: convert.SessionEntityToPb(updatedSession),
 	}, nil
 }
 
-func (c *chatImpl) DeleteChatSession(ctx context.Context, req *pb.DeleteChatSessionRequest) (*pb.DeleteChatSessionResponse, error) {
+func (c *chatImpl) DeleteChatSession(ctx context.Context, req *pb.DeleteChatSessionReq) (*pb.DeleteChatSessionRsp, error) {
 	id := int(req.GetId())
 	if id <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidSessionID)
@@ -206,10 +206,10 @@ func (c *chatImpl) DeleteChatSession(ctx context.Context, req *pb.DeleteChatSess
 		return nil, err
 	}
 
-	return &pb.DeleteChatSessionResponse{}, nil
+	return &pb.DeleteChatSessionRsp{}, nil
 }
 
-func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, stream SendMessageStream) error {
+func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageReq, stream SendMessageStream) error {
 	// 参数校验
 	sessionID := int(req.GetSessionId())
 	if sessionID <= 0 {
@@ -414,7 +414,7 @@ func (c *chatImpl) SendMessage(ctx context.Context, req *pb.SendMessageRequest, 
 		//log.Debugf("大模型输出下标: %d, 内容: %s", result.Index, result.Content)
 
 		// 发送流式响应给前端
-		if sendErr := stream.Send(&pb.SendMessageResponse{
+		if sendErr := stream.Send(&pb.SendMessageRsp{
 			Index:      int32(result.Index),
 			Content:    result.Content,
 			Done:       result.Done,
@@ -833,22 +833,22 @@ func (c *chatImpl) getLLM(provider pb.APIProvider) model.LLMModel {
 	}
 }
 
-func (c *chatImpl) RegenerateMessage(ctx context.Context, req *pb.RegenerateMessageRequest, stream RegenerateMessageStream) error {
+func (c *chatImpl) RegenerateMessage(ctx context.Context, req *pb.RegenerateMessageReq, stream RegenerateMessageStream) error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (c *chatImpl) EditMessage(ctx context.Context, req *pb.EditMessageRequest) (*pb.EditMessageResponse, error) {
+func (c *chatImpl) EditMessage(ctx context.Context, req *pb.EditMessageReq) (*pb.EditMessageRsp, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (c *chatImpl) DeleteMessage(ctx context.Context, req *pb.DeleteMessageRequest) (*pb.DeleteMessageResponse, error) {
+func (c *chatImpl) DeleteMessage(ctx context.Context, req *pb.DeleteMessageReq) (*pb.DeleteMessageRsp, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (c *chatImpl) SwitchSwipe(ctx context.Context, req *pb.SwitchSwipeRequest) (*pb.SwitchSwipeResponse, error) {
+func (c *chatImpl) SwitchSwipe(ctx context.Context, req *pb.SwitchSwipeReq) (*pb.SwitchSwipeRsp, error) {
 	err := c.chatRepo.SwitchSwipe(ctx, int(req.MessageId), int(req.SwipeIndex))
 	if err != nil {
 		if errs.Code(err) == connect.CodeNotFound {
@@ -857,7 +857,7 @@ func (c *chatImpl) SwitchSwipe(ctx context.Context, req *pb.SwitchSwipeRequest) 
 		}
 		return nil, err
 	}
-	return &pb.SwitchSwipeResponse{}, nil
+	return &pb.SwitchSwipeRsp{}, nil
 }
 
 func (c *chatImpl) buildMessages(
@@ -1082,8 +1082,8 @@ func isWorldInfoEntryValid(entry *entity.WorldInfoEntry, session *entity.ChatSes
 	return false
 }
 
-func (c *chatImpl) GetCharLatestSession(ctx context.Context, req *pb.GetCharLatestSessionRequest) (
-	*pb.GetCharLatestSessionResponse, error) {
+func (c *chatImpl) GetCharLatestSession(ctx context.Context, req *pb.GetCharLatestSessionReq) (
+	*pb.GetCharLatestSessionRsp, error) {
 	if req.GetCharacterId() <= 0 {
 		return nil, errs.NewStandardf(connect.CodeInvalidArgument, "character_id不能为空")
 	}
@@ -1099,17 +1099,17 @@ func (c *chatImpl) GetCharLatestSession(ctx context.Context, req *pb.GetCharLate
 			return nil, err
 		}
 	}
-	return &pb.GetCharLatestSessionResponse{
+	return &pb.GetCharLatestSessionRsp{
 		Session: convert.SessionEntityToPb(session),
 	}, nil
 }
 
-func (c *chatImpl) UpdateSessionTime(ctx context.Context, req *pb.UpdateSessionTimeRequest) (
-	*pb.UpdateSessionTimeResponse, error) {
+func (c *chatImpl) UpdateSessionTime(ctx context.Context, req *pb.UpdateSessionTimeReq) (
+	*pb.UpdateSessionTimeRsp, error) {
 	if err := c.chatRepo.UpdateSessionTime(ctx, int(req.GetSessionId()), time.Now()); err != nil {
 		return nil, err
 	}
-	return &pb.UpdateSessionTimeResponse{}, nil
+	return &pb.UpdateSessionTimeRsp{}, nil
 }
 
 func insertMaxDepthMsg(maxDepth int, msgMap map[int][]PriorityMessage) []PriorityMessage {
@@ -1301,10 +1301,10 @@ func applyMacro(messages []model.Message, session *entity.ChatSession, persona *
 	return messages
 }
 
-func (c *chatImpl) DeleteSwipe(ctx context.Context, req *pb.DeleteSwipeRequest) (*pb.DeleteSwipeResponse, error) {
+func (c *chatImpl) DeleteSwipe(ctx context.Context, req *pb.DeleteSwipeReq) (*pb.DeleteSwipeRsp, error) {
 
 	if err := c.chatRepo.DeleteSwipe(ctx, int(req.MessageId), int(req.SwipeId)); err != nil {
 		return nil, err
 	}
-	return &pb.DeleteSwipeResponse{}, nil
+	return &pb.DeleteSwipeRsp{}, nil
 }

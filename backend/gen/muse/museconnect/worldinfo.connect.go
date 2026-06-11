@@ -74,29 +74,29 @@ const (
 // WorldInfoServiceClient is a client for the muse.WorldInfoService service.
 type WorldInfoServiceClient interface {
 	// 获取世界书列表
-	ListWorldInfos(context.Context, *connect.Request[muse.ListWorldInfosRequest]) (*connect.Response[muse.ListWorldInfosResponse], error)
+	ListWorldInfos(context.Context, *connect.Request[muse.ListWorldInfosReq]) (*connect.Response[muse.ListWorldInfosRsp], error)
 	// 获取单个世界书
-	GetWorldInfo(context.Context, *connect.Request[muse.GetWorldInfoRequest]) (*connect.Response[muse.GetWorldInfoResponse], error)
+	GetWorldInfo(context.Context, *connect.Request[muse.GetWorldInfoReq]) (*connect.Response[muse.GetWorldInfoRsp], error)
 	// 创建世界书
-	CreateWorldInfo(context.Context, *connect.Request[muse.CreateWorldInfoRequest]) (*connect.Response[muse.CreateWorldInfoResponse], error)
+	CreateWorldInfo(context.Context, *connect.Request[muse.CreateWorldInfoReq]) (*connect.Response[muse.CreateWorldInfoRsp], error)
 	// 更新世界书
-	UpdateWorldInfo(context.Context, *connect.Request[muse.UpdateWorldInfoRequest]) (*connect.Response[muse.UpdateWorldInfoResponse], error)
+	UpdateWorldInfo(context.Context, *connect.Request[muse.UpdateWorldInfoReq]) (*connect.Response[muse.UpdateWorldInfoRsp], error)
 	// 删除世界书
-	DeleteWorldInfo(context.Context, *connect.Request[muse.DeleteWorldInfoRequest]) (*connect.Response[muse.DeleteWorldInfoResponse], error)
+	DeleteWorldInfo(context.Context, *connect.Request[muse.DeleteWorldInfoReq]) (*connect.Response[muse.DeleteWorldInfoRsp], error)
 	// 导入世界书（支持SillyTavern格式）
-	ImportWorldInfo(context.Context, *connect.Request[muse.ImportWorldInfoRequest]) (*connect.Response[muse.ImportWorldInfoResponse], error)
+	ImportWorldInfo(context.Context, *connect.Request[muse.ImportWorldInfoReq]) (*connect.Response[muse.ImportWorldInfoRsp], error)
 	// 导出世界书
-	ExportWorldInfo(context.Context, *connect.Request[muse.ExportWorldInfoRequest]) (*connect.Response[muse.ExportWorldInfoResponse], error)
+	ExportWorldInfo(context.Context, *connect.Request[muse.ExportWorldInfoReq]) (*connect.Response[muse.ExportWorldInfoRsp], error)
 	// 获取世界书条目列表
-	ListWorldInfoEntries(context.Context, *connect.Request[muse.ListWorldInfoEntriesRequest]) (*connect.Response[muse.ListWorldInfoEntriesResponse], error)
+	ListWorldInfoEntries(context.Context, *connect.Request[muse.ListWorldInfoEntriesReq]) (*connect.Response[muse.ListWorldInfoEntriesRsp], error)
 	// 添加世界书条目
-	AddWorldInfoEntry(context.Context, *connect.Request[muse.AddWorldInfoEntryRequest]) (*connect.Response[muse.AddWorldInfoEntryResponse], error)
+	AddWorldInfoEntry(context.Context, *connect.Request[muse.AddWorldInfoEntryReq]) (*connect.Response[muse.AddWorldInfoEntryRsp], error)
 	// 更新世界书条目
-	UpdateWorldInfoEntry(context.Context, *connect.Request[muse.UpdateWorldInfoEntryRequest]) (*connect.Response[muse.UpdateWorldInfoEntryResponse], error)
+	UpdateWorldInfoEntry(context.Context, *connect.Request[muse.UpdateWorldInfoEntryReq]) (*connect.Response[muse.UpdateWorldInfoEntryRsp], error)
 	// 删除世界书条目
-	DeleteWorldInfoEntry(context.Context, *connect.Request[muse.DeleteWorldInfoEntryRequest]) (*connect.Response[muse.DeleteWorldInfoEntryResponse], error)
+	DeleteWorldInfoEntry(context.Context, *connect.Request[muse.DeleteWorldInfoEntryReq]) (*connect.Response[muse.DeleteWorldInfoEntryRsp], error)
 	// 批量更新世界书条目排序
-	UpdateWorldInfoEntriesOrder(context.Context, *connect.Request[muse.UpdateWorldInfoEntriesOrderRequest]) (*connect.Response[muse.UpdateWorldInfoEntriesOrderResponse], error)
+	UpdateWorldInfoEntriesOrder(context.Context, *connect.Request[muse.UpdateWorldInfoEntriesOrderReq]) (*connect.Response[muse.UpdateWorldInfoEntriesOrderRsp], error)
 }
 
 // NewWorldInfoServiceClient constructs a client for the muse.WorldInfoService service. By default,
@@ -110,73 +110,73 @@ func NewWorldInfoServiceClient(httpClient connect.HTTPClient, baseURL string, op
 	baseURL = strings.TrimRight(baseURL, "/")
 	worldInfoServiceMethods := muse.File_muse_worldinfo_proto.Services().ByName("WorldInfoService").Methods()
 	return &worldInfoServiceClient{
-		listWorldInfos: connect.NewClient[muse.ListWorldInfosRequest, muse.ListWorldInfosResponse](
+		listWorldInfos: connect.NewClient[muse.ListWorldInfosReq, muse.ListWorldInfosRsp](
 			httpClient,
 			baseURL+WorldInfoServiceListWorldInfosProcedure,
 			connect.WithSchema(worldInfoServiceMethods.ByName("ListWorldInfos")),
 			connect.WithClientOptions(opts...),
 		),
-		getWorldInfo: connect.NewClient[muse.GetWorldInfoRequest, muse.GetWorldInfoResponse](
+		getWorldInfo: connect.NewClient[muse.GetWorldInfoReq, muse.GetWorldInfoRsp](
 			httpClient,
 			baseURL+WorldInfoServiceGetWorldInfoProcedure,
 			connect.WithSchema(worldInfoServiceMethods.ByName("GetWorldInfo")),
 			connect.WithClientOptions(opts...),
 		),
-		createWorldInfo: connect.NewClient[muse.CreateWorldInfoRequest, muse.CreateWorldInfoResponse](
+		createWorldInfo: connect.NewClient[muse.CreateWorldInfoReq, muse.CreateWorldInfoRsp](
 			httpClient,
 			baseURL+WorldInfoServiceCreateWorldInfoProcedure,
 			connect.WithSchema(worldInfoServiceMethods.ByName("CreateWorldInfo")),
 			connect.WithClientOptions(opts...),
 		),
-		updateWorldInfo: connect.NewClient[muse.UpdateWorldInfoRequest, muse.UpdateWorldInfoResponse](
+		updateWorldInfo: connect.NewClient[muse.UpdateWorldInfoReq, muse.UpdateWorldInfoRsp](
 			httpClient,
 			baseURL+WorldInfoServiceUpdateWorldInfoProcedure,
 			connect.WithSchema(worldInfoServiceMethods.ByName("UpdateWorldInfo")),
 			connect.WithClientOptions(opts...),
 		),
-		deleteWorldInfo: connect.NewClient[muse.DeleteWorldInfoRequest, muse.DeleteWorldInfoResponse](
+		deleteWorldInfo: connect.NewClient[muse.DeleteWorldInfoReq, muse.DeleteWorldInfoRsp](
 			httpClient,
 			baseURL+WorldInfoServiceDeleteWorldInfoProcedure,
 			connect.WithSchema(worldInfoServiceMethods.ByName("DeleteWorldInfo")),
 			connect.WithClientOptions(opts...),
 		),
-		importWorldInfo: connect.NewClient[muse.ImportWorldInfoRequest, muse.ImportWorldInfoResponse](
+		importWorldInfo: connect.NewClient[muse.ImportWorldInfoReq, muse.ImportWorldInfoRsp](
 			httpClient,
 			baseURL+WorldInfoServiceImportWorldInfoProcedure,
 			connect.WithSchema(worldInfoServiceMethods.ByName("ImportWorldInfo")),
 			connect.WithClientOptions(opts...),
 		),
-		exportWorldInfo: connect.NewClient[muse.ExportWorldInfoRequest, muse.ExportWorldInfoResponse](
+		exportWorldInfo: connect.NewClient[muse.ExportWorldInfoReq, muse.ExportWorldInfoRsp](
 			httpClient,
 			baseURL+WorldInfoServiceExportWorldInfoProcedure,
 			connect.WithSchema(worldInfoServiceMethods.ByName("ExportWorldInfo")),
 			connect.WithClientOptions(opts...),
 		),
-		listWorldInfoEntries: connect.NewClient[muse.ListWorldInfoEntriesRequest, muse.ListWorldInfoEntriesResponse](
+		listWorldInfoEntries: connect.NewClient[muse.ListWorldInfoEntriesReq, muse.ListWorldInfoEntriesRsp](
 			httpClient,
 			baseURL+WorldInfoServiceListWorldInfoEntriesProcedure,
 			connect.WithSchema(worldInfoServiceMethods.ByName("ListWorldInfoEntries")),
 			connect.WithClientOptions(opts...),
 		),
-		addWorldInfoEntry: connect.NewClient[muse.AddWorldInfoEntryRequest, muse.AddWorldInfoEntryResponse](
+		addWorldInfoEntry: connect.NewClient[muse.AddWorldInfoEntryReq, muse.AddWorldInfoEntryRsp](
 			httpClient,
 			baseURL+WorldInfoServiceAddWorldInfoEntryProcedure,
 			connect.WithSchema(worldInfoServiceMethods.ByName("AddWorldInfoEntry")),
 			connect.WithClientOptions(opts...),
 		),
-		updateWorldInfoEntry: connect.NewClient[muse.UpdateWorldInfoEntryRequest, muse.UpdateWorldInfoEntryResponse](
+		updateWorldInfoEntry: connect.NewClient[muse.UpdateWorldInfoEntryReq, muse.UpdateWorldInfoEntryRsp](
 			httpClient,
 			baseURL+WorldInfoServiceUpdateWorldInfoEntryProcedure,
 			connect.WithSchema(worldInfoServiceMethods.ByName("UpdateWorldInfoEntry")),
 			connect.WithClientOptions(opts...),
 		),
-		deleteWorldInfoEntry: connect.NewClient[muse.DeleteWorldInfoEntryRequest, muse.DeleteWorldInfoEntryResponse](
+		deleteWorldInfoEntry: connect.NewClient[muse.DeleteWorldInfoEntryReq, muse.DeleteWorldInfoEntryRsp](
 			httpClient,
 			baseURL+WorldInfoServiceDeleteWorldInfoEntryProcedure,
 			connect.WithSchema(worldInfoServiceMethods.ByName("DeleteWorldInfoEntry")),
 			connect.WithClientOptions(opts...),
 		),
-		updateWorldInfoEntriesOrder: connect.NewClient[muse.UpdateWorldInfoEntriesOrderRequest, muse.UpdateWorldInfoEntriesOrderResponse](
+		updateWorldInfoEntriesOrder: connect.NewClient[muse.UpdateWorldInfoEntriesOrderReq, muse.UpdateWorldInfoEntriesOrderRsp](
 			httpClient,
 			baseURL+WorldInfoServiceUpdateWorldInfoEntriesOrderProcedure,
 			connect.WithSchema(worldInfoServiceMethods.ByName("UpdateWorldInfoEntriesOrder")),
@@ -187,106 +187,106 @@ func NewWorldInfoServiceClient(httpClient connect.HTTPClient, baseURL string, op
 
 // worldInfoServiceClient implements WorldInfoServiceClient.
 type worldInfoServiceClient struct {
-	listWorldInfos              *connect.Client[muse.ListWorldInfosRequest, muse.ListWorldInfosResponse]
-	getWorldInfo                *connect.Client[muse.GetWorldInfoRequest, muse.GetWorldInfoResponse]
-	createWorldInfo             *connect.Client[muse.CreateWorldInfoRequest, muse.CreateWorldInfoResponse]
-	updateWorldInfo             *connect.Client[muse.UpdateWorldInfoRequest, muse.UpdateWorldInfoResponse]
-	deleteWorldInfo             *connect.Client[muse.DeleteWorldInfoRequest, muse.DeleteWorldInfoResponse]
-	importWorldInfo             *connect.Client[muse.ImportWorldInfoRequest, muse.ImportWorldInfoResponse]
-	exportWorldInfo             *connect.Client[muse.ExportWorldInfoRequest, muse.ExportWorldInfoResponse]
-	listWorldInfoEntries        *connect.Client[muse.ListWorldInfoEntriesRequest, muse.ListWorldInfoEntriesResponse]
-	addWorldInfoEntry           *connect.Client[muse.AddWorldInfoEntryRequest, muse.AddWorldInfoEntryResponse]
-	updateWorldInfoEntry        *connect.Client[muse.UpdateWorldInfoEntryRequest, muse.UpdateWorldInfoEntryResponse]
-	deleteWorldInfoEntry        *connect.Client[muse.DeleteWorldInfoEntryRequest, muse.DeleteWorldInfoEntryResponse]
-	updateWorldInfoEntriesOrder *connect.Client[muse.UpdateWorldInfoEntriesOrderRequest, muse.UpdateWorldInfoEntriesOrderResponse]
+	listWorldInfos              *connect.Client[muse.ListWorldInfosReq, muse.ListWorldInfosRsp]
+	getWorldInfo                *connect.Client[muse.GetWorldInfoReq, muse.GetWorldInfoRsp]
+	createWorldInfo             *connect.Client[muse.CreateWorldInfoReq, muse.CreateWorldInfoRsp]
+	updateWorldInfo             *connect.Client[muse.UpdateWorldInfoReq, muse.UpdateWorldInfoRsp]
+	deleteWorldInfo             *connect.Client[muse.DeleteWorldInfoReq, muse.DeleteWorldInfoRsp]
+	importWorldInfo             *connect.Client[muse.ImportWorldInfoReq, muse.ImportWorldInfoRsp]
+	exportWorldInfo             *connect.Client[muse.ExportWorldInfoReq, muse.ExportWorldInfoRsp]
+	listWorldInfoEntries        *connect.Client[muse.ListWorldInfoEntriesReq, muse.ListWorldInfoEntriesRsp]
+	addWorldInfoEntry           *connect.Client[muse.AddWorldInfoEntryReq, muse.AddWorldInfoEntryRsp]
+	updateWorldInfoEntry        *connect.Client[muse.UpdateWorldInfoEntryReq, muse.UpdateWorldInfoEntryRsp]
+	deleteWorldInfoEntry        *connect.Client[muse.DeleteWorldInfoEntryReq, muse.DeleteWorldInfoEntryRsp]
+	updateWorldInfoEntriesOrder *connect.Client[muse.UpdateWorldInfoEntriesOrderReq, muse.UpdateWorldInfoEntriesOrderRsp]
 }
 
 // ListWorldInfos calls muse.WorldInfoService.ListWorldInfos.
-func (c *worldInfoServiceClient) ListWorldInfos(ctx context.Context, req *connect.Request[muse.ListWorldInfosRequest]) (*connect.Response[muse.ListWorldInfosResponse], error) {
+func (c *worldInfoServiceClient) ListWorldInfos(ctx context.Context, req *connect.Request[muse.ListWorldInfosReq]) (*connect.Response[muse.ListWorldInfosRsp], error) {
 	return c.listWorldInfos.CallUnary(ctx, req)
 }
 
 // GetWorldInfo calls muse.WorldInfoService.GetWorldInfo.
-func (c *worldInfoServiceClient) GetWorldInfo(ctx context.Context, req *connect.Request[muse.GetWorldInfoRequest]) (*connect.Response[muse.GetWorldInfoResponse], error) {
+func (c *worldInfoServiceClient) GetWorldInfo(ctx context.Context, req *connect.Request[muse.GetWorldInfoReq]) (*connect.Response[muse.GetWorldInfoRsp], error) {
 	return c.getWorldInfo.CallUnary(ctx, req)
 }
 
 // CreateWorldInfo calls muse.WorldInfoService.CreateWorldInfo.
-func (c *worldInfoServiceClient) CreateWorldInfo(ctx context.Context, req *connect.Request[muse.CreateWorldInfoRequest]) (*connect.Response[muse.CreateWorldInfoResponse], error) {
+func (c *worldInfoServiceClient) CreateWorldInfo(ctx context.Context, req *connect.Request[muse.CreateWorldInfoReq]) (*connect.Response[muse.CreateWorldInfoRsp], error) {
 	return c.createWorldInfo.CallUnary(ctx, req)
 }
 
 // UpdateWorldInfo calls muse.WorldInfoService.UpdateWorldInfo.
-func (c *worldInfoServiceClient) UpdateWorldInfo(ctx context.Context, req *connect.Request[muse.UpdateWorldInfoRequest]) (*connect.Response[muse.UpdateWorldInfoResponse], error) {
+func (c *worldInfoServiceClient) UpdateWorldInfo(ctx context.Context, req *connect.Request[muse.UpdateWorldInfoReq]) (*connect.Response[muse.UpdateWorldInfoRsp], error) {
 	return c.updateWorldInfo.CallUnary(ctx, req)
 }
 
 // DeleteWorldInfo calls muse.WorldInfoService.DeleteWorldInfo.
-func (c *worldInfoServiceClient) DeleteWorldInfo(ctx context.Context, req *connect.Request[muse.DeleteWorldInfoRequest]) (*connect.Response[muse.DeleteWorldInfoResponse], error) {
+func (c *worldInfoServiceClient) DeleteWorldInfo(ctx context.Context, req *connect.Request[muse.DeleteWorldInfoReq]) (*connect.Response[muse.DeleteWorldInfoRsp], error) {
 	return c.deleteWorldInfo.CallUnary(ctx, req)
 }
 
 // ImportWorldInfo calls muse.WorldInfoService.ImportWorldInfo.
-func (c *worldInfoServiceClient) ImportWorldInfo(ctx context.Context, req *connect.Request[muse.ImportWorldInfoRequest]) (*connect.Response[muse.ImportWorldInfoResponse], error) {
+func (c *worldInfoServiceClient) ImportWorldInfo(ctx context.Context, req *connect.Request[muse.ImportWorldInfoReq]) (*connect.Response[muse.ImportWorldInfoRsp], error) {
 	return c.importWorldInfo.CallUnary(ctx, req)
 }
 
 // ExportWorldInfo calls muse.WorldInfoService.ExportWorldInfo.
-func (c *worldInfoServiceClient) ExportWorldInfo(ctx context.Context, req *connect.Request[muse.ExportWorldInfoRequest]) (*connect.Response[muse.ExportWorldInfoResponse], error) {
+func (c *worldInfoServiceClient) ExportWorldInfo(ctx context.Context, req *connect.Request[muse.ExportWorldInfoReq]) (*connect.Response[muse.ExportWorldInfoRsp], error) {
 	return c.exportWorldInfo.CallUnary(ctx, req)
 }
 
 // ListWorldInfoEntries calls muse.WorldInfoService.ListWorldInfoEntries.
-func (c *worldInfoServiceClient) ListWorldInfoEntries(ctx context.Context, req *connect.Request[muse.ListWorldInfoEntriesRequest]) (*connect.Response[muse.ListWorldInfoEntriesResponse], error) {
+func (c *worldInfoServiceClient) ListWorldInfoEntries(ctx context.Context, req *connect.Request[muse.ListWorldInfoEntriesReq]) (*connect.Response[muse.ListWorldInfoEntriesRsp], error) {
 	return c.listWorldInfoEntries.CallUnary(ctx, req)
 }
 
 // AddWorldInfoEntry calls muse.WorldInfoService.AddWorldInfoEntry.
-func (c *worldInfoServiceClient) AddWorldInfoEntry(ctx context.Context, req *connect.Request[muse.AddWorldInfoEntryRequest]) (*connect.Response[muse.AddWorldInfoEntryResponse], error) {
+func (c *worldInfoServiceClient) AddWorldInfoEntry(ctx context.Context, req *connect.Request[muse.AddWorldInfoEntryReq]) (*connect.Response[muse.AddWorldInfoEntryRsp], error) {
 	return c.addWorldInfoEntry.CallUnary(ctx, req)
 }
 
 // UpdateWorldInfoEntry calls muse.WorldInfoService.UpdateWorldInfoEntry.
-func (c *worldInfoServiceClient) UpdateWorldInfoEntry(ctx context.Context, req *connect.Request[muse.UpdateWorldInfoEntryRequest]) (*connect.Response[muse.UpdateWorldInfoEntryResponse], error) {
+func (c *worldInfoServiceClient) UpdateWorldInfoEntry(ctx context.Context, req *connect.Request[muse.UpdateWorldInfoEntryReq]) (*connect.Response[muse.UpdateWorldInfoEntryRsp], error) {
 	return c.updateWorldInfoEntry.CallUnary(ctx, req)
 }
 
 // DeleteWorldInfoEntry calls muse.WorldInfoService.DeleteWorldInfoEntry.
-func (c *worldInfoServiceClient) DeleteWorldInfoEntry(ctx context.Context, req *connect.Request[muse.DeleteWorldInfoEntryRequest]) (*connect.Response[muse.DeleteWorldInfoEntryResponse], error) {
+func (c *worldInfoServiceClient) DeleteWorldInfoEntry(ctx context.Context, req *connect.Request[muse.DeleteWorldInfoEntryReq]) (*connect.Response[muse.DeleteWorldInfoEntryRsp], error) {
 	return c.deleteWorldInfoEntry.CallUnary(ctx, req)
 }
 
 // UpdateWorldInfoEntriesOrder calls muse.WorldInfoService.UpdateWorldInfoEntriesOrder.
-func (c *worldInfoServiceClient) UpdateWorldInfoEntriesOrder(ctx context.Context, req *connect.Request[muse.UpdateWorldInfoEntriesOrderRequest]) (*connect.Response[muse.UpdateWorldInfoEntriesOrderResponse], error) {
+func (c *worldInfoServiceClient) UpdateWorldInfoEntriesOrder(ctx context.Context, req *connect.Request[muse.UpdateWorldInfoEntriesOrderReq]) (*connect.Response[muse.UpdateWorldInfoEntriesOrderRsp], error) {
 	return c.updateWorldInfoEntriesOrder.CallUnary(ctx, req)
 }
 
 // WorldInfoServiceHandler is an implementation of the muse.WorldInfoService service.
 type WorldInfoServiceHandler interface {
 	// 获取世界书列表
-	ListWorldInfos(context.Context, *connect.Request[muse.ListWorldInfosRequest]) (*connect.Response[muse.ListWorldInfosResponse], error)
+	ListWorldInfos(context.Context, *connect.Request[muse.ListWorldInfosReq]) (*connect.Response[muse.ListWorldInfosRsp], error)
 	// 获取单个世界书
-	GetWorldInfo(context.Context, *connect.Request[muse.GetWorldInfoRequest]) (*connect.Response[muse.GetWorldInfoResponse], error)
+	GetWorldInfo(context.Context, *connect.Request[muse.GetWorldInfoReq]) (*connect.Response[muse.GetWorldInfoRsp], error)
 	// 创建世界书
-	CreateWorldInfo(context.Context, *connect.Request[muse.CreateWorldInfoRequest]) (*connect.Response[muse.CreateWorldInfoResponse], error)
+	CreateWorldInfo(context.Context, *connect.Request[muse.CreateWorldInfoReq]) (*connect.Response[muse.CreateWorldInfoRsp], error)
 	// 更新世界书
-	UpdateWorldInfo(context.Context, *connect.Request[muse.UpdateWorldInfoRequest]) (*connect.Response[muse.UpdateWorldInfoResponse], error)
+	UpdateWorldInfo(context.Context, *connect.Request[muse.UpdateWorldInfoReq]) (*connect.Response[muse.UpdateWorldInfoRsp], error)
 	// 删除世界书
-	DeleteWorldInfo(context.Context, *connect.Request[muse.DeleteWorldInfoRequest]) (*connect.Response[muse.DeleteWorldInfoResponse], error)
+	DeleteWorldInfo(context.Context, *connect.Request[muse.DeleteWorldInfoReq]) (*connect.Response[muse.DeleteWorldInfoRsp], error)
 	// 导入世界书（支持SillyTavern格式）
-	ImportWorldInfo(context.Context, *connect.Request[muse.ImportWorldInfoRequest]) (*connect.Response[muse.ImportWorldInfoResponse], error)
+	ImportWorldInfo(context.Context, *connect.Request[muse.ImportWorldInfoReq]) (*connect.Response[muse.ImportWorldInfoRsp], error)
 	// 导出世界书
-	ExportWorldInfo(context.Context, *connect.Request[muse.ExportWorldInfoRequest]) (*connect.Response[muse.ExportWorldInfoResponse], error)
+	ExportWorldInfo(context.Context, *connect.Request[muse.ExportWorldInfoReq]) (*connect.Response[muse.ExportWorldInfoRsp], error)
 	// 获取世界书条目列表
-	ListWorldInfoEntries(context.Context, *connect.Request[muse.ListWorldInfoEntriesRequest]) (*connect.Response[muse.ListWorldInfoEntriesResponse], error)
+	ListWorldInfoEntries(context.Context, *connect.Request[muse.ListWorldInfoEntriesReq]) (*connect.Response[muse.ListWorldInfoEntriesRsp], error)
 	// 添加世界书条目
-	AddWorldInfoEntry(context.Context, *connect.Request[muse.AddWorldInfoEntryRequest]) (*connect.Response[muse.AddWorldInfoEntryResponse], error)
+	AddWorldInfoEntry(context.Context, *connect.Request[muse.AddWorldInfoEntryReq]) (*connect.Response[muse.AddWorldInfoEntryRsp], error)
 	// 更新世界书条目
-	UpdateWorldInfoEntry(context.Context, *connect.Request[muse.UpdateWorldInfoEntryRequest]) (*connect.Response[muse.UpdateWorldInfoEntryResponse], error)
+	UpdateWorldInfoEntry(context.Context, *connect.Request[muse.UpdateWorldInfoEntryReq]) (*connect.Response[muse.UpdateWorldInfoEntryRsp], error)
 	// 删除世界书条目
-	DeleteWorldInfoEntry(context.Context, *connect.Request[muse.DeleteWorldInfoEntryRequest]) (*connect.Response[muse.DeleteWorldInfoEntryResponse], error)
+	DeleteWorldInfoEntry(context.Context, *connect.Request[muse.DeleteWorldInfoEntryReq]) (*connect.Response[muse.DeleteWorldInfoEntryRsp], error)
 	// 批量更新世界书条目排序
-	UpdateWorldInfoEntriesOrder(context.Context, *connect.Request[muse.UpdateWorldInfoEntriesOrderRequest]) (*connect.Response[muse.UpdateWorldInfoEntriesOrderResponse], error)
+	UpdateWorldInfoEntriesOrder(context.Context, *connect.Request[muse.UpdateWorldInfoEntriesOrderReq]) (*connect.Response[muse.UpdateWorldInfoEntriesOrderRsp], error)
 }
 
 // NewWorldInfoServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -403,50 +403,50 @@ func NewWorldInfoServiceHandler(svc WorldInfoServiceHandler, opts ...connect.Han
 // UnimplementedWorldInfoServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedWorldInfoServiceHandler struct{}
 
-func (UnimplementedWorldInfoServiceHandler) ListWorldInfos(context.Context, *connect.Request[muse.ListWorldInfosRequest]) (*connect.Response[muse.ListWorldInfosResponse], error) {
+func (UnimplementedWorldInfoServiceHandler) ListWorldInfos(context.Context, *connect.Request[muse.ListWorldInfosReq]) (*connect.Response[muse.ListWorldInfosRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.WorldInfoService.ListWorldInfos is not implemented"))
 }
 
-func (UnimplementedWorldInfoServiceHandler) GetWorldInfo(context.Context, *connect.Request[muse.GetWorldInfoRequest]) (*connect.Response[muse.GetWorldInfoResponse], error) {
+func (UnimplementedWorldInfoServiceHandler) GetWorldInfo(context.Context, *connect.Request[muse.GetWorldInfoReq]) (*connect.Response[muse.GetWorldInfoRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.WorldInfoService.GetWorldInfo is not implemented"))
 }
 
-func (UnimplementedWorldInfoServiceHandler) CreateWorldInfo(context.Context, *connect.Request[muse.CreateWorldInfoRequest]) (*connect.Response[muse.CreateWorldInfoResponse], error) {
+func (UnimplementedWorldInfoServiceHandler) CreateWorldInfo(context.Context, *connect.Request[muse.CreateWorldInfoReq]) (*connect.Response[muse.CreateWorldInfoRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.WorldInfoService.CreateWorldInfo is not implemented"))
 }
 
-func (UnimplementedWorldInfoServiceHandler) UpdateWorldInfo(context.Context, *connect.Request[muse.UpdateWorldInfoRequest]) (*connect.Response[muse.UpdateWorldInfoResponse], error) {
+func (UnimplementedWorldInfoServiceHandler) UpdateWorldInfo(context.Context, *connect.Request[muse.UpdateWorldInfoReq]) (*connect.Response[muse.UpdateWorldInfoRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.WorldInfoService.UpdateWorldInfo is not implemented"))
 }
 
-func (UnimplementedWorldInfoServiceHandler) DeleteWorldInfo(context.Context, *connect.Request[muse.DeleteWorldInfoRequest]) (*connect.Response[muse.DeleteWorldInfoResponse], error) {
+func (UnimplementedWorldInfoServiceHandler) DeleteWorldInfo(context.Context, *connect.Request[muse.DeleteWorldInfoReq]) (*connect.Response[muse.DeleteWorldInfoRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.WorldInfoService.DeleteWorldInfo is not implemented"))
 }
 
-func (UnimplementedWorldInfoServiceHandler) ImportWorldInfo(context.Context, *connect.Request[muse.ImportWorldInfoRequest]) (*connect.Response[muse.ImportWorldInfoResponse], error) {
+func (UnimplementedWorldInfoServiceHandler) ImportWorldInfo(context.Context, *connect.Request[muse.ImportWorldInfoReq]) (*connect.Response[muse.ImportWorldInfoRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.WorldInfoService.ImportWorldInfo is not implemented"))
 }
 
-func (UnimplementedWorldInfoServiceHandler) ExportWorldInfo(context.Context, *connect.Request[muse.ExportWorldInfoRequest]) (*connect.Response[muse.ExportWorldInfoResponse], error) {
+func (UnimplementedWorldInfoServiceHandler) ExportWorldInfo(context.Context, *connect.Request[muse.ExportWorldInfoReq]) (*connect.Response[muse.ExportWorldInfoRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.WorldInfoService.ExportWorldInfo is not implemented"))
 }
 
-func (UnimplementedWorldInfoServiceHandler) ListWorldInfoEntries(context.Context, *connect.Request[muse.ListWorldInfoEntriesRequest]) (*connect.Response[muse.ListWorldInfoEntriesResponse], error) {
+func (UnimplementedWorldInfoServiceHandler) ListWorldInfoEntries(context.Context, *connect.Request[muse.ListWorldInfoEntriesReq]) (*connect.Response[muse.ListWorldInfoEntriesRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.WorldInfoService.ListWorldInfoEntries is not implemented"))
 }
 
-func (UnimplementedWorldInfoServiceHandler) AddWorldInfoEntry(context.Context, *connect.Request[muse.AddWorldInfoEntryRequest]) (*connect.Response[muse.AddWorldInfoEntryResponse], error) {
+func (UnimplementedWorldInfoServiceHandler) AddWorldInfoEntry(context.Context, *connect.Request[muse.AddWorldInfoEntryReq]) (*connect.Response[muse.AddWorldInfoEntryRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.WorldInfoService.AddWorldInfoEntry is not implemented"))
 }
 
-func (UnimplementedWorldInfoServiceHandler) UpdateWorldInfoEntry(context.Context, *connect.Request[muse.UpdateWorldInfoEntryRequest]) (*connect.Response[muse.UpdateWorldInfoEntryResponse], error) {
+func (UnimplementedWorldInfoServiceHandler) UpdateWorldInfoEntry(context.Context, *connect.Request[muse.UpdateWorldInfoEntryReq]) (*connect.Response[muse.UpdateWorldInfoEntryRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.WorldInfoService.UpdateWorldInfoEntry is not implemented"))
 }
 
-func (UnimplementedWorldInfoServiceHandler) DeleteWorldInfoEntry(context.Context, *connect.Request[muse.DeleteWorldInfoEntryRequest]) (*connect.Response[muse.DeleteWorldInfoEntryResponse], error) {
+func (UnimplementedWorldInfoServiceHandler) DeleteWorldInfoEntry(context.Context, *connect.Request[muse.DeleteWorldInfoEntryReq]) (*connect.Response[muse.DeleteWorldInfoEntryRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.WorldInfoService.DeleteWorldInfoEntry is not implemented"))
 }
 
-func (UnimplementedWorldInfoServiceHandler) UpdateWorldInfoEntriesOrder(context.Context, *connect.Request[muse.UpdateWorldInfoEntriesOrderRequest]) (*connect.Response[muse.UpdateWorldInfoEntriesOrderResponse], error) {
+func (UnimplementedWorldInfoServiceHandler) UpdateWorldInfoEntriesOrder(context.Context, *connect.Request[muse.UpdateWorldInfoEntriesOrderReq]) (*connect.Response[muse.UpdateWorldInfoEntriesOrderRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.WorldInfoService.UpdateWorldInfoEntriesOrder is not implemented"))
 }

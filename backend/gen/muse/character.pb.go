@@ -171,7 +171,7 @@ func (x *Character) GetRegexRules() []*RegexRule {
 }
 
 // 获取角色卡列表请求
-type ListCharactersRequest struct {
+type ListCharactersReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Page          *int32                 `protobuf:"varint,1,opt,name=page,proto3,oneof" json:"page,omitempty"`
 	PageSize      *int32                 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3,oneof" json:"page_size,omitempty"`
@@ -179,20 +179,20 @@ type ListCharactersRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListCharactersRequest) Reset() {
-	*x = ListCharactersRequest{}
+func (x *ListCharactersReq) Reset() {
+	*x = ListCharactersReq{}
 	mi := &file_muse_character_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListCharactersRequest) String() string {
+func (x *ListCharactersReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListCharactersRequest) ProtoMessage() {}
+func (*ListCharactersReq) ProtoMessage() {}
 
-func (x *ListCharactersRequest) ProtoReflect() protoreflect.Message {
+func (x *ListCharactersReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_character_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -204,19 +204,19 @@ func (x *ListCharactersRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListCharactersRequest.ProtoReflect.Descriptor instead.
-func (*ListCharactersRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListCharactersReq.ProtoReflect.Descriptor instead.
+func (*ListCharactersReq) Descriptor() ([]byte, []int) {
 	return file_muse_character_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *ListCharactersRequest) GetPage() int32 {
+func (x *ListCharactersReq) GetPage() int32 {
 	if x != nil && x.Page != nil {
 		return *x.Page
 	}
 	return 0
 }
 
-func (x *ListCharactersRequest) GetPageSize() int32 {
+func (x *ListCharactersReq) GetPageSize() int32 {
 	if x != nil && x.PageSize != nil {
 		return *x.PageSize
 	}
@@ -224,7 +224,7 @@ func (x *ListCharactersRequest) GetPageSize() int32 {
 }
 
 // 获取角色卡列表响应
-type ListCharactersResponse struct {
+type ListCharactersRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Characters    []*Character           `protobuf:"bytes,1,rep,name=characters,proto3" json:"characters,omitempty"`
 	Total         int32                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
@@ -232,20 +232,20 @@ type ListCharactersResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListCharactersResponse) Reset() {
-	*x = ListCharactersResponse{}
+func (x *ListCharactersRsp) Reset() {
+	*x = ListCharactersRsp{}
 	mi := &file_muse_character_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListCharactersResponse) String() string {
+func (x *ListCharactersRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListCharactersResponse) ProtoMessage() {}
+func (*ListCharactersRsp) ProtoMessage() {}
 
-func (x *ListCharactersResponse) ProtoReflect() protoreflect.Message {
+func (x *ListCharactersRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_character_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -257,19 +257,19 @@ func (x *ListCharactersResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListCharactersResponse.ProtoReflect.Descriptor instead.
-func (*ListCharactersResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListCharactersRsp.ProtoReflect.Descriptor instead.
+func (*ListCharactersRsp) Descriptor() ([]byte, []int) {
 	return file_muse_character_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *ListCharactersResponse) GetCharacters() []*Character {
+func (x *ListCharactersRsp) GetCharacters() []*Character {
 	if x != nil {
 		return x.Characters
 	}
 	return nil
 }
 
-func (x *ListCharactersResponse) GetTotal() int32 {
+func (x *ListCharactersRsp) GetTotal() int32 {
 	if x != nil {
 		return x.Total
 	}
@@ -277,27 +277,27 @@ func (x *ListCharactersResponse) GetTotal() int32 {
 }
 
 // 获取单个角色卡请求
-type GetCharacterRequest struct {
+type GetCharacterReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetCharacterRequest) Reset() {
-	*x = GetCharacterRequest{}
+func (x *GetCharacterReq) Reset() {
+	*x = GetCharacterReq{}
 	mi := &file_muse_character_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetCharacterRequest) String() string {
+func (x *GetCharacterReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetCharacterRequest) ProtoMessage() {}
+func (*GetCharacterReq) ProtoMessage() {}
 
-func (x *GetCharacterRequest) ProtoReflect() protoreflect.Message {
+func (x *GetCharacterReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_character_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -309,12 +309,12 @@ func (x *GetCharacterRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetCharacterRequest.ProtoReflect.Descriptor instead.
-func (*GetCharacterRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetCharacterReq.ProtoReflect.Descriptor instead.
+func (*GetCharacterReq) Descriptor() ([]byte, []int) {
 	return file_muse_character_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *GetCharacterRequest) GetId() int32 {
+func (x *GetCharacterReq) GetId() int32 {
 	if x != nil {
 		return x.Id
 	}
@@ -322,27 +322,27 @@ func (x *GetCharacterRequest) GetId() int32 {
 }
 
 // 获取单个角色卡响应
-type GetCharacterResponse struct {
+type GetCharacterRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Character     *Character             `protobuf:"bytes,1,opt,name=character,proto3" json:"character,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetCharacterResponse) Reset() {
-	*x = GetCharacterResponse{}
+func (x *GetCharacterRsp) Reset() {
+	*x = GetCharacterRsp{}
 	mi := &file_muse_character_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetCharacterResponse) String() string {
+func (x *GetCharacterRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetCharacterResponse) ProtoMessage() {}
+func (*GetCharacterRsp) ProtoMessage() {}
 
-func (x *GetCharacterResponse) ProtoReflect() protoreflect.Message {
+func (x *GetCharacterRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_character_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -354,12 +354,12 @@ func (x *GetCharacterResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetCharacterResponse.ProtoReflect.Descriptor instead.
-func (*GetCharacterResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetCharacterRsp.ProtoReflect.Descriptor instead.
+func (*GetCharacterRsp) Descriptor() ([]byte, []int) {
 	return file_muse_character_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *GetCharacterResponse) GetCharacter() *Character {
+func (x *GetCharacterRsp) GetCharacter() *Character {
 	if x != nil {
 		return x.Character
 	}
@@ -367,7 +367,7 @@ func (x *GetCharacterResponse) GetCharacter() *Character {
 }
 
 // 创建角色卡请求
-type CreateCharacterRequest struct {
+type CreateCharacterReq struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
 	Name            string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	Avatar          *string                `protobuf:"bytes,2,opt,name=avatar,proto3,oneof" json:"avatar,omitempty"`
@@ -383,20 +383,20 @@ type CreateCharacterRequest struct {
 	sizeCache       protoimpl.SizeCache
 }
 
-func (x *CreateCharacterRequest) Reset() {
-	*x = CreateCharacterRequest{}
+func (x *CreateCharacterReq) Reset() {
+	*x = CreateCharacterReq{}
 	mi := &file_muse_character_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreateCharacterRequest) String() string {
+func (x *CreateCharacterReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateCharacterRequest) ProtoMessage() {}
+func (*CreateCharacterReq) ProtoMessage() {}
 
-func (x *CreateCharacterRequest) ProtoReflect() protoreflect.Message {
+func (x *CreateCharacterReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_character_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -408,75 +408,75 @@ func (x *CreateCharacterRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreateCharacterRequest.ProtoReflect.Descriptor instead.
-func (*CreateCharacterRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateCharacterReq.ProtoReflect.Descriptor instead.
+func (*CreateCharacterReq) Descriptor() ([]byte, []int) {
 	return file_muse_character_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *CreateCharacterRequest) GetName() string {
+func (x *CreateCharacterReq) GetName() string {
 	if x != nil {
 		return x.Name
 	}
 	return ""
 }
 
-func (x *CreateCharacterRequest) GetAvatar() string {
+func (x *CreateCharacterReq) GetAvatar() string {
 	if x != nil && x.Avatar != nil {
 		return *x.Avatar
 	}
 	return ""
 }
 
-func (x *CreateCharacterRequest) GetDescription() string {
+func (x *CreateCharacterReq) GetDescription() string {
 	if x != nil && x.Description != nil {
 		return *x.Description
 	}
 	return ""
 }
 
-func (x *CreateCharacterRequest) GetPersonality() string {
+func (x *CreateCharacterReq) GetPersonality() string {
 	if x != nil && x.Personality != nil {
 		return *x.Personality
 	}
 	return ""
 }
 
-func (x *CreateCharacterRequest) GetScenario() string {
+func (x *CreateCharacterReq) GetScenario() string {
 	if x != nil && x.Scenario != nil {
 		return *x.Scenario
 	}
 	return ""
 }
 
-func (x *CreateCharacterRequest) GetFirstMessage() []string {
+func (x *CreateCharacterReq) GetFirstMessage() []string {
 	if x != nil {
 		return x.FirstMessage
 	}
 	return nil
 }
 
-func (x *CreateCharacterRequest) GetExampleDialogue() []string {
+func (x *CreateCharacterReq) GetExampleDialogue() []string {
 	if x != nil {
 		return x.ExampleDialogue
 	}
 	return nil
 }
 
-func (x *CreateCharacterRequest) GetCreatorNotes() string {
+func (x *CreateCharacterReq) GetCreatorNotes() string {
 	if x != nil && x.CreatorNotes != nil {
 		return *x.CreatorNotes
 	}
 	return ""
 }
 
-func (x *CreateCharacterRequest) GetSystemPrompt() string {
+func (x *CreateCharacterReq) GetSystemPrompt() string {
 	if x != nil && x.SystemPrompt != nil {
 		return *x.SystemPrompt
 	}
 	return ""
 }
 
-func (x *CreateCharacterRequest) GetWorldInfoId() int32 {
+func (x *CreateCharacterReq) GetWorldInfoId() int32 {
 	if x != nil && x.WorldInfoId != nil {
 		return *x.WorldInfoId
 	}
@@ -484,27 +484,27 @@ func (x *CreateCharacterRequest) GetWorldInfoId() int32 {
 }
 
 // 创建角色卡响应
-type CreateCharacterResponse struct {
+type CreateCharacterRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Character     *Character             `protobuf:"bytes,1,opt,name=character,proto3" json:"character,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreateCharacterResponse) Reset() {
-	*x = CreateCharacterResponse{}
+func (x *CreateCharacterRsp) Reset() {
+	*x = CreateCharacterRsp{}
 	mi := &file_muse_character_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreateCharacterResponse) String() string {
+func (x *CreateCharacterRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateCharacterResponse) ProtoMessage() {}
+func (*CreateCharacterRsp) ProtoMessage() {}
 
-func (x *CreateCharacterResponse) ProtoReflect() protoreflect.Message {
+func (x *CreateCharacterRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_character_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -516,12 +516,12 @@ func (x *CreateCharacterResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreateCharacterResponse.ProtoReflect.Descriptor instead.
-func (*CreateCharacterResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateCharacterRsp.ProtoReflect.Descriptor instead.
+func (*CreateCharacterRsp) Descriptor() ([]byte, []int) {
 	return file_muse_character_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *CreateCharacterResponse) GetCharacter() *Character {
+func (x *CreateCharacterRsp) GetCharacter() *Character {
 	if x != nil {
 		return x.Character
 	}
@@ -529,7 +529,7 @@ func (x *CreateCharacterResponse) GetCharacter() *Character {
 }
 
 // 更新角色卡请求
-type UpdateCharacterRequest struct {
+type UpdateCharacterReq struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
 	Id              int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name            string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
@@ -547,20 +547,20 @@ type UpdateCharacterRequest struct {
 	sizeCache       protoimpl.SizeCache
 }
 
-func (x *UpdateCharacterRequest) Reset() {
-	*x = UpdateCharacterRequest{}
+func (x *UpdateCharacterReq) Reset() {
+	*x = UpdateCharacterReq{}
 	mi := &file_muse_character_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateCharacterRequest) String() string {
+func (x *UpdateCharacterReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateCharacterRequest) ProtoMessage() {}
+func (*UpdateCharacterReq) ProtoMessage() {}
 
-func (x *UpdateCharacterRequest) ProtoReflect() protoreflect.Message {
+func (x *UpdateCharacterReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_character_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -572,89 +572,89 @@ func (x *UpdateCharacterRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateCharacterRequest.ProtoReflect.Descriptor instead.
-func (*UpdateCharacterRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateCharacterReq.ProtoReflect.Descriptor instead.
+func (*UpdateCharacterReq) Descriptor() ([]byte, []int) {
 	return file_muse_character_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *UpdateCharacterRequest) GetId() int32 {
+func (x *UpdateCharacterReq) GetId() int32 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-func (x *UpdateCharacterRequest) GetName() string {
+func (x *UpdateCharacterReq) GetName() string {
 	if x != nil {
 		return x.Name
 	}
 	return ""
 }
 
-func (x *UpdateCharacterRequest) GetAvatar() string {
+func (x *UpdateCharacterReq) GetAvatar() string {
 	if x != nil && x.Avatar != nil {
 		return *x.Avatar
 	}
 	return ""
 }
 
-func (x *UpdateCharacterRequest) GetDescription() string {
+func (x *UpdateCharacterReq) GetDescription() string {
 	if x != nil && x.Description != nil {
 		return *x.Description
 	}
 	return ""
 }
 
-func (x *UpdateCharacterRequest) GetPersonality() string {
+func (x *UpdateCharacterReq) GetPersonality() string {
 	if x != nil && x.Personality != nil {
 		return *x.Personality
 	}
 	return ""
 }
 
-func (x *UpdateCharacterRequest) GetScenario() string {
+func (x *UpdateCharacterReq) GetScenario() string {
 	if x != nil && x.Scenario != nil {
 		return *x.Scenario
 	}
 	return ""
 }
 
-func (x *UpdateCharacterRequest) GetFirstMessage() []string {
+func (x *UpdateCharacterReq) GetFirstMessage() []string {
 	if x != nil {
 		return x.FirstMessage
 	}
 	return nil
 }
 
-func (x *UpdateCharacterRequest) GetExampleDialogue() []string {
+func (x *UpdateCharacterReq) GetExampleDialogue() []string {
 	if x != nil {
 		return x.ExampleDialogue
 	}
 	return nil
 }
 
-func (x *UpdateCharacterRequest) GetCreatorNotes() string {
+func (x *UpdateCharacterReq) GetCreatorNotes() string {
 	if x != nil && x.CreatorNotes != nil {
 		return *x.CreatorNotes
 	}
 	return ""
 }
 
-func (x *UpdateCharacterRequest) GetSystemPrompt() string {
+func (x *UpdateCharacterReq) GetSystemPrompt() string {
 	if x != nil && x.SystemPrompt != nil {
 		return *x.SystemPrompt
 	}
 	return ""
 }
 
-func (x *UpdateCharacterRequest) GetWorldInfoId() int32 {
+func (x *UpdateCharacterReq) GetWorldInfoId() int32 {
 	if x != nil && x.WorldInfoId != nil {
 		return *x.WorldInfoId
 	}
 	return 0
 }
 
-func (x *UpdateCharacterRequest) GetVersion() int64 {
+func (x *UpdateCharacterReq) GetVersion() int64 {
 	if x != nil {
 		return x.Version
 	}
@@ -662,27 +662,27 @@ func (x *UpdateCharacterRequest) GetVersion() int64 {
 }
 
 // 更新角色卡响应
-type UpdateCharacterResponse struct {
+type UpdateCharacterRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Character     *Character             `protobuf:"bytes,1,opt,name=character,proto3" json:"character,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateCharacterResponse) Reset() {
-	*x = UpdateCharacterResponse{}
+func (x *UpdateCharacterRsp) Reset() {
+	*x = UpdateCharacterRsp{}
 	mi := &file_muse_character_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateCharacterResponse) String() string {
+func (x *UpdateCharacterRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateCharacterResponse) ProtoMessage() {}
+func (*UpdateCharacterRsp) ProtoMessage() {}
 
-func (x *UpdateCharacterResponse) ProtoReflect() protoreflect.Message {
+func (x *UpdateCharacterRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_character_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -694,12 +694,12 @@ func (x *UpdateCharacterResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateCharacterResponse.ProtoReflect.Descriptor instead.
-func (*UpdateCharacterResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateCharacterRsp.ProtoReflect.Descriptor instead.
+func (*UpdateCharacterRsp) Descriptor() ([]byte, []int) {
 	return file_muse_character_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *UpdateCharacterResponse) GetCharacter() *Character {
+func (x *UpdateCharacterRsp) GetCharacter() *Character {
 	if x != nil {
 		return x.Character
 	}
@@ -707,27 +707,27 @@ func (x *UpdateCharacterResponse) GetCharacter() *Character {
 }
 
 // 删除角色卡请求
-type DeleteCharacterRequest struct {
+type DeleteCharacterReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeleteCharacterRequest) Reset() {
-	*x = DeleteCharacterRequest{}
+func (x *DeleteCharacterReq) Reset() {
+	*x = DeleteCharacterReq{}
 	mi := &file_muse_character_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeleteCharacterRequest) String() string {
+func (x *DeleteCharacterReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeleteCharacterRequest) ProtoMessage() {}
+func (*DeleteCharacterReq) ProtoMessage() {}
 
-func (x *DeleteCharacterRequest) ProtoReflect() protoreflect.Message {
+func (x *DeleteCharacterReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_character_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -739,12 +739,12 @@ func (x *DeleteCharacterRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeleteCharacterRequest.ProtoReflect.Descriptor instead.
-func (*DeleteCharacterRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeleteCharacterReq.ProtoReflect.Descriptor instead.
+func (*DeleteCharacterReq) Descriptor() ([]byte, []int) {
 	return file_muse_character_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *DeleteCharacterRequest) GetId() int32 {
+func (x *DeleteCharacterReq) GetId() int32 {
 	if x != nil {
 		return x.Id
 	}
@@ -752,26 +752,26 @@ func (x *DeleteCharacterRequest) GetId() int32 {
 }
 
 // 删除角色卡响应
-type DeleteCharacterResponse struct {
+type DeleteCharacterRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeleteCharacterResponse) Reset() {
-	*x = DeleteCharacterResponse{}
+func (x *DeleteCharacterRsp) Reset() {
+	*x = DeleteCharacterRsp{}
 	mi := &file_muse_character_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeleteCharacterResponse) String() string {
+func (x *DeleteCharacterRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeleteCharacterResponse) ProtoMessage() {}
+func (*DeleteCharacterRsp) ProtoMessage() {}
 
-func (x *DeleteCharacterResponse) ProtoReflect() protoreflect.Message {
+func (x *DeleteCharacterRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_character_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -783,13 +783,13 @@ func (x *DeleteCharacterResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeleteCharacterResponse.ProtoReflect.Descriptor instead.
-func (*DeleteCharacterResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeleteCharacterRsp.ProtoReflect.Descriptor instead.
+func (*DeleteCharacterRsp) Descriptor() ([]byte, []int) {
 	return file_muse_character_proto_rawDescGZIP(), []int{10}
 }
 
 // 导入角色卡请求
-type ImportCharacterRequest struct {
+type ImportCharacterReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	FileContent   []byte                 `protobuf:"bytes,1,opt,name=file_content,json=fileContent,proto3" json:"file_content,omitempty"` // PNG图片或JSON文件内容
 	FileName      string                 `protobuf:"bytes,2,opt,name=file_name,json=fileName,proto3" json:"file_name,omitempty"`          // 文件名，用于判断格式
@@ -797,20 +797,20 @@ type ImportCharacterRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ImportCharacterRequest) Reset() {
-	*x = ImportCharacterRequest{}
+func (x *ImportCharacterReq) Reset() {
+	*x = ImportCharacterReq{}
 	mi := &file_muse_character_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ImportCharacterRequest) String() string {
+func (x *ImportCharacterReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ImportCharacterRequest) ProtoMessage() {}
+func (*ImportCharacterReq) ProtoMessage() {}
 
-func (x *ImportCharacterRequest) ProtoReflect() protoreflect.Message {
+func (x *ImportCharacterReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_character_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -822,19 +822,19 @@ func (x *ImportCharacterRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ImportCharacterRequest.ProtoReflect.Descriptor instead.
-func (*ImportCharacterRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ImportCharacterReq.ProtoReflect.Descriptor instead.
+func (*ImportCharacterReq) Descriptor() ([]byte, []int) {
 	return file_muse_character_proto_rawDescGZIP(), []int{11}
 }
 
-func (x *ImportCharacterRequest) GetFileContent() []byte {
+func (x *ImportCharacterReq) GetFileContent() []byte {
 	if x != nil {
 		return x.FileContent
 	}
 	return nil
 }
 
-func (x *ImportCharacterRequest) GetFileName() string {
+func (x *ImportCharacterReq) GetFileName() string {
 	if x != nil {
 		return x.FileName
 	}
@@ -842,27 +842,27 @@ func (x *ImportCharacterRequest) GetFileName() string {
 }
 
 // 导入角色卡响应
-type ImportCharacterResponse struct {
+type ImportCharacterRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Character     *Character             `protobuf:"bytes,1,opt,name=character,proto3" json:"character,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ImportCharacterResponse) Reset() {
-	*x = ImportCharacterResponse{}
+func (x *ImportCharacterRsp) Reset() {
+	*x = ImportCharacterRsp{}
 	mi := &file_muse_character_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ImportCharacterResponse) String() string {
+func (x *ImportCharacterRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ImportCharacterResponse) ProtoMessage() {}
+func (*ImportCharacterRsp) ProtoMessage() {}
 
-func (x *ImportCharacterResponse) ProtoReflect() protoreflect.Message {
+func (x *ImportCharacterRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_character_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -874,12 +874,12 @@ func (x *ImportCharacterResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ImportCharacterResponse.ProtoReflect.Descriptor instead.
-func (*ImportCharacterResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ImportCharacterRsp.ProtoReflect.Descriptor instead.
+func (*ImportCharacterRsp) Descriptor() ([]byte, []int) {
 	return file_muse_character_proto_rawDescGZIP(), []int{12}
 }
 
-func (x *ImportCharacterResponse) GetCharacter() *Character {
+func (x *ImportCharacterRsp) GetCharacter() *Character {
 	if x != nil {
 		return x.Character
 	}
@@ -887,7 +887,7 @@ func (x *ImportCharacterResponse) GetCharacter() *Character {
 }
 
 // 导出角色卡请求
-type ExportCharacterRequest struct {
+type ExportCharacterReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Format        string                 `protobuf:"bytes,2,opt,name=format,proto3" json:"format,omitempty"` // "png" 或 "json"
@@ -895,20 +895,20 @@ type ExportCharacterRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ExportCharacterRequest) Reset() {
-	*x = ExportCharacterRequest{}
+func (x *ExportCharacterReq) Reset() {
+	*x = ExportCharacterReq{}
 	mi := &file_muse_character_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ExportCharacterRequest) String() string {
+func (x *ExportCharacterReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ExportCharacterRequest) ProtoMessage() {}
+func (*ExportCharacterReq) ProtoMessage() {}
 
-func (x *ExportCharacterRequest) ProtoReflect() protoreflect.Message {
+func (x *ExportCharacterReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_character_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -920,19 +920,19 @@ func (x *ExportCharacterRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ExportCharacterRequest.ProtoReflect.Descriptor instead.
-func (*ExportCharacterRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ExportCharacterReq.ProtoReflect.Descriptor instead.
+func (*ExportCharacterReq) Descriptor() ([]byte, []int) {
 	return file_muse_character_proto_rawDescGZIP(), []int{13}
 }
 
-func (x *ExportCharacterRequest) GetId() int32 {
+func (x *ExportCharacterReq) GetId() int32 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-func (x *ExportCharacterRequest) GetFormat() string {
+func (x *ExportCharacterReq) GetFormat() string {
 	if x != nil {
 		return x.Format
 	}
@@ -940,7 +940,7 @@ func (x *ExportCharacterRequest) GetFormat() string {
 }
 
 // 导出角色卡响应
-type ExportCharacterResponse struct {
+type ExportCharacterRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	FileContent   []byte                 `protobuf:"bytes,1,opt,name=file_content,json=fileContent,proto3" json:"file_content,omitempty"`
 	FileName      string                 `protobuf:"bytes,2,opt,name=file_name,json=fileName,proto3" json:"file_name,omitempty"`
@@ -948,20 +948,20 @@ type ExportCharacterResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ExportCharacterResponse) Reset() {
-	*x = ExportCharacterResponse{}
+func (x *ExportCharacterRsp) Reset() {
+	*x = ExportCharacterRsp{}
 	mi := &file_muse_character_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ExportCharacterResponse) String() string {
+func (x *ExportCharacterRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ExportCharacterResponse) ProtoMessage() {}
+func (*ExportCharacterRsp) ProtoMessage() {}
 
-func (x *ExportCharacterResponse) ProtoReflect() protoreflect.Message {
+func (x *ExportCharacterRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_character_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -973,19 +973,19 @@ func (x *ExportCharacterResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ExportCharacterResponse.ProtoReflect.Descriptor instead.
-func (*ExportCharacterResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ExportCharacterRsp.ProtoReflect.Descriptor instead.
+func (*ExportCharacterRsp) Descriptor() ([]byte, []int) {
 	return file_muse_character_proto_rawDescGZIP(), []int{14}
 }
 
-func (x *ExportCharacterResponse) GetFileContent() []byte {
+func (x *ExportCharacterRsp) GetFileContent() []byte {
 	if x != nil {
 		return x.FileContent
 	}
 	return nil
 }
 
-func (x *ExportCharacterResponse) GetFileName() string {
+func (x *ExportCharacterRsp) GetFileName() string {
 	if x != nil {
 		return x.FileName
 	}
@@ -993,27 +993,27 @@ func (x *ExportCharacterResponse) GetFileName() string {
 }
 
 // 恢复角色卡世界书请求
-type RestoreCharacterWorldInfoRequest struct {
+type RestoreCharacterWorldInfoReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	CharacterId   int32                  `protobuf:"varint,1,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *RestoreCharacterWorldInfoRequest) Reset() {
-	*x = RestoreCharacterWorldInfoRequest{}
+func (x *RestoreCharacterWorldInfoReq) Reset() {
+	*x = RestoreCharacterWorldInfoReq{}
 	mi := &file_muse_character_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *RestoreCharacterWorldInfoRequest) String() string {
+func (x *RestoreCharacterWorldInfoReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RestoreCharacterWorldInfoRequest) ProtoMessage() {}
+func (*RestoreCharacterWorldInfoReq) ProtoMessage() {}
 
-func (x *RestoreCharacterWorldInfoRequest) ProtoReflect() protoreflect.Message {
+func (x *RestoreCharacterWorldInfoReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_character_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1025,12 +1025,12 @@ func (x *RestoreCharacterWorldInfoRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use RestoreCharacterWorldInfoRequest.ProtoReflect.Descriptor instead.
-func (*RestoreCharacterWorldInfoRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use RestoreCharacterWorldInfoReq.ProtoReflect.Descriptor instead.
+func (*RestoreCharacterWorldInfoReq) Descriptor() ([]byte, []int) {
 	return file_muse_character_proto_rawDescGZIP(), []int{15}
 }
 
-func (x *RestoreCharacterWorldInfoRequest) GetCharacterId() int32 {
+func (x *RestoreCharacterWorldInfoReq) GetCharacterId() int32 {
 	if x != nil {
 		return x.CharacterId
 	}
@@ -1038,27 +1038,27 @@ func (x *RestoreCharacterWorldInfoRequest) GetCharacterId() int32 {
 }
 
 // 恢复角色卡世界书响应
-type RestoreCharacterWorldInfoResponse struct {
+type RestoreCharacterWorldInfoRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	WorldInfo     *WorldInfo             `protobuf:"bytes,1,opt,name=world_info,json=worldInfo,proto3" json:"world_info,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *RestoreCharacterWorldInfoResponse) Reset() {
-	*x = RestoreCharacterWorldInfoResponse{}
+func (x *RestoreCharacterWorldInfoRsp) Reset() {
+	*x = RestoreCharacterWorldInfoRsp{}
 	mi := &file_muse_character_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *RestoreCharacterWorldInfoResponse) String() string {
+func (x *RestoreCharacterWorldInfoRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RestoreCharacterWorldInfoResponse) ProtoMessage() {}
+func (*RestoreCharacterWorldInfoRsp) ProtoMessage() {}
 
-func (x *RestoreCharacterWorldInfoResponse) ProtoReflect() protoreflect.Message {
+func (x *RestoreCharacterWorldInfoRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_character_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1070,12 +1070,12 @@ func (x *RestoreCharacterWorldInfoResponse) ProtoReflect() protoreflect.Message 
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use RestoreCharacterWorldInfoResponse.ProtoReflect.Descriptor instead.
-func (*RestoreCharacterWorldInfoResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use RestoreCharacterWorldInfoRsp.ProtoReflect.Descriptor instead.
+func (*RestoreCharacterWorldInfoRsp) Descriptor() ([]byte, []int) {
 	return file_muse_character_proto_rawDescGZIP(), []int{16}
 }
 
-func (x *RestoreCharacterWorldInfoResponse) GetWorldInfo() *WorldInfo {
+func (x *RestoreCharacterWorldInfoRsp) GetWorldInfo() *WorldInfo {
 	if x != nil {
 		return x.WorldInfo
 	}
@@ -1106,23 +1106,23 @@ const file_muse_character_proto_rawDesc = "" +
 	"\n" +
 	"world_info\x18\x10 \x01(\v2\x0f.muse.WorldInfoR\tworldInfo\x120\n" +
 	"\vregex_rules\x18\x11 \x03(\v2\x0f.muse.RegexRuleR\n" +
-	"regexRules\"i\n" +
-	"\x15ListCharactersRequest\x12\x17\n" +
+	"regexRules\"e\n" +
+	"\x11ListCharactersReq\x12\x17\n" +
 	"\x04page\x18\x01 \x01(\x05H\x00R\x04page\x88\x01\x01\x12 \n" +
 	"\tpage_size\x18\x02 \x01(\x05H\x01R\bpageSize\x88\x01\x01B\a\n" +
 	"\x05_pageB\f\n" +
 	"\n" +
-	"_page_size\"_\n" +
-	"\x16ListCharactersResponse\x12/\n" +
+	"_page_size\"Z\n" +
+	"\x11ListCharactersRsp\x12/\n" +
 	"\n" +
 	"characters\x18\x01 \x03(\v2\x0f.muse.CharacterR\n" +
 	"characters\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05total\"%\n" +
-	"\x13GetCharacterRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\"E\n" +
-	"\x14GetCharacterResponse\x12-\n" +
-	"\tcharacter\x18\x01 \x01(\v2\x0f.muse.CharacterR\tcharacter\"\xf3\x03\n" +
-	"\x16CreateCharacterRequest\x12\x12\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\"!\n" +
+	"\x0fGetCharacterReq\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\"@\n" +
+	"\x0fGetCharacterRsp\x12-\n" +
+	"\tcharacter\x18\x01 \x01(\v2\x0f.muse.CharacterR\tcharacter\"\xef\x03\n" +
+	"\x12CreateCharacterReq\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1b\n" +
 	"\x06avatar\x18\x02 \x01(\tH\x00R\x06avatar\x88\x01\x01\x12%\n" +
 	"\vdescription\x18\x03 \x01(\tH\x01R\vdescription\x88\x01\x01\x12%\n" +
@@ -1140,10 +1140,10 @@ const file_muse_character_proto_rawDesc = "" +
 	"\t_scenarioB\x10\n" +
 	"\x0e_creator_notesB\x10\n" +
 	"\x0e_system_promptB\x10\n" +
-	"\x0e_world_info_id\"H\n" +
-	"\x17CreateCharacterResponse\x12-\n" +
-	"\tcharacter\x18\x01 \x01(\v2\x0f.muse.CharacterR\tcharacter\"\x9d\x04\n" +
-	"\x16UpdateCharacterRequest\x12\x0e\n" +
+	"\x0e_world_info_id\"C\n" +
+	"\x12CreateCharacterRsp\x12-\n" +
+	"\tcharacter\x18\x01 \x01(\v2\x0f.muse.CharacterR\tcharacter\"\x99\x04\n" +
+	"\x12UpdateCharacterReq\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1b\n" +
 	"\x06avatar\x18\x03 \x01(\tH\x00R\x06avatar\x88\x01\x01\x12%\n" +
@@ -1163,37 +1163,37 @@ const file_muse_character_proto_rawDesc = "" +
 	"\t_scenarioB\x10\n" +
 	"\x0e_creator_notesB\x10\n" +
 	"\x0e_system_promptB\x10\n" +
-	"\x0e_world_info_id\"H\n" +
-	"\x17UpdateCharacterResponse\x12-\n" +
-	"\tcharacter\x18\x01 \x01(\v2\x0f.muse.CharacterR\tcharacter\"(\n" +
-	"\x16DeleteCharacterRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\"\x19\n" +
-	"\x17DeleteCharacterResponse\"X\n" +
-	"\x16ImportCharacterRequest\x12!\n" +
+	"\x0e_world_info_id\"C\n" +
+	"\x12UpdateCharacterRsp\x12-\n" +
+	"\tcharacter\x18\x01 \x01(\v2\x0f.muse.CharacterR\tcharacter\"$\n" +
+	"\x12DeleteCharacterReq\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\"\x14\n" +
+	"\x12DeleteCharacterRsp\"T\n" +
+	"\x12ImportCharacterReq\x12!\n" +
 	"\ffile_content\x18\x01 \x01(\fR\vfileContent\x12\x1b\n" +
-	"\tfile_name\x18\x02 \x01(\tR\bfileName\"H\n" +
-	"\x17ImportCharacterResponse\x12-\n" +
-	"\tcharacter\x18\x01 \x01(\v2\x0f.muse.CharacterR\tcharacter\"@\n" +
-	"\x16ExportCharacterRequest\x12\x0e\n" +
+	"\tfile_name\x18\x02 \x01(\tR\bfileName\"C\n" +
+	"\x12ImportCharacterRsp\x12-\n" +
+	"\tcharacter\x18\x01 \x01(\v2\x0f.muse.CharacterR\tcharacter\"<\n" +
+	"\x12ExportCharacterReq\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x16\n" +
-	"\x06format\x18\x02 \x01(\tR\x06format\"Y\n" +
-	"\x17ExportCharacterResponse\x12!\n" +
+	"\x06format\x18\x02 \x01(\tR\x06format\"T\n" +
+	"\x12ExportCharacterRsp\x12!\n" +
 	"\ffile_content\x18\x01 \x01(\fR\vfileContent\x12\x1b\n" +
-	"\tfile_name\x18\x02 \x01(\tR\bfileName\"E\n" +
-	" RestoreCharacterWorldInfoRequest\x12!\n" +
-	"\fcharacter_id\x18\x01 \x01(\x05R\vcharacterId\"S\n" +
-	"!RestoreCharacterWorldInfoResponse\x12.\n" +
+	"\tfile_name\x18\x02 \x01(\tR\bfileName\"A\n" +
+	"\x1cRestoreCharacterWorldInfoReq\x12!\n" +
+	"\fcharacter_id\x18\x01 \x01(\x05R\vcharacterId\"N\n" +
+	"\x1cRestoreCharacterWorldInfoRsp\x12.\n" +
 	"\n" +
-	"world_info\x18\x01 \x01(\v2\x0f.muse.WorldInfoR\tworldInfo2\xa4\x05\n" +
-	"\x10CharacterService\x12K\n" +
-	"\x0eListCharacters\x12\x1b.muse.ListCharactersRequest\x1a\x1c.muse.ListCharactersResponse\x12E\n" +
-	"\fGetCharacter\x12\x19.muse.GetCharacterRequest\x1a\x1a.muse.GetCharacterResponse\x12N\n" +
-	"\x0fCreateCharacter\x12\x1c.muse.CreateCharacterRequest\x1a\x1d.muse.CreateCharacterResponse\x12N\n" +
-	"\x0fUpdateCharacter\x12\x1c.muse.UpdateCharacterRequest\x1a\x1d.muse.UpdateCharacterResponse\x12N\n" +
-	"\x0fDeleteCharacter\x12\x1c.muse.DeleteCharacterRequest\x1a\x1d.muse.DeleteCharacterResponse\x12N\n" +
-	"\x0fImportCharacter\x12\x1c.muse.ImportCharacterRequest\x1a\x1d.muse.ImportCharacterResponse\x12N\n" +
-	"\x0fExportCharacter\x12\x1c.muse.ExportCharacterRequest\x1a\x1d.muse.ExportCharacterResponse\x12l\n" +
-	"\x19RestoreCharacterWorldInfo\x12&.muse.RestoreCharacterWorldInfoRequest\x1a'.muse.RestoreCharacterWorldInfoResponseBi\n" +
+	"world_info\x18\x01 \x01(\v2\x0f.muse.WorldInfoR\tworldInfo2\xdc\x04\n" +
+	"\x10CharacterService\x12B\n" +
+	"\x0eListCharacters\x12\x17.muse.ListCharactersReq\x1a\x17.muse.ListCharactersRsp\x12<\n" +
+	"\fGetCharacter\x12\x15.muse.GetCharacterReq\x1a\x15.muse.GetCharacterRsp\x12E\n" +
+	"\x0fCreateCharacter\x12\x18.muse.CreateCharacterReq\x1a\x18.muse.CreateCharacterRsp\x12E\n" +
+	"\x0fUpdateCharacter\x12\x18.muse.UpdateCharacterReq\x1a\x18.muse.UpdateCharacterRsp\x12E\n" +
+	"\x0fDeleteCharacter\x12\x18.muse.DeleteCharacterReq\x1a\x18.muse.DeleteCharacterRsp\x12E\n" +
+	"\x0fImportCharacter\x12\x18.muse.ImportCharacterReq\x1a\x18.muse.ImportCharacterRsp\x12E\n" +
+	"\x0fExportCharacter\x12\x18.muse.ExportCharacterReq\x1a\x18.muse.ExportCharacterRsp\x12c\n" +
+	"\x19RestoreCharacterWorldInfo\x12\".muse.RestoreCharacterWorldInfoReq\x1a\".muse.RestoreCharacterWorldInfoRspBi\n" +
 	"\bcom.museB\x0eCharacterProtoP\x01Z\x1dgithub.com/ling/muse/gen/muse\xa2\x02\x03MXX\xaa\x02\x04Muse\xca\x02\x04Muse\xe2\x02\x10Muse\\GPBMetadata\xea\x02\x04Museb\x06proto3"
 
 var (
@@ -1210,51 +1210,51 @@ func file_muse_character_proto_rawDescGZIP() []byte {
 
 var file_muse_character_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
 var file_muse_character_proto_goTypes = []any{
-	(*Character)(nil),                         // 0: muse.Character
-	(*ListCharactersRequest)(nil),             // 1: muse.ListCharactersRequest
-	(*ListCharactersResponse)(nil),            // 2: muse.ListCharactersResponse
-	(*GetCharacterRequest)(nil),               // 3: muse.GetCharacterRequest
-	(*GetCharacterResponse)(nil),              // 4: muse.GetCharacterResponse
-	(*CreateCharacterRequest)(nil),            // 5: muse.CreateCharacterRequest
-	(*CreateCharacterResponse)(nil),           // 6: muse.CreateCharacterResponse
-	(*UpdateCharacterRequest)(nil),            // 7: muse.UpdateCharacterRequest
-	(*UpdateCharacterResponse)(nil),           // 8: muse.UpdateCharacterResponse
-	(*DeleteCharacterRequest)(nil),            // 9: muse.DeleteCharacterRequest
-	(*DeleteCharacterResponse)(nil),           // 10: muse.DeleteCharacterResponse
-	(*ImportCharacterRequest)(nil),            // 11: muse.ImportCharacterRequest
-	(*ImportCharacterResponse)(nil),           // 12: muse.ImportCharacterResponse
-	(*ExportCharacterRequest)(nil),            // 13: muse.ExportCharacterRequest
-	(*ExportCharacterResponse)(nil),           // 14: muse.ExportCharacterResponse
-	(*RestoreCharacterWorldInfoRequest)(nil),  // 15: muse.RestoreCharacterWorldInfoRequest
-	(*RestoreCharacterWorldInfoResponse)(nil), // 16: muse.RestoreCharacterWorldInfoResponse
-	(*WorldInfo)(nil),                         // 17: muse.WorldInfo
-	(*RegexRule)(nil),                         // 18: muse.RegexRule
+	(*Character)(nil),                    // 0: muse.Character
+	(*ListCharactersReq)(nil),            // 1: muse.ListCharactersReq
+	(*ListCharactersRsp)(nil),            // 2: muse.ListCharactersRsp
+	(*GetCharacterReq)(nil),              // 3: muse.GetCharacterReq
+	(*GetCharacterRsp)(nil),              // 4: muse.GetCharacterRsp
+	(*CreateCharacterReq)(nil),           // 5: muse.CreateCharacterReq
+	(*CreateCharacterRsp)(nil),           // 6: muse.CreateCharacterRsp
+	(*UpdateCharacterReq)(nil),           // 7: muse.UpdateCharacterReq
+	(*UpdateCharacterRsp)(nil),           // 8: muse.UpdateCharacterRsp
+	(*DeleteCharacterReq)(nil),           // 9: muse.DeleteCharacterReq
+	(*DeleteCharacterRsp)(nil),           // 10: muse.DeleteCharacterRsp
+	(*ImportCharacterReq)(nil),           // 11: muse.ImportCharacterReq
+	(*ImportCharacterRsp)(nil),           // 12: muse.ImportCharacterRsp
+	(*ExportCharacterReq)(nil),           // 13: muse.ExportCharacterReq
+	(*ExportCharacterRsp)(nil),           // 14: muse.ExportCharacterRsp
+	(*RestoreCharacterWorldInfoReq)(nil), // 15: muse.RestoreCharacterWorldInfoReq
+	(*RestoreCharacterWorldInfoRsp)(nil), // 16: muse.RestoreCharacterWorldInfoRsp
+	(*WorldInfo)(nil),                    // 17: muse.WorldInfo
+	(*RegexRule)(nil),                    // 18: muse.RegexRule
 }
 var file_muse_character_proto_depIdxs = []int32{
 	17, // 0: muse.Character.world_info:type_name -> muse.WorldInfo
 	18, // 1: muse.Character.regex_rules:type_name -> muse.RegexRule
-	0,  // 2: muse.ListCharactersResponse.characters:type_name -> muse.Character
-	0,  // 3: muse.GetCharacterResponse.character:type_name -> muse.Character
-	0,  // 4: muse.CreateCharacterResponse.character:type_name -> muse.Character
-	0,  // 5: muse.UpdateCharacterResponse.character:type_name -> muse.Character
-	0,  // 6: muse.ImportCharacterResponse.character:type_name -> muse.Character
-	17, // 7: muse.RestoreCharacterWorldInfoResponse.world_info:type_name -> muse.WorldInfo
-	1,  // 8: muse.CharacterService.ListCharacters:input_type -> muse.ListCharactersRequest
-	3,  // 9: muse.CharacterService.GetCharacter:input_type -> muse.GetCharacterRequest
-	5,  // 10: muse.CharacterService.CreateCharacter:input_type -> muse.CreateCharacterRequest
-	7,  // 11: muse.CharacterService.UpdateCharacter:input_type -> muse.UpdateCharacterRequest
-	9,  // 12: muse.CharacterService.DeleteCharacter:input_type -> muse.DeleteCharacterRequest
-	11, // 13: muse.CharacterService.ImportCharacter:input_type -> muse.ImportCharacterRequest
-	13, // 14: muse.CharacterService.ExportCharacter:input_type -> muse.ExportCharacterRequest
-	15, // 15: muse.CharacterService.RestoreCharacterWorldInfo:input_type -> muse.RestoreCharacterWorldInfoRequest
-	2,  // 16: muse.CharacterService.ListCharacters:output_type -> muse.ListCharactersResponse
-	4,  // 17: muse.CharacterService.GetCharacter:output_type -> muse.GetCharacterResponse
-	6,  // 18: muse.CharacterService.CreateCharacter:output_type -> muse.CreateCharacterResponse
-	8,  // 19: muse.CharacterService.UpdateCharacter:output_type -> muse.UpdateCharacterResponse
-	10, // 20: muse.CharacterService.DeleteCharacter:output_type -> muse.DeleteCharacterResponse
-	12, // 21: muse.CharacterService.ImportCharacter:output_type -> muse.ImportCharacterResponse
-	14, // 22: muse.CharacterService.ExportCharacter:output_type -> muse.ExportCharacterResponse
-	16, // 23: muse.CharacterService.RestoreCharacterWorldInfo:output_type -> muse.RestoreCharacterWorldInfoResponse
+	0,  // 2: muse.ListCharactersRsp.characters:type_name -> muse.Character
+	0,  // 3: muse.GetCharacterRsp.character:type_name -> muse.Character
+	0,  // 4: muse.CreateCharacterRsp.character:type_name -> muse.Character
+	0,  // 5: muse.UpdateCharacterRsp.character:type_name -> muse.Character
+	0,  // 6: muse.ImportCharacterRsp.character:type_name -> muse.Character
+	17, // 7: muse.RestoreCharacterWorldInfoRsp.world_info:type_name -> muse.WorldInfo
+	1,  // 8: muse.CharacterService.ListCharacters:input_type -> muse.ListCharactersReq
+	3,  // 9: muse.CharacterService.GetCharacter:input_type -> muse.GetCharacterReq
+	5,  // 10: muse.CharacterService.CreateCharacter:input_type -> muse.CreateCharacterReq
+	7,  // 11: muse.CharacterService.UpdateCharacter:input_type -> muse.UpdateCharacterReq
+	9,  // 12: muse.CharacterService.DeleteCharacter:input_type -> muse.DeleteCharacterReq
+	11, // 13: muse.CharacterService.ImportCharacter:input_type -> muse.ImportCharacterReq
+	13, // 14: muse.CharacterService.ExportCharacter:input_type -> muse.ExportCharacterReq
+	15, // 15: muse.CharacterService.RestoreCharacterWorldInfo:input_type -> muse.RestoreCharacterWorldInfoReq
+	2,  // 16: muse.CharacterService.ListCharacters:output_type -> muse.ListCharactersRsp
+	4,  // 17: muse.CharacterService.GetCharacter:output_type -> muse.GetCharacterRsp
+	6,  // 18: muse.CharacterService.CreateCharacter:output_type -> muse.CreateCharacterRsp
+	8,  // 19: muse.CharacterService.UpdateCharacter:output_type -> muse.UpdateCharacterRsp
+	10, // 20: muse.CharacterService.DeleteCharacter:output_type -> muse.DeleteCharacterRsp
+	12, // 21: muse.CharacterService.ImportCharacter:output_type -> muse.ImportCharacterRsp
+	14, // 22: muse.CharacterService.ExportCharacter:output_type -> muse.ExportCharacterRsp
+	16, // 23: muse.CharacterService.RestoreCharacterWorldInfo:output_type -> muse.RestoreCharacterWorldInfoRsp
 	16, // [16:24] is the sub-list for method output_type
 	8,  // [8:16] is the sub-list for method input_type
 	8,  // [8:8] is the sub-list for extension type_name

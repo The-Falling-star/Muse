@@ -301,7 +301,7 @@ func (x *MessageSwipe) GetCreatedAt() int64 {
 }
 
 // 获取会话列表请求
-type ListChatSessionsRequest struct {
+type ListChatSessionsReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	CharacterId   *int32                 `protobuf:"varint,1,opt,name=character_id,json=characterId,proto3,oneof" json:"character_id,omitempty"` // 可选，按角色筛选
 	Page          *int32                 `protobuf:"varint,2,opt,name=page,proto3,oneof" json:"page,omitempty"`
@@ -310,20 +310,20 @@ type ListChatSessionsRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListChatSessionsRequest) Reset() {
-	*x = ListChatSessionsRequest{}
+func (x *ListChatSessionsReq) Reset() {
+	*x = ListChatSessionsReq{}
 	mi := &file_muse_chat_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListChatSessionsRequest) String() string {
+func (x *ListChatSessionsReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListChatSessionsRequest) ProtoMessage() {}
+func (*ListChatSessionsReq) ProtoMessage() {}
 
-func (x *ListChatSessionsRequest) ProtoReflect() protoreflect.Message {
+func (x *ListChatSessionsReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_chat_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -335,26 +335,26 @@ func (x *ListChatSessionsRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListChatSessionsRequest.ProtoReflect.Descriptor instead.
-func (*ListChatSessionsRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListChatSessionsReq.ProtoReflect.Descriptor instead.
+func (*ListChatSessionsReq) Descriptor() ([]byte, []int) {
 	return file_muse_chat_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *ListChatSessionsRequest) GetCharacterId() int32 {
+func (x *ListChatSessionsReq) GetCharacterId() int32 {
 	if x != nil && x.CharacterId != nil {
 		return *x.CharacterId
 	}
 	return 0
 }
 
-func (x *ListChatSessionsRequest) GetPage() int32 {
+func (x *ListChatSessionsReq) GetPage() int32 {
 	if x != nil && x.Page != nil {
 		return *x.Page
 	}
 	return 0
 }
 
-func (x *ListChatSessionsRequest) GetPageSize() int32 {
+func (x *ListChatSessionsReq) GetPageSize() int32 {
 	if x != nil && x.PageSize != nil {
 		return *x.PageSize
 	}
@@ -362,7 +362,7 @@ func (x *ListChatSessionsRequest) GetPageSize() int32 {
 }
 
 // 获取会话列表响应
-type ListChatSessionsResponse struct {
+type ListChatSessionsRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Sessions      []*ChatSession         `protobuf:"bytes,1,rep,name=sessions,proto3" json:"sessions,omitempty"`
 	Total         int32                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
@@ -370,20 +370,20 @@ type ListChatSessionsResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListChatSessionsResponse) Reset() {
-	*x = ListChatSessionsResponse{}
+func (x *ListChatSessionsRsp) Reset() {
+	*x = ListChatSessionsRsp{}
 	mi := &file_muse_chat_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListChatSessionsResponse) String() string {
+func (x *ListChatSessionsRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListChatSessionsResponse) ProtoMessage() {}
+func (*ListChatSessionsRsp) ProtoMessage() {}
 
-func (x *ListChatSessionsResponse) ProtoReflect() protoreflect.Message {
+func (x *ListChatSessionsRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_chat_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -395,19 +395,19 @@ func (x *ListChatSessionsResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListChatSessionsResponse.ProtoReflect.Descriptor instead.
-func (*ListChatSessionsResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListChatSessionsRsp.ProtoReflect.Descriptor instead.
+func (*ListChatSessionsRsp) Descriptor() ([]byte, []int) {
 	return file_muse_chat_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *ListChatSessionsResponse) GetSessions() []*ChatSession {
+func (x *ListChatSessionsRsp) GetSessions() []*ChatSession {
 	if x != nil {
 		return x.Sessions
 	}
 	return nil
 }
 
-func (x *ListChatSessionsResponse) GetTotal() int32 {
+func (x *ListChatSessionsRsp) GetTotal() int32 {
 	if x != nil {
 		return x.Total
 	}
@@ -415,27 +415,27 @@ func (x *ListChatSessionsResponse) GetTotal() int32 {
 }
 
 // 获取单个会话请求
-type GetChatSessionRequest struct {
+type GetChatSessionReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetChatSessionRequest) Reset() {
-	*x = GetChatSessionRequest{}
+func (x *GetChatSessionReq) Reset() {
+	*x = GetChatSessionReq{}
 	mi := &file_muse_chat_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetChatSessionRequest) String() string {
+func (x *GetChatSessionReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetChatSessionRequest) ProtoMessage() {}
+func (*GetChatSessionReq) ProtoMessage() {}
 
-func (x *GetChatSessionRequest) ProtoReflect() protoreflect.Message {
+func (x *GetChatSessionReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_chat_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -447,12 +447,12 @@ func (x *GetChatSessionRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetChatSessionRequest.ProtoReflect.Descriptor instead.
-func (*GetChatSessionRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetChatSessionReq.ProtoReflect.Descriptor instead.
+func (*GetChatSessionReq) Descriptor() ([]byte, []int) {
 	return file_muse_chat_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *GetChatSessionRequest) GetId() int32 {
+func (x *GetChatSessionReq) GetId() int32 {
 	if x != nil {
 		return x.Id
 	}
@@ -460,27 +460,27 @@ func (x *GetChatSessionRequest) GetId() int32 {
 }
 
 // 获取单个会话响应
-type GetChatSessionResponse struct {
+type GetChatSessionRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Session       *ChatSession           `protobuf:"bytes,1,opt,name=session,proto3" json:"session,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetChatSessionResponse) Reset() {
-	*x = GetChatSessionResponse{}
+func (x *GetChatSessionRsp) Reset() {
+	*x = GetChatSessionRsp{}
 	mi := &file_muse_chat_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetChatSessionResponse) String() string {
+func (x *GetChatSessionRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetChatSessionResponse) ProtoMessage() {}
+func (*GetChatSessionRsp) ProtoMessage() {}
 
-func (x *GetChatSessionResponse) ProtoReflect() protoreflect.Message {
+func (x *GetChatSessionRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_chat_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -492,12 +492,12 @@ func (x *GetChatSessionResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetChatSessionResponse.ProtoReflect.Descriptor instead.
-func (*GetChatSessionResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetChatSessionRsp.ProtoReflect.Descriptor instead.
+func (*GetChatSessionRsp) Descriptor() ([]byte, []int) {
 	return file_muse_chat_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *GetChatSessionResponse) GetSession() *ChatSession {
+func (x *GetChatSessionRsp) GetSession() *ChatSession {
 	if x != nil {
 		return x.Session
 	}
@@ -505,7 +505,7 @@ func (x *GetChatSessionResponse) GetSession() *ChatSession {
 }
 
 // 创建会话请求
-type CreateChatSessionRequest struct {
+type CreateChatSessionReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	CharacterId   int32                  `protobuf:"varint,1,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"`
 	Name          *string                `protobuf:"bytes,2,opt,name=name,proto3,oneof" json:"name,omitempty"`
@@ -513,20 +513,20 @@ type CreateChatSessionRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreateChatSessionRequest) Reset() {
-	*x = CreateChatSessionRequest{}
+func (x *CreateChatSessionReq) Reset() {
+	*x = CreateChatSessionReq{}
 	mi := &file_muse_chat_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreateChatSessionRequest) String() string {
+func (x *CreateChatSessionReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateChatSessionRequest) ProtoMessage() {}
+func (*CreateChatSessionReq) ProtoMessage() {}
 
-func (x *CreateChatSessionRequest) ProtoReflect() protoreflect.Message {
+func (x *CreateChatSessionReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_chat_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -538,19 +538,19 @@ func (x *CreateChatSessionRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreateChatSessionRequest.ProtoReflect.Descriptor instead.
-func (*CreateChatSessionRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateChatSessionReq.ProtoReflect.Descriptor instead.
+func (*CreateChatSessionReq) Descriptor() ([]byte, []int) {
 	return file_muse_chat_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *CreateChatSessionRequest) GetCharacterId() int32 {
+func (x *CreateChatSessionReq) GetCharacterId() int32 {
 	if x != nil {
 		return x.CharacterId
 	}
 	return 0
 }
 
-func (x *CreateChatSessionRequest) GetName() string {
+func (x *CreateChatSessionReq) GetName() string {
 	if x != nil && x.Name != nil {
 		return *x.Name
 	}
@@ -558,27 +558,27 @@ func (x *CreateChatSessionRequest) GetName() string {
 }
 
 // 创建会话响应
-type CreateChatSessionResponse struct {
+type CreateChatSessionRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Session       *ChatSession           `protobuf:"bytes,1,opt,name=session,proto3" json:"session,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreateChatSessionResponse) Reset() {
-	*x = CreateChatSessionResponse{}
+func (x *CreateChatSessionRsp) Reset() {
+	*x = CreateChatSessionRsp{}
 	mi := &file_muse_chat_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreateChatSessionResponse) String() string {
+func (x *CreateChatSessionRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateChatSessionResponse) ProtoMessage() {}
+func (*CreateChatSessionRsp) ProtoMessage() {}
 
-func (x *CreateChatSessionResponse) ProtoReflect() protoreflect.Message {
+func (x *CreateChatSessionRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_chat_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -590,12 +590,12 @@ func (x *CreateChatSessionResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreateChatSessionResponse.ProtoReflect.Descriptor instead.
-func (*CreateChatSessionResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateChatSessionRsp.ProtoReflect.Descriptor instead.
+func (*CreateChatSessionRsp) Descriptor() ([]byte, []int) {
 	return file_muse_chat_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *CreateChatSessionResponse) GetSession() *ChatSession {
+func (x *CreateChatSessionRsp) GetSession() *ChatSession {
 	if x != nil {
 		return x.Session
 	}
@@ -603,7 +603,7 @@ func (x *CreateChatSessionResponse) GetSession() *ChatSession {
 }
 
 // 更新会话请求
-type UpdateChatSessionRequest struct {
+type UpdateChatSessionReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name          *string                `protobuf:"bytes,2,opt,name=name,proto3,oneof" json:"name,omitempty"`
@@ -612,20 +612,20 @@ type UpdateChatSessionRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateChatSessionRequest) Reset() {
-	*x = UpdateChatSessionRequest{}
+func (x *UpdateChatSessionReq) Reset() {
+	*x = UpdateChatSessionReq{}
 	mi := &file_muse_chat_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateChatSessionRequest) String() string {
+func (x *UpdateChatSessionReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateChatSessionRequest) ProtoMessage() {}
+func (*UpdateChatSessionReq) ProtoMessage() {}
 
-func (x *UpdateChatSessionRequest) ProtoReflect() protoreflect.Message {
+func (x *UpdateChatSessionReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_chat_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -637,26 +637,26 @@ func (x *UpdateChatSessionRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateChatSessionRequest.ProtoReflect.Descriptor instead.
-func (*UpdateChatSessionRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateChatSessionReq.ProtoReflect.Descriptor instead.
+func (*UpdateChatSessionReq) Descriptor() ([]byte, []int) {
 	return file_muse_chat_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *UpdateChatSessionRequest) GetId() int32 {
+func (x *UpdateChatSessionReq) GetId() int32 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-func (x *UpdateChatSessionRequest) GetName() string {
+func (x *UpdateChatSessionReq) GetName() string {
 	if x != nil && x.Name != nil {
 		return *x.Name
 	}
 	return ""
 }
 
-func (x *UpdateChatSessionRequest) GetVersion() int64 {
+func (x *UpdateChatSessionReq) GetVersion() int64 {
 	if x != nil {
 		return x.Version
 	}
@@ -664,27 +664,27 @@ func (x *UpdateChatSessionRequest) GetVersion() int64 {
 }
 
 // 更新会话响应
-type UpdateChatSessionResponse struct {
+type UpdateChatSessionRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Session       *ChatSession           `protobuf:"bytes,1,opt,name=session,proto3" json:"session,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateChatSessionResponse) Reset() {
-	*x = UpdateChatSessionResponse{}
+func (x *UpdateChatSessionRsp) Reset() {
+	*x = UpdateChatSessionRsp{}
 	mi := &file_muse_chat_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateChatSessionResponse) String() string {
+func (x *UpdateChatSessionRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateChatSessionResponse) ProtoMessage() {}
+func (*UpdateChatSessionRsp) ProtoMessage() {}
 
-func (x *UpdateChatSessionResponse) ProtoReflect() protoreflect.Message {
+func (x *UpdateChatSessionRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_chat_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -696,12 +696,12 @@ func (x *UpdateChatSessionResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateChatSessionResponse.ProtoReflect.Descriptor instead.
-func (*UpdateChatSessionResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateChatSessionRsp.ProtoReflect.Descriptor instead.
+func (*UpdateChatSessionRsp) Descriptor() ([]byte, []int) {
 	return file_muse_chat_proto_rawDescGZIP(), []int{10}
 }
 
-func (x *UpdateChatSessionResponse) GetSession() *ChatSession {
+func (x *UpdateChatSessionRsp) GetSession() *ChatSession {
 	if x != nil {
 		return x.Session
 	}
@@ -709,27 +709,27 @@ func (x *UpdateChatSessionResponse) GetSession() *ChatSession {
 }
 
 // 删除会话请求
-type DeleteChatSessionRequest struct {
+type DeleteChatSessionReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeleteChatSessionRequest) Reset() {
-	*x = DeleteChatSessionRequest{}
+func (x *DeleteChatSessionReq) Reset() {
+	*x = DeleteChatSessionReq{}
 	mi := &file_muse_chat_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeleteChatSessionRequest) String() string {
+func (x *DeleteChatSessionReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeleteChatSessionRequest) ProtoMessage() {}
+func (*DeleteChatSessionReq) ProtoMessage() {}
 
-func (x *DeleteChatSessionRequest) ProtoReflect() protoreflect.Message {
+func (x *DeleteChatSessionReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_chat_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -741,12 +741,12 @@ func (x *DeleteChatSessionRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeleteChatSessionRequest.ProtoReflect.Descriptor instead.
-func (*DeleteChatSessionRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeleteChatSessionReq.ProtoReflect.Descriptor instead.
+func (*DeleteChatSessionReq) Descriptor() ([]byte, []int) {
 	return file_muse_chat_proto_rawDescGZIP(), []int{11}
 }
 
-func (x *DeleteChatSessionRequest) GetId() int32 {
+func (x *DeleteChatSessionReq) GetId() int32 {
 	if x != nil {
 		return x.Id
 	}
@@ -754,26 +754,26 @@ func (x *DeleteChatSessionRequest) GetId() int32 {
 }
 
 // 删除会话响应
-type DeleteChatSessionResponse struct {
+type DeleteChatSessionRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeleteChatSessionResponse) Reset() {
-	*x = DeleteChatSessionResponse{}
+func (x *DeleteChatSessionRsp) Reset() {
+	*x = DeleteChatSessionRsp{}
 	mi := &file_muse_chat_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeleteChatSessionResponse) String() string {
+func (x *DeleteChatSessionRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeleteChatSessionResponse) ProtoMessage() {}
+func (*DeleteChatSessionRsp) ProtoMessage() {}
 
-func (x *DeleteChatSessionResponse) ProtoReflect() protoreflect.Message {
+func (x *DeleteChatSessionRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_chat_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -785,13 +785,13 @@ func (x *DeleteChatSessionResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeleteChatSessionResponse.ProtoReflect.Descriptor instead.
-func (*DeleteChatSessionResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeleteChatSessionRsp.ProtoReflect.Descriptor instead.
+func (*DeleteChatSessionRsp) Descriptor() ([]byte, []int) {
 	return file_muse_chat_proto_rawDescGZIP(), []int{12}
 }
 
 // 发送消息请求
-type SendMessageRequest struct {
+type SendMessageReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	SessionId     int32                  `protobuf:"varint,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
 	Content       string                 `protobuf:"bytes,2,opt,name=content,proto3" json:"content,omitempty"`
@@ -799,20 +799,20 @@ type SendMessageRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SendMessageRequest) Reset() {
-	*x = SendMessageRequest{}
+func (x *SendMessageReq) Reset() {
+	*x = SendMessageReq{}
 	mi := &file_muse_chat_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SendMessageRequest) String() string {
+func (x *SendMessageReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SendMessageRequest) ProtoMessage() {}
+func (*SendMessageReq) ProtoMessage() {}
 
-func (x *SendMessageRequest) ProtoReflect() protoreflect.Message {
+func (x *SendMessageReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_chat_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -824,19 +824,19 @@ func (x *SendMessageRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SendMessageRequest.ProtoReflect.Descriptor instead.
-func (*SendMessageRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use SendMessageReq.ProtoReflect.Descriptor instead.
+func (*SendMessageReq) Descriptor() ([]byte, []int) {
 	return file_muse_chat_proto_rawDescGZIP(), []int{13}
 }
 
-func (x *SendMessageRequest) GetSessionId() int32 {
+func (x *SendMessageReq) GetSessionId() int32 {
 	if x != nil {
 		return x.SessionId
 	}
 	return 0
 }
 
-func (x *SendMessageRequest) GetContent() string {
+func (x *SendMessageReq) GetContent() string {
 	if x != nil {
 		return x.Content
 	}
@@ -844,7 +844,7 @@ func (x *SendMessageRequest) GetContent() string {
 }
 
 // 发送消息响应
-type SendMessageResponse struct {
+type SendMessageRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Index         int32                  `protobuf:"varint,1,opt,name=index,proto3" json:"index,omitempty"` // 多个候选回复时，候选回复的下标
 	Content       string                 `protobuf:"bytes,2,opt,name=content,proto3" json:"content,omitempty"`
@@ -855,20 +855,20 @@ type SendMessageResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SendMessageResponse) Reset() {
-	*x = SendMessageResponse{}
+func (x *SendMessageRsp) Reset() {
+	*x = SendMessageRsp{}
 	mi := &file_muse_chat_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SendMessageResponse) String() string {
+func (x *SendMessageRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SendMessageResponse) ProtoMessage() {}
+func (*SendMessageRsp) ProtoMessage() {}
 
-func (x *SendMessageResponse) ProtoReflect() protoreflect.Message {
+func (x *SendMessageRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_chat_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -880,40 +880,40 @@ func (x *SendMessageResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SendMessageResponse.ProtoReflect.Descriptor instead.
-func (*SendMessageResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use SendMessageRsp.ProtoReflect.Descriptor instead.
+func (*SendMessageRsp) Descriptor() ([]byte, []int) {
 	return file_muse_chat_proto_rawDescGZIP(), []int{14}
 }
 
-func (x *SendMessageResponse) GetIndex() int32 {
+func (x *SendMessageRsp) GetIndex() int32 {
 	if x != nil {
 		return x.Index
 	}
 	return 0
 }
 
-func (x *SendMessageResponse) GetContent() string {
+func (x *SendMessageRsp) GetContent() string {
 	if x != nil {
 		return x.Content
 	}
 	return ""
 }
 
-func (x *SendMessageResponse) GetDone() bool {
+func (x *SendMessageRsp) GetDone() bool {
 	if x != nil {
 		return x.Done
 	}
 	return false
 }
 
-func (x *SendMessageResponse) GetErrCode() ErrCode {
+func (x *SendMessageRsp) GetErrCode() ErrCode {
 	if x != nil {
 		return x.ErrCode
 	}
 	return ErrCode_Success
 }
 
-func (x *SendMessageResponse) GetErrMessage() string {
+func (x *SendMessageRsp) GetErrMessage() string {
 	if x != nil {
 		return x.ErrMessage
 	}
@@ -921,27 +921,27 @@ func (x *SendMessageResponse) GetErrMessage() string {
 }
 
 // 重新生成消息请求
-type RegenerateMessageRequest struct {
+type RegenerateMessageReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	MessageId     int32                  `protobuf:"varint,1,opt,name=message_id,json=messageId,proto3" json:"message_id,omitempty"` // 要重新生成的AI消息ID
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *RegenerateMessageRequest) Reset() {
-	*x = RegenerateMessageRequest{}
+func (x *RegenerateMessageReq) Reset() {
+	*x = RegenerateMessageReq{}
 	mi := &file_muse_chat_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *RegenerateMessageRequest) String() string {
+func (x *RegenerateMessageReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RegenerateMessageRequest) ProtoMessage() {}
+func (*RegenerateMessageReq) ProtoMessage() {}
 
-func (x *RegenerateMessageRequest) ProtoReflect() protoreflect.Message {
+func (x *RegenerateMessageReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_chat_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -953,12 +953,12 @@ func (x *RegenerateMessageRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use RegenerateMessageRequest.ProtoReflect.Descriptor instead.
-func (*RegenerateMessageRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use RegenerateMessageReq.ProtoReflect.Descriptor instead.
+func (*RegenerateMessageReq) Descriptor() ([]byte, []int) {
 	return file_muse_chat_proto_rawDescGZIP(), []int{15}
 }
 
-func (x *RegenerateMessageRequest) GetMessageId() int32 {
+func (x *RegenerateMessageReq) GetMessageId() int32 {
 	if x != nil {
 		return x.MessageId
 	}
@@ -966,7 +966,7 @@ func (x *RegenerateMessageRequest) GetMessageId() int32 {
 }
 
 // 重新生成消息响应（流式）
-type RegenerateMessageResponse struct {
+type RegenerateMessageRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	NewSwipe      *MessageSwipe          `protobuf:"bytes,1,opt,name=new_swipe,json=newSwipe,proto3" json:"new_swipe,omitempty"`                 // 新的swipe
 	ContentDelta  string                 `protobuf:"bytes,2,opt,name=content_delta,json=contentDelta,proto3" json:"content_delta,omitempty"`     // 内容增量
@@ -977,20 +977,20 @@ type RegenerateMessageResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *RegenerateMessageResponse) Reset() {
-	*x = RegenerateMessageResponse{}
+func (x *RegenerateMessageRsp) Reset() {
+	*x = RegenerateMessageRsp{}
 	mi := &file_muse_chat_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *RegenerateMessageResponse) String() string {
+func (x *RegenerateMessageRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RegenerateMessageResponse) ProtoMessage() {}
+func (*RegenerateMessageRsp) ProtoMessage() {}
 
-func (x *RegenerateMessageResponse) ProtoReflect() protoreflect.Message {
+func (x *RegenerateMessageRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_chat_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1002,40 +1002,40 @@ func (x *RegenerateMessageResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use RegenerateMessageResponse.ProtoReflect.Descriptor instead.
-func (*RegenerateMessageResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use RegenerateMessageRsp.ProtoReflect.Descriptor instead.
+func (*RegenerateMessageRsp) Descriptor() ([]byte, []int) {
 	return file_muse_chat_proto_rawDescGZIP(), []int{16}
 }
 
-func (x *RegenerateMessageResponse) GetNewSwipe() *MessageSwipe {
+func (x *RegenerateMessageRsp) GetNewSwipe() *MessageSwipe {
 	if x != nil {
 		return x.NewSwipe
 	}
 	return nil
 }
 
-func (x *RegenerateMessageResponse) GetContentDelta() string {
+func (x *RegenerateMessageRsp) GetContentDelta() string {
 	if x != nil {
 		return x.ContentDelta
 	}
 	return ""
 }
 
-func (x *RegenerateMessageResponse) GetDone() bool {
+func (x *RegenerateMessageRsp) GetDone() bool {
 	if x != nil {
 		return x.Done
 	}
 	return false
 }
 
-func (x *RegenerateMessageResponse) GetErrCode() ErrCode {
+func (x *RegenerateMessageRsp) GetErrCode() ErrCode {
 	if x != nil {
 		return x.ErrCode
 	}
 	return ErrCode_Success
 }
 
-func (x *RegenerateMessageResponse) GetErrMessage() string {
+func (x *RegenerateMessageRsp) GetErrMessage() string {
 	if x != nil {
 		return x.ErrMessage
 	}
@@ -1043,7 +1043,7 @@ func (x *RegenerateMessageResponse) GetErrMessage() string {
 }
 
 // 编辑消息请求
-type EditMessageRequest struct {
+type EditMessageReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	MessageId     int32                  `protobuf:"varint,1,opt,name=message_id,json=messageId,proto3" json:"message_id,omitempty"`
 	SwipeId       int32                  `protobuf:"varint,2,opt,name=swipe_id,json=swipeId,proto3" json:"swipe_id,omitempty"` // 要编辑的swipe ID
@@ -1052,20 +1052,20 @@ type EditMessageRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *EditMessageRequest) Reset() {
-	*x = EditMessageRequest{}
+func (x *EditMessageReq) Reset() {
+	*x = EditMessageReq{}
 	mi := &file_muse_chat_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *EditMessageRequest) String() string {
+func (x *EditMessageReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*EditMessageRequest) ProtoMessage() {}
+func (*EditMessageReq) ProtoMessage() {}
 
-func (x *EditMessageRequest) ProtoReflect() protoreflect.Message {
+func (x *EditMessageReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_chat_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1077,26 +1077,26 @@ func (x *EditMessageRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use EditMessageRequest.ProtoReflect.Descriptor instead.
-func (*EditMessageRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use EditMessageReq.ProtoReflect.Descriptor instead.
+func (*EditMessageReq) Descriptor() ([]byte, []int) {
 	return file_muse_chat_proto_rawDescGZIP(), []int{17}
 }
 
-func (x *EditMessageRequest) GetMessageId() int32 {
+func (x *EditMessageReq) GetMessageId() int32 {
 	if x != nil {
 		return x.MessageId
 	}
 	return 0
 }
 
-func (x *EditMessageRequest) GetSwipeId() int32 {
+func (x *EditMessageReq) GetSwipeId() int32 {
 	if x != nil {
 		return x.SwipeId
 	}
 	return 0
 }
 
-func (x *EditMessageRequest) GetContent() string {
+func (x *EditMessageReq) GetContent() string {
 	if x != nil {
 		return x.Content
 	}
@@ -1104,27 +1104,27 @@ func (x *EditMessageRequest) GetContent() string {
 }
 
 // 编辑消息响应
-type EditMessageResponse struct {
+type EditMessageRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Swipe         *MessageSwipe          `protobuf:"bytes,1,opt,name=swipe,proto3" json:"swipe,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *EditMessageResponse) Reset() {
-	*x = EditMessageResponse{}
+func (x *EditMessageRsp) Reset() {
+	*x = EditMessageRsp{}
 	mi := &file_muse_chat_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *EditMessageResponse) String() string {
+func (x *EditMessageRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*EditMessageResponse) ProtoMessage() {}
+func (*EditMessageRsp) ProtoMessage() {}
 
-func (x *EditMessageResponse) ProtoReflect() protoreflect.Message {
+func (x *EditMessageRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_chat_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1136,12 +1136,12 @@ func (x *EditMessageResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use EditMessageResponse.ProtoReflect.Descriptor instead.
-func (*EditMessageResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use EditMessageRsp.ProtoReflect.Descriptor instead.
+func (*EditMessageRsp) Descriptor() ([]byte, []int) {
 	return file_muse_chat_proto_rawDescGZIP(), []int{18}
 }
 
-func (x *EditMessageResponse) GetSwipe() *MessageSwipe {
+func (x *EditMessageRsp) GetSwipe() *MessageSwipe {
 	if x != nil {
 		return x.Swipe
 	}
@@ -1149,27 +1149,27 @@ func (x *EditMessageResponse) GetSwipe() *MessageSwipe {
 }
 
 // 删除消息请求
-type DeleteMessageRequest struct {
+type DeleteMessageReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	MessageId     int32                  `protobuf:"varint,1,opt,name=message_id,json=messageId,proto3" json:"message_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeleteMessageRequest) Reset() {
-	*x = DeleteMessageRequest{}
+func (x *DeleteMessageReq) Reset() {
+	*x = DeleteMessageReq{}
 	mi := &file_muse_chat_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeleteMessageRequest) String() string {
+func (x *DeleteMessageReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeleteMessageRequest) ProtoMessage() {}
+func (*DeleteMessageReq) ProtoMessage() {}
 
-func (x *DeleteMessageRequest) ProtoReflect() protoreflect.Message {
+func (x *DeleteMessageReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_chat_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1181,12 +1181,12 @@ func (x *DeleteMessageRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeleteMessageRequest.ProtoReflect.Descriptor instead.
-func (*DeleteMessageRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeleteMessageReq.ProtoReflect.Descriptor instead.
+func (*DeleteMessageReq) Descriptor() ([]byte, []int) {
 	return file_muse_chat_proto_rawDescGZIP(), []int{19}
 }
 
-func (x *DeleteMessageRequest) GetMessageId() int32 {
+func (x *DeleteMessageReq) GetMessageId() int32 {
 	if x != nil {
 		return x.MessageId
 	}
@@ -1194,26 +1194,26 @@ func (x *DeleteMessageRequest) GetMessageId() int32 {
 }
 
 // 删除消息响应
-type DeleteMessageResponse struct {
+type DeleteMessageRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeleteMessageResponse) Reset() {
-	*x = DeleteMessageResponse{}
+func (x *DeleteMessageRsp) Reset() {
+	*x = DeleteMessageRsp{}
 	mi := &file_muse_chat_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeleteMessageResponse) String() string {
+func (x *DeleteMessageRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeleteMessageResponse) ProtoMessage() {}
+func (*DeleteMessageRsp) ProtoMessage() {}
 
-func (x *DeleteMessageResponse) ProtoReflect() protoreflect.Message {
+func (x *DeleteMessageRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_chat_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1225,13 +1225,13 @@ func (x *DeleteMessageResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeleteMessageResponse.ProtoReflect.Descriptor instead.
-func (*DeleteMessageResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeleteMessageRsp.ProtoReflect.Descriptor instead.
+func (*DeleteMessageRsp) Descriptor() ([]byte, []int) {
 	return file_muse_chat_proto_rawDescGZIP(), []int{20}
 }
 
 // 切换Swipe请求
-type SwitchSwipeRequest struct {
+type SwitchSwipeReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	MessageId     int32                  `protobuf:"varint,1,opt,name=message_id,json=messageId,proto3" json:"message_id,omitempty"`
 	SwipeIndex    int32                  `protobuf:"varint,2,opt,name=swipe_index,json=swipeIndex,proto3" json:"swipe_index,omitempty"`
@@ -1239,20 +1239,20 @@ type SwitchSwipeRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SwitchSwipeRequest) Reset() {
-	*x = SwitchSwipeRequest{}
+func (x *SwitchSwipeReq) Reset() {
+	*x = SwitchSwipeReq{}
 	mi := &file_muse_chat_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SwitchSwipeRequest) String() string {
+func (x *SwitchSwipeReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SwitchSwipeRequest) ProtoMessage() {}
+func (*SwitchSwipeReq) ProtoMessage() {}
 
-func (x *SwitchSwipeRequest) ProtoReflect() protoreflect.Message {
+func (x *SwitchSwipeReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_chat_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1264,19 +1264,19 @@ func (x *SwitchSwipeRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SwitchSwipeRequest.ProtoReflect.Descriptor instead.
-func (*SwitchSwipeRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use SwitchSwipeReq.ProtoReflect.Descriptor instead.
+func (*SwitchSwipeReq) Descriptor() ([]byte, []int) {
 	return file_muse_chat_proto_rawDescGZIP(), []int{21}
 }
 
-func (x *SwitchSwipeRequest) GetMessageId() int32 {
+func (x *SwitchSwipeReq) GetMessageId() int32 {
 	if x != nil {
 		return x.MessageId
 	}
 	return 0
 }
 
-func (x *SwitchSwipeRequest) GetSwipeIndex() int32 {
+func (x *SwitchSwipeReq) GetSwipeIndex() int32 {
 	if x != nil {
 		return x.SwipeIndex
 	}
@@ -1284,27 +1284,27 @@ func (x *SwitchSwipeRequest) GetSwipeIndex() int32 {
 }
 
 // 切换Swipe响应
-type SwitchSwipeResponse struct {
+type SwitchSwipeRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Message       *Message               `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SwitchSwipeResponse) Reset() {
-	*x = SwitchSwipeResponse{}
+func (x *SwitchSwipeRsp) Reset() {
+	*x = SwitchSwipeRsp{}
 	mi := &file_muse_chat_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SwitchSwipeResponse) String() string {
+func (x *SwitchSwipeRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SwitchSwipeResponse) ProtoMessage() {}
+func (*SwitchSwipeRsp) ProtoMessage() {}
 
-func (x *SwitchSwipeResponse) ProtoReflect() protoreflect.Message {
+func (x *SwitchSwipeRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_chat_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1316,12 +1316,12 @@ func (x *SwitchSwipeResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SwitchSwipeResponse.ProtoReflect.Descriptor instead.
-func (*SwitchSwipeResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use SwitchSwipeRsp.ProtoReflect.Descriptor instead.
+func (*SwitchSwipeRsp) Descriptor() ([]byte, []int) {
 	return file_muse_chat_proto_rawDescGZIP(), []int{22}
 }
 
-func (x *SwitchSwipeResponse) GetMessage() *Message {
+func (x *SwitchSwipeRsp) GetMessage() *Message {
 	if x != nil {
 		return x.Message
 	}
@@ -1329,27 +1329,27 @@ func (x *SwitchSwipeResponse) GetMessage() *Message {
 }
 
 // 获取角色最新会话请求
-type GetCharLatestSessionRequest struct {
+type GetCharLatestSessionReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	CharacterId   int32                  `protobuf:"varint,1,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetCharLatestSessionRequest) Reset() {
-	*x = GetCharLatestSessionRequest{}
+func (x *GetCharLatestSessionReq) Reset() {
+	*x = GetCharLatestSessionReq{}
 	mi := &file_muse_chat_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetCharLatestSessionRequest) String() string {
+func (x *GetCharLatestSessionReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetCharLatestSessionRequest) ProtoMessage() {}
+func (*GetCharLatestSessionReq) ProtoMessage() {}
 
-func (x *GetCharLatestSessionRequest) ProtoReflect() protoreflect.Message {
+func (x *GetCharLatestSessionReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_chat_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1361,12 +1361,12 @@ func (x *GetCharLatestSessionRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetCharLatestSessionRequest.ProtoReflect.Descriptor instead.
-func (*GetCharLatestSessionRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetCharLatestSessionReq.ProtoReflect.Descriptor instead.
+func (*GetCharLatestSessionReq) Descriptor() ([]byte, []int) {
 	return file_muse_chat_proto_rawDescGZIP(), []int{23}
 }
 
-func (x *GetCharLatestSessionRequest) GetCharacterId() int32 {
+func (x *GetCharLatestSessionReq) GetCharacterId() int32 {
 	if x != nil {
 		return x.CharacterId
 	}
@@ -1374,27 +1374,27 @@ func (x *GetCharLatestSessionRequest) GetCharacterId() int32 {
 }
 
 // 获取角色最新会话响应
-type GetCharLatestSessionResponse struct {
+type GetCharLatestSessionRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Session       *ChatSession           `protobuf:"bytes,1,opt,name=session,proto3" json:"session,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetCharLatestSessionResponse) Reset() {
-	*x = GetCharLatestSessionResponse{}
+func (x *GetCharLatestSessionRsp) Reset() {
+	*x = GetCharLatestSessionRsp{}
 	mi := &file_muse_chat_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetCharLatestSessionResponse) String() string {
+func (x *GetCharLatestSessionRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetCharLatestSessionResponse) ProtoMessage() {}
+func (*GetCharLatestSessionRsp) ProtoMessage() {}
 
-func (x *GetCharLatestSessionResponse) ProtoReflect() protoreflect.Message {
+func (x *GetCharLatestSessionRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_chat_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1406,12 +1406,12 @@ func (x *GetCharLatestSessionResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetCharLatestSessionResponse.ProtoReflect.Descriptor instead.
-func (*GetCharLatestSessionResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetCharLatestSessionRsp.ProtoReflect.Descriptor instead.
+func (*GetCharLatestSessionRsp) Descriptor() ([]byte, []int) {
 	return file_muse_chat_proto_rawDescGZIP(), []int{24}
 }
 
-func (x *GetCharLatestSessionResponse) GetSession() *ChatSession {
+func (x *GetCharLatestSessionRsp) GetSession() *ChatSession {
 	if x != nil {
 		return x.Session
 	}
@@ -1419,27 +1419,27 @@ func (x *GetCharLatestSessionResponse) GetSession() *ChatSession {
 }
 
 // 更新会话时间戳请求
-type UpdateSessionTimeRequest struct {
+type UpdateSessionTimeReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	SessionId     int32                  `protobuf:"varint,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateSessionTimeRequest) Reset() {
-	*x = UpdateSessionTimeRequest{}
+func (x *UpdateSessionTimeReq) Reset() {
+	*x = UpdateSessionTimeReq{}
 	mi := &file_muse_chat_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateSessionTimeRequest) String() string {
+func (x *UpdateSessionTimeReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateSessionTimeRequest) ProtoMessage() {}
+func (*UpdateSessionTimeReq) ProtoMessage() {}
 
-func (x *UpdateSessionTimeRequest) ProtoReflect() protoreflect.Message {
+func (x *UpdateSessionTimeReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_chat_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1451,12 +1451,12 @@ func (x *UpdateSessionTimeRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateSessionTimeRequest.ProtoReflect.Descriptor instead.
-func (*UpdateSessionTimeRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateSessionTimeReq.ProtoReflect.Descriptor instead.
+func (*UpdateSessionTimeReq) Descriptor() ([]byte, []int) {
 	return file_muse_chat_proto_rawDescGZIP(), []int{25}
 }
 
-func (x *UpdateSessionTimeRequest) GetSessionId() int32 {
+func (x *UpdateSessionTimeReq) GetSessionId() int32 {
 	if x != nil {
 		return x.SessionId
 	}
@@ -1464,26 +1464,26 @@ func (x *UpdateSessionTimeRequest) GetSessionId() int32 {
 }
 
 // 更新会话时间戳响应
-type UpdateSessionTimeResponse struct {
+type UpdateSessionTimeRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateSessionTimeResponse) Reset() {
-	*x = UpdateSessionTimeResponse{}
+func (x *UpdateSessionTimeRsp) Reset() {
+	*x = UpdateSessionTimeRsp{}
 	mi := &file_muse_chat_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateSessionTimeResponse) String() string {
+func (x *UpdateSessionTimeRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateSessionTimeResponse) ProtoMessage() {}
+func (*UpdateSessionTimeRsp) ProtoMessage() {}
 
-func (x *UpdateSessionTimeResponse) ProtoReflect() protoreflect.Message {
+func (x *UpdateSessionTimeRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_chat_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1495,13 +1495,13 @@ func (x *UpdateSessionTimeResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateSessionTimeResponse.ProtoReflect.Descriptor instead.
-func (*UpdateSessionTimeResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateSessionTimeRsp.ProtoReflect.Descriptor instead.
+func (*UpdateSessionTimeRsp) Descriptor() ([]byte, []int) {
 	return file_muse_chat_proto_rawDescGZIP(), []int{26}
 }
 
 // 删除Swipe请求
-type DeleteSwipeRequest struct {
+type DeleteSwipeReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	MessageId     int32                  `protobuf:"varint,1,opt,name=message_id,json=messageId,proto3" json:"message_id,omitempty"`
 	SwipeId       int32                  `protobuf:"varint,2,opt,name=swipe_id,json=swipeId,proto3" json:"swipe_id,omitempty"`
@@ -1509,20 +1509,20 @@ type DeleteSwipeRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeleteSwipeRequest) Reset() {
-	*x = DeleteSwipeRequest{}
+func (x *DeleteSwipeReq) Reset() {
+	*x = DeleteSwipeReq{}
 	mi := &file_muse_chat_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeleteSwipeRequest) String() string {
+func (x *DeleteSwipeReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeleteSwipeRequest) ProtoMessage() {}
+func (*DeleteSwipeReq) ProtoMessage() {}
 
-func (x *DeleteSwipeRequest) ProtoReflect() protoreflect.Message {
+func (x *DeleteSwipeReq) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_chat_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1534,19 +1534,19 @@ func (x *DeleteSwipeRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeleteSwipeRequest.ProtoReflect.Descriptor instead.
-func (*DeleteSwipeRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeleteSwipeReq.ProtoReflect.Descriptor instead.
+func (*DeleteSwipeReq) Descriptor() ([]byte, []int) {
 	return file_muse_chat_proto_rawDescGZIP(), []int{27}
 }
 
-func (x *DeleteSwipeRequest) GetMessageId() int32 {
+func (x *DeleteSwipeReq) GetMessageId() int32 {
 	if x != nil {
 		return x.MessageId
 	}
 	return 0
 }
 
-func (x *DeleteSwipeRequest) GetSwipeId() int32 {
+func (x *DeleteSwipeReq) GetSwipeId() int32 {
 	if x != nil {
 		return x.SwipeId
 	}
@@ -1554,26 +1554,26 @@ func (x *DeleteSwipeRequest) GetSwipeId() int32 {
 }
 
 // 删除Swipe响应
-type DeleteSwipeResponse struct {
+type DeleteSwipeRsp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeleteSwipeResponse) Reset() {
-	*x = DeleteSwipeResponse{}
+func (x *DeleteSwipeRsp) Reset() {
+	*x = DeleteSwipeRsp{}
 	mi := &file_muse_chat_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeleteSwipeResponse) String() string {
+func (x *DeleteSwipeRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeleteSwipeResponse) ProtoMessage() {}
+func (*DeleteSwipeRsp) ProtoMessage() {}
 
-func (x *DeleteSwipeResponse) ProtoReflect() protoreflect.Message {
+func (x *DeleteSwipeRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_muse_chat_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1585,8 +1585,8 @@ func (x *DeleteSwipeResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeleteSwipeResponse.ProtoReflect.Descriptor instead.
-func (*DeleteSwipeResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeleteSwipeRsp.ProtoReflect.Descriptor instead.
+func (*DeleteSwipeRsp) Descriptor() ([]byte, []int) {
 	return file_muse_chat_proto_rawDescGZIP(), []int{28}
 }
 
@@ -1627,104 +1627,104 @@ const file_muse_chat_proto_rawDesc = "" +
 	"message_id\x18\x02 \x01(\x05R\tmessageId\x12\x18\n" +
 	"\acontent\x18\x03 \x01(\tR\acontent\x12\x1d\n" +
 	"\n" +
-	"created_at\x18\x04 \x01(\x03R\tcreatedAt\"\xa4\x01\n" +
-	"\x17ListChatSessionsRequest\x12&\n" +
+	"created_at\x18\x04 \x01(\x03R\tcreatedAt\"\xa0\x01\n" +
+	"\x13ListChatSessionsReq\x12&\n" +
 	"\fcharacter_id\x18\x01 \x01(\x05H\x00R\vcharacterId\x88\x01\x01\x12\x17\n" +
 	"\x04page\x18\x02 \x01(\x05H\x01R\x04page\x88\x01\x01\x12 \n" +
 	"\tpage_size\x18\x03 \x01(\x05H\x02R\bpageSize\x88\x01\x01B\x0f\n" +
 	"\r_character_idB\a\n" +
 	"\x05_pageB\f\n" +
 	"\n" +
-	"_page_size\"_\n" +
-	"\x18ListChatSessionsResponse\x12-\n" +
+	"_page_size\"Z\n" +
+	"\x13ListChatSessionsRsp\x12-\n" +
 	"\bsessions\x18\x01 \x03(\v2\x11.muse.ChatSessionR\bsessions\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05total\"'\n" +
-	"\x15GetChatSessionRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\"E\n" +
-	"\x16GetChatSessionResponse\x12+\n" +
-	"\asession\x18\x01 \x01(\v2\x11.muse.ChatSessionR\asession\"_\n" +
-	"\x18CreateChatSessionRequest\x12!\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\"#\n" +
+	"\x11GetChatSessionReq\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\"@\n" +
+	"\x11GetChatSessionRsp\x12+\n" +
+	"\asession\x18\x01 \x01(\v2\x11.muse.ChatSessionR\asession\"[\n" +
+	"\x14CreateChatSessionReq\x12!\n" +
 	"\fcharacter_id\x18\x01 \x01(\x05R\vcharacterId\x12\x17\n" +
 	"\x04name\x18\x02 \x01(\tH\x00R\x04name\x88\x01\x01B\a\n" +
-	"\x05_name\"H\n" +
-	"\x19CreateChatSessionResponse\x12+\n" +
-	"\asession\x18\x01 \x01(\v2\x11.muse.ChatSessionR\asession\"f\n" +
-	"\x18UpdateChatSessionRequest\x12\x0e\n" +
+	"\x05_name\"C\n" +
+	"\x14CreateChatSessionRsp\x12+\n" +
+	"\asession\x18\x01 \x01(\v2\x11.muse.ChatSessionR\asession\"b\n" +
+	"\x14UpdateChatSessionReq\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x17\n" +
 	"\x04name\x18\x02 \x01(\tH\x00R\x04name\x88\x01\x01\x12\x18\n" +
 	"\aversion\x18\x03 \x01(\x03R\aversionB\a\n" +
-	"\x05_name\"H\n" +
-	"\x19UpdateChatSessionResponse\x12+\n" +
-	"\asession\x18\x01 \x01(\v2\x11.muse.ChatSessionR\asession\"*\n" +
-	"\x18DeleteChatSessionRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\"\x1b\n" +
-	"\x19DeleteChatSessionResponse\"M\n" +
-	"\x12SendMessageRequest\x12\x1d\n" +
+	"\x05_name\"C\n" +
+	"\x14UpdateChatSessionRsp\x12+\n" +
+	"\asession\x18\x01 \x01(\v2\x11.muse.ChatSessionR\asession\"&\n" +
+	"\x14DeleteChatSessionReq\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\"\x16\n" +
+	"\x14DeleteChatSessionRsp\"I\n" +
+	"\x0eSendMessageReq\x12\x1d\n" +
 	"\n" +
 	"session_id\x18\x01 \x01(\x05R\tsessionId\x12\x18\n" +
-	"\acontent\x18\x02 \x01(\tR\acontent\"\xa4\x01\n" +
-	"\x13SendMessageResponse\x12\x14\n" +
+	"\acontent\x18\x02 \x01(\tR\acontent\"\x9f\x01\n" +
+	"\x0eSendMessageRsp\x12\x14\n" +
 	"\x05index\x18\x01 \x01(\x05R\x05index\x12\x18\n" +
 	"\acontent\x18\x02 \x01(\tR\acontent\x12\x12\n" +
 	"\x04done\x18\x03 \x01(\bR\x04done\x12(\n" +
 	"\berr_code\x18\x04 \x01(\x0e2\r.muse.ErrCodeR\aerrCode\x12\x1f\n" +
 	"\verr_message\x18\x05 \x01(\tR\n" +
-	"errMessage\"9\n" +
-	"\x18RegenerateMessageRequest\x12\x1d\n" +
+	"errMessage\"5\n" +
+	"\x14RegenerateMessageReq\x12\x1d\n" +
 	"\n" +
-	"message_id\x18\x01 \x01(\x05R\tmessageId\"\xd0\x01\n" +
-	"\x19RegenerateMessageResponse\x12/\n" +
+	"message_id\x18\x01 \x01(\x05R\tmessageId\"\xcb\x01\n" +
+	"\x14RegenerateMessageRsp\x12/\n" +
 	"\tnew_swipe\x18\x01 \x01(\v2\x12.muse.MessageSwipeR\bnewSwipe\x12#\n" +
 	"\rcontent_delta\x18\x02 \x01(\tR\fcontentDelta\x12\x12\n" +
 	"\x04done\x18\x03 \x01(\bR\x04done\x12(\n" +
 	"\berr_code\x18\x04 \x01(\x0e2\r.muse.ErrCodeR\aerrCode\x12\x1f\n" +
 	"\verr_message\x18\x05 \x01(\tR\n" +
-	"errMessage\"h\n" +
-	"\x12EditMessageRequest\x12\x1d\n" +
+	"errMessage\"d\n" +
+	"\x0eEditMessageReq\x12\x1d\n" +
 	"\n" +
 	"message_id\x18\x01 \x01(\x05R\tmessageId\x12\x19\n" +
 	"\bswipe_id\x18\x02 \x01(\x05R\aswipeId\x12\x18\n" +
-	"\acontent\x18\x03 \x01(\tR\acontent\"?\n" +
-	"\x13EditMessageResponse\x12(\n" +
-	"\x05swipe\x18\x01 \x01(\v2\x12.muse.MessageSwipeR\x05swipe\"5\n" +
-	"\x14DeleteMessageRequest\x12\x1d\n" +
+	"\acontent\x18\x03 \x01(\tR\acontent\":\n" +
+	"\x0eEditMessageRsp\x12(\n" +
+	"\x05swipe\x18\x01 \x01(\v2\x12.muse.MessageSwipeR\x05swipe\"1\n" +
+	"\x10DeleteMessageReq\x12\x1d\n" +
 	"\n" +
-	"message_id\x18\x01 \x01(\x05R\tmessageId\"\x17\n" +
-	"\x15DeleteMessageResponse\"T\n" +
-	"\x12SwitchSwipeRequest\x12\x1d\n" +
+	"message_id\x18\x01 \x01(\x05R\tmessageId\"\x12\n" +
+	"\x10DeleteMessageRsp\"P\n" +
+	"\x0eSwitchSwipeReq\x12\x1d\n" +
 	"\n" +
 	"message_id\x18\x01 \x01(\x05R\tmessageId\x12\x1f\n" +
 	"\vswipe_index\x18\x02 \x01(\x05R\n" +
-	"swipeIndex\">\n" +
-	"\x13SwitchSwipeResponse\x12'\n" +
-	"\amessage\x18\x01 \x01(\v2\r.muse.MessageR\amessage\"@\n" +
-	"\x1bGetCharLatestSessionRequest\x12!\n" +
-	"\fcharacter_id\x18\x01 \x01(\x05R\vcharacterId\"K\n" +
-	"\x1cGetCharLatestSessionResponse\x12+\n" +
-	"\asession\x18\x01 \x01(\v2\x11.muse.ChatSessionR\asession\"9\n" +
-	"\x18UpdateSessionTimeRequest\x12\x1d\n" +
+	"swipeIndex\"9\n" +
+	"\x0eSwitchSwipeRsp\x12'\n" +
+	"\amessage\x18\x01 \x01(\v2\r.muse.MessageR\amessage\"<\n" +
+	"\x17GetCharLatestSessionReq\x12!\n" +
+	"\fcharacter_id\x18\x01 \x01(\x05R\vcharacterId\"F\n" +
+	"\x17GetCharLatestSessionRsp\x12+\n" +
+	"\asession\x18\x01 \x01(\v2\x11.muse.ChatSessionR\asession\"5\n" +
+	"\x14UpdateSessionTimeReq\x12\x1d\n" +
 	"\n" +
-	"session_id\x18\x01 \x01(\x05R\tsessionId\"\x1b\n" +
-	"\x19UpdateSessionTimeResponse\"N\n" +
-	"\x12DeleteSwipeRequest\x12\x1d\n" +
+	"session_id\x18\x01 \x01(\x05R\tsessionId\"\x16\n" +
+	"\x14UpdateSessionTimeRsp\"J\n" +
+	"\x0eDeleteSwipeReq\x12\x1d\n" +
 	"\n" +
 	"message_id\x18\x01 \x01(\x05R\tmessageId\x12\x19\n" +
-	"\bswipe_id\x18\x02 \x01(\x05R\aswipeId\"\x15\n" +
-	"\x13DeleteSwipeResponse2\x98\b\n" +
-	"\vChatService\x12Q\n" +
-	"\x10ListChatSessions\x12\x1d.muse.ListChatSessionsRequest\x1a\x1e.muse.ListChatSessionsResponse\x12K\n" +
-	"\x0eGetChatSession\x12\x1b.muse.GetChatSessionRequest\x1a\x1c.muse.GetChatSessionResponse\x12T\n" +
-	"\x11CreateChatSession\x12\x1e.muse.CreateChatSessionRequest\x1a\x1f.muse.CreateChatSessionResponse\x12T\n" +
-	"\x11UpdateChatSession\x12\x1e.muse.UpdateChatSessionRequest\x1a\x1f.muse.UpdateChatSessionResponse\x12T\n" +
-	"\x11DeleteChatSession\x12\x1e.muse.DeleteChatSessionRequest\x1a\x1f.muse.DeleteChatSessionResponse\x12D\n" +
-	"\vSendMessage\x12\x18.muse.SendMessageRequest\x1a\x19.muse.SendMessageResponse0\x01\x12V\n" +
-	"\x11RegenerateMessage\x12\x1e.muse.RegenerateMessageRequest\x1a\x1f.muse.RegenerateMessageResponse0\x01\x12B\n" +
-	"\vEditMessage\x12\x18.muse.EditMessageRequest\x1a\x19.muse.EditMessageResponse\x12H\n" +
-	"\rDeleteMessage\x12\x1a.muse.DeleteMessageRequest\x1a\x1b.muse.DeleteMessageResponse\x12B\n" +
-	"\vSwitchSwipe\x12\x18.muse.SwitchSwipeRequest\x1a\x19.muse.SwitchSwipeResponse\x12]\n" +
-	"\x14GetCharLatestSession\x12!.muse.GetCharLatestSessionRequest\x1a\".muse.GetCharLatestSessionResponse\x12T\n" +
-	"\x11UpdateSessionTime\x12\x1e.muse.UpdateSessionTimeRequest\x1a\x1f.muse.UpdateSessionTimeResponse\x12B\n" +
-	"\vDeleteSwipe\x12\x18.muse.DeleteSwipeRequest\x1a\x19.muse.DeleteSwipeResponseBd\n" +
+	"\bswipe_id\x18\x02 \x01(\x05R\aswipeId\"\x10\n" +
+	"\x0eDeleteSwipeRsp2\xa3\a\n" +
+	"\vChatService\x12H\n" +
+	"\x10ListChatSessions\x12\x19.muse.ListChatSessionsReq\x1a\x19.muse.ListChatSessionsRsp\x12B\n" +
+	"\x0eGetChatSession\x12\x17.muse.GetChatSessionReq\x1a\x17.muse.GetChatSessionRsp\x12K\n" +
+	"\x11CreateChatSession\x12\x1a.muse.CreateChatSessionReq\x1a\x1a.muse.CreateChatSessionRsp\x12K\n" +
+	"\x11UpdateChatSession\x12\x1a.muse.UpdateChatSessionReq\x1a\x1a.muse.UpdateChatSessionRsp\x12K\n" +
+	"\x11DeleteChatSession\x12\x1a.muse.DeleteChatSessionReq\x1a\x1a.muse.DeleteChatSessionRsp\x12;\n" +
+	"\vSendMessage\x12\x14.muse.SendMessageReq\x1a\x14.muse.SendMessageRsp0\x01\x12M\n" +
+	"\x11RegenerateMessage\x12\x1a.muse.RegenerateMessageReq\x1a\x1a.muse.RegenerateMessageRsp0\x01\x129\n" +
+	"\vEditMessage\x12\x14.muse.EditMessageReq\x1a\x14.muse.EditMessageRsp\x12?\n" +
+	"\rDeleteMessage\x12\x16.muse.DeleteMessageReq\x1a\x16.muse.DeleteMessageRsp\x129\n" +
+	"\vSwitchSwipe\x12\x14.muse.SwitchSwipeReq\x1a\x14.muse.SwitchSwipeRsp\x12T\n" +
+	"\x14GetCharLatestSession\x12\x1d.muse.GetCharLatestSessionReq\x1a\x1d.muse.GetCharLatestSessionRsp\x12K\n" +
+	"\x11UpdateSessionTime\x12\x1a.muse.UpdateSessionTimeReq\x1a\x1a.muse.UpdateSessionTimeRsp\x129\n" +
+	"\vDeleteSwipe\x12\x14.muse.DeleteSwipeReq\x1a\x14.muse.DeleteSwipeRspBd\n" +
 	"\bcom.museB\tChatProtoP\x01Z\x1dgithub.com/ling/muse/gen/muse\xa2\x02\x03MXX\xaa\x02\x04Muse\xca\x02\x04Muse\xe2\x02\x10Muse\\GPBMetadata\xea\x02\x04Museb\x06proto3"
 
 var (
@@ -1741,80 +1741,80 @@ func file_muse_chat_proto_rawDescGZIP() []byte {
 
 var file_muse_chat_proto_msgTypes = make([]protoimpl.MessageInfo, 29)
 var file_muse_chat_proto_goTypes = []any{
-	(*ChatSession)(nil),                  // 0: muse.ChatSession
-	(*Message)(nil),                      // 1: muse.Message
-	(*MessageSwipe)(nil),                 // 2: muse.MessageSwipe
-	(*ListChatSessionsRequest)(nil),      // 3: muse.ListChatSessionsRequest
-	(*ListChatSessionsResponse)(nil),     // 4: muse.ListChatSessionsResponse
-	(*GetChatSessionRequest)(nil),        // 5: muse.GetChatSessionRequest
-	(*GetChatSessionResponse)(nil),       // 6: muse.GetChatSessionResponse
-	(*CreateChatSessionRequest)(nil),     // 7: muse.CreateChatSessionRequest
-	(*CreateChatSessionResponse)(nil),    // 8: muse.CreateChatSessionResponse
-	(*UpdateChatSessionRequest)(nil),     // 9: muse.UpdateChatSessionRequest
-	(*UpdateChatSessionResponse)(nil),    // 10: muse.UpdateChatSessionResponse
-	(*DeleteChatSessionRequest)(nil),     // 11: muse.DeleteChatSessionRequest
-	(*DeleteChatSessionResponse)(nil),    // 12: muse.DeleteChatSessionResponse
-	(*SendMessageRequest)(nil),           // 13: muse.SendMessageRequest
-	(*SendMessageResponse)(nil),          // 14: muse.SendMessageResponse
-	(*RegenerateMessageRequest)(nil),     // 15: muse.RegenerateMessageRequest
-	(*RegenerateMessageResponse)(nil),    // 16: muse.RegenerateMessageResponse
-	(*EditMessageRequest)(nil),           // 17: muse.EditMessageRequest
-	(*EditMessageResponse)(nil),          // 18: muse.EditMessageResponse
-	(*DeleteMessageRequest)(nil),         // 19: muse.DeleteMessageRequest
-	(*DeleteMessageResponse)(nil),        // 20: muse.DeleteMessageResponse
-	(*SwitchSwipeRequest)(nil),           // 21: muse.SwitchSwipeRequest
-	(*SwitchSwipeResponse)(nil),          // 22: muse.SwitchSwipeResponse
-	(*GetCharLatestSessionRequest)(nil),  // 23: muse.GetCharLatestSessionRequest
-	(*GetCharLatestSessionResponse)(nil), // 24: muse.GetCharLatestSessionResponse
-	(*UpdateSessionTimeRequest)(nil),     // 25: muse.UpdateSessionTimeRequest
-	(*UpdateSessionTimeResponse)(nil),    // 26: muse.UpdateSessionTimeResponse
-	(*DeleteSwipeRequest)(nil),           // 27: muse.DeleteSwipeRequest
-	(*DeleteSwipeResponse)(nil),          // 28: muse.DeleteSwipeResponse
-	(*Character)(nil),                    // 29: muse.Character
-	(Role)(0),                            // 30: muse.Role
-	(ErrCode)(0),                         // 31: muse.ErrCode
+	(*ChatSession)(nil),             // 0: muse.ChatSession
+	(*Message)(nil),                 // 1: muse.Message
+	(*MessageSwipe)(nil),            // 2: muse.MessageSwipe
+	(*ListChatSessionsReq)(nil),     // 3: muse.ListChatSessionsReq
+	(*ListChatSessionsRsp)(nil),     // 4: muse.ListChatSessionsRsp
+	(*GetChatSessionReq)(nil),       // 5: muse.GetChatSessionReq
+	(*GetChatSessionRsp)(nil),       // 6: muse.GetChatSessionRsp
+	(*CreateChatSessionReq)(nil),    // 7: muse.CreateChatSessionReq
+	(*CreateChatSessionRsp)(nil),    // 8: muse.CreateChatSessionRsp
+	(*UpdateChatSessionReq)(nil),    // 9: muse.UpdateChatSessionReq
+	(*UpdateChatSessionRsp)(nil),    // 10: muse.UpdateChatSessionRsp
+	(*DeleteChatSessionReq)(nil),    // 11: muse.DeleteChatSessionReq
+	(*DeleteChatSessionRsp)(nil),    // 12: muse.DeleteChatSessionRsp
+	(*SendMessageReq)(nil),          // 13: muse.SendMessageReq
+	(*SendMessageRsp)(nil),          // 14: muse.SendMessageRsp
+	(*RegenerateMessageReq)(nil),    // 15: muse.RegenerateMessageReq
+	(*RegenerateMessageRsp)(nil),    // 16: muse.RegenerateMessageRsp
+	(*EditMessageReq)(nil),          // 17: muse.EditMessageReq
+	(*EditMessageRsp)(nil),          // 18: muse.EditMessageRsp
+	(*DeleteMessageReq)(nil),        // 19: muse.DeleteMessageReq
+	(*DeleteMessageRsp)(nil),        // 20: muse.DeleteMessageRsp
+	(*SwitchSwipeReq)(nil),          // 21: muse.SwitchSwipeReq
+	(*SwitchSwipeRsp)(nil),          // 22: muse.SwitchSwipeRsp
+	(*GetCharLatestSessionReq)(nil), // 23: muse.GetCharLatestSessionReq
+	(*GetCharLatestSessionRsp)(nil), // 24: muse.GetCharLatestSessionRsp
+	(*UpdateSessionTimeReq)(nil),    // 25: muse.UpdateSessionTimeReq
+	(*UpdateSessionTimeRsp)(nil),    // 26: muse.UpdateSessionTimeRsp
+	(*DeleteSwipeReq)(nil),          // 27: muse.DeleteSwipeReq
+	(*DeleteSwipeRsp)(nil),          // 28: muse.DeleteSwipeRsp
+	(*Character)(nil),               // 29: muse.Character
+	(Role)(0),                       // 30: muse.Role
+	(ErrCode)(0),                    // 31: muse.ErrCode
 }
 var file_muse_chat_proto_depIdxs = []int32{
 	29, // 0: muse.ChatSession.character:type_name -> muse.Character
 	1,  // 1: muse.ChatSession.messages:type_name -> muse.Message
 	30, // 2: muse.Message.role:type_name -> muse.Role
 	2,  // 3: muse.Message.swipes:type_name -> muse.MessageSwipe
-	0,  // 4: muse.ListChatSessionsResponse.sessions:type_name -> muse.ChatSession
-	0,  // 5: muse.GetChatSessionResponse.session:type_name -> muse.ChatSession
-	0,  // 6: muse.CreateChatSessionResponse.session:type_name -> muse.ChatSession
-	0,  // 7: muse.UpdateChatSessionResponse.session:type_name -> muse.ChatSession
-	31, // 8: muse.SendMessageResponse.err_code:type_name -> muse.ErrCode
-	2,  // 9: muse.RegenerateMessageResponse.new_swipe:type_name -> muse.MessageSwipe
-	31, // 10: muse.RegenerateMessageResponse.err_code:type_name -> muse.ErrCode
-	2,  // 11: muse.EditMessageResponse.swipe:type_name -> muse.MessageSwipe
-	1,  // 12: muse.SwitchSwipeResponse.message:type_name -> muse.Message
-	0,  // 13: muse.GetCharLatestSessionResponse.session:type_name -> muse.ChatSession
-	3,  // 14: muse.ChatService.ListChatSessions:input_type -> muse.ListChatSessionsRequest
-	5,  // 15: muse.ChatService.GetChatSession:input_type -> muse.GetChatSessionRequest
-	7,  // 16: muse.ChatService.CreateChatSession:input_type -> muse.CreateChatSessionRequest
-	9,  // 17: muse.ChatService.UpdateChatSession:input_type -> muse.UpdateChatSessionRequest
-	11, // 18: muse.ChatService.DeleteChatSession:input_type -> muse.DeleteChatSessionRequest
-	13, // 19: muse.ChatService.SendMessage:input_type -> muse.SendMessageRequest
-	15, // 20: muse.ChatService.RegenerateMessage:input_type -> muse.RegenerateMessageRequest
-	17, // 21: muse.ChatService.EditMessage:input_type -> muse.EditMessageRequest
-	19, // 22: muse.ChatService.DeleteMessage:input_type -> muse.DeleteMessageRequest
-	21, // 23: muse.ChatService.SwitchSwipe:input_type -> muse.SwitchSwipeRequest
-	23, // 24: muse.ChatService.GetCharLatestSession:input_type -> muse.GetCharLatestSessionRequest
-	25, // 25: muse.ChatService.UpdateSessionTime:input_type -> muse.UpdateSessionTimeRequest
-	27, // 26: muse.ChatService.DeleteSwipe:input_type -> muse.DeleteSwipeRequest
-	4,  // 27: muse.ChatService.ListChatSessions:output_type -> muse.ListChatSessionsResponse
-	6,  // 28: muse.ChatService.GetChatSession:output_type -> muse.GetChatSessionResponse
-	8,  // 29: muse.ChatService.CreateChatSession:output_type -> muse.CreateChatSessionResponse
-	10, // 30: muse.ChatService.UpdateChatSession:output_type -> muse.UpdateChatSessionResponse
-	12, // 31: muse.ChatService.DeleteChatSession:output_type -> muse.DeleteChatSessionResponse
-	14, // 32: muse.ChatService.SendMessage:output_type -> muse.SendMessageResponse
-	16, // 33: muse.ChatService.RegenerateMessage:output_type -> muse.RegenerateMessageResponse
-	18, // 34: muse.ChatService.EditMessage:output_type -> muse.EditMessageResponse
-	20, // 35: muse.ChatService.DeleteMessage:output_type -> muse.DeleteMessageResponse
-	22, // 36: muse.ChatService.SwitchSwipe:output_type -> muse.SwitchSwipeResponse
-	24, // 37: muse.ChatService.GetCharLatestSession:output_type -> muse.GetCharLatestSessionResponse
-	26, // 38: muse.ChatService.UpdateSessionTime:output_type -> muse.UpdateSessionTimeResponse
-	28, // 39: muse.ChatService.DeleteSwipe:output_type -> muse.DeleteSwipeResponse
+	0,  // 4: muse.ListChatSessionsRsp.sessions:type_name -> muse.ChatSession
+	0,  // 5: muse.GetChatSessionRsp.session:type_name -> muse.ChatSession
+	0,  // 6: muse.CreateChatSessionRsp.session:type_name -> muse.ChatSession
+	0,  // 7: muse.UpdateChatSessionRsp.session:type_name -> muse.ChatSession
+	31, // 8: muse.SendMessageRsp.err_code:type_name -> muse.ErrCode
+	2,  // 9: muse.RegenerateMessageRsp.new_swipe:type_name -> muse.MessageSwipe
+	31, // 10: muse.RegenerateMessageRsp.err_code:type_name -> muse.ErrCode
+	2,  // 11: muse.EditMessageRsp.swipe:type_name -> muse.MessageSwipe
+	1,  // 12: muse.SwitchSwipeRsp.message:type_name -> muse.Message
+	0,  // 13: muse.GetCharLatestSessionRsp.session:type_name -> muse.ChatSession
+	3,  // 14: muse.ChatService.ListChatSessions:input_type -> muse.ListChatSessionsReq
+	5,  // 15: muse.ChatService.GetChatSession:input_type -> muse.GetChatSessionReq
+	7,  // 16: muse.ChatService.CreateChatSession:input_type -> muse.CreateChatSessionReq
+	9,  // 17: muse.ChatService.UpdateChatSession:input_type -> muse.UpdateChatSessionReq
+	11, // 18: muse.ChatService.DeleteChatSession:input_type -> muse.DeleteChatSessionReq
+	13, // 19: muse.ChatService.SendMessage:input_type -> muse.SendMessageReq
+	15, // 20: muse.ChatService.RegenerateMessage:input_type -> muse.RegenerateMessageReq
+	17, // 21: muse.ChatService.EditMessage:input_type -> muse.EditMessageReq
+	19, // 22: muse.ChatService.DeleteMessage:input_type -> muse.DeleteMessageReq
+	21, // 23: muse.ChatService.SwitchSwipe:input_type -> muse.SwitchSwipeReq
+	23, // 24: muse.ChatService.GetCharLatestSession:input_type -> muse.GetCharLatestSessionReq
+	25, // 25: muse.ChatService.UpdateSessionTime:input_type -> muse.UpdateSessionTimeReq
+	27, // 26: muse.ChatService.DeleteSwipe:input_type -> muse.DeleteSwipeReq
+	4,  // 27: muse.ChatService.ListChatSessions:output_type -> muse.ListChatSessionsRsp
+	6,  // 28: muse.ChatService.GetChatSession:output_type -> muse.GetChatSessionRsp
+	8,  // 29: muse.ChatService.CreateChatSession:output_type -> muse.CreateChatSessionRsp
+	10, // 30: muse.ChatService.UpdateChatSession:output_type -> muse.UpdateChatSessionRsp
+	12, // 31: muse.ChatService.DeleteChatSession:output_type -> muse.DeleteChatSessionRsp
+	14, // 32: muse.ChatService.SendMessage:output_type -> muse.SendMessageRsp
+	16, // 33: muse.ChatService.RegenerateMessage:output_type -> muse.RegenerateMessageRsp
+	18, // 34: muse.ChatService.EditMessage:output_type -> muse.EditMessageRsp
+	20, // 35: muse.ChatService.DeleteMessage:output_type -> muse.DeleteMessageRsp
+	22, // 36: muse.ChatService.SwitchSwipe:output_type -> muse.SwitchSwipeRsp
+	24, // 37: muse.ChatService.GetCharLatestSession:output_type -> muse.GetCharLatestSessionRsp
+	26, // 38: muse.ChatService.UpdateSessionTime:output_type -> muse.UpdateSessionTimeRsp
+	28, // 39: muse.ChatService.DeleteSwipe:output_type -> muse.DeleteSwipeRsp
 	27, // [27:40] is the sub-list for method output_type
 	14, // [14:27] is the sub-list for method input_type
 	14, // [14:14] is the sub-list for extension type_name

@@ -25,8 +25,8 @@ func NewCharacterServer() *CharacterServer {
 }
 
 // ListCharacters 获取角色列表
-func (c *CharacterServer) ListCharacters(ctx context.Context, req *connect.Request[pb.ListCharactersRequest]) (
-	*connect.Response[pb.ListCharactersResponse], error) {
+func (c *CharacterServer) ListCharacters(ctx context.Context, req *connect.Request[pb.ListCharactersReq]) (
+	*connect.Response[pb.ListCharactersRsp], error) {
 	resp, err := c.character.ListCharacters(ctx, req.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "ListCharacters", req.Msg, resp, err)
@@ -35,8 +35,8 @@ func (c *CharacterServer) ListCharacters(ctx context.Context, req *connect.Reque
 }
 
 // GetCharacter 获取指定角色详情
-func (c *CharacterServer) GetCharacter(ctx context.Context, req *connect.Request[pb.GetCharacterRequest]) (
-	*connect.Response[pb.GetCharacterResponse], error) {
+func (c *CharacterServer) GetCharacter(ctx context.Context, req *connect.Request[pb.GetCharacterReq]) (
+	*connect.Response[pb.GetCharacterRsp], error) {
 	resp, err := c.character.GetCharacter(ctx, req.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "GetCharacter", req.Msg, resp, err)
@@ -45,13 +45,13 @@ func (c *CharacterServer) GetCharacter(ctx context.Context, req *connect.Request
 }
 
 // CreateCharacter 创建新角色
-func (c *CharacterServer) CreateCharacter(ctx context.Context, req *connect.Request[pb.CreateCharacterRequest]) (
-	*connect.Response[pb.CreateCharacterResponse], error) {
+func (c *CharacterServer) CreateCharacter(ctx context.Context, req *connect.Request[pb.CreateCharacterReq]) (
+	*connect.Response[pb.CreateCharacterRsp], error) {
 	// 开启事务
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return doResponseExp(ctx, "CreateCharacter", req.Msg, (*pb.CreateCharacterResponse)(nil), err)
+		return doResponseExp(ctx, "CreateCharacter", req.Msg, (*pb.CreateCharacterRsp)(nil), err)
 	}
 
 	resp, err := c.character.CreateCharacter(ctx, req.Msg)
@@ -62,13 +62,13 @@ func (c *CharacterServer) CreateCharacter(ctx context.Context, req *connect.Requ
 }
 
 // UpdateCharacter 更新指定角色
-func (c *CharacterServer) UpdateCharacter(ctx context.Context, req *connect.Request[pb.UpdateCharacterRequest]) (
-	*connect.Response[pb.UpdateCharacterResponse], error) {
+func (c *CharacterServer) UpdateCharacter(ctx context.Context, req *connect.Request[pb.UpdateCharacterReq]) (
+	*connect.Response[pb.UpdateCharacterRsp], error) {
 	// 开启事务
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return doResponseExp(ctx, "UpdateCharacter", req.Msg, (*pb.UpdateCharacterResponse)(nil), err)
+		return doResponseExp(ctx, "UpdateCharacter", req.Msg, (*pb.UpdateCharacterRsp)(nil), err)
 	}
 
 	resp, err := c.character.UpdateCharacter(ctx, req.Msg)
@@ -79,13 +79,13 @@ func (c *CharacterServer) UpdateCharacter(ctx context.Context, req *connect.Requ
 }
 
 // DeleteCharacter 删除指定角色
-func (c *CharacterServer) DeleteCharacter(ctx context.Context, req *connect.Request[pb.DeleteCharacterRequest]) (
-	*connect.Response[pb.DeleteCharacterResponse], error) {
+func (c *CharacterServer) DeleteCharacter(ctx context.Context, req *connect.Request[pb.DeleteCharacterReq]) (
+	*connect.Response[pb.DeleteCharacterRsp], error) {
 	// 开启事务
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return doResponseExp(ctx, "DeleteCharacter", req.Msg, (*pb.DeleteCharacterResponse)(nil), err)
+		return doResponseExp(ctx, "DeleteCharacter", req.Msg, (*pb.DeleteCharacterRsp)(nil), err)
 	}
 
 	resp, err := c.character.DeleteCharacter(ctx, req.Msg)
@@ -96,13 +96,13 @@ func (c *CharacterServer) DeleteCharacter(ctx context.Context, req *connect.Requ
 }
 
 // ImportCharacter 导入角色
-func (c *CharacterServer) ImportCharacter(ctx context.Context, req *connect.Request[pb.ImportCharacterRequest]) (
-	*connect.Response[pb.ImportCharacterResponse], error) {
+func (c *CharacterServer) ImportCharacter(ctx context.Context, req *connect.Request[pb.ImportCharacterReq]) (
+	*connect.Response[pb.ImportCharacterRsp], error) {
 	// 开启事务
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return doResponseExp(ctx, "ImportCharacter", req.Msg.FileName, (*pb.ImportCharacterResponse)(nil), err)
+		return doResponseExp(ctx, "ImportCharacter", req.Msg.FileName, (*pb.ImportCharacterRsp)(nil), err)
 	}
 
 	resp, err := c.character.ImportCharacter(ctx, req.Msg)
@@ -113,8 +113,8 @@ func (c *CharacterServer) ImportCharacter(ctx context.Context, req *connect.Requ
 }
 
 // ExportCharacter 导出角色
-func (c *CharacterServer) ExportCharacter(ctx context.Context, req *connect.Request[pb.ExportCharacterRequest]) (
-	*connect.Response[pb.ExportCharacterResponse], error) {
+func (c *CharacterServer) ExportCharacter(ctx context.Context, req *connect.Request[pb.ExportCharacterReq]) (
+	*connect.Response[pb.ExportCharacterRsp], error) {
 	resp, err := c.character.ExportCharacter(ctx, req.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "ExportCharacter", req.Msg, resp, err)
@@ -123,13 +123,13 @@ func (c *CharacterServer) ExportCharacter(ctx context.Context, req *connect.Requ
 }
 
 // RestoreCharacterWorldInfo 恢复角色的世界信息
-func (c *CharacterServer) RestoreCharacterWorldInfo(ctx context.Context, req *connect.Request[pb.RestoreCharacterWorldInfoRequest]) (
-	*connect.Response[pb.RestoreCharacterWorldInfoResponse], error) {
+func (c *CharacterServer) RestoreCharacterWorldInfo(ctx context.Context, req *connect.Request[pb.RestoreCharacterWorldInfoReq]) (
+	*connect.Response[pb.RestoreCharacterWorldInfoRsp], error) {
 	// 开启事务
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return doResponseExp(ctx, "RestoreCharacterWorldInfo", req.Msg, (*pb.RestoreCharacterWorldInfoResponse)(nil), err)
+		return doResponseExp(ctx, "RestoreCharacterWorldInfo", req.Msg, (*pb.RestoreCharacterWorldInfoRsp)(nil), err)
 	}
 
 	resp, err := c.character.RestoreCharacterWorldInfo(ctx, req.Msg)

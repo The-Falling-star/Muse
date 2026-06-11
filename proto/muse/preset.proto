@@ -59,14 +59,14 @@ message PromptItem {
 
 // 获取预设列表请求
 // 注意：此接口不加载关联的PromptItems和RegexRules数据，仅返回预设基本信息
-message ListPresetsRequest {
+message ListPresetsReq {
   int32 page = 1; // 页码，从1开始，默认为1
   int32 page_size = 2; // 每页数量，默认为20，最大100
 }
 
 // 获取预设列表响应
 // 注意：返回的预设不包含关联的PromptItems和RegexRules数据
-message ListPresetsResponse {
+message ListPresetsRsp {
   repeated PresetWithPromptLen presets = 1; // 预设列表
   int64 total = 2; // 总数
   int32 page = 3; // 当前页码
@@ -80,17 +80,17 @@ message PresetWithPromptLen {
 }
 
 // 获取单个预设请求
-message GetPresetRequest {
+message GetPresetReq {
   int32 id = 1;
 }
 
 // 获取单个预设响应
-message GetPresetResponse {
+message GetPresetRsp {
   PresetWithAll preset = 1;
 }
 
 // 创建预设请求
-message CreatePresetRequest {
+message CreatePresetReq {
   string name = 1;
   float temperature = 2;
   float top_p = 3;
@@ -98,12 +98,12 @@ message CreatePresetRequest {
   int32 max_tokens = 5;
   float frequency_penalty = 6;
   float presence_penalty = 7;
-  repeated CreatePromptItemRequest prompt_items = 8;
-  repeated AddRegexRuleRequest regex_rules = 9;
+  repeated CreatePromptItemReq prompt_items = 8;
+  repeated AddRegexRuleReq regex_rules = 9;
 }
 
 // 创建提示项请求（嵌套）
-message CreatePromptItemRequest {
+message CreatePromptItemReq {
   PromptItemIdentifier identifier = 1;
   string name = 2;
   optional string content = 3;
@@ -116,10 +116,10 @@ message CreatePromptItemRequest {
 }
 
 // 创建预设响应
-message CreatePresetResponse {}
+message CreatePresetRsp {}
 
 // 更新预设请求
-message UpdatePresetRequest {
+message UpdatePresetReq {
   int32 id = 1;
   string name = 2;
   float temperature = 3;
@@ -132,58 +132,58 @@ message UpdatePresetRequest {
 }
 
 // 更新预设响应
-message UpdatePresetResponse {}
+message UpdatePresetRsp {}
 
 // 删除预设请求
-message DeletePresetRequest {
+message DeletePresetReq {
   int32 id = 1;
 }
 
 // 删除预设响应
-message DeletePresetResponse {}
+message DeletePresetRsp {}
 
 // 设置活跃预设请求
-message SetActivePresetRequest {
+message SetActivePresetReq {
   int32 preset_id = 1;
 }
 
 // 设置活跃预设响应
-message SetActivePresetResponse {}
+message SetActivePresetRsp {}
 
 // 导入预设请求
-message ImportPresetRequest {
+message ImportPresetReq {
   bytes file_content = 1;  // JSON文件内容
   string file_name = 2;
 }
 
 // 导入预设响应
-message ImportPresetResponse {
+message ImportPresetRsp {
   PresetWithAll preset = 1;
 }
 
 // 导出预设请求
-message ExportPresetRequest {
+message ExportPresetReq {
   int32 id = 1;
 }
 
 // 导出预设响应
-message ExportPresetResponse {
+message ExportPresetRsp {
   bytes file_content = 1;
   string file_name = 2;
 }
 
 // 获取预设的提示项列表请求
-message ListPromptItemsRequest {
+message ListPromptItemsReq {
   int32 preset_id = 1;
 }
 
 // 获取预设的提示项列表响应
-message ListPromptItemsResponse {
+message ListPromptItemsRsp {
   repeated PromptItem items = 1;
 }
 
 // 创建提示项请求
-message AddPromptItemRequest {
+message AddPromptItemReq {
   int32 preset_id = 1;
   PromptItemIdentifier identifier = 2;
   string name = 3;
@@ -197,12 +197,12 @@ message AddPromptItemRequest {
 }
 
 // 创建提示项响应
-message AddPromptItemResponse {
+message AddPromptItemRsp {
   PromptItem item = 1;
 }
 
 // 更新提示项请求
-message UpdatePromptItemRequest {
+message UpdatePromptItemReq {
   int32 id = 1;
   PromptItemIdentifier identifier = 2;
   string name = 3;
@@ -218,20 +218,20 @@ message UpdatePromptItemRequest {
 }
 
 // 更新提示项响应
-message UpdatePromptItemResponse {
+message UpdatePromptItemRsp {
   PromptItem item = 1;
 }
 
 // 删除提示项请求
-message DeletePromptItemRequest {
+message DeletePromptItemReq {
   int32 id = 1;
 }
 
 // 删除提示项响应
-message DeletePromptItemResponse {}
+message DeletePromptItemRsp {}
 
 // 批量更新提示项排序请求
-message UpdatePromptItemsOrderRequest {
+message UpdatePromptItemsOrderReq {
   int32 preset_id = 1; // 预设ID
   int32 source_id = 2; // 原提示词ID
   int32 des_id = 3; // 目标提示词ID
@@ -239,35 +239,35 @@ message UpdatePromptItemsOrderRequest {
 }
 
 // 批量更新提示项排序响应
-message UpdatePromptItemsOrderResponse {}
+message UpdatePromptItemsOrderRsp {}
 
 // 预设服务（包含预设和提示项的管理）
 service PresetService {
   // 获取预设列表
-  rpc ListPresets(ListPresetsRequest) returns (ListPresetsResponse);
+  rpc ListPresets(ListPresetsReq) returns (ListPresetsRsp);
   // 获取单个预设
-  rpc GetPreset(GetPresetRequest) returns (GetPresetResponse);
+  rpc GetPreset(GetPresetReq) returns (GetPresetRsp);
   // 创建预设
-  rpc CreatePreset(CreatePresetRequest) returns (CreatePresetResponse);
+  rpc CreatePreset(CreatePresetReq) returns (CreatePresetRsp);
   // 更新预设
-  rpc UpdatePreset(UpdatePresetRequest) returns (UpdatePresetResponse);
+  rpc UpdatePreset(UpdatePresetReq) returns (UpdatePresetRsp);
   // 删除预设
-  rpc DeletePreset(DeletePresetRequest) returns (DeletePresetResponse);
+  rpc DeletePreset(DeletePresetReq) returns (DeletePresetRsp);
   // 设置活跃预设
-  rpc SetActivePreset(SetActivePresetRequest) returns (SetActivePresetResponse);
+  rpc SetActivePreset(SetActivePresetReq) returns (SetActivePresetRsp);
   // 导入预设（支持SillyTavern格式）
-  rpc ImportPreset(ImportPresetRequest) returns (ImportPresetResponse);
+  rpc ImportPreset(ImportPresetReq) returns (ImportPresetRsp);
   // 导出预设
-  rpc ExportPreset(ExportPresetRequest) returns (ExportPresetResponse);
+  rpc ExportPreset(ExportPresetReq) returns (ExportPresetRsp);
 
   // 获取预设的提示项列表
-  rpc ListPromptItems(ListPromptItemsRequest) returns (ListPromptItemsResponse);
+  rpc ListPromptItems(ListPromptItemsReq) returns (ListPromptItemsRsp);
   // 添加提示项
-  rpc AddPromptItem(AddPromptItemRequest) returns (AddPromptItemResponse);
+  rpc AddPromptItem(AddPromptItemReq) returns (AddPromptItemRsp);
   // 更新提示项
-  rpc UpdatePromptItem(UpdatePromptItemRequest) returns (UpdatePromptItemResponse);
+  rpc UpdatePromptItem(UpdatePromptItemReq) returns (UpdatePromptItemRsp);
   // 删除提示项
-  rpc DeletePromptItem(DeletePromptItemRequest) returns (DeletePromptItemResponse);
+  rpc DeletePromptItem(DeletePromptItemReq) returns (DeletePromptItemRsp);
   // 批量更新提示项排序
-  rpc UpdatePromptItemsOrder(UpdatePromptItemsOrderRequest) returns (UpdatePromptItemsOrderResponse);
+  rpc UpdatePromptItemsOrder(UpdatePromptItemsOrderReq) returns (UpdatePromptItemsOrderRsp);
 }

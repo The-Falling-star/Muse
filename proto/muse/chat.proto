@@ -49,67 +49,67 @@ message MessageSwipe {
 // ================================
 
 // 获取会话列表请求
-message ListChatSessionsRequest {
+message ListChatSessionsReq {
   optional int32 character_id = 1;  // 可选，按角色筛选
   optional int32 page = 2;
   optional int32 page_size = 3;
 }
 
 // 获取会话列表响应
-message ListChatSessionsResponse {
+message ListChatSessionsRsp {
   repeated ChatSession sessions = 1;
   int32 total = 2;
 }
 
 // 获取单个会话请求
-message GetChatSessionRequest {
+message GetChatSessionReq {
   int32 id = 1;
 }
 
 // 获取单个会话响应
-message GetChatSessionResponse {
+message GetChatSessionRsp {
   ChatSession session = 1;
 }
 
 // 创建会话请求
-message CreateChatSessionRequest {
+message CreateChatSessionReq {
   int32 character_id = 1;
   optional string name = 2;
 }
 
 // 创建会话响应
-message CreateChatSessionResponse {
+message CreateChatSessionRsp {
   ChatSession session = 1;
 }
 
 // 更新会话请求
-message UpdateChatSessionRequest {
+message UpdateChatSessionReq {
   int32 id = 1;
   optional string name = 2;
   int64 version = 3;  // 乐观锁版本号
 }
 
 // 更新会话响应
-message UpdateChatSessionResponse {
+message UpdateChatSessionRsp {
   ChatSession session = 1;
 }
 
 // 删除会话请求
-message DeleteChatSessionRequest {
+message DeleteChatSessionReq {
   int32 id = 1;
 }
 
 // 删除会话响应
-message DeleteChatSessionResponse {}
+message DeleteChatSessionRsp {}
 
 // 发送消息请求
-message SendMessageRequest {
+message SendMessageReq {
   int32 session_id = 1;
   string content = 2;
 }
 
 // 发送消息响应
-message SendMessageResponse {
+message SendMessageRsp {
   int32 index = 1; // 多个候选回复时，候选回复的下标
   string content = 2;
   bool done = 3;           // 是否完成
@@ -118,12 +118,12 @@ message SendMessageResponse {
 }
 
 // 重新生成消息请求
-message RegenerateMessageRequest {
+message RegenerateMessageReq {
   int32 message_id = 1;  // 要重新生成的AI消息ID
 }
 
 // 重新生成消息响应（流式）
-message RegenerateMessageResponse {
+message RegenerateMessageRsp {
   MessageSwipe new_swipe = 1;  // 新的swipe
   string content_delta = 2;    // 内容增量
   bool done = 3;        // 是否完成
@@ -132,89 +132,89 @@ message RegenerateMessageResponse {
 }
 
 // 编辑消息请求
-message EditMessageRequest {
+message EditMessageReq {
   int32 message_id = 1;
   int32 swipe_id = 2;     // 要编辑的swipe ID
   string content = 3;      // 新内容
 }
 
 // 编辑消息响应
-message EditMessageResponse {
+message EditMessageRsp {
   MessageSwipe swipe = 1;
 }
 
 // 删除消息请求
-message DeleteMessageRequest {
+message DeleteMessageReq {
   int32 message_id = 1;
 }
 
 // 删除消息响应
-message DeleteMessageResponse {}
+message DeleteMessageRsp {}
 
 // 切换Swipe请求
-message SwitchSwipeRequest {
+message SwitchSwipeReq {
   int32 message_id = 1;
   int32 swipe_index = 2;
 }
 
 // 切换Swipe响应
-message SwitchSwipeResponse {
+message SwitchSwipeRsp {
   Message message = 1;
 }
 
 // 获取角色最新会话请求
-message GetCharLatestSessionRequest {
+message GetCharLatestSessionReq {
   int32 character_id = 1;
 }
 
 // 获取角色最新会话响应
-message GetCharLatestSessionResponse {
+message GetCharLatestSessionRsp {
   ChatSession session = 1;
 }
 
 // 更新会话时间戳请求
-message UpdateSessionTimeRequest {
+message UpdateSessionTimeReq {
   int32 session_id = 1;
 }
 
 // 更新会话时间戳响应
-message UpdateSessionTimeResponse {}
+message UpdateSessionTimeRsp {}
 
 // 删除Swipe请求
-message DeleteSwipeRequest {
+message DeleteSwipeReq {
   int32 message_id = 1;
   int32 swipe_id = 2;
 }
 
 // 删除Swipe响应
-message DeleteSwipeResponse {}
+message DeleteSwipeRsp {}
 
 // 聊天服务
 service ChatService {
   // 获取会话列表
-  rpc ListChatSessions(ListChatSessionsRequest) returns (ListChatSessionsResponse);
+  rpc ListChatSessions(ListChatSessionsReq) returns (ListChatSessionsRsp);
   // 获取单个会话
-  rpc GetChatSession(GetChatSessionRequest) returns (GetChatSessionResponse);
+  rpc GetChatSession(GetChatSessionReq) returns (GetChatSessionRsp);
   // 创建会话
-  rpc CreateChatSession(CreateChatSessionRequest) returns (CreateChatSessionResponse);
+  rpc CreateChatSession(CreateChatSessionReq) returns (CreateChatSessionRsp);
   // 更新会话
-  rpc UpdateChatSession(UpdateChatSessionRequest) returns (UpdateChatSessionResponse);
+  rpc UpdateChatSession(UpdateChatSessionReq) returns (UpdateChatSessionRsp);
   // 删除会话
-  rpc DeleteChatSession(DeleteChatSessionRequest) returns (DeleteChatSessionResponse);
+  rpc DeleteChatSession(DeleteChatSessionReq) returns (DeleteChatSessionRsp);
   // 发送消息（流式响应）
-  rpc SendMessage(SendMessageRequest) returns (stream SendMessageResponse);
+  rpc SendMessage(SendMessageReq) returns (stream SendMessageRsp);
   // 重新生成消息（流式响应）
-  rpc RegenerateMessage(RegenerateMessageRequest) returns (stream RegenerateMessageResponse);
+  rpc RegenerateMessage(RegenerateMessageReq) returns (stream RegenerateMessageRsp);
   // 编辑消息
-  rpc EditMessage(EditMessageRequest) returns (EditMessageResponse);
+  rpc EditMessage(EditMessageReq) returns (EditMessageRsp);
   // 删除消息
-  rpc DeleteMessage(DeleteMessageRequest) returns (DeleteMessageResponse);
+  rpc DeleteMessage(DeleteMessageReq) returns (DeleteMessageRsp);
   // 切换Swipe
-  rpc SwitchSwipe(SwitchSwipeRequest) returns (SwitchSwipeResponse);
+  rpc SwitchSwipe(SwitchSwipeReq) returns (SwitchSwipeRsp);
   // 获取角色最新会话
-  rpc GetCharLatestSession(GetCharLatestSessionRequest) returns (GetCharLatestSessionResponse);
+  rpc GetCharLatestSession(GetCharLatestSessionReq) returns (GetCharLatestSessionRsp);
   // 更新会话时间戳
-  rpc UpdateSessionTime(UpdateSessionTimeRequest) returns (UpdateSessionTimeResponse);
+  rpc UpdateSessionTime(UpdateSessionTimeReq) returns (UpdateSessionTimeRsp);
   // 删除swipe
-  rpc DeleteSwipe(DeleteSwipeRequest) returns (DeleteSwipeResponse);
+  rpc DeleteSwipe(DeleteSwipeReq) returns (DeleteSwipeRsp);
 }

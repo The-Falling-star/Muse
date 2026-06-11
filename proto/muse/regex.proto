@@ -39,18 +39,18 @@ message RegexRule {
 // ================================
 
 // 获取正则规则列表请求（全量拉取全局+预设+角色正则）
-message ListRegexRulesRequest {
+message ListRegexRulesReq {
   int32 preset_id = 1;     // 预设ID（0表示仅拉取全局正则）
   int32 character_id = 2;  // 角色ID（0表示仅拉取角色正则）
 }
 
 // 获取正则规则列表响应（全量，不分页）
-message ListRegexRulesResponse {
+message ListRegexRulesRsp {
   repeated RegexRule rules = 1;
 }
 
 // 添加正则规则请求
-message AddRegexRuleRequest {
+message AddRegexRuleReq {
   int32 preset_id = 1;
   int32 character_id = 16;
   string name = 2;
@@ -66,12 +66,12 @@ message AddRegexRuleRequest {
 }
 
 // 添加正则规则响应
-message AddRegexRuleResponse {
+message AddRegexRuleRsp {
   RegexRule rule = 1;
 }
 
 // 更新正则规则请求
-message UpdateRegexRuleRequest {
+message UpdateRegexRuleReq {
   int32 id = 1;
   string name = 2;
   string find_pattern = 3;
@@ -86,44 +86,44 @@ message UpdateRegexRuleRequest {
 }
 
 // 更新正则规则响应
-message UpdateRegexRuleResponse {
+message UpdateRegexRuleRsp {
   RegexRule rule = 1;
 }
 
 // 删除正则规则请求
-message DeleteRegexRuleRequest {
+message DeleteRegexRuleReq {
   int32 id = 1;
 }
 
 // 删除正则规则响应
-message DeleteRegexRuleResponse {}
+message DeleteRegexRuleRsp {}
 
 // 批量更新正则规则排序请求
-message UpdateRegexRulesOrderRequest {
+message UpdateRegexRulesOrderReq {
   int32 preset_id = 1;
   repeated int32 rule_ids = 2;  // 按新顺序排列的ID列表
 }
 
 // 批量更新正则规则排序响应
-message UpdateRegexRulesOrderResponse {}
+message UpdateRegexRulesOrderRsp {}
 
 // 导入正则规则请求
 // 导入的都是全局正则（preset_id = 0）
-message ImportRegexRulesRequest {
+message ImportRegexRulesReq {
   bytes file_content = 1;  // JSON文件内容
   string file_name = 2;
 }
 
 // 导入正则规则响应
-message ImportRegexRulesResponse {}
+message ImportRegexRulesRsp {}
 
 // 导出正则规则请求
-message ExportRegexRulesRequest {
+message ExportRegexRulesReq {
   int32 preset_id = 1;
 }
 
 // 导出正则规则响应
-message ExportRegexRulesResponse {
+message ExportRegexRulesRsp {
   bytes file_content = 1;
   string file_name = 2;
 }
@@ -131,17 +131,17 @@ message ExportRegexRulesResponse {
 // 正则规则服务
 service RegexRuleService {
   // 获取正则规则列表（全量拉取全局+预设+角色正则）
-  rpc ListRegexRules(ListRegexRulesRequest) returns (ListRegexRulesResponse);
+  rpc ListRegexRules(ListRegexRulesReq) returns (ListRegexRulesRsp);
   // 添加正则规则
-  rpc AddRegexRule(AddRegexRuleRequest) returns (AddRegexRuleResponse);
+  rpc AddRegexRule(AddRegexRuleReq) returns (AddRegexRuleRsp);
   // 更新正则规则
-  rpc UpdateRegexRule(UpdateRegexRuleRequest) returns (UpdateRegexRuleResponse);
+  rpc UpdateRegexRule(UpdateRegexRuleReq) returns (UpdateRegexRuleRsp);
   // 删除正则规则
-  rpc DeleteRegexRule(DeleteRegexRuleRequest) returns (DeleteRegexRuleResponse);
+  rpc DeleteRegexRule(DeleteRegexRuleReq) returns (DeleteRegexRuleRsp);
   // 批量更新正则规则排序
-  rpc UpdateRegexRulesOrder(UpdateRegexRulesOrderRequest) returns (UpdateRegexRulesOrderResponse);
+  rpc UpdateRegexRulesOrder(UpdateRegexRulesOrderReq) returns (UpdateRegexRulesOrderRsp);
   // 导入正则规则
-  rpc ImportRegexRules(ImportRegexRulesRequest) returns (ImportRegexRulesResponse);
+  rpc ImportRegexRules(ImportRegexRulesReq) returns (ImportRegexRulesRsp);
   // 导出正则规则
-  rpc ExportRegexRules(ExportRegexRulesRequest) returns (ExportRegexRulesResponse);
+  rpc ExportRegexRules(ExportRegexRulesReq) returns (ExportRegexRulesRsp);
 }

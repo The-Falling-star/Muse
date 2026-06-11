@@ -54,82 +54,82 @@ message APIConfig {
 // ================================
 
 // 注册请求
-message RegisterRequest {
+message RegisterReq {
   string username = 1;
   string password = 2;
 }
 
 // 注册响应
-message RegisterResponse {
+message RegisterRsp {
   SysUser user = 1;
   string token = 2;
 }
 
 // 登录请求
-message LoginRequest {
+message LoginReq {
   string username = 1;
   string password = 2;
 }
 
 // 登录响应
-message LoginResponse {
+message LoginRsp {
   SysUser user = 1;
   string token = 2;
 }
 
 // 获取当前用户请求
-message GetCurrentUserRequest {}
+message GetCurrentUserReq {}
 
 // 获取当前用户响应
-message GetCurrentUserResponse {
+message GetCurrentUserRsp {
   SysUser user = 1;
 }
 
 // 修改密码请求
-message ChangePasswordRequest {
+message ChangePasswordReq {
   string old_password = 1;
   string new_password = 2;
 }
 
 // 修改密码响应
-message ChangePasswordResponse {}
+message ChangePasswordRsp {}
 
 // ================================
 // 用户服务（包含认证、人设、用户设置和API配置的管理）
 // ================================
 
 // 获取人设列表请求
-message ListPersonasRequest {}
+message ListPersonasReq {}
 
 // 获取人设列表响应
-message ListPersonasResponse {
+message ListPersonasRsp {
   repeated Persona personas = 1;
 }
 
 // 获取单个人设请求
-message GetPersonaRequest {
+message GetPersonaReq {
   int32 id = 1;
 }
 
 // 获取单个人设响应
-message GetPersonaResponse {
+message GetPersonaRsp {
   Persona persona = 1;
 }
 
 // 创建人设请求
-message CreatePersonaRequest {
+message CreatePersonaReq {
   string name = 1;
   optional string avatar = 2;
   optional string description = 3;
 }
 
 // 创建人设响应
-message CreatePersonaResponse {
+message CreatePersonaRsp {
   Persona persona = 1;
 }
 
 // 更新人设请求
-message UpdatePersonaRequest {
+message UpdatePersonaReq {
   int32 id = 1;
   string name = 2;
   optional string avatar = 3;
@@ -137,40 +137,40 @@ message UpdatePersonaRequest {
 }
 
 // 更新人设响应
-message UpdatePersonaResponse {
+message UpdatePersonaRsp {
   Persona persona = 1;
 }
 
 // 删除人设请求
-message DeletePersonaRequest {
+message DeletePersonaReq {
   int32 id = 1;
 }
 
 // 删除人设响应
-message DeletePersonaResponse {}
+message DeletePersonaRsp {}
 
 // 设置活跃人设请求
-message SetActivePersonaRequest {
+message SetActivePersonaReq {
   int32 persona_id = 1;
 }
 
 // 设置活跃人设响应
-message SetActivePersonaResponse {}
+message SetActivePersonaRsp {}
 
 // ================================
 // 用户设置
 // ================================
 
 // 获取用户设置请求
-message GetUserInfoRequest {}
+message GetUserInfoReq {}
 
 // 获取用户信息响应
-message GetUserInfoResponse {
+message GetUserInfoRsp {
   SysUser user = 1;
 }
 
 // 更新用户信息请求
-message UpdateUserInfoRequest {
+message UpdateUserInfoReq {
   optional Theme theme = 1;
   optional string language = 2;
   optional APIProvider provider = 5;
@@ -179,66 +179,66 @@ message UpdateUserInfoRequest {
 }
 
 // 更新用户信息响应
-message UpdateUserInfoResponse {}
+message UpdateUserInfoRsp {}
 
 // ================================
 // API配置
 // ================================
 
 // 获取API配置列表请求
-message ListAPIConfigsRequest {
+message ListAPIConfigsReq {
   APIProvider provider = 1;
 }
 
 // 获取API配置列表响应
-message ListAPIConfigsResponse {
+message ListAPIConfigsRsp {
   repeated APIConfig configs = 1;
 }
 
 // 创建API配置请求
-message CreateAPIConfigRequest {
+message CreateAPIConfigReq {
   APIProvider provider = 2;
   string api_key = 3;
 }
 
 // 创建API配置响应
-message CreateAPIConfigResponse {
+message CreateAPIConfigRsp {
   int32 config_id = 1;
 }
 
 // 更新API配置请求
-message UpdateAPIConfigRequest {
+message UpdateAPIConfigReq {
   int32 id = 1;
   APIProvider provider = 3;
   optional string api_key = 4;  // 可选，不传则不更新
 }
 
 // 更新API配置响应
-message UpdateAPIConfigResponse {}
+message UpdateAPIConfigRsp {}
 
 // 删除API配置请求
-message DeleteAPIConfigRequest {
+message DeleteAPIConfigReq {
   int32 id = 1;
 }
 
 // 删除API配置响应
-message DeleteAPIConfigResponse {}
+message DeleteAPIConfigRsp {}
 
 // 设置活跃API配置请求
-message SetActiveAPIConfigRequest {
+message SetActiveAPIConfigReq {
   int32 config_id = 1;
 }
 
 // 设置活跃API配置响应
-message SetActiveAPIConfigResponse {}
+message SetActiveAPIConfigRsp {}
 
 // 测试API配置请求
-message TestAPIConfigRequest {
+message TestAPIConfigReq {
   int32 id = 1;
 }
 
 // 测试API配置响应
-message TestAPIConfigResponse {
+message TestAPIConfigRsp {
   bool success = 1;
   optional string error_message = 2;
   optional string model_info = 3;  // 返回的模型信息
@@ -247,42 +247,42 @@ message TestAPIConfigResponse {
 // 用户服务（包含认证、人设、用户设置和API配置的管理）
 service UserService {
   // 用户注册
-  rpc Register(RegisterRequest) returns (RegisterResponse);
+  rpc Register(RegisterReq) returns (RegisterRsp);
   // 用户登录
-  rpc Login(LoginRequest) returns (LoginResponse);
+  rpc Login(LoginReq) returns (LoginRsp);
   // 获取当前用户信息
-  rpc GetCurrentUser(GetCurrentUserRequest) returns (GetCurrentUserResponse);
+  rpc GetCurrentUser(GetCurrentUserReq) returns (GetCurrentUserRsp);
   // 修改密码
-  rpc ChangePassword(ChangePasswordRequest) returns (ChangePasswordResponse);
+  rpc ChangePassword(ChangePasswordReq) returns (ChangePasswordRsp);
 
   // 获取人设列表
-  rpc ListPersonas(ListPersonasRequest) returns (ListPersonasResponse);
+  rpc ListPersonas(ListPersonasReq) returns (ListPersonasRsp);
   // 获取单个人设
-  rpc GetPersona(GetPersonaRequest) returns (GetPersonaResponse);
+  rpc GetPersona(GetPersonaReq) returns (GetPersonaRsp);
   // 创建人设
-  rpc CreatePersona(CreatePersonaRequest) returns (CreatePersonaResponse);
+  rpc CreatePersona(CreatePersonaReq) returns (CreatePersonaRsp);
   // 更新人设
-  rpc UpdatePersona(UpdatePersonaRequest) returns (UpdatePersonaResponse);
+  rpc UpdatePersona(UpdatePersonaReq) returns (UpdatePersonaRsp);
   // 删除人设
-  rpc DeletePersona(DeletePersonaRequest) returns (DeletePersonaResponse);
+  rpc DeletePersona(DeletePersonaReq) returns (DeletePersonaRsp);
   // 设置活跃人设
-  rpc SetActivePersona(SetActivePersonaRequest) returns (SetActivePersonaResponse);
+  rpc SetActivePersona(SetActivePersonaReq) returns (SetActivePersonaRsp);
 
   // 获取用户信息
-  rpc GetUserInfo(GetUserInfoRequest) returns (GetUserInfoResponse);
+  rpc GetUserInfo(GetUserInfoReq) returns (GetUserInfoRsp);
   // 更新用户信息
-  rpc UpdateUserInfo(UpdateUserInfoRequest) returns (UpdateUserInfoResponse);
+  rpc UpdateUserInfo(UpdateUserInfoReq) returns (UpdateUserInfoRsp);
 
   // 获取API配置列表
-  rpc ListAPIConfigs(ListAPIConfigsRequest) returns (ListAPIConfigsResponse);
+  rpc ListAPIConfigs(ListAPIConfigsReq) returns (ListAPIConfigsRsp);
   // 创建API配置
-  rpc CreateAPIConfig(CreateAPIConfigRequest) returns (CreateAPIConfigResponse);
+  rpc CreateAPIConfig(CreateAPIConfigReq) returns (CreateAPIConfigRsp);
   // 更新API配置
-  rpc UpdateAPIConfig(UpdateAPIConfigRequest) returns (UpdateAPIConfigResponse);
+  rpc UpdateAPIConfig(UpdateAPIConfigReq) returns (UpdateAPIConfigRsp);
   // 删除API配置
-  rpc DeleteAPIConfig(DeleteAPIConfigRequest) returns (DeleteAPIConfigResponse);
+  rpc DeleteAPIConfig(DeleteAPIConfigReq) returns (DeleteAPIConfigRsp);
   // 设置活跃API配置
-  rpc SetActiveAPIConfig(SetActiveAPIConfigRequest) returns (SetActiveAPIConfigResponse);
+  rpc SetActiveAPIConfig(SetActiveAPIConfigReq) returns (SetActiveAPIConfigRsp);
   // 测试API配置连接
-  rpc TestAPIConfig(TestAPIConfigRequest) returns (TestAPIConfigResponse);
+  rpc TestAPIConfig(TestAPIConfigReq) returns (TestAPIConfigRsp);
 }

@@ -14,7 +14,7 @@ import type { Message as Message$1 } from "@bufbuild/protobuf";
  * Describes the file muse/chat.proto.
  */
 export const file_muse_chat: GenFile = /*@__PURE__*/
-  fileDesc("Cg9tdXNlL2NoYXQucHJvdG8SBG11c2UizAEKC0NoYXRTZXNzaW9uEgoKAmlkGAEgASgFEg8KB3VzZXJfaWQYAiABKAUSFAoMY2hhcmFjdGVyX2lkGAMgASgFEgwKBG5hbWUYBCABKAkSDwoHdmVyc2lvbhgFIAEoAxISCgpjcmVhdGVkX2F0GAYgASgDEhIKCnVwZGF0ZWRfYXQYByABKAMSIgoJY2hhcmFjdGVyGAggASgLMg8ubXVzZS5DaGFyYWN0ZXISHwoIbWVzc2FnZXMYCSADKAsyDS5tdXNlLk1lc3NhZ2UivwEKB01lc3NhZ2USCgoCaWQYASABKAUSEgoKc2Vzc2lvbl9pZBgCIAEoBRIYCgRyb2xlGAMgASgOMgoubXVzZS5Sb2xlEhoKEmFjdGl2ZV9zd2lwZV9pbmRleBgEIAEoBRISCgpzb3J0X29yZGVyGAUgASgFEhIKCmNyZWF0ZWRfYXQYBiABKAMSEgoKdXBkYXRlZF9hdBgHIAEoAxIiCgZzd2lwZXMYCCADKAsyEi5tdXNlLk1lc3NhZ2VTd2lwZSJTCgxNZXNzYWdlU3dpcGUSCgoCaWQYASABKAUSEgoKbWVzc2FnZV9pZBgCIAEoBRIPCgdjb250ZW50GAMgASgJEhIKCmNyZWF0ZWRfYXQYBCABKAMihwEKF0xpc3RDaGF0U2Vzc2lvbnNSZXF1ZXN0EhkKDGNoYXJhY3Rlcl9pZBgBIAEoBUgAiAEBEhEKBHBhZ2UYAiABKAVIAYgBARIWCglwYWdlX3NpemUYAyABKAVIAogBAUIPCg1fY2hhcmFjdGVyX2lkQgcKBV9wYWdlQgwKCl9wYWdlX3NpemUiTgoYTGlzdENoYXRTZXNzaW9uc1Jlc3BvbnNlEiMKCHNlc3Npb25zGAEgAygLMhEubXVzZS5DaGF0U2Vzc2lvbhINCgV0b3RhbBgCIAEoBSIjChVHZXRDaGF0U2Vzc2lvblJlcXVlc3QSCgoCaWQYASABKAUiPAoWR2V0Q2hhdFNlc3Npb25SZXNwb25zZRIiCgdzZXNzaW9uGAEgASgLMhEubXVzZS5DaGF0U2Vzc2lvbiJMChhDcmVhdGVDaGF0U2Vzc2lvblJlcXVlc3QSFAoMY2hhcmFjdGVyX2lkGAEgASgFEhEKBG5hbWUYAiABKAlIAIgBAUIHCgVfbmFtZSI/ChlDcmVhdGVDaGF0U2Vzc2lvblJlc3BvbnNlEiIKB3Nlc3Npb24YASABKAsyES5tdXNlLkNoYXRTZXNzaW9uIlMKGFVwZGF0ZUNoYXRTZXNzaW9uUmVxdWVzdBIKCgJpZBgBIAEoBRIRCgRuYW1lGAIgASgJSACIAQESDwoHdmVyc2lvbhgDIAEoA0IHCgVfbmFtZSI/ChlVcGRhdGVDaGF0U2Vzc2lvblJlc3BvbnNlEiIKB3Nlc3Npb24YASABKAsyES5tdXNlLkNoYXRTZXNzaW9uIiYKGERlbGV0ZUNoYXRTZXNzaW9uUmVxdWVzdBIKCgJpZBgBIAEoBSIbChlEZWxldGVDaGF0U2Vzc2lvblJlc3BvbnNlIjkKElNlbmRNZXNzYWdlUmVxdWVzdBISCgpzZXNzaW9uX2lkGAEgASgFEg8KB2NvbnRlbnQYAiABKAkieQoTU2VuZE1lc3NhZ2VSZXNwb25zZRINCgVpbmRleBgBIAEoBRIPCgdjb250ZW50GAIgASgJEgwKBGRvbmUYAyABKAgSHwoIZXJyX2NvZGUYBCABKA4yDS5tdXNlLkVyckNvZGUSEwoLZXJyX21lc3NhZ2UYBSABKAkiLgoYUmVnZW5lcmF0ZU1lc3NhZ2VSZXF1ZXN0EhIKCm1lc3NhZ2VfaWQYASABKAUinQEKGVJlZ2VuZXJhdGVNZXNzYWdlUmVzcG9uc2USJQoJbmV3X3N3aXBlGAEgASgLMhIubXVzZS5NZXNzYWdlU3dpcGUSFQoNY29udGVudF9kZWx0YRgCIAEoCRIMCgRkb25lGAMgASgIEh8KCGVycl9jb2RlGAQgASgOMg0ubXVzZS5FcnJDb2RlEhMKC2Vycl9tZXNzYWdlGAUgASgJIksKEkVkaXRNZXNzYWdlUmVxdWVzdBISCgptZXNzYWdlX2lkGAEgASgFEhAKCHN3aXBlX2lkGAIgASgFEg8KB2NvbnRlbnQYAyABKAkiOAoTRWRpdE1lc3NhZ2VSZXNwb25zZRIhCgVzd2lwZRgBIAEoCzISLm11c2UuTWVzc2FnZVN3aXBlIioKFERlbGV0ZU1lc3NhZ2VSZXF1ZXN0EhIKCm1lc3NhZ2VfaWQYASABKAUiFwoVRGVsZXRlTWVzc2FnZVJlc3BvbnNlIj0KElN3aXRjaFN3aXBlUmVxdWVzdBISCgptZXNzYWdlX2lkGAEgASgFEhMKC3N3aXBlX2luZGV4GAIgASgFIjUKE1N3aXRjaFN3aXBlUmVzcG9uc2USHgoHbWVzc2FnZRgBIAEoCzINLm11c2UuTWVzc2FnZSIzChtHZXRDaGFyTGF0ZXN0U2Vzc2lvblJlcXVlc3QSFAoMY2hhcmFjdGVyX2lkGAEgASgFIkIKHEdldENoYXJMYXRlc3RTZXNzaW9uUmVzcG9uc2USIgoHc2Vzc2lvbhgBIAEoCzIRLm11c2UuQ2hhdFNlc3Npb24iLgoYVXBkYXRlU2Vzc2lvblRpbWVSZXF1ZXN0EhIKCnNlc3Npb25faWQYASABKAUiGwoZVXBkYXRlU2Vzc2lvblRpbWVSZXNwb25zZSI6ChJEZWxldGVTd2lwZVJlcXVlc3QSEgoKbWVzc2FnZV9pZBgBIAEoBRIQCghzd2lwZV9pZBgCIAEoBSIVChNEZWxldGVTd2lwZVJlc3BvbnNlMpgICgtDaGF0U2VydmljZRJRChBMaXN0Q2hhdFNlc3Npb25zEh0ubXVzZS5MaXN0Q2hhdFNlc3Npb25zUmVxdWVzdBoeLm11c2UuTGlzdENoYXRTZXNzaW9uc1Jlc3BvbnNlEksKDkdldENoYXRTZXNzaW9uEhsubXVzZS5HZXRDaGF0U2Vzc2lvblJlcXVlc3QaHC5tdXNlLkdldENoYXRTZXNzaW9uUmVzcG9uc2USVAoRQ3JlYXRlQ2hhdFNlc3Npb24SHi5tdXNlLkNyZWF0ZUNoYXRTZXNzaW9uUmVxdWVzdBofLm11c2UuQ3JlYXRlQ2hhdFNlc3Npb25SZXNwb25zZRJUChFVcGRhdGVDaGF0U2Vzc2lvbhIeLm11c2UuVXBkYXRlQ2hhdFNlc3Npb25SZXF1ZXN0Gh8ubXVzZS5VcGRhdGVDaGF0U2Vzc2lvblJlc3BvbnNlElQKEURlbGV0ZUNoYXRTZXNzaW9uEh4ubXVzZS5EZWxldGVDaGF0U2Vzc2lvblJlcXVlc3QaHy5tdXNlLkRlbGV0ZUNoYXRTZXNzaW9uUmVzcG9uc2USRAoLU2VuZE1lc3NhZ2USGC5tdXNlLlNlbmRNZXNzYWdlUmVxdWVzdBoZLm11c2UuU2VuZE1lc3NhZ2VSZXNwb25zZTABElYKEVJlZ2VuZXJhdGVNZXNzYWdlEh4ubXVzZS5SZWdlbmVyYXRlTWVzc2FnZVJlcXVlc3QaHy5tdXNlLlJlZ2VuZXJhdGVNZXNzYWdlUmVzcG9uc2UwARJCCgtFZGl0TWVzc2FnZRIYLm11c2UuRWRpdE1lc3NhZ2VSZXF1ZXN0GhkubXVzZS5FZGl0TWVzc2FnZVJlc3BvbnNlEkgKDURlbGV0ZU1lc3NhZ2USGi5tdXNlLkRlbGV0ZU1lc3NhZ2VSZXF1ZXN0GhsubXVzZS5EZWxldGVNZXNzYWdlUmVzcG9uc2USQgoLU3dpdGNoU3dpcGUSGC5tdXNlLlN3aXRjaFN3aXBlUmVxdWVzdBoZLm11c2UuU3dpdGNoU3dpcGVSZXNwb25zZRJdChRHZXRDaGFyTGF0ZXN0U2Vzc2lvbhIhLm11c2UuR2V0Q2hhckxhdGVzdFNlc3Npb25SZXF1ZXN0GiIubXVzZS5HZXRDaGFyTGF0ZXN0U2Vzc2lvblJlc3BvbnNlElQKEVVwZGF0ZVNlc3Npb25UaW1lEh4ubXVzZS5VcGRhdGVTZXNzaW9uVGltZVJlcXVlc3QaHy5tdXNlLlVwZGF0ZVNlc3Npb25UaW1lUmVzcG9uc2USQgoLRGVsZXRlU3dpcGUSGC5tdXNlLkRlbGV0ZVN3aXBlUmVxdWVzdBoZLm11c2UuRGVsZXRlU3dpcGVSZXNwb25zZUJkCghjb20ubXVzZUIJQ2hhdFByb3RvUAFaHWdpdGh1Yi5jb20vbGluZy9tdXNlL2dlbi9tdXNlogIDTVhYqgIETXVzZcoCBE11c2XiAhBNdXNlXEdQQk1ldGFkYXRh6gIETXVzZWIGcHJvdG8z", [file_muse_common, file_muse_character]);
+  fileDesc("Cg9tdXNlL2NoYXQucHJvdG8SBG11c2UizAEKC0NoYXRTZXNzaW9uEgoKAmlkGAEgASgFEg8KB3VzZXJfaWQYAiABKAUSFAoMY2hhcmFjdGVyX2lkGAMgASgFEgwKBG5hbWUYBCABKAkSDwoHdmVyc2lvbhgFIAEoAxISCgpjcmVhdGVkX2F0GAYgASgDEhIKCnVwZGF0ZWRfYXQYByABKAMSIgoJY2hhcmFjdGVyGAggASgLMg8ubXVzZS5DaGFyYWN0ZXISHwoIbWVzc2FnZXMYCSADKAsyDS5tdXNlLk1lc3NhZ2UivwEKB01lc3NhZ2USCgoCaWQYASABKAUSEgoKc2Vzc2lvbl9pZBgCIAEoBRIYCgRyb2xlGAMgASgOMgoubXVzZS5Sb2xlEhoKEmFjdGl2ZV9zd2lwZV9pbmRleBgEIAEoBRISCgpzb3J0X29yZGVyGAUgASgFEhIKCmNyZWF0ZWRfYXQYBiABKAMSEgoKdXBkYXRlZF9hdBgHIAEoAxIiCgZzd2lwZXMYCCADKAsyEi5tdXNlLk1lc3NhZ2VTd2lwZSJTCgxNZXNzYWdlU3dpcGUSCgoCaWQYASABKAUSEgoKbWVzc2FnZV9pZBgCIAEoBRIPCgdjb250ZW50GAMgASgJEhIKCmNyZWF0ZWRfYXQYBCABKAMigwEKE0xpc3RDaGF0U2Vzc2lvbnNSZXESGQoMY2hhcmFjdGVyX2lkGAEgASgFSACIAQESEQoEcGFnZRgCIAEoBUgBiAEBEhYKCXBhZ2Vfc2l6ZRgDIAEoBUgCiAEBQg8KDV9jaGFyYWN0ZXJfaWRCBwoFX3BhZ2VCDAoKX3BhZ2Vfc2l6ZSJJChNMaXN0Q2hhdFNlc3Npb25zUnNwEiMKCHNlc3Npb25zGAEgAygLMhEubXVzZS5DaGF0U2Vzc2lvbhINCgV0b3RhbBgCIAEoBSIfChFHZXRDaGF0U2Vzc2lvblJlcRIKCgJpZBgBIAEoBSI3ChFHZXRDaGF0U2Vzc2lvblJzcBIiCgdzZXNzaW9uGAEgASgLMhEubXVzZS5DaGF0U2Vzc2lvbiJIChRDcmVhdGVDaGF0U2Vzc2lvblJlcRIUCgxjaGFyYWN0ZXJfaWQYASABKAUSEQoEbmFtZRgCIAEoCUgAiAEBQgcKBV9uYW1lIjoKFENyZWF0ZUNoYXRTZXNzaW9uUnNwEiIKB3Nlc3Npb24YASABKAsyES5tdXNlLkNoYXRTZXNzaW9uIk8KFFVwZGF0ZUNoYXRTZXNzaW9uUmVxEgoKAmlkGAEgASgFEhEKBG5hbWUYAiABKAlIAIgBARIPCgd2ZXJzaW9uGAMgASgDQgcKBV9uYW1lIjoKFFVwZGF0ZUNoYXRTZXNzaW9uUnNwEiIKB3Nlc3Npb24YASABKAsyES5tdXNlLkNoYXRTZXNzaW9uIiIKFERlbGV0ZUNoYXRTZXNzaW9uUmVxEgoKAmlkGAEgASgFIhYKFERlbGV0ZUNoYXRTZXNzaW9uUnNwIjUKDlNlbmRNZXNzYWdlUmVxEhIKCnNlc3Npb25faWQYASABKAUSDwoHY29udGVudBgCIAEoCSJ0Cg5TZW5kTWVzc2FnZVJzcBINCgVpbmRleBgBIAEoBRIPCgdjb250ZW50GAIgASgJEgwKBGRvbmUYAyABKAgSHwoIZXJyX2NvZGUYBCABKA4yDS5tdXNlLkVyckNvZGUSEwoLZXJyX21lc3NhZ2UYBSABKAkiKgoUUmVnZW5lcmF0ZU1lc3NhZ2VSZXESEgoKbWVzc2FnZV9pZBgBIAEoBSKYAQoUUmVnZW5lcmF0ZU1lc3NhZ2VSc3ASJQoJbmV3X3N3aXBlGAEgASgLMhIubXVzZS5NZXNzYWdlU3dpcGUSFQoNY29udGVudF9kZWx0YRgCIAEoCRIMCgRkb25lGAMgASgIEh8KCGVycl9jb2RlGAQgASgOMg0ubXVzZS5FcnJDb2RlEhMKC2Vycl9tZXNzYWdlGAUgASgJIkcKDkVkaXRNZXNzYWdlUmVxEhIKCm1lc3NhZ2VfaWQYASABKAUSEAoIc3dpcGVfaWQYAiABKAUSDwoHY29udGVudBgDIAEoCSIzCg5FZGl0TWVzc2FnZVJzcBIhCgVzd2lwZRgBIAEoCzISLm11c2UuTWVzc2FnZVN3aXBlIiYKEERlbGV0ZU1lc3NhZ2VSZXESEgoKbWVzc2FnZV9pZBgBIAEoBSISChBEZWxldGVNZXNzYWdlUnNwIjkKDlN3aXRjaFN3aXBlUmVxEhIKCm1lc3NhZ2VfaWQYASABKAUSEwoLc3dpcGVfaW5kZXgYAiABKAUiMAoOU3dpdGNoU3dpcGVSc3ASHgoHbWVzc2FnZRgBIAEoCzINLm11c2UuTWVzc2FnZSIvChdHZXRDaGFyTGF0ZXN0U2Vzc2lvblJlcRIUCgxjaGFyYWN0ZXJfaWQYASABKAUiPQoXR2V0Q2hhckxhdGVzdFNlc3Npb25Sc3ASIgoHc2Vzc2lvbhgBIAEoCzIRLm11c2UuQ2hhdFNlc3Npb24iKgoUVXBkYXRlU2Vzc2lvblRpbWVSZXESEgoKc2Vzc2lvbl9pZBgBIAEoBSIWChRVcGRhdGVTZXNzaW9uVGltZVJzcCI2Cg5EZWxldGVTd2lwZVJlcRISCgptZXNzYWdlX2lkGAEgASgFEhAKCHN3aXBlX2lkGAIgASgFIhAKDkRlbGV0ZVN3aXBlUnNwMqMHCgtDaGF0U2VydmljZRJIChBMaXN0Q2hhdFNlc3Npb25zEhkubXVzZS5MaXN0Q2hhdFNlc3Npb25zUmVxGhkubXVzZS5MaXN0Q2hhdFNlc3Npb25zUnNwEkIKDkdldENoYXRTZXNzaW9uEhcubXVzZS5HZXRDaGF0U2Vzc2lvblJlcRoXLm11c2UuR2V0Q2hhdFNlc3Npb25Sc3ASSwoRQ3JlYXRlQ2hhdFNlc3Npb24SGi5tdXNlLkNyZWF0ZUNoYXRTZXNzaW9uUmVxGhoubXVzZS5DcmVhdGVDaGF0U2Vzc2lvblJzcBJLChFVcGRhdGVDaGF0U2Vzc2lvbhIaLm11c2UuVXBkYXRlQ2hhdFNlc3Npb25SZXEaGi5tdXNlLlVwZGF0ZUNoYXRTZXNzaW9uUnNwEksKEURlbGV0ZUNoYXRTZXNzaW9uEhoubXVzZS5EZWxldGVDaGF0U2Vzc2lvblJlcRoaLm11c2UuRGVsZXRlQ2hhdFNlc3Npb25Sc3ASOwoLU2VuZE1lc3NhZ2USFC5tdXNlLlNlbmRNZXNzYWdlUmVxGhQubXVzZS5TZW5kTWVzc2FnZVJzcDABEk0KEVJlZ2VuZXJhdGVNZXNzYWdlEhoubXVzZS5SZWdlbmVyYXRlTWVzc2FnZVJlcRoaLm11c2UuUmVnZW5lcmF0ZU1lc3NhZ2VSc3AwARI5CgtFZGl0TWVzc2FnZRIULm11c2UuRWRpdE1lc3NhZ2VSZXEaFC5tdXNlLkVkaXRNZXNzYWdlUnNwEj8KDURlbGV0ZU1lc3NhZ2USFi5tdXNlLkRlbGV0ZU1lc3NhZ2VSZXEaFi5tdXNlLkRlbGV0ZU1lc3NhZ2VSc3ASOQoLU3dpdGNoU3dpcGUSFC5tdXNlLlN3aXRjaFN3aXBlUmVxGhQubXVzZS5Td2l0Y2hTd2lwZVJzcBJUChRHZXRDaGFyTGF0ZXN0U2Vzc2lvbhIdLm11c2UuR2V0Q2hhckxhdGVzdFNlc3Npb25SZXEaHS5tdXNlLkdldENoYXJMYXRlc3RTZXNzaW9uUnNwEksKEVVwZGF0ZVNlc3Npb25UaW1lEhoubXVzZS5VcGRhdGVTZXNzaW9uVGltZVJlcRoaLm11c2UuVXBkYXRlU2Vzc2lvblRpbWVSc3ASOQoLRGVsZXRlU3dpcGUSFC5tdXNlLkRlbGV0ZVN3aXBlUmVxGhQubXVzZS5EZWxldGVTd2lwZVJzcEJkCghjb20ubXVzZUIJQ2hhdFByb3RvUAFaHWdpdGh1Yi5jb20vbGluZy9tdXNlL2dlbi9tdXNlogIDTVhYqgIETXVzZcoCBE11c2XiAhBNdXNlXEdQQk1ldGFkYXRh6gIETXVzZWIGcHJvdG8z", [file_muse_common, file_muse_character]);
 
 /**
  * ChatSession 聊天会话，记录与某个角色的对话
@@ -208,9 +208,9 @@ export const MessageSwipeSchema: GenMessage<MessageSwipe> = /*@__PURE__*/
 /**
  * 获取会话列表请求
  *
- * @generated from message muse.ListChatSessionsRequest
+ * @generated from message muse.ListChatSessionsReq
  */
-export type ListChatSessionsRequest = Message$1<"muse.ListChatSessionsRequest"> & {
+export type ListChatSessionsReq = Message$1<"muse.ListChatSessionsReq"> & {
   /**
    * 可选，按角色筛选
    *
@@ -230,18 +230,18 @@ export type ListChatSessionsRequest = Message$1<"muse.ListChatSessionsRequest"> 
 };
 
 /**
- * Describes the message muse.ListChatSessionsRequest.
- * Use `create(ListChatSessionsRequestSchema)` to create a new message.
+ * Describes the message muse.ListChatSessionsReq.
+ * Use `create(ListChatSessionsReqSchema)` to create a new message.
  */
-export const ListChatSessionsRequestSchema: GenMessage<ListChatSessionsRequest> = /*@__PURE__*/
+export const ListChatSessionsReqSchema: GenMessage<ListChatSessionsReq> = /*@__PURE__*/
   messageDesc(file_muse_chat, 3);
 
 /**
  * 获取会话列表响应
  *
- * @generated from message muse.ListChatSessionsResponse
+ * @generated from message muse.ListChatSessionsRsp
  */
-export type ListChatSessionsResponse = Message$1<"muse.ListChatSessionsResponse"> & {
+export type ListChatSessionsRsp = Message$1<"muse.ListChatSessionsRsp"> & {
   /**
    * @generated from field: repeated muse.ChatSession sessions = 1;
    */
@@ -254,18 +254,18 @@ export type ListChatSessionsResponse = Message$1<"muse.ListChatSessionsResponse"
 };
 
 /**
- * Describes the message muse.ListChatSessionsResponse.
- * Use `create(ListChatSessionsResponseSchema)` to create a new message.
+ * Describes the message muse.ListChatSessionsRsp.
+ * Use `create(ListChatSessionsRspSchema)` to create a new message.
  */
-export const ListChatSessionsResponseSchema: GenMessage<ListChatSessionsResponse> = /*@__PURE__*/
+export const ListChatSessionsRspSchema: GenMessage<ListChatSessionsRsp> = /*@__PURE__*/
   messageDesc(file_muse_chat, 4);
 
 /**
  * 获取单个会话请求
  *
- * @generated from message muse.GetChatSessionRequest
+ * @generated from message muse.GetChatSessionReq
  */
-export type GetChatSessionRequest = Message$1<"muse.GetChatSessionRequest"> & {
+export type GetChatSessionReq = Message$1<"muse.GetChatSessionReq"> & {
   /**
    * @generated from field: int32 id = 1;
    */
@@ -273,18 +273,18 @@ export type GetChatSessionRequest = Message$1<"muse.GetChatSessionRequest"> & {
 };
 
 /**
- * Describes the message muse.GetChatSessionRequest.
- * Use `create(GetChatSessionRequestSchema)` to create a new message.
+ * Describes the message muse.GetChatSessionReq.
+ * Use `create(GetChatSessionReqSchema)` to create a new message.
  */
-export const GetChatSessionRequestSchema: GenMessage<GetChatSessionRequest> = /*@__PURE__*/
+export const GetChatSessionReqSchema: GenMessage<GetChatSessionReq> = /*@__PURE__*/
   messageDesc(file_muse_chat, 5);
 
 /**
  * 获取单个会话响应
  *
- * @generated from message muse.GetChatSessionResponse
+ * @generated from message muse.GetChatSessionRsp
  */
-export type GetChatSessionResponse = Message$1<"muse.GetChatSessionResponse"> & {
+export type GetChatSessionRsp = Message$1<"muse.GetChatSessionRsp"> & {
   /**
    * @generated from field: muse.ChatSession session = 1;
    */
@@ -292,18 +292,18 @@ export type GetChatSessionResponse = Message$1<"muse.GetChatSessionResponse"> & 
 };
 
 /**
- * Describes the message muse.GetChatSessionResponse.
- * Use `create(GetChatSessionResponseSchema)` to create a new message.
+ * Describes the message muse.GetChatSessionRsp.
+ * Use `create(GetChatSessionRspSchema)` to create a new message.
  */
-export const GetChatSessionResponseSchema: GenMessage<GetChatSessionResponse> = /*@__PURE__*/
+export const GetChatSessionRspSchema: GenMessage<GetChatSessionRsp> = /*@__PURE__*/
   messageDesc(file_muse_chat, 6);
 
 /**
  * 创建会话请求
  *
- * @generated from message muse.CreateChatSessionRequest
+ * @generated from message muse.CreateChatSessionReq
  */
-export type CreateChatSessionRequest = Message$1<"muse.CreateChatSessionRequest"> & {
+export type CreateChatSessionReq = Message$1<"muse.CreateChatSessionReq"> & {
   /**
    * @generated from field: int32 character_id = 1;
    */
@@ -316,18 +316,18 @@ export type CreateChatSessionRequest = Message$1<"muse.CreateChatSessionRequest"
 };
 
 /**
- * Describes the message muse.CreateChatSessionRequest.
- * Use `create(CreateChatSessionRequestSchema)` to create a new message.
+ * Describes the message muse.CreateChatSessionReq.
+ * Use `create(CreateChatSessionReqSchema)` to create a new message.
  */
-export const CreateChatSessionRequestSchema: GenMessage<CreateChatSessionRequest> = /*@__PURE__*/
+export const CreateChatSessionReqSchema: GenMessage<CreateChatSessionReq> = /*@__PURE__*/
   messageDesc(file_muse_chat, 7);
 
 /**
  * 创建会话响应
  *
- * @generated from message muse.CreateChatSessionResponse
+ * @generated from message muse.CreateChatSessionRsp
  */
-export type CreateChatSessionResponse = Message$1<"muse.CreateChatSessionResponse"> & {
+export type CreateChatSessionRsp = Message$1<"muse.CreateChatSessionRsp"> & {
   /**
    * @generated from field: muse.ChatSession session = 1;
    */
@@ -335,18 +335,18 @@ export type CreateChatSessionResponse = Message$1<"muse.CreateChatSessionRespons
 };
 
 /**
- * Describes the message muse.CreateChatSessionResponse.
- * Use `create(CreateChatSessionResponseSchema)` to create a new message.
+ * Describes the message muse.CreateChatSessionRsp.
+ * Use `create(CreateChatSessionRspSchema)` to create a new message.
  */
-export const CreateChatSessionResponseSchema: GenMessage<CreateChatSessionResponse> = /*@__PURE__*/
+export const CreateChatSessionRspSchema: GenMessage<CreateChatSessionRsp> = /*@__PURE__*/
   messageDesc(file_muse_chat, 8);
 
 /**
  * 更新会话请求
  *
- * @generated from message muse.UpdateChatSessionRequest
+ * @generated from message muse.UpdateChatSessionReq
  */
-export type UpdateChatSessionRequest = Message$1<"muse.UpdateChatSessionRequest"> & {
+export type UpdateChatSessionReq = Message$1<"muse.UpdateChatSessionReq"> & {
   /**
    * @generated from field: int32 id = 1;
    */
@@ -366,18 +366,18 @@ export type UpdateChatSessionRequest = Message$1<"muse.UpdateChatSessionRequest"
 };
 
 /**
- * Describes the message muse.UpdateChatSessionRequest.
- * Use `create(UpdateChatSessionRequestSchema)` to create a new message.
+ * Describes the message muse.UpdateChatSessionReq.
+ * Use `create(UpdateChatSessionReqSchema)` to create a new message.
  */
-export const UpdateChatSessionRequestSchema: GenMessage<UpdateChatSessionRequest> = /*@__PURE__*/
+export const UpdateChatSessionReqSchema: GenMessage<UpdateChatSessionReq> = /*@__PURE__*/
   messageDesc(file_muse_chat, 9);
 
 /**
  * 更新会话响应
  *
- * @generated from message muse.UpdateChatSessionResponse
+ * @generated from message muse.UpdateChatSessionRsp
  */
-export type UpdateChatSessionResponse = Message$1<"muse.UpdateChatSessionResponse"> & {
+export type UpdateChatSessionRsp = Message$1<"muse.UpdateChatSessionRsp"> & {
   /**
    * @generated from field: muse.ChatSession session = 1;
    */
@@ -385,18 +385,18 @@ export type UpdateChatSessionResponse = Message$1<"muse.UpdateChatSessionRespons
 };
 
 /**
- * Describes the message muse.UpdateChatSessionResponse.
- * Use `create(UpdateChatSessionResponseSchema)` to create a new message.
+ * Describes the message muse.UpdateChatSessionRsp.
+ * Use `create(UpdateChatSessionRspSchema)` to create a new message.
  */
-export const UpdateChatSessionResponseSchema: GenMessage<UpdateChatSessionResponse> = /*@__PURE__*/
+export const UpdateChatSessionRspSchema: GenMessage<UpdateChatSessionRsp> = /*@__PURE__*/
   messageDesc(file_muse_chat, 10);
 
 /**
  * 删除会话请求
  *
- * @generated from message muse.DeleteChatSessionRequest
+ * @generated from message muse.DeleteChatSessionReq
  */
-export type DeleteChatSessionRequest = Message$1<"muse.DeleteChatSessionRequest"> & {
+export type DeleteChatSessionReq = Message$1<"muse.DeleteChatSessionReq"> & {
   /**
    * @generated from field: int32 id = 1;
    */
@@ -404,33 +404,33 @@ export type DeleteChatSessionRequest = Message$1<"muse.DeleteChatSessionRequest"
 };
 
 /**
- * Describes the message muse.DeleteChatSessionRequest.
- * Use `create(DeleteChatSessionRequestSchema)` to create a new message.
+ * Describes the message muse.DeleteChatSessionReq.
+ * Use `create(DeleteChatSessionReqSchema)` to create a new message.
  */
-export const DeleteChatSessionRequestSchema: GenMessage<DeleteChatSessionRequest> = /*@__PURE__*/
+export const DeleteChatSessionReqSchema: GenMessage<DeleteChatSessionReq> = /*@__PURE__*/
   messageDesc(file_muse_chat, 11);
 
 /**
  * 删除会话响应
  *
- * @generated from message muse.DeleteChatSessionResponse
+ * @generated from message muse.DeleteChatSessionRsp
  */
-export type DeleteChatSessionResponse = Message$1<"muse.DeleteChatSessionResponse"> & {
+export type DeleteChatSessionRsp = Message$1<"muse.DeleteChatSessionRsp"> & {
 };
 
 /**
- * Describes the message muse.DeleteChatSessionResponse.
- * Use `create(DeleteChatSessionResponseSchema)` to create a new message.
+ * Describes the message muse.DeleteChatSessionRsp.
+ * Use `create(DeleteChatSessionRspSchema)` to create a new message.
  */
-export const DeleteChatSessionResponseSchema: GenMessage<DeleteChatSessionResponse> = /*@__PURE__*/
+export const DeleteChatSessionRspSchema: GenMessage<DeleteChatSessionRsp> = /*@__PURE__*/
   messageDesc(file_muse_chat, 12);
 
 /**
  * 发送消息请求
  *
- * @generated from message muse.SendMessageRequest
+ * @generated from message muse.SendMessageReq
  */
-export type SendMessageRequest = Message$1<"muse.SendMessageRequest"> & {
+export type SendMessageReq = Message$1<"muse.SendMessageReq"> & {
   /**
    * @generated from field: int32 session_id = 1;
    */
@@ -443,18 +443,18 @@ export type SendMessageRequest = Message$1<"muse.SendMessageRequest"> & {
 };
 
 /**
- * Describes the message muse.SendMessageRequest.
- * Use `create(SendMessageRequestSchema)` to create a new message.
+ * Describes the message muse.SendMessageReq.
+ * Use `create(SendMessageReqSchema)` to create a new message.
  */
-export const SendMessageRequestSchema: GenMessage<SendMessageRequest> = /*@__PURE__*/
+export const SendMessageReqSchema: GenMessage<SendMessageReq> = /*@__PURE__*/
   messageDesc(file_muse_chat, 13);
 
 /**
  * 发送消息响应
  *
- * @generated from message muse.SendMessageResponse
+ * @generated from message muse.SendMessageRsp
  */
-export type SendMessageResponse = Message$1<"muse.SendMessageResponse"> & {
+export type SendMessageRsp = Message$1<"muse.SendMessageRsp"> & {
   /**
    * 多个候选回复时，候选回复的下标
    *
@@ -490,18 +490,18 @@ export type SendMessageResponse = Message$1<"muse.SendMessageResponse"> & {
 };
 
 /**
- * Describes the message muse.SendMessageResponse.
- * Use `create(SendMessageResponseSchema)` to create a new message.
+ * Describes the message muse.SendMessageRsp.
+ * Use `create(SendMessageRspSchema)` to create a new message.
  */
-export const SendMessageResponseSchema: GenMessage<SendMessageResponse> = /*@__PURE__*/
+export const SendMessageRspSchema: GenMessage<SendMessageRsp> = /*@__PURE__*/
   messageDesc(file_muse_chat, 14);
 
 /**
  * 重新生成消息请求
  *
- * @generated from message muse.RegenerateMessageRequest
+ * @generated from message muse.RegenerateMessageReq
  */
-export type RegenerateMessageRequest = Message$1<"muse.RegenerateMessageRequest"> & {
+export type RegenerateMessageReq = Message$1<"muse.RegenerateMessageReq"> & {
   /**
    * 要重新生成的AI消息ID
    *
@@ -511,18 +511,18 @@ export type RegenerateMessageRequest = Message$1<"muse.RegenerateMessageRequest"
 };
 
 /**
- * Describes the message muse.RegenerateMessageRequest.
- * Use `create(RegenerateMessageRequestSchema)` to create a new message.
+ * Describes the message muse.RegenerateMessageReq.
+ * Use `create(RegenerateMessageReqSchema)` to create a new message.
  */
-export const RegenerateMessageRequestSchema: GenMessage<RegenerateMessageRequest> = /*@__PURE__*/
+export const RegenerateMessageReqSchema: GenMessage<RegenerateMessageReq> = /*@__PURE__*/
   messageDesc(file_muse_chat, 15);
 
 /**
  * 重新生成消息响应（流式）
  *
- * @generated from message muse.RegenerateMessageResponse
+ * @generated from message muse.RegenerateMessageRsp
  */
-export type RegenerateMessageResponse = Message$1<"muse.RegenerateMessageResponse"> & {
+export type RegenerateMessageRsp = Message$1<"muse.RegenerateMessageRsp"> & {
   /**
    * 新的swipe
    *
@@ -560,18 +560,18 @@ export type RegenerateMessageResponse = Message$1<"muse.RegenerateMessageRespons
 };
 
 /**
- * Describes the message muse.RegenerateMessageResponse.
- * Use `create(RegenerateMessageResponseSchema)` to create a new message.
+ * Describes the message muse.RegenerateMessageRsp.
+ * Use `create(RegenerateMessageRspSchema)` to create a new message.
  */
-export const RegenerateMessageResponseSchema: GenMessage<RegenerateMessageResponse> = /*@__PURE__*/
+export const RegenerateMessageRspSchema: GenMessage<RegenerateMessageRsp> = /*@__PURE__*/
   messageDesc(file_muse_chat, 16);
 
 /**
  * 编辑消息请求
  *
- * @generated from message muse.EditMessageRequest
+ * @generated from message muse.EditMessageReq
  */
-export type EditMessageRequest = Message$1<"muse.EditMessageRequest"> & {
+export type EditMessageReq = Message$1<"muse.EditMessageReq"> & {
   /**
    * @generated from field: int32 message_id = 1;
    */
@@ -593,18 +593,18 @@ export type EditMessageRequest = Message$1<"muse.EditMessageRequest"> & {
 };
 
 /**
- * Describes the message muse.EditMessageRequest.
- * Use `create(EditMessageRequestSchema)` to create a new message.
+ * Describes the message muse.EditMessageReq.
+ * Use `create(EditMessageReqSchema)` to create a new message.
  */
-export const EditMessageRequestSchema: GenMessage<EditMessageRequest> = /*@__PURE__*/
+export const EditMessageReqSchema: GenMessage<EditMessageReq> = /*@__PURE__*/
   messageDesc(file_muse_chat, 17);
 
 /**
  * 编辑消息响应
  *
- * @generated from message muse.EditMessageResponse
+ * @generated from message muse.EditMessageRsp
  */
-export type EditMessageResponse = Message$1<"muse.EditMessageResponse"> & {
+export type EditMessageRsp = Message$1<"muse.EditMessageRsp"> & {
   /**
    * @generated from field: muse.MessageSwipe swipe = 1;
    */
@@ -612,18 +612,18 @@ export type EditMessageResponse = Message$1<"muse.EditMessageResponse"> & {
 };
 
 /**
- * Describes the message muse.EditMessageResponse.
- * Use `create(EditMessageResponseSchema)` to create a new message.
+ * Describes the message muse.EditMessageRsp.
+ * Use `create(EditMessageRspSchema)` to create a new message.
  */
-export const EditMessageResponseSchema: GenMessage<EditMessageResponse> = /*@__PURE__*/
+export const EditMessageRspSchema: GenMessage<EditMessageRsp> = /*@__PURE__*/
   messageDesc(file_muse_chat, 18);
 
 /**
  * 删除消息请求
  *
- * @generated from message muse.DeleteMessageRequest
+ * @generated from message muse.DeleteMessageReq
  */
-export type DeleteMessageRequest = Message$1<"muse.DeleteMessageRequest"> & {
+export type DeleteMessageReq = Message$1<"muse.DeleteMessageReq"> & {
   /**
    * @generated from field: int32 message_id = 1;
    */
@@ -631,33 +631,33 @@ export type DeleteMessageRequest = Message$1<"muse.DeleteMessageRequest"> & {
 };
 
 /**
- * Describes the message muse.DeleteMessageRequest.
- * Use `create(DeleteMessageRequestSchema)` to create a new message.
+ * Describes the message muse.DeleteMessageReq.
+ * Use `create(DeleteMessageReqSchema)` to create a new message.
  */
-export const DeleteMessageRequestSchema: GenMessage<DeleteMessageRequest> = /*@__PURE__*/
+export const DeleteMessageReqSchema: GenMessage<DeleteMessageReq> = /*@__PURE__*/
   messageDesc(file_muse_chat, 19);
 
 /**
  * 删除消息响应
  *
- * @generated from message muse.DeleteMessageResponse
+ * @generated from message muse.DeleteMessageRsp
  */
-export type DeleteMessageResponse = Message$1<"muse.DeleteMessageResponse"> & {
+export type DeleteMessageRsp = Message$1<"muse.DeleteMessageRsp"> & {
 };
 
 /**
- * Describes the message muse.DeleteMessageResponse.
- * Use `create(DeleteMessageResponseSchema)` to create a new message.
+ * Describes the message muse.DeleteMessageRsp.
+ * Use `create(DeleteMessageRspSchema)` to create a new message.
  */
-export const DeleteMessageResponseSchema: GenMessage<DeleteMessageResponse> = /*@__PURE__*/
+export const DeleteMessageRspSchema: GenMessage<DeleteMessageRsp> = /*@__PURE__*/
   messageDesc(file_muse_chat, 20);
 
 /**
  * 切换Swipe请求
  *
- * @generated from message muse.SwitchSwipeRequest
+ * @generated from message muse.SwitchSwipeReq
  */
-export type SwitchSwipeRequest = Message$1<"muse.SwitchSwipeRequest"> & {
+export type SwitchSwipeReq = Message$1<"muse.SwitchSwipeReq"> & {
   /**
    * @generated from field: int32 message_id = 1;
    */
@@ -670,18 +670,18 @@ export type SwitchSwipeRequest = Message$1<"muse.SwitchSwipeRequest"> & {
 };
 
 /**
- * Describes the message muse.SwitchSwipeRequest.
- * Use `create(SwitchSwipeRequestSchema)` to create a new message.
+ * Describes the message muse.SwitchSwipeReq.
+ * Use `create(SwitchSwipeReqSchema)` to create a new message.
  */
-export const SwitchSwipeRequestSchema: GenMessage<SwitchSwipeRequest> = /*@__PURE__*/
+export const SwitchSwipeReqSchema: GenMessage<SwitchSwipeReq> = /*@__PURE__*/
   messageDesc(file_muse_chat, 21);
 
 /**
  * 切换Swipe响应
  *
- * @generated from message muse.SwitchSwipeResponse
+ * @generated from message muse.SwitchSwipeRsp
  */
-export type SwitchSwipeResponse = Message$1<"muse.SwitchSwipeResponse"> & {
+export type SwitchSwipeRsp = Message$1<"muse.SwitchSwipeRsp"> & {
   /**
    * @generated from field: muse.Message message = 1;
    */
@@ -689,18 +689,18 @@ export type SwitchSwipeResponse = Message$1<"muse.SwitchSwipeResponse"> & {
 };
 
 /**
- * Describes the message muse.SwitchSwipeResponse.
- * Use `create(SwitchSwipeResponseSchema)` to create a new message.
+ * Describes the message muse.SwitchSwipeRsp.
+ * Use `create(SwitchSwipeRspSchema)` to create a new message.
  */
-export const SwitchSwipeResponseSchema: GenMessage<SwitchSwipeResponse> = /*@__PURE__*/
+export const SwitchSwipeRspSchema: GenMessage<SwitchSwipeRsp> = /*@__PURE__*/
   messageDesc(file_muse_chat, 22);
 
 /**
  * 获取角色最新会话请求
  *
- * @generated from message muse.GetCharLatestSessionRequest
+ * @generated from message muse.GetCharLatestSessionReq
  */
-export type GetCharLatestSessionRequest = Message$1<"muse.GetCharLatestSessionRequest"> & {
+export type GetCharLatestSessionReq = Message$1<"muse.GetCharLatestSessionReq"> & {
   /**
    * @generated from field: int32 character_id = 1;
    */
@@ -708,18 +708,18 @@ export type GetCharLatestSessionRequest = Message$1<"muse.GetCharLatestSessionRe
 };
 
 /**
- * Describes the message muse.GetCharLatestSessionRequest.
- * Use `create(GetCharLatestSessionRequestSchema)` to create a new message.
+ * Describes the message muse.GetCharLatestSessionReq.
+ * Use `create(GetCharLatestSessionReqSchema)` to create a new message.
  */
-export const GetCharLatestSessionRequestSchema: GenMessage<GetCharLatestSessionRequest> = /*@__PURE__*/
+export const GetCharLatestSessionReqSchema: GenMessage<GetCharLatestSessionReq> = /*@__PURE__*/
   messageDesc(file_muse_chat, 23);
 
 /**
  * 获取角色最新会话响应
  *
- * @generated from message muse.GetCharLatestSessionResponse
+ * @generated from message muse.GetCharLatestSessionRsp
  */
-export type GetCharLatestSessionResponse = Message$1<"muse.GetCharLatestSessionResponse"> & {
+export type GetCharLatestSessionRsp = Message$1<"muse.GetCharLatestSessionRsp"> & {
   /**
    * @generated from field: muse.ChatSession session = 1;
    */
@@ -727,18 +727,18 @@ export type GetCharLatestSessionResponse = Message$1<"muse.GetCharLatestSessionR
 };
 
 /**
- * Describes the message muse.GetCharLatestSessionResponse.
- * Use `create(GetCharLatestSessionResponseSchema)` to create a new message.
+ * Describes the message muse.GetCharLatestSessionRsp.
+ * Use `create(GetCharLatestSessionRspSchema)` to create a new message.
  */
-export const GetCharLatestSessionResponseSchema: GenMessage<GetCharLatestSessionResponse> = /*@__PURE__*/
+export const GetCharLatestSessionRspSchema: GenMessage<GetCharLatestSessionRsp> = /*@__PURE__*/
   messageDesc(file_muse_chat, 24);
 
 /**
  * 更新会话时间戳请求
  *
- * @generated from message muse.UpdateSessionTimeRequest
+ * @generated from message muse.UpdateSessionTimeReq
  */
-export type UpdateSessionTimeRequest = Message$1<"muse.UpdateSessionTimeRequest"> & {
+export type UpdateSessionTimeReq = Message$1<"muse.UpdateSessionTimeReq"> & {
   /**
    * @generated from field: int32 session_id = 1;
    */
@@ -746,33 +746,33 @@ export type UpdateSessionTimeRequest = Message$1<"muse.UpdateSessionTimeRequest"
 };
 
 /**
- * Describes the message muse.UpdateSessionTimeRequest.
- * Use `create(UpdateSessionTimeRequestSchema)` to create a new message.
+ * Describes the message muse.UpdateSessionTimeReq.
+ * Use `create(UpdateSessionTimeReqSchema)` to create a new message.
  */
-export const UpdateSessionTimeRequestSchema: GenMessage<UpdateSessionTimeRequest> = /*@__PURE__*/
+export const UpdateSessionTimeReqSchema: GenMessage<UpdateSessionTimeReq> = /*@__PURE__*/
   messageDesc(file_muse_chat, 25);
 
 /**
  * 更新会话时间戳响应
  *
- * @generated from message muse.UpdateSessionTimeResponse
+ * @generated from message muse.UpdateSessionTimeRsp
  */
-export type UpdateSessionTimeResponse = Message$1<"muse.UpdateSessionTimeResponse"> & {
+export type UpdateSessionTimeRsp = Message$1<"muse.UpdateSessionTimeRsp"> & {
 };
 
 /**
- * Describes the message muse.UpdateSessionTimeResponse.
- * Use `create(UpdateSessionTimeResponseSchema)` to create a new message.
+ * Describes the message muse.UpdateSessionTimeRsp.
+ * Use `create(UpdateSessionTimeRspSchema)` to create a new message.
  */
-export const UpdateSessionTimeResponseSchema: GenMessage<UpdateSessionTimeResponse> = /*@__PURE__*/
+export const UpdateSessionTimeRspSchema: GenMessage<UpdateSessionTimeRsp> = /*@__PURE__*/
   messageDesc(file_muse_chat, 26);
 
 /**
  * 删除Swipe请求
  *
- * @generated from message muse.DeleteSwipeRequest
+ * @generated from message muse.DeleteSwipeReq
  */
-export type DeleteSwipeRequest = Message$1<"muse.DeleteSwipeRequest"> & {
+export type DeleteSwipeReq = Message$1<"muse.DeleteSwipeReq"> & {
   /**
    * @generated from field: int32 message_id = 1;
    */
@@ -785,25 +785,25 @@ export type DeleteSwipeRequest = Message$1<"muse.DeleteSwipeRequest"> & {
 };
 
 /**
- * Describes the message muse.DeleteSwipeRequest.
- * Use `create(DeleteSwipeRequestSchema)` to create a new message.
+ * Describes the message muse.DeleteSwipeReq.
+ * Use `create(DeleteSwipeReqSchema)` to create a new message.
  */
-export const DeleteSwipeRequestSchema: GenMessage<DeleteSwipeRequest> = /*@__PURE__*/
+export const DeleteSwipeReqSchema: GenMessage<DeleteSwipeReq> = /*@__PURE__*/
   messageDesc(file_muse_chat, 27);
 
 /**
  * 删除Swipe响应
  *
- * @generated from message muse.DeleteSwipeResponse
+ * @generated from message muse.DeleteSwipeRsp
  */
-export type DeleteSwipeResponse = Message$1<"muse.DeleteSwipeResponse"> & {
+export type DeleteSwipeRsp = Message$1<"muse.DeleteSwipeRsp"> & {
 };
 
 /**
- * Describes the message muse.DeleteSwipeResponse.
- * Use `create(DeleteSwipeResponseSchema)` to create a new message.
+ * Describes the message muse.DeleteSwipeRsp.
+ * Use `create(DeleteSwipeRspSchema)` to create a new message.
  */
-export const DeleteSwipeResponseSchema: GenMessage<DeleteSwipeResponse> = /*@__PURE__*/
+export const DeleteSwipeRspSchema: GenMessage<DeleteSwipeRsp> = /*@__PURE__*/
   messageDesc(file_muse_chat, 28);
 
 /**
@@ -819,8 +819,8 @@ export const ChatService: GenService<{
    */
   listChatSessions: {
     methodKind: "unary";
-    input: typeof ListChatSessionsRequestSchema;
-    output: typeof ListChatSessionsResponseSchema;
+    input: typeof ListChatSessionsReqSchema;
+    output: typeof ListChatSessionsRspSchema;
   },
   /**
    * 获取单个会话
@@ -829,8 +829,8 @@ export const ChatService: GenService<{
    */
   getChatSession: {
     methodKind: "unary";
-    input: typeof GetChatSessionRequestSchema;
-    output: typeof GetChatSessionResponseSchema;
+    input: typeof GetChatSessionReqSchema;
+    output: typeof GetChatSessionRspSchema;
   },
   /**
    * 创建会话
@@ -839,8 +839,8 @@ export const ChatService: GenService<{
    */
   createChatSession: {
     methodKind: "unary";
-    input: typeof CreateChatSessionRequestSchema;
-    output: typeof CreateChatSessionResponseSchema;
+    input: typeof CreateChatSessionReqSchema;
+    output: typeof CreateChatSessionRspSchema;
   },
   /**
    * 更新会话
@@ -849,8 +849,8 @@ export const ChatService: GenService<{
    */
   updateChatSession: {
     methodKind: "unary";
-    input: typeof UpdateChatSessionRequestSchema;
-    output: typeof UpdateChatSessionResponseSchema;
+    input: typeof UpdateChatSessionReqSchema;
+    output: typeof UpdateChatSessionRspSchema;
   },
   /**
    * 删除会话
@@ -859,8 +859,8 @@ export const ChatService: GenService<{
    */
   deleteChatSession: {
     methodKind: "unary";
-    input: typeof DeleteChatSessionRequestSchema;
-    output: typeof DeleteChatSessionResponseSchema;
+    input: typeof DeleteChatSessionReqSchema;
+    output: typeof DeleteChatSessionRspSchema;
   },
   /**
    * 发送消息（流式响应）
@@ -869,8 +869,8 @@ export const ChatService: GenService<{
    */
   sendMessage: {
     methodKind: "server_streaming";
-    input: typeof SendMessageRequestSchema;
-    output: typeof SendMessageResponseSchema;
+    input: typeof SendMessageReqSchema;
+    output: typeof SendMessageRspSchema;
   },
   /**
    * 重新生成消息（流式响应）
@@ -879,8 +879,8 @@ export const ChatService: GenService<{
    */
   regenerateMessage: {
     methodKind: "server_streaming";
-    input: typeof RegenerateMessageRequestSchema;
-    output: typeof RegenerateMessageResponseSchema;
+    input: typeof RegenerateMessageReqSchema;
+    output: typeof RegenerateMessageRspSchema;
   },
   /**
    * 编辑消息
@@ -889,8 +889,8 @@ export const ChatService: GenService<{
    */
   editMessage: {
     methodKind: "unary";
-    input: typeof EditMessageRequestSchema;
-    output: typeof EditMessageResponseSchema;
+    input: typeof EditMessageReqSchema;
+    output: typeof EditMessageRspSchema;
   },
   /**
    * 删除消息
@@ -899,8 +899,8 @@ export const ChatService: GenService<{
    */
   deleteMessage: {
     methodKind: "unary";
-    input: typeof DeleteMessageRequestSchema;
-    output: typeof DeleteMessageResponseSchema;
+    input: typeof DeleteMessageReqSchema;
+    output: typeof DeleteMessageRspSchema;
   },
   /**
    * 切换Swipe
@@ -909,8 +909,8 @@ export const ChatService: GenService<{
    */
   switchSwipe: {
     methodKind: "unary";
-    input: typeof SwitchSwipeRequestSchema;
-    output: typeof SwitchSwipeResponseSchema;
+    input: typeof SwitchSwipeReqSchema;
+    output: typeof SwitchSwipeRspSchema;
   },
   /**
    * 获取角色最新会话
@@ -919,8 +919,8 @@ export const ChatService: GenService<{
    */
   getCharLatestSession: {
     methodKind: "unary";
-    input: typeof GetCharLatestSessionRequestSchema;
-    output: typeof GetCharLatestSessionResponseSchema;
+    input: typeof GetCharLatestSessionReqSchema;
+    output: typeof GetCharLatestSessionRspSchema;
   },
   /**
    * 更新会话时间戳
@@ -929,8 +929,8 @@ export const ChatService: GenService<{
    */
   updateSessionTime: {
     methodKind: "unary";
-    input: typeof UpdateSessionTimeRequestSchema;
-    output: typeof UpdateSessionTimeResponseSchema;
+    input: typeof UpdateSessionTimeReqSchema;
+    output: typeof UpdateSessionTimeRspSchema;
   },
   /**
    * 删除swipe
@@ -939,8 +939,8 @@ export const ChatService: GenService<{
    */
   deleteSwipe: {
     methodKind: "unary";
-    input: typeof DeleteSwipeRequestSchema;
-    output: typeof DeleteSwipeResponseSchema;
+    input: typeof DeleteSwipeReqSchema;
+    output: typeof DeleteSwipeRspSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_muse_chat, 0);

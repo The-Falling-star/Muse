@@ -36,29 +36,29 @@ message Character {
 // ================================
 
 // 获取角色卡列表请求
-message ListCharactersRequest {
+message ListCharactersReq {
   optional int32 page = 1;
   optional int32 page_size = 2;
 }
 
 // 获取角色卡列表响应
-message ListCharactersResponse {
+message ListCharactersRsp {
   repeated Character characters = 1;
   int32 total = 2;
 }
 
 // 获取单个角色卡请求
-message GetCharacterRequest {
+message GetCharacterReq {
   int32 id = 1;
 }
 
 // 获取单个角色卡响应
-message GetCharacterResponse {
+message GetCharacterRsp {
   Character character = 1;
 }
 
 // 创建角色卡请求
-message CreateCharacterRequest {
+message CreateCharacterReq {
   string name = 1;
   optional string avatar = 2;
   optional string description = 3;
@@ -72,12 +72,12 @@ message CreateCharacterRequest {
 }
 
 // 创建角色卡响应
-message CreateCharacterResponse {
+message CreateCharacterRsp {
   Character character = 1;
 }
 
 // 更新角色卡请求
-message UpdateCharacterRequest {
+message UpdateCharacterReq {
   int32 id = 1;
   string name = 2;
   optional string avatar = 3;
@@ -93,67 +93,67 @@ message UpdateCharacterRequest {
 }
 
 // 更新角色卡响应
-message UpdateCharacterResponse {
+message UpdateCharacterRsp {
   Character character = 1;
 }
 
 // 删除角色卡请求
-message DeleteCharacterRequest {
+message DeleteCharacterReq {
   int32 id = 1;
 }
 
 // 删除角色卡响应
-message DeleteCharacterResponse {}
+message DeleteCharacterRsp {}
 
 // 导入角色卡请求
-message ImportCharacterRequest {
+message ImportCharacterReq {
   bytes file_content = 1;  // PNG图片或JSON文件内容
   string file_name = 2;    // 文件名，用于判断格式
 }
 
 // 导入角色卡响应
-message ImportCharacterResponse {
+message ImportCharacterRsp {
   Character character = 1;
 }
 
 // 导出角色卡请求
-message ExportCharacterRequest {
+message ExportCharacterReq {
   int32 id = 1;
   string format = 2;  // "png" 或 "json"
 }
 
 // 导出角色卡响应
-message ExportCharacterResponse {
+message ExportCharacterRsp {
   bytes file_content = 1;
   string file_name = 2;
 }
 
 // 恢复角色卡世界书请求
-message RestoreCharacterWorldInfoRequest {
+message RestoreCharacterWorldInfoReq {
   int32 character_id = 1;
 }
 
 // 恢复角色卡世界书响应
-message RestoreCharacterWorldInfoResponse {
+message RestoreCharacterWorldInfoRsp {
   WorldInfo world_info = 1;
 }
 
 // 角色卡服务
 service CharacterService {
   // 获取角色卡列表
-  rpc ListCharacters(ListCharactersRequest) returns (ListCharactersResponse);
+  rpc ListCharacters(ListCharactersReq) returns (ListCharactersRsp);
   // 获取单个角色卡
-  rpc GetCharacter(GetCharacterRequest) returns (GetCharacterResponse);
+  rpc GetCharacter(GetCharacterReq) returns (GetCharacterRsp);
   // 创建角色卡
-  rpc CreateCharacter(CreateCharacterRequest) returns (CreateCharacterResponse);
+  rpc CreateCharacter(CreateCharacterReq) returns (CreateCharacterRsp);
   // 更新角色卡
-  rpc UpdateCharacter(UpdateCharacterRequest) returns (UpdateCharacterResponse);
+  rpc UpdateCharacter(UpdateCharacterReq) returns (UpdateCharacterRsp);
   // 删除角色卡
-  rpc DeleteCharacter(DeleteCharacterRequest) returns (DeleteCharacterResponse);
+  rpc DeleteCharacter(DeleteCharacterReq) returns (DeleteCharacterRsp);
   // 导入角色卡（支持SillyTavern格式）
-  rpc ImportCharacter(ImportCharacterRequest) returns (ImportCharacterResponse);
+  rpc ImportCharacter(ImportCharacterReq) returns (ImportCharacterRsp);
   // 导出角色卡
-  rpc ExportCharacter(ExportCharacterRequest) returns (ExportCharacterResponse);
+  rpc ExportCharacter(ExportCharacterReq) returns (ExportCharacterRsp);
   // 恢复角色卡的世界书（从备份恢复）
-  rpc RestoreCharacterWorldInfo(RestoreCharacterWorldInfoRequest) returns (RestoreCharacterWorldInfoResponse);
+  rpc RestoreCharacterWorldInfo(RestoreCharacterWorldInfoReq) returns (RestoreCharacterWorldInfoRsp);
 }

@@ -21,8 +21,8 @@ func NewRegexRuleServer() *RegexRuleServer {
 }
 
 // ListRegexRules 获取全局正则规则列表
-func (r *RegexRuleServer) ListRegexRules(ctx context.Context, req *connect.Request[pb.ListRegexRulesRequest]) (
-	*connect.Response[pb.ListRegexRulesResponse], error) {
+func (r *RegexRuleServer) ListRegexRules(ctx context.Context, req *connect.Request[pb.ListRegexRulesReq]) (
+	*connect.Response[pb.ListRegexRulesRsp], error) {
 	resp, err := r.regexRule.ListRegexRules(ctx, req.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "ListRegexRules", req.Msg, resp, err)
@@ -31,13 +31,13 @@ func (r *RegexRuleServer) ListRegexRules(ctx context.Context, req *connect.Reque
 }
 
 // AddRegexRule 添加新的正则规则
-func (r *RegexRuleServer) AddRegexRule(ctx context.Context, req *connect.Request[pb.AddRegexRuleRequest]) (
-	*connect.Response[pb.AddRegexRuleResponse], error) {
+func (r *RegexRuleServer) AddRegexRule(ctx context.Context, req *connect.Request[pb.AddRegexRuleReq]) (
+	*connect.Response[pb.AddRegexRuleRsp], error) {
 	// 开启事务
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return doResponseExp(ctx, "AddRegexRule", req.Msg, (*pb.AddRegexRuleResponse)(nil), err)
+		return doResponseExp(ctx, "AddRegexRule", req.Msg, (*pb.AddRegexRuleRsp)(nil), err)
 	}
 
 	resp, err := r.regexRule.AddRegexRule(ctx, req.Msg)
@@ -48,13 +48,13 @@ func (r *RegexRuleServer) AddRegexRule(ctx context.Context, req *connect.Request
 }
 
 // UpdateRegexRule 更新指定正则规则
-func (r *RegexRuleServer) UpdateRegexRule(ctx context.Context, req *connect.Request[pb.UpdateRegexRuleRequest]) (
-	*connect.Response[pb.UpdateRegexRuleResponse], error) {
+func (r *RegexRuleServer) UpdateRegexRule(ctx context.Context, req *connect.Request[pb.UpdateRegexRuleReq]) (
+	*connect.Response[pb.UpdateRegexRuleRsp], error) {
 	// 开启事务
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return doResponseExp(ctx, "UpdateRegexRule", req.Msg, (*pb.UpdateRegexRuleResponse)(nil), err)
+		return doResponseExp(ctx, "UpdateRegexRule", req.Msg, (*pb.UpdateRegexRuleRsp)(nil), err)
 	}
 
 	resp, err := r.regexRule.UpdateRegexRule(ctx, req.Msg)
@@ -65,13 +65,13 @@ func (r *RegexRuleServer) UpdateRegexRule(ctx context.Context, req *connect.Requ
 }
 
 // DeleteRegexRule 删除指定正则规则
-func (r *RegexRuleServer) DeleteRegexRule(ctx context.Context, req *connect.Request[pb.DeleteRegexRuleRequest]) (
-	*connect.Response[pb.DeleteRegexRuleResponse], error) {
+func (r *RegexRuleServer) DeleteRegexRule(ctx context.Context, req *connect.Request[pb.DeleteRegexRuleReq]) (
+	*connect.Response[pb.DeleteRegexRuleRsp], error) {
 	// 开启事务
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return doResponseExp(ctx, "DeleteRegexRule", req.Msg, (*pb.DeleteRegexRuleResponse)(nil), err)
+		return doResponseExp(ctx, "DeleteRegexRule", req.Msg, (*pb.DeleteRegexRuleRsp)(nil), err)
 	}
 
 	resp, err := r.regexRule.DeleteRegexRule(ctx, req.Msg)
@@ -83,13 +83,13 @@ func (r *RegexRuleServer) DeleteRegexRule(ctx context.Context, req *connect.Requ
 
 // UpdateRegexRulesOrder 更新正则规则的排序
 func (r *RegexRuleServer) UpdateRegexRulesOrder(ctx context.Context,
-	req *connect.Request[pb.UpdateRegexRulesOrderRequest]) (
-	*connect.Response[pb.UpdateRegexRulesOrderResponse], error) {
+	req *connect.Request[pb.UpdateRegexRulesOrderReq]) (
+	*connect.Response[pb.UpdateRegexRulesOrderRsp], error) {
 	// 开启事务
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return doResponseExp(ctx, "UpdateRegexRulesOrder", req.Msg, (*pb.UpdateRegexRulesOrderResponse)(nil), err)
+		return doResponseExp(ctx, "UpdateRegexRulesOrder", req.Msg, (*pb.UpdateRegexRulesOrderRsp)(nil), err)
 	}
 
 	resp, err := r.regexRule.UpdateRegexRulesOrder(ctx, req.Msg)
@@ -101,13 +101,13 @@ func (r *RegexRuleServer) UpdateRegexRulesOrder(ctx context.Context,
 
 // ImportRegexRules 导入正则规则
 func (r *RegexRuleServer) ImportRegexRules(ctx context.Context,
-	c *connect.Request[pb.ImportRegexRulesRequest]) (
-	*connect.Response[pb.ImportRegexRulesResponse], error) {
+	c *connect.Request[pb.ImportRegexRulesReq]) (
+	*connect.Response[pb.ImportRegexRulesRsp], error) {
 	// 开启事务
 	var err error
 	ctx, err = beginTransaction(ctx)
 	if err != nil {
-		return doResponseExp(ctx, "ImportRegexRules", c.Msg, (*pb.ImportRegexRulesResponse)(nil), err)
+		return doResponseExp(ctx, "ImportRegexRules", c.Msg, (*pb.ImportRegexRulesRsp)(nil), err)
 	}
 
 	resp, err := r.regexRule.ImportRegexRules(ctx, c.Msg)
@@ -119,8 +119,8 @@ func (r *RegexRuleServer) ImportRegexRules(ctx context.Context,
 
 // ExportRegexRules 导出正则规则
 func (r *RegexRuleServer) ExportRegexRules(ctx context.Context,
-	c *connect.Request[pb.ExportRegexRulesRequest]) (
-	*connect.Response[pb.ExportRegexRulesResponse], error) {
+	c *connect.Request[pb.ExportRegexRulesReq]) (
+	*connect.Response[pb.ExportRegexRulesRsp], error) {
 	resp, err := r.regexRule.ExportRegexRules(ctx, c.Msg)
 	if err != nil {
 		return doResponseExp(ctx, "ExportRegexRules", c.Msg, resp, err)

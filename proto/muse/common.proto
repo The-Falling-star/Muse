@@ -95,10 +95,10 @@ message CandidateModels {
 }
 
 // 获取公共配置请求
-message GetPublicConfigRequest {}
+message GetPublicConfigReq {}
 
 // 获取公共配置响应
-message GetPublicConfigResponse {
+message GetPublicConfigRsp {
   bool skip_auth = 1;  // 是否跳过认证
   repeated CandidateModels candidate_models = 2; // 候选模型列表
 }
@@ -106,5 +106,5 @@ message GetPublicConfigResponse {
 // 公共服务
 service CommonService {
   // 获取公共配置（无需认证）
-  rpc GetPublicConfig(GetPublicConfigRequest) returns (GetPublicConfigResponse);
+  rpc GetPublicConfig(GetPublicConfigReq) returns (GetPublicConfigRsp);
 }

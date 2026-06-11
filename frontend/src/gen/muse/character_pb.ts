@@ -16,7 +16,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file muse/character.proto.
  */
 export const file_muse_character: GenFile = /*@__PURE__*/
-  fileDesc("ChRtdXNlL2NoYXJhY3Rlci5wcm90bxIEbXVzZSK+AgoJQ2hhcmFjdGVyEgoKAmlkGAEgASgFEg8KB3VzZXJfaWQYAiABKAUSDAoEbmFtZRgDIAEoCRIOCgZhdmF0YXIYBCABKAkSEwoLZGVzY3JpcHRpb24YBSABKAkSFQoNZmlyc3RfbWVzc2FnZRgIIAMoCRIYChBleGFtcGxlX2RpYWxvZ3VlGAkgAygJEhUKDWNyZWF0b3Jfbm90ZXMYCiABKAkSFQoNd29ybGRfaW5mb19pZBgMIAEoBRIPCgd2ZXJzaW9uGA0gASgDEhIKCmNyZWF0ZWRfYXQYDiABKAMSEgoKdXBkYXRlZF9hdBgPIAEoAxIjCgp3b3JsZF9pbmZvGBAgASgLMg8ubXVzZS5Xb3JsZEluZm8SJAoLcmVnZXhfcnVsZXMYESADKAsyDy5tdXNlLlJlZ2V4UnVsZSJZChVMaXN0Q2hhcmFjdGVyc1JlcXVlc3QSEQoEcGFnZRgBIAEoBUgAiAEBEhYKCXBhZ2Vfc2l6ZRgCIAEoBUgBiAEBQgcKBV9wYWdlQgwKCl9wYWdlX3NpemUiTAoWTGlzdENoYXJhY3RlcnNSZXNwb25zZRIjCgpjaGFyYWN0ZXJzGAEgAygLMg8ubXVzZS5DaGFyYWN0ZXISDQoFdG90YWwYAiABKAUiIQoTR2V0Q2hhcmFjdGVyUmVxdWVzdBIKCgJpZBgBIAEoBSI6ChRHZXRDaGFyYWN0ZXJSZXNwb25zZRIiCgljaGFyYWN0ZXIYASABKAsyDy5tdXNlLkNoYXJhY3RlciL5AgoWQ3JlYXRlQ2hhcmFjdGVyUmVxdWVzdBIMCgRuYW1lGAEgASgJEhMKBmF2YXRhchgCIAEoCUgAiAEBEhgKC2Rlc2NyaXB0aW9uGAMgASgJSAGIAQESGAoLcGVyc29uYWxpdHkYBCABKAlIAogBARIVCghzY2VuYXJpbxgFIAEoCUgDiAEBEhUKDWZpcnN0X21lc3NhZ2UYBiADKAkSGAoQZXhhbXBsZV9kaWFsb2d1ZRgHIAMoCRIaCg1jcmVhdG9yX25vdGVzGAggASgJSASIAQESGgoNc3lzdGVtX3Byb21wdBgJIAEoCUgFiAEBEhoKDXdvcmxkX2luZm9faWQYCiABKAVIBogBAUIJCgdfYXZhdGFyQg4KDF9kZXNjcmlwdGlvbkIOCgxfcGVyc29uYWxpdHlCCwoJX3NjZW5hcmlvQhAKDl9jcmVhdG9yX25vdGVzQhAKDl9zeXN0ZW1fcHJvbXB0QhAKDl93b3JsZF9pbmZvX2lkIj0KF0NyZWF0ZUNoYXJhY3RlclJlc3BvbnNlEiIKCWNoYXJhY3RlchgBIAEoCzIPLm11c2UuQ2hhcmFjdGVyIpYDChZVcGRhdGVDaGFyYWN0ZXJSZXF1ZXN0EgoKAmlkGAEgASgFEgwKBG5hbWUYAiABKAkSEwoGYXZhdGFyGAMgASgJSACIAQESGAoLZGVzY3JpcHRpb24YBCABKAlIAYgBARIYCgtwZXJzb25hbGl0eRgFIAEoCUgCiAEBEhUKCHNjZW5hcmlvGAYgASgJSAOIAQESFQoNZmlyc3RfbWVzc2FnZRgHIAMoCRIYChBleGFtcGxlX2RpYWxvZ3VlGAggAygJEhoKDWNyZWF0b3Jfbm90ZXMYCSABKAlIBIgBARIaCg1zeXN0ZW1fcHJvbXB0GAogASgJSAWIAQESGgoNd29ybGRfaW5mb19pZBgLIAEoBUgGiAEBEg8KB3ZlcnNpb24YDCABKANCCQoHX2F2YXRhckIOCgxfZGVzY3JpcHRpb25CDgoMX3BlcnNvbmFsaXR5QgsKCV9zY2VuYXJpb0IQCg5fY3JlYXRvcl9ub3Rlc0IQCg5fc3lzdGVtX3Byb21wdEIQCg5fd29ybGRfaW5mb19pZCI9ChdVcGRhdGVDaGFyYWN0ZXJSZXNwb25zZRIiCgljaGFyYWN0ZXIYASABKAsyDy5tdXNlLkNoYXJhY3RlciIkChZEZWxldGVDaGFyYWN0ZXJSZXF1ZXN0EgoKAmlkGAEgASgFIhkKF0RlbGV0ZUNoYXJhY3RlclJlc3BvbnNlIkEKFkltcG9ydENoYXJhY3RlclJlcXVlc3QSFAoMZmlsZV9jb250ZW50GAEgASgMEhEKCWZpbGVfbmFtZRgCIAEoCSI9ChdJbXBvcnRDaGFyYWN0ZXJSZXNwb25zZRIiCgljaGFyYWN0ZXIYASABKAsyDy5tdXNlLkNoYXJhY3RlciI0ChZFeHBvcnRDaGFyYWN0ZXJSZXF1ZXN0EgoKAmlkGAEgASgFEg4KBmZvcm1hdBgCIAEoCSJCChdFeHBvcnRDaGFyYWN0ZXJSZXNwb25zZRIUCgxmaWxlX2NvbnRlbnQYASABKAwSEQoJZmlsZV9uYW1lGAIgASgJIjgKIFJlc3RvcmVDaGFyYWN0ZXJXb3JsZEluZm9SZXF1ZXN0EhQKDGNoYXJhY3Rlcl9pZBgBIAEoBSJICiFSZXN0b3JlQ2hhcmFjdGVyV29ybGRJbmZvUmVzcG9uc2USIwoKd29ybGRfaW5mbxgBIAEoCzIPLm11c2UuV29ybGRJbmZvMqQFChBDaGFyYWN0ZXJTZXJ2aWNlEksKDkxpc3RDaGFyYWN0ZXJzEhsubXVzZS5MaXN0Q2hhcmFjdGVyc1JlcXVlc3QaHC5tdXNlLkxpc3RDaGFyYWN0ZXJzUmVzcG9uc2USRQoMR2V0Q2hhcmFjdGVyEhkubXVzZS5HZXRDaGFyYWN0ZXJSZXF1ZXN0GhoubXVzZS5HZXRDaGFyYWN0ZXJSZXNwb25zZRJOCg9DcmVhdGVDaGFyYWN0ZXISHC5tdXNlLkNyZWF0ZUNoYXJhY3RlclJlcXVlc3QaHS5tdXNlLkNyZWF0ZUNoYXJhY3RlclJlc3BvbnNlEk4KD1VwZGF0ZUNoYXJhY3RlchIcLm11c2UuVXBkYXRlQ2hhcmFjdGVyUmVxdWVzdBodLm11c2UuVXBkYXRlQ2hhcmFjdGVyUmVzcG9uc2USTgoPRGVsZXRlQ2hhcmFjdGVyEhwubXVzZS5EZWxldGVDaGFyYWN0ZXJSZXF1ZXN0Gh0ubXVzZS5EZWxldGVDaGFyYWN0ZXJSZXNwb25zZRJOCg9JbXBvcnRDaGFyYWN0ZXISHC5tdXNlLkltcG9ydENoYXJhY3RlclJlcXVlc3QaHS5tdXNlLkltcG9ydENoYXJhY3RlclJlc3BvbnNlEk4KD0V4cG9ydENoYXJhY3RlchIcLm11c2UuRXhwb3J0Q2hhcmFjdGVyUmVxdWVzdBodLm11c2UuRXhwb3J0Q2hhcmFjdGVyUmVzcG9uc2USbAoZUmVzdG9yZUNoYXJhY3RlcldvcmxkSW5mbxImLm11c2UuUmVzdG9yZUNoYXJhY3RlcldvcmxkSW5mb1JlcXVlc3QaJy5tdXNlLlJlc3RvcmVDaGFyYWN0ZXJXb3JsZEluZm9SZXNwb25zZUJpCghjb20ubXVzZUIOQ2hhcmFjdGVyUHJvdG9QAVodZ2l0aHViLmNvbS9saW5nL211c2UvZ2VuL211c2WiAgNNWFiqAgRNdXNlygIETXVzZeICEE11c2VcR1BCTWV0YWRhdGHqAgRNdXNlYgZwcm90bzM", [file_muse_common, file_muse_user, file_muse_regex, file_muse_worldinfo]);
+  fileDesc("ChRtdXNlL2NoYXJhY3Rlci5wcm90bxIEbXVzZSK+AgoJQ2hhcmFjdGVyEgoKAmlkGAEgASgFEg8KB3VzZXJfaWQYAiABKAUSDAoEbmFtZRgDIAEoCRIOCgZhdmF0YXIYBCABKAkSEwoLZGVzY3JpcHRpb24YBSABKAkSFQoNZmlyc3RfbWVzc2FnZRgIIAMoCRIYChBleGFtcGxlX2RpYWxvZ3VlGAkgAygJEhUKDWNyZWF0b3Jfbm90ZXMYCiABKAkSFQoNd29ybGRfaW5mb19pZBgMIAEoBRIPCgd2ZXJzaW9uGA0gASgDEhIKCmNyZWF0ZWRfYXQYDiABKAMSEgoKdXBkYXRlZF9hdBgPIAEoAxIjCgp3b3JsZF9pbmZvGBAgASgLMg8ubXVzZS5Xb3JsZEluZm8SJAoLcmVnZXhfcnVsZXMYESADKAsyDy5tdXNlLlJlZ2V4UnVsZSJVChFMaXN0Q2hhcmFjdGVyc1JlcRIRCgRwYWdlGAEgASgFSACIAQESFgoJcGFnZV9zaXplGAIgASgFSAGIAQFCBwoFX3BhZ2VCDAoKX3BhZ2Vfc2l6ZSJHChFMaXN0Q2hhcmFjdGVyc1JzcBIjCgpjaGFyYWN0ZXJzGAEgAygLMg8ubXVzZS5DaGFyYWN0ZXISDQoFdG90YWwYAiABKAUiHQoPR2V0Q2hhcmFjdGVyUmVxEgoKAmlkGAEgASgFIjUKD0dldENoYXJhY3RlclJzcBIiCgljaGFyYWN0ZXIYASABKAsyDy5tdXNlLkNoYXJhY3RlciL1AgoSQ3JlYXRlQ2hhcmFjdGVyUmVxEgwKBG5hbWUYASABKAkSEwoGYXZhdGFyGAIgASgJSACIAQESGAoLZGVzY3JpcHRpb24YAyABKAlIAYgBARIYCgtwZXJzb25hbGl0eRgEIAEoCUgCiAEBEhUKCHNjZW5hcmlvGAUgASgJSAOIAQESFQoNZmlyc3RfbWVzc2FnZRgGIAMoCRIYChBleGFtcGxlX2RpYWxvZ3VlGAcgAygJEhoKDWNyZWF0b3Jfbm90ZXMYCCABKAlIBIgBARIaCg1zeXN0ZW1fcHJvbXB0GAkgASgJSAWIAQESGgoNd29ybGRfaW5mb19pZBgKIAEoBUgGiAEBQgkKB19hdmF0YXJCDgoMX2Rlc2NyaXB0aW9uQg4KDF9wZXJzb25hbGl0eUILCglfc2NlbmFyaW9CEAoOX2NyZWF0b3Jfbm90ZXNCEAoOX3N5c3RlbV9wcm9tcHRCEAoOX3dvcmxkX2luZm9faWQiOAoSQ3JlYXRlQ2hhcmFjdGVyUnNwEiIKCWNoYXJhY3RlchgBIAEoCzIPLm11c2UuQ2hhcmFjdGVyIpIDChJVcGRhdGVDaGFyYWN0ZXJSZXESCgoCaWQYASABKAUSDAoEbmFtZRgCIAEoCRITCgZhdmF0YXIYAyABKAlIAIgBARIYCgtkZXNjcmlwdGlvbhgEIAEoCUgBiAEBEhgKC3BlcnNvbmFsaXR5GAUgASgJSAKIAQESFQoIc2NlbmFyaW8YBiABKAlIA4gBARIVCg1maXJzdF9tZXNzYWdlGAcgAygJEhgKEGV4YW1wbGVfZGlhbG9ndWUYCCADKAkSGgoNY3JlYXRvcl9ub3RlcxgJIAEoCUgEiAEBEhoKDXN5c3RlbV9wcm9tcHQYCiABKAlIBYgBARIaCg13b3JsZF9pbmZvX2lkGAsgASgFSAaIAQESDwoHdmVyc2lvbhgMIAEoA0IJCgdfYXZhdGFyQg4KDF9kZXNjcmlwdGlvbkIOCgxfcGVyc29uYWxpdHlCCwoJX3NjZW5hcmlvQhAKDl9jcmVhdG9yX25vdGVzQhAKDl9zeXN0ZW1fcHJvbXB0QhAKDl93b3JsZF9pbmZvX2lkIjgKElVwZGF0ZUNoYXJhY3RlclJzcBIiCgljaGFyYWN0ZXIYASABKAsyDy5tdXNlLkNoYXJhY3RlciIgChJEZWxldGVDaGFyYWN0ZXJSZXESCgoCaWQYASABKAUiFAoSRGVsZXRlQ2hhcmFjdGVyUnNwIj0KEkltcG9ydENoYXJhY3RlclJlcRIUCgxmaWxlX2NvbnRlbnQYASABKAwSEQoJZmlsZV9uYW1lGAIgASgJIjgKEkltcG9ydENoYXJhY3RlclJzcBIiCgljaGFyYWN0ZXIYASABKAsyDy5tdXNlLkNoYXJhY3RlciIwChJFeHBvcnRDaGFyYWN0ZXJSZXESCgoCaWQYASABKAUSDgoGZm9ybWF0GAIgASgJIj0KEkV4cG9ydENoYXJhY3RlclJzcBIUCgxmaWxlX2NvbnRlbnQYASABKAwSEQoJZmlsZV9uYW1lGAIgASgJIjQKHFJlc3RvcmVDaGFyYWN0ZXJXb3JsZEluZm9SZXESFAoMY2hhcmFjdGVyX2lkGAEgASgFIkMKHFJlc3RvcmVDaGFyYWN0ZXJXb3JsZEluZm9Sc3ASIwoKd29ybGRfaW5mbxgBIAEoCzIPLm11c2UuV29ybGRJbmZvMtwEChBDaGFyYWN0ZXJTZXJ2aWNlEkIKDkxpc3RDaGFyYWN0ZXJzEhcubXVzZS5MaXN0Q2hhcmFjdGVyc1JlcRoXLm11c2UuTGlzdENoYXJhY3RlcnNSc3ASPAoMR2V0Q2hhcmFjdGVyEhUubXVzZS5HZXRDaGFyYWN0ZXJSZXEaFS5tdXNlLkdldENoYXJhY3RlclJzcBJFCg9DcmVhdGVDaGFyYWN0ZXISGC5tdXNlLkNyZWF0ZUNoYXJhY3RlclJlcRoYLm11c2UuQ3JlYXRlQ2hhcmFjdGVyUnNwEkUKD1VwZGF0ZUNoYXJhY3RlchIYLm11c2UuVXBkYXRlQ2hhcmFjdGVyUmVxGhgubXVzZS5VcGRhdGVDaGFyYWN0ZXJSc3ASRQoPRGVsZXRlQ2hhcmFjdGVyEhgubXVzZS5EZWxldGVDaGFyYWN0ZXJSZXEaGC5tdXNlLkRlbGV0ZUNoYXJhY3RlclJzcBJFCg9JbXBvcnRDaGFyYWN0ZXISGC5tdXNlLkltcG9ydENoYXJhY3RlclJlcRoYLm11c2UuSW1wb3J0Q2hhcmFjdGVyUnNwEkUKD0V4cG9ydENoYXJhY3RlchIYLm11c2UuRXhwb3J0Q2hhcmFjdGVyUmVxGhgubXVzZS5FeHBvcnRDaGFyYWN0ZXJSc3ASYwoZUmVzdG9yZUNoYXJhY3RlcldvcmxkSW5mbxIiLm11c2UuUmVzdG9yZUNoYXJhY3RlcldvcmxkSW5mb1JlcRoiLm11c2UuUmVzdG9yZUNoYXJhY3RlcldvcmxkSW5mb1JzcEJpCghjb20ubXVzZUIOQ2hhcmFjdGVyUHJvdG9QAVodZ2l0aHViLmNvbS9saW5nL211c2UvZ2VuL211c2WiAgNNWFiqAgRNdXNlygIETXVzZeICEE11c2VcR1BCTWV0YWRhdGHqAgRNdXNlYgZwcm90bzM", [file_muse_common, file_muse_user, file_muse_regex, file_muse_worldinfo]);
 
 /**
  * Character 角色卡，定义AI扮演的角色
@@ -133,9 +133,9 @@ export const CharacterSchema: GenMessage<Character> = /*@__PURE__*/
 /**
  * 获取角色卡列表请求
  *
- * @generated from message muse.ListCharactersRequest
+ * @generated from message muse.ListCharactersReq
  */
-export type ListCharactersRequest = Message<"muse.ListCharactersRequest"> & {
+export type ListCharactersReq = Message<"muse.ListCharactersReq"> & {
   /**
    * @generated from field: optional int32 page = 1;
    */
@@ -148,18 +148,18 @@ export type ListCharactersRequest = Message<"muse.ListCharactersRequest"> & {
 };
 
 /**
- * Describes the message muse.ListCharactersRequest.
- * Use `create(ListCharactersRequestSchema)` to create a new message.
+ * Describes the message muse.ListCharactersReq.
+ * Use `create(ListCharactersReqSchema)` to create a new message.
  */
-export const ListCharactersRequestSchema: GenMessage<ListCharactersRequest> = /*@__PURE__*/
+export const ListCharactersReqSchema: GenMessage<ListCharactersReq> = /*@__PURE__*/
   messageDesc(file_muse_character, 1);
 
 /**
  * 获取角色卡列表响应
  *
- * @generated from message muse.ListCharactersResponse
+ * @generated from message muse.ListCharactersRsp
  */
-export type ListCharactersResponse = Message<"muse.ListCharactersResponse"> & {
+export type ListCharactersRsp = Message<"muse.ListCharactersRsp"> & {
   /**
    * @generated from field: repeated muse.Character characters = 1;
    */
@@ -172,18 +172,18 @@ export type ListCharactersResponse = Message<"muse.ListCharactersResponse"> & {
 };
 
 /**
- * Describes the message muse.ListCharactersResponse.
- * Use `create(ListCharactersResponseSchema)` to create a new message.
+ * Describes the message muse.ListCharactersRsp.
+ * Use `create(ListCharactersRspSchema)` to create a new message.
  */
-export const ListCharactersResponseSchema: GenMessage<ListCharactersResponse> = /*@__PURE__*/
+export const ListCharactersRspSchema: GenMessage<ListCharactersRsp> = /*@__PURE__*/
   messageDesc(file_muse_character, 2);
 
 /**
  * 获取单个角色卡请求
  *
- * @generated from message muse.GetCharacterRequest
+ * @generated from message muse.GetCharacterReq
  */
-export type GetCharacterRequest = Message<"muse.GetCharacterRequest"> & {
+export type GetCharacterReq = Message<"muse.GetCharacterReq"> & {
   /**
    * @generated from field: int32 id = 1;
    */
@@ -191,18 +191,18 @@ export type GetCharacterRequest = Message<"muse.GetCharacterRequest"> & {
 };
 
 /**
- * Describes the message muse.GetCharacterRequest.
- * Use `create(GetCharacterRequestSchema)` to create a new message.
+ * Describes the message muse.GetCharacterReq.
+ * Use `create(GetCharacterReqSchema)` to create a new message.
  */
-export const GetCharacterRequestSchema: GenMessage<GetCharacterRequest> = /*@__PURE__*/
+export const GetCharacterReqSchema: GenMessage<GetCharacterReq> = /*@__PURE__*/
   messageDesc(file_muse_character, 3);
 
 /**
  * 获取单个角色卡响应
  *
- * @generated from message muse.GetCharacterResponse
+ * @generated from message muse.GetCharacterRsp
  */
-export type GetCharacterResponse = Message<"muse.GetCharacterResponse"> & {
+export type GetCharacterRsp = Message<"muse.GetCharacterRsp"> & {
   /**
    * @generated from field: muse.Character character = 1;
    */
@@ -210,18 +210,18 @@ export type GetCharacterResponse = Message<"muse.GetCharacterResponse"> & {
 };
 
 /**
- * Describes the message muse.GetCharacterResponse.
- * Use `create(GetCharacterResponseSchema)` to create a new message.
+ * Describes the message muse.GetCharacterRsp.
+ * Use `create(GetCharacterRspSchema)` to create a new message.
  */
-export const GetCharacterResponseSchema: GenMessage<GetCharacterResponse> = /*@__PURE__*/
+export const GetCharacterRspSchema: GenMessage<GetCharacterRsp> = /*@__PURE__*/
   messageDesc(file_muse_character, 4);
 
 /**
  * 创建角色卡请求
  *
- * @generated from message muse.CreateCharacterRequest
+ * @generated from message muse.CreateCharacterReq
  */
-export type CreateCharacterRequest = Message<"muse.CreateCharacterRequest"> & {
+export type CreateCharacterReq = Message<"muse.CreateCharacterReq"> & {
   /**
    * @generated from field: string name = 1;
    */
@@ -274,18 +274,18 @@ export type CreateCharacterRequest = Message<"muse.CreateCharacterRequest"> & {
 };
 
 /**
- * Describes the message muse.CreateCharacterRequest.
- * Use `create(CreateCharacterRequestSchema)` to create a new message.
+ * Describes the message muse.CreateCharacterReq.
+ * Use `create(CreateCharacterReqSchema)` to create a new message.
  */
-export const CreateCharacterRequestSchema: GenMessage<CreateCharacterRequest> = /*@__PURE__*/
+export const CreateCharacterReqSchema: GenMessage<CreateCharacterReq> = /*@__PURE__*/
   messageDesc(file_muse_character, 5);
 
 /**
  * 创建角色卡响应
  *
- * @generated from message muse.CreateCharacterResponse
+ * @generated from message muse.CreateCharacterRsp
  */
-export type CreateCharacterResponse = Message<"muse.CreateCharacterResponse"> & {
+export type CreateCharacterRsp = Message<"muse.CreateCharacterRsp"> & {
   /**
    * @generated from field: muse.Character character = 1;
    */
@@ -293,18 +293,18 @@ export type CreateCharacterResponse = Message<"muse.CreateCharacterResponse"> & 
 };
 
 /**
- * Describes the message muse.CreateCharacterResponse.
- * Use `create(CreateCharacterResponseSchema)` to create a new message.
+ * Describes the message muse.CreateCharacterRsp.
+ * Use `create(CreateCharacterRspSchema)` to create a new message.
  */
-export const CreateCharacterResponseSchema: GenMessage<CreateCharacterResponse> = /*@__PURE__*/
+export const CreateCharacterRspSchema: GenMessage<CreateCharacterRsp> = /*@__PURE__*/
   messageDesc(file_muse_character, 6);
 
 /**
  * 更新角色卡请求
  *
- * @generated from message muse.UpdateCharacterRequest
+ * @generated from message muse.UpdateCharacterReq
  */
-export type UpdateCharacterRequest = Message<"muse.UpdateCharacterRequest"> & {
+export type UpdateCharacterReq = Message<"muse.UpdateCharacterReq"> & {
   /**
    * @generated from field: int32 id = 1;
    */
@@ -369,18 +369,18 @@ export type UpdateCharacterRequest = Message<"muse.UpdateCharacterRequest"> & {
 };
 
 /**
- * Describes the message muse.UpdateCharacterRequest.
- * Use `create(UpdateCharacterRequestSchema)` to create a new message.
+ * Describes the message muse.UpdateCharacterReq.
+ * Use `create(UpdateCharacterReqSchema)` to create a new message.
  */
-export const UpdateCharacterRequestSchema: GenMessage<UpdateCharacterRequest> = /*@__PURE__*/
+export const UpdateCharacterReqSchema: GenMessage<UpdateCharacterReq> = /*@__PURE__*/
   messageDesc(file_muse_character, 7);
 
 /**
  * 更新角色卡响应
  *
- * @generated from message muse.UpdateCharacterResponse
+ * @generated from message muse.UpdateCharacterRsp
  */
-export type UpdateCharacterResponse = Message<"muse.UpdateCharacterResponse"> & {
+export type UpdateCharacterRsp = Message<"muse.UpdateCharacterRsp"> & {
   /**
    * @generated from field: muse.Character character = 1;
    */
@@ -388,18 +388,18 @@ export type UpdateCharacterResponse = Message<"muse.UpdateCharacterResponse"> & 
 };
 
 /**
- * Describes the message muse.UpdateCharacterResponse.
- * Use `create(UpdateCharacterResponseSchema)` to create a new message.
+ * Describes the message muse.UpdateCharacterRsp.
+ * Use `create(UpdateCharacterRspSchema)` to create a new message.
  */
-export const UpdateCharacterResponseSchema: GenMessage<UpdateCharacterResponse> = /*@__PURE__*/
+export const UpdateCharacterRspSchema: GenMessage<UpdateCharacterRsp> = /*@__PURE__*/
   messageDesc(file_muse_character, 8);
 
 /**
  * 删除角色卡请求
  *
- * @generated from message muse.DeleteCharacterRequest
+ * @generated from message muse.DeleteCharacterReq
  */
-export type DeleteCharacterRequest = Message<"muse.DeleteCharacterRequest"> & {
+export type DeleteCharacterReq = Message<"muse.DeleteCharacterReq"> & {
   /**
    * @generated from field: int32 id = 1;
    */
@@ -407,33 +407,33 @@ export type DeleteCharacterRequest = Message<"muse.DeleteCharacterRequest"> & {
 };
 
 /**
- * Describes the message muse.DeleteCharacterRequest.
- * Use `create(DeleteCharacterRequestSchema)` to create a new message.
+ * Describes the message muse.DeleteCharacterReq.
+ * Use `create(DeleteCharacterReqSchema)` to create a new message.
  */
-export const DeleteCharacterRequestSchema: GenMessage<DeleteCharacterRequest> = /*@__PURE__*/
+export const DeleteCharacterReqSchema: GenMessage<DeleteCharacterReq> = /*@__PURE__*/
   messageDesc(file_muse_character, 9);
 
 /**
  * 删除角色卡响应
  *
- * @generated from message muse.DeleteCharacterResponse
+ * @generated from message muse.DeleteCharacterRsp
  */
-export type DeleteCharacterResponse = Message<"muse.DeleteCharacterResponse"> & {
+export type DeleteCharacterRsp = Message<"muse.DeleteCharacterRsp"> & {
 };
 
 /**
- * Describes the message muse.DeleteCharacterResponse.
- * Use `create(DeleteCharacterResponseSchema)` to create a new message.
+ * Describes the message muse.DeleteCharacterRsp.
+ * Use `create(DeleteCharacterRspSchema)` to create a new message.
  */
-export const DeleteCharacterResponseSchema: GenMessage<DeleteCharacterResponse> = /*@__PURE__*/
+export const DeleteCharacterRspSchema: GenMessage<DeleteCharacterRsp> = /*@__PURE__*/
   messageDesc(file_muse_character, 10);
 
 /**
  * 导入角色卡请求
  *
- * @generated from message muse.ImportCharacterRequest
+ * @generated from message muse.ImportCharacterReq
  */
-export type ImportCharacterRequest = Message<"muse.ImportCharacterRequest"> & {
+export type ImportCharacterReq = Message<"muse.ImportCharacterReq"> & {
   /**
    * PNG图片或JSON文件内容
    *
@@ -450,18 +450,18 @@ export type ImportCharacterRequest = Message<"muse.ImportCharacterRequest"> & {
 };
 
 /**
- * Describes the message muse.ImportCharacterRequest.
- * Use `create(ImportCharacterRequestSchema)` to create a new message.
+ * Describes the message muse.ImportCharacterReq.
+ * Use `create(ImportCharacterReqSchema)` to create a new message.
  */
-export const ImportCharacterRequestSchema: GenMessage<ImportCharacterRequest> = /*@__PURE__*/
+export const ImportCharacterReqSchema: GenMessage<ImportCharacterReq> = /*@__PURE__*/
   messageDesc(file_muse_character, 11);
 
 /**
  * 导入角色卡响应
  *
- * @generated from message muse.ImportCharacterResponse
+ * @generated from message muse.ImportCharacterRsp
  */
-export type ImportCharacterResponse = Message<"muse.ImportCharacterResponse"> & {
+export type ImportCharacterRsp = Message<"muse.ImportCharacterRsp"> & {
   /**
    * @generated from field: muse.Character character = 1;
    */
@@ -469,18 +469,18 @@ export type ImportCharacterResponse = Message<"muse.ImportCharacterResponse"> & 
 };
 
 /**
- * Describes the message muse.ImportCharacterResponse.
- * Use `create(ImportCharacterResponseSchema)` to create a new message.
+ * Describes the message muse.ImportCharacterRsp.
+ * Use `create(ImportCharacterRspSchema)` to create a new message.
  */
-export const ImportCharacterResponseSchema: GenMessage<ImportCharacterResponse> = /*@__PURE__*/
+export const ImportCharacterRspSchema: GenMessage<ImportCharacterRsp> = /*@__PURE__*/
   messageDesc(file_muse_character, 12);
 
 /**
  * 导出角色卡请求
  *
- * @generated from message muse.ExportCharacterRequest
+ * @generated from message muse.ExportCharacterReq
  */
-export type ExportCharacterRequest = Message<"muse.ExportCharacterRequest"> & {
+export type ExportCharacterReq = Message<"muse.ExportCharacterReq"> & {
   /**
    * @generated from field: int32 id = 1;
    */
@@ -495,18 +495,18 @@ export type ExportCharacterRequest = Message<"muse.ExportCharacterRequest"> & {
 };
 
 /**
- * Describes the message muse.ExportCharacterRequest.
- * Use `create(ExportCharacterRequestSchema)` to create a new message.
+ * Describes the message muse.ExportCharacterReq.
+ * Use `create(ExportCharacterReqSchema)` to create a new message.
  */
-export const ExportCharacterRequestSchema: GenMessage<ExportCharacterRequest> = /*@__PURE__*/
+export const ExportCharacterReqSchema: GenMessage<ExportCharacterReq> = /*@__PURE__*/
   messageDesc(file_muse_character, 13);
 
 /**
  * 导出角色卡响应
  *
- * @generated from message muse.ExportCharacterResponse
+ * @generated from message muse.ExportCharacterRsp
  */
-export type ExportCharacterResponse = Message<"muse.ExportCharacterResponse"> & {
+export type ExportCharacterRsp = Message<"muse.ExportCharacterRsp"> & {
   /**
    * @generated from field: bytes file_content = 1;
    */
@@ -519,18 +519,18 @@ export type ExportCharacterResponse = Message<"muse.ExportCharacterResponse"> & 
 };
 
 /**
- * Describes the message muse.ExportCharacterResponse.
- * Use `create(ExportCharacterResponseSchema)` to create a new message.
+ * Describes the message muse.ExportCharacterRsp.
+ * Use `create(ExportCharacterRspSchema)` to create a new message.
  */
-export const ExportCharacterResponseSchema: GenMessage<ExportCharacterResponse> = /*@__PURE__*/
+export const ExportCharacterRspSchema: GenMessage<ExportCharacterRsp> = /*@__PURE__*/
   messageDesc(file_muse_character, 14);
 
 /**
  * 恢复角色卡世界书请求
  *
- * @generated from message muse.RestoreCharacterWorldInfoRequest
+ * @generated from message muse.RestoreCharacterWorldInfoReq
  */
-export type RestoreCharacterWorldInfoRequest = Message<"muse.RestoreCharacterWorldInfoRequest"> & {
+export type RestoreCharacterWorldInfoReq = Message<"muse.RestoreCharacterWorldInfoReq"> & {
   /**
    * @generated from field: int32 character_id = 1;
    */
@@ -538,18 +538,18 @@ export type RestoreCharacterWorldInfoRequest = Message<"muse.RestoreCharacterWor
 };
 
 /**
- * Describes the message muse.RestoreCharacterWorldInfoRequest.
- * Use `create(RestoreCharacterWorldInfoRequestSchema)` to create a new message.
+ * Describes the message muse.RestoreCharacterWorldInfoReq.
+ * Use `create(RestoreCharacterWorldInfoReqSchema)` to create a new message.
  */
-export const RestoreCharacterWorldInfoRequestSchema: GenMessage<RestoreCharacterWorldInfoRequest> = /*@__PURE__*/
+export const RestoreCharacterWorldInfoReqSchema: GenMessage<RestoreCharacterWorldInfoReq> = /*@__PURE__*/
   messageDesc(file_muse_character, 15);
 
 /**
  * 恢复角色卡世界书响应
  *
- * @generated from message muse.RestoreCharacterWorldInfoResponse
+ * @generated from message muse.RestoreCharacterWorldInfoRsp
  */
-export type RestoreCharacterWorldInfoResponse = Message<"muse.RestoreCharacterWorldInfoResponse"> & {
+export type RestoreCharacterWorldInfoRsp = Message<"muse.RestoreCharacterWorldInfoRsp"> & {
   /**
    * @generated from field: muse.WorldInfo world_info = 1;
    */
@@ -557,10 +557,10 @@ export type RestoreCharacterWorldInfoResponse = Message<"muse.RestoreCharacterWo
 };
 
 /**
- * Describes the message muse.RestoreCharacterWorldInfoResponse.
- * Use `create(RestoreCharacterWorldInfoResponseSchema)` to create a new message.
+ * Describes the message muse.RestoreCharacterWorldInfoRsp.
+ * Use `create(RestoreCharacterWorldInfoRspSchema)` to create a new message.
  */
-export const RestoreCharacterWorldInfoResponseSchema: GenMessage<RestoreCharacterWorldInfoResponse> = /*@__PURE__*/
+export const RestoreCharacterWorldInfoRspSchema: GenMessage<RestoreCharacterWorldInfoRsp> = /*@__PURE__*/
   messageDesc(file_muse_character, 16);
 
 /**
@@ -576,8 +576,8 @@ export const CharacterService: GenService<{
    */
   listCharacters: {
     methodKind: "unary";
-    input: typeof ListCharactersRequestSchema;
-    output: typeof ListCharactersResponseSchema;
+    input: typeof ListCharactersReqSchema;
+    output: typeof ListCharactersRspSchema;
   },
   /**
    * 获取单个角色卡
@@ -586,8 +586,8 @@ export const CharacterService: GenService<{
    */
   getCharacter: {
     methodKind: "unary";
-    input: typeof GetCharacterRequestSchema;
-    output: typeof GetCharacterResponseSchema;
+    input: typeof GetCharacterReqSchema;
+    output: typeof GetCharacterRspSchema;
   },
   /**
    * 创建角色卡
@@ -596,8 +596,8 @@ export const CharacterService: GenService<{
    */
   createCharacter: {
     methodKind: "unary";
-    input: typeof CreateCharacterRequestSchema;
-    output: typeof CreateCharacterResponseSchema;
+    input: typeof CreateCharacterReqSchema;
+    output: typeof CreateCharacterRspSchema;
   },
   /**
    * 更新角色卡
@@ -606,8 +606,8 @@ export const CharacterService: GenService<{
    */
   updateCharacter: {
     methodKind: "unary";
-    input: typeof UpdateCharacterRequestSchema;
-    output: typeof UpdateCharacterResponseSchema;
+    input: typeof UpdateCharacterReqSchema;
+    output: typeof UpdateCharacterRspSchema;
   },
   /**
    * 删除角色卡
@@ -616,8 +616,8 @@ export const CharacterService: GenService<{
    */
   deleteCharacter: {
     methodKind: "unary";
-    input: typeof DeleteCharacterRequestSchema;
-    output: typeof DeleteCharacterResponseSchema;
+    input: typeof DeleteCharacterReqSchema;
+    output: typeof DeleteCharacterRspSchema;
   },
   /**
    * 导入角色卡（支持SillyTavern格式）
@@ -626,8 +626,8 @@ export const CharacterService: GenService<{
    */
   importCharacter: {
     methodKind: "unary";
-    input: typeof ImportCharacterRequestSchema;
-    output: typeof ImportCharacterResponseSchema;
+    input: typeof ImportCharacterReqSchema;
+    output: typeof ImportCharacterRspSchema;
   },
   /**
    * 导出角色卡
@@ -636,8 +636,8 @@ export const CharacterService: GenService<{
    */
   exportCharacter: {
     methodKind: "unary";
-    input: typeof ExportCharacterRequestSchema;
-    output: typeof ExportCharacterResponseSchema;
+    input: typeof ExportCharacterReqSchema;
+    output: typeof ExportCharacterRspSchema;
   },
   /**
    * 恢复角色卡的世界书（从备份恢复）
@@ -646,8 +646,8 @@ export const CharacterService: GenService<{
    */
   restoreCharacterWorldInfo: {
     methodKind: "unary";
-    input: typeof RestoreCharacterWorldInfoRequestSchema;
-    output: typeof RestoreCharacterWorldInfoResponseSchema;
+    input: typeof RestoreCharacterWorldInfoReqSchema;
+    output: typeof RestoreCharacterWorldInfoRspSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_muse_character, 0);

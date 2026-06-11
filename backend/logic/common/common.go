@@ -14,7 +14,7 @@ func newCommon() *commonImpl {
 }
 
 // GetPublicConfig 获取公共配置（无需认证）
-func (c *commonImpl) GetPublicConfig(ctx context.Context, req *pb.GetPublicConfigRequest) (*pb.GetPublicConfigResponse, error) {
+func (c *commonImpl) GetPublicConfig(ctx context.Context, req *pb.GetPublicConfigReq) (*pb.GetPublicConfigRsp, error) {
 	cfg := config.Get()
 
 	// 构建候选模型列表
@@ -26,7 +26,7 @@ func (c *commonImpl) GetPublicConfig(ctx context.Context, req *pb.GetPublicConfi
 		})
 	}
 
-	return &pb.GetPublicConfigResponse{
+	return &pb.GetPublicConfigRsp{
 		SkipAuth:        cfg.Auth.SkipAuth,
 		CandidateModels: candidateModels,
 	}, nil

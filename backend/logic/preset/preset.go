@@ -31,7 +31,7 @@ func newPreset() *presetImpl {
 	}
 }
 
-func (p *presetImpl) ListPresets(ctx context.Context, req *pb.ListPresetsRequest) (*pb.ListPresetsResponse, error) {
+func (p *presetImpl) ListPresets(ctx context.Context, req *pb.ListPresetsReq) (*pb.ListPresetsRsp, error) {
 	// 获取并规范化分页参数
 	page, pageSize := constant.NormalizePagination(int(req.GetPage()), int(req.GetPageSize()))
 
@@ -52,7 +52,7 @@ func (p *presetImpl) ListPresets(ctx context.Context, req *pb.ListPresetsRequest
 		})
 	}
 
-	return &pb.ListPresetsResponse{
+	return &pb.ListPresetsRsp{
 		Presets:  pbPresets,
 		Total:    total,
 		Page:     int32(page),
@@ -60,7 +60,7 @@ func (p *presetImpl) ListPresets(ctx context.Context, req *pb.ListPresetsRequest
 	}, nil
 }
 
-func (p *presetImpl) GetPreset(ctx context.Context, req *pb.GetPresetRequest) (*pb.GetPresetResponse, error) {
+func (p *presetImpl) GetPreset(ctx context.Context, req *pb.GetPresetReq) (*pb.GetPresetRsp, error) {
 	id := int(req.GetId())
 	if id <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidPresetID)
@@ -77,7 +77,7 @@ func (p *presetImpl) GetPreset(ctx context.Context, req *pb.GetPresetRequest) (*
 	}
 
 	pbPreset, pbPromptItem, pbRegex := convert.PresetEntityToPb(preset)
-	return &pb.GetPresetResponse{
+	return &pb.GetPresetRsp{
 		Preset: &pb.PresetWithAll{
 			Preset:      pbPreset,
 			PromptItems: pbPromptItem,
@@ -86,7 +86,7 @@ func (p *presetImpl) GetPreset(ctx context.Context, req *pb.GetPresetRequest) (*
 	}, nil
 }
 
-func (p *presetImpl) CreatePreset(ctx context.Context, req *pb.CreatePresetRequest) (*pb.CreatePresetResponse, error) {
+func (p *presetImpl) CreatePreset(ctx context.Context, req *pb.CreatePresetReq) (*pb.CreatePresetRsp, error) {
 	// 参数校验
 	name := strings.TrimSpace(req.GetName())
 	if name == "" {
@@ -129,10 +129,10 @@ func (p *presetImpl) CreatePreset(ctx context.Context, req *pb.CreatePresetReque
 		_ = p.presetRepo.CreatePromptItem(ctx, item)
 	}
 
-	return &pb.CreatePresetResponse{}, nil
+	return &pb.CreatePresetRsp{}, nil
 }
 
-func (p *presetImpl) UpdatePreset(ctx context.Context, req *pb.UpdatePresetRequest) (*pb.UpdatePresetResponse, error) {
+func (p *presetImpl) UpdatePreset(ctx context.Context, req *pb.UpdatePresetReq) (*pb.UpdatePresetRsp, error) {
 	id := int(req.GetId())
 	if id <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidPresetID)
@@ -176,10 +176,10 @@ func (p *presetImpl) UpdatePreset(ctx context.Context, req *pb.UpdatePresetReque
 	// 使相关缓存失效
 	cache.InvalidateCacheByPreset(int64(id))
 
-	return &pb.UpdatePresetResponse{}, nil
+	return &pb.UpdatePresetRsp{}, nil
 }
 
-func (p *presetImpl) DeletePreset(ctx context.Context, req *pb.DeletePresetRequest) (*pb.DeletePresetResponse, error) {
+func (p *presetImpl) DeletePreset(ctx context.Context, req *pb.DeletePresetReq) (*pb.DeletePresetRsp, error) {
 	id := int(req.GetId())
 	if id <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidPresetID)
@@ -194,10 +194,10 @@ func (p *presetImpl) DeletePreset(ctx context.Context, req *pb.DeletePresetReque
 		return nil, err
 	}
 
-	return &pb.DeletePresetResponse{}, nil
+	return &pb.DeletePresetRsp{}, nil
 }
 
-func (p *presetImpl) ListPromptItems(ctx context.Context, req *pb.ListPromptItemsRequest) (*pb.ListPromptItemsResponse, error) {
+func (p *presetImpl) ListPromptItems(ctx context.Context, req *pb.ListPromptItemsReq) (*pb.ListPromptItemsRsp, error) {
 	presetID := int(req.GetPresetId())
 	if presetID <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidPresetID)
@@ -215,12 +215,12 @@ func (p *presetImpl) ListPromptItems(ctx context.Context, req *pb.ListPromptItem
 		pbItems = append(pbItems, convert.PromptItemEntityToPb(item))
 	}
 
-	return &pb.ListPromptItemsResponse{
+	return &pb.ListPromptItemsRsp{
 		Items: pbItems,
 	}, nil
 }
 
-func (p *presetImpl) AddPromptItem(ctx context.Context, req *pb.AddPromptItemRequest) (*pb.AddPromptItemResponse, error) {
+func (p *presetImpl) AddPromptItem(ctx context.Context, req *pb.AddPromptItemReq) (*pb.AddPromptItemRsp, error) {
 	// 参数校验
 	presetID := int(req.GetPresetId())
 	if presetID <= 0 {
@@ -256,12 +256,12 @@ func (p *presetImpl) AddPromptItem(ctx context.Context, req *pb.AddPromptItemReq
 		return nil, err
 	}
 
-	return &pb.AddPromptItemResponse{
+	return &pb.AddPromptItemRsp{
 		Item: convert.PromptItemEntityToPb(fullItem),
 	}, nil
 }
 
-func (p *presetImpl) UpdatePromptItem(ctx context.Context, req *pb.UpdatePromptItemRequest) (*pb.UpdatePromptItemResponse, error) {
+func (p *presetImpl) UpdatePromptItem(ctx context.Context, req *pb.UpdatePromptItemReq) (*pb.UpdatePromptItemRsp, error) {
 	id := int(req.GetId())
 	if id <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidPromptItemID)
@@ -308,12 +308,12 @@ func (p *presetImpl) UpdatePromptItem(ctx context.Context, req *pb.UpdatePromptI
 		return nil, err
 	}
 
-	return &pb.UpdatePromptItemResponse{
+	return &pb.UpdatePromptItemRsp{
 		Item: convert.PromptItemEntityToPb(updatedItem),
 	}, nil
 }
 
-func (p *presetImpl) DeletePromptItem(ctx context.Context, req *pb.DeletePromptItemRequest) (*pb.DeletePromptItemResponse, error) {
+func (p *presetImpl) DeletePromptItem(ctx context.Context, req *pb.DeletePromptItemReq) (*pb.DeletePromptItemRsp, error) {
 	id := int(req.GetId())
 	if id <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidPromptItemID)
@@ -324,10 +324,10 @@ func (p *presetImpl) DeletePromptItem(ctx context.Context, req *pb.DeletePromptI
 		return nil, err
 	}
 
-	return &pb.DeletePromptItemResponse{}, nil
+	return &pb.DeletePromptItemRsp{}, nil
 }
 
-func (p *presetImpl) UpdatePromptItemsOrder(ctx context.Context, req *pb.UpdatePromptItemsOrderRequest) (*pb.UpdatePromptItemsOrderResponse, error) {
+func (p *presetImpl) UpdatePromptItemsOrder(ctx context.Context, req *pb.UpdatePromptItemsOrderReq) (*pb.UpdatePromptItemsOrderRsp, error) {
 	presetID := int(req.GetPresetId())
 	if presetID <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidPresetID)
@@ -343,10 +343,10 @@ func (p *presetImpl) UpdatePromptItemsOrder(ctx context.Context, req *pb.UpdateP
 		return nil, err
 	}
 
-	return &pb.UpdatePromptItemsOrderResponse{}, nil
+	return &pb.UpdatePromptItemsOrderRsp{}, nil
 }
 
-func (p *presetImpl) SetActivePreset(ctx context.Context, req *pb.SetActivePresetRequest) (*pb.SetActivePresetResponse, error) {
+func (p *presetImpl) SetActivePreset(ctx context.Context, req *pb.SetActivePresetReq) (*pb.SetActivePresetRsp, error) {
 	presetID := int(req.GetPresetId())
 	if presetID <= 0 {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, errs.InvalidPresetID)
@@ -354,10 +354,10 @@ func (p *presetImpl) SetActivePreset(ctx context.Context, req *pb.SetActivePrese
 	if err := p.presetRepo.SetActivePreset(ctx, jwt.GetUserId(ctx), presetID); err != nil {
 		return nil, err
 	}
-	return &pb.SetActivePresetResponse{}, nil
+	return &pb.SetActivePresetRsp{}, nil
 }
 
-func (p *presetImpl) ImportPreset(ctx context.Context, req *pb.ImportPresetRequest) (*pb.ImportPresetResponse, error) {
+func (p *presetImpl) ImportPreset(ctx context.Context, req *pb.ImportPresetReq) (*pb.ImportPresetRsp, error) {
 	fileContent := req.GetFileContent()
 	fileName := strings.TrimSpace(req.GetFileName())
 
@@ -449,7 +449,7 @@ func (p *presetImpl) ImportPreset(ctx context.Context, req *pb.ImportPresetReque
 	}
 
 	pbPreset, pbPromptItem, pbRegex := convert.PresetEntityToPb(fullPreset)
-	return &pb.ImportPresetResponse{
+	return &pb.ImportPresetRsp{
 		Preset: &pb.PresetWithAll{
 			Preset:      pbPreset,
 			PromptItems: pbPromptItem,
@@ -458,7 +458,7 @@ func (p *presetImpl) ImportPreset(ctx context.Context, req *pb.ImportPresetReque
 	}, nil
 }
 
-func (p *presetImpl) ExportPreset(ctx context.Context, req *pb.ExportPresetRequest) (*pb.ExportPresetResponse, error) {
+func (p *presetImpl) ExportPreset(ctx context.Context, req *pb.ExportPresetReq) (*pb.ExportPresetRsp, error) {
 	//TODO implement me
 	panic("implement me")
 }

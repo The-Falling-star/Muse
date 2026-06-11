@@ -24,9 +24,9 @@ import (
 // File 定义了文件服务的接口
 type File interface {
 	// UploadFile 上传文件
-	UploadFile(ctx context.Context, req *pb.UploadFileRequest) (*pb.UploadFileResponse, error)
+	UploadFile(ctx context.Context, req *pb.UploadFileReq) (*pb.UploadFileRsp, error)
 	// DownloadFile 下载文件
-	DownloadFile(ctx context.Context, req *pb.DownloadFileRequest) (*pb.DownloadFileResponse, error)
+	DownloadFile(ctx context.Context, req *pb.DownloadFileReq) (*pb.DownloadFileRsp, error)
 }
 
 type fileImpl struct{}
@@ -37,7 +37,7 @@ func NewFile() File {
 }
 
 // UploadFile 上传文件
-func (f *fileImpl) UploadFile(ctx context.Context, req *pb.UploadFileRequest) (*pb.UploadFileResponse, error) {
+func (f *fileImpl) UploadFile(ctx context.Context, req *pb.UploadFileReq) (*pb.UploadFileRsp, error) {
 	fileContent := req.GetFileContent()
 	fileName := req.GetFileName()
 	fileType := req.GetFileType()
@@ -67,13 +67,13 @@ func (f *fileImpl) UploadFile(ctx context.Context, req *pb.UploadFileRequest) (*
 	relativePath := filepath.Join(fileType.String(), fileName)
 	log.Infof("文件上传成功: userId=%d, path=%s", userId, relativePath)
 
-	return &pb.UploadFileResponse{
+	return &pb.UploadFileRsp{
 		FilePath: relativePath,
 	}, nil
 }
 
 // DownloadFile 下载文件
-func (f *fileImpl) DownloadFile(ctx context.Context, req *pb.DownloadFileRequest) (*pb.DownloadFileResponse, error) {
+func (f *fileImpl) DownloadFile(ctx context.Context, req *pb.DownloadFileReq) (*pb.DownloadFileRsp, error) {
 	filePath := req.GetFilePath()
 	if filePath == "" {
 		return nil, errs.NewStandard(connect.CodeInvalidArgument, "文件路径不能为空")
@@ -116,7 +116,7 @@ func (f *fileImpl) DownloadFile(ctx context.Context, req *pb.DownloadFileRequest
 
 	log.Debugf("文件下载成功: userId=%d, path=%s, size=%d", userId, filePath, len(fileContent))
 
-	return &pb.DownloadFileResponse{
+	return &pb.DownloadFileRsp{
 		FileContent: fileContent,
 		ContentType: contentType,
 		FileName:    fileName,

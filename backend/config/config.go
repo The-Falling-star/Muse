@@ -32,8 +32,9 @@ type ChatConfig struct {
 
 // ServerConfig 服务器配置
 type ServerConfig struct {
-	Host string `yaml:"host" env:"SERVER_HOST"`
-	Port int    `yaml:"port" env:"SERVER_PORT"`
+	Host     string `yaml:"host" env:"SERVER_HOST"`
+	Port     int    `yaml:"port" env:"SERVER_PORT"`
+	BasePath string `yaml:"base_path" env:"SERVER_BASE_PATH"` // 子目录部署路径，如 /muse，根路径部署留空
 }
 
 // Address 返回服务器监听地址

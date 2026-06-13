@@ -55,5 +55,5 @@ lerna-debug.log*
 backend/data/*
 backend/muse
 backend/static/
-
 docs
+.env.production

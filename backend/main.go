@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
@@ -15,7 +16,6 @@ import (
 	"github.com/ling/muse/config"
 	"github.com/ling/muse/gen/muse/museconnect"
 	"github.com/ling/muse/middleware"
-
 	log "github.com/sirupsen/logrus"
 )
 
@@ -96,8 +96,17 @@ func main() {
 	// 条件性启用静态文件服务
 	middleware.ServeStaticFiles(mux, cfg.StaticFile.Enabled, cfg.StaticFile.FrontendDir)
 
+	// 应用子路径剥离（子目录部署时剥离前缀，如 /muse）
+	handler := http.Handler(mux)
+	basePath := cfg.Server.BasePath
+	basePath = strings.TrimRight(basePath, "/")
+	if basePath != "" {
+		handler = http.StripPrefix(basePath, handler)
+		log.Infof("子路径部署模式，base_path: %s", basePath)
+	}
+
 	// 应用 CORS 中间件
-	handler := middleware.CORS(mux)
+	handler = middleware.CORS(handler)
 
 	server := &http.Server{
 		Addr:         cfg.Server.Address(),

@@ -30,5 +30,5 @@ echo "  已复制到 $STATIC_DIR"
 # 3. 编译后端
 echo "[3/3] 编译后端..."
 cd "$BACKEND_DIR"
-go build -tags embed -o muse .
-echo "编译完成: $BACKEND_DIR/muse"
+go build -tags embed -o ../muse .
+echo "编译完成: $PROJECT_DIR/muse"

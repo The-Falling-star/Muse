@@ -3,6 +3,9 @@
 server:
   host: "0.0.0.0"
   port: 8080
+  # 子目录部署路径，如 /muse，根路径部署留空或不填
+  # 配置后 nginx 只需 proxy_pass http://localhost:8080; 无需额外剥离前缀
+  # base_path: "/muse"
 
 auth:
   # JWT 加密密钥，生产环境请务必修改为随机字符串

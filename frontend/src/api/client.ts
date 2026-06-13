@@ -52,8 +52,9 @@ const errorHandlerInterceptor: Interceptor = (next) => async (req) => {
         // 清除本地token
         localStorage.removeItem('token');
         // 跳转到登录页（避免在登录页循环跳转）
-        if (window.location.pathname !== '/login') {
-          window.location.href = '/login';
+        const loginPath = import.meta.env.BASE_URL + 'login';
+        if (!window.location.pathname.endsWith('/login')) {
+          window.location.href = loginPath;
         }
       }
     } else {

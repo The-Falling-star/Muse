@@ -10,7 +10,7 @@ import (
 // 预设包含模型参数配置和关联的提示项、正则规则
 type Preset struct {
 	ID               int       `gorm:"column:id;primaryKey;autoIncrement" json:"id"`                                             // 预设ID，主键自增
-	UserID           int       `gorm:"column:user_id;not null;index:idx_user_id" json:"userId"`                                  // 所属用户ID
+	UserID           int       `gorm:"column:user_id;not null;index:idx_presets_user_id" json:"userId"`                          // 所属用户ID
 	Name             string    `gorm:"column:name;type:varchar(128);not null;" json:"name"`                                      // 预设名称
 	Temperature      float32   `gorm:"column:temperature;type:decimal(3,2);not null;default:1.00" json:"temperature"`            // 温度参数，控制输出随机性，范围0-2，值越高输出越随机
 	TopP             float32   `gorm:"column:top_p;type:decimal(3,2);not null;default:1.00" json:"topP"`                         // 核采样参数，控制候选token的累积概率阈值，范围0-1
@@ -37,7 +37,7 @@ func (Preset) TableName() string {
 // 提示项是预设中的提示词模板，可以按角色和位置插入到对话中
 type PromptItem struct {
 	ID                int                     `gorm:"column:id;primaryKey;autoIncrement" json:"id"`                                                // 提示项ID，主键自增
-	PresetID          int                     `gorm:"column:preset_id;not null;index:idx_preset_id" json:"presetId"`                               // 所属预设ID
+	PresetID          int                     `gorm:"column:preset_id;not null;index:idx_prompt_items_preset_id" json:"presetId"`                  // 所属预设ID
 	Identifier        pb.PromptItemIdentifier `gorm:"column:identifier;type:tinyint unsigned;not null;default:0" json:"identifier"`                // 标识符枚举，用于唯一标识提示项
 	Name              string                  `gorm:"column:name;type:varchar(128);not null;default:''" json:"name"`                               // 显示名称
 	Content           string                  `gorm:"column:content;type:text;not null" json:"content"`                                            // 提示词内容

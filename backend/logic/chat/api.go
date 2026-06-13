@@ -44,6 +44,8 @@ type Chat interface {
 	UpdateSessionTime(ctx context.Context, req *pb.UpdateSessionTimeReq) (*pb.UpdateSessionTimeRsp, error)
 	// DeleteSwipe 删除消息swipe
 	DeleteSwipe(ctx context.Context, req *pb.DeleteSwipeReq) (*pb.DeleteSwipeRsp, error)
+	// ImportSession 导入会话
+	ImportSession(ctx context.Context, req *pb.ImportSessionReq) (*pb.ImportSessionRsp, error)
 }
 
 // NewChat 创建一个新的Chat实例

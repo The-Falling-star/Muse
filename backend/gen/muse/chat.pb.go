@@ -1590,6 +1590,104 @@ func (*DeleteSwipeRsp) Descriptor() ([]byte, []int) {
 	return file_muse_chat_proto_rawDescGZIP(), []int{28}
 }
 
+// 导入会话请求
+type ImportSessionReq struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CharacterId   int32                  `protobuf:"varint,1,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"`
+	Data          []byte                 `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ImportSessionReq) Reset() {
+	*x = ImportSessionReq{}
+	mi := &file_muse_chat_proto_msgTypes[29]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ImportSessionReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ImportSessionReq) ProtoMessage() {}
+
+func (x *ImportSessionReq) ProtoReflect() protoreflect.Message {
+	mi := &file_muse_chat_proto_msgTypes[29]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ImportSessionReq.ProtoReflect.Descriptor instead.
+func (*ImportSessionReq) Descriptor() ([]byte, []int) {
+	return file_muse_chat_proto_rawDescGZIP(), []int{29}
+}
+
+func (x *ImportSessionReq) GetCharacterId() int32 {
+	if x != nil {
+		return x.CharacterId
+	}
+	return 0
+}
+
+func (x *ImportSessionReq) GetData() []byte {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+// 导入会话响应
+type ImportSessionRsp struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Session       *ChatSession           `protobuf:"bytes,1,opt,name=session,proto3" json:"session,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ImportSessionRsp) Reset() {
+	*x = ImportSessionRsp{}
+	mi := &file_muse_chat_proto_msgTypes[30]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ImportSessionRsp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ImportSessionRsp) ProtoMessage() {}
+
+func (x *ImportSessionRsp) ProtoReflect() protoreflect.Message {
+	mi := &file_muse_chat_proto_msgTypes[30]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ImportSessionRsp.ProtoReflect.Descriptor instead.
+func (*ImportSessionRsp) Descriptor() ([]byte, []int) {
+	return file_muse_chat_proto_rawDescGZIP(), []int{30}
+}
+
+func (x *ImportSessionRsp) GetSession() *ChatSession {
+	if x != nil {
+		return x.Session
+	}
+	return nil
+}
+
 var File_muse_chat_proto protoreflect.FileDescriptor
 
 const file_muse_chat_proto_rawDesc = "" +
@@ -1710,7 +1808,12 @@ const file_muse_chat_proto_rawDesc = "" +
 	"\n" +
 	"message_id\x18\x01 \x01(\x05R\tmessageId\x12\x19\n" +
 	"\bswipe_id\x18\x02 \x01(\x05R\aswipeId\"\x10\n" +
-	"\x0eDeleteSwipeRsp2\xa3\a\n" +
+	"\x0eDeleteSwipeRsp\"I\n" +
+	"\x10ImportSessionReq\x12!\n" +
+	"\fcharacter_id\x18\x01 \x01(\x05R\vcharacterId\x12\x12\n" +
+	"\x04data\x18\x02 \x01(\fR\x04data\"?\n" +
+	"\x10ImportSessionRsp\x12+\n" +
+	"\asession\x18\x01 \x01(\v2\x11.muse.ChatSessionR\asession2\xe4\a\n" +
 	"\vChatService\x12H\n" +
 	"\x10ListChatSessions\x12\x19.muse.ListChatSessionsReq\x1a\x19.muse.ListChatSessionsRsp\x12B\n" +
 	"\x0eGetChatSession\x12\x17.muse.GetChatSessionReq\x1a\x17.muse.GetChatSessionRsp\x12K\n" +
@@ -1724,7 +1827,8 @@ const file_muse_chat_proto_rawDesc = "" +
 	"\vSwitchSwipe\x12\x14.muse.SwitchSwipeReq\x1a\x14.muse.SwitchSwipeRsp\x12T\n" +
 	"\x14GetCharLatestSession\x12\x1d.muse.GetCharLatestSessionReq\x1a\x1d.muse.GetCharLatestSessionRsp\x12K\n" +
 	"\x11UpdateSessionTime\x12\x1a.muse.UpdateSessionTimeReq\x1a\x1a.muse.UpdateSessionTimeRsp\x129\n" +
-	"\vDeleteSwipe\x12\x14.muse.DeleteSwipeReq\x1a\x14.muse.DeleteSwipeRspBd\n" +
+	"\vDeleteSwipe\x12\x14.muse.DeleteSwipeReq\x1a\x14.muse.DeleteSwipeRsp\x12?\n" +
+	"\rImportSession\x12\x16.muse.ImportSessionReq\x1a\x16.muse.ImportSessionRspBd\n" +
 	"\bcom.museB\tChatProtoP\x01Z\x1dgithub.com/ling/muse/gen/muse\xa2\x02\x03MXX\xaa\x02\x04Muse\xca\x02\x04Muse\xe2\x02\x10Muse\\GPBMetadata\xea\x02\x04Museb\x06proto3"
 
 var (
@@ -1739,7 +1843,7 @@ func file_muse_chat_proto_rawDescGZIP() []byte {
 	return file_muse_chat_proto_rawDescData
 }
 
-var file_muse_chat_proto_msgTypes = make([]protoimpl.MessageInfo, 29)
+var file_muse_chat_proto_msgTypes = make([]protoimpl.MessageInfo, 31)
 var file_muse_chat_proto_goTypes = []any{
 	(*ChatSession)(nil),             // 0: muse.ChatSession
 	(*Message)(nil),                 // 1: muse.Message
@@ -1770,56 +1874,61 @@ var file_muse_chat_proto_goTypes = []any{
 	(*UpdateSessionTimeRsp)(nil),    // 26: muse.UpdateSessionTimeRsp
 	(*DeleteSwipeReq)(nil),          // 27: muse.DeleteSwipeReq
 	(*DeleteSwipeRsp)(nil),          // 28: muse.DeleteSwipeRsp
-	(*Character)(nil),               // 29: muse.Character
-	(Role)(0),                       // 30: muse.Role
-	(ErrCode)(0),                    // 31: muse.ErrCode
+	(*ImportSessionReq)(nil),        // 29: muse.ImportSessionReq
+	(*ImportSessionRsp)(nil),        // 30: muse.ImportSessionRsp
+	(*Character)(nil),               // 31: muse.Character
+	(Role)(0),                       // 32: muse.Role
+	(ErrCode)(0),                    // 33: muse.ErrCode
 }
 var file_muse_chat_proto_depIdxs = []int32{
-	29, // 0: muse.ChatSession.character:type_name -> muse.Character
+	31, // 0: muse.ChatSession.character:type_name -> muse.Character
 	1,  // 1: muse.ChatSession.messages:type_name -> muse.Message
-	30, // 2: muse.Message.role:type_name -> muse.Role
+	32, // 2: muse.Message.role:type_name -> muse.Role
 	2,  // 3: muse.Message.swipes:type_name -> muse.MessageSwipe
 	0,  // 4: muse.ListChatSessionsRsp.sessions:type_name -> muse.ChatSession
 	0,  // 5: muse.GetChatSessionRsp.session:type_name -> muse.ChatSession
 	0,  // 6: muse.CreateChatSessionRsp.session:type_name -> muse.ChatSession
 	0,  // 7: muse.UpdateChatSessionRsp.session:type_name -> muse.ChatSession
-	31, // 8: muse.SendMessageRsp.err_code:type_name -> muse.ErrCode
+	33, // 8: muse.SendMessageRsp.err_code:type_name -> muse.ErrCode
 	2,  // 9: muse.RegenerateMessageRsp.new_swipe:type_name -> muse.MessageSwipe
-	31, // 10: muse.RegenerateMessageRsp.err_code:type_name -> muse.ErrCode
+	33, // 10: muse.RegenerateMessageRsp.err_code:type_name -> muse.ErrCode
 	2,  // 11: muse.EditMessageRsp.swipe:type_name -> muse.MessageSwipe
 	1,  // 12: muse.SwitchSwipeRsp.message:type_name -> muse.Message
 	0,  // 13: muse.GetCharLatestSessionRsp.session:type_name -> muse.ChatSession
-	3,  // 14: muse.ChatService.ListChatSessions:input_type -> muse.ListChatSessionsReq
-	5,  // 15: muse.ChatService.GetChatSession:input_type -> muse.GetChatSessionReq
-	7,  // 16: muse.ChatService.CreateChatSession:input_type -> muse.CreateChatSessionReq
-	9,  // 17: muse.ChatService.UpdateChatSession:input_type -> muse.UpdateChatSessionReq
-	11, // 18: muse.ChatService.DeleteChatSession:input_type -> muse.DeleteChatSessionReq
-	13, // 19: muse.ChatService.SendMessage:input_type -> muse.SendMessageReq
-	15, // 20: muse.ChatService.RegenerateMessage:input_type -> muse.RegenerateMessageReq
-	17, // 21: muse.ChatService.EditMessage:input_type -> muse.EditMessageReq
-	19, // 22: muse.ChatService.DeleteMessage:input_type -> muse.DeleteMessageReq
-	21, // 23: muse.ChatService.SwitchSwipe:input_type -> muse.SwitchSwipeReq
-	23, // 24: muse.ChatService.GetCharLatestSession:input_type -> muse.GetCharLatestSessionReq
-	25, // 25: muse.ChatService.UpdateSessionTime:input_type -> muse.UpdateSessionTimeReq
-	27, // 26: muse.ChatService.DeleteSwipe:input_type -> muse.DeleteSwipeReq
-	4,  // 27: muse.ChatService.ListChatSessions:output_type -> muse.ListChatSessionsRsp
-	6,  // 28: muse.ChatService.GetChatSession:output_type -> muse.GetChatSessionRsp
-	8,  // 29: muse.ChatService.CreateChatSession:output_type -> muse.CreateChatSessionRsp
-	10, // 30: muse.ChatService.UpdateChatSession:output_type -> muse.UpdateChatSessionRsp
-	12, // 31: muse.ChatService.DeleteChatSession:output_type -> muse.DeleteChatSessionRsp
-	14, // 32: muse.ChatService.SendMessage:output_type -> muse.SendMessageRsp
-	16, // 33: muse.ChatService.RegenerateMessage:output_type -> muse.RegenerateMessageRsp
-	18, // 34: muse.ChatService.EditMessage:output_type -> muse.EditMessageRsp
-	20, // 35: muse.ChatService.DeleteMessage:output_type -> muse.DeleteMessageRsp
-	22, // 36: muse.ChatService.SwitchSwipe:output_type -> muse.SwitchSwipeRsp
-	24, // 37: muse.ChatService.GetCharLatestSession:output_type -> muse.GetCharLatestSessionRsp
-	26, // 38: muse.ChatService.UpdateSessionTime:output_type -> muse.UpdateSessionTimeRsp
-	28, // 39: muse.ChatService.DeleteSwipe:output_type -> muse.DeleteSwipeRsp
-	27, // [27:40] is the sub-list for method output_type
-	14, // [14:27] is the sub-list for method input_type
-	14, // [14:14] is the sub-list for extension type_name
-	14, // [14:14] is the sub-list for extension extendee
-	0,  // [0:14] is the sub-list for field type_name
+	0,  // 14: muse.ImportSessionRsp.session:type_name -> muse.ChatSession
+	3,  // 15: muse.ChatService.ListChatSessions:input_type -> muse.ListChatSessionsReq
+	5,  // 16: muse.ChatService.GetChatSession:input_type -> muse.GetChatSessionReq
+	7,  // 17: muse.ChatService.CreateChatSession:input_type -> muse.CreateChatSessionReq
+	9,  // 18: muse.ChatService.UpdateChatSession:input_type -> muse.UpdateChatSessionReq
+	11, // 19: muse.ChatService.DeleteChatSession:input_type -> muse.DeleteChatSessionReq
+	13, // 20: muse.ChatService.SendMessage:input_type -> muse.SendMessageReq
+	15, // 21: muse.ChatService.RegenerateMessage:input_type -> muse.RegenerateMessageReq
+	17, // 22: muse.ChatService.EditMessage:input_type -> muse.EditMessageReq
+	19, // 23: muse.ChatService.DeleteMessage:input_type -> muse.DeleteMessageReq
+	21, // 24: muse.ChatService.SwitchSwipe:input_type -> muse.SwitchSwipeReq
+	23, // 25: muse.ChatService.GetCharLatestSession:input_type -> muse.GetCharLatestSessionReq
+	25, // 26: muse.ChatService.UpdateSessionTime:input_type -> muse.UpdateSessionTimeReq
+	27, // 27: muse.ChatService.DeleteSwipe:input_type -> muse.DeleteSwipeReq
+	29, // 28: muse.ChatService.ImportSession:input_type -> muse.ImportSessionReq
+	4,  // 29: muse.ChatService.ListChatSessions:output_type -> muse.ListChatSessionsRsp
+	6,  // 30: muse.ChatService.GetChatSession:output_type -> muse.GetChatSessionRsp
+	8,  // 31: muse.ChatService.CreateChatSession:output_type -> muse.CreateChatSessionRsp
+	10, // 32: muse.ChatService.UpdateChatSession:output_type -> muse.UpdateChatSessionRsp
+	12, // 33: muse.ChatService.DeleteChatSession:output_type -> muse.DeleteChatSessionRsp
+	14, // 34: muse.ChatService.SendMessage:output_type -> muse.SendMessageRsp
+	16, // 35: muse.ChatService.RegenerateMessage:output_type -> muse.RegenerateMessageRsp
+	18, // 36: muse.ChatService.EditMessage:output_type -> muse.EditMessageRsp
+	20, // 37: muse.ChatService.DeleteMessage:output_type -> muse.DeleteMessageRsp
+	22, // 38: muse.ChatService.SwitchSwipe:output_type -> muse.SwitchSwipeRsp
+	24, // 39: muse.ChatService.GetCharLatestSession:output_type -> muse.GetCharLatestSessionRsp
+	26, // 40: muse.ChatService.UpdateSessionTime:output_type -> muse.UpdateSessionTimeRsp
+	28, // 41: muse.ChatService.DeleteSwipe:output_type -> muse.DeleteSwipeRsp
+	30, // 42: muse.ChatService.ImportSession:output_type -> muse.ImportSessionRsp
+	29, // [29:43] is the sub-list for method output_type
+	15, // [15:29] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_muse_chat_proto_init() }
@@ -1838,7 +1947,7 @@ func file_muse_chat_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_muse_chat_proto_rawDesc), len(file_muse_chat_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   29,
+			NumMessages:   31,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

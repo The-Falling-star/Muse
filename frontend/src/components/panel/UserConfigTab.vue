@@ -282,8 +282,7 @@ const handleSavePersona = async (persona: PersonaWithEdit) => {
     }
 
     if (userStore.personas.length === 1) {
-      await userClient.setActivePersona({ personaId: rsp.persona!.id });
-      userStore.setActivePersonaId(rsp.persona!.id);
+      await userStore.setActivePersonaId(rsp.persona!.id);
     }
   } finally {
     persona.loading = false;
@@ -313,8 +312,7 @@ const handleDeletePersona = async (persona: PersonaWithEdit) => {
 
     if (isActive && personaList.value.length > 0) {
       const nextActive = personaList.value[0]!;
-      await userClient.setActivePersona({ personaId: nextActive.id });
-      userStore.setActivePersonaId(nextActive.id);
+      await userStore.setActivePersonaId(nextActive.id);
     }
   } finally {
     persona.loading = false;
@@ -325,8 +323,7 @@ const handleActivatePersona = async (persona: PersonaWithEdit) => {
   if (persona.id === 0 || persona.id === userStore.currentUser?.activePersonaId) {
     return;
   }
-  await userClient.setActivePersona({ personaId: persona.id });
-  userStore.setActivePersonaId(persona.id);
+  await userStore.setActivePersonaId(persona.id);
 };
 
 const cleanupPersonaPreview = (persona: PersonaWithEdit) => {

@@ -74,9 +74,6 @@ export const useRegexRuleStore = defineStore('regexRule', () => {
       console.info("已存在角色正则: ", characterId)
       characterId = 0;
     }
-    if (presetId === 0 && characterId === 0) {
-      return;
-    }
     console.info("拉取预设正则: ", presetId, "角色正则: ", characterId)
     loading.value = true;
     try {

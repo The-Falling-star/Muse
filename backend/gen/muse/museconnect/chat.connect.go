@@ -68,6 +68,9 @@ const (
 	ChatServiceUpdateSessionTimeProcedure = "/muse.ChatService/UpdateSessionTime"
 	// ChatServiceDeleteSwipeProcedure is the fully-qualified name of the ChatService's DeleteSwipe RPC.
 	ChatServiceDeleteSwipeProcedure = "/muse.ChatService/DeleteSwipe"
+	// ChatServiceImportSessionProcedure is the fully-qualified name of the ChatService's ImportSession
+	// RPC.
+	ChatServiceImportSessionProcedure = "/muse.ChatService/ImportSession"
 )
 
 // ChatServiceClient is a client for the muse.ChatService service.
@@ -98,6 +101,8 @@ type ChatServiceClient interface {
 	UpdateSessionTime(context.Context, *connect.Request[muse.UpdateSessionTimeReq]) (*connect.Response[muse.UpdateSessionTimeRsp], error)
 	// 删除swipe
 	DeleteSwipe(context.Context, *connect.Request[muse.DeleteSwipeReq]) (*connect.Response[muse.DeleteSwipeRsp], error)
+	// 导入会话
+	ImportSession(context.Context, *connect.Request[muse.ImportSessionReq]) (*connect.Response[muse.ImportSessionRsp], error)
 }
 
 // NewChatServiceClient constructs a client for the muse.ChatService service. By default, it uses
@@ -189,6 +194,12 @@ func NewChatServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(chatServiceMethods.ByName("DeleteSwipe")),
 			connect.WithClientOptions(opts...),
 		),
+		importSession: connect.NewClient[muse.ImportSessionReq, muse.ImportSessionRsp](
+			httpClient,
+			baseURL+ChatServiceImportSessionProcedure,
+			connect.WithSchema(chatServiceMethods.ByName("ImportSession")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -207,6 +218,7 @@ type chatServiceClient struct {
 	getCharLatestSession *connect.Client[muse.GetCharLatestSessionReq, muse.GetCharLatestSessionRsp]
 	updateSessionTime    *connect.Client[muse.UpdateSessionTimeReq, muse.UpdateSessionTimeRsp]
 	deleteSwipe          *connect.Client[muse.DeleteSwipeReq, muse.DeleteSwipeRsp]
+	importSession        *connect.Client[muse.ImportSessionReq, muse.ImportSessionRsp]
 }
 
 // ListChatSessions calls muse.ChatService.ListChatSessions.
@@ -274,6 +286,11 @@ func (c *chatServiceClient) DeleteSwipe(ctx context.Context, req *connect.Reques
 	return c.deleteSwipe.CallUnary(ctx, req)
 }
 
+// ImportSession calls muse.ChatService.ImportSession.
+func (c *chatServiceClient) ImportSession(ctx context.Context, req *connect.Request[muse.ImportSessionReq]) (*connect.Response[muse.ImportSessionRsp], error) {
+	return c.importSession.CallUnary(ctx, req)
+}
+
 // ChatServiceHandler is an implementation of the muse.ChatService service.
 type ChatServiceHandler interface {
 	// 获取会话列表
@@ -302,6 +319,8 @@ type ChatServiceHandler interface {
 	UpdateSessionTime(context.Context, *connect.Request[muse.UpdateSessionTimeReq]) (*connect.Response[muse.UpdateSessionTimeRsp], error)
 	// 删除swipe
 	DeleteSwipe(context.Context, *connect.Request[muse.DeleteSwipeReq]) (*connect.Response[muse.DeleteSwipeRsp], error)
+	// 导入会话
+	ImportSession(context.Context, *connect.Request[muse.ImportSessionReq]) (*connect.Response[muse.ImportSessionRsp], error)
 }
 
 // NewChatServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -389,6 +408,12 @@ func NewChatServiceHandler(svc ChatServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(chatServiceMethods.ByName("DeleteSwipe")),
 		connect.WithHandlerOptions(opts...),
 	)
+	chatServiceImportSessionHandler := connect.NewUnaryHandler(
+		ChatServiceImportSessionProcedure,
+		svc.ImportSession,
+		connect.WithSchema(chatServiceMethods.ByName("ImportSession")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/muse.ChatService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ChatServiceListChatSessionsProcedure:
@@ -417,6 +442,8 @@ func NewChatServiceHandler(svc ChatServiceHandler, opts ...connect.HandlerOption
 			chatServiceUpdateSessionTimeHandler.ServeHTTP(w, r)
 		case ChatServiceDeleteSwipeProcedure:
 			chatServiceDeleteSwipeHandler.ServeHTTP(w, r)
+		case ChatServiceImportSessionProcedure:
+			chatServiceImportSessionHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -476,4 +503,8 @@ func (UnimplementedChatServiceHandler) UpdateSessionTime(context.Context, *conne
 
 func (UnimplementedChatServiceHandler) DeleteSwipe(context.Context, *connect.Request[muse.DeleteSwipeReq]) (*connect.Response[muse.DeleteSwipeRsp], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.ChatService.DeleteSwipe is not implemented"))
+}
+
+func (UnimplementedChatServiceHandler) ImportSession(context.Context, *connect.Request[muse.ImportSessionReq]) (*connect.Response[muse.ImportSessionRsp], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muse.ChatService.ImportSession is not implemented"))
 }

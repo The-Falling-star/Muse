@@ -1,7 +1,9 @@
 package chat
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"regexp"
@@ -17,6 +19,7 @@ import (
 	"github.com/ling/muse/common/errs"
 	"github.com/ling/muse/common/jwt"
 	"github.com/ling/muse/entity"
+	"github.com/ling/muse/entity/sillytavern"
 	pb "github.com/ling/muse/gen/muse"
 	"github.com/ling/muse/repo/cache"
 	"github.com/ling/muse/repo/database"
@@ -1302,9 +1305,106 @@ func applyMacro(messages []model.Message, session *entity.ChatSession, persona *
 }
 
 func (c *chatImpl) DeleteSwipe(ctx context.Context, req *pb.DeleteSwipeReq) (*pb.DeleteSwipeRsp, error) {
-
-	if err := c.chatRepo.DeleteSwipe(ctx, int(req.MessageId), int(req.SwipeId)); err != nil {
+	userId := jwt.GetUserId(ctx)
+	if err := c.chatRepo.DeleteSwipe(ctx, int(req.MessageId), userId, int(req.SwipeId)); err != nil {
 		return nil, err
 	}
 	return &pb.DeleteSwipeRsp{}, nil
+}
+
+func (c *chatImpl) ImportSession(ctx context.Context, req *pb.ImportSessionReq) (*pb.ImportSessionRsp, error) {
+	charID := req.GetCharacterId()
+	if charID <= 0 {
+		return nil, errs.NewStandard(connect.CodeInvalidArgument, "无效的角色ID")
+	}
+	userId := jwt.GetUserId(ctx)
+	char, err := c.charRepo.GetByID(ctx, int(charID), userId)
+	if err != nil {
+		return nil, errs.NewStandardf(connect.CodeInternal, "获取角色失败: %v", err)
+	}
+	if char == nil {
+		return nil, errs.NewStandard(connect.CodeNotFound, "角色不存在")
+	}
+	meta, histories, err := DecodeChatHistory(req.Data)
+	if err != nil {
+		return nil, errs.NewStandardf(connect.CodeInternal, "解析聊天记录失败: %v", err)
+	}
+	if meta.CharacterName != char.Name {
+		log.Warnf("角色名称不一致: %s != %s", char.Name, meta.CharacterName)
+	}
+	session, err := c.chatRepo.ImportSession(ctx, userId, char.ID, meta.CharacterName+" - "+meta.CreateDate, histories)
+	if err != nil {
+		return nil, errs.NewStandardf(connect.CodeInternal, "导入聊天记录失败: %v", err)
+	}
+	return &pb.ImportSessionRsp{Session: convert.SessionEntityToPb(session)}, nil
+}
+
+func DecodeChatHistory(file []byte) (*sillytavern.ChatHistoryMeta, []entity.Message, error) {
+	dec := json.NewDecoder(bytes.NewReader(file))
+	meta := &sillytavern.ChatHistoryMeta{}
+	err := dec.Decode(meta)
+	if err != nil {
+		return nil, nil, err
+	}
+	var histories []entity.Message
+	for dec.More() {
+		history := &sillytavern.ChatHistory{}
+		err = dec.Decode(history)
+		if err != nil {
+			return nil, nil, err
+		}
+		msg := entity.Message{
+			ActiveSwipeIndex: history.SwipeId,
+			Swipes:           make([]entity.MessageSwipe, 0, len(history.Swipes)),
+		}
+		msg.Role = pb.Role_Assistant
+		if history.IsUser {
+			msg.Role = pb.Role_User
+		}
+		if history.IsSystem {
+			msg.Role = pb.Role_System
+		}
+		msg.CreatedAt = parseSTSendDate(history.SendDate)
+		msg.UpdatedAt = msg.CreatedAt
+
+		if len(history.Swipes) == 0 {
+			msg.Swipes = append(msg.Swipes, entity.MessageSwipe{
+				Content:   history.Mes,
+				CreatedAt: parseSTSendDate(history.SendDate),
+			})
+			histories = append(histories, msg)
+			continue
+		}
+
+		for i, swipe := range history.Swipes {
+			messageSwipe := entity.MessageSwipe{
+				Content: swipe,
+			}
+			if i < len(history.SwipeInfo) {
+				messageSwipe.CreatedAt = parseSTSendDate(history.SwipeInfo[i].SendDate)
+			} else {
+				messageSwipe.CreatedAt = msg.CreatedAt
+			}
+			msg.Swipes = append(msg.Swipes, messageSwipe)
+		}
+		histories = append(histories, msg)
+	}
+	return meta, histories, nil
+}
+
+// stSendDateLayouts SillyTavern send_date 的两种时间格式
+var stSendDateLayouts = []string{
+	"January 2, 2006 3:04:05pm",
+	"January 2, 2006 3:04pm",
+}
+
+// parseSTSendDate 解析 SillyTavern 的 send_date，失败返回当前时间
+func parseSTSendDate(s string) time.Time {
+	for _, layout := range stSendDateLayouts {
+		if t, err := time.Parse(layout, s); err == nil {
+			return t
+		}
+	}
+	log.Warnf("解析 ST send_date 失败，使用当前时间: %s", s)
+	return time.Now()
 }

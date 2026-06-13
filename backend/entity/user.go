@@ -37,13 +37,13 @@ func (User) TableName() string {
 // Persona 用户人设表实体
 // 人设是用户在角色扮演中扮演的角色身份，类似于SillyTavern中的Persona功能
 type Persona struct {
-	ID          int       `gorm:"column:id;primaryKey;autoIncrement" json:"id"`            // 人设唯一标识
-	UserID      int       `gorm:"column:user_id;not null;index:idx_user_id" json:"userId"` // 所属用户ID
-	Name        string    `gorm:"column:name;type:varchar(128);not null" json:"name"`      // 人设名称
-	Avatar      string    `gorm:"column:avatar;type:text" json:"avatar"`                   // 人设头像，Base64编码或URL
-	Description string    `gorm:"column:description;type:text" json:"description"`         // 人设描述，用于向AI描述用户扮演的角色
-	CreatedAt   time.Time `gorm:"column:created_at;autoCreateTime" json:"createdAt"`       // 创建时间
-	UpdatedAt   time.Time `gorm:"column:updated_at;autoUpdateTime" json:"updatedAt"`       // 更新时间
+	ID          int       `gorm:"column:id;primaryKey;autoIncrement" json:"id"`                     // 人设唯一标识
+	UserID      int       `gorm:"column:user_id;not null;index:idx_personas_user_id" json:"userId"` // 所属用户ID
+	Name        string    `gorm:"column:name;type:varchar(128);not null" json:"name"`               // 人设名称
+	Avatar      string    `gorm:"column:avatar;type:text" json:"avatar"`                            // 人设头像，Base64编码或URL
+	Description string    `gorm:"column:description;type:text" json:"description"`                  // 人设描述，用于向AI描述用户扮演的角色
+	CreatedAt   time.Time `gorm:"column:created_at;autoCreateTime" json:"createdAt"`                // 创建时间
+	UpdatedAt   time.Time `gorm:"column:updated_at;autoUpdateTime" json:"updatedAt"`                // 更新时间
 }
 
 // TableName 返回表名

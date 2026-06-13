@@ -110,10 +110,11 @@ export const useUserStore = defineStore('user', () => {
   };
 
   // 设置活跃人设ID
-  const setActivePersonaId = (personaId: number) => {
+  const setActivePersonaId = async (personaId: number) => {
     if (currentUser.value) {
       currentUser.value.activePersonaId = personaId;
     }
+    await userClient.setActivePersona({ personaId: personaId })
   };
 
   // =====================

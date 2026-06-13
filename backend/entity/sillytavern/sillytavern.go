@@ -1,6 +1,10 @@
 package sillytavern
 
-import "github.com/ling/muse/common/constant"
+import (
+	"time"
+
+	"github.com/ling/muse/common/constant"
+)
 
 // CharacterCard 角色卡数据结构（兼容V2/V3格式）
 // 字段说明参考 SillyTavern Character Card V2/V3 规范
@@ -341,4 +345,30 @@ type RegexScript struct {
 	SubstituteRegex int      `json:"substituteRegex"` // 替换正则模式（0=无, 1={{user}}, 2={{char}}, 3=全部）
 	MinDepth        int      `json:"minDepth"`        // 最小深度
 	MaxDepth        int      `json:"maxDepth"`        // 最大深度
+}
+
+// ChatHistoryMeta 聊天记录元数据
+type ChatHistoryMeta struct {
+	UserName      string `json:"user_name"`
+	CharacterName string `json:"character_name"`
+	CreateDate    string `json:"create_date"`
+}
+
+// ChatHistory 聊天记录
+type ChatHistory struct {
+	Name      string   `json:"name"`
+	IsUser    bool     `json:"is_user"`
+	IsSystem  bool     `json:"is_system"`
+	SendDate  string   `json:"send_date"`
+	Mes       string   `json:"mes"`
+	Title     string   `json:"title"`
+	SwipeId   int      `json:"swipe_id"`
+	Swipes    []string `json:"swipes"`
+	SwipeInfo []struct {
+		SendDate    string    `json:"send_date"`
+		GenStarted  time.Time `json:"gen_started"`
+		GenFinished time.Time `json:"gen_finished"`
+	} `json:"swipe_info"`
+	GenStarted  time.Time `json:"gen_started"`
+	GenFinished time.Time `json:"gen_finished"`
 }

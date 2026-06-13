@@ -8,6 +8,7 @@ export const MAX_PAGE_SIZE = 100;
 // 获取所有数据时的分页大小
 export const FETCH_ALL_PAGE_SIZE = 1000;
 
+// 宏
 export const MACRO_USER = ['{{user}}', '{{User}}', '<user>']
 export const MACRO_CHAR = ['{{char}}', '{{Char}}', '<char>', '<BOT>']
 
@@ -25,3 +26,7 @@ export const REGEX_RULE_TYPE = {
 } as const;
 
 export type RegexRuleType = typeof REGEX_RULE_TYPE[keyof typeof REGEX_RULE_TYPE];
+
+export const INPUT_EXTRA_OPTIONS_KEY= {
+  IMPORT_CHAT_HISTORY: 'import_chat_history',
+}

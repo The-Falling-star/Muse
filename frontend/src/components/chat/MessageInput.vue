@@ -97,8 +97,8 @@
       </n-popover>
 
       <!-- 附加功能按钮 -->
-      <div class="input-actions-left">
-        <n-dropdown :options="quickInsertOptions" trigger="click" @select="handleQuickInsert">
+      <div class="extra-actions-left">
+        <n-dropdown :options="extraOptions" trigger="click" @select="handleExtraOption">
           <n-button quaternary circle size="small">
             <template #icon>
               <n-icon size="18"><FlashOutline /></n-icon>
@@ -163,13 +163,22 @@
       </span>
     </div>
 
-    <!-- 隐藏的文件输入 -->
+    <!-- 隐藏的文件输入（附件） -->
     <input
       ref="fileInputRef"
       type="file"
       multiple
       hidden
       @change="handleFileSelect"
+    />
+
+    <!-- 隐藏的文件输入（导入聊天记录） -->
+    <input
+      ref="importFileInputRef"
+      type="file"
+      accept=".jsonl,.json"
+      hidden
+      @change="handleImportFileSelect"
     />
   </div>
 </template>
@@ -191,8 +200,12 @@ import {
 import { useUserStore } from '@/stores/user';
 import { useFileStore } from '@/stores/file';
 import { useAppStore } from '@/stores/app';
-import { userClient } from '@/api/client';
+import { useCharacterStore } from '@/stores/character';
+import { useChatStore } from '@/stores/chat';
+import { chatClient } from '@/api/client';
+import { globalMessage } from '@/composables/useGlobalMessage';
 import type { Persona } from '@/gen/muse/user_pb';
+import { INPUT_EXTRA_OPTIONS_KEY } from '@/utils/constants.ts';
 
 interface AttachmentFile {
   name: string;
@@ -223,9 +236,11 @@ const emit = defineEmits<{
 const userStore = useUserStore();
 const fileStore = useFileStore();
 const appStore = useAppStore();
+const characterStore = useCharacterStore();
+const chatStore = useChatStore();
 
 const inputRef = ref<InstanceType<typeof NInput> | null>(null);
-const fileInputRef = ref<HTMLInputElement | null>(null);
+const importFileInputRef = ref<HTMLInputElement | null>(null);
 const attachments = ref<AttachmentFile[]>([]);
 const personaPopoverShow = ref(false);
 
@@ -255,8 +270,7 @@ const getPersonaAvatarSrc = (path: string | undefined): string => {
 // 选择 Persona，调用后端 API 设置活跃人设
 const selectPersona = async (persona: Persona) => {
   try {
-    await userClient.setActivePersona({ personaId: persona.id });
-    userStore.setActivePersonaId(persona.id);
+    await userStore.setActivePersonaId(persona.id);
     emit('persona-change', persona);
   } catch (e) {
     console.error('切换人设失败:', e);
@@ -281,15 +295,9 @@ const charCount = computed(() => localValue.value.length);
 // 是否可以发送
 const canSend = computed(() => localValue.value.trim().length > 0 && !props.disabled);
 
-// 快速插入选项
-const quickInsertOptions = [
-  { label: '添加附件', key: 'attachment', icon: () => null },
-  { type: 'divider', key: 'd0' },
-  { label: '角色扮演开始', key: 'roleplay', icon: () => null },
-  { label: '续写', key: 'continue', icon: () => null },
-  { label: '重写', key: 'rewrite', icon: () => null },
-  { type: 'divider', key: 'd1' },
-  { label: '自定义指令...', key: 'custom', icon: () => null }
+// 更多选项
+const extraOptions = [
+  { label: '导入聊天记录', key: INPUT_EXTRA_OPTIONS_KEY.IMPORT_CHAT_HISTORY},
 ];
 
 // 处理按键
@@ -306,11 +314,6 @@ const handleSend = () => {
   emit('send', localValue.value);
   localValue.value = '';
   attachments.value = [];
-};
-
-// 文件选择
-const triggerFileInput = () => {
-  fileInputRef.value?.click();
 };
 
 const handleFileSelect = (e: Event) => {
@@ -333,23 +336,50 @@ const removeAttachment = (index: number) => {
   attachments.value.splice(index, 1);
 };
 
-// 快速插入处理
-const handleQuickInsert = (key: string) => {
-  // 处理添加附件
-  if (key === 'attachment') {
-    triggerFileInput();
+// 额外选项处理
+const handleExtraOption = (key: string) => {
+  switch (key) {
+    case INPUT_EXTRA_OPTIONS_KEY.IMPORT_CHAT_HISTORY:
+      handleImportChatHistory();
+      break;
+  }
+};
+
+// 导入聊天记录 - 打开文件选择器
+const handleImportChatHistory = () => {
+  const charId = characterStore.curCharId;
+  if (!charId) {
+    globalMessage.warning('请先选择一个角色');
+    return;
+  }
+  importFileInputRef.value?.click();
+};
+
+// 导入文件选择完成
+const handleImportFileSelect = async (e: Event) => {
+  const target = e.target as HTMLInputElement;
+  const file = target.files?.[0];
+  target.value = '';
+
+  if (!file) return;
+
+  const charId = characterStore.curCharId;
+  if (!charId) {
+    globalMessage.warning('请先选择一个角色');
     return;
   }
 
-  const inserts: Record<string, string> = {
-    roleplay: '[开始角色扮演]\n',
-    continue: '[续写上文]\n',
-    rewrite: '[请重写以下内容]\n'
-  };
-
-  if (inserts[key]) {
-    localValue.value += inserts[key];
-    inputRef.value?.focus();
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    const data = new Uint8Array(arrayBuffer);
+    const rsp = await chatClient.importSession({ characterId: charId, data });
+    if (rsp.session) {
+      chatStore.addSession(rsp.session);
+      chatStore.setActiveSession(rsp.session);
+      globalMessage.success('聊天记录导入成功');
+    }
+  } catch (err) {
+    console.error('导入聊天记录失败:', err);
   }
 };
 
@@ -545,7 +575,7 @@ defineExpose({ focus });
   border-top: 1px solid var(--border-color);
 }
 
-.input-actions-left,
+.extra-actions-left,
 .input-actions-right {
   display: flex;
   align-items: center;
@@ -554,13 +584,13 @@ defineExpose({ focus });
   height: 40px;
 }
 
-.input-actions-left .n-button {
+.extra-actions-left .n-button {
   color: var(--text-tertiary);
   width: 36px;
   height: 36px;
 }
 
-.input-actions-left .n-button:hover {
+.extra-actions-left .n-button:hover {
   color: var(--color-primary);
 }
 
@@ -661,7 +691,7 @@ defineExpose({ focus });
     gap: 6px;
   }
 
-  .input-actions-left .n-button,
+  .extra-actions-left .n-button,
   .send-button,
   .stop-button {
     width: 36px;

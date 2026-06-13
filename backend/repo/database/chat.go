@@ -7,7 +7,6 @@ import (
 
 	"connectrpc.com/connect"
 	"github.com/ling/muse/common/errs"
-	"github.com/ling/muse/common/jwt"
 	"github.com/ling/muse/entity"
 	"gorm.io/gorm"
 )
@@ -35,6 +34,9 @@ func (c *ChatRepo) GetSessionByID(ctx context.Context, id int, userID int) (*ent
 	db := GetDB(ctx)
 	var session entity.ChatSession
 	result := db.Where("id = ? AND user_id = ?", id, userID).
+		Preload("Character", func(db *gorm.DB) *gorm.DB {
+			return db.Select("id", "name", "avatar")
+		}).
 		Preload("Messages").
 		Preload("Messages.Swipes").
 		First(&session)
@@ -256,7 +258,10 @@ func (c *ChatRepo) UpdateMessageSwipe(ctx context.Context, swipeID int, content 
 func (c *ChatRepo) GetCharLatestSessionWithMsg(ctx context.Context, charID, userID int) (*entity.ChatSession, error) {
 	db := GetDB(ctx)
 	session := &entity.ChatSession{}
-	if err := db.Preload("Messages").
+	if err := db.Preload("Character", func(db *gorm.DB) *gorm.DB {
+		return db.Select("id", "name", "avatar")
+	}).
+		Preload("Messages").
 		Preload("Messages.Swipes").
 		Where("character_id = ? AND user_id = ?", charID, userID).
 		Order("updated_at DESC").
@@ -315,7 +320,7 @@ func (c *ChatRepo) SwitchSwipe(ctx context.Context, messageID, index int) error 
 	return nil
 }
 
-func (c *ChatRepo) DeleteSwipe(ctx context.Context, msgID int, swipeID int) error {
+func (c *ChatRepo) DeleteSwipe(ctx context.Context, msgID, userId, swipeID int) error {
 	db := GetDB(ctx)
 	msg := &entity.Message{}
 	if err := db.Where("id = ?", msgID).First(msg).Error; err != nil {
@@ -324,7 +329,6 @@ func (c *ChatRepo) DeleteSwipe(ctx context.Context, msgID int, swipeID int) erro
 		}
 		return errs.NewStandardf(connect.CodeInternal, "删除swipe时查询message失败: %v", err)
 	}
-	userId := jwt.GetUserId(ctx)
 	session := &entity.ChatSession{}
 	if err := db.Where("id = ? AND user_id = ?", msg.SessionID, userId).First(session).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -347,4 +351,19 @@ func (c *ChatRepo) DeleteSwipe(ctx context.Context, msgID int, swipeID int) erro
 		return errs.NewStandardf(connect.CodeInternal, "删除swipe时更新message失败: %v", err)
 	}
 	return nil
+}
+
+func (c *ChatRepo) ImportSession(ctx context.Context, userID, charID int, sessionName string, histories []entity.Message) (*entity.ChatSession, error) {
+	db := GetDB(ctx)
+	session := &entity.ChatSession{
+		UserID:      userID,
+		CharacterID: charID,
+		Name:        sessionName,
+		Messages:    histories,
+	}
+	if err := db.Create(session).Error; err != nil {
+		return nil, errs.NewStandardf(connect.CodeInternal, "导入会话失败: %v", err)
+	}
+	// 重新获取完整数据（包含Character关联）
+	return c.GetSessionByID(ctx, session.ID, userID)
 }

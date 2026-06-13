@@ -70,7 +70,9 @@ type ChatRepository interface {
 	// SwitchSwipe 切换消息的swipe
 	SwitchSwipe(ctx context.Context, messageID, index int) error
 	// DeleteSwipe 删除消息的swipe
-	DeleteSwipe(ctx context.Context, msgID int, swipeID int) error
+	DeleteSwipe(ctx context.Context, msgID, userId, swipeID int) error
+	// ImportSession 导入会话
+	ImportSession(ctx context.Context, userID, charID int, sessionName string, histories []entity.Message) (*entity.ChatSession, error)
 }
 
 // PresetRepository 预设数据仓库接口

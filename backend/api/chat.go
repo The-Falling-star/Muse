@@ -227,3 +227,17 @@ func (c *ChatServer) DeleteSwipe(ctx context.Context, req *connect.Request[pb.De
 	}
 	return doResponse(ctx, "DeleteSwipe", req.Msg, resp)
 }
+
+func (c *ChatServer) ImportSession(ctx context.Context, req *connect.Request[pb.ImportSessionReq]) (
+	*connect.Response[pb.ImportSessionRsp], error) {
+	var err error
+	ctx, err = beginTransaction(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	rsp, err := c.chat.ImportSession(ctx, req.Msg)
+	if err != nil {
+		return doResponseExp(ctx, "ImportSession", req.Msg.CharacterId, rsp, err)
+	}
+	return doResponse(ctx, "ImportSession", req.Msg.CharacterId, rsp)
+}

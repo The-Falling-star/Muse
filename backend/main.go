@@ -90,6 +90,9 @@ func main() {
 		_, _ = w.Write([]byte("ok"))
 	})
 
+	// 注册内嵌前端资源
+	middleware.RegisterEmbeddedFS(FrontendDist)
+
 	// 条件性启用静态文件服务
 	middleware.ServeStaticFiles(mux, cfg.StaticFile.Enabled, cfg.StaticFile.FrontendDir)
 

@@ -23,6 +23,8 @@ static_file:
   # 设置为false时为分离部署模式，需要单独部署前端
   enabled: true
   # 前端构建产物目录路径
+  # 使用 compile.sh 编译时，前端资源会内嵌到二进制文件中，无需此配置
+  # 仅在开发模式（go run）下才从磁盘读取前端文件
   frontend_dir: "./frontend/dist"
 
 # 候选模型配置

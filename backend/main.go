@@ -98,10 +98,15 @@ func main() {
 
 	// 应用子路径剥离（子目录部署时剥离前缀，如 /muse）
 	handler := http.Handler(mux)
-	basePath := cfg.Server.BasePath
-	basePath = strings.TrimRight(basePath, "/")
-	if basePath != "" {
-		handler = http.StripPrefix(basePath, handler)
+	if basePath := strings.TrimRight(cfg.Server.BasePath, "/"); basePath != "" {
+		handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			// 精确匹配 base_path 时重定向到带斜杠的路径，避免 StripPrefix 产生空路径
+			if r.URL.Path == basePath {
+				http.Redirect(w, r, basePath+"/", http.StatusMovedPermanently)
+				return
+			}
+			http.StripPrefix(basePath, mux).ServeHTTP(w, r)
+		})
 		log.Infof("子路径部署模式，base_path: %s", basePath)
 	}
 

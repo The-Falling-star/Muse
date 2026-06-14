@@ -765,7 +765,7 @@ const handleSaveAs = () => {
         });
 
         // 重新加载列表获取新创建的预设
-        await presetStore.loadPresets();
+        await presetStore.reloadPresets();
         const newPreset = presetStore.presets!.find(p => p.preset?.name === newName.value);
         
         if (newPreset && newPreset.preset) {
